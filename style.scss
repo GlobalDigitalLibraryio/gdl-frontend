@@ -102,6 +102,29 @@ p {
     .welcome__header {
         padding: 3em;
     }
+    .section--content {
+        .cards {
+            margin: 0 auto;
+            max-width: 1000px;
+            width: 90%;
+        }
+        .cards__item {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 40px 0;
+            .item__text {
+                width: 40%;
+            }
+            .item__image {
+                width: 60%;
+            }
+            &:nth-of-type(even) {
+                .item__image {
+                    order: 2;
+                }
+            }
+        }
+    }
 }
 
 @media (min-width: 900px) {
