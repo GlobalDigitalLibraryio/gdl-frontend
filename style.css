@@ -62,6 +62,8 @@ p {
     width: calc(100% + 15px); }
   .block-link.block-link--bigger {
     font-size: 1.4rem; }
+  .block-link.block-link--right {
+    text-align: right; }
 
 .welcome__header {
   padding: 2em; }
@@ -69,11 +71,28 @@ p {
 .intro-text {
   max-width: 500px; }
 
-.section--welcome {
+.section--blue {
   height: 70vh;
   min-height: 400px;
   background: linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
   color: #fff; }
+
+.section--fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: -1; }
+
+.section--read-more {
+  margin: 20px auto 80px;
+  padding: 10px;
+  width: 90%;
+  max-width: 1200px;
+  z-index: 10;
+  background: #fff; }
+  .section--read-more h2 {
+    text-transform: uppercase; }
 
 .section--content .cards {
   margin: 0 auto; }
@@ -87,7 +106,9 @@ p {
   padding: 1em; }
 
 .footer {
-  text-align: center; }
+  position: relative;
+  text-align: center;
+  z-index: 10; }
 
 .footer__links .links__social ul {
   display: flex;
