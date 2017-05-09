@@ -84,12 +84,12 @@ p {
 
 .arrow {
   display: block;
+  margin-left: 20px;
   width: 50px;
   height: 50px;
   text-indent: -9000px;
   background: url("img/arrow.png") no-repeat center center;
-  background-size: 80% 80%;
-  transition: all 150ms ease-in-out; }
+  background-size: 80% 80%; }
   .arrow:hover {
     background-size: cover; }
 
@@ -100,7 +100,7 @@ p {
   max-width: 500px; }
 
 .section--blue {
-  height: 60vh;
+  height: 55vh;
   min-height: 400px;
   background: linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
   color: #fff; }
@@ -127,10 +127,8 @@ p {
   width: 90%;
   max-width: 900px;
   z-index: 10;
-  background: #fff; }
-  .section--read-more h1 {
-    /*text-transform: uppercase;
-        font-weight: normal;*/ }
+  background: #fff;
+  box-shadow: 0px 5px 20px -4px rgba(0, 0, 0, 0.35); }
   .section--read-more h2 {
     text-transform: uppercase; }
 
@@ -139,11 +137,11 @@ p {
   .section--content .cards {
     margin: 0 auto; }
   .section--content .cards__item h2 {
-    margin: 10px 0 16px;
+    margin-bottom: 16px;
     color: #1c5791;
     font-size: 2rem; }
   .section--content .cards__item .item__text {
-    padding: 1em; }
+    padding: 1em 1em 1.4em; }
 
 .footer {
   position: relative;
@@ -158,6 +156,27 @@ p {
   .footer__links .links__social ul li {
     width: 70px;
     text-align: center; }
+
+.footer__logos {
+  padding: 2em 1em;
+  border-top: 1px solid #5fa1d1;
+  background: #fff; }
+  .footer__logos ul {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: 500px;
+    list-style: none;
+    justify-content: space-between; }
+    .footer__logos ul li {
+      margin: 20px 0;
+      height: 40px;
+      width: 46%; }
+      .footer__logos ul li img {
+        display: block;
+        margin: 0 auto;
+        width: auto;
+        height: 100%; }
 
 a.icon {
   display: block;
@@ -208,7 +227,9 @@ a.icon {
       order: 2; }
   .section--read-more {
     margin-top: 60px;
-    padding: 20px 40px; } }
+    padding: 20px 40px; }
+  .footer__logos ul li {
+    width: 33%; } }
 
 @media (min-width: 900px) {
   h1 {
@@ -226,7 +247,11 @@ a.icon {
     padding: 4em; }
   .section--read-more {
     margin-top: 160px;
-    padding: 20px 80px; } }
+    padding: 20px 80px; }
+  .footer__logos ul {
+    max-width: 900px; }
+    .footer__logos ul li {
+      width: 14%; } }
 
 @media (min-width: 1200px) {
   .section--content .cards__item {
