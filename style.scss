@@ -27,6 +27,8 @@ h1 {
         display: block;
         text-indent: 20px;
         text-transform: uppercase;
+        font-size: 90%;
+        font-weight: 600;
     }
 }
 
@@ -113,17 +115,19 @@ p {
 
 .arrow {
     display: block;
-    margin-left: 20px;
-    width: 50px;
-    height: 50px;
+    padding: 5px;
+    width: 70px;
+    height: 70px;
     text-indent: -9000px;
-    background: url('img/arrow.png') no-repeat center center;
-    background-size: 80% 80%;
+    background: url('img/arrow.png') no-repeat center 65%;
+    background-size: 70% 70%;
+    border: 5px solid #fff;
+    transition: all 150ms ease-in-out;
+    border-radius: 50%;
     &:hover {
-        background-size: cover;
+        background-size: 80% 80%;
     }
 }
-
 .section--welcome {
     position: relative;
 }
@@ -167,6 +171,12 @@ p {
     box-shadow: 0px 5px 20px -4px rgba(0,0,0,0.35);
     h2 {
         text-transform: uppercase;
+    }
+    h3 {
+        margin-bottom: 16px;
+        margin-top: 30px;
+        font-size: 150%;
+        font-weight: 600;
     }
 }
 
@@ -264,7 +274,10 @@ a.icon {
         font-size: 1.4rem;
     }
     .welcome__header {
-        padding: 3em;
+        padding: 3em 0;
+        margin: 0 auto;
+        max-width: $max-width;
+        width: 90%;
         h1 {
             font-size: 4rem;
             span {
@@ -282,7 +295,7 @@ a.icon {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            margin: 40px 0;           
+            margin: 40px 0;
             background: #fff;
             box-shadow: 0px 5px 20px -4px rgba(0,0,0,0.35);
             .item__text {
@@ -330,7 +343,7 @@ a.icon {
         }
     }
     .welcome__header {
-        padding: 4em;
+        padding: 4em 0;
     }
     .section--read-more {
         margin-top: 160px;
@@ -349,6 +362,7 @@ a.icon {
 @media (min-width: 1200px) {
     .section--content {
         .cards__item {
+            margin: 60px 0;
              font-size: 130%;
             .item__text {
                  padding: 10px 30px;
