@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Global Digital Learning</title>
+  <meta name="author" content="name">
+  <meta name="description" content="description here">
+  <meta name="keywords" content="keywords,here">
+  <link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+  <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' type='text/css'>
+  <link rel="stylesheet" href="style.css" type="text/css">
+  <script src="jquery-3.2.1.min.js"></script>
+  </head>
+  <body>
+
+    <section class="section section--blue section--welcome">
+      <div class="books-icons"></div>
+      <div class="teaching-icons">
+        <img src="img/icons.png" alt="">
+      </div>
+      <header class="header welcome__header">
+        <h1>Global digital <span>library</span></h1>
+        <p class="intro-text">
+          The Global Digital Library(GDL) is intended to be a means of distributing mother tongue learning resources to support children’s literacy learning.
+        </p>
+        <p class="intro-text">
+          The GDL project is in the initial stages - developing a platform to ensure that high-quality mother tongue learning resources become available to all.
+        </p>
+        <a href="#content" class="arrow" title="Click here to read more absout Global Digital Library">Read more</a>
+      </header>
+    </section>
+
+    <section class="section section--content" id="content">
+      <div class="cards">
+
+        <div class="cards__item">
+          <div class="item__image">
+            <figure class="image">
+              <img src="img/CambodiaChildren.jpeg" alt="Cambodia Children with iPad">
+            </figure>
+          </div>
+          <div class="item__text">
+            <h2>Early grade reading</h2>
+            <p>Although there have been major strides in education over the past 15 years, 250 million children of primary school age are still unable to recognize basic letters and numbers.</p>
+            <p> The Global Digital Library is intended to be a means of distributing mother tongue learning resources worldwide to support children’s learning in their local languages.</p>
+            <a class="block-link" href="the-global-digital-library.html" target="_blank">Read more about the project</a>
+          </div>
+        </div>
+
+        <div class="cards__item">
+          <div class="item__image">
+            <figure class="image">
+              <img src="img/children-african.jpeg" alt="Writing on blackboard">
+            </figure>
+          </div>
+          <div class="item__text">
+            <h2>Compilation of digital libraries</h2>
+            <p>If you are looking for reading resources, All Children Reading have made a  compilation of digital libraries, carefully curated to feature a variety of sites that provide local language early grade reading materials.</p>
+            <a class="block-link" href="https://allchildrenreading.org/digital-libraries/" target="_blank">All Children Reading</a>
+          </div>
+
+        </div>
+
+        <div class="cards__item">
+          <div class="item__image">
+            <figure class="image">
+              <img src="img/children-partners.jpeg" alt="Children in the grass with computer">
+            </figure>
+          </div>
+          <div class="item__text">
+            <h2>Project Partners</h2>
+            <p>The Norwegian Agency for Development Cooperation and Norwegian Digital Learning Arena are leading the development of the Global Digital Library initiative as part of <a href="http://globalbookalliance.org/">the Global Book Alliance</a>. Other collaborating partners include the All Children Reading: A Grand Challenge for Development partners (USAID, World Vision, and the Australian Government) among other institutions.</p>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__links">
+        <a href="the-global-digital-library.html" class="button button--green">More about Global Digital Library</a>
+        <div class="links__social">
+          <ul>
+            <li>
+              <a class="icon facebook-icon" target="_blank" href="https://www.facebook.com/globaldigitallibrary">GDL on Facebook</a>
+            </li>
+            <li>
+              <a class="icon twitter-icon" target="_blank" href="https://twitter.com/gdigitallibrary">GDL on Twitter</a>
+            </li>
+            <li>
+              <a class="icon mail-icon" href="mailto:christer@digitallibrary.io">Send us an e-mail</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__logos">
+        <ul>
+          <li class="all-children-reading">
+            <img src="img/all-children.png" alt="All Children Reading logo">
+          </li>
+          <li class="us-aid">
+            <img src="img/usaid.png" alt="US Aid logo">
+          </li>
+          <li class="world-vision">
+            <img src="img/world-vision.png" alt="World Vision logo">
+          </li>
+          <li class="aud-aid">
+            <img src="img/australian-aid.png" alt="Australian Aid logo">
+          </li>
+          <li class="norad">
+            <img src="img/norad.png" alt="Norad logo">
+          </li>
+          <li class="ndla">
+            <img src="img/ndla.png" alt="NDLA logo">
+          </li>
+        </ul>
+      </div>
+    </footer>
+
+
+  <script type="text/javascript">
+    $( document ).ready(function() {
+        $('.welcome__header .arrow').on('click', function(e) {
+          e.preventDefault();
+          var target = $(this).attr('href');
+          $('html, body').animate({
+            scrollTop: $(target).offset().top
+        }, 1000);
+        });
+    });
+  </script>
+  </body>
+</html>
