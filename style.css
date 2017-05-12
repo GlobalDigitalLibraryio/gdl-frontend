@@ -106,9 +106,19 @@ p {
 
 .section--blue {
   height: 55vh;
-  min-height: 400px;
+  min-height: 450px;
   background: linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
-  color: #fff; }
+  color: #fff;
+  overflow: hidden; }
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+  .section--blue {
+    height: auto; } }
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: landscape) {
+  .section--blue {
+    height: auto;
+    min-height: 350px; } }
 
 .books-icons {
   position: absolute;
@@ -156,7 +166,9 @@ p {
 .footer {
   position: relative;
   text-align: center;
-  z-index: 10; }
+  z-index: 10;
+  background: #f5f5f5;
+  border-top: 1px solid #f5f5f5; }
 
 .footer__links .links__social ul {
   display: flex;
