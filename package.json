@@ -1,0 +1,40 @@
+{
+  "name": "gdl-frontend",
+  "version": "0.0.1",
+  "description": "GDL Frontend",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GlobalDigitalLibraryio/gdl-frontend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GlobalDigitalLibraryio/gdl-frontend/issues"
+  },
+  "engines": {
+    "node": "~6.6.0",
+    "npm": "~3.10.3"
+  },
+  "author": "gdl@knowit.no",
+  "license": "GPL-3.0",
+  "scripts": {
+    "pretest": "npm run lint",
+    "lint": "eslint --ext .js --ext .jsx pages components",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\""
+  },
+  "dependencies": {
+    "classnames": "^2.2.5",
+    "next": "^2.4.0",
+    "prop-types": "^15.5.10",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "react-scroll": "^1.5.2"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-ndla": "^0.1.1",
+    "prettier-eslint": "^6.2.3",
+    "prettier-eslint-cli": "^4.0.1"
+  }
+}
