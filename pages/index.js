@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link as ScrollLink } from 'react-scroll';
+import Link from 'next/link';
 
 import BlockLink from '../components/BlockLink';
 import Layout from '../components/Layout';
-import PartnersFooter from '../components/PartnersFooter';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Section from '../components/Section';
@@ -19,9 +19,7 @@ const Card = ({ children, header, src, alt }) => (
       <h2>{header}</h2>
       {children}
     </div>
-
     <style jsx>{`
-
       @media screen and (min-width: 600px) {
         .root {
           display: flex;
@@ -72,6 +70,32 @@ Card.propTypes = {
   src: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
 };
+
+const AboutLink = ({ children, ...props }) => (
+  <Link>
+    <a {...props}>
+      {children}
+      <style jsx>{`
+      a {
+        background: #309556;
+        display: inline-block;
+        padding: 10px 20px;
+        margin-top: 20px;
+        color: #fff;
+        border-radius: 0;
+        -webkit-appearance: none;
+        text-decoration: none;
+        text-transform: uppercase;
+        border: none;
+        transition: background-color 100ms ease-in-out;
+      }
+      a:hover, a:focus {
+        background: #60bb82;
+      }
+    `}</style>
+    </a>
+  </Link>
+);
 
 export default () => (
   <Layout>
@@ -200,9 +224,12 @@ export default () => (
           </div>
 
         </Card>
-
+        <div style={{ textAlign: 'center' }}>
+          <AboutLink href="/about">
+            More about Global Digital Library
+          </AboutLink>
+        </div>
       </Container>
     </Section>
-    <PartnersFooter renderAboutLink />
   </Layout>
 );

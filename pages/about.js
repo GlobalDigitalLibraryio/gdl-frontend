@@ -5,7 +5,6 @@ import Hero from '../components/Hero';
 import Section from '../components/Section';
 import BlockLink from '../components/BlockLink';
 import Container from '../components/Container';
-import PartnersFooter from '../components/PartnersFooter';
 
 export default () => (
   <Layout title="About - Global Digital Library">
@@ -71,6 +70,5 @@ export default () => (
         </Card>
       </Container>
     </Section>
-    <PartnersFooter />
   </Layout>
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import Footer from './Footer';
 
 const Layout = ({ children, title = 'Global Digital Library' }) => (
   <div>
@@ -37,7 +38,22 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
         margin-bottom: 16px;
       }
     `}</style>
-    {children}
+    <div className="site">
+      <div className="site-content">
+        {children}
+      </div>
+      <Footer />
+    </div>
+    <style jsx>{`
+      .site {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+      .site-content {
+        flex: 1;
+      }
+    `}</style>
   </div>
 );
 
