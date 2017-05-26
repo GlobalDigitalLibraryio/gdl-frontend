@@ -4,9 +4,14 @@ import Router from 'next/router';
 import fetch from 'isomorphic-unfetch';
 import Layout from '../components/Layout';
 import Hero from '../components/Hero';
+import { Group } from '../components/Control';
 import Section from '../components/Section';
 import Container from '../components/Container';
 import Result from '../components/PartnerSearch/Result';
+import Columns, { Column } from '../components/Columns';
+import Input from '../components/Input';
+import Button from '../components/Button';
+import Pagination from '../components/Pagination';
 
 const API_KEY = 'AIzaSyCV5jNMGhZuXpqxDPCHkyC8HP9QShrN4mw';
 const SEARCH_ENGINE_ID = '001504581191494847575:s0_xqdo7npy';
@@ -32,31 +37,46 @@ export default class PartnerSearch extends React.Component {
 
   render() {
     const { results } = this.props;
-    console.log(results);
     return (
       <Layout title="Partner Search - Global Digital Library">
         <Hero>
-          <Hero.Body />
+          <Hero.Body>
+            <Container>
+              <form onSubmit={this.onSearch}>
+                <Group>
+                  <Input
+                    expanded
+                    type="search"
+                    name="q"
+                    placeholder="Search for books"
+                    defaultValue={this.props.q}
+                    innerRef={(search) => {
+                      this.search = search;
+                    }}
+                  />
+                  <Button type="submit">Search</Button>
+                </Group>
+              </form>
+            </Container>
+          </Hero.Body>
         </Hero>
         <Section>
           <Container>
-            <form onSubmit={this.onSearch}>
-              <input
-                name="q"
-                placeholder="Search for books"
-                defaultValue={this.props.q}
-                ref={(search) => {
-                  this.search = search;
-                }}
-              />
-              <button type="submit">Search</button>
-            </form>
             {results &&
               results.items &&
               <span>
                 Showing {results.queries.request[0].startIndex}-{results.queries.request[0].startIndex + results.queries.request[0].count - 1} of {results.queries.request[0].totalResults} results
               </span>}
-            {results && results.items && results.items.map(item => <Result key={item.cacheId} item={item} />)}
+            <Columns multiline>
+              {results && results.items && results.items.map(item => <Column size="4" tablet="4" desktop="3" key={item.cacheId}><Result key={item.cacheId} item={item} /></Column>)}
+            </Columns>
+            <Pagination>
+              <Pagination.Item>Previous</Pagination.Item>
+              <Pagination.Item active>1</Pagination.Item>
+              <Pagination.Item>2</Pagination.Item>
+              <Pagination.Item>3</Pagination.Item>
+              <Pagination.Item>Next</Pagination.Item>
+            </Pagination>
             {results && !results.items ? 'No results' : null}
           </Container>
         </Section>

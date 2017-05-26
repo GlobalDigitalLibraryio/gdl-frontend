@@ -30,6 +30,14 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
       p {
         margin-bottom: 16px;
       }
+      a {
+        text-decoration: none;
+      }
+
+      small {
+        font-size: 0.8em;
+      }
+
     `}</style>
     <div className="site">
       <div className="site-content">
