@@ -10,15 +10,8 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
       <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       <meta name="description" content="Global Digital Library GDL" />
-      <meta
-        name="keywords"
-        content="global, digital, library, gdl, reading, children"
-      />
-      <link
-        rel="stylesheet"
-        href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700"
-        type="text/css"
-      />
+      <meta name="keywords" content="global, digital, library, gdl, reading, children" />
+      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" type="text/css" />
     </Head>
     <style global jsx>{`
       * {

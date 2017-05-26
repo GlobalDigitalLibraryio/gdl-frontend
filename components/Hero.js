@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const Hero = ({ children, fixed, ...props }) => (
+const Hero = ({ children, teachingIcons, fixed, ...props }) => (
   <section className={classNames('hero', { fixed })} {...props}>
     {children}
+    {teachingIcons && <div className="icons"><img src="/static/hero/icons.png" alt="" /></div>}
     <style jsx>{`
       .hero {
         display: flex;
@@ -18,6 +19,18 @@ const Hero = ({ children, fixed, ...props }) => (
         color: #fff;
         background: url("/static/hero/books.png"), linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
       }
+      .icons {
+        opacity: 0.4;
+        float: right;
+        height: auto;
+      }
+
+      .icons img {
+        position: absolute;
+        right: 10%;
+        top: 0%;
+        height: auto;
+      }
 
       .fixed {
         position: fixed;
@@ -30,10 +43,12 @@ const Hero = ({ children, fixed, ...props }) => (
 );
 
 Hero.propTypes = {
+  teachingIcons: PropTypes.bool,
   fixed: PropTypes.bool,
 };
 
 Hero.defaultProps = {
+  teachingIcons: false,
   fixed: false,
 };
 
@@ -49,6 +64,7 @@ const HeroBody = ({ children, size, ...props }) => (
         flex-shrink: 0;
         padding: 3rem 1.5rem;
       }
+
       @media screen and (min-width: 1192px) {
         .hero-body {
           padding-left: 0;

@@ -3,22 +3,12 @@ import React from 'react';
 const SocialLinks = () => (
   <ul>
     <li>
-      <a
-        className="icon facebook"
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.facebook.com/globaldigitallibrary"
-      >
+      <a className="icon facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/globaldigitallibrary">
         GDL on Facebook
       </a>
     </li>
     <li>
-      <a
-        className="icon twitter"
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://twitter.com/gdigitallibrary"
-      >
+      <a className="icon twitter" target="_blank" rel="noopener noreferrer" href="https://twitter.com/gdigitallibrary">
         GDL on Twitter
       </a>
     </li>
@@ -75,10 +65,7 @@ const Footer = () => (
     <div className="partners">
       <ul>
         <li className="all-children-reading">
-          <img
-            src="/static/footer/all-children.png"
-            alt="All Children Reading logo"
-          />
+          <img src="/static/footer/all-children.png" alt="All Children Reading logo" />
         </li>
         <li className="us-aid">
           <img src="/static/footer/usaid.png" alt="US Aid logo" />
@@ -87,10 +74,7 @@ const Footer = () => (
           <img src="/static/footer/world-vision.png" alt="World Vision logo" />
         </li>
         <li className="aud-aid">
-          <img
-            src="/static/footer/australian-aid.png"
-            alt="Australian Aid logo"
-          />
+          <img src="/static/footer/australian-aid.png" alt="Australian Aid logo" />
         </li>
         <li className="norad">
           <img src="/static/footer/norad.png" alt="Norad logo" />

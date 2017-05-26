@@ -109,14 +109,7 @@ export default () => (
           <p>
             The GDL-project is currently in an initial stage; establishing the implementation plan and steering structure and piloting the technical platform.
           </p>
-          <ScrollLink
-            aria-label="Read more"
-            href="#content"
-            to="content"
-            smooth
-            className="read-more-arrow"
-            title="Click here to read more about Global Digital Library"
-          >
+          <ScrollLink aria-label="Read more" href="#content" to="content" smooth className="read-more-arrow" title="Click here to read more about Global Digital Library">
             Read more
           </ScrollLink>
           <style jsx>{`
@@ -163,11 +156,7 @@ export default () => (
     </Hero>
     <Section as="section" id="content">
       <Container>
-        <Card
-          src="/static/index/children-smiling.jpg"
-          alt="Smiling children"
-          header="About the Global Digital Library"
-        >
+        <Card src="/static/index/children-smiling.jpg" alt="Smiling children" header="About the Global Digital Library">
           <div>
             <p>
               The Global Digital Library will expand access to mother tongue (MT) content by providing openly licensed,
@@ -183,42 +172,26 @@ export default () => (
           </div>
         </Card>
 
-        <Card
-          src="/static/index/children-cheering.jpg"
-          alt="Happy children"
-          header="Compilation of digital libraries"
-        >
+        <Card src="/static/index/children-cheering.jpg" alt="Happy children" header="Compilation of digital libraries">
           <div>
             <p>
               If you are looking for reading resources, All Children Reading have made a compilation of digital libraries,
               carefully curated to feature a variety of sites that provide local language early grade reading materials.
             </p>
-            <BlockLink
-              href="https://allchildrenreading.org/digital-libraries/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <BlockLink href="https://allchildrenreading.org/digital-libraries/" rel="noopener noreferrer" target="_blank">
               All Children Reading
             </BlockLink>
           </div>
         </Card>
 
-        <Card
-          src="/static/index/children-laughing.jpg"
-          alt="Children in the grass with computer"
-          header="Project partners"
-        >
+        <Card src="/static/index/children-laughing.jpg" alt="Children in the grass with computer" header="Project partners">
           <div>
             <p>
               The Norwegian Agency for Development Cooperation (NORAD) and Norwegian Digital Learning Arena (NDLA)
               are leading the development of the Global Digital Library as part of the Global Book Alliance.
               Other collaborating partners include the All Children Reading: A Grand Challenge for Development partners (USAID, World Vision, and the Australian Government).
             </p>
-            <BlockLink
-              href="http://globalbookalliance.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <BlockLink href="http://globalbookalliance.org/" target="_blank" rel="noopener noreferrer">
               Global book alliance
             </BlockLink>
           </div>
