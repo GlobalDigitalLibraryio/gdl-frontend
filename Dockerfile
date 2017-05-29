@@ -23,6 +23,7 @@ USER root
 COPY components $APP_PATH/components
 COPY pages $APP_PATH/pages
 COPY static $APP_PATH/static
+COPY server.js $APP_PATH
 RUN chown -R app:app $HOME/*
 
 # Build client code
