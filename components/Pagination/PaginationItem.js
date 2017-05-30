@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
 
-const A = styled.a`
+const common = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   align-items: center;
@@ -26,18 +26,12 @@ const A = styled.a`
   justify-content: center;
   margin: 0.25rem;
   text-align: center;
-
-  border-color: #dbdbdb;
   min-width: 2.25em;
+`;
 
-  &:[disabled] {
-    cursor: not-allowed;
-    background-color: #dbdbdb;
-    border-color: #dbdbdb;
-    box-shadow: none;
-    color: #7a7a7a;
-    opacity: 0.5;
-  }
+const A = styled.a`
+  ${common}
+  border-color: #dbdbdb;
 
   &:hover {
     border-color: #b5b5b5;
@@ -51,6 +45,18 @@ const A = styled.a`
   &:active {
      box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2);
   }
+
+  ${props => (props.active ? `
+    background-color: #00d1b2;
+    border-color: #00d1b2;
+    color: #fff;
+  ` : null)}
+`;
+
+const Ellipsis = styled.span`
+  ${common}
+  color: #b5b5b5;
+  pointer-events: none;
 `;
 
 const Li = styled.li`
@@ -58,15 +64,15 @@ const Li = styled.li`
   flex-shrink: 1;
 `;
 
-const PaginationItem = props => (
+const PaginationItem = ({ ellipsis, ...props }) => (
   <Li>
-    <A {...props} />
+    {ellipsis ? <Ellipsis>…</Ellipsis> : <A {...props} />}
   </Li>
-);
+  );
 
 PaginationItem.propTypes = {
   active: PropTypes.bool,
-  disabled: PropTypes.bool,
+  ellipsis: PropTypes.bool,
 };
 
 export default PaginationItem;
