@@ -18,13 +18,14 @@
   "scripts": {
     "pretest": "npm run lint",
     "lint": "eslint --ext .js --ext .jsx pages components",
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\""
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "express": "^4.15.3",
     "isomorphic-unfetch": "^1.0.0",
     "next": "^2.4.0",
     "prop-types": "^15.5.10",
