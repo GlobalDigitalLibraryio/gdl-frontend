@@ -1,19 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from '../../components/Cardd';
-import ImageContainer from '../../components/ImageContainer';
-import Columns, { Column } from '../Columns';
+import { ImageContainer, Card, Column, Columns } from '../../generic';
 
 const HoverCard = Card.extend`
   min-height: 300px;
-  transition: border 100ms ease-in-out;
-  &:hover {
-    margin-top: -5px;
-  }
   flex-grow: 1;
 `;
-
-// <div dangerouslySetInnerHTML={{ __html: item.snippet }} />
 
 const Result = ({ item }) => (
   <HoverCard>
@@ -48,9 +40,17 @@ Result.propTypes = {
 };
 
 const Results = ({ items }) => (
-  <Columns multiline>
-    {items.map(item => <Column size="4" tablet="4" desktop="3" key={item.cacheId}><Result key={item.cacheId} item={item} /></Column>)}
+  <Columns multiline responsive="mobile">
+    {items.map(item => <Column size="4" mobile="6" tablet="4" desktop="3" key={item.cacheId}><Result key={item.cacheId} item={item} /></Column>)}
   </Columns>
 );
+
+Results.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      cacheId: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};
 
 export default Results;

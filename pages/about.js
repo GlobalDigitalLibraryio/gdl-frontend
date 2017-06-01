@@ -2,10 +2,8 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
 import Hero from '../components/Hero';
-import Section from '../components/Section';
 import BlockLink from '../components/BlockLink';
-import Container from '../components/Container';
-import Content from '../components/Content';
+import { Container, Content, Section } from '../components/generic';
 
 export default () => (
   <Layout title="About - Global Digital Library">

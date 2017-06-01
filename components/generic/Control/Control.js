@@ -21,12 +21,3 @@ Control.defaultProps = {
 };
 
 export default Control;
-
-/* ${Group} {
-    flex-shrink: 0;
-
-    &:not(:last-child) {
-      margin-bottom: 0;
-      margin-right: 0.75rem;
-    }
-  } */

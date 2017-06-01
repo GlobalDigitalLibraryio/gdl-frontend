@@ -5,9 +5,8 @@ import Link from 'next/link';
 
 import BlockLink from '../components/BlockLink';
 import Layout from '../components/Layout';
-import Container from '../components/Container';
+import { Container, Section } from '../components/generic';
 import Hero from '../components/Hero';
-import Section from '../components/Section';
 
 const Card = ({ children, header, src, alt }) => (
   <div className="root">

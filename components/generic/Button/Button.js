@@ -39,7 +39,7 @@ const Button = styled.button`
     color: #363636;
   }
 
-  &:[disabled] {
+  &:disabled {
     cursor: not-allowed;
     background-color: white;
     border-color: #dbdbdb;
@@ -66,7 +66,7 @@ const ButtonContainer = (props, context) => {
 };
 
 ButtonContainer.propTypes = {
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool, // Disables the button
 };
 
 ButtonContainer.defaultProps = {

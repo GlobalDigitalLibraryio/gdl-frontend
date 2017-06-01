@@ -47,9 +47,12 @@ const A = styled.a`
   }
 
   ${props => (props.active ? `
-    background-color: #00d1b2;
+    background-color: #20588F;
     border-color: #00d1b2;
     color: #fff;
+    &:hover {
+      color: #fff;
+    }
   ` : null)}
 `;
 
@@ -68,7 +71,7 @@ const PaginationItem = ({ ellipsis, ...props }) => (
   <Li>
     {ellipsis ? <Ellipsis>…</Ellipsis> : <A {...props} />}
   </Li>
-  );
+);
 
 PaginationItem.propTypes = {
   active: PropTypes.bool,

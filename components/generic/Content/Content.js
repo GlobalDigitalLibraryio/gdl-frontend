@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
 /**
- * A single class to handle WYSIWYG generated content, where only HTML tags are available
- * When you just want to directly use HTML tags
+ * A single component to handle WYSIWYG generated content, where only HTML tags are available
+ * Use this when you just want to directly use HTML tags.
  */
+
 export default styled.div`
   color: #4a4a4a;
 
