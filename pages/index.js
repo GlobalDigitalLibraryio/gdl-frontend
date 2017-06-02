@@ -46,6 +46,10 @@ const Card = ({ children, header, src, alt }) => (
         margin: 60px 0;
       }
 
+      a {
+        color: #20588F;
+      }
+
       
       img {
         display: block;

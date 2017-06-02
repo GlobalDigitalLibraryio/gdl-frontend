@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import media from '../helpers/media';
 
 const LevelItem = styled.div`
   align-items: center;
   display: flex;
   flex-basis: auto;
-  flex-grow: 0;
+  flex-grow: ${props => (props.narrow ? '0' : '1')};
   flex-shrink: 0;
   justify-content: center;
 
@@ -15,5 +16,13 @@ const LevelItem = styled.div`
     }
   `}
 `;
+
+LevelItem.propTypes = {
+  narrow: PropTypes.bool,
+};
+
+LevelItem.defaultProps = {
+  narrow: false,
+};
 
 export default LevelItem;

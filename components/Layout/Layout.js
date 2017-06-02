@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import { PRIMARY } from '../../components/colors';
 import Footer from './Footer';
 
 const Layout = ({ children, title = 'Global Digital Library' }) => (
@@ -19,18 +20,27 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
         padding: 0;
         box-sizing: border-box;
       }
+
       body {
         font-family: 'Source Sans Pro', sans-serif;
         background: #f5f5f5;
         color: #333; 
       }
+
       html {
         font-size: 16px;
       }
+
       p {
         margin-bottom: 16px;
       }
+
       a {
+        color: ${PRIMARY};
+        text-decoration: underline;
+      }
+
+      a:focus, a:hover {
         text-decoration: none;
       }
 

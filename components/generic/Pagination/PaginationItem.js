@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { PRIMARY } from '../../colors';
 
 const common = css`
   -moz-appearance: none;
@@ -27,6 +28,7 @@ const common = css`
   margin: 0.25rem;
   text-align: center;
   min-width: 2.25em;
+  text-decoration: none;
 `;
 
 const A = styled.a`
@@ -35,7 +37,6 @@ const A = styled.a`
 
   &:hover {
     border-color: #b5b5b5;
-    color: #363636;
   }
 
   &:focus {
@@ -47,8 +48,7 @@ const A = styled.a`
   }
 
   ${props => (props.active ? `
-    background-color: #20588F;
-    border-color: #00d1b2;
+    background-color: ${PRIMARY};
     color: #fff;
     &:hover {
       color: #fff;

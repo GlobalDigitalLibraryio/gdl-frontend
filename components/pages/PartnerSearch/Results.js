@@ -1,26 +1,45 @@
 import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { ImageContainer, Card, Column, Columns } from '../../generic';
+import media from '../../generic/helpers/media';
 
-const HoverCard = Card.extend`
-  min-height: 300px;
+const ResultCard = Card.extend`
+  min-height: 200px;
   flex-grow: 1;
+  ${media.mobile`
+    min-height: 150px;
+  `}
+`;
+
+const ResultCardContent = Card.Content.extend`
+  ${media.mobile`
+    padding: 0.75rem;
+  `}
+`;
+
+const TitleLink = styled.a`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  margin-bottom: 1em;
 `;
 
 const Result = ({ item }) => (
-  <HoverCard>
+  <ResultCard>
     <Card.Image>
       <ImageContainer>
         {item.pagemap && item.pagemap.cse_image && item.pagemap.cse_image.length > 0 && <img src={item.pagemap.cse_image[0].src} alt="" />}
       </ImageContainer>
     </Card.Image>
-    <Card.Content>
-      <a href={item.link} target="_blank" rel="noopener noreferrer">
-        <p>{item.title}</p>
-      </a>
-      <small>{item.displayLink}</small>
-    </Card.Content>
-  </HoverCard>
+    <ResultCardContent>
+      <TitleLink href={item.link} target="_blank" rel="noopener noreferrer">
+        {item.title}
+      </TitleLink>
+      <small>{item.displayLink.substring(0, item.displayLink.indexOf('.'))}</small>
+    </ResultCardContent>
+  </ResultCard>
 );
 
 Result.propTypes = {

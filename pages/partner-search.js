@@ -81,12 +81,12 @@ export default class PartnerSearch extends React.Component {
   state = {
     q: this.props.q,
     filter: this.props.more || 'all',
-  };
+  }
 
   onSearch = (event) => {
     event.preventDefault();
     this.doSearch();
-  };
+  }
 
   onFilterChange = (event) => {
     if (this.state.q) {
@@ -94,7 +94,7 @@ export default class PartnerSearch extends React.Component {
     } else {
       this.setState({ filter: event.target.value });
     }
-  };
+  }
 
   doSearch() {
     const { url } = this.props;
