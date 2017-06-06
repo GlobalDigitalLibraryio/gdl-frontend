@@ -46,6 +46,7 @@ const filters = {
   letsreadbooksorg: { name: "Let's Read", more: 'more:letsreadbooksorg' },
   bookshare: { name: 'Bookshare', more: 'more:bookshare' },
   bookdash: { name: 'Bookdash', more: 'more:bookdash' },
+  pustakalaya: { name: 'Pustakalaya', more: 'more:pustakalaya' },
 };
 
 export default class PartnerSearch extends React.Component {
