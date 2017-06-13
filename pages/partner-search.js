@@ -13,15 +13,16 @@ const API_KEY = 'AIzaSyCV5jNMGhZuXpqxDPCHkyC8HP9QShrN4mw';
 const SEARCH_ENGINE_ID = '001504581191494847575:s0_xqdo7npy';
 const PAGE_SIZE = 10; // Valid values are 1-10
 
-const FilterContainer = ({ id, className, children, ...props }) => (
+const FilterContainer = ({ id, className, name, children, ...props }) => (
   <label htmlFor={id} className={className}>
-    <input id={id} type="radio" name="filter" {...props} />
+    <input id={id} type="checkbox" name={name} {...props} />
     <span>{children}</span>
   </label>
 );
 
 FilterContainer.propTypes = {
   className: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
 };
 
@@ -39,73 +40,115 @@ const Filter = styled(FilterContainer)`
   }
 `;
 
-const filters = {
-  all: { name: 'All', more: '' },
-  storyweaver: { name: 'StoryWeaver', more: 'more:storyweaver' },
-  africanstorybook: { name: 'African Storybook', more: 'more:africanstorybook' },
-  letsreadbooksorg: { name: "Let's Read", more: 'more:letsreadbooksorg' },
-  bookshare: { name: 'Bookshare', more: 'more:bookshare' },
-  bookdash: { name: 'Bookdash', more: 'more:bookdash' },
-  pustakalaya: { name: 'Pustakalaya', more: 'more:pustakalaya' },
+const siteFilters = {
+  // all: { name: 'All', more: '' },
+  storyweaver: { name: 'StoryWeaver', site: 'site:storyweaver.org.in' },
+  africanstorybook: { name: 'African Storybook', site: 'site:africanstorybook.org' },
+  letsreadbooksorg: { name: "Let's Read", site: 'site:letsreadbooksorg.wordpress.com' },
+  bookshare: { name: 'Bookshare', site: 'site:www.bookshare.org' },
+  bookdash: { name: 'Bookdash', site: 'site:bookdash.org' },
+  pustakalaya: { name: 'Pustakalaya', site: 'site:pustakalaya.org' },
 };
+
+// Handles none, single or multiple site parameters
+function getSiteFiltering(site) {
+  if (!site) {
+    return '';
+  } else if (Array.isArray(site)) {
+    return site.map(site => siteFilters[site].site).join(' OR ');
+  }
+
+  return siteFilters[site] ? siteFilters[site].site : '';
+}
+
+// Accepts null, a string, or an array of string and returns an array
+function toArray(site) {
+  if (!site) {
+    return [];
+  } else if (Array.isArray(site)) {
+    return site;
+  }
+  return [site];
+}
 
 export default class PartnerSearch extends React.Component {
   static async getInitialProps({ query }) {
-    const { q, more: filter, start = 1 } = query; // start = 1 if undefined
+    const { q, site, start = 1 } = query; // start = 1 if undefined
+
     if (q) {
+      const filter = getSiteFiltering(site);
       // If start is less than 1, Google throws
-      const more = filter in filters ? filters[filter].more : '';
       const safeStart = start >= 1 ? start : 1;
-      const res = await fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${more}`);
-      const json = await res.json();
+      const sites = toArray(site);
+      try {
+        const res = await fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${filter}`);
+        const json = await res.json();
+        let totalResults;
+        let lastPage;
+        let page;
+        let from;
+        let to;
 
-      let totalResults;
-      let lastPage;
-      let page;
-      let from;
-      let to;
+        if (json.queries.request) {
+          const request = json.queries.request[0];
+          totalResults = request.totalResults;
+          lastPage = Math.ceil(totalResults ? totalResults / PAGE_SIZE : 1);
+          from = request.startIndex;
+          to = from + request.count - 1;
+          page = Math.ceil(from / 10);
+        }
 
-      if (json.queries.request) {
-        const request = json.queries.request[0];
-        totalResults = request.totalResults;
-        lastPage = Math.ceil(totalResults ? totalResults / PAGE_SIZE : 1);
-        from = request.startIndex;
-        to = from + request.count - 1;
-        page = Math.ceil(from / 10);
+        return { results: json, q, totalResults, lastPage, from, to, page, sites };
+      } catch (err) {
+        console.error(err);
+        return { err, q, sites };
       }
-
-      return { results: json, q, totalResults, lastPage, from, to, page };
     }
+
     return {};
   }
 
   state = {
     q: this.props.q,
-    filter: this.props.more || 'all',
-  }
+    sites: this.props.sites.reduce((acc, val) => {
+      acc[val] = true;
+      return acc;
+    }, {}),
+  };
 
   onSearch = (event) => {
     event.preventDefault();
     this.doSearch();
-  }
+  };
 
   onFilterChange = (event) => {
+    const { checked, name } = event.target;
     if (this.state.q) {
-      this.setState({ filter: event.target.value }, () => this.doSearch());
+      this.setState(state => ({ sites: { ...state.sites, [name]: checked } }), () => this.doSearch());
     } else {
-      this.setState({ filter: event.target.value });
+      this.setState(state => ({ sites: { ...state.sites, [name]: checked } }));
     }
-  }
+  };
+
+  onAllChange = () => {
+    if (this.state.q) {
+      this.setState({ sites: {} }, () => this.doSearch());
+    } else {
+      this.setState({ sites: {} });
+    }
+  };
 
   doSearch() {
     const { url } = this.props;
-    const filter = this.state.filter && this.state.filter !== '' ? `&more=${this.state.filter}` : '';
+    // Generate a query string for the selected sites
+    const filter = Object.entries(this.state.sites).filter(([key, value]) => value).map(([key]) => `&site=${key}`).join('');
+
     const href = `${url.pathname}?q=${this.state.q}${filter}`;
     Router.push(href);
   }
 
   render() {
-    const { results, url, page, lastPage } = this.props;
+    const { results, url, page, lastPage, err } = this.props;
 
     return (
       <Layout title="Partner Search - Global Digital Library">
@@ -118,8 +161,9 @@ export default class PartnerSearch extends React.Component {
                   <Button type="submit" disabled={this.state.q === ''}>Search</Button>
                 </Group>
                 <Level>
-                  {Object.entries(filters).map(([key, value]) => (
-                    <Level.Item key={key}><Filter id={key} value={key} onChange={this.onFilterChange} checked={this.state.filter === key}>{value.name}</Filter></Level.Item>
+                  <Level.Item><Filter id="all" onChange={this.onAllChange} checked={Object.keys(this.state.sites).length === 0} name="all">All</Filter></Level.Item>
+                  {Object.entries(siteFilters).map(([key, value]) => (
+                    <Level.Item key={key}><Filter id={key} name={key} onChange={this.onFilterChange} checked={this.state.sites[key] || false}>{value.name}</Filter></Level.Item>
                   ))}
                 </Level>
               </form>
@@ -129,11 +173,14 @@ export default class PartnerSearch extends React.Component {
 
         <Section>
           <Container>
+            {err && <P5 textCentered>An error occurred while searching. Please try again.</P5>}
+
             {results &&
               results.items &&
               <P5 textCentered>
                 Showing {this.props.from}-{this.props.to} of {this.props.totalResults} results
               </P5>}
+
             {results && results.items ? <Results items={results.items} /> : <P5 textCentered>No results</P5>}
 
             {results && results.items && lastPage !== 1 && <Pagination url={url} page={page} lastPage={lastPage} />}
@@ -145,15 +192,16 @@ export default class PartnerSearch extends React.Component {
 }
 
 PartnerSearch.propTypes = {
+  err: PropTypes.object,
+  sites: PropTypes.arrayOf(PropTypes.string).isRequired,
   url: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.number,
+      start: PropTypes.string,
     }).isRequired,
   }).isRequired,
-  q: PropTypes.string, // Initial search query in URL
-  more: PropTypes.oneOf(['', 'storyweaver', 'africanstorybook', 'letsreadbooksorg', 'bookdash', 'bookshare']).isRequired,
+  q: PropTypes.string.isRequired, // Initial search query in URL
   totalResults: PropTypes.string,
   from: PropTypes.number,
   to: PropTypes.number,
@@ -177,5 +225,7 @@ PartnerSearch.propTypes = {
 };
 
 PartnerSearch.defaultProps = {
-  more: '',
+  err: null,
+  q: '',
+  sites: [],
 };

@@ -14,7 +14,7 @@ PaginationLink.propTypes = {
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.number,
+      start: PropTypes.string,
     }).isRequired,
   }).isRequired,
   start: PropTypes.number.isRequired,
@@ -34,7 +34,7 @@ export default class Pagination extends React.PureComponent {
       <Pag>
         {page !== 1 && <PaginationLink aria-label="Previous" url={url} start={(page - 1) * 10}>&lt;</PaginationLink>}
 
-        {page > 2 && [<PaginationLink url={url} key="first" start={0}>1</PaginationLink>, <Pagination.Item key="ellipsis" ellipsis />]}
+        {page > 2 && [<PaginationLink url={url} key="first" start={0}>1</PaginationLink>, <Pag.Item key="ellipsis" ellipsis />]}
 
         {page !== 1 &&
           <PaginationLink url={url} start={(page - 1) * 10}>
