@@ -27,17 +27,17 @@
     "classnames": "^2.2.5",
     "express": "^4.15.3",
     "isomorphic-unfetch": "^1.0.0",
-    "next": "^2.4.0",
+    "next": "^2.4.3",
     "prop-types": "^15.5.10",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4",
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
     "react-scroll": "^1.5.2",
-    "styled-components": "^2.0.0"
+    "styled-components": "^2.0.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-ndla": "^0.1.1",
-    "prettier-eslint": "^6.2.3",
-    "prettier-eslint-cli": "^4.0.2"
+    "prettier-eslint": "^6.3.0",
+    "prettier-eslint-cli": "^4.1.0"
   }
 }
