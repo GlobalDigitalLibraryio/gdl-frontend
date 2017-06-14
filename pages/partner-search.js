@@ -31,8 +31,15 @@ const Filter = styled(FilterContainer)`
     visibility: hidden;
   }
 
+  & input + span {
+    color: whitesmoke;
+    cursor: pointer;
+  }
+
   & input:checked + span {
     font-weight: bold;
+    color: white;
+    text-decoration: underline;
   }
 
   &:not(:last-child) {
@@ -161,7 +168,7 @@ export default class PartnerSearch extends React.Component {
                   <Button type="submit" disabled={this.state.q === ''}>Search</Button>
                 </Group>
                 <Level>
-                  <Level.Item><Filter id="all" onChange={this.onAllChange} checked={Object.keys(this.state.sites).length === 0} name="all">All</Filter></Level.Item>
+                  <Level.Item><Filter id="all" onChange={this.onAllChange} checked={!Object.values(this.state.sites).includes(true)} name="all">All</Filter></Level.Item>
                   {Object.entries(siteFilters).map(([key, value]) => (
                     <Level.Item key={key}><Filter id={key} name={key} onChange={this.onFilterChange} checked={this.state.sites[key] || false}>{value.name}</Filter></Level.Item>
                   ))}
