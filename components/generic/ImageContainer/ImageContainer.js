@@ -16,14 +16,12 @@ const ImageContainer = styled.figure`
     top: 0;
     height: 100%;
     width: 100%;
-
   }
   padding-top: 66.6666%;
-
 `;
 
 ImageContainer.propTypes = {
-  ratio: PropTypes.oneOf(['3by2']),
+  ratio: PropTypes.oneOf(['3by2'])
 };
 
 export default ImageContainer;

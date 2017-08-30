@@ -5,7 +5,11 @@ import classNames from 'classnames';
 const Hero = ({ children, teachingIcons, fixed, ...props }) => (
   <section className={classNames('hero', { fixed })} {...props}>
     {children}
-    {teachingIcons && <div className="icons"><img src="/static/hero/icons.png" alt="" /></div>}
+    {teachingIcons && (
+      <div className="icons">
+        <img src="/static/hero/icons.png" alt="" />
+      </div>
+    )}
     <style jsx>{`
       .hero {
         display: flex;
@@ -17,7 +21,8 @@ const Hero = ({ children, teachingIcons, fixed, ...props }) => (
         -ms-flex-pack: justify;
         -ms-flex-direction: column;
         color: #fff;
-        background: url("/static/hero/books.png"), linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
+        background: url('/static/hero/books.png'),
+          linear-gradient(to right, #1c5791 0%, #5fa1d1 100%);
       }
       .icons {
         opacity: 0.4;
@@ -44,12 +49,12 @@ const Hero = ({ children, teachingIcons, fixed, ...props }) => (
 
 Hero.propTypes = {
   teachingIcons: PropTypes.bool,
-  fixed: PropTypes.bool,
+  fixed: PropTypes.bool
 };
 
 Hero.defaultProps = {
   teachingIcons: false,
-  fixed: false,
+  fixed: false
 };
 
 const HeroBody = ({ children, size, ...props }) => (
@@ -90,7 +95,7 @@ const HeroBody = ({ children, size, ...props }) => (
 );
 
 HeroBody.propTypes = {
-  size: PropTypes.oneOf(['medium', 'large']),
+  size: PropTypes.oneOf(['medium', 'large'])
 };
 
 Hero.Body = HeroBody;

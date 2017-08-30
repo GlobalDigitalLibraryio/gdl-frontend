@@ -32,8 +32,7 @@ const common = css`
 `;
 
 const A = styled.a`
-  ${common}
-  border-color: #dbdbdb;
+  ${common} border-color: #dbdbdb;
 
   &:hover {
     border-color: #b5b5b5;
@@ -44,21 +43,23 @@ const A = styled.a`
   }
 
   &:active {
-     box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2);
+    box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.2);
   }
 
-  ${props => (props.active ? `
+  ${props =>
+    props.active
+      ? `
     background-color: ${PRIMARY};
     color: #fff;
     &:hover {
       color: #fff;
     }
-  ` : null)}
+  `
+      : null};
 `;
 
 const Ellipsis = styled.span`
-  ${common}
-  color: #b5b5b5;
+  ${common} color: #b5b5b5;
   pointer-events: none;
 `;
 
@@ -68,14 +69,12 @@ const Li = styled.li`
 `;
 
 const PaginationItem = ({ ellipsis, ...props }) => (
-  <Li>
-    {ellipsis ? <Ellipsis>…</Ellipsis> : <A {...props} />}
-  </Li>
+  <Li>{ellipsis ? <Ellipsis>…</Ellipsis> : <A {...props} />}</Li>
 );
 
 PaginationItem.propTypes = {
   active: PropTypes.bool,
-  ellipsis: PropTypes.bool,
+  ellipsis: PropTypes.bool
 };
 
 export default PaginationItem;

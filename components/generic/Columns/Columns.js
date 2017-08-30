@@ -3,9 +3,18 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import media from '../helpers/media';
 
-const ColumnsContainer = ({ centered, children, vCentered, multiline, responsive, ...props }) => (
+const ColumnsContainer = ({
+  centered,
+  children,
+  vCentered,
+  multiline,
+  responsive,
+  ...props
+}) => (
   <div {...props}>
-    {React.Children.map(children, column => React.cloneElement(column, { responsive }))}
+    {React.Children.map(children, column =>
+      React.cloneElement(column, { responsive })
+    )}
   </div>
 );
 
@@ -13,7 +22,7 @@ ColumnsContainer.propTypes = {
   centered: PropTypes.bool.isRequired,
   vCentered: PropTypes.bool.isRequired,
   multiline: PropTypes.bool.isRequired,
-  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired, // By default columns are stacked on mobile, and starts from tablets and upwards.
+  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired // By default columns are stacked on mobile, and starts from tablets and upwards.
 };
 
 const Columns = styled(ColumnsContainer)`
@@ -33,21 +42,24 @@ const Columns = styled(ColumnsContainer)`
   justify-content: ${props => (props.centered ? 'center' : 'flex-start')};
   align-items: ${props => (props.vCentered ? 'center' : 'stretch')};
 
-  ${props => (props.responsive === 'mobile' ? 'display:flex;' : media[props.responsive]`display:flex;`)}
+  ${props =>
+    props.responsive === 'mobile'
+      ? 'display:flex;'
+      : media[props.responsive]`display:flex;`};
 `;
 
 Columns.propTypes = {
   centered: PropTypes.bool, // Horizontal centering
   vCentered: PropTypes.bool, // Vertical centering
   multiline: PropTypes.bool, // Wrap across multiple columns/rows
-  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']), // By default columns are stacked on mobile, and starts from tablets and upwards.
+  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']) // By default columns are stacked on mobile, and starts from tablets and upwards.
 };
 
 Columns.defaultProps = {
   centered: false,
   vCentered: false,
   multiline: false,
-  responsive: 'tablet',
+  responsive: 'tablet'
 };
 
 export default Columns;

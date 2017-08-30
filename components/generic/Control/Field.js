@@ -11,7 +11,7 @@ const Field = styled.div`
 export default class FieldContainer extends React.Component {
   getChildContext() {
     return {
-      isInField: true,
+      isInField: true
     };
   }
 
@@ -21,5 +21,5 @@ export default class FieldContainer extends React.Component {
 }
 
 FieldContainer.childContextTypes = {
-  isInField: PropTypes.bool,
+  isInField: PropTypes.bool
 };

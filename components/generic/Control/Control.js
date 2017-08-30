@@ -6,18 +6,21 @@ const Control = styled.div`
   position: relative;
   text-align: left;
 
-  ${props => (props.expanded ? `
+  ${props =>
+    props.expanded
+      ? `
     flex-grow: 1;
     flex-shrink 1;
-  ` : null)}
+  `
+      : null};
 `;
 
 Control.propTypes = {
-  expanded: PropTypes.bool,
+  expanded: PropTypes.bool
 };
 
 Control.defaultProps = {
-  expanded: false,
+  expanded: false
 };
 
 export default Control;

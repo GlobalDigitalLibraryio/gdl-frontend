@@ -66,15 +66,15 @@ const ButtonContainer = (props, context) => {
 };
 
 ButtonContainer.propTypes = {
-  disabled: PropTypes.bool, // Disables the button
+  disabled: PropTypes.bool // Disables the button
 };
 
 ButtonContainer.defaultProps = {
-  type: 'button',
+  type: 'button'
 };
 
 ButtonContainer.contextTypes = {
-  isInField: PropTypes.bool,
+  isInField: PropTypes.bool
 };
 
 export default ButtonContainer;

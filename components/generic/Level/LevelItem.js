@@ -14,15 +14,15 @@ const LevelItem = styled.div`
     &:not(:last-child) {
       margin-bottom: 1.5rem;
     }
-  `}
+  `};
 `;
 
 LevelItem.propTypes = {
-  narrow: PropTypes.bool,
+  narrow: PropTypes.bool
 };
 
 LevelItem.defaultProps = {
-  narrow: false,
+  narrow: false
 };
 
 export default LevelItem;

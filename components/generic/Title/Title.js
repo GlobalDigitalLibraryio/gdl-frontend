@@ -13,7 +13,8 @@ const Title = styled.h3`
     margin-bottom: 1.5em;
   }
 
-  & span, & em {
+  & span,
+  & em {
     font-weight: 300;
   }
 
@@ -24,11 +25,11 @@ const Title = styled.h3`
 `;
 
 Title.propTypes = {
-  textCentered: PropTypes.bool,
+  textCentered: PropTypes.bool
 };
 
 Title.defaultProps = {
-  textCentered: false,
+  textCentered: false
 };
 
 const H1 = Title.withComponent('h1').extend`

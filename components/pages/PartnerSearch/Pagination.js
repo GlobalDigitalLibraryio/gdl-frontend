@@ -14,15 +14,15 @@ PaginationLink.propTypes = {
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.string,
-    }).isRequired,
+      start: PropTypes.string
+    }).isRequired
   }).isRequired,
   start: PropTypes.number.isRequired,
-  active: PropTypes.bool,
+  active: PropTypes.bool
 };
 
 PaginationLink.defaultProps = {
-  active: false,
+  active: false
 };
 
 /* eslint-disable react/prefer-stateless-function, react/forbid-prop-types */
@@ -32,25 +32,44 @@ export default class Pagination extends React.PureComponent {
     const { page, url, lastPage } = this.props;
     return (
       <Pag>
-        {page !== 1 && <PaginationLink aria-label="Previous" url={url} start={(page - 1) * 10}>&lt;</PaginationLink>}
+        {page !== 1 && (
+          <PaginationLink
+            aria-label="Previous"
+            url={url}
+            start={(page - 1) * 10}
+          >
+            &lt;
+          </PaginationLink>
+        )}
 
-        {page > 2 && [<PaginationLink url={url} key="first" start={0}>1</PaginationLink>, <Pag.Item key="ellipsis" ellipsis />]}
+        {page > 2 && [
+          <PaginationLink url={url} key="first" start={0}>
+            1
+          </PaginationLink>,
+          <Pag.Item key="ellipsis" ellipsis />
+        ]}
 
-        {page !== 1 &&
+        {page !== 1 && (
           <PaginationLink url={url} start={(page - 1) * 10}>
             {page - 1}
-          </PaginationLink>}
+          </PaginationLink>
+        )}
 
         <PaginationLink active url={url} start={page * 10}>
           {page}
         </PaginationLink>
 
-        {lastPage !== page &&
+        {lastPage !== page && (
           <PaginationLink url={url} start={(page + 1) * 10}>
             {page + 1}
-          </PaginationLink>}
+          </PaginationLink>
+        )}
 
-        {lastPage !== page && <PaginationLink ara-label="Next" url={url} start={(page + 1) * 10}>&gt;</PaginationLink>}
+        {lastPage !== page && (
+          <PaginationLink ara-label="Next" url={url} start={(page + 1) * 10}>
+            &gt;
+          </PaginationLink>
+        )}
       </Pag>
     );
   }
@@ -59,5 +78,5 @@ export default class Pagination extends React.PureComponent {
 Pagination.propTypes = {
   page: PropTypes.number.isRequired,
   lastPage: PropTypes.number.isRequired,
-  url: PropTypes.object.isRequired,
+  url: PropTypes.object.isRequired
 };

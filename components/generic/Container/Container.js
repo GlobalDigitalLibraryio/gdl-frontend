@@ -18,7 +18,6 @@ const Container = styled.div`
     max-width: 1344px;
     width: 1344px;
   }
-
 `;
 
 export default Container;

@@ -3,12 +3,22 @@ import React from 'react';
 const SocialLinks = () => (
   <ul>
     <li>
-      <a className="icon facebook" target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/globaldigitallibrary">
+      <a
+        className="icon facebook"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.facebook.com/globaldigitallibrary"
+      >
         GDL on Facebook
       </a>
     </li>
     <li>
-      <a className="icon twitter" target="_blank" rel="noopener noreferrer" href="https://twitter.com/gdigitallibrary">
+      <a
+        className="icon twitter"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://twitter.com/gdigitallibrary"
+      >
         GDL on Twitter
       </a>
     </li>
@@ -42,20 +52,21 @@ const SocialLinks = () => (
         transition: margin-top 100ms ease-in-out;
       }
 
-      .icon:hover, .icon:focus {
+      .icon:hover,
+      .icon:focus {
         margin-top: -5px;
       }
 
       .facebook {
-        background-image: url("/static/footer/facebook.png");
+        background-image: url('/static/footer/facebook.png');
       }
       .twitter {
-        background-image: url("/static/footer/twitter.png");
+        background-image: url('/static/footer/twitter.png');
       }
       .mail {
-        background-image: url("/static/footer/mail.png"); 
+        background-image: url('/static/footer/mail.png');
       }
-  `}</style>
+    `}</style>
   </ul>
 );
 
@@ -65,7 +76,10 @@ const Footer = () => (
     <div className="partners">
       <ul>
         <li className="all-children-reading">
-          <img src="/static/footer/all-children.png" alt="All Children Reading logo" />
+          <img
+            src="/static/footer/all-children.png"
+            alt="All Children Reading logo"
+          />
         </li>
         <li className="us-aid">
           <img src="/static/footer/usaid.png" alt="US Aid logo" />
@@ -74,7 +88,10 @@ const Footer = () => (
           <img src="/static/footer/world-vision.png" alt="World Vision logo" />
         </li>
         <li className="aud-aid">
-          <img src="/static/footer/australian-aid.png" alt="Australian Aid logo" />
+          <img
+            src="/static/footer/australian-aid.png"
+            alt="Australian Aid logo"
+          />
         </li>
         <li className="norad">
           <img src="/static/footer/norad.png" alt="Norad logo" />
@@ -88,7 +105,7 @@ const Footer = () => (
       footer {
         text-align: center;
         background: #f5f5f5;
-        border-top: 1px solid #f5f5f5; 
+        border-top: 1px solid #f5f5f5;
       }
 
       .partners {
@@ -109,7 +126,7 @@ const Footer = () => (
       li {
         margin: 20px 0;
         height: 40px;
-        width: 46%; 
+        width: 46%;
       }
 
       img {

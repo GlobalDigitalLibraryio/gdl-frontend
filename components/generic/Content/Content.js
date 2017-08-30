@@ -18,7 +18,12 @@ export default styled.div`
     margin-bottom: 1em;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: #363636;
     font-weight: 400;
     line-height: 1.125;

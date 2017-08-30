@@ -9,7 +9,7 @@ const ResultCard = Card.extend`
   flex-grow: 1;
   ${media.mobile`
     min-height: 150px;
-  `}
+  `};
 `;
 
 const ResultCardContent = Card.Content.extend`
@@ -30,14 +30,20 @@ const Result = ({ item }) => (
   <ResultCard>
     <Card.Image>
       <ImageContainer>
-        {item.pagemap && item.pagemap.cse_image && item.pagemap.cse_image.length > 0 && <img src={item.pagemap.cse_image[0].src} alt="" />}
+        {item.pagemap &&
+        item.pagemap.cse_image &&
+        item.pagemap.cse_image.length > 0 && (
+          <img src={item.pagemap.cse_image[0].src} alt="" />
+        )}
       </ImageContainer>
     </Card.Image>
     <ResultCardContent>
       <TitleLink href={item.link} target="_blank" rel="noopener noreferrer">
         {item.title}
       </TitleLink>
-      <small>{item.displayLink.substring(0, item.displayLink.indexOf('.'))}</small>
+      <small>
+        {item.displayLink.substring(0, item.displayLink.indexOf('.'))}
+      </small>
     </ResultCardContent>
   </ResultCard>
 );
@@ -51,25 +57,29 @@ Result.propTypes = {
     pagemap: PropTypes.shape({
       cse_image: PropTypes.arrayOf(
         PropTypes.shape({
-          src: PropTypes.string.isRequired,
-        }),
-      ),
-    }),
-  }).isRequired,
+          src: PropTypes.string.isRequired
+        })
+      )
+    })
+  }).isRequired
 };
 
 const Results = ({ items }) => (
   <Columns multiline responsive="mobile">
-    {items.map(item => <Column size="4" mobile="6" tablet="4" desktop="3" key={item.cacheId}><Result key={item.cacheId} item={item} /></Column>)}
+    {items.map(item => (
+      <Column size="4" mobile="6" tablet="4" desktop="3" key={item.cacheId}>
+        <Result key={item.cacheId} item={item} />
+      </Column>
+    ))}
   </Columns>
 );
 
 Results.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      cacheId: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
+      cacheId: PropTypes.string.isRequired
+    })
+  ).isRequired
 };
 
 export default Results;

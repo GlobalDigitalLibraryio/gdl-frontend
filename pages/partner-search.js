@@ -7,7 +7,15 @@ import fetch from 'isomorphic-unfetch';
 import Layout from '../components/Layout';
 import Hero from '../components/Hero';
 import { Pagination, Results } from '../components/pages/PartnerSearch/';
-import { Container, Input, Button, Group, Level, P5, Section } from '../components/generic';
+import {
+  Container,
+  Input,
+  Button,
+  Group,
+  Level,
+  P5,
+  Section
+} from '../components/generic';
 
 const API_KEY = 'AIzaSyCV5jNMGhZuXpqxDPCHkyC8HP9QShrN4mw';
 const SEARCH_ENGINE_ID = '001504581191494847575:s0_xqdo7npy';
@@ -23,7 +31,7 @@ const FilterContainer = ({ id, className, name, children, ...props }) => (
 FilterContainer.propTypes = {
   className: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 const Filter = styled(FilterContainer)`
@@ -50,11 +58,17 @@ const Filter = styled(FilterContainer)`
 const siteFilters = {
   // all: { name: 'All', more: '' },
   storyweaver: { name: 'StoryWeaver', site: 'site:storyweaver.org.in' },
-  africanstorybook: { name: 'African Storybook', site: 'site:africanstorybook.org' },
-  letsreadbooksorg: { name: "Let's Read", site: 'site:letsreadbooksorg.wordpress.com' },
+  africanstorybook: {
+    name: 'African Storybook',
+    site: 'site:africanstorybook.org'
+  },
+  letsreadbooksorg: {
+    name: 'Let\'s Read',
+    site: 'site:letsreadbooksorg.wordpress.com'
+  },
   bookshare: { name: 'Bookshare', site: 'site:www.bookshare.org' },
   bookdash: { name: 'Bookdash', site: 'site:bookdash.org' },
-  pustakalaya: { name: 'Pustakalaya', site: 'site:pustakalaya.org' },
+  pustakalaya: { name: 'Pustakalaya', site: 'site:pustakalaya.org' }
 };
 
 // Handles none, single or multiple site parameters
@@ -62,7 +76,7 @@ function getSiteFiltering(site) {
   if (!site) {
     return '';
   } else if (Array.isArray(site)) {
-    return site.map(site => siteFilters[site].site).join(' OR ');
+    return site.map(s => siteFilters[s].site).join(' OR ');
   }
 
   return siteFilters[site] ? siteFilters[site].site : '';
@@ -88,7 +102,9 @@ export default class PartnerSearch extends React.Component {
       const safeStart = start >= 1 ? start : 1;
       const sites = toArray(site);
       try {
-        const res = await fetch(`https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${filter}`);
+        const res = await fetch(
+          `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${filter}`
+        );
         const json = await res.json();
         let totalResults;
         let lastPage;
@@ -105,9 +121,17 @@ export default class PartnerSearch extends React.Component {
           page = Math.ceil(from / 10);
         }
 
-        return { results: json, q, totalResults, lastPage, from, to, page, sites };
+        return {
+          results: json,
+          q,
+          totalResults,
+          lastPage,
+          from,
+          to,
+          page,
+          sites
+        };
       } catch (err) {
-        console.error(err);
         return { err, q, sites };
       }
     }
@@ -120,18 +144,21 @@ export default class PartnerSearch extends React.Component {
     sites: this.props.sites.reduce((acc, val) => {
       acc[val] = true;
       return acc;
-    }, {}),
+    }, {})
   };
 
-  onSearch = (event) => {
+  onSearch = event => {
     event.preventDefault();
     this.doSearch();
   };
 
-  onFilterChange = (event) => {
+  onFilterChange = event => {
     const { checked, name } = event.target;
     if (this.state.q) {
-      this.setState(state => ({ sites: { ...state.sites, [name]: checked } }), () => this.doSearch());
+      this.setState(
+        state => ({ sites: { ...state.sites, [name]: checked } }),
+        () => this.doSearch()
+      );
     } else {
       this.setState(state => ({ sites: { ...state.sites, [name]: checked } }));
     }
@@ -148,7 +175,10 @@ export default class PartnerSearch extends React.Component {
   doSearch() {
     const { url } = this.props;
     // Generate a query string for the selected sites
-    const filter = Object.entries(this.state.sites).filter(([key, value]) => value).map(([key]) => `&site=${key}`).join('');
+    const filter = Object.entries(this.state.sites)
+      .filter(([, value]) => value)
+      .map(([key]) => `&site=${key}`)
+      .join('');
 
     const href = `${url.pathname}?q=${this.state.q}${filter}`;
     Router.push(href);
@@ -164,13 +194,40 @@ export default class PartnerSearch extends React.Component {
             <Container>
               <form onSubmit={this.onSearch}>
                 <Group>
-                  <Input expanded type="search" name="q" placeholder="Search for books" value={this.state.q} onChange={event => this.setState({ q: event.target.value })} />
-                  <Button type="submit" disabled={this.state.q === ''}>Search</Button>
+                  <Input
+                    expanded
+                    type="search"
+                    name="q"
+                    placeholder="Search for books"
+                    value={this.state.q}
+                    onChange={event => this.setState({ q: event.target.value })}
+                  />
+                  <Button type="submit" disabled={this.state.q === ''}>
+                    Search
+                  </Button>
                 </Group>
                 <Level>
-                  <Level.Item><Filter id="all" onChange={this.onAllChange} checked={!Object.values(this.state.sites).includes(true)} name="all">All</Filter></Level.Item>
+                  <Level.Item>
+                    <Filter
+                      id="all"
+                      onChange={this.onAllChange}
+                      checked={!Object.values(this.state.sites).includes(true)}
+                      name="all"
+                    >
+                      All
+                    </Filter>
+                  </Level.Item>
                   {Object.entries(siteFilters).map(([key, value]) => (
-                    <Level.Item key={key}><Filter id={key} name={key} onChange={this.onFilterChange} checked={this.state.sites[key] || false}>{value.name}</Filter></Level.Item>
+                    <Level.Item key={key}>
+                      <Filter
+                        id={key}
+                        name={key}
+                        onChange={this.onFilterChange}
+                        checked={this.state.sites[key] || false}
+                      >
+                        {value.name}
+                      </Filter>
+                    </Level.Item>
                   ))}
                 </Level>
               </form>
@@ -180,17 +237,31 @@ export default class PartnerSearch extends React.Component {
 
         <Section>
           <Container>
-            {err && <P5 textCentered>An error occurred while searching. Please try again.</P5>}
+            {err && (
+              <P5 textCentered>
+                An error occurred while searching. Please try again.
+              </P5>
+            )}
 
             {results &&
-              results.items &&
+            results.items && (
               <P5 textCentered>
-                Showing {this.props.from}-{this.props.to} of {this.props.totalResults} results
-              </P5>}
+                Showing {this.props.from}-{this.props.to} of{' '}
+                {this.props.totalResults} results
+              </P5>
+            )}
 
-            {results && results.items ? <Results items={results.items} /> : <P5 textCentered>No results</P5>}
+            {results && results.items ? (
+              <Results items={results.items} />
+            ) : (
+              <P5 textCentered>No results</P5>
+            )}
 
-            {results && results.items && lastPage !== 1 && <Pagination url={url} page={page} lastPage={lastPage} />}
+            {results &&
+            results.items &&
+            lastPage !== 1 && (
+              <Pagination url={url} page={page} lastPage={lastPage} />
+            )}
           </Container>
         </Section>
       </Layout>
@@ -205,8 +276,8 @@ PartnerSearch.propTypes = {
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.string,
-    }).isRequired,
+      start: PropTypes.string
+    }).isRequired
   }).isRequired,
   q: PropTypes.string.isRequired, // Initial search query in URL
   totalResults: PropTypes.string,
@@ -217,22 +288,22 @@ PartnerSearch.propTypes = {
   results: PropTypes.shape({
     items: PropTypes.arrayOf(
       PropTypes.shape({
-        cacheId: PropTypes.string.isRequired,
-      }),
+        cacheId: PropTypes.string.isRequired
+      })
     ),
     queries: PropTypes.shape({
       request: PropTypes.arrayOf(
         PropTypes.shape({
           count: PropTypes.number.isRequired,
-          startIndex: PropTypes.number.isRequired,
-        }),
-      ).isRequired,
-    }).isRequired,
-  }),
+          startIndex: PropTypes.number.isRequired
+        })
+      ).isRequired
+    }).isRequired
+  })
 };
 
 PartnerSearch.defaultProps = {
   err: null,
   q: '',
-  sites: [],
+  sites: []
 };

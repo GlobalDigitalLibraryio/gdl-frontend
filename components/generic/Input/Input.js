@@ -25,7 +25,7 @@ const common = css`
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
   max-width: 100%;
   width: 100%;
-  
+
   &:hover {
     border-color: #b5b5b5;
   }
@@ -34,7 +34,8 @@ const common = css`
     color: rgba(54, 54, 54, 0.3);
   }
 
-  &:focus, &:active {
+  &:focus,
+  &:active {
     outline: none;
     border-color: #00d1b2;
   }
@@ -46,12 +47,9 @@ const common = css`
     box-shadow: none;
     color: #7a7a7a;
   }
-
 `;
 
-const Input = styled.input`
-  ${common}
-`;
+const Input = styled.input`${common};`;
 
 const InputContainer = ({ expanded, ...props }) => (
   <Control expanded={expanded}>
@@ -61,12 +59,12 @@ const InputContainer = ({ expanded, ...props }) => (
 
 InputContainer.propTypes = {
   expanded: PropTypes.bool,
-  disabled: PropTypes.bool,
+  disabled: PropTypes.bool
 };
 
 InputContainer.defaultProps = {
   expanded: false,
-  type: 'text',
+  type: 'text'
 };
 
 export default InputContainer;

@@ -11,8 +11,15 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
       <meta httpEquiv="X-UA-Compatible" content="IE=edge,chrome=1" />
       <meta name="viewport" content="width=device-width,initial-scale=1" />
       <meta name="description" content="Global Digital Library GDL" />
-      <meta name="keywords" content="global, digital, library, gdl, reading, children" />
-      <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" type="text/css" />
+      <meta
+        name="keywords"
+        content="global, digital, library, gdl, reading, children"
+      />
+      <link
+        rel="stylesheet"
+        href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700"
+        type="text/css"
+      />
     </Head>
     <style global jsx>{`
       * {
@@ -24,7 +31,7 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
       body {
         font-family: 'Source Sans Pro', sans-serif;
         background: #f5f5f5;
-        color: #333; 
+        color: #333;
       }
 
       html {
@@ -40,19 +47,17 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
         text-decoration: underline;
       }
 
-      a:focus, a:hover {
+      a:focus,
+      a:hover {
         text-decoration: none;
       }
 
       small {
         font-size: 0.8em;
       }
-
     `}</style>
     <div className="site">
-      <div className="site-content">
-        {children}
-      </div>
+      <div className="site-content">{children}</div>
       <Footer />
     </div>
     <style jsx>{`
@@ -69,7 +74,7 @@ const Layout = ({ children, title = 'Global Digital Library' }) => (
 );
 
 Layout.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.string
 };
 
 export default Layout;

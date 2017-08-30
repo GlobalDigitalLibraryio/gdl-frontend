@@ -11,15 +11,15 @@ const Level = styled.div`
     margin-bottom: 1.5rem;
   }
 
-  ${props => (props.mobile ? 'display: flex;' : media.tablet`display: flex;`)}
+  ${props => (props.mobile ? 'display: flex;' : media.tablet`display: flex;`)};
 `;
 
 Level.propTypes = {
-  mobile: PropTypes.bool, // By default, level items stack on mobile. Set this if you do not want that
+  mobile: PropTypes.bool // By default, level items stack on mobile. Set this if you do not want that
 };
 
 Level.defaultProps = {
-  mobile: false,
+  mobile: false
 };
 
 Level.Item = LevelItem;
