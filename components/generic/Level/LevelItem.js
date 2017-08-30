@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import media from '../helpers/media';
@@ -18,11 +26,11 @@ const LevelItem = styled.div`
 `;
 
 LevelItem.propTypes = {
-  narrow: PropTypes.bool
+  narrow: PropTypes.bool,
 };
 
 LevelItem.defaultProps = {
-  narrow: false
+  narrow: false,
 };
 
 export default LevelItem;

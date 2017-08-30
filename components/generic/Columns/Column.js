@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import media from '../helpers/media';
@@ -54,18 +62,18 @@ const sizePropType = PropTypes.oneOf([
   9,
   10,
   11,
-  12
+  12,
 ]);
 
 Column.propTypes = {
   mobile: sizePropType, // Column size for mobile (max width) only applies if Columns.responsive === mobile
   tablet: sizePropType, // Column size for tablet (min width) only applies if Columns.responsive === tablet (default)
   desktop: sizePropType, // Column size for desktop (min width)
-  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired
+  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired,
 };
 
 Column.defaultProps = {
-  responsive: 'tablet'
+  responsive: 'tablet',
 };
 
 export default Column;

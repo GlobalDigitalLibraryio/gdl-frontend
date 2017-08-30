@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -13,7 +21,7 @@ const ColumnsContainer = ({
 }) => (
   <div {...props}>
     {React.Children.map(children, column =>
-      React.cloneElement(column, { responsive })
+      React.cloneElement(column, { responsive }),
     )}
   </div>
 );
@@ -22,7 +30,7 @@ ColumnsContainer.propTypes = {
   centered: PropTypes.bool.isRequired,
   vCentered: PropTypes.bool.isRequired,
   multiline: PropTypes.bool.isRequired,
-  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired // By default columns are stacked on mobile, and starts from tablets and upwards.
+  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']).isRequired, // By default columns are stacked on mobile, and starts from tablets and upwards.
 };
 
 const Columns = styled(ColumnsContainer)`
@@ -52,14 +60,14 @@ Columns.propTypes = {
   centered: PropTypes.bool, // Horizontal centering
   vCentered: PropTypes.bool, // Vertical centering
   multiline: PropTypes.bool, // Wrap across multiple columns/rows
-  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']) // By default columns are stacked on mobile, and starts from tablets and upwards.
+  responsive: PropTypes.oneOf(['mobile', 'tablet', 'desktop']), // By default columns are stacked on mobile, and starts from tablets and upwards.
 };
 
 Columns.defaultProps = {
   centered: false,
   vCentered: false,
   multiline: false,
-  responsive: 'tablet'
+  responsive: 'tablet',
 };
 
 export default Columns;

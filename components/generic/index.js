@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import Button from './Button';
 import Card from './Card';
 import Columns, { Column } from './Columns';
@@ -37,5 +45,5 @@ export {
   P5,
   P6,
   Pagination,
-  Section
+  Section,
 };

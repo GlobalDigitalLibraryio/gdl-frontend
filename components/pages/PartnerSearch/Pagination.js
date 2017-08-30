@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
@@ -14,15 +22,15 @@ PaginationLink.propTypes = {
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.string
-    }).isRequired
+      start: PropTypes.string,
+    }).isRequired,
   }).isRequired,
   start: PropTypes.number.isRequired,
-  active: PropTypes.bool
+  active: PropTypes.bool,
 };
 
 PaginationLink.defaultProps = {
-  active: false
+  active: false,
 };
 
 /* eslint-disable react/prefer-stateless-function, react/forbid-prop-types */
@@ -46,7 +54,7 @@ export default class Pagination extends React.PureComponent {
           <PaginationLink url={url} key="first" start={0}>
             1
           </PaginationLink>,
-          <Pag.Item key="ellipsis" ellipsis />
+          <Pag.Item key="ellipsis" ellipsis />,
         ]}
 
         {page !== 1 && (
@@ -78,5 +86,5 @@ export default class Pagination extends React.PureComponent {
 Pagination.propTypes = {
   page: PropTypes.number.isRequired,
   lastPage: PropTypes.number.isRequired,
-  url: PropTypes.object.isRequired
+  url: PropTypes.object.isRequired,
 };

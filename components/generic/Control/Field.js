@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -11,7 +19,7 @@ const Field = styled.div`
 export default class FieldContainer extends React.Component {
   getChildContext() {
     return {
-      isInField: true
+      isInField: true,
     };
   }
 
@@ -21,5 +29,5 @@ export default class FieldContainer extends React.Component {
 }
 
 FieldContainer.childContextTypes = {
-  isInField: PropTypes.bool
+  isInField: PropTypes.bool,
 };

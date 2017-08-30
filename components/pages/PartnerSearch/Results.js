@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -57,11 +65,11 @@ Result.propTypes = {
     pagemap: PropTypes.shape({
       cse_image: PropTypes.arrayOf(
         PropTypes.shape({
-          src: PropTypes.string.isRequired
-        })
-      )
-    })
-  }).isRequired
+          src: PropTypes.string.isRequired,
+        }),
+      ),
+    }),
+  }).isRequired,
 };
 
 const Results = ({ items }) => (
@@ -77,9 +85,9 @@ const Results = ({ items }) => (
 Results.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      cacheId: PropTypes.string.isRequired
-    })
-  ).isRequired
+      cacheId: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
 };
 
 export default Results;

@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2017-present, Global Digital Library.
+ * 
+ * This source code is licensed under the GPLv3 license found in the
+ * LICENSE file in the root directory of this source tree.
+ * 
+ */
+
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -14,7 +22,7 @@ import {
   Group,
   Level,
   P5,
-  Section
+  Section,
 } from '../components/generic';
 
 const API_KEY = 'AIzaSyCV5jNMGhZuXpqxDPCHkyC8HP9QShrN4mw';
@@ -31,7 +39,7 @@ const FilterContainer = ({ id, className, name, children, ...props }) => (
 FilterContainer.propTypes = {
   className: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
 };
 
 const Filter = styled(FilterContainer)`
@@ -60,15 +68,15 @@ const siteFilters = {
   storyweaver: { name: 'StoryWeaver', site: 'site:storyweaver.org.in' },
   africanstorybook: {
     name: 'African Storybook',
-    site: 'site:africanstorybook.org'
+    site: 'site:africanstorybook.org',
   },
   letsreadbooksorg: {
     name: 'Let\'s Read',
-    site: 'site:letsreadbooksorg.wordpress.com'
+    site: 'site:letsreadbooksorg.wordpress.com',
   },
   bookshare: { name: 'Bookshare', site: 'site:www.bookshare.org' },
   bookdash: { name: 'Bookdash', site: 'site:bookdash.org' },
-  pustakalaya: { name: 'Pustakalaya', site: 'site:pustakalaya.org' }
+  pustakalaya: { name: 'Pustakalaya', site: 'site:pustakalaya.org' },
 };
 
 // Handles none, single or multiple site parameters
@@ -103,7 +111,7 @@ export default class PartnerSearch extends React.Component {
       const sites = toArray(site);
       try {
         const res = await fetch(
-          `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${filter}`
+          `https://www.googleapis.com/customsearch/v1?key=${API_KEY}&cx=${SEARCH_ENGINE_ID}&start=${safeStart}&prettyPrint=false&num=${PAGE_SIZE}&q=${q} ${filter}`,
         );
         const json = await res.json();
         let totalResults;
@@ -129,7 +137,7 @@ export default class PartnerSearch extends React.Component {
           from,
           to,
           page,
-          sites
+          sites,
         };
       } catch (err) {
         return { err, q, sites };
@@ -144,7 +152,7 @@ export default class PartnerSearch extends React.Component {
     sites: this.props.sites.reduce((acc, val) => {
       acc[val] = true;
       return acc;
-    }, {})
+    }, {}),
   };
 
   onSearch = event => {
@@ -157,7 +165,7 @@ export default class PartnerSearch extends React.Component {
     if (this.state.q) {
       this.setState(
         state => ({ sites: { ...state.sites, [name]: checked } }),
-        () => this.doSearch()
+        () => this.doSearch(),
       );
     } else {
       this.setState(state => ({ sites: { ...state.sites, [name]: checked } }));
@@ -276,8 +284,8 @@ PartnerSearch.propTypes = {
     pathname: PropTypes.string.isRequired,
     query: PropTypes.shape({
       q: PropTypes.string,
-      start: PropTypes.string
-    }).isRequired
+      start: PropTypes.string,
+    }).isRequired,
   }).isRequired,
   q: PropTypes.string.isRequired, // Initial search query in URL
   totalResults: PropTypes.string,
@@ -288,22 +296,22 @@ PartnerSearch.propTypes = {
   results: PropTypes.shape({
     items: PropTypes.arrayOf(
       PropTypes.shape({
-        cacheId: PropTypes.string.isRequired
-      })
+        cacheId: PropTypes.string.isRequired,
+      }),
     ),
     queries: PropTypes.shape({
       request: PropTypes.arrayOf(
         PropTypes.shape({
           count: PropTypes.number.isRequired,
-          startIndex: PropTypes.number.isRequired
-        })
-      ).isRequired
-    }).isRequired
-  })
+          startIndex: PropTypes.number.isRequired,
+        }),
+      ).isRequired,
+    }).isRequired,
+  }),
 };
 
 PartnerSearch.defaultProps = {
   err: null,
   q: '',
-  sites: []
+  sites: [],
 };
