@@ -1,8 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import classNames from 'classnames';
 
-const Hero = ({ children, teachingIcons, fixed, ...props }) => (
+type HeroProps = {
+  children?: React.Node,
+  teachingIcons: boolean,
+  fixed: boolean,
+};
+
+const Hero = ({ children, teachingIcons, fixed, ...props }: HeroProps) => (
   <section className={classNames('hero', { fixed })} {...props}>
     {children}
     {teachingIcons && (
@@ -47,17 +53,18 @@ const Hero = ({ children, teachingIcons, fixed, ...props }) => (
   </section>
 );
 
-Hero.propTypes = {
-  teachingIcons: PropTypes.bool,
-  fixed: PropTypes.bool
-};
-
 Hero.defaultProps = {
   teachingIcons: false,
-  fixed: false
+  fixed: false,
 };
 
-const HeroBody = ({ children, size, ...props }) => (
+type HeroBodyProps = {
+  size?: 'medium' | 'large',
+  children?: React.Node,
+};
+
+const HeroBody = ({ children, size, ...props }: HeroBodyProps) => (
+  // $FlowFixMe Flow complains size cannot be coerced to string because it could be undefined, but that is handled by the classNames lib. Disabling for now
   <div className={classNames('hero-body', { [`${size}`]: size })} {...props}>
     {children}
     <style jsx>{`
@@ -94,10 +101,6 @@ const HeroBody = ({ children, size, ...props }) => (
   </div>
 );
 
-HeroBody.propTypes = {
-  size: PropTypes.oneOf(['medium', 'large'])
-};
-
 Hero.Body = HeroBody;
 
-export default Hero;
+export { HeroBody, Hero as default };

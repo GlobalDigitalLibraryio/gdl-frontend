@@ -1,14 +1,25 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+// @flow
+import * as React from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import Link from 'next/link';
 
 import BlockLink from '../components/BlockLink';
 import Layout from '../components/Layout';
 import { Container, Section } from '../components/generic';
+
 import Hero from '../components/Hero';
 
-const Card = ({ children, header, src, alt }) => (
+const Card = ({
+  children,
+  header,
+  src,
+  alt,
+}: {
+  children?: React.Node,
+  src: string,
+  alt: string,
+  header: string,
+}) => (
   <div className="root">
     <figure>
       <img src={src} alt={alt} />
@@ -64,12 +75,6 @@ const Card = ({ children, header, src, alt }) => (
     `}</style>
   </div>
 );
-
-Card.propTypes = {
-  header: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
-  alt: PropTypes.string.isRequired
-};
 
 const AboutLink = ({ children, ...props }) => (
   <Link>

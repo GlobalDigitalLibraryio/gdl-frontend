@@ -1,4 +1,5 @@
-import React from 'react';
+// @flow
+import * as React from 'react';
 import Layout from '../components/Layout';
 import Card from '../components/Card';
 import Hero from '../components/Hero';
