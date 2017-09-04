@@ -1,0 +1,12 @@
+{
+  "book.id": {
+    "translation": "Book id: {0}",
+    "defaults": "Book id: {0}",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        30
+      ]
+    ]
+  }
+}

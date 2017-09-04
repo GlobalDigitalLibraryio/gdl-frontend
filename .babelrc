@@ -1,4 +1,4 @@
 {
-  "presets": ["next/babel"],
+  "presets": ["next/babel", "lingui-react"],
   "plugins": ["transform-flow-strip-types"]
 }

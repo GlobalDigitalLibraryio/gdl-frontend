@@ -10,3 +10,5 @@
 types/
 
 [options]
+# js-lingui uses this, enabling this to remove errors
+unsafe.enable_getters_and_setters=true
