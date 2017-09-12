@@ -8,6 +8,8 @@
 
 // @flow
 
+/* eslint-disable no-underscore-dangle, no-eval, import/no-extraneous-dependencies */
+
 import * as React from 'react';
 import { I18nProvider } from 'lingui-react';
 import Head from 'next/head';

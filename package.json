@@ -15,23 +15,21 @@
   },
   "lingui": {
     "fallbackLocale": "en",
-    "srcPathIgnorePatterns": [
-      "/node_modules/",
-      "/.next"
-    ]
+    "srcPathIgnorePatterns": ["/node_modules/", "/.next"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
   "scripts": {
     "pretest": "npm run lint",
-    "lint": "eslint --ext .js --ext .jsx pages components",
+    "lint": "eslint --ext .js --ext .jsx pages components hocs",
     "dev": "npm run i18n:compile && node server.js",
     "build": "npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server.js",
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
+    "format":
+      "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
     "flow": "flow"
   },
   "dependencies": {
@@ -53,11 +51,17 @@
     "styled-components": "^2.1.2"
   },
   "devDependencies": {
+    "babel-eslint": "^7.2.3",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-lingui-react": "^1.0.5",
     "eslint": "^4.5.0",
-    "eslint-config-ndla": "^0.3.3",
-    "flow-bin": "^0.53.1",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-prettier": "^2.4.0",
+    "eslint-plugin-flowtype": "^2.35.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.4.0-rc.0",
+    "flow-bin": "^0.54.1",
     "lingui-cli": "^1.3.2",
     "prettier-eslint": "^6.4.2",
     "prettier-eslint-cli": "^4.2.1"
