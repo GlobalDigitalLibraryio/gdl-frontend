@@ -1,12 +1,10 @@
-/**
- * Copyright (c) 2017-present, Global Digital Library.
- * 
- * This source code is licensed under the GPLv3 license found in the
- * LICENSE file in the root directory of this source tree.
- * 
- */
-
 // @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2017 GDL
+ * 
+ * See LICENSE
+ */
 
 /* eslint-disable no-underscore-dangle, no-eval, import/no-extraneous-dependencies */
 

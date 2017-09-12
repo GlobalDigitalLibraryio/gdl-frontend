@@ -1,12 +1,11 @@
+// @flow
 /**
- * Copyright (c) 2017-present, Global Digital Library.
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2017 GDL
  * 
- * This source code is licensed under the GPLv3 license found in the
- * LICENSE file in the root directory of this source tree.
- * 
+ * See LICENSE
  */
 
-// @flow
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import withI18n from '../../hocs/withI18n';

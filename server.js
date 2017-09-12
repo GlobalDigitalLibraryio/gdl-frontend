@@ -1,12 +1,11 @@
+// @flow
 /**
- * Copyright (c) 2017-present, Global Digital Library.
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2017 @PROJECT@
  * 
- * This source code is licensed under the GPLv3 license found in the
- * LICENSE file in the root directory of this source tree.
- * 
+ * See LICENSE
  */
 
-// @flow
 const express = require('express');
 const next = require('next');
 const requestLanguage = require('express-request-language');
