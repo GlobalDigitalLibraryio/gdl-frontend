@@ -1,0 +1,47 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "plugins": ["flowtype", "react"],
+  "parserOptions": {
+    "ecmaVersion": 2016,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true,
+    "jest": true
+  },
+  "settings": {
+    "react": {
+      "flowVersion": "0.53"
+    }
+  },
+  "rules": {
+    // Use single quotes
+    "quotes": ["error", "single"],
+    // Allow JSX to be used in files with the extensions '.js'
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    // Don't require prop validation for 'this.props.children'
+    "react/prop-types": [
+      "error",
+      {
+        "ignore": ["children"]
+      }
+    ],
+    // TODO: Phase out these rules when Flow coverage is higher
+    // Warn instead of error on forbidden prop-types such 'PropTypes.object'.
+    "react/forbid-prop-types": 1,
+    // Don't require default props.
+    "react/require-default-props": 0
+  }
+}

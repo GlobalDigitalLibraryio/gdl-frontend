@@ -4,3 +4,6 @@ npm-debug.log
 .DS_STORE
 .next
 *.iml
+# Ignore the compiled translation files
+locale/*/*.js
+locale/_build/
