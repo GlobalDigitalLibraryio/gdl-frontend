@@ -15,7 +15,10 @@
   },
   "lingui": {
     "fallbackLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -28,8 +31,7 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format":
-      "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
     "flow": "flow"
   },
   "dependencies": {
@@ -39,19 +41,27 @@
     "express": "^4.15.4",
     "express-request-language": "^1.1.12",
     "glob": "^7.1.2",
+    "grid-styled": "^2.0.0-10",
     "isomorphic-unfetch": "^2.0.0",
     "lingui-react": "^1.2.0",
     "next": "^3.2.1",
     "next-routes": "^1.0.40",
+    "polished": "^1.7.0",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-icons": "^2.2.5",
+    "react-popper": "^0.7.2",
     "react-scroll": "^1.5.4",
     "serialize-javascript": "^1.4.0",
-    "styled-components": "^2.1.2"
+    "styled-components": "^2.1.2",
+    "styled-system": "^1.0.0-13",
+    "tag-hoc": "^1.0.0"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "babel-plugin-inline-react-svg": "^0.4.0",
+    "babel-plugin-styled-components": "^1.2.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-lingui-react": "^1.0.5",
     "eslint": "^4.5.0",

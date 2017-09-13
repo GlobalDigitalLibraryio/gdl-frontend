@@ -8,9 +8,38 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet } from 'styled-components';
+import { ServerStyleSheet, injectGlobal } from 'styled-components';
+import { normalize } from 'polished';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
+
+// Add global styles
+// eslint-disable-next-line no-unused-expressions
+injectGlobal`
+  ${normalize(true)}
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+
+  html {
+    box-sizing: border-box;
+    font-size: 16px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Source Sans Pro", sans-serif;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    background: #f9f9fb;
+    color: #444444;
+
+    a {
+      color: #20588F;
+    }
+  }
+`;
 
 export default class MyDocument extends Document {
   static async getInitialProps(context) {
@@ -29,7 +58,13 @@ export default class MyDocument extends Document {
     return (
       <html lang={this.props.language}>
         <Head>
-          <title>My page</title>
+          <title>Global Digital Library</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link
+            rel="stylesheet"
+            href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700"
+            type="text/css"
+          />
           {styleTags}
         </Head>
         <body>

@@ -1,4 +1,8 @@
 {
   "presets": ["next/babel", "lingui-react"],
-  "plugins": ["transform-flow-strip-types"]
+  "plugins": [
+    "transform-flow-strip-types",
+    "inline-react-svg",
+    ["babel-plugin-styled-components", { "ssr": true }]
+  ]
 }

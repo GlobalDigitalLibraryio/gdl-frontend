@@ -1,3 +1,4 @@
+// @flow
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
@@ -5,35 +6,19 @@
  * See LICENSE
  */
 
-import React from 'react';
+import styled from 'styled-components';
+import tag from 'tag-hoc';
 
-const Card = ({ children, ...props }) => (
-  <div {...props}>
-    {children}
-    <style jsx>{`
-      div {
-        background-color: white;
-        box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1),
-          0 0 0 1px rgba(10, 10, 10, 0.1);
-        color: #4a4a4a;
-        max-width: 100%;
-        position: relative;
-      }
-    `}</style>
-  </div>
-);
+const Base = tag([])('div');
 
-const CardContent = ({ children, ...props }) => (
-  <div {...props}>
-    {children}
-    <style jsx>{`
-      div {
-        padding: 1.5rem;
-      }
-    `}</style>
-  </div>
-);
+const Card = styled(Base)`
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+`;
 
-Card.Content = CardContent;
+const CardContent = styled.div`padding: 1rem;`;
 
-export default Card;
+const CardAction = styled.button`color: #20588f;`;
+
+export { Card as default, CardContent, CardAction };
