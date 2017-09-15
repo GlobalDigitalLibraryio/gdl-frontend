@@ -6,21 +6,23 @@
  * See LICENSE
  */
 
-import * as React from 'react';
 import styled from 'styled-components';
 import tag from 'tag-hoc';
-import { fontSize } from 'styled-system';
+import { fontSize, color } from 'styled-system';
 
 const Base = tag(['textAlign'])('h1');
 
-type Props = {
+// TODO: Figure out how to type styled components
+/* type Props = {
   textAlign: 'left' | 'center' | 'right',
-};
+  fontSize: Array<number> | number | Array<string> | string,
+  color?: string,
+  is?: string,
+}; */
 
-type Test = (props: Props) => React.Component;
-
-const Title: Test = styled(Base)`
-  ${fontSize} font-weight: 600;
+const Title = styled(Base)`
+  ${fontSize} ${color} display: block;
+  font-weight: 600;
   text-align: ${props => props.textAlign};
 `;
 

@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans, DateFormat } from 'lingui-react';
+import { DateFormat } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
 import { Flex } from 'grid-styled';
@@ -16,7 +16,7 @@ import withI18n from '../../hocs/withI18n';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Navbar, { NavItem, HamburgerButton } from '../../components/Navbar';
-import Card, { CardContent } from '../../components/Card';
+import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Heading from '../../components/Heading';
@@ -48,8 +48,6 @@ const BookMetaData = ({
   </Box>
 );
 
-// TODO: Remove datefallback in render when API returns publishedDate
-
 const BookDescription = styled.div`text-align: center;`;
 
 class BookPage extends React.Component<Props> {
@@ -70,7 +68,7 @@ class BookPage extends React.Component<Props> {
 
     return {
       book,
-      similar,
+      similar: similar.results,
     };
   }
 
@@ -110,10 +108,10 @@ class BookPage extends React.Component<Props> {
             {book.title}
           </Title>
           <Flex>
-            <Box w={1 / 2}>
+            <Flex w={1 / 2} justify="flex-end" mr={1}>
               <BookCover book={book} />
-            </Box>
-            <Box w={1 / 2} fontSize="14px">
+            </Flex>
+            <Box w={1 / 2} fontSize="14px" ml={1}>
               <BookMetaData heading="Publisher">
                 <a href="">{book.publisher.name}</a>
               </BookMetaData>
@@ -131,31 +129,23 @@ class BookPage extends React.Component<Props> {
           </Flex>
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
-              <Card>
-                <CardContent>Book language: {book.language.name}</CardContent>
-              </Card>
+              <Card>Book language: {book.language.name}</Card>
               <Box mt={1} mb={1}>
-                <Card>
-                  <CardContent>Download book</CardContent>
-                </Card>
-                <Card>
-                  <CardContent>Translate book</CardContent>
-                </Card>
+                <Card>Download book</Card>
+                <Card>Translate book</Card>
               </Box>
             </Box>
             <Box w={[1, 1 / 2]} mb={1}>
               <Card style={{ height: '100%' }}>
-                <CardContent>
-                  {book.datePublished && (
-                    <BookMetaData heading="Published">
-                      <DateFormat value={new Date(book.datePublished)} />
-                    </BookMetaData>
-                  )}
-                  <BookMetaData heading="License">
-                    <a href={book.license.url}>{book.license.description}</a>
+                {book.datePublished && (
+                  <BookMetaData heading="Published">
+                    <DateFormat value={new Date(book.datePublished)} />
                   </BookMetaData>
-                  <BookMetaData heading="categories">{categories}</BookMetaData>
-                </CardContent>
+                )}
+                <BookMetaData heading="License">
+                  <a href={book.license.url}>{book.license.description}</a>
+                </BookMetaData>
+                <BookMetaData heading="categories">{categories}</BookMetaData>
               </Card>
             </Box>
           </Flex>

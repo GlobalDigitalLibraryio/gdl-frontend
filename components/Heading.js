@@ -6,14 +6,21 @@
  * See LICENSE
  */
 import styled from 'styled-components';
+import tag from 'tag-hoc';
+import { fontSize } from 'styled-system';
+
+const Base = tag([])('div');
 
 /**
- * Uppercased headers
+ * Smaller uppercased headers
  */
-const Heading = styled.div`
-  text-transform: uppercase;
-  font-size: 0.75rem;
+const Heading = styled(Base)`
+  ${fontSize} text-transform: uppercase;
   font-weight: 600;
 `;
+
+Heading.defaultProps = {
+  fontSize: 12,
+};
 
 export default Heading;

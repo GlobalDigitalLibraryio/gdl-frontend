@@ -32,12 +32,14 @@
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
     "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
-    "flow": "flow"
+    "flow": "flow",
+    "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
     "domurl": "^2.1.7",
+    "downshift": "^1.6.0",
     "express": "^4.15.4",
     "express-request-language": "^1.1.12",
     "glob": "^7.1.2",
@@ -59,6 +61,7 @@
     "tag-hoc": "^1.0.0"
   },
   "devDependencies": {
+    "@storybook/react": "^3.2.8",
     "babel-eslint": "^7.2.3",
     "babel-plugin-inline-react-svg": "^0.4.0",
     "babel-plugin-styled-components": "^1.2.0",

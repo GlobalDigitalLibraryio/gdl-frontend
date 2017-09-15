@@ -9,11 +9,8 @@
 import styled from 'styled-components';
 
 const Hero = styled.div`
-  display: flex;
-  flex-direction: column,
-  align-items: stretch;
-  background-color: #F8F8F8;
-  border-top: solid 1px #E0E0E0;
+  background-color: #f8f8f8;
+  border-top: solid 1px #e0e0e0;
 `;
 
 export default Hero;

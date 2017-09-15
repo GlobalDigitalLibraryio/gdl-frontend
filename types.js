@@ -44,6 +44,10 @@ export type Book = {
   +contributors: Array<Contributor>,
   +language: Language,
   +availableLanguages: Array<Language>,
+  +downloads: {
+    epub: string,
+    pdf: string,
+  },
   +coverPhoto: {
     large: string,
     small: string,

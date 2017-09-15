@@ -12,4 +12,9 @@ import { fontSize } from 'styled-system';
 
 export default styled(Box)`
   ${fontSize};
+  align-self: ${props => props.align};
 `;
+
+/* type Props = {
+  align: 'auto' | 'flex-start' | 'flex-end' | 'center' | 'baseline' | 'stretch',
+}; */

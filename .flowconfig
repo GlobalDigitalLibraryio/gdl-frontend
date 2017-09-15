@@ -3,6 +3,7 @@
 .*/node_modules/styled-components/.*
 # Ignore flow error caused by this babel-plugin
 .*/node_modules/babel-plugin-transform-react-remove-prop-types/.*
+.*/node_modules/radium/.*
 
 [include]
 

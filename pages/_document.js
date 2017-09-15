@@ -8,16 +8,15 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet, injectGlobal } from 'styled-components';
+import { ServerStyleSheet, injectGlobal, css } from 'styled-components';
 import { normalize } from 'polished';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
 
 // Add global styles
 // eslint-disable-next-line no-unused-expressions
-injectGlobal`
-  ${normalize(true)}
-  *, *:before, *:after {
+const globalStyles = css`
+  ${normalize(true)} *, *:before, *:after {
     box-sizing: inherit;
   }
 
@@ -29,19 +28,24 @@ injectGlobal`
   body {
     margin: 0;
     padding: 0;
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     background: #f9f9fb;
     color: #444444;
 
     a {
-      color: #20588F;
+      color: #20588f;
     }
   }
 `;
 
-export default class MyDocument extends Document {
+// eslint-disable-next-line no-unused-expressions
+injectGlobal`
+  ${globalStyles}
+`;
+
+class GDLDocument extends Document {
   static async getInitialProps(context) {
     // Wait for the language on the request (see server.js) so we can set the lang attribute on the html tag
     const props = await super.getInitialProps(context);
@@ -75,3 +79,5 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+export { GDLDocument as default, globalStyles };
