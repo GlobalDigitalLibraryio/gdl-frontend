@@ -12,12 +12,11 @@ import { Box } from 'grid-styled';
 /**
  * Center content horizontally
  */
-const Container = styled(Box)`
-  max-width: 738px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
-`;
+const Container = styled(Box)`max-width: 738px;`;
+
+Container.defaultProps = {
+  mx: 'auto',
+  px: 15,
+};
 
 export default Container;

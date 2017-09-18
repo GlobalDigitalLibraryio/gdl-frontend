@@ -25,7 +25,8 @@ const Card = Box.extend`
 `;
 
 Card.defaultProps = {
-  p: 10,
+  px: 15,
+  py: 12,
 };
 
 // Adds much bigger shadow to the card

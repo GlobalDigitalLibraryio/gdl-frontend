@@ -9,14 +9,16 @@
 import * as React from 'react';
 import { DateFormat } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
+import { MdLanguage, MdTranslate, MdFileDownload } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import { Flex } from 'grid-styled';
+import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import withI18n from '../../hocs/withI18n';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
+import Flex from '../../components/Flex';
 import Navbar, { NavItem, HamburgerButton } from '../../components/Navbar';
-import Card from '../../components/Card';
+import CardBase, { CardAction } from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Heading from '../../components/Heading';
@@ -49,6 +51,11 @@ const BookMetaData = ({
 );
 
 const BookDescription = styled.div`text-align: center;`;
+
+// Extend the regular Card, allowing us to alter the border radius responsively
+const Card = CardBase.extend`
+  ${responsiveStyle('border-radius', 'borderRadius')};
+`;
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
@@ -103,6 +110,7 @@ class BookPage extends React.Component<Props> {
           <NavItem>Søkefelt</NavItem>
           <HamburgerButton />
         </Navbar>
+
         <Container>
           <Title fontSize={[28, 38]} textAlign="center">
             {book.title}
@@ -121,22 +129,42 @@ class BookPage extends React.Component<Props> {
               <ReadingLevel>Level {book.readingLevel}</ReadingLevel>
             </Box>
           </Flex>
+
           <Box mt={20} mb={20}>
             <BookDescription>{book.description}</BookDescription>
           </Box>
           <Flex justify="space-around" mb={20}>
             <Button>Read</Button>
           </Flex>
+
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
-              <Card>Book language: {book.language.name}</Card>
+              <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
+                <CardAction>
+                  <MdLanguage /> Book language: {book.language.name}
+                </CardAction>
+                <hr />
+                This book is available in {book.availableLanguages.length} other
+                languages
+              </Card>
               <Box mt={1} mb={1}>
-                <Card>Download book</Card>
-                <Card>Translate book</Card>
+                <Card borderRadius={0}>
+                  <CardAction>
+                    <MdFileDownload /> Download book
+                  </CardAction>
+                </Card>
+                <Card borderRadius={[0, '0 0 0 4px']}>
+                  <CardAction>
+                    <MdTranslate /> Translate book
+                  </CardAction>
+                </Card>
               </Box>
             </Box>
             <Box w={[1, 1 / 2]} mb={1}>
-              <Card style={{ height: '100%' }}>
+              <Card
+                style={{ height: '100%' }}
+                borderRadius={['0 0 4px 4px', '0 4px 4px 0']}
+              >
                 {book.datePublished && (
                   <BookMetaData heading="Published">
                     <DateFormat value={new Date(book.datePublished)} />
@@ -150,6 +178,7 @@ class BookPage extends React.Component<Props> {
             </Box>
           </Flex>
         </Container>
+
         <Hero>
           <Container>
             <SimilarLink href="">Similar</SimilarLink>
