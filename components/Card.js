@@ -32,6 +32,7 @@ Card.defaultProps = {
 // Adds much bigger shadow to the card
 // TODO: Add Flow typing of children
 const CardDropdown = Card.extend`
+  z-index: 9999;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4);
   &::before,
   &::after {

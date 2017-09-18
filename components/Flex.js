@@ -6,10 +6,9 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
 import { Flex } from 'grid-styled';
 import { fontSize } from 'styled-system';
 
-export default styled(Flex)`
+export default Flex.extend`
   ${fontSize};
 `;

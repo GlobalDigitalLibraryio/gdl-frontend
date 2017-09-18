@@ -15,10 +15,8 @@
   },
   "lingui": {
     "fallbackLocale": "en",
-    "srcPathIgnorePatterns": [
-      "/node_modules/",
-      "/.next"
-    ]
+    "sourceLocale": "en",
+    "srcPathIgnorePatterns": ["/node_modules/", "/.next"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -31,7 +29,8 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
+    "format":
+      "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
     "flow": "flow",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
@@ -45,7 +44,7 @@
     "glob": "^7.1.2",
     "grid-styled": "^2.0.0-10",
     "isomorphic-unfetch": "^2.0.0",
-    "lingui-react": "^1.2.0",
+    "lingui-react": "^1.2.1",
     "next": "^3.2.1",
     "next-routes": "^1.0.40",
     "polished": "^1.7.0",

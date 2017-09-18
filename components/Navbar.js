@@ -11,12 +11,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdMenu, MdSearch } from 'react-icons/lib/md';
 import { rem } from 'polished';
+import Container from './Container';
 import Input from './Input';
+import Flex from './Flex';
 
 // The color of the content in the navbar
 const color = '#fff';
 
-// The top
 const Nav = styled.nav`
   position: relative;
   min-height: ${rem('54px')};
@@ -64,16 +65,18 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
   render() {
     return (
       <Nav>
-        <Input placeholder="Search for title, level or subject" />
-        <HamburgerButton>
-          <MdSearch />
-        </HamburgerButton>
-        <HamburgerButton
-          onClick={this.handleHamburgerClick}
-          aria-expanded={this.state.isExpanded}
-        >
-          <MdMenu />
-        </HamburgerButton>
+        <Container maxWidth={1080} is={Flex} w={1}>
+          <Input placeholder="Search for title, level or subject" />
+          <HamburgerButton>
+            <MdSearch />
+          </HamburgerButton>
+          <HamburgerButton
+            onClick={this.handleHamburgerClick}
+            aria-expanded={this.state.isExpanded}
+          >
+            <MdMenu />
+          </HamburgerButton>
+        </Container>
       </Nav>
     );
   }

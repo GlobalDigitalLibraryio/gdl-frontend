@@ -7,18 +7,25 @@
  */
 
 import * as React from 'react';
-import { DateFormat } from 'lingui-react';
+import { DateFormat, Trans, Plural } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
 import { MdLanguage, MdTranslate, MdFileDownload } from 'react-icons/lib/md';
 import styled from 'styled-components';
+import { Manager, Target, Popper } from 'react-popper';
+import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import withI18n from '../../hocs/withI18n';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
-import Navbar, { NavItem, HamburgerButton } from '../../components/Navbar';
-import CardBase, { CardAction } from '../../components/Card';
+import Navbar from '../../components/Navbar';
+import CardBase, {
+  CardAction,
+  CardDropdown,
+  CardDropdownItem,
+  CardPopoverArrow,
+} from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Heading from '../../components/Heading';
@@ -98,6 +105,8 @@ class BookPage extends React.Component<Props> {
       ))
       .map((item, index) => [index > 0 && ', ', item]);
 
+    const availableLanguages = book.availableLanguages.length;
+
     return (
       <div>
         <Meta
@@ -105,11 +114,7 @@ class BookPage extends React.Component<Props> {
           description={book.description}
           image={book.coverPhoto.large}
         />
-        <Navbar>
-          <NavItem>Test</NavItem>
-          <NavItem>Søkefelt</NavItem>
-          <HamburgerButton />
-        </Navbar>
+        <Navbar />
 
         <Container>
           <Title fontSize={[28, 38]} textAlign="center">
@@ -126,7 +131,9 @@ class BookPage extends React.Component<Props> {
               <BookMetaData my={10} heading="Authors">
                 {contributors}
               </BookMetaData>
-              <ReadingLevel>Level {book.readingLevel}</ReadingLevel>
+              <ReadingLevel>
+                <Trans>Level {book.readingLevel}</Trans>
+              </ReadingLevel>
             </Box>
           </Flex>
 
@@ -134,28 +141,67 @@ class BookPage extends React.Component<Props> {
             <BookDescription>{book.description}</BookDescription>
           </Box>
           <Flex justify="space-around" mb={20}>
-            <Button>Read</Button>
+            <Button>
+              <Trans>Read</Trans>
+            </Button>
           </Flex>
 
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
               <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
                 <CardAction>
-                  <MdLanguage /> Book language: {book.language.name}
+                  <MdLanguage />{' '}
+                  <Trans>Book language: {book.language.name}</Trans>
                 </CardAction>
                 <hr />
-                This book is available in {book.availableLanguages.length} other
-                languages
+                <Plural
+                  id="availableLanguages"
+                  value={availableLanguages}
+                  one="This book is available in another language"
+                  other="This book is available in # other languages"
+                />
               </Card>
               <Box mt={1} mb={1}>
-                <Card borderRadius={0}>
-                  <CardAction>
-                    <MdFileDownload /> Download book
-                  </CardAction>
-                </Card>
+                <Manager>
+                  <Downshift>
+                    {({ getButtonProps, isOpen, getItemProps }) => (
+                      <div>
+                        <Card borderRadius={0}>
+                          <Target>
+                            <CardAction {...getButtonProps()} href="">
+                              <MdFileDownload /> <Trans>Download book</Trans>
+                            </CardAction>
+                          </Target>
+                          {isOpen && (
+                            <Popper
+                              placement="bottom"
+                              style={{ width: '100%', zIndex: 9999 }}
+                            >
+                              <CardDropdown>
+                                <CardDropdownItem
+                                  href={book.downloads.epub}
+                                  {...getItemProps({ item: 'epub' })}
+                                >
+                                  <MdFileDownload />{' '}
+                                  <Trans>Download ePub</Trans>
+                                </CardDropdownItem>
+                                <CardDropdownItem
+                                  href={book.downloads.pdf}
+                                  {...getItemProps({ item: 'pdf' })}
+                                >
+                                  <MdFileDownload /> <Trans>Download PDF</Trans>
+                                </CardDropdownItem>
+                              </CardDropdown>
+                            </Popper>
+                          )}
+                        </Card>
+                      </div>
+                    )}
+                  </Downshift>
+                </Manager>
                 <Card borderRadius={[0, '0 0 0 4px']}>
                   <CardAction>
-                    <MdTranslate /> Translate book
+                    <MdTranslate /> <Trans>Translate book</Trans>
                   </CardAction>
                 </Card>
               </Box>
@@ -181,7 +227,9 @@ class BookPage extends React.Component<Props> {
 
         <Hero>
           <Container>
-            <SimilarLink href="">Similar</SimilarLink>
+            <SimilarLink href="">
+              <Trans>Similar</Trans>
+            </SimilarLink>
             <HorizontalBookList books={this.props.similar} />
           </Container>
         </Hero>
