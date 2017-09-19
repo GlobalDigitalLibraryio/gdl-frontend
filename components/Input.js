@@ -13,9 +13,12 @@ const Input = styled.input`
   font-size: 1rem;
   background-color: #f8f8f8;
   border-radius: 4px;
-  border: 1px solid #e8e3e3;
+  border: 5px solid #a5bcd3;
   padding: 12px;
   ${placeholder({ color: '#8A8888' })};
+  &:focus {
+    box-shadow: inset 0 3px 4px 0 rgba(0, 0, 0, 0.2);
+  }
 `;
 
 export default Input;

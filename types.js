@@ -7,7 +7,7 @@
  */
 
 export type Publisher = {
-  +id: string,
+  +id: number,
   +name: string,
 };
 

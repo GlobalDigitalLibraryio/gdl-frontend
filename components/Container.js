@@ -6,17 +6,21 @@
  * See LICENSE
  */
 
-import { Box } from 'grid-styled';
+import styled from 'styled-components';
+import Box from './Box';
 
 /**
  * Center content horizontally
  */
-const Container = Box.extend`max-width: ${props => props.maxWidth}px;`;
+const Container = styled(Box)`
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+`;
 
 Container.defaultProps = {
-  mx: 'auto',
-  px: 15,
-  maxWidth: 738,
+  mw: '738px',
 };
 
 export default Container;

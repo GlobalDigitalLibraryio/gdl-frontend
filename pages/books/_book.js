@@ -16,6 +16,7 @@ import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import withI18n from '../../hocs/withI18n';
+import { Link } from '../../routes';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -24,7 +25,6 @@ import CardBase, {
   CardAction,
   CardDropdown,
   CardDropdownItem,
-  CardPopoverArrow,
 } from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
@@ -68,10 +68,10 @@ class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     const [bookRes, similarRes] = await Promise.all([
       fetch(
-        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/eng/${query.id}`,
+        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/${query.lang}/${query.id}`,
       ),
       fetch(
-        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/eng/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
+        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
       ),
     ]);
 
@@ -105,7 +105,7 @@ class BookPage extends React.Component<Props> {
       ))
       .map((item, index) => [index > 0 && ', ', item]);
 
-    const availableLanguages = book.availableLanguages.length;
+    const availableLanguages = book.availableLanguages.length - 1;
 
     return (
       <div>
@@ -116,7 +116,7 @@ class BookPage extends React.Component<Props> {
         />
         <Navbar />
 
-        <Container>
+        <Container mb={[15, 20]}>
           <Title fontSize={[28, 38]} textAlign="center">
             {book.title}
           </Title>
@@ -148,19 +148,61 @@ class BookPage extends React.Component<Props> {
 
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
-              <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
-                <CardAction>
-                  <MdLanguage />{' '}
-                  <Trans>Book language: {book.language.name}</Trans>
-                </CardAction>
-                <hr />
-                <Plural
-                  id="availableLanguages"
-                  value={availableLanguages}
-                  one="This book is available in another language"
-                  other="This book is available in # other languages"
-                />
-              </Card>
+              <Manager>
+                <Downshift>
+                  {({ getButtonProps, isOpen, getItemProps }) => (
+                    <div>
+                      <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
+                        <Target>
+                          <CardAction {...getButtonProps()} href="">
+                            <MdLanguage />{' '}
+                            <Trans>Book language: {book.language.name}</Trans>
+                          </CardAction>
+                        </Target>
+                        <hr />
+                        <Plural
+                          value={availableLanguages}
+                          _0="This book is not available in other languages"
+                          one="This book is available in another language"
+                          other="This book is available in # other languages"
+                          render="small"
+                        />
+                        {isOpen && (
+                          <Popper
+                            placement="bottom"
+                            style={{ width: '100%', zIndex: 9999 }}
+                          >
+                            <CardDropdown>
+                              {book.availableLanguages
+                                .filter(
+                                  lang => lang.code !== book.language.code,
+                                )
+                                .map(lang => (
+                                  <Link
+                                    passHref
+                                    route="book"
+                                    key={lang.code}
+                                    params={{
+                                      id: book.id,
+                                      lang: lang.code,
+                                    }}
+                                  >
+                                    <CardDropdownItem
+                                      href={book.downloads.epub}
+                                      {...getItemProps({ item: 'epub' })}
+                                    >
+                                      {lang.name}
+                                    </CardDropdownItem>
+                                  </Link>
+                                ))}
+                            </CardDropdown>
+                          </Popper>
+                        )}
+                      </Card>
+                    </div>
+                  )}
+                </Downshift>
+              </Manager>
               <Box mt={1} mb={1}>
                 <Manager>
                   <Downshift>
@@ -179,6 +221,7 @@ class BookPage extends React.Component<Props> {
                             >
                               <CardDropdown>
                                 <CardDropdownItem
+                                  onClick={event => event.stopPropagation()}
                                   href={book.downloads.epub}
                                   {...getItemProps({ item: 'epub' })}
                                 >
@@ -186,6 +229,7 @@ class BookPage extends React.Component<Props> {
                                   <Trans>Download ePub</Trans>
                                 </CardDropdownItem>
                                 <CardDropdownItem
+                                  onClick={event => event.stopPropagation()}
                                   href={book.downloads.pdf}
                                   {...getItemProps({ item: 'pdf' })}
                                 >
@@ -226,7 +270,7 @@ class BookPage extends React.Component<Props> {
         </Container>
 
         <Hero>
-          <Container>
+          <Container py={[10, 20]}>
             <SimilarLink href="">
               <Trans>Similar</Trans>
             </SimilarLink>

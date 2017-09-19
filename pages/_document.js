@@ -31,11 +31,15 @@ const globalStyles = css`
     font-family: 'Source Sans Pro', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background: #f9f9fb;
+    background: #eff0f2;
     color: #444444;
 
     a {
       color: #20588f;
+    }
+
+    small {
+      color: #8a6666;
     }
   }
 `;

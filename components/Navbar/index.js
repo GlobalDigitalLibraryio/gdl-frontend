@@ -6,6 +6,6 @@
  * See LICENSE
  */
 
-require('./CardExample');
-require('./NavExample');
-require('./BookCoverExample');
+import Navbar from './Navbar';
+
+export default Navbar;

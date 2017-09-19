@@ -1,84 +1,38 @@
 {
+  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
+    "translation": "",
+    "origin": [["pages/books/_book.js", 157]]
+  },
   "Level {0}": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        135
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 135]]
   },
   "Read": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        145
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 145]]
   },
   "Book language: {0}": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        154
-      ]
-    ]
-  },
-  "availableLanguages": {
-    "translation": "",
-    "defaults": "{availableLanguages, plural, one {This book is available in another language} other {This book is available in # other languages}}",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        157
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 154]]
   },
   "Download book": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        172
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 173]]
   },
   "Download ePub": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        186
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 187]]
   },
   "Download PDF": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        192
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 193]]
   },
   "Translate book": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        204
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 205]]
   },
   "Similar": {
     "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        231
-      ]
-    ]
+    "origin": [["pages/books/_book.js", 232]]
   }
 }

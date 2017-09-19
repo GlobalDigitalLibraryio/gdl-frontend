@@ -9,7 +9,7 @@
 import styled from 'styled-components';
 
 const Hero = styled.div`
-  background-color: #f8f8f8;
+  background: linear-gradient(180deg, #eff0f2 0%, #eaeaea 100%);
   border-top: solid 1px #e0e0e0;
 `;
 

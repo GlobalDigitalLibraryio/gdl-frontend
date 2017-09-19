@@ -6,9 +6,27 @@
  * See LICENSE
  */
 
-import { Flex } from 'grid-styled';
-import { fontSize } from 'styled-system';
+import styled from 'styled-components';
+import { responsiveStyle } from 'styled-system';
+import Box from './Box';
 
-export default Flex.extend`
-  ${fontSize};
-`;
+const wrap = responsiveStyle('flex-wrap', 'wrap', 'wrap');
+const direction = responsiveStyle('flex-direction', 'direction');
+const align = responsiveStyle('align-items', 'align');
+const justify = responsiveStyle('justify-content', 'justify');
+const column = props => (props.column ? 'flex-direction:column;' : null);
+
+// $FlowFixMe Doesn't typecheck against styled-components from flow-typed
+const Flex = styled(Box)(
+  [],
+  { display: 'flex' },
+  wrap,
+  column,
+  direction,
+  align,
+  justify,
+);
+
+Flex.displayName = 'Flex';
+
+export default Flex;

@@ -32,7 +32,6 @@ Card.defaultProps = {
 // Adds much bigger shadow to the card
 // TODO: Add Flow typing of children
 const CardDropdown = Card.extend`
-  z-index: 9999;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4);
   &::before,
   &::after {
@@ -72,6 +71,13 @@ const CardDropdownItem = styled.a`
   text-decoration: none;
   padding: 10px 15px;
 
+  &:hover,
+  &:focus,
+  &.selected {
+    background-color: #edf7ff;
+    outline: none;
+  }
+
   & svg {
     margin-right: 10px;
   }
@@ -81,35 +87,18 @@ const CardDropdownItem = styled.a`
   }
 `;
 
-// The data selectors is for popper.js
-const CardPopoverArrow = styled.div`
-  width: 0;
-  height: 0;
-  border-style: solid;
-  position: absolute;
-  margin: 5px;
-  [data-placement^='bottom'] & {
-    top: -10px;
-    left: calc(50% - 5px);
-    border-width: 5px 5px 0 5px;
-    border-color: transparent transparent #222 transparent;
-  }
-`;
-
 const CardAction = styled.a`
   ${fontSize} color: #20588f;
   text-decoration: none;
   font-weight: 600;
+  display: block;
+  & svg {
+    margin-right: 10px;
+  }
 `;
 
 CardAction.defaultProps = {
   fontSize: 16,
 };
 
-export {
-  Card as default,
-  CardAction,
-  CardDropdown,
-  CardDropdownItem,
-  CardPopoverArrow,
-};
+export { Card as default, CardAction, CardDropdown, CardDropdownItem };
