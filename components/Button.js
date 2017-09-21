@@ -20,6 +20,7 @@ const Button = styled.button`
   min-width: 150px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-style: none;
   &:hover,
   &:active {
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
