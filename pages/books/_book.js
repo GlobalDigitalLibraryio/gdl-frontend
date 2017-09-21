@@ -9,7 +9,12 @@
 import * as React from 'react';
 import { DateFormat, Trans, Plural } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
-import { MdLanguage, MdTranslate, MdFileDownload } from 'react-icons/lib/md';
+import {
+  MdLanguage,
+  MdTranslate,
+  MdFileDownload,
+  MdKeyboardArrowRight,
+} from 'react-icons/lib/md';
 import styled from 'styled-components';
 import { Manager, Target, Popper } from 'react-popper';
 import Downshift from 'downshift';
@@ -34,7 +39,6 @@ import ReadingLevel from '../../components/ReadingLevel';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
-import SimilarLink from '../../components/SimilarLink';
 
 // Number of similar books to fetch
 const SIMILAR_BOOKS_PAGE_SIZE = 3;
@@ -271,10 +275,10 @@ class BookPage extends React.Component<Props> {
 
         <Hero>
           <Container py={[10, 20]}>
-            <SimilarLink href="">
-              <Trans>Similar</Trans>
-            </SimilarLink>
-            <HorizontalBookList books={this.props.similar} />
+            <Title href="" is="a" upperCase fontSize={[18, 22]}>
+              <Trans>Similar</Trans> <MdKeyboardArrowRight />
+            </Title>
+            <HorizontalBookList books={this.props.similar} mt={20} />
           </Container>
         </Hero>
       </div>

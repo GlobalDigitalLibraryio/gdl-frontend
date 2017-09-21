@@ -12,8 +12,8 @@ import type { Book } from '../types';
 import BookCardCover from './BookCardCover';
 import { Link } from '../routes';
 
-export default ({ books }: { books: Array<Book> }) => (
-  <Flex justify="space-between">
+export default ({ books, ...props }: { books: Array<Book> }) => (
+  <Flex justify="space-between" {...props}>
     {books.map(book => (
       <Link
         route="book"

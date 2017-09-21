@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import tag from 'tag-hoc';
 import { fontSize, color } from 'styled-system';
 
-const Base = tag(['textAlign'])('h1');
+const Base = tag(['textAlign', 'upperCase'])('h1');
 
 // TODO: Figure out how to type styled components
 /* type Props = {
@@ -24,6 +24,8 @@ const Title = styled(Base)`
   ${fontSize} ${color} display: block;
   font-weight: 600;
   text-align: ${props => props.textAlign};
+  text-transform: ${props => (props.upperCase ? 'uppercase' : null)};
+  text-decoration: none;
 `;
 
 Title.defaultProps = {
