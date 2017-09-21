@@ -84,7 +84,7 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
       <Nav>
         <Container mw="1075px" is={Flex} w={1} align="stretch">
           <Flex justify="flex-start">
-            <Logo />
+            <Logo style={{ height: '35px', marginLeft: '-25px' }} />
             {/* <Input placeholder="Search for title, level or subject" /> */}
           </Flex>
           <Flex flex="0 0 auto" mx="auto" />
