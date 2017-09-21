@@ -20,12 +20,13 @@ import { Manager, Target, Popper } from 'react-popper';
 import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
-import withI18n from '../../hocs/withI18n';
+import defaultPage from '../../hocs/defaultPage';
 import { Link } from '../../routes';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
+import env from '../../env';
 import CardBase, {
   CardAction,
   CardDropdown,
@@ -71,11 +72,9 @@ const Card = CardBase.extend`
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     const [bookRes, similarRes] = await Promise.all([
+      fetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
       fetch(
-        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/${query.lang}/${query.id}`,
-      ),
-      fetch(
-        `http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
+        `${env.bookApiUrl}/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
       ),
     ]);
 
@@ -286,4 +285,4 @@ class BookPage extends React.Component<Props> {
   }
 }
 
-export default withI18n(BookPage);
+export default defaultPage(BookPage);

@@ -28,6 +28,7 @@ COPY hocs $APP_PATH/hocs
 COPY locale $APP_PATH/locale
 COPY routes.js $APP_PATH
 COPY .babelrc $APP_PATH
+COPY env.js $APP_PATH
 RUN chown -R app:app $HOME/*
 
 # Build client code

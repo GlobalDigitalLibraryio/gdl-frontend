@@ -33,6 +33,9 @@ const translations = {
   en: import('../locale/en/messages'),
 };
 
+/**
+ * A HoC that that faciliates our i18n layer
+ */
 export default (Page: React.ComponentType<any>) =>
   class PageWithI18n extends React.Component<Props> {
     static async getInitialProps(context) {
