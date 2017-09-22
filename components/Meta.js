@@ -12,7 +12,7 @@ import Head from 'next/head';
 type Props = {
   description: string,
   title: string,
-  image?: string,
+  image?: ?string,
 };
 
 export default (props: Props) => (

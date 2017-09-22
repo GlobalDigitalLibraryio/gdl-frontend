@@ -19,8 +19,16 @@ const Img = styled.img`
   margin-left: auto;
 `;
 
-export default ({ book, ...props }: { book: Book }) => (
+const NO_COVER_PLACEHOLDER_URL = '/static/placeholder-cover.png';
+
+const BookCover = ({ book, ...props }: { book: Book }) => (
   <Box mw={['130px', '250px']} mh={['130px', '250px']} {...props}>
-    <Img src={book.coverPhoto.small} alt={book.title} aria-hidden />
+    <Img
+      src={book.coverPhoto ? book.coverPhoto.small : NO_COVER_PLACEHOLDER_URL}
+      alt={book.title}
+      aria-hidden
+    />
   </Box>
 );
+
+export { BookCover as default, NO_COVER_PLACEHOLDER_URL };

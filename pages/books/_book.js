@@ -117,7 +117,7 @@ class BookPage extends React.Component<Props> {
         <Meta
           title={book.title}
           description={book.description}
-          image={book.coverPhoto.large}
+          image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Navbar />
 

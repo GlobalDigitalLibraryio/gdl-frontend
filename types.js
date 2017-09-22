@@ -48,7 +48,7 @@ export type Book = {
     epub: string,
     pdf: string,
   },
-  +coverPhoto: {
+  +coverPhoto?: {
     large: string,
     small: string,
   },
