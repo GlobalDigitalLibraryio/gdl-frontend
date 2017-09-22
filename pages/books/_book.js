@@ -42,7 +42,7 @@ import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
 
 // Number of similar books to fetch
-const SIMILAR_BOOKS_PAGE_SIZE = 3;
+const SIMILAR_BOOKS_PAGE_SIZE = 5;
 
 type Props = {
   book: Book,

@@ -48,7 +48,13 @@ const Img = styled.img`
 `;
 
 export default ({ book, ...props }: { book: Book }) => (
-  <Box w={[105, 130]} h={['164px', '204px']} {...props}>
+  <Box
+    w={[105, 130]}
+    h={['164px', '204px']}
+    mx={5}
+    style={{ flexShrink: 0 }}
+    {...props}
+  >
     <Cover h={['130px', '160px']}>
       <Img src={book.coverPhoto.small} alt={book.title} aria-hidden />
     </Cover>
