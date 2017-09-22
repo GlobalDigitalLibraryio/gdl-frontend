@@ -10,6 +10,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../types';
+import { NO_COVER_PLACEHOLDER_URL } from './BookCover';
 import BoxBase from './Box';
 import CardBase from './Card';
 
@@ -56,7 +57,11 @@ export default ({ book, ...props }: { book: Book }) => (
     {...props}
   >
     <Cover h={['130px', '160px']}>
-      <Img src={book.coverPhoto.small} alt={book.title} aria-hidden />
+      <Img
+        src={book.coverPhoto ? book.coverPhoto.small : NO_COVER_PLACEHOLDER_URL}
+        alt={book.title}
+        aria-hidden
+      />
     </Cover>
     <Card h={['34px', '44px']}>{book.title}</Card>
   </Box>
