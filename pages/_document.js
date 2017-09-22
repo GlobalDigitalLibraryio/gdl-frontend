@@ -28,7 +28,9 @@ const globalStyles = css`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     background: #eff0f2;
@@ -68,11 +70,6 @@ class GDLDocument extends Document {
         <Head>
           <title>Global Digital Library</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link
-            rel="stylesheet"
-            href="//fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700"
-            type="text/css"
-          />
           {styleTags}
         </Head>
         <body>
