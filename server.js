@@ -11,6 +11,7 @@ const next = require('next');
 const requestLanguage = require('express-request-language');
 const cookieParser = require('cookie-parser');
 const glob = require('glob');
+const compression = require('compression');
 const routes = require('./routes');
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -24,6 +25,9 @@ app
   .prepare()
   .then(() => {
     const server = express();
+
+    // Gzip responses
+    server.use(compression());
 
     // Health check for AWS
     server.get('/health', (req, res) => {
