@@ -7,11 +7,13 @@
  */
 
 import * as React from 'react';
-import { configure } from '@storybook/react';
+import { configure, addDecorator } from '@storybook/react';
 import { injectGlobal } from 'styled-components';
 import { globalStyles } from '../pages/_document';
-import Container from '../components/Container';
+import { Theme } from '../hocs/withTheme';
 
 injectGlobal`${globalStyles}`;
+
+addDecorator(story => <Theme>{story()}</Theme>);
 
 configure(() => require('../stories'), module);

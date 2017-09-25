@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { MdMenu, MdSearch } from 'react-icons/lib/md';
 import { responsiveStyle } from 'styled-system';
@@ -59,22 +58,9 @@ const HamburgerButton = styled.button.attrs({
 `;
 
 class Navbar extends React.Component<{}, { isExpanded: boolean }> {
-  static childContextTypes = {
-    reactIconBase: PropTypes.object,
-  };
-
   state = {
     isExpanded: false,
   };
-
-  getChildContext() {
-    return {
-      reactIconBase: {
-        color,
-        size: 24,
-      },
-    };
-  }
 
   handleHamburgerClick = () =>
     this.setState(state => ({ isExpanded: !state.isExpanded }));
@@ -89,10 +75,11 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
           </Flex>
           <Flex flex="0 0 auto" mx="auto" />
           <Flex justify="flex-end">
-            <HamburgerButton>
+            <HamburgerButton aria-label="Search">
               <MdSearch />
             </HamburgerButton>
             <HamburgerButton
+              aria-label="Menu"
               onClick={this.handleHamburgerClick}
               aria-expanded={this.state.isExpanded}
               hideText={[true, false]}
