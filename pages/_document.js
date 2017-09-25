@@ -52,28 +52,32 @@ injectGlobal`
 `;
 
 class GDLDocument extends Document {
-  static async getInitialProps(context) {
-    // Wait for the language on the request (see server.js) so we can set the lang attribute on the html tag
-    const props = await super.getInitialProps(context);
-    const { req: { language } } = context;
+  static getInitialProps({ renderPage, req }) {
+    const sheet = new ServerStyleSheet();
+
+    const page = renderPage(App => props =>
+      sheet.collectStyles(<App {...props} />),
+    );
+
+    const styleTags = sheet.getStyleElement();
+
     return {
-      ...props,
-      language,
+      ...page,
+      language: req.language,
+      styleTags,
     };
   }
+
   render() {
-    const sheet = new ServerStyleSheet();
-    const main = sheet.collectStyles(<Main />);
-    const styleTags = sheet.getStyleElement();
     return (
       <html lang={this.props.language}>
         <Head>
           <title>Global Digital Library</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          {styleTags}
+          {this.props.styleTags}
         </Head>
         <body>
-          <div className="root">{main}</div>
+          <Main />
           <NextScript />
         </body>
       </html>
