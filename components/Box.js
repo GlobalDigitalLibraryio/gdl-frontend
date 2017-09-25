@@ -7,7 +7,7 @@
  */
 
 import styled from 'styled-components';
-import { fontSize, space, width, responsiveStyle } from 'styled-system';
+import { fontSize, space, color, width, responsiveStyle } from 'styled-system';
 import tag from 'tag-hoc';
 
 const flex = responsiveStyle('flex');
@@ -44,6 +44,7 @@ const Base = tag([
   'mh',
   'mw',
   'h',
+  'color',
 ])('div');
 
 // $FlowFixMe Doesn't typecheck against styled-components from flow-typed
@@ -57,6 +58,7 @@ const Box = styled(Base)(
   height,
   maxHeight,
   maxWidth,
+  color,
 );
 
 Box.displayName = 'Box';

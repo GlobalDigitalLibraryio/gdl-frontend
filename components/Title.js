@@ -22,6 +22,7 @@ const Base = tag(['textAlign', 'upperCase'])('h1');
 
 const Title = styled(Base)`
   ${fontSize} ${color} display: block;
+  margin-top: 0;
   font-weight: 600;
   text-align: ${props => props.textAlign};
   text-transform: ${props => (props.upperCase ? 'uppercase' : null)};

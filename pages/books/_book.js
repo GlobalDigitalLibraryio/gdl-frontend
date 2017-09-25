@@ -121,7 +121,7 @@ class BookPage extends React.Component<Props> {
         />
         <Navbar />
 
-        <Container mb={[15, 20]}>
+        <Container mb={[15, 20]} mt={15}>
           <Title fontSize={[28, 38]} textAlign="center">
             {book.title}
           </Title>
@@ -285,8 +285,8 @@ class BookPage extends React.Component<Props> {
           </Flex>
         </Container>
 
-        <Hero>
-          <Container py={[10, 20]}>
+        <Hero borderTop borderBottom>
+          <Container>
             <Title href="" is="a" upperCase fontSize={[18, 22]}>
               <Trans>Similar</Trans> <MdKeyboardArrowRight />
             </Title>
