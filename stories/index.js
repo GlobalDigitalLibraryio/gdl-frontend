@@ -9,3 +9,4 @@
 require('./CardExample');
 require('./NavExample');
 require('./BookCoverExample');
+require('./HeroExample');
