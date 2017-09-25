@@ -14,6 +14,8 @@ import {
   MdTranslate,
   MdFileDownload,
   MdKeyboardArrowRight,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
 import { Manager, Target, Popper } from 'react-popper';
@@ -160,6 +162,11 @@ class BookPage extends React.Component<Props> {
                           <CardAction {...getButtonProps()} href="">
                             <MdLanguage />{' '}
                             <Trans>Book language: {book.language.name}</Trans>
+                            {isOpen ? (
+                              <MdKeyboardArrowUp />
+                            ) : (
+                              <MdKeyboardArrowDown />
+                            )}
                           </CardAction>
                         </Target>
                         <hr />
@@ -215,6 +222,11 @@ class BookPage extends React.Component<Props> {
                           <Target>
                             <CardAction {...getButtonProps()} href="">
                               <MdFileDownload /> <Trans>Download book</Trans>
+                              {isOpen ? (
+                                <MdKeyboardArrowUp />
+                              ) : (
+                                <MdKeyboardArrowDown />
+                              )}
                             </CardAction>
                           </Target>
                           {isOpen && (
@@ -248,7 +260,8 @@ class BookPage extends React.Component<Props> {
                 </Manager>
                 <Card borderRadius={[0, '0 0 0 4px']}>
                   <CardAction>
-                    <MdTranslate /> <Trans>Translate book</Trans>
+                    <MdTranslate /> <Trans>Translate book</Trans>{' '}
+                    <MdKeyboardArrowRight />
                   </CardAction>
                 </Card>
               </Box>

@@ -91,9 +91,13 @@ const CardAction = styled.a`
   ${fontSize} color: #20588f;
   text-decoration: none;
   font-weight: 600;
-  display: block;
-  & svg {
+  display: flex;
+  align-items: center;
+  & svg:nth-of-type(1) {
     margin-right: 10px;
+  }
+  & svg:nth-of-type(2) {
+    margin-left: auto;
   }
 `;
 
