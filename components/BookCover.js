@@ -17,6 +17,7 @@ const Img = styled.img`
   max-height: 100%;
   display: block;
   margin-left: auto;
+  margin-right: auto;
 `;
 
 const NO_COVER_PLACEHOLDER_URL = '/static/placeholder-cover.png';
