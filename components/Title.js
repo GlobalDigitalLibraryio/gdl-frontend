@@ -31,7 +31,7 @@ const Title = styled(Base)`
 
 Title.defaultProps = {
   fontSize: [28, 38],
-  textAlign: 'left',
+  textAlign: 'inherit',
 };
 
 export default Title;

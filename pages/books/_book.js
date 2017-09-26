@@ -38,7 +38,6 @@ import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Heading from '../../components/Heading';
 import Container from '../../components/Container';
-import ReadingLevel from '../../components/ReadingLevel';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
@@ -64,7 +63,7 @@ const BookMetaData = ({
   </Box>
 );
 
-const BookDescription = styled.div`text-align: center;`;
+const BookDescription = styled.div`margin-bottom: 15px;`;
 
 // Extend the regular Card, allowing us to alter the border radius responsively
 const Card = CardBase.extend`
@@ -120,37 +119,28 @@ class BookPage extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Navbar />
-
-        <Container mb={[15, 20]} mt={15}>
-          <Title fontSize={[28, 38]} textAlign="center">
-            {book.title}
-          </Title>
-          <Flex>
-            <Flex w={1 / 2} justify="flex-end" mr={1}>
-              <BookCover book={book} />
-            </Flex>
-            <Box w={1 / 2} fontSize="14px" ml={1}>
-              <BookMetaData heading="Publisher">
-                <a href="">{book.publisher.name}</a>
-              </BookMetaData>
-              <BookMetaData my={10} heading="Authors">
-                {contributors}
-              </BookMetaData>
-              <ReadingLevel>
-                <Trans>Level {book.readingLevel}</Trans>
-              </ReadingLevel>
-            </Box>
-          </Flex>
-
-          <Box mt={20} mb={20}>
-            <BookDescription>{book.description}</BookDescription>
-          </Box>
-          <Flex justify="space-around" mb={20}>
-            <Button>
-              <Trans>Read</Trans>
-            </Button>
-          </Flex>
-
+        <Hero colorful>
+          <Container>
+            <CardBase style={{ textAlign: 'center' }}>
+              <Box>
+                <Title fontSize={[28, 38]} textAlign="center">
+                  {book.title}
+                </Title>
+                <Trans>
+                  from <a href="">{book.publisher.name}</a>
+                </Trans>
+              </Box>
+              <BookCover book={book} mx="auto" my={15} />
+              <Box>
+                <BookDescription>{book.description}</BookDescription>
+                <Button>
+                  <Trans>Read</Trans>
+                </Button>
+              </Box>
+            </CardBase>
+          </Container>
+        </Hero>
+        <Container pt={[15, 25]}>
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
               <Manager>
@@ -276,6 +266,9 @@ class BookPage extends React.Component<Props> {
                     <DateFormat value={new Date(book.datePublished)} />
                   </BookMetaData>
                 )}
+                <BookMetaData my={10} heading="Authors">
+                  {contributors}
+                </BookMetaData>
                 <BookMetaData heading="License">
                   <a href={book.license.url}>{book.license.description}</a>
                 </BookMetaData>

@@ -1,38 +1,83 @@
 {
-  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
+  "from <0>{0}</0>": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 157]]
-  },
-  "Level {0}": {
-    "translation": "",
-    "origin": [["pages/books/_book.js", 135]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        129
+      ]
+    ]
   },
   "Read": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 145]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        137
+      ]
+    ]
   },
   "Book language: {0}": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 154]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        154
+      ]
+    ]
+  },
+  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        163
+      ]
+    ]
   },
   "Download book": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 173]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        214
+      ]
+    ]
   },
   "Download ePub": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 187]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        234
+      ]
+    ]
   },
   "Download PDF": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 193]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        241
+      ]
+    ]
   },
   "Translate book": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 205]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        253
+      ]
+    ]
   },
   "Similar": {
     "translation": "",
-    "origin": [["pages/books/_book.js", 232]]
+    "origin": [
+      [
+        "pages/books/_book.js",
+        284
+      ]
+    ]
   }
 }
