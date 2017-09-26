@@ -16,7 +16,10 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -29,8 +32,7 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format":
-      "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"pages/**/*.js\"",
     "flow": "flow",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
