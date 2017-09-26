@@ -16,7 +16,6 @@ const align = responsiveStyle('align-items', 'align');
 const justify = responsiveStyle('justify-content', 'justify');
 const column = props => (props.column ? 'flex-direction:column;' : null);
 
-// $FlowFixMe Doesn't typecheck against styled-components from flow-typed
 const Flex = styled(Box)(
   [],
   { display: 'flex' },

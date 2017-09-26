@@ -47,7 +47,6 @@ const Base = tag([
   'color',
 ])('div');
 
-// $FlowFixMe Doesn't typecheck against styled-components from flow-typed
 const Box = styled(Base)(
   [],
   fontSize,
