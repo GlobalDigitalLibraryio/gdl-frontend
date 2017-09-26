@@ -37,7 +37,6 @@
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
-    "classnames": "^2.2.5",
     "compression": "^1.7.0",
     "cookie-parser": "^1.4.3",
     "domurl": "^2.1.7",
