@@ -26,7 +26,6 @@ const Title = styled(Base)`
   font-weight: 600;
   text-align: ${props => props.textAlign};
   text-transform: ${props => (props.upperCase ? 'uppercase' : null)};
-  text-decoration: none;
 `;
 
 Title.defaultProps = {

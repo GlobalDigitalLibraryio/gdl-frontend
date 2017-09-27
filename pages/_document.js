@@ -38,6 +38,7 @@ const globalStyles = css`
 
     a {
       color: #20588f;
+      text-decoration: none;
     }
 
     small {

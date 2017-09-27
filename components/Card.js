@@ -68,7 +68,6 @@ CardDropdown.defaultProps = {
 const CardDropdownItem = styled.a`
   display: block;
   color: #20588f;
-  text-decoration: none;
   padding: 10px 15px;
 
   &:hover,
@@ -89,7 +88,6 @@ const CardDropdownItem = styled.a`
 
 const CardAction = styled.a`
   ${fontSize} color: #20588f;
-  text-decoration: none;
   font-weight: 600;
   display: flex;
   align-items: center;

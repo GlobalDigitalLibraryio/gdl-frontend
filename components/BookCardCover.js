@@ -17,7 +17,6 @@ import CardBase from './Card';
 const Card = CardBase.extend`
   text-align: center;
   border-radius: 0 0 4px 4px;
-  text-decoration: none;
   color: #444;
   line-height: 14px;
   overflow: hidden;

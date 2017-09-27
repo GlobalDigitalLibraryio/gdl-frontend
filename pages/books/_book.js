@@ -29,6 +29,7 @@ import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
 import env from '../../env';
+import A from '../../components/A';
 import CardBase, {
   CardAction,
   CardDropdown,
@@ -95,17 +96,17 @@ class BookPage extends React.Component<Props> {
 
     const contributors = book.contributors
       .map(contributor => (
-        <a href="" key={contributor.id}>
+        <A href="" key={contributor.id}>
           {contributor.name}
-        </a>
+        </A>
       ))
       .map((item, index) => [index > 0 && ', ', item]);
 
     const categories = book.categories
       .map(category => (
-        <a href="" key={category.id}>
+        <A href="" key={category.id}>
           {category.name}
-        </a>
+        </A>
       ))
       .map((item, index) => [index > 0 && ', ', item]);
 
@@ -127,7 +128,7 @@ class BookPage extends React.Component<Props> {
                   {book.title}
                 </Title>
                 <Trans>
-                  from <a href="">{book.publisher.name}</a>
+                  from <A href="">{book.publisher.name}</A>
                 </Trans>
               </Box>
               <BookCover book={book} mx="auto" my={15} />
@@ -270,7 +271,7 @@ class BookPage extends React.Component<Props> {
                   {contributors}
                 </BookMetaData>
                 <BookMetaData heading="License">
-                  <a href={book.license.url}>{book.license.description}</a>
+                  <A href={book.license.url}>{book.license.description}</A>
                 </BookMetaData>
                 <BookMetaData heading="categories">{categories}</BookMetaData>
               </Card>
