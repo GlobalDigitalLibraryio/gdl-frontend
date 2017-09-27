@@ -10,3 +10,5 @@ require('./CardExample');
 require('./NavExample');
 require('./BookCoverExample');
 require('./HeroExample');
+require('./ToolbarExample');
+require('./ContainerExample');

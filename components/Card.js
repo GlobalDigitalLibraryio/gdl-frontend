@@ -67,7 +67,6 @@ CardDropdown.defaultProps = {
 // Currently we only support links in the dropdown
 const CardDropdownItem = styled.a`
   display: block;
-  color: #20588f;
   padding: 10px 15px;
 
   &:hover,
