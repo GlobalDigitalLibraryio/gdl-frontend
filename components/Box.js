@@ -7,10 +7,17 @@
  */
 
 import styled from 'styled-components';
-import { fontSize, space, color, width, responsiveStyle } from 'styled-system';
+import {
+  fontSize,
+  space,
+  color,
+  width,
+  flex,
+  responsiveStyle,
+  textAlign,
+} from 'styled-system';
 import tag from 'tag-hoc';
 
-const flex = responsiveStyle('flex');
 const order = responsiveStyle('order');
 const maxWidth = responsiveStyle('max-width', 'mw');
 const maxHeight = responsiveStyle('max-height', 'mh');
@@ -37,7 +44,7 @@ const Base = tag([
   'flex',
   'order',
   'wrap',
-  'direction',
+  'flexDirection',
   'align',
   'justify',
   'column',
@@ -45,6 +52,8 @@ const Base = tag([
   'mw',
   'h',
   'color',
+  'bg',
+  'align',
 ])('div');
 
 const Box = styled(Base)(
@@ -58,6 +67,7 @@ const Box = styled(Base)(
   maxHeight,
   maxWidth,
   color,
+  textAlign,
 );
 
 Box.displayName = 'Box';
@@ -97,4 +107,7 @@ type Props = {
   mh: responsiveStringProp,
   mw: responsiveStringProp,
   h: responsiveStringProp,
+  color: responsiveStringProp,
+  bg: responsiveStringProp,
+  align: responseStringProp,
 } */

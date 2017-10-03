@@ -124,7 +124,7 @@ class BookPage extends React.Component<Props> {
           <Container>
             <CardBase style={{ textAlign: 'center' }}>
               <Box>
-                <Title fontSize={[28, 38]} textAlign="center">
+                <Title fontSize={[28, 38]} align="center">
                   {book.title}
                 </Title>
                 <Trans>

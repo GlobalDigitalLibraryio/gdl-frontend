@@ -38,9 +38,7 @@ storiesOf('Hero', module)
   .add('Colorful hero', () => (
     <Hero colorful>
       <Container>
-        <Card style={{ textAlign: 'center' }}>
-          Such colorful hero with a cool gradient
-        </Card>
+        <Card align="center">Such colorful hero with a cool gradient</Card>
       </Container>
     </Hero>
   ));

@@ -8,29 +8,27 @@
 
 import styled from 'styled-components';
 import tag from 'tag-hoc';
-import { fontSize, color } from 'styled-system';
+import { fontSize, color, textAlign } from 'styled-system';
 
-const Base = tag(['textAlign', 'upperCase'])('h1');
+const Base = tag(['align', 'upperCase'])('h1');
 
 // TODO: Figure out how to type styled components
 /* type Props = {
-  textAlign: 'left' | 'center' | 'right',
+  text: 'left' | 'center' | 'right',
   fontSize: Array<number> | number | Array<string> | string,
   color?: string,
   is?: string,
 }; */
 
 const Title = styled(Base)`
-  ${fontSize} ${color} display: block;
+  ${fontSize} ${color} ${textAlign} display: block;
   margin-top: 0;
   font-weight: 600;
-  text-align: ${props => props.textAlign};
   text-transform: ${props => (props.upperCase ? 'uppercase' : null)};
 `;
 
 Title.defaultProps = {
   fontSize: [28, 38],
-  textAlign: 'inherit',
 };
 
 export default Title;
