@@ -63,7 +63,7 @@ class BooksPage extends React.Component<Props> {
       ),
       fetch(
         `${env.bookApiUrl}/book-api/v1/books/${language ||
-          ''}?sort=arrivaldate&page-size=${BOOKS_PAGE_SIZE}&reading-level=${level}`,
+          ''}?sort=-arrivaldate&page-size=${BOOKS_PAGE_SIZE}&reading-level=${level}`,
       ),
       fetch(`${env.bookApiUrl}/book-api/v1/levels`),
       fetch(`${env.bookApiUrl}/book-api/v1/languages`),
