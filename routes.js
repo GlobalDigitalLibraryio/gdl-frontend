@@ -11,4 +11,5 @@ const nextRoutes = require('next-routes');
 const routes = nextRoutes();
 module.exports = routes;
 
+routes.add('books');
 routes.add('book', '/books/:lang/:id(\\d+)', 'books/_book');
