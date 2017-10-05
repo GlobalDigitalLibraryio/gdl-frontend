@@ -12,3 +12,4 @@ require('./BookCoverExample');
 require('./HeroExample');
 require('./ToolbarExample');
 require('./ContainerExample');
+require('./ButtonExample');
