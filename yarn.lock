@@ -848,10 +848,11 @@ babel-plugin-react-require@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.0.tgz#2e4e7b4496b93a654a1c80042276de4e4eeb20e3"
 
-babel-plugin-styled-components@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.2.0.tgz#8bb8f9e69119bb8dee408c8d36a0dfef5191f3c7"
+babel-plugin-styled-components@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.2.1.tgz#e1593f2a6a0327e2d156695306e60c4dd175866d"
   dependencies:
+    babel-types "^6.26.0"
     stylis "^3.2.1"
 
 babel-plugin-syntax-async-functions@^6.8.0:
@@ -2471,9 +2472,9 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.10.1.tgz#fc8db44435731792f5cbef84d7925b026ec55705"
+downshift@1.11.0:
+  version "1.11.0"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.11.0.tgz#9dae445f434870bb8c7cbcef77f176ce29153081"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
@@ -5618,9 +5619,9 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-scroll@1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.5.4.tgz#8c5c4ced659553be1fa39959776c85055fceb137"
+react-scroll@1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.5.5.tgz#52410d856e19a4259b98d0632df3a47df59036ba"
   dependencies:
     object-assign "^4.1.1"
     prop-types "^15.5.8"
@@ -6396,9 +6397,9 @@ style-loader@^0.18.2:
     loader-utils "^1.0.2"
     schema-utils "^0.3.0"
 
-styled-components@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-2.2.0.tgz#23823d305b1929723f927837735fdc2431545956"
+styled-components@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-2.2.1.tgz#f4835f1001c37bcc301ac3865b5d93466de4dd5b"
   dependencies:
     buffer "^5.0.3"
     css-to-react-native "^2.0.3"
