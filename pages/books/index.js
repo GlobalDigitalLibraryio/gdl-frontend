@@ -109,7 +109,7 @@ class BooksPage extends React.Component<Props> {
         <Navbar />
 
         <Toolbar>
-          <Container mw="1075px">
+          <Container mw="1075px" px={[0, 15]}>
             <ToolbarItem
               id="langFilter"
               text="Language"

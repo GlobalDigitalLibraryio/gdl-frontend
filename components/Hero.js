@@ -6,10 +6,9 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
 import Box from './Box';
 
-const Hero = styled(Box)`
+const Hero = Box.extend`
   background: ${props =>
     props.colorful
       ? 'linear-gradient(90deg, #014C90 0%, #4EAD81 100%)'

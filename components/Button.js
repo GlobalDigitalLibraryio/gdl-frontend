@@ -8,7 +8,6 @@
 
 import styled from 'styled-components';
 
-// TODO: Fix text-shadow
 const Button = styled.button`
   color: #fff;
   border-radius: 4px;

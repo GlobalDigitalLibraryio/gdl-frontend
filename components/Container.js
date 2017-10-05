@@ -6,21 +6,19 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
 import Box from './Box';
 
 /**
  * Center content horizontally
  */
-const Container = styled(Box)`
+const Container = Box.extend`
   margin-left: auto;
   margin-right: auto;
-  padding-left: 15px;
-  padding-right: 15px;
 `;
 
 Container.defaultProps = {
   mw: '738px',
+  px: 15,
 };
 
 export default Container;
