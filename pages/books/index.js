@@ -147,8 +147,24 @@ class BooksPage extends React.Component<Props> {
               text="Level"
               selectedItem={levelFilter}
             >
-              {({ getItemProps, selectedItem, highlightedIndex }) =>
-                levels.map((level, index) => (
+              {({ getItemProps, selectedItem, highlightedIndex }) => [
+                <Link
+                  key="All"
+                  passHref
+                  route="books"
+                  params={{
+                    [langQuery]: languageFilter.code,
+                  }}
+                >
+                  <ToolbarDropdownItem
+                    {...getItemProps({ item: 'all' })}
+                    isActive={highlightedIndex === 0}
+                    isSelected={!selectedItem}
+                  >
+                    <MdCheck /> All levels
+                  </ToolbarDropdownItem>
+                </Link>,
+                ...levels.map((level, index) => (
                   <Link
                     key={level}
                     passHref
@@ -160,13 +176,14 @@ class BooksPage extends React.Component<Props> {
                   >
                     <ToolbarDropdownItem
                       {...getItemProps({ item: level })}
-                      isActive={highlightedIndex === index}
+                      isActive={highlightedIndex === index + 1}
                       isSelected={selectedItem === level}
                     >
                       <MdCheck /> Level {level}
                     </ToolbarDropdownItem>
                   </Link>
-                ))}
+                )),
+              ]}
             </ToolbarItem>
           </Container>
         </Toolbar>
