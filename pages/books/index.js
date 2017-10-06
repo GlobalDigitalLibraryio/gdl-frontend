@@ -101,7 +101,7 @@ class BooksPage extends React.Component<Props> {
 
   // Generate the query param object for the links in the level and language filter.
   // Keeps existing value for the other type of query param, and removes undefined values because we don't want ?lang=eng&level=undefined
-  makeParamsObj({ level, language }: { level?: ?string, language?: string }) {
+  makeParamsObj({ level, language }: { level?: string, language?: string }) {
     const params = {
       [langQuery]: language || this.props.languageFilter.code,
       [levelQuery]: level || this.props.levelFilter,
@@ -187,7 +187,7 @@ class BooksPage extends React.Component<Props> {
                     passHref
                     route="books"
                     params={this.makeParamsObj({
-                      level: levelFilter,
+                      level,
                     })}
                   >
                     <ToolbarDropdownItem
