@@ -56,9 +56,7 @@ const Base = tag([
   'align',
 ])('div');
 
-const Box = styled(
-  Base,
-)(
+const Box = styled(Base)(
   [],
   fontSize,
   width,
@@ -70,8 +68,9 @@ const Box = styled(
   maxWidth,
   color,
   textAlign,
-  { display: 'block' },
 );
+
+Box.displayName = 'Box';
 
 export default Box;
 

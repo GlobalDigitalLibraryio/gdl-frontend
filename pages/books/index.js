@@ -178,12 +178,10 @@ class BooksPage extends React.Component<Props> {
               params={{ id: editorPick.id, lang: editorPick.language.code }}
               passHref
             >
-              <Card is="a">
+              <Card is="a" style={{ display: 'block' }}>
                 <Flex>
-                  <Box mr={6} flex="none">
-                    <BookCover book={editorPick} />
-                  </Box>
-                  <Box ml={6}>
+                  <BookCover book={editorPick} ml="auto" w={1 / 2} mr={6} />
+                  <Box w={1 / 2} ml={6}>
                     <Title upperCase fontSize={18}>
                       Editors pick
                     </Title>
