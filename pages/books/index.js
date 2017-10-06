@@ -211,7 +211,7 @@ class BooksPage extends React.Component<Props> {
               params={{ id: editorPick.id, lang: editorPick.language.code }}
               passHref
             >
-              <Card is="a" style={{ display: 'block' }}>
+              <Card is="a" style={{ display: 'block', color: '#444' }}>
                 <Flex>
                   <BookCover book={editorPick} ml="auto" w={1 / 2} mr={6} />
                   <Box w={1 / 2} ml={6}>
