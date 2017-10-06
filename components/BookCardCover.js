@@ -51,7 +51,6 @@ export default ({ book, ...props }: { book: Book }) => (
   <Box
     w={[105, 130]}
     h={['164px', '204px']}
-    mx={5}
     style={{ flexShrink: 0 }}
     {...props}
   >

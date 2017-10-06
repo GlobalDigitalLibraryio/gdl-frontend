@@ -12,13 +12,10 @@ import type { Book } from '../types';
 import BookCardCover from './BookCardCover';
 import { Link } from '../routes';
 
-const FlexScroller = Flex.extend`
-  justify-content: space-between;
-  overflow-x: auto;
-`;
+const FlexScroller = Flex.extend`overflow-x: auto;`;
 
 export default ({ books, ...props }: { books: Array<Book> }) => (
-  <FlexScroller {...props}>
+  <FlexScroller mx={-8} {...props}>
     {books.map(book => (
       <Link
         route="book"
@@ -26,7 +23,7 @@ export default ({ books, ...props }: { books: Array<Book> }) => (
         key={book.id}
         passHref
       >
-        <BookCardCover book={book} is="a" />
+        <BookCardCover book={book} mx={8} is="a" />
       </Link>
     ))}
   </FlexScroller>
