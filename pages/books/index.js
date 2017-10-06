@@ -213,7 +213,7 @@ class BooksPage extends React.Component<Props> {
             >
               <Card is="a" style={{ display: 'block', color: '#444' }}>
                 <Flex>
-                  <BookCover book={editorPick} ml="auto" w={1 / 2} mr={6} />
+                  <BookCover book={editorPick} mr={6} />
                   <Box w={1 / 2} ml={6}>
                     <Title upperCase fontSize={18}>
                       Editors pick
