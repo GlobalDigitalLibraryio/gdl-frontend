@@ -46,17 +46,29 @@ const levelQuery = 'level';
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     // Read the level and language from the query parameters
-    const level = query[levelQuery];
+    let level = query[levelQuery];
     const language = query[langQuery];
 
-    const [
-      editorPicksRes,
-      popluarRes,
-      justArrivedRes,
-      levelsRes,
-      languagesRes,
-    ] = await Promise.all([
+    // Fetch these first, cause they don't use the reading level
+    const [editorPicksRes, levelsRes, languagesRes] = await Promise.all([
       fetch(`${env.bookApiUrl}/book-api/v1/editorpicks/${language || ''}`),
+      fetch(`${env.bookApiUrl}/book-api/v1/levels/${language || ''}`),
+      fetch(`${env.bookApiUrl}/book-api/v1/languages`),
+    ]);
+
+    const [editorPicks, levels, languages] = await Promise.all([
+      editorPicksRes.json(),
+      levelsRes.json(),
+      languagesRes.json(),
+    ]);
+
+    // If the levels doesn't include the level from the query param, nullify it, so we don't apply the filter to the API call and get empty results
+    if (!levels.includes(level)) {
+      level = null;
+    }
+
+    // Now that we've cleaned up the reading level in the query param, fetch the rest
+    const [popluarRes, justArrivedRes] = await Promise.all([
       fetch(
         `${env.bookApiUrl}/book-api/v1/books/${language ||
           ''}?sort=popular&page-size=${BOOKS_PAGE_SIZE}${level
@@ -69,22 +81,11 @@ class BooksPage extends React.Component<Props> {
           ? `&reading-level=${level}`
           : ''}`,
       ),
-      fetch(`${env.bookApiUrl}/book-api/v1/levels`),
-      fetch(`${env.bookApiUrl}/book-api/v1/languages`),
     ]);
 
-    const [
-      editorPicks,
-      popular,
-      justArrived,
-      levels,
-      languages,
-    ] = await Promise.all([
-      editorPicksRes.json(),
+    const [popular, justArrived] = await Promise.all([
       popluarRes.json(),
       justArrivedRes.json(),
-      levelsRes.json(),
-      languagesRes.json(),
     ]);
 
     return {
@@ -96,6 +97,25 @@ class BooksPage extends React.Component<Props> {
       languages,
       levels,
     };
+  }
+
+  // Generate the query param object for the links in the level and language filter.
+  // Keeps existing value for the other type of query param, and removes undefined values because we don't want ?lang=eng&level=undefined
+  makeParamsObj({ level, language }: { level?: ?string, language?: string }) {
+    const params = {
+      [langQuery]: language || this.props.languageFilter.code,
+      [levelQuery]: level || this.props.levelFilter,
+    };
+
+    if (!params[langQuery]) {
+      delete params[langQuery];
+    }
+
+    if (!params[levelQuery]) {
+      delete params[levelQuery];
+    }
+
+    return params;
   }
 
   render() {
@@ -125,10 +145,7 @@ class BooksPage extends React.Component<Props> {
                     key={language.code}
                     route="books"
                     passHref
-                    params={{
-                      [langQuery]: language.code,
-                      [levelQuery]: levelFilter,
-                    }}
+                    params={this.makeParamsObj({ language: language.code })}
                   >
                     <ToolbarDropdownItem
                       {...getItemProps({ item: language.code })}
@@ -169,10 +186,9 @@ class BooksPage extends React.Component<Props> {
                     key={level}
                     passHref
                     route="books"
-                    params={{
-                      [levelQuery]: level,
-                      [langQuery]: languageFilter.code,
-                    }}
+                    params={this.makeParamsObj({
+                      level: levelFilter,
+                    })}
                   >
                     <ToolbarDropdownItem
                       {...getItemProps({ item: level })}
@@ -214,7 +230,7 @@ class BooksPage extends React.Component<Props> {
         <Hero>
           <Container>
             <Title href="" is="a" upperCase fontSize={[18, 22]}>
-              Just arrived in english <MdKeyboardArrowRight />
+              Just arrived in {languageFilter.name} <MdKeyboardArrowRight />
             </Title>
             <HorizontalBookList books={this.props.popular} mt={20} />
           </Container>
@@ -223,7 +239,7 @@ class BooksPage extends React.Component<Props> {
         <Hero borderTop borderBottom>
           <Container>
             <Title href="" is="a" upperCase fontSize={[18, 22]}>
-              Popular in english <MdKeyboardArrowRight />
+              Popular in {languageFilter.name} <MdKeyboardArrowRight />
             </Title>
             <HorizontalBookList books={this.props.justArrived} mt={20} />
           </Container>
