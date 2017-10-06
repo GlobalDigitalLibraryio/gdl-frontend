@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 VERSION="$1"
 source ./build.properties
 PROJECT="$GDLOrganization/$GDLComponentName"
