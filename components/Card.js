@@ -7,8 +7,23 @@
  */
 
 import styled from 'styled-components';
-import { fontSize } from 'styled-system';
+import { fontSize, space, color, width, responsiveStyle } from 'styled-system';
+
 import Box from './Box';
+
+const height = responsiveStyle('height', 'h');
+
+const CardBase = styled.div`
+  border-radius: 4px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+  ${space} ${color} ${fontSize} ${width} ${height};
+`;
+
+CardBase.defaultProps = {
+  color: '#444',
+  bg: '#fff',
+};
 
 const Card = Box.extend`
   background: #fff;
@@ -27,6 +42,7 @@ const Card = Box.extend`
 Card.defaultProps = {
   px: 15,
   py: 12,
+  color: '#444',
 };
 
 // Adds much bigger shadow to the card
@@ -102,4 +118,10 @@ CardAction.defaultProps = {
   fontSize: 16,
 };
 
-export { Card as default, CardAction, CardDropdown, CardDropdownItem };
+export {
+  Card as default,
+  CardBase,
+  CardAction,
+  CardDropdown,
+  CardDropdownItem,
+};

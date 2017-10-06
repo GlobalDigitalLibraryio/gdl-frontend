@@ -6,7 +6,6 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
 import {
   justifyContent,
   flexDirection,
@@ -17,7 +16,7 @@ import Box from './Box';
 
 const column = props => (props.column ? 'flex-direction:column;' : null);
 
-const Flex = styled(Box)(
+const Flex = Box.extend(
   [],
   { display: 'flex' },
   flexWrap,
@@ -26,7 +25,5 @@ const Flex = styled(Box)(
   alignItems,
   justifyContent,
 );
-
-Flex.displayName = 'Flex';
 
 export default Flex;
