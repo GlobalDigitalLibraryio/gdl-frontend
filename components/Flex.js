@@ -17,16 +17,9 @@ import Box from './Box';
 
 const column = props => (props.column ? 'flex-direction:column;' : null);
 
-const Flex = styled(Box)(
-  [],
-  { display: 'flex' },
-  flexWrap,
-  column,
-  flexDirection,
-  alignItems,
-  justifyContent,
-);
-
-Flex.displayName = 'Flex';
+const Flex = styled(Box)`
+  display: flex;
+  ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent};
+`;
 
 export default Flex;
