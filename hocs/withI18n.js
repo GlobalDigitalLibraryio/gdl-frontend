@@ -6,10 +6,10 @@
  * See LICENSE
  */
 
-/* eslint-disable no-underscore-dangle, no-eval, import/no-extraneous-dependencies */
+/* eslint-disable no-underscore-dangle, no-eval */
 
 import * as React from 'react';
-import { I18nProvider } from 'lingui-react';
+import { I18nProvider, withI18n } from 'lingui-react';
 import Head from 'next/head';
 import { unpackCatalog } from 'lingui-i18n';
 import serializeJS from 'serialize-javascript';
@@ -36,8 +36,10 @@ const translations = {
 /**
  * A HoC that that faciliates our i18n layer
  */
-export default (Page: React.ComponentType<any>) =>
-  class PageWithI18n extends React.Component<Props> {
+export default (Page: React.ComponentType<any>) => {
+  const I18nPage = withI18n()(Page);
+
+  return class PageWithI18n extends React.Component<Props> {
     static async getInitialProps(context) {
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
@@ -108,8 +110,9 @@ export default (Page: React.ComponentType<any>) =>
               );
             })}
           </Head>
-          <Page {...props} />
+          <I18nPage {...props} />
         </I18nProvider>
       );
     }
   };
+};

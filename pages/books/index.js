@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
+import { Trans } from 'lingui-react';
+import type { I18n } from 'lingui-i18n';
 import { MdKeyboardArrowRight, MdCheck } from 'react-icons/lib/md';
 import type { Book, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -38,6 +40,7 @@ type Props = {
   languages: Array<Language>,
   languageFilter: Language,
   levelFilter: ?string,
+  i18n: I18n,
 };
 
 const langQuery = 'lang';
@@ -125,11 +128,12 @@ class BooksPage extends React.Component<Props> {
       levels,
       languageFilter,
       levelFilter,
+      i18n,
     } = this.props;
 
     return (
       <div>
-        <Meta title="Books" description="Enjoy all the books" />
+        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
         <Navbar />
 
         <Toolbar>
@@ -178,7 +182,7 @@ class BooksPage extends React.Component<Props> {
                     isActive={highlightedIndex === 0}
                     isSelected={!selectedItem}
                   >
-                    <MdCheck /> All levels
+                    <MdCheck /> <Trans>All levels</Trans>
                   </ToolbarDropdownItem>
                 </Link>,
                 ...levels.map((level, index) => (
@@ -195,7 +199,7 @@ class BooksPage extends React.Component<Props> {
                       isActive={highlightedIndex === index + 1}
                       isSelected={selectedItem === level}
                     >
-                      <MdCheck /> Level {level}
+                      <MdCheck /> <Trans>Level {level}</Trans>
                     </ToolbarDropdownItem>
                   </Link>
                 )),
@@ -216,7 +220,7 @@ class BooksPage extends React.Component<Props> {
                   <BookCover book={editorPick} mr={6} />
                   <Box w={1 / 2} ml={6}>
                     <Title upperCase fontSize={18}>
-                      Editors pick
+                      <Trans>Editors pick</Trans>
                     </Title>
                     <Title fontSize={16}>{editorPick.title}</Title>
                     {editorPick.description}
@@ -230,7 +234,8 @@ class BooksPage extends React.Component<Props> {
         <Hero>
           <Container>
             <Title href="" is="a" upperCase fontSize={[18, 22]}>
-              Just arrived in {languageFilter.name} <MdKeyboardArrowRight />
+              <Trans>Just arrived in {languageFilter.name}</Trans>{' '}
+              <MdKeyboardArrowRight />
             </Title>
             <HorizontalBookList books={this.props.popular} mt={20} />
           </Container>
@@ -239,7 +244,8 @@ class BooksPage extends React.Component<Props> {
         <Hero borderTop borderBottom>
           <Container>
             <Title href="" is="a" upperCase fontSize={[18, 22]}>
-              Popular in {languageFilter.name} <MdKeyboardArrowRight />
+              <Trans>Popular in {languageFilter.name}</Trans>{' '}
+              <MdKeyboardArrowRight />
             </Title>
             <HorizontalBookList books={this.props.justArrived} mt={20} />
           </Container>
