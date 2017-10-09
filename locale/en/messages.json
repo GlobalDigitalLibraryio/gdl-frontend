@@ -1,10 +1,73 @@
 {
+  "Books": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        136
+      ]
+    ]
+  },
+  "Enjoy all the books": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        136
+      ]
+    ]
+  },
+  "All levels": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        185
+      ]
+    ]
+  },
+  "Level {level}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        202
+      ]
+    ]
+  },
+  "Editors pick": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        223
+      ]
+    ]
+  },
+  "Just arrived in {0}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        237
+      ]
+    ]
+  },
+  "Popular in {0}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/index.js",
+        247
+      ]
+    ]
+  },
   "from <0>{0}</0>": {
     "translation": "",
     "origin": [
       [
         "pages/books/_book.js",
-        129
+        130
       ]
     ]
   },
@@ -13,7 +76,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        137
+        138
       ]
     ]
   },
@@ -22,7 +85,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        154
+        155
       ]
     ]
   },
@@ -31,7 +94,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        163
+        164
       ]
     ]
   },
@@ -40,7 +103,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        214
+        215
       ]
     ]
   },
@@ -49,7 +112,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        234
+        235
       ]
     ]
   },
@@ -58,7 +121,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        241
+        242
       ]
     ]
   },
@@ -67,7 +130,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        253
+        254
       ]
     ]
   },
@@ -76,7 +139,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        284
+        285
       ]
     ]
   }

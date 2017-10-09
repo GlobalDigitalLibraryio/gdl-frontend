@@ -31,11 +31,8 @@
     "quotes": ["error", "single"],
     // Allow JSX to be used in files with the extensions '.js'
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    // Allow the import of dev dependencies in Storybook stories
-    "import/no-extraneous-dependencies": [
-      "error",
-      { "devDependencies": ["stories/**.js"] }
-    ],
+    // Allow the import of dev dependencies (and the deps of our deps...)
+    "import/no-extraneous-dependencies": 0,
     // Don't require prop validation for 'this.props.children'
     "react/prop-types": [
       "error",
