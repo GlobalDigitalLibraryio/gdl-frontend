@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders a Title 1`] = `
+.c0 {
+  font-size: 28px;
+  display: block;
+  margin-top: 0;
+  font-weight: 600;
+}
+
+@media screen and (min-width:40em) {
+  .c0 {
+    font-size: 38px;
+  }
+}
+
+<Styled(Base)
+  fontSize={
+    Array [
+      28,
+      38,
+    ]
+  }
+>
+  <Base
+    className="c0"
+    fontSize={
+      Array [
+        28,
+        38,
+      ]
+    }
+  >
+    <h1
+      className="c0"
+      fontSize={
+        Array [
+          28,
+          38,
+        ]
+      }
+      is={null}
+    >
+      Normal title
+    </h1>
+  </Base>
+</Styled(Base)>
+`;

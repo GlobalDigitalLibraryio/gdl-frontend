@@ -1,5 +1,19 @@
 {
-  "presets": ["next/babel", "lingui-react"],
+  "env": {
+    "development": {
+      "presets": ["next/babel", "lingui-react"]
+    },
+    "production": {
+      "presets": ["next/babel", "lingui-react"]
+    },
+    "test": {
+      "presets": [
+        ["env", { "modules": "commonjs" }],
+        "next/babel",
+        "lingui-react"
+      ]
+    }
+  },
   "plugins": [
     "polished",
     "transform-flow-strip-types",
