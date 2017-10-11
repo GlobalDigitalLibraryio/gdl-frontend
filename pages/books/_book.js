@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { DateFormat, Trans, Plural } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
 import {
@@ -46,6 +47,9 @@ import HorizontalBookList from '../../components/HorizontalBookList';
 // Number of similar books to fetch
 const SIMILAR_BOOKS_PAGE_SIZE = 5;
 
+// Download the Reader component on demand
+const Reader = dynamic(import('../../components/Reader'));
+
 type Props = {
   book: Book,
   similar: Array<Book>,
@@ -64,14 +68,16 @@ const BookMetaData = ({
   </Box>
 );
 
-const BookDescription = styled.div`margin-bottom: 15px;`;
+const BookDescription = styled.div`
+  margin-bottom: 15px;
+`;
 
 // Extend the regular Card, allowing us to alter the border radius responsively
 const Card = CardBase.extend`
   ${responsiveStyle('border-radius', 'borderRadius')};
 `;
 
-class BookPage extends React.Component<Props> {
+class BookPage extends React.Component<Props, { showReader: boolean }> {
   static async getInitialProps({ query }) {
     const [bookRes, similarRes] = await Promise.all([
       fetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
@@ -90,6 +96,10 @@ class BookPage extends React.Component<Props> {
       similar: similar.results,
     };
   }
+
+  state = {
+    showReader: false,
+  };
 
   render() {
     const { book } = this.props;
@@ -120,6 +130,12 @@ class BookPage extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Navbar />
+        {this.state.showReader && (
+          <Reader
+            book={book}
+            onClose={() => this.setState({ showReader: false })}
+          />
+        )}
         <Hero colorful>
           <Container>
             <CardBase style={{ textAlign: 'center' }}>
@@ -134,7 +150,7 @@ class BookPage extends React.Component<Props> {
               <BookCover book={book} mx="auto" my={15} />
               <Box>
                 <BookDescription>{book.description}</BookDescription>
-                <Button>
+                <Button onClick={() => this.setState({ showReader: true })}>
                   <Trans>Read</Trans>
                 </Button>
               </Box>

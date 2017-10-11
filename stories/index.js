@@ -13,3 +13,4 @@ require('./HeroExample');
 require('./ToolbarExample');
 require('./ContainerExample');
 require('./ButtonExample');
+require('./ReaderExample');

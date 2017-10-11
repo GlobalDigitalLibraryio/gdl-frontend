@@ -29,7 +29,7 @@ const Nav = styled.nav`
 `;
 
 Nav.defaultProps = {
-  minHeight: ['54px', '70px'],
+  minHeight: ['54px', '80px'],
 };
 
 const NavItem = styled.div`
