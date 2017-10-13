@@ -123,7 +123,7 @@ class Reader extends React.Component<Props, State> {
               onNextChapter={this.handleNextChapter}
               onPrevChapter={this.handlePrevChapter}
             >
-              Chapter {currentChapter + 1} / {book.chapters.length}
+              {currentChapter + 1} / {book.chapters.length}
             </Footer>
           </Card>
         </Container>
