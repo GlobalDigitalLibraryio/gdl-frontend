@@ -13,6 +13,7 @@ const Page = styled.div`
   flex: 1 1 auto;
   border-top: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
+  color: #000;
   ${space};
   & img {
     max-width: 100%;
