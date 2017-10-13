@@ -14,7 +14,7 @@ import media from '../helpers/media';
 const Menu = styled.div`
   display: flex;
   align-items: center;
-  flex: 0 0 auto
+  flex: 0 0 auto;
   color: #8a8888;
 
   font-size: 14px;
@@ -48,8 +48,11 @@ const Button = styled.button.attrs({
   }
 `;
 
-const BookTitle = styled.span`
+const BookTitle = styled.h2`
+  margin: 0;
   margin-left: 20px;
+  font-size: inherit;
+  font-weight: normal;
   ${ellipsis()};
 `;
 
