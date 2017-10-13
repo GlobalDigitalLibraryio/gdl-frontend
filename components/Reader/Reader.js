@@ -15,6 +15,7 @@ import Modal from './Modal';
 import Header from './Header';
 import Footer from './Footer';
 import Container from '../Container';
+import KeyDown from '../KeyDown';
 import media from '../helpers/media';
 
 type Props = {
@@ -89,6 +90,17 @@ class Reader extends React.Component<Props, State> {
 
     return (
       <Modal>
+        <KeyDown when="Escape" then={this.props.onClose} />
+        <KeyDown
+          when="ArrowRight"
+          then={this.handleNextChapter}
+          disabled={currentChapter >= book.chapters.length - 1}
+        />
+        <KeyDown
+          when="ArrowLeft"
+          then={this.handlePrevChapter}
+          disabled={currentChapter < 1}
+        />
         <Backdrop />
         <Container
           h={['100vh', '994px']}
