@@ -14,6 +14,10 @@ const Page = styled.div`
   border-top: 1px solid #e3e3e3;
   border-bottom: 1px solid #e3e3e3;
   color: #000;
+  strong,
+  b {
+    font-weight: bold;
+  }
   ${space};
   & img {
     max-width: 100%;
