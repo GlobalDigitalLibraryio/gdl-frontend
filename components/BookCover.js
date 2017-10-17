@@ -17,7 +17,7 @@ const Img = styled.img`
 
 const Cover = Box.extend`
   border-radius: 4px;
-  background-color: #f8f8f8;
+  background-color: ${props => props.theme.grays.desertStorm};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   overflow: hidden;
   display: flex;

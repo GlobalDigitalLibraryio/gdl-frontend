@@ -17,7 +17,7 @@ import CardBase from './Card';
 const Card = CardBase.extend`
   text-align: center;
   border-radius: 0 0 4px 4px;
-  color: #444;
+  color: ${props => props.theme.grays.dark};
   line-height: 14px;
   overflow: hidden;
 `;
@@ -28,12 +28,14 @@ Card.defaultProps = {
   py: '2px',
 };
 
-const Box = BoxBase.extend`text-decoration: none;`;
+const Box = BoxBase.extend`
+  text-decoration: none;
+`;
 
 // The wrapper for the book image
 const Cover = styled.div`
   ${responsiveStyle('height', 'h')} width: 100%;
-  background-color: #f8f8f8;
+  background-color: ${props => props.theme.grays.desertStorm};
   border-radius: 4px 4px 0 0;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   overflow: hidden;

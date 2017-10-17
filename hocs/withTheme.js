@@ -8,8 +8,34 @@
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { ThemeProvider } from 'styled-components';
 
 /* eslint-disable react/no-multi-comp */
+
+const theme = {
+  primaries: {
+    primary: '#20588f',
+    secondary: '#507aa4',
+    tertiary: '#a5bcd3',
+    light: '#ceddea',
+    highlight: '#edf7ff',
+    dark: '#184673',
+  },
+  supports: {
+    greenPrimary: '#5cbc80',
+    greenHighlight: '#edfff4',
+    greenDark: '#5cbc80',
+  },
+  grays: {
+    dark: '#444',
+    white: '#fff',
+    steel: '#666',
+    gainsboro: '#ddd',
+    platinum: '#e3e3e3',
+    gallery: '#eff0f2',
+    desertStorm: '#f8f8f8',
+  },
+};
 
 class Theme extends React.Component<{ children: React.Node }> {
   static childContextTypes = {
@@ -25,7 +51,7 @@ class Theme extends React.Component<{ children: React.Node }> {
   }
 
   render() {
-    return this.props.children;
+    return <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>;
   }
 }
 
@@ -51,4 +77,4 @@ function withTheme(Page: React.ComponentType<any>) {
   };
 }
 
-export { Theme, withTheme as default };
+export { Theme, theme, withTheme as default };

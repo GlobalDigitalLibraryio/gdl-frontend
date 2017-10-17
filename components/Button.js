@@ -9,9 +9,13 @@
 import styled from 'styled-components';
 
 const Button = styled.button`
-  color: #fff;
+  color: ${props => props.theme.grays.white};
   border-radius: 4px;
-  background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
+  background: linear-gradient(
+    180deg,
+    ${props => props.theme.supports.greenPrimary} 0%,
+    #056d2c 100%
+  );
   line-height: 1.1;
   padding: 10px 30px;
   font-size: 1.4rem;

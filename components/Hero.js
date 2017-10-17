@@ -11,10 +11,12 @@ import Box from './Box';
 const Hero = Box.extend`
   background: ${props =>
     props.colorful
-      ? 'linear-gradient(90deg, #014C90 0%, #4EAD81 100%)'
+      ? 'linear-gradient(135deg, #004b91 0%, #5abc7f 100%)'
       : 'linear-gradient(180deg, #eff0f2 0%, #eaeaea 100%)'};
-  border-top: ${props => (props.borderTop ? 'solid 1px #e0e0e0' : null)};
-  border-bottom: ${props => (props.borderBottom ? 'solid 1px #e0e0e0' : null)};
+  border-top: ${props =>
+    props.borderTop ? `solid 1px ${props.theme.grays.platinum}` : null};
+  border-bottom: ${props =>
+    props.borderBottom ? `solid 1px ${props.theme.grays.platinum}` : null};
 `;
 
 Hero.defaultProps = {
