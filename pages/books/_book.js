@@ -29,6 +29,7 @@ import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
+import ReadingLevel from '../../components/ReadingLevel';
 import env from '../../env';
 import A from '../../components/A';
 import CardBase, {
@@ -302,6 +303,9 @@ class BookPage extends React.Component<Props> {
                 style={{ height: '100%' }}
                 borderRadius={['0 0 4px 4px', '0 4px 4px 0']}
               >
+                <ReadingLevel style={{ float: 'right' }}>
+                  <Trans id="level">Level {book.readingLevel}</Trans>
+                </ReadingLevel>
                 {book.datePublished && (
                   <BookMetaData heading="Published">
                     <DateFormat value={new Date(book.datePublished)} />

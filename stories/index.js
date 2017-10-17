@@ -14,3 +14,4 @@ require('./ToolbarExample');
 require('./ContainerExample');
 require('./ButtonExample');
 require('./ReaderExample');
+require('./ReadingLevelExample');

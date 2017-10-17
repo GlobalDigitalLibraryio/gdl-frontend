@@ -8,22 +8,23 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
+import { Trans } from 'lingui-react';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../types';
 import { NO_COVER_PLACEHOLDER_URL } from './BookCover';
 import BoxBase from './Box';
 import CardBase from './Card';
+import ReadingLevel from './ReadingLevel';
 
 const Card = CardBase.extend`
   text-align: center;
   border-radius: 0 0 4px 4px;
   color: ${props => props.theme.grays.dark};
-  line-height: 14px;
   overflow: hidden;
 `;
 
 Card.defaultProps = {
-  fontSize: [12, 14],
+  fontSize: [11, 14],
   px: 5,
   py: '2px',
 };
@@ -49,13 +50,15 @@ const Img = styled.img`
   max-width: 100%;
 `;
 
+const BookTitle = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+`;
+
 export default ({ book, ...props }: { book: Book }) => (
-  <Box
-    w={[105, 130]}
-    h={['164px', '204px']}
-    style={{ flexShrink: 0 }}
-    {...props}
-  >
+  <Box w={[105, 130]} style={{ flexShrink: 0 }} {...props}>
     <Cover h={['130px', '160px']}>
       <Img
         src={book.coverPhoto ? book.coverPhoto.small : NO_COVER_PLACEHOLDER_URL}
@@ -63,6 +66,11 @@ export default ({ book, ...props }: { book: Book }) => (
         aria-hidden
       />
     </Cover>
-    <Card h={['34px', '44px']}>{book.title}</Card>
+    <Card h={['50px', '53px']}>
+      <BookTitle>{book.title}</BookTitle>
+      <ReadingLevel>
+        <Trans id="level">Level {book.readingLevel}</Trans>
+      </ReadingLevel>
+    </Card>
   </Box>
 );

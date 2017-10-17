@@ -44,7 +44,7 @@ exports[`Renders 1`] = `
         "tertiary": "#a5bcd3",
       },
       "supports": Object {
-        "greenDark": "#5cbc80",
+        "greenDark": "#359258",
         "greenHighlight": "#edfff4",
         "greenPrimary": "#5cbc80",
       },

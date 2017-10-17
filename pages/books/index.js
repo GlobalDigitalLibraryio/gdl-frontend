@@ -199,7 +199,7 @@ class BooksPage extends React.Component<Props> {
                       isActive={highlightedIndex === index + 1}
                       isSelected={selectedItem === level}
                     >
-                      <MdCheck /> <Trans>Level {level}</Trans>
+                      <MdCheck /> <Trans id="level">Level {level}</Trans>
                     </ToolbarDropdownItem>
                   </Link>
                 )),
