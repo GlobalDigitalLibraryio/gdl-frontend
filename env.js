@@ -11,7 +11,7 @@
 // If we are on the server, we get the envionment from process, on the client, we read it from ___NEXT_DATA__
 // Make sure all pages are wrapped with the withEnv HoC so we can read this from the window object on the client
 const ENV =
-  (typeof window !== 'undefined'
+  (typeof window !== 'undefined' && window.__NEXT_DATA__
     ? window.__NEXT_DATA__.props.env
     : process.env) || {};
 

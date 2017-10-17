@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders 1`] = `
+.c0 {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0 2px 0 rgba(0,0,0,0.12),0 2px 2px 0 rgba(0,0,0,0.12);
+  position: relative;
+  max-width: 100%;
+}
+
+.c0 hr {
+  background-color: #e3e3e3;
+  height: 1px;
+  border: none;
+}
+
+<Base
+  className="c0"
+  px={15}
+  py={12}
+  theme={
+    Object {
+      "grays": Object {
+        "dark": "#444",
+        "desertStorm": "#f8f8f8",
+        "gainsboro": "#ddd",
+        "gallery": "#eff0f2",
+        "jumbo": "#888",
+        "platinum": "#e3e3e3",
+        "steel": "#666",
+        "white": "#fff",
+      },
+      "primaries": Object {
+        "dark": "#184673",
+        "highlight": "#edf7ff",
+        "light": "#ceddea",
+        "primary": "#20588f",
+        "secondary": "#507aa4",
+        "tertiary": "#a5bcd3",
+      },
+      "supports": Object {
+        "greenDark": "#5cbc80",
+        "greenHighlight": "#edfff4",
+        "greenPrimary": "#5cbc80",
+      },
+    }
+  }
+>
+  I am in a card!
+</Base>
+`;

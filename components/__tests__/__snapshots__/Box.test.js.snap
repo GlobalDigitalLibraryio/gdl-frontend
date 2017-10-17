@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Can have different margins 1`] = `
+.c0 {
+  margin: 10px;
+}
+
+<Styled(Base)
+  m={10}
+>
+  <Base
+    className="c0"
+    m={10}
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Can have different margins 2`] = `
+.c0 {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+<Styled(Base)
+  mx={5}
+  my={10}
+>
+  <Base
+    className="c0"
+    mx={5}
+    my={10}
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Can have different margins 3`] = `
+.c0 {
+  margin-bottom: 1px;
+  margin-left: 2px;
+  margin-right: 4px;
+  margin-top: 3px;
+}
+
+<Styled(Base)
+  mb="1px"
+  ml="2px"
+  mr="4px"
+  mt="3px"
+>
+  <Base
+    className="c0"
+    mb="1px"
+    ml="2px"
+    mr="4px"
+    mt="3px"
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Can have different paddings 1`] = `
+.c0 {
+  padding: 10px;
+}
+
+<Styled(Base)
+  p={10}
+>
+  <Base
+    className="c0"
+    p={10}
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Can have different paddings 2`] = `
+.c0 {
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+<Styled(Base)
+  px={5}
+  py={10}
+>
+  <Base
+    className="c0"
+    px={5}
+    py={10}
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Can have different paddings 3`] = `
+.c0 {
+  padding-bottom: 1px;
+  padding-left: 2px;
+  padding-right: 4px;
+  padding-top: 3px;
+}
+
+<Styled(Base)
+  pb="1px"
+  pl="2px"
+  pr="4px"
+  pt="3px"
+>
+  <Base
+    className="c0"
+    pb="1px"
+    pl="2px"
+    pr="4px"
+    pt="3px"
+  >
+    <div
+      className="c0"
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
+
+exports[`Supports custom component 1`] = `
+<Styled(Base)
+  is="section"
+>
+  <Base
+    className=""
+    is="section"
+  >
+    <section
+      className=""
+      is={null}
+    />
+  </Base>
+</Styled(Base)>
+`;
