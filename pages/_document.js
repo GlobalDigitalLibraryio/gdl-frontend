@@ -10,6 +10,7 @@ import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet, injectGlobal, css } from 'styled-components';
 import { normalize } from 'polished';
+import { theme } from '../hocs/withTheme';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
 
@@ -33,16 +34,12 @@ const globalStyles = css`
       'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background: #eff0f2;
-    color: #444444;
+    background: ${theme.grays.gallery};
+    color: ${theme.grays.dark};
 
     a {
-      color: #20588f;
+      color: ${theme.primaries.primary};
       text-decoration: none;
-    }
-
-    small {
-      color: #8a6666;
     }
   }
 `;

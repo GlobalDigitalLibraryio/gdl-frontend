@@ -11,9 +11,9 @@ import styled from 'styled-components';
 
 const Input = styled.input`
   font-size: 1rem;
-  background-color: #f8f8f8;
+  background-color: ${props => props.theme.grays.desertStorm};
   border-radius: 4px;
-  border: 5px solid #a5bcd3;
+  border: 5px solid ${props => props.theme.primaries.tertiary};
   padding: 12px;
   ${placeholder({ color: '#8A8888' })};
   &:focus {

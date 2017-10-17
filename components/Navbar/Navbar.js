@@ -15,19 +15,17 @@ import Container from '../Container';
 import Flex from '../Flex';
 import Logo from './GDL-logo.svg';
 
-// The color of the content in the navbar
-const color = '#fff';
-
 const Nav = styled.nav`
   position: relative;
   ${responsiveStyle(
     'min-height',
     'minHeight',
-  )} background: linear-gradient(0deg, #4884be 0%, #20588f 100%);
+  )} background: linear-gradient(0deg, #4884be 0%, ${props =>
+  props.theme.primaries.primary} 100%);
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  color: ${color};
+  color: ${props => props.theme.grays.white};
 `;
 
 Nav.defaultProps = {
@@ -48,7 +46,7 @@ const HamburgerButton = styled.button.attrs({
   align-items: center;
   vertical-align: top;
   border: 1px solid transparent;
-  color: ${color};
+  color: ${props => props.theme.grays.white};
   font-size: 18px;
   font-weight: 600;
   > span {

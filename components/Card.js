@@ -11,14 +11,14 @@ import { fontSize } from 'styled-system';
 import Box from './Box';
 
 const Card = Box.extend`
-  background: #fff;
+  background: ${props => props.theme.grays.white};
   border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   position: relative;
   max-width: 100%;
 
   & hr {
-    background-color: #e8e3e3;
+    background-color: ${props => props.theme.grays.platinum};
     height: 1px;
     border: none;
   }
@@ -46,7 +46,7 @@ const CardDropdown = Card.extend`
   }
   &::after {
     border-color: rgba(136, 183, 213, 0);
-    border-bottom-color: #fff;
+    border-bottom-color: ${props => props.theme.grays.white};
     border-width: 10px;
     margin-left: -10px;
   }
@@ -72,7 +72,7 @@ const CardDropdownItem = styled.a`
   &:hover,
   &:focus,
   &.selected {
-    background-color: #edf7ff;
+    background-color: ${props => props.theme.primaries.highlight};
     outline: none;
   }
 
@@ -81,13 +81,12 @@ const CardDropdownItem = styled.a`
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid #e8e3e3;
+    border-bottom: 1px solid ${props => props.theme.grays.platinum};
   }
 `;
 
 const CardAction = styled.a`
-  ${fontSize} color: #20588f;
-  font-weight: 600;
+  ${fontSize} font-weight: 600;
   display: flex;
   align-items: center;
   & svg:nth-of-type(1) {

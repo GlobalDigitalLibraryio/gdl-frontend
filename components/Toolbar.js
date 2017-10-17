@@ -12,16 +12,16 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
 import Card from './Card';
 
 const Toolbar = styled.div`
-  background: #fff;
+  background: ${props => props.theme.grays.white};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   font-size: 14px;
   position: relative;
 `;
 
 const Item = styled.div`
-  border-right: solid 1px #e0e0e0;
+  border-right: solid 1px ${props => props.theme.grays.platinum};
   &:first-child {
-    border-left: solid 1px #e0e0e0;
+    border-left: solid 1px ${props => props.theme.grays.platinum};
   }
   position: relative;
   display: inline-block;
@@ -35,18 +35,23 @@ const A = styled.a`
 const ToolbarDropdownItem = styled.a`
   display: block;
   padding: 10px 15px;
-  color: #444;
   &:not(:last-child) {
-    border-bottom: 1px solid #e8e3e3;
+    border-bottom: 1px solid ${props => props.theme.grays.platinum};
   }
 
   & svg {
-    color: ${props => (props.isSelected ? '#5CBC80' : '#dddddd')};
+    color: ${props =>
+      props.isSelected
+        ? props.theme.supports.greenDark
+        : props.theme.grays.gainsboro};
     margin-right: 10px;
   }
 
-  ${props => props.isActive && 'background-color: #edf7ff'};
-  ${props => props.isSelected && 'background-color: #EDFFF4'};
+  ${props =>
+    props.isActive && `background-color: ${props.theme.primaries.highlight}`};
+  ${props =>
+    props.isSelected &&
+    `background-color: ${props.theme.supports.greenHighlight}`};
 `;
 
 type Props = {
