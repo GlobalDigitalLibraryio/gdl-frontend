@@ -49,6 +49,7 @@ const book: Book = {
     small:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200',
   },
+  chapters: [],
   downloads: {
     epub: '',
     pdf: '',

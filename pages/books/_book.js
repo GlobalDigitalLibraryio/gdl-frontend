@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import dynamic from 'next/dynamic';
 import { DateFormat, Trans, Plural } from 'lingui-react';
 import fetch from 'isomorphic-unfetch';
 import {
@@ -23,7 +24,7 @@ import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import { Link } from '../../routes';
+import { Link, Router } from '../../routes';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -46,9 +47,18 @@ import HorizontalBookList from '../../components/HorizontalBookList';
 // Number of similar books to fetch
 const SIMILAR_BOOKS_PAGE_SIZE = 5;
 
+// Download the Reader component on demand
+const Reader = dynamic(import('../../components/Reader'));
+
 type Props = {
   book: Book,
   similar: Array<Book>,
+  chapter?: number,
+  url: {
+    query: {
+      chapter?: string,
+    },
+  },
 };
 
 const BookMetaData = ({
@@ -64,7 +74,9 @@ const BookMetaData = ({
   </Box>
 );
 
-const BookDescription = styled.div`margin-bottom: 15px;`;
+const BookDescription = styled.div`
+  margin-bottom: 15px;
+`;
 
 // Extend the regular Card, allowing us to alter the border radius responsively
 const Card = CardBase.extend`
@@ -120,6 +132,23 @@ class BookPage extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Navbar />
+
+        {this.props.url.query.chapter && (
+          <Reader
+            book={book}
+            chapter={this.props.url.query.chapter}
+            onClose={() =>
+              Router.pushRoute(
+                'book',
+                {
+                  id: book.id,
+                  lang: book.language.code,
+                },
+                { shallow: true },
+              )}
+          />
+        )}
+
         <Hero colorful>
           <Container>
             <CardBase style={{ textAlign: 'center' }}>
@@ -134,7 +163,18 @@ class BookPage extends React.Component<Props> {
               <BookCover book={book} mx="auto" my={15} />
               <Box>
                 <BookDescription>{book.description}</BookDescription>
-                <Button>
+                <Button
+                  onClick={() =>
+                    Router.pushRoute(
+                      'book',
+                      {
+                        id: book.id,
+                        lang: book.language.code,
+                        chapter: 1,
+                      },
+                      { shallow: true },
+                    )}
+                >
                   <Trans>Read</Trans>
                 </Button>
               </Box>

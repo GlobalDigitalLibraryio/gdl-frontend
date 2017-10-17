@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mobile first media template 1`] = `
+Array [
+  "
+    background: blue;
+    ",
+  "
+    @media (min-width: ",
+  "40",
+  "em) {
+      ",
+  "background-red;",
+  ";
+    }
+  ",
+  ";
+  ",
+]
+`;

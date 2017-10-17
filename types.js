@@ -32,6 +32,14 @@ export type Language = {
   +name: string,
 };
 
+export type Chapter = {
+  content: string,
+};
+
+export type ChapterSummary = {
+  url: string,
+};
+
 export type Book = {
   +id: number,
   +title: string,
@@ -44,6 +52,7 @@ export type Book = {
   +contributors: Array<Contributor>,
   +language: Language,
   +availableLanguages: Array<Language>,
+  +chapters: Array<ChapterSummary>,
   +downloads: {
     epub: string,
     pdf: string,

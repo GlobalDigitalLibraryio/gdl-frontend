@@ -12,4 +12,4 @@ const routes = nextRoutes();
 module.exports = routes;
 
 routes.add('books');
-routes.add('book', '/books/:lang/:id(\\d+)', 'books/_book');
+routes.add('book', '/books/:lang/:id(\\d+)/:chapter(\\d+)?', 'books/_book');
