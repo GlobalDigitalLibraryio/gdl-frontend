@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
+import Error from 'next/error';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
 import type { Book, Chapter } from '../../types';
@@ -17,15 +18,16 @@ import Footer from './Footer';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
 import media from '../helpers/media';
+import { Router } from '../../routes';
 
 type Props = {
   book: Book,
   onClose(): void,
+  chapter: number,
 };
 
 type State = {
-  currentChapter: number,
-  chapters: { [number]: Chapter | 'loading' | null },
+  chapters: { [number]: Chapter },
 };
 
 function createMarkup(chapter: Chapter) {
@@ -42,24 +44,30 @@ const Card = styled.div`
 `;
 
 class Reader extends React.Component<Props, State> {
+  static defaultProps = {
+    chapter: 1,
+  };
+
   state = {
-    currentChapter: 0,
-    chapters: this.props.book.chapters.reduce((acc, chapter, index) => {
-      acc[index] = null;
-      return acc;
-    }, {}),
+    chapters: {},
   };
 
   componentDidMount() {
-    this.loadChapter(this.state.currentChapter);
+    this.loadChapter(this.props.chapter);
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (nextProps.chapter !== this.props.chapter) {
+      this.loadChapter(nextProps.chapter);
+    }
   }
 
   async loadChapter(chapterNumber: number) {
     const maybeChapter = this.state.chapters[chapterNumber];
 
-    if (!maybeChapter || maybeChapter !== 'loading') {
+    if (!maybeChapter && this.props.book.chapters[chapterNumber - 1]) {
       const chapterRes = await fetch(
-        this.props.book.chapters[chapterNumber].url,
+        this.props.book.chapters[chapterNumber - 1].url,
       );
       const chapter = await chapterRes.json();
 
@@ -72,21 +80,33 @@ class Reader extends React.Component<Props, State> {
     }
   }
 
+  changeChapter = (chapter: number) => {
+    Router.pushRoute(
+      'book',
+      { id: this.props.book.id, lang: this.props.book.language.code, chapter },
+      { shallow: true },
+    );
+    // Begin loading the chapter right away
+    this.loadChapter(chapter);
+  };
+
   handleNextChapter = () => {
-    this.loadChapter(this.state.currentChapter + 1);
-    this.setState(state => ({ currentChapter: state.currentChapter + 1 }));
+    this.changeChapter(this.props.chapter + 1);
   };
 
   handlePrevChapter = () => {
-    this.loadChapter(this.state.currentChapter - 1);
-    this.setState(state => ({ currentChapter: state.currentChapter - 1 }));
+    this.changeChapter(this.props.chapter - 1);
   };
 
   render() {
-    const { currentChapter } = this.state;
-    const { book } = this.props;
+    const { book, chapter } = this.props;
 
-    const chapter = this.state.chapters[this.state.currentChapter];
+    // If this isn't a valid chapter. Render the 404 page
+    if (chapter < 1 || chapter > this.props.book.chapters.length) {
+      return <Error statusCode={404} />;
+    }
+
+    const maybeChapter = this.state.chapters[chapter];
 
     return (
       <Modal>
@@ -94,12 +114,12 @@ class Reader extends React.Component<Props, State> {
         <KeyDown
           when="ArrowRight"
           then={this.handleNextChapter}
-          disabled={currentChapter >= book.chapters.length - 1}
+          disabled={chapter >= book.chapters.length}
         />
         <KeyDown
           when="ArrowLeft"
           then={this.handlePrevChapter}
-          disabled={currentChapter < 1}
+          disabled={chapter <= 1}
         />
         <Backdrop />
         <Container
@@ -112,18 +132,18 @@ class Reader extends React.Component<Props, State> {
         >
           <Card>
             <Header onClose={this.props.onClose} title={book.title} />
-            {chapter && chapter !== 'loading' ? (
-              <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
+            {maybeChapter && maybeChapter !== 'loading' ? (
+              <Page dangerouslySetInnerHTML={createMarkup(maybeChapter)} />
             ) : (
               <Page />
             )}
             <Footer
-              disableNext={currentChapter >= book.chapters.length - 1}
-              disablePrev={currentChapter < 1}
+              disableNext={chapter >= book.chapters.length}
+              disablePrev={chapter <= 1}
               onNextChapter={this.handleNextChapter}
               onPrevChapter={this.handlePrevChapter}
             >
-              {currentChapter + 1} / {book.chapters.length}
+              {chapter} / {book.chapters.length}
             </Footer>
           </Card>
         </Container>
@@ -132,4 +152,11 @@ class Reader extends React.Component<Props, State> {
   }
 }
 
-export default Reader;
+// Wrap our Reader component to convert chapter as string to a number. We receive the chapter as a string because we read it from the URL, but we want to use number in Reader because we use the chapter to index into arrays
+export default (props: { ...$Exact<Props>, chapter: string }) => (
+  <Reader
+    book={props.book}
+    onClose={props.onClose}
+    chapter={parseInt(props.chapter, 10)}
+  />
+);

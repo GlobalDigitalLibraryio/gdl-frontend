@@ -24,7 +24,7 @@ import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import { Link } from '../../routes';
+import { Link, Router } from '../../routes';
 import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -53,6 +53,12 @@ const Reader = dynamic(import('../../components/Reader'));
 type Props = {
   book: Book,
   similar: Array<Book>,
+  chapter?: number,
+  url: {
+    query: {
+      chapter?: string,
+    },
+  },
 };
 
 const BookMetaData = ({
@@ -77,7 +83,7 @@ const Card = CardBase.extend`
   ${responsiveStyle('border-radius', 'borderRadius')};
 `;
 
-class BookPage extends React.Component<Props, { showReader: boolean }> {
+class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     const [bookRes, similarRes] = await Promise.all([
       fetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
@@ -96,10 +102,6 @@ class BookPage extends React.Component<Props, { showReader: boolean }> {
       similar: similar.results,
     };
   }
-
-  state = {
-    showReader: false,
-  };
 
   render() {
     const { book } = this.props;
@@ -130,12 +132,23 @@ class BookPage extends React.Component<Props, { showReader: boolean }> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Navbar />
-        {this.state.showReader && (
+
+        {this.props.url.query.chapter && (
           <Reader
             book={book}
-            onClose={() => this.setState({ showReader: false })}
+            chapter={this.props.url.query.chapter}
+            onClose={() =>
+              Router.pushRoute(
+                'book',
+                {
+                  id: book.id,
+                  lang: book.language.code,
+                },
+                { shallow: true },
+              )}
           />
         )}
+
         <Hero colorful>
           <Container>
             <CardBase style={{ textAlign: 'center' }}>
@@ -150,7 +163,18 @@ class BookPage extends React.Component<Props, { showReader: boolean }> {
               <BookCover book={book} mx="auto" my={15} />
               <Box>
                 <BookDescription>{book.description}</BookDescription>
-                <Button onClick={() => this.setState({ showReader: true })}>
+                <Button
+                  onClick={() =>
+                    Router.pushRoute(
+                      'book',
+                      {
+                        id: book.id,
+                        lang: book.language.code,
+                        chapter: 1,
+                      },
+                      { shallow: true },
+                    )}
+                >
                   <Trans>Read</Trans>
                 </Button>
               </Box>

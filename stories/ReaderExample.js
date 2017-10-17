@@ -84,5 +84,9 @@ const book: Book = {
 };
 
 storiesOf('Reader', module).add('Reader', () => (
-  <Reader book={book} onClose={() => console.log('Close requested')} />
+  <Reader
+    book={book}
+    onClose={() => console.log('Close requested')}
+    chapter="1"
+  />
 ));
