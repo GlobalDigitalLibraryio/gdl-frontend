@@ -11,8 +11,8 @@ import { space } from 'styled-system';
 const Page = styled.div`
   overflow-y: auto;
   flex: 1 1 auto;
-  border-top: 1px solid #e3e3e3;
-  border-bottom: 1px solid #e3e3e3;
+  border-top: 1px solid ${props => props.theme.grays.platinum};
+  border-bottom: 1px solid ${props => props.theme.grays.platinum};
   color: #000;
   strong,
   b {

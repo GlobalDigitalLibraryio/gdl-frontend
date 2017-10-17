@@ -11,11 +11,11 @@ import { ellipsis } from 'polished';
 import { MdFontDownload, MdClose } from 'react-icons/lib/md';
 import media from '../helpers/media';
 
-const Menu = styled.div`
+const Div = styled.div`
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  color: #8a8888;
+  color: ${props => props.theme.grays.jumbo};
 
   font-size: 14px;
   min-height: 48px;
@@ -29,7 +29,7 @@ const Menu = styled.div`
   }
 
   & button:last-child {
-    border-left: 1px solid #e3e3e3;
+    border-left: 1px solid ${props => props.theme.grays.platinum};
   }
 `;
 
@@ -40,11 +40,11 @@ const Button = styled.button.attrs({
   align-self: stretch;
   border-radius: 0;
   border: none;
-  color: #444;
+  color: ${props => props.theme.grays.dark};
   padding-left: 10px;
   padding-right: 10px;
   :disabled {
-    color: #ddd;
+    color: ${props => props.theme.grays.gainsboro};
   }
 `;
 
@@ -62,7 +62,7 @@ type Props = {
 };
 
 const Header = (props: Props) => (
-  <Menu>
+  <Div>
     <BookTitle>{props.title}</BookTitle>
     <Button>
       <MdFontDownload />
@@ -70,7 +70,7 @@ const Header = (props: Props) => (
     <Button aria-label="Close book" title="Close book" onClick={props.onClose}>
       <MdClose />
     </Button>
-  </Menu>
+  </Div>
 );
 
 export { Header as default, Button };

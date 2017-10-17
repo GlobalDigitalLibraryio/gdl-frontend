@@ -30,6 +30,7 @@ const theme = {
     dark: '#444',
     white: '#fff',
     steel: '#666',
+    jumbo: '#888',
     gainsboro: '#ddd',
     platinum: '#e3e3e3',
     gallery: '#eff0f2',

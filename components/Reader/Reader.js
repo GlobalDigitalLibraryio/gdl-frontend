@@ -35,7 +35,8 @@ function createMarkup(chapter: Chapter) {
 }
 
 const Card = styled.div`
-  ${media.tablet`border-radius: 4px;`} background: #fff;
+  ${media.tablet`border-radius: 4px;`} background: ${props =>
+      props.theme.grays.white};
   position: relative;
   width: 100%;
   height: 100%;

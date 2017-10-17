@@ -19,11 +19,11 @@ type Props = {
   children: React.Node,
 };
 
-const Container = styled.div`
+const Div = styled.div`
   display: flex;
   align-items: center;
   flex: 0 0 auto;
-  color: #8a8888;
+  color: ${props => props.theme.grays.jumbo};
 
   font-size: 12px;
   min-height: 48px;
@@ -42,7 +42,7 @@ const Container = styled.div`
 `;
 
 const Footer = (props: Props) => (
-  <Container>
+  <Div>
     <Button
       onClick={props.onPrevChapter}
       disabled={props.disablePrev}
@@ -60,7 +60,7 @@ const Footer = (props: Props) => (
     >
       <MdKeyboardArrowRight />
     </Button>
-  </Container>
+  </Div>
 );
 
 export default Footer;
