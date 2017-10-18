@@ -24,7 +24,7 @@ const theme = {
   supports: {
     greenPrimary: '#5cbc80',
     greenHighlight: '#edfff4',
-    greenDark: '#5cbc80',
+    greenDark: '#359258',
   },
   grays: {
     dark: '#444',

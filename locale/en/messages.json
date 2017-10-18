@@ -1,4 +1,103 @@
 {
+  "level": {
+    "translation": "",
+    "defaults": "Level {level}",
+    "origin": [
+      [
+        "components/BookCardCover.js",
+        72
+      ],
+      [
+        "pages/books/_book.js",
+        307
+      ],
+      [
+        "pages/books/index.js",
+        202
+      ]
+    ]
+  },
+  "from <0>{0}</0>": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        160
+      ]
+    ]
+  },
+  "Read": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        179
+      ]
+    ]
+  },
+  "Book language: {0}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        196
+      ]
+    ]
+  },
+  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        205
+      ]
+    ]
+  },
+  "Download book": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        256
+      ]
+    ]
+  },
+  "Download ePub": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        276
+      ]
+    ]
+  },
+  "Download PDF": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        283
+      ]
+    ]
+  },
+  "Translate book": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        295
+      ]
+    ]
+  },
+  "Similar": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/books/_book.js",
+        329
+      ]
+    ]
+  },
   "Books": {
     "translation": "",
     "origin": [
@@ -26,15 +125,6 @@
       ]
     ]
   },
-  "Level {level}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        202
-      ]
-    ]
-  },
   "Editors pick": {
     "translation": "",
     "origin": [
@@ -59,87 +149,6 @@
       [
         "pages/books/index.js",
         247
-      ]
-    ]
-  },
-  "from <0>{0}</0>": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        130
-      ]
-    ]
-  },
-  "Read": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        138
-      ]
-    ]
-  },
-  "Book language: {0}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        155
-      ]
-    ]
-  },
-  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        164
-      ]
-    ]
-  },
-  "Download book": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        215
-      ]
-    ]
-  },
-  "Download ePub": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        235
-      ]
-    ]
-  },
-  "Download PDF": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        242
-      ]
-    ]
-  },
-  "Translate book": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        254
-      ]
-    ]
-  },
-  "Similar": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        285
       ]
     ]
   }

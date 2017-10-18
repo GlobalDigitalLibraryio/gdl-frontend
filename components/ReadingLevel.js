@@ -9,17 +9,12 @@
 import styled from 'styled-components';
 
 const ReadingLevel = styled.span`
-  border-radius: 12px;
-  background-color: ${props => props.theme.grays.white};
-  border: 1px solid ${props => props.theme.primaries.primary};
-  color: ${props => props.theme.primaries.primary};
-  font-weight: 600;
-  font-size: 0.75rem;
-  padding-left: 1.1em;
-  padding-right: 1.1em;
-  height: 4em;
-  line-height: 2;
-  text-transform: uppercase;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  border-radius: 39px;
+  background-color: ${props => props.theme.supports.greenHighlight};
+  color: ${props => props.theme.supports.greenDark};
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 export default ReadingLevel;
