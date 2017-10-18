@@ -10,6 +10,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { MdMenu, MdSearch } from 'react-icons/lib/md';
 import { responsiveStyle } from 'styled-system';
+import { Link } from '../../routes';
 import Container from '../Container';
 // import Input from '../Input';
 import Flex from '../Flex';
@@ -68,7 +69,11 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
       <Nav>
         <Container mw="1075px" is={Flex} w={1} align="stretch">
           <Flex justify="flex-start">
-            <Logo style={{ height: '35px', marginLeft: '-25px' }} />
+            <Link route="books">
+              <a>
+                <Logo style={{ height: '35px', marginLeft: '-25px' }} />
+              </a>
+            </Link>
             {/* <Input placeholder="Search for title, level or subject" /> */}
           </Flex>
           <Flex flex="0 0 auto" mx="auto" />
