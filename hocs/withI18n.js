@@ -93,6 +93,7 @@ export default (Page: React.ComponentType<any>) => {
           catalogs={{
             [language]: unpackCatalog(eval(`(${catalog})`)),
           }}
+          defaultRender={null}
           development={dev}
         >
           <Head>
