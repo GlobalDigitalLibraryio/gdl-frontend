@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders 1`] = `
+.c0 {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+<Component
+  alt="test"
+  src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
+>
+  <styled.img
+    alt="test"
+    aria-hidden={true}
+    src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
+  >
+    <img
+      alt="test"
+      aria-hidden={true}
+      className="c0"
+      src="data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="
+    />
+  </styled.img>
+</Component>
+`;

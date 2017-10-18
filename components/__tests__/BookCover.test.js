@@ -2,22 +2,17 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
-import * as React from 'react';
-import { storiesOf } from '@storybook/react';
-import type { Book } from '../types';
-import BookCardCover from '../components/BookCardCover';
-import BookCover from '../components/BookCover';
-import Container from '../components/Container';
-
-/* eslint-disable jsx-a11y/href-no-hash */
-// We use dummy links for example. So disable this rule
-
-// FIXME: Have to add wrapping div around Card for now
-// because of https://github.com/jxnblk/grid-styled/issues/44
+import React from 'react';
+import { mount } from 'enzyme';
+import toJson from 'enzyme-to-json';
+import 'jest-styled-components';
+import type { Book } from '../../types';
+import { theme } from '../../hocs/withTheme';
+import BookCover from '../BookCover';
 
 const book: Book = {
   id: 1,
@@ -55,7 +50,8 @@ const book: Book = {
   },
 };
 
-storiesOf('BookCover', module)
-  .addDecorator(story => <Container mt={50}>{story()}</Container>)
-  .add('Book card cover', () => <BookCardCover book={book} />)
-  .add('Book cover', () => <BookCover book={book} />);
+test('Renders', () => {
+  const tree = mount(<BookCover book={book} theme={theme} />);
+
+  expect(toJson(tree)).toMatchSnapshot();
+});
