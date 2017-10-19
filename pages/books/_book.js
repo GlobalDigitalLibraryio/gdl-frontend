@@ -19,8 +19,6 @@ import {
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import { Manager, Target, Popper } from 'react-popper';
-import Downshift from 'downshift';
 import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -32,11 +30,8 @@ import Navbar from '../../components/Navbar';
 import ReadingLevel from '../../components/ReadingLevel';
 import env from '../../env';
 import A from '../../components/A';
-import CardBase, {
-  CardAction,
-  CardDropdown,
-  CardDropdownItem,
-} from '../../components/Card';
+import CardBase, { CardAction } from '../../components/Card';
+import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Heading from '../../components/Heading';
@@ -185,111 +180,82 @@ class BookPage extends React.Component<Props> {
         <Container pt={[15, 25]}>
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
-              <Manager>
-                <Downshift>
-                  {({ getButtonProps, isOpen, getItemProps }) => (
-                    <div>
-                      <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
-                        <Target>
-                          <CardAction {...getButtonProps()} href="">
-                            <MdLanguage />{' '}
-                            <Trans>Book language: {book.language.name}</Trans>
-                            {isOpen ? (
-                              <MdKeyboardArrowUp />
-                            ) : (
-                              <MdKeyboardArrowDown />
-                            )}
-                          </CardAction>
-                        </Target>
-                        <hr />
-                        <Plural
-                          value={availableLanguages}
-                          _0="This book is not available in other languages"
-                          one="This book is available in another language"
-                          other="This book is available in # other languages"
-                          render="small"
-                        />
-                        {isOpen && (
-                          <Popper
-                            placement="bottom"
-                            style={{ width: '100%', zIndex: 9999 }}
-                          >
-                            <CardDropdown>
-                              {book.availableLanguages
-                                .filter(
-                                  lang => lang.code !== book.language.code,
-                                )
-                                .map(lang => (
-                                  <Link
-                                    passHref
-                                    route="book"
-                                    key={lang.code}
-                                    params={{
-                                      id: book.id,
-                                      lang: lang.code,
-                                    }}
-                                  >
-                                    <CardDropdownItem
-                                      href={book.downloads.epub}
-                                      {...getItemProps({ item: 'epub' })}
-                                    >
-                                      {lang.name}
-                                    </CardDropdownItem>
-                                  </Link>
-                                ))}
-                            </CardDropdown>
-                          </Popper>
-                        )}
-                      </Card>
-                    </div>
+              <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
+                <CardDropdown
+                  id="book-language"
+                  renderTarget={(getTargetProps, isOpen) => (
+                    <CardAction href="" {...getTargetProps()}>
+                      <MdLanguage />{' '}
+                      <Trans>Book language: {book.language.name}</Trans>
+                      {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
+                    </CardAction>
                   )}
-                </Downshift>
-              </Manager>
+                >
+                  {({ getItemProps, highlightedIndex }) =>
+                    book.availableLanguages
+                      .filter(lang => lang.code !== book.language.code)
+                      .map((lang, index) => (
+                        <Link
+                          passHref
+                          route="book"
+                          key={lang.code}
+                          params={{ id: book.id, lang: lang.code }}
+                        >
+                          <CardDropdownItem
+                            {...getItemProps({ item: lang.code })}
+                            isActive={highlightedIndex === index}
+                          >
+                            {lang.name}
+                          </CardDropdownItem>
+                        </Link>
+                      ))}
+                </CardDropdown>
+                <hr />
+                <Plural
+                  value={availableLanguages}
+                  _0="This book is not available in other languages"
+                  one="This book is available in another language"
+                  other="This book is available in # other languages"
+                  render="small"
+                />
+              </Card>
               <Box mt={1} mb={1}>
-                <Manager>
-                  <Downshift>
-                    {({ getButtonProps, isOpen, getItemProps }) => (
-                      <div>
-                        <Card borderRadius={0}>
-                          <Target>
-                            <CardAction {...getButtonProps()} href="">
-                              <MdFileDownload /> <Trans>Download book</Trans>
-                              {isOpen ? (
-                                <MdKeyboardArrowUp />
-                              ) : (
-                                <MdKeyboardArrowDown />
-                              )}
-                            </CardAction>
-                          </Target>
-                          {isOpen && (
-                            <Popper
-                              placement="bottom"
-                              style={{ width: '100%', zIndex: 9999 }}
-                            >
-                              <CardDropdown>
-                                <CardDropdownItem
-                                  onClick={event => event.stopPropagation()}
-                                  href={book.downloads.epub}
-                                  {...getItemProps({ item: 'epub' })}
-                                >
-                                  <MdFileDownload />{' '}
-                                  <Trans>Download ePub</Trans>
-                                </CardDropdownItem>
-                                <CardDropdownItem
-                                  onClick={event => event.stopPropagation()}
-                                  href={book.downloads.pdf}
-                                  {...getItemProps({ item: 'pdf' })}
-                                >
-                                  <MdFileDownload /> <Trans>Download PDF</Trans>
-                                </CardDropdownItem>
-                              </CardDropdown>
-                            </Popper>
-                          )}
-                        </Card>
-                      </div>
+                <Card borderRadius={0}>
+                  <CardDropdown
+                    id="download-book"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <CardAction {...getTargetProps()} href="">
+                        <MdFileDownload /> <Trans>Download book</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </CardAction>
                     )}
-                  </Downshift>
-                </Manager>
+                  >
+                    {({ getItemProps, highlightedIndex }) => [
+                      <CardDropdownItem
+                        key="epub"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.epub}
+                        {...getItemProps({ item: 'epub' })}
+                        isActive={highlightedIndex === 0}
+                      >
+                        <MdFileDownload /> <Trans>Download ePub</Trans>
+                      </CardDropdownItem>,
+                      <CardDropdownItem
+                        key="pdf"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.pdf}
+                        {...getItemProps({ item: 'pdf' })}
+                        isActive={highlightedIndex === 1}
+                      >
+                        <MdFileDownload /> <Trans>Download PDF</Trans>
+                      </CardDropdownItem>,
+                    ]}
+                  </CardDropdown>
+                </Card>
                 <Card borderRadius={[0, '0 0 0 4px']}>
                   <CardAction>
                     <MdTranslate /> <Trans>Translate book</Trans>{' '}
