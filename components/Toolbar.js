@@ -72,7 +72,7 @@ class ToolbarItem extends React.Component<Props, { isExpanded: boolean }> {
 
   render() {
     return (
-      <Downshift selectedItem={this.props.selectedItem}>
+      <Downshift selectedItem={this.props.selectedItem} id={this.props.id}>
         {({
           getButtonProps,
           getRootProps,
