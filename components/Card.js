@@ -6,17 +6,15 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
-import { fontSize } from 'styled-system';
 import Box from './Box';
 
-const CardNew = Box.extend`
+const CardBase = Box.extend`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   color: ${props => props.theme.grays.dark};
 `;
 
-const Card = CardNew.extend`
+const Card = CardBase.extend`
   background: ${props => props.theme.grays.white};
   position: relative;
   max-width: 100%;
@@ -33,20 +31,4 @@ Card.defaultProps = {
   py: 12,
 };
 
-const CardAction = styled.a`
-  ${fontSize} font-weight: 600;
-  display: flex;
-  align-items: center;
-  & svg:nth-of-type(1) {
-    margin-right: 10px;
-  }
-  & svg:nth-of-type(2) {
-    margin-left: auto;
-  }
-`;
-
-CardAction.defaultProps = {
-  fontSize: 16,
-};
-
-export { Card as default, CardNew, CardAction };
+export { Card as default, CardBase };

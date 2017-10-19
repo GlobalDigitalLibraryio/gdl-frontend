@@ -10,7 +10,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Trans } from 'lingui-react';
 import type { Book } from '../types';
-import { CardNew } from './Card';
+import { CardBase } from './Card';
 import ReadingLevel from './ReadingLevel';
 import Img from './Img';
 import Box from './Box';
@@ -36,7 +36,7 @@ const BookTitle = styled.div`
 
 // TODO: Figure out why box-shadow is clipped
 export default ({ book, ...props }: { book: Book }) => (
-  <CardNew
+  <CardBase
     w={[105, 130]}
     flex="0 0 auto"
     style={{ overflow: 'hidden', display: 'block' }}
@@ -51,5 +51,5 @@ export default ({ book, ...props }: { book: Book }) => (
         <Trans id="level">Level {book.readingLevel}</Trans>
       </ReadingLevel>
     </Div>
-  </CardNew>
+  </CardBase>
 );

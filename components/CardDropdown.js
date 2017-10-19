@@ -9,7 +9,6 @@ import * as React from 'react';
 import { Manager, Target, Popper } from 'react-popper';
 import Downshift from 'downshift';
 import styled from 'styled-components';
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
 import Card from './Card';
 
 const CardDropdownItem = styled.a`
@@ -35,7 +34,6 @@ const Dropdown = Card.extend`
 
 type Props = {
   id: string, // Because we want to avoid using Downshift's automatically generated id to prevent checksums errors with SSR
-  disabled: boolean,
   renderTarget(getButtonProps: Function, isOpen: boolean): React.Node,
   children: ({
     highlightedIndex: number,
@@ -49,10 +47,6 @@ class CardDropdown extends React.Component<Props> {
   };
 
   render() {
-    if (this.props.disabled) {
-      return this.props.renderTarget();
-    }
-
     return (
       <Manager tag={false}>
         <Downshift id={this.props.id}>

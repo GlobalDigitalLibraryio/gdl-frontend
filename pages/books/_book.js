@@ -30,7 +30,7 @@ import Navbar from '../../components/Navbar';
 import ReadingLevel from '../../components/ReadingLevel';
 import env from '../../env';
 import A from '../../components/A';
-import CardBase, { CardAction } from '../../components/Card';
+import Card from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
@@ -74,8 +74,21 @@ const BookDescription = styled.div`
   margin-bottom: 15px;
 `;
 
+const DropdownAction = styled.a`
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  & svg:nth-of-type(1) {
+    margin-right: 10px;
+  }
+  & svg:nth-of-type(2) {
+    margin-left: auto;
+  }
+`;
+
 // Extend the regular Card, allowing us to alter the border radius responsively
-const Card = CardBase.extend`
+const CardBorderRadius = Card.extend`
   ${responsiveStyle('border-radius', 'borderRadius')};
 `;
 
@@ -147,7 +160,7 @@ class BookPage extends React.Component<Props> {
 
         <Hero colorful>
           <Container>
-            <CardBase style={{ textAlign: 'center' }}>
+            <Card style={{ textAlign: 'center' }}>
               <Box>
                 <Title fontSize={[28, 38]} align="center">
                   {book.title}
@@ -174,21 +187,21 @@ class BookPage extends React.Component<Props> {
                   <Trans>Read</Trans>
                 </Button>
               </Box>
-            </CardBase>
+            </Card>
           </Container>
         </Hero>
         <Container pt={[15, 25]}>
           <Flex wrap>
             <Box w={[1, 1 / 2]}>
-              <Card borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
+              <CardBorderRadius borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
                 <CardDropdown
                   id="book-language"
                   renderTarget={(getTargetProps, isOpen) => (
-                    <CardAction href="" {...getTargetProps()}>
+                    <DropdownAction href="" {...getTargetProps()}>
                       <MdLanguage />{' '}
                       <Trans>Book language: {book.language.name}</Trans>
                       {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-                    </CardAction>
+                    </DropdownAction>
                   )}
                 >
                   {({ getItemProps, highlightedIndex }) =>
@@ -218,20 +231,20 @@ class BookPage extends React.Component<Props> {
                   other="This book is available in # other languages"
                   render="small"
                 />
-              </Card>
+              </CardBorderRadius>
               <Box mt={1} mb={1}>
-                <Card borderRadius={0}>
+                <CardBorderRadius borderRadius={0}>
                   <CardDropdown
                     id="download-book"
                     renderTarget={(getTargetProps, isOpen) => (
-                      <CardAction {...getTargetProps()} href="">
+                      <DropdownAction {...getTargetProps()} href="">
                         <MdFileDownload /> <Trans>Download book</Trans>
                         {isOpen ? (
                           <MdKeyboardArrowUp />
                         ) : (
                           <MdKeyboardArrowDown />
                         )}
-                      </CardAction>
+                      </DropdownAction>
                     )}
                   >
                     {({ getItemProps, highlightedIndex }) => [
@@ -255,17 +268,17 @@ class BookPage extends React.Component<Props> {
                       </CardDropdownItem>,
                     ]}
                   </CardDropdown>
-                </Card>
-                <Card borderRadius={[0, '0 0 0 4px']}>
-                  <CardAction>
+                </CardBorderRadius>
+                <CardBorderRadius borderRadius={[0, '0 0 0 4px']}>
+                  <DropdownAction>
                     <MdTranslate /> <Trans>Translate book</Trans>{' '}
                     <MdKeyboardArrowRight />
-                  </CardAction>
-                </Card>
+                  </DropdownAction>
+                </CardBorderRadius>
               </Box>
             </Box>
             <Box w={[1, 1 / 2]} mb={1}>
-              <Card
+              <CardBorderRadius
                 style={{ height: '100%' }}
                 borderRadius={['0 0 4px 4px', '0 4px 4px 0']}
               >
@@ -284,7 +297,7 @@ class BookPage extends React.Component<Props> {
                   <A href={book.license.url}>{book.license.description}</A>
                 </BookMetaData>
                 <BookMetaData heading="categories">{categories}</BookMetaData>
-              </Card>
+              </CardBorderRadius>
             </Box>
           </Flex>
         </Container>

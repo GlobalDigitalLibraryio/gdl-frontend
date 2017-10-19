@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import { css } from 'styled-components';
-import { CardNew } from './Card';
+import { CardBase } from './Card';
 import Img from './Img';
 import type { Book } from '../types';
 
@@ -20,7 +20,7 @@ const coverCss = css`
   justify-content: center;
 `;
 
-const Cover = CardNew.extend`
+const Cover = CardBase.extend`
   ${coverCss};
 `;
 
