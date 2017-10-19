@@ -38,7 +38,7 @@ const BookTitle = styled.div`
 export default ({ book, ...props }: { book: Book }) => (
   <CardNew
     w={[105, 130]}
-    flex="1 0 auto"
+    flex="0 0 auto"
     style={{ overflow: 'hidden', display: 'block' }}
     {...props}
   >
