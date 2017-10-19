@@ -19,7 +19,6 @@ import {
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import { responsiveStyle } from 'styled-system';
 import type { Book } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
@@ -30,7 +29,7 @@ import Navbar from '../../components/Navbar';
 import ReadingLevel from '../../components/ReadingLevel';
 import env from '../../env';
 import A from '../../components/A';
-import Card from '../../components/Card';
+import Card, { CardBase } from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
@@ -88,8 +87,13 @@ const DropdownAction = styled.a`
 `;
 
 // Extend the regular Card, allowing us to alter the border radius responsively
-const CardBorderRadius = Card.extend`
-  ${responsiveStyle('border-radius', 'borderRadius')};
+const CardNested = Card.extend`
+  border-radius: 0;
+`;
+
+const Separator = styled.div`
+  height: 4px;
+  background-color: ${props => props.theme.grays.gallery};
 `;
 
 class BookPage extends React.Component<Props> {
@@ -191,49 +195,54 @@ class BookPage extends React.Component<Props> {
           </Container>
         </Hero>
         <Container pt={[15, 25]}>
-          <Flex wrap>
-            <Box w={[1, 1 / 2]}>
-              <CardBorderRadius borderRadius={['4px 4px 0 0', '4px 0 0 0']}>
-                <CardDropdown
-                  id="book-language"
-                  renderTarget={(getTargetProps, isOpen) => (
-                    <DropdownAction href="" {...getTargetProps()}>
-                      <MdLanguage />{' '}
-                      <Trans>Book language: {book.language.name}</Trans>
-                      {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-                    </DropdownAction>
-                  )}
-                >
-                  {({ getItemProps, highlightedIndex }) =>
-                    book.availableLanguages
-                      .filter(lang => lang.code !== book.language.code)
-                      .map((lang, index) => (
-                        <Link
-                          passHref
-                          route="book"
-                          key={lang.code}
-                          params={{ id: book.id, lang: lang.code }}
-                        >
-                          <CardDropdownItem
-                            {...getItemProps({ item: lang.code })}
-                            isActive={highlightedIndex === index}
+          <CardBase mb={10}>
+            <Flex wrap>
+              <Flex w={[1, 1 / 2]} column>
+                <CardNested>
+                  <CardDropdown
+                    id="book-language"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <DropdownAction href="" {...getTargetProps()}>
+                        <MdLanguage />{' '}
+                        <Trans>Book language: {book.language.name}</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </DropdownAction>
+                    )}
+                  >
+                    {({ getItemProps, highlightedIndex }) =>
+                      book.availableLanguages
+                        .filter(lang => lang.code !== book.language.code)
+                        .map((lang, index) => (
+                          <Link
+                            passHref
+                            route="book"
+                            key={lang.code}
+                            params={{ id: book.id, lang: lang.code }}
                           >
-                            {lang.name}
-                          </CardDropdownItem>
-                        </Link>
-                      ))}
-                </CardDropdown>
-                <hr />
-                <Plural
-                  value={availableLanguages}
-                  _0="This book is not available in other languages"
-                  one="This book is available in another language"
-                  other="This book is available in # other languages"
-                  render="small"
-                />
-              </CardBorderRadius>
-              <Box mt={1} mb={1}>
-                <CardBorderRadius borderRadius={0}>
+                            <CardDropdownItem
+                              {...getItemProps({ item: lang.code })}
+                              isActive={highlightedIndex === index}
+                            >
+                              {lang.name}
+                            </CardDropdownItem>
+                          </Link>
+                        ))}
+                  </CardDropdown>
+                  <hr />
+                  <Plural
+                    value={availableLanguages}
+                    _0="This book is not available in other languages"
+                    one="This book is available in another language"
+                    other="This book is available in # other languages"
+                    render="small"
+                  />
+                </CardNested>
+                <Separator />
+                <CardNested>
                   <CardDropdown
                     id="download-book"
                     renderTarget={(getTargetProps, isOpen) => (
@@ -268,38 +277,35 @@ class BookPage extends React.Component<Props> {
                       </CardDropdownItem>,
                     ]}
                   </CardDropdown>
-                </CardBorderRadius>
-                <CardBorderRadius borderRadius={[0, '0 0 0 4px']}>
+                </CardNested>
+                <CardNested flex="1 0 auto">
                   <DropdownAction>
                     <MdTranslate /> <Trans>Translate book</Trans>{' '}
                     <MdKeyboardArrowRight />
                   </DropdownAction>
-                </CardBorderRadius>
-              </Box>
-            </Box>
-            <Box w={[1, 1 / 2]} mb={1}>
-              <CardBorderRadius
-                style={{ height: '100%' }}
-                borderRadius={['0 0 4px 4px', '0 4px 4px 0']}
-              >
-                <ReadingLevel style={{ float: 'right' }}>
-                  <Trans id="level">Level {book.readingLevel}</Trans>
-                </ReadingLevel>
-                {book.datePublished && (
-                  <BookMetaData heading="Published">
-                    <DateFormat value={new Date(book.datePublished)} />
+                </CardNested>
+              </Flex>
+              <Box w={[1, 1 / 2]}>
+                <CardNested style={{ height: '100%' }}>
+                  <ReadingLevel style={{ float: 'right' }}>
+                    <Trans id="level">Level {book.readingLevel}</Trans>
+                  </ReadingLevel>
+                  {book.datePublished && (
+                    <BookMetaData heading="Published">
+                      <DateFormat value={new Date(book.datePublished)} />
+                    </BookMetaData>
+                  )}
+                  <BookMetaData my={10} heading="Authors">
+                    {contributors}
                   </BookMetaData>
-                )}
-                <BookMetaData my={10} heading="Authors">
-                  {contributors}
-                </BookMetaData>
-                <BookMetaData heading="License">
-                  <A href={book.license.url}>{book.license.description}</A>
-                </BookMetaData>
-                <BookMetaData heading="categories">{categories}</BookMetaData>
-              </CardBorderRadius>
-            </Box>
-          </Flex>
+                  <BookMetaData heading="License">
+                    <A href={book.license.url}>{book.license.description}</A>
+                  </BookMetaData>
+                  <BookMetaData heading="categories">{categories}</BookMetaData>
+                </CardNested>
+              </Box>
+            </Flex>
+          </CardBase>
         </Container>
 
         <Hero borderTop borderBottom>
