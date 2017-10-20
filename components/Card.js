@@ -18,12 +18,6 @@ const Card = CardBase.extend`
   background: ${props => props.theme.grays.white};
   position: relative;
   max-width: 100%;
-
-  & hr {
-    background-color: ${props => props.theme.grays.platinum};
-    height: 1px;
-    border: none;
-  }
 `;
 
 export { Card as default, CardBase };

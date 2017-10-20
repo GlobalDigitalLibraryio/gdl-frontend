@@ -83,6 +83,15 @@ const DropdownAction = styled.a`
   }
 `;
 
+// Specially desgined for "underlining" everything but the first icon of the download book link
+const Hr = styled.hr`
+  background-color: ${props => props.theme.grays.platinum};
+  height: 1px;
+  border: none;
+  margin-left: 33px;
+  margin-right: -15px;
+`;
+
 // Extend the regular Card, allowing us to alter the border radius responsively
 const CardNested = Card.extend`
   border-radius: 0;
@@ -231,7 +240,7 @@ class BookPage extends React.Component<Props> {
                           </Link>
                         ))}
                   </CardDropdown>
-                  <hr />
+                  <Hr />
                   <Plural
                     value={availableLanguages}
                     _0="This book is not available in other languages"
