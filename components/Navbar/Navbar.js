@@ -55,6 +55,17 @@ const HamburgerButton = styled.button.attrs({
   }
 `;
 
+const LogoA = styled.a`
+  svg {
+    height: 24px;
+    width: 75px;
+    ${media.tablet`
+      height: 36px;
+      width: 110px;
+    `};
+  }
+`;
+
 class Navbar extends React.Component<{}, { isExpanded: boolean }> {
   state = {
     isExpanded: false,
@@ -67,25 +78,28 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
     return (
       <Nav>
         <Container mw="1075px" is={Flex} w={1} align="stretch">
-          <Flex justify="flex-start">
-            <Link route="books">
-              <a>
-                <Logo style={{ height: '35px', marginLeft: '-25px' }} />
-              </a>
-            </Link>
-          </Flex>
-          <Flex flex="0 0 auto" mx="auto" />
-          <Flex justify="flex-end">
+          <Flex
+            justify={['flex-start', 'flex-end']}
+            flex="1 1 0"
+            order={[0, 2]}
+          >
             <HamburgerButton
               aria-label="Menu"
               onClick={this.handleHamburgerClick}
               aria-expanded={this.state.isExpanded}
-              hideText={[true, false]}
             >
               <MdMenu />
               <span>Menu</span>
             </HamburgerButton>
           </Flex>
+          <Flex justify={['center', 'flex-start']} flex="1 1 0">
+            <Link route="books" passHref>
+              <LogoA>
+                <Logo style={{ height: '35px' }} />
+              </LogoA>
+            </Link>
+          </Flex>
+          <Flex flex="1 1 0" order={[0, 1]} />
         </Container>
       </Nav>
     );
