@@ -14,7 +14,6 @@ import {
   MdLanguage,
   MdTranslate,
   MdFileDownload,
-  MdKeyboardArrowRight,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
@@ -30,6 +29,7 @@ import env from '../../env';
 import A from '../../components/A';
 import H3 from '../../components/H3';
 import H1 from '../../components/H1';
+import H6 from '../../components/H6';
 import P from '../../components/P';
 import Card, { CardBase } from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
@@ -39,7 +39,6 @@ import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
-import media from '../../components/helpers/media';
 
 // Number of similar books to fetch
 const SIMILAR_BOOKS_PAGE_SIZE = 5;
@@ -58,11 +57,6 @@ type Props = {
   },
 };
 
-const Heading = styled.div`
-  text-transform: uppercase;
-  font-weight: bold;
-`;
-
 const BookMetaData = ({
   heading,
   children,
@@ -71,7 +65,7 @@ const BookMetaData = ({
   children: React.Node,
 }) => (
   <Box mb={2}>
-    <Heading>{heading}</Heading>
+    <H6>{heading}</H6>
     {children}
   </Box>
 );
@@ -199,125 +193,124 @@ class BookPage extends React.Component<Props> {
             </Card>
           </Container>
         </Hero>
-        <Hero py={[15, 20]}>
-          <Container>
-            <CardBase>
-              <Flex wrap>
-                <Flex w={[1, 1 / 2]} column>
-                  <CardNested>
-                    <CardDropdown
-                      id="book-language"
-                      renderTarget={(getTargetProps, isOpen) => (
-                        <DropdownAction href="" {...getTargetProps()}>
-                          <MdLanguage />{' '}
-                          <Trans>Book language: {book.language.name}</Trans>
-                          {isOpen ? (
-                            <MdKeyboardArrowUp />
-                          ) : (
-                            <MdKeyboardArrowDown />
-                          )}
-                        </DropdownAction>
-                      )}
-                    >
-                      {({ getItemProps, highlightedIndex }) =>
-                        book.availableLanguages
-                          .filter(lang => lang.code !== book.language.code)
-                          .map((lang, index) => (
-                            <Link
-                              passHref
-                              route="book"
-                              key={lang.code}
-                              params={{ id: book.id, lang: lang.code }}
-                            >
-                              <CardDropdownItem
-                                {...getItemProps({ item: lang.code })}
-                                isActive={highlightedIndex === index}
-                              >
-                                {lang.name}
-                              </CardDropdownItem>
-                            </Link>
-                          ))}
-                    </CardDropdown>
-                    <hr />
-                    <Plural
-                      value={availableLanguages}
-                      _0="This book is not available in other languages"
-                      one="This book is available in another language"
-                      other="This book is available in # other languages"
-                      render="small"
-                    />
-                  </CardNested>
-                  <Separator />
-                  <CardNested>
-                    <CardDropdown
-                      id="download-book"
-                      renderTarget={(getTargetProps, isOpen) => (
-                        <DropdownAction {...getTargetProps()} href="">
-                          <MdFileDownload /> <Trans>Download book</Trans>
-                          {isOpen ? (
-                            <MdKeyboardArrowUp />
-                          ) : (
-                            <MdKeyboardArrowDown />
-                          )}
-                        </DropdownAction>
-                      )}
-                    >
-                      {({ getItemProps, highlightedIndex }) => [
-                        <CardDropdownItem
-                          key="epub"
-                          onClick={event => event.stopPropagation()}
-                          href={book.downloads.epub}
-                          {...getItemProps({ item: 'epub' })}
-                          isActive={highlightedIndex === 0}
-                        >
-                          <MdFileDownload /> <Trans>Download ePub</Trans>
-                        </CardDropdownItem>,
-                        <CardDropdownItem
-                          key="pdf"
-                          onClick={event => event.stopPropagation()}
-                          href={book.downloads.pdf}
-                          {...getItemProps({ item: 'pdf' })}
-                          isActive={highlightedIndex === 1}
-                        >
-                          <MdFileDownload /> <Trans>Download PDF</Trans>
-                        </CardDropdownItem>,
-                      ]}
-                    </CardDropdown>
-                  </CardNested>
-                  <CardNested flex="1 0 auto">
-                    <DropdownAction>
-                      <MdTranslate /> <Trans>Translate book</Trans>{' '}
-                      <MdKeyboardArrowRight />
-                    </DropdownAction>
-                  </CardNested>
-                </Flex>
-                <Box w={[1, 1 / 2]}>
-                  <CardNested fontSize={[10, 12]} style={{ height: '100%' }}>
-                    <ReadingLevel style={{ float: 'right' }}>
-                      <Trans id="level">Level {book.readingLevel}</Trans>
-                    </ReadingLevel>
-                    {book.datePublished && (
-                      <BookMetaData heading="Published">
-                        <DateFormat value={new Date(book.datePublished)} />
-                      </BookMetaData>
+        <Container py={[15, 20]}>
+          <CardBase>
+            <Flex wrap>
+              <Flex w={[1, 1 / 2]} column>
+                <CardNested p={15}>
+                  <CardDropdown
+                    id="book-language"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <DropdownAction href="" {...getTargetProps()}>
+                        <MdLanguage />{' '}
+                        <Trans>Book language: {book.language.name}</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </DropdownAction>
                     )}
-                    <BookMetaData my={10} heading="Authors">
-                      {contributors}
-                    </BookMetaData>
-                    <BookMetaData heading="License">
-                      <A href={book.license.url}>{book.license.description}</A>
-                    </BookMetaData>
-                    <BookMetaData heading="categories">
-                      {categories}
-                    </BookMetaData>
-                  </CardNested>
-                </Box>
+                  >
+                    {({ getItemProps, highlightedIndex }) =>
+                      book.availableLanguages
+                        .filter(lang => lang.code !== book.language.code)
+                        .map((lang, index) => (
+                          <Link
+                            passHref
+                            route="book"
+                            key={lang.code}
+                            params={{ id: book.id, lang: lang.code }}
+                          >
+                            <CardDropdownItem
+                              {...getItemProps({ item: lang.code })}
+                              isActive={highlightedIndex === index}
+                            >
+                              {lang.name}
+                            </CardDropdownItem>
+                          </Link>
+                        ))}
+                  </CardDropdown>
+                  <hr />
+                  <Plural
+                    value={availableLanguages}
+                    _0="This book is not available in other languages"
+                    one="This book is available in another language"
+                    other="This book is available in # other languages"
+                    render="small"
+                  />
+                </CardNested>
+                <Separator />
+                <CardNested p={15}>
+                  <CardDropdown
+                    id="download-book"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <DropdownAction {...getTargetProps()} href="">
+                        <MdFileDownload /> <Trans>Download book</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </DropdownAction>
+                    )}
+                  >
+                    {({ getItemProps, highlightedIndex }) => [
+                      <CardDropdownItem
+                        key="epub"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.epub}
+                        {...getItemProps({ item: 'epub' })}
+                        isActive={highlightedIndex === 0}
+                      >
+                        <MdFileDownload /> <Trans>Download ePub</Trans>
+                      </CardDropdownItem>,
+                      <CardDropdownItem
+                        key="pdf"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.pdf}
+                        {...getItemProps({ item: 'pdf' })}
+                        isActive={highlightedIndex === 1}
+                      >
+                        <MdFileDownload /> <Trans>Download PDF</Trans>
+                      </CardDropdownItem>,
+                    ]}
+                  </CardDropdown>
+                </CardNested>
+                <CardNested flex="1 0 auto" p={15}>
+                  <DropdownAction>
+                    <MdTranslate /> <Trans>Translate book</Trans>
+                  </DropdownAction>
+                </CardNested>
               </Flex>
-            </CardBase>
-          </Container>
-        </Hero>
+              <Box w={[1, 1 / 2]}>
+                <CardNested
+                  fontSize={[13, 15]}
+                  p={15}
+                  style={{ height: '100%' }}
+                >
+                  <ReadingLevel style={{ float: 'right' }}>
+                    <Trans id="level">Level {book.readingLevel}</Trans>
+                  </ReadingLevel>
+                  {book.datePublished && (
+                    <BookMetaData heading="Published">
+                      <DateFormat value={new Date(book.datePublished)} />
+                    </BookMetaData>
+                  )}
+                  <BookMetaData my={10} heading="Authors">
+                    {contributors}
+                  </BookMetaData>
+                  <BookMetaData heading="License">
+                    <A href={book.license.url}>{book.license.description}</A>
+                  </BookMetaData>
+                  <BookMetaData heading="categories">{categories}</BookMetaData>
+                </CardNested>
+              </Box>
+            </Flex>
+          </CardBase>
+        </Container>
 
-        <Hero py={[15, 22]}>
+        <Hero pb={[15, 22]}>
           <Container>
             <H3>
               <Trans>Similar</Trans>
