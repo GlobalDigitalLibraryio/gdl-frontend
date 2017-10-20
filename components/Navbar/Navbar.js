@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import { MdMenu, MdSearch } from 'react-icons/lib/md';
+import { MdMenu } from 'react-icons/lib/md';
 import { responsiveStyle } from 'styled-system';
 import { Link } from '../../routes';
 import Container from '../Container';
@@ -74,13 +74,9 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
                 <Logo style={{ height: '35px', marginLeft: '-25px' }} />
               </a>
             </Link>
-            {/* <Input placeholder="Search for title, level or subject" /> */}
           </Flex>
           <Flex flex="0 0 auto" mx="auto" />
           <Flex justify="flex-end">
-            <HamburgerButton aria-label="Search">
-              <MdSearch />
-            </HamburgerButton>
             <HamburgerButton
               aria-label="Menu"
               onClick={this.handleHamburgerClick}
