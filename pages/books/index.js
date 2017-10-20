@@ -25,6 +25,7 @@ import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
+import P from '../../components/P';
 import Toolbar, {
   ToolbarItem,
   ToolbarDropdownItem,
@@ -208,22 +209,42 @@ class BooksPage extends React.Component<Props> {
           </Container>
         </Toolbar>
 
-        <Hero colorful>
+        <Hero
+          colorful
+          h={['237px', '390px']}
+          pt={['15px', '40px']}
+          pb={['42px', '54px']}
+        >
           <Container>
             <Link
               route="book"
               params={{ id: editorPick.id, lang: editorPick.language.code }}
               passHref
             >
-              <Card is="a" style={{ display: 'block', color: '#444' }}>
+              <Card
+                is="a"
+                style={{ display: 'block', color: '#444' }}
+                h={['180px', '295px']}
+                pl={['15px', '20px']}
+                pr={['15px', '80px']}
+                pt={['15px', '20px']}
+              >
                 <Flex>
-                  <BookCover book={editorPick} mr={6} />
-                  <Box w={1 / 2} ml={6}>
-                    <Title upperCase fontSize={18}>
-                      <Trans>Editors pick</Trans>
+                  <BookCover
+                    book={editorPick}
+                    h={['148px', '247px']}
+                    w={['120px', '200px']}
+                    mr={['15px', '20px']}
+                    flex="0 0 auto"
+                  />
+                  <Box>
+                    <Title upperCase fontSize={[16, 20]}>
+                      <Trans>Editor’s pick</Trans>
                     </Title>
-                    <Title fontSize={16}>{editorPick.title}</Title>
-                    {editorPick.description}
+                    <Title fontSize={[16, 20]}>{editorPick.title}</Title>
+                    <P fontSize={[12, 16]} lineHeight={[18, 24]}>
+                      {editorPick.description}
+                    </P>
                   </Box>
                 </Flex>
               </Card>

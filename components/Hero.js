@@ -19,8 +19,4 @@ const Hero = Box.extend`
     props.borderBottom ? `solid 1px ${props.theme.grays.platinum}` : null};
 `;
 
-Hero.defaultProps = {
-  py: '1rem',
-};
-
 export default Hero;

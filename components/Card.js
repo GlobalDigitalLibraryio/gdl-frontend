@@ -26,9 +26,4 @@ const Card = CardBase.extend`
   }
 `;
 
-Card.defaultProps = {
-  px: 15,
-  py: 12,
-};
-
 export { Card as default, CardBase };
