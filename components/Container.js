@@ -18,7 +18,7 @@ const Container = Box.extend`
 
 Container.defaultProps = {
   mw: '738px',
-  px: 15,
+  px: [15, 20],
 };
 
 export default Container;
