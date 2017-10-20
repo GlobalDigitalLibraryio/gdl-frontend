@@ -10,10 +10,9 @@ import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
-import { MdKeyboardArrowRight, MdCheck } from 'react-icons/lib/md';
+import { MdCheck } from 'react-icons/lib/md';
 import type { Book, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
@@ -26,6 +25,8 @@ import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
 import P from '../../components/P';
+import H3 from '../../components/H3';
+import H4 from '../../components/H4';
 import Toolbar, {
   ToolbarItem,
   ToolbarDropdownItem,
@@ -238,10 +239,10 @@ class BooksPage extends React.Component<Props> {
                     flex="0 0 auto"
                   />
                   <Box>
-                    <Title upperCase fontSize={[16, 20]}>
+                    <H3>
                       <Trans>Editor’s pick</Trans>
-                    </Title>
-                    <Title fontSize={[16, 20]}>{editorPick.title}</Title>
+                    </H3>
+                    <H4>{editorPick.title}</H4>
                     <P fontSize={[12, 16]} lineHeight={[18, 24]}>
                       {editorPick.description}
                     </P>
@@ -254,20 +255,18 @@ class BooksPage extends React.Component<Props> {
 
         <Hero>
           <Container>
-            <Title href="" is="a" upperCase fontSize={[18, 22]}>
+            <H3>
               <Trans>Just arrived in {languageFilter.name}</Trans>{' '}
-              <MdKeyboardArrowRight />
-            </Title>
+            </H3>
             <HorizontalBookList books={this.props.popular} mt={20} />
           </Container>
         </Hero>
 
         <Hero borderTop borderBottom>
           <Container>
-            <Title href="" is="a" upperCase fontSize={[18, 22]}>
+            <H3>
               <Trans>Popular in {languageFilter.name}</Trans>{' '}
-              <MdKeyboardArrowRight />
-            </Title>
+            </H3>
             <HorizontalBookList books={this.props.justArrived} mt={20} />
           </Container>
         </Hero>

@@ -22,13 +22,14 @@ import styled from 'styled-components';
 import type { Book } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
-import Title from '../../components/Title';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
 import ReadingLevel from '../../components/ReadingLevel';
 import env from '../../env';
 import A from '../../components/A';
+import H3 from '../../components/H3';
+import H1 from '../../components/H1';
 import Card, { CardBase } from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
@@ -166,9 +167,9 @@ class BookPage extends React.Component<Props> {
           <Container>
             <Card style={{ textAlign: 'center' }}>
               <Box>
-                <Title fontSize={[28, 38]} align="center">
+                <H1 fontSize={[28, 38]} align="center">
                   {book.title}
-                </Title>
+                </H1>
                 <Trans>
                   from <A href="">{book.publisher.name}</A>
                 </Trans>
@@ -310,9 +311,9 @@ class BookPage extends React.Component<Props> {
 
         <Hero borderTop borderBottom>
           <Container>
-            <Title href="" is="a" upperCase fontSize={[18, 22]}>
-              <Trans>Similar</Trans> <MdKeyboardArrowRight />
-            </Title>
+            <H3>
+              <Trans>Similar</Trans>
+            </H3>
             <HorizontalBookList books={this.props.similar} mt={20} />
           </Container>
         </Hero>

@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders 1`] = `
+.c0 {
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 30px;
+}
+
+.c0:first-child {
+  margin-top: 0;
+}
+
+@media (min-width:40em) {
+  .c0 {
+    font-size: 36px;
+    line-height: 42px;
+  }
+}
+
+<h1
+  className="c0"
+>
+  Header 1
+</h1>
+`;
