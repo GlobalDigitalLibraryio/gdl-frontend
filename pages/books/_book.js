@@ -30,15 +30,16 @@ import env from '../../env';
 import A from '../../components/A';
 import H3 from '../../components/H3';
 import H1 from '../../components/H1';
+import P from '../../components/P';
 import Card, { CardBase } from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
-import Heading from '../../components/Heading';
 import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import HorizontalBookList from '../../components/HorizontalBookList';
+import media from '../../components/helpers/media';
 
 // Number of similar books to fetch
 const SIMILAR_BOOKS_PAGE_SIZE = 5;
@@ -57,6 +58,11 @@ type Props = {
   },
 };
 
+const Heading = styled.div`
+  text-transform: uppercase;
+  font-weight: bold;
+`;
+
 const BookMetaData = ({
   heading,
   children,
@@ -69,10 +75,6 @@ const BookMetaData = ({
     {children}
   </Box>
 );
-
-const BookDescription = styled.div`
-  margin-bottom: 15px;
-`;
 
 const DropdownAction = styled.a`
   font-size: 16px;
@@ -163,20 +165,22 @@ class BookPage extends React.Component<Props> {
           />
         )}
 
-        <Hero colorful>
+        <Hero colorful py={[15, 40]}>
           <Container>
-            <Card style={{ textAlign: 'center' }}>
+            <Card style={{ textAlign: 'center' }} pt={[18]} pb={[15]} px={[10]}>
               <Box>
                 <H1 fontSize={[28, 38]} align="center">
                   {book.title}
                 </H1>
-                <Trans>
-                  from <A href="">{book.publisher.name}</A>
-                </Trans>
+                <P fontSize={[12, 14]}>
+                  <Trans>
+                    from <A href="">{book.publisher.name}</A>
+                  </Trans>
+                </P>
               </Box>
               <BookCover book={book} mx="auto" my={15} />
               <Box>
-                <BookDescription>{book.description}</BookDescription>
+                <P fontSize={[14, 16]}>{book.description}</P>
                 <Button
                   onClick={() =>
                     Router.pushRoute(
@@ -287,7 +291,7 @@ class BookPage extends React.Component<Props> {
                 </CardNested>
               </Flex>
               <Box w={[1, 1 / 2]}>
-                <CardNested style={{ height: '100%' }}>
+                <CardNested fontSize={[10, 12]} style={{ height: '100%' }}>
                   <ReadingLevel style={{ float: 'right' }}>
                     <Trans id="level">Level {book.readingLevel}</Trans>
                   </ReadingLevel>
