@@ -309,7 +309,7 @@ class BookPage extends React.Component<Props> {
           </CardBase>
         </Container>
 
-        <Hero borderTop borderBottom>
+        <Hero py={[15, 22]}>
           <Container>
             <H3>
               <Trans>Similar</Trans>

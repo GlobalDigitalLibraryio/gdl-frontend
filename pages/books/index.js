@@ -253,7 +253,7 @@ class BooksPage extends React.Component<Props> {
           </Container>
         </Hero>
 
-        <Hero>
+        <Hero py={[15, 22]}>
           <Container>
             <H3>
               <Trans>Just arrived in {languageFilter.name}</Trans>{' '}
@@ -262,7 +262,7 @@ class BooksPage extends React.Component<Props> {
           </Container>
         </Hero>
 
-        <Hero borderTop borderBottom>
+        <Hero py={[15, 22]}>
           <Container>
             <H3>
               <Trans>Popular in {languageFilter.name}</Trans>{' '}

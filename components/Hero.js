@@ -13,10 +13,8 @@ const Hero = Box.extend`
     props.colorful
       ? 'linear-gradient(135deg, #004b91 0%, #5abc7f 100%)'
       : 'linear-gradient(180deg, #eff0f2 0%, #eaeaea 100%)'};
-  border-top: ${props =>
-    props.borderTop ? `solid 1px ${props.theme.grays.platinum}` : null};
   border-bottom: ${props =>
-    props.borderBottom ? `solid 1px ${props.theme.grays.platinum}` : null};
+    !props.colorful ? `solid 1px ${props.theme.grays.platinum}` : null};
 `;
 
 export default Hero;
