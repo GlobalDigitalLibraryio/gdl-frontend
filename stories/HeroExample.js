@@ -10,30 +10,16 @@ import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import Hero from '../components/Hero';
 import Container from '../components/Container';
-import Title from '../components/Title';
+import H1 from '../components/H1';
 import Card from '../components/Card';
 
 storiesOf('Hero', module)
   .add('Hero', () => (
     <Hero>
       <Container>
-        <Title>Hero banner to showcase something</Title>
+        <H1>Hero banner to showcase something</H1>
       </Container>
     </Hero>
-  ))
-  .add('Bordered Hero', () => (
-    <div>
-      <Hero borderTop borderBottom>
-        <Container>
-          <Title>Hero banner with top and bottom borders</Title>
-        </Container>
-      </Hero>
-      <Hero borderBottom>
-        <Container>
-          <Title>Hero banner with bottom border</Title>
-        </Container>
-      </Hero>
-    </div>
   ))
   .add('Colorful hero', () => (
     <Hero colorful>
