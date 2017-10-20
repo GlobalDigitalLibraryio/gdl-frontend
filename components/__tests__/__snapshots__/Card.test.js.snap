@@ -10,12 +10,6 @@ exports[`Renders 1`] = `
   max-width: 100%;
 }
 
-.c0 hr {
-  background-color: #e3e3e3;
-  height: 1px;
-  border: none;
-}
-
 <Base
   className="c0"
   theme={

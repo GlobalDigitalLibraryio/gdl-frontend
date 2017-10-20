@@ -7,14 +7,14 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
 import { theme } from '../../hocs/withTheme';
 import ReadingLevel from '../ReadingLevel';
 
 test('Renders', () => {
-  const tree = shallow(<ReadingLevel theme={theme}>Level 1</ReadingLevel>);
+  const tree = mount(<ReadingLevel theme={theme} level="1" />);
 
   expect(toJson(tree)).toMatchSnapshot();
 });

@@ -298,9 +298,10 @@ class BookPage extends React.Component<Props> {
                   p={15}
                   style={{ height: '100%' }}
                 >
-                  <ReadingLevel style={{ float: 'right' }}>
-                    <Trans id="level">Level {book.readingLevel}</Trans>
-                  </ReadingLevel>
+                  <ReadingLevel
+                    style={{ float: 'right' }}
+                    level={book.readingLevel}
+                  />
                   {book.datePublished && (
                     <BookMetaData heading="Published">
                       <DateFormat value={new Date(book.datePublished)} />

@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import { Trans } from 'lingui-react';
 import type { Book } from '../types';
 import { CardBase } from './Card';
 import ReadingLevel from './ReadingLevel';
@@ -47,9 +46,7 @@ export default ({ book, ...props }: { book: Book }) => (
     </Cover>
     <Div h={['50px', '53px']} fontSize={[11, 14]}>
       <BookTitle>{book.title}</BookTitle>
-      <ReadingLevel>
-        <Trans id="level">Level {book.readingLevel}</Trans>
-      </ReadingLevel>
+      <ReadingLevel level={book.readingLevel} />
     </Div>
   </CardBase>
 );

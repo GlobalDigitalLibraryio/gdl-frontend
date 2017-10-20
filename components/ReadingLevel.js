@@ -6,15 +6,28 @@
  * See LICENSE
  */
 
+import * as React from 'react';
 import styled from 'styled-components';
+import { Trans } from 'lingui-react';
+import media from './helpers/media';
 
-const ReadingLevel = styled.span`
+const Label = styled.span`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   background-color: ${props => props.theme.grays.steel};
   color: ${props => props.theme.grays.white};
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 11px;
+  line-height: 17px;
+  ${media.tablet`
+    font-size: 12px;
+    line-height: 18px;
+  `};
 `;
 
-export default ReadingLevel;
+export default ({ level, ...props }: { level: string }) => (
+  <Label {...props}>
+    <Trans>Level {level}</Trans>
+  </Label>
+);
