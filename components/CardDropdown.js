@@ -26,10 +26,9 @@ const CardDropdownItem = styled.a`
 
 const Dropdown = Card.extend`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4);
-  width: 95%;
-  margin-left: auto;
-  margin-right: auto;
+  border-radius: 0 0 4px 4px;
   overflow: hidden;
+  margin-top: 10px;
 `;
 
 type Props = {
