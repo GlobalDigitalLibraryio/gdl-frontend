@@ -9,29 +9,25 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { MdMenu } from 'react-icons/lib/md';
-import { responsiveStyle } from 'styled-system';
+import media from '../helpers/media';
 import { Link } from '../../routes';
 import Container from '../Container';
-// import Input from '../Input';
 import Flex from '../Flex';
 import Logo from './GDL-logo.svg';
 
 const Nav = styled.nav`
   position: relative;
-  ${responsiveStyle(
-    'min-height',
-    'minHeight',
-  )} background: linear-gradient(0deg, #4884be 0%, ${props =>
-  props.theme.primaries.primary} 100%);
+  min-height: 54px;
+  ${media.tablet`
+    min-height: 80px;
+  `}
+  background: linear-gradient(0deg, #4884be 0%, ${props =>
+    props.theme.primaries.primary} 100%);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   color: ${props => props.theme.grays.white};
 `;
-
-Nav.defaultProps = {
-  minHeight: ['54px', '80px'],
-};
 
 const NavItem = styled.div`
   display: flex;
@@ -52,7 +48,10 @@ const HamburgerButton = styled.button.attrs({
   font-weight: 600;
   > span {
     margin-left: 6px;
-    ${responsiveStyle('display', 'hideText', 'none')};
+    display: none;
+    ${media.tablet`
+      display: unset;
+    `};
   }
 `;
 
