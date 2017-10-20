@@ -10,9 +10,9 @@ import styled from 'styled-components';
 
 const ReadingLevel = styled.span`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 39px;
-  background-color: ${props => props.theme.supports.greenHighlight};
-  color: ${props => props.theme.supports.greenDark};
+  border-radius: 4px;
+  background-color: ${props => props.theme.grays.steel};
+  color: ${props => props.theme.grays.white};
   padding-left: 10px;
   padding-right: 10px;
 `;
