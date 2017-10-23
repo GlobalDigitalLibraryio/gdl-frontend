@@ -30,7 +30,7 @@ const BookTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 `;
 
 // TODO: Figure out why box-shadow is clipped
@@ -41,10 +41,10 @@ export default ({ book, ...props }: { book: Book }) => (
     style={{ overflow: 'hidden', display: 'block' }}
     {...props}
   >
-    <Cover h={['130px', '160px']} w="100%" book={book}>
+    <Cover h={[130, 160]} w="100%">
       <Img src={book.coverPhoto && book.coverPhoto.small} alt={book.title} />
     </Cover>
-    <Div h={['50px', '53px']} fontSize={[11, 14]}>
+    <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
       <BookTitle>{book.title}</BookTitle>
       <ReadingLevel level={book.readingLevel} />
     </Div>
