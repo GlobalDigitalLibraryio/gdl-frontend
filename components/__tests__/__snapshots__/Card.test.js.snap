@@ -2,27 +2,16 @@
 
 exports[`Renders 1`] = `
 .c0 {
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  background: #fff;
-  border-radius: 4px;
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.12),0 2px 2px 0 rgba(0,0,0,0.12);
+  border-radius: 4px;
+  color: #444;
+  background: #fff;
   position: relative;
   max-width: 100%;
 }
 
-.c0 hr {
-  background-color: #e3e3e3;
-  height: 1px;
-  border: none;
-}
-
 <Base
   className="c0"
-  px={15}
-  py={12}
   theme={
     Object {
       "grays": Object {

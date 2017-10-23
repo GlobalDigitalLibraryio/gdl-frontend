@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Renders 1`] = `
+.c1 {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.c0 {
+  width: 150px;
+  height: 185px;
+  box-shadow: 0 0 2px 0 rgba(0,0,0,0.12),0 2px 2px 0 rgba(0,0,0,0.12);
+  border-radius: 4px;
+  color: #444;
+  background-color: #f8f8f8;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+@media screen and (min-width:40em) {
+  .c0 {
+    width: 200px;
+  }
+}
+
+@media screen and (min-width:40em) {
+  .c0 {
+    height: 225px;
+  }
+}
+
+<BookCover
+  book={
+    Object {
+      "availableLanguages": Array [],
+      "categories": Array [],
+      "chapters": Array [],
+      "contributors": Array [],
+      "coverPhoto": Object {
+        "large": "http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg",
+        "small": "http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200",
+      },
+      "description": "Sindi buzzes with colorful songs and dance. Will starting school end all that?",
+      "downloads": Object {
+        "epub": "",
+        "pdf": "",
+      },
+      "id": 1,
+      "language": Object {
+        "code": "eng",
+        "name": "English",
+      },
+      "license": Object {
+        "description": "Attribution 4.0 International (CC BY 4.0)",
+        "id": 1,
+        "name": "cc by 4.0",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+      },
+      "publisher": Object {
+        "id": 1,
+        "name": "Pratham Books",
+      },
+      "readingLevel": "3",
+      "title": "A Life in the Fair Jungle",
+    }
+  }
+  h={
+    Array [
+      "185px",
+      "225px",
+    ]
+  }
+  theme={
+    Object {
+      "grays": Object {
+        "dark": "#444",
+        "desertStorm": "#f8f8f8",
+        "gainsboro": "#ddd",
+        "gallery": "#eff0f2",
+        "jumbo": "#888",
+        "platinum": "#e3e3e3",
+        "steel": "#666",
+        "white": "#fff",
+      },
+      "primaries": Object {
+        "dark": "#184673",
+        "highlight": "#edf7ff",
+        "light": "#ceddea",
+        "primary": "#20588f",
+        "secondary": "#507aa4",
+        "tertiary": "#a5bcd3",
+      },
+      "supports": Object {
+        "greenDark": "#359258",
+        "greenHighlight": "#edfff4",
+        "greenPrimary": "#5cbc80",
+      },
+    }
+  }
+  w={
+    Array [
+      "150px",
+      "200px",
+    ]
+  }
+>
+  <Styled(Base)
+    h={
+      Array [
+        "185px",
+        "225px",
+      ]
+    }
+    theme={
+      Object {
+        "grays": Object {
+          "dark": "#444",
+          "desertStorm": "#f8f8f8",
+          "gainsboro": "#ddd",
+          "gallery": "#eff0f2",
+          "jumbo": "#888",
+          "platinum": "#e3e3e3",
+          "steel": "#666",
+          "white": "#fff",
+        },
+        "primaries": Object {
+          "dark": "#184673",
+          "highlight": "#edf7ff",
+          "light": "#ceddea",
+          "primary": "#20588f",
+          "secondary": "#507aa4",
+          "tertiary": "#a5bcd3",
+        },
+        "supports": Object {
+          "greenDark": "#359258",
+          "greenHighlight": "#edfff4",
+          "greenPrimary": "#5cbc80",
+        },
+      }
+    }
+    w={
+      Array [
+        "150px",
+        "200px",
+      ]
+    }
+  >
+    <Base
+      className="c0"
+      h={
+        Array [
+          "185px",
+          "225px",
+        ]
+      }
+      theme={
+        Object {
+          "grays": Object {
+            "dark": "#444",
+            "desertStorm": "#f8f8f8",
+            "gainsboro": "#ddd",
+            "gallery": "#eff0f2",
+            "jumbo": "#888",
+            "platinum": "#e3e3e3",
+            "steel": "#666",
+            "white": "#fff",
+          },
+          "primaries": Object {
+            "dark": "#184673",
+            "highlight": "#edf7ff",
+            "light": "#ceddea",
+            "primary": "#20588f",
+            "secondary": "#507aa4",
+            "tertiary": "#a5bcd3",
+          },
+          "supports": Object {
+            "greenDark": "#359258",
+            "greenHighlight": "#edfff4",
+            "greenPrimary": "#5cbc80",
+          },
+        }
+      }
+      w={
+        Array [
+          "150px",
+          "200px",
+        ]
+      }
+    >
+      <div
+        className="c0"
+        is={null}
+        theme={
+          Object {
+            "grays": Object {
+              "dark": "#444",
+              "desertStorm": "#f8f8f8",
+              "gainsboro": "#ddd",
+              "gallery": "#eff0f2",
+              "jumbo": "#888",
+              "platinum": "#e3e3e3",
+              "steel": "#666",
+              "white": "#fff",
+            },
+            "primaries": Object {
+              "dark": "#184673",
+              "highlight": "#edf7ff",
+              "light": "#ceddea",
+              "primary": "#20588f",
+              "secondary": "#507aa4",
+              "tertiary": "#a5bcd3",
+            },
+            "supports": Object {
+              "greenDark": "#359258",
+              "greenHighlight": "#edfff4",
+              "greenPrimary": "#5cbc80",
+            },
+          }
+        }
+      >
+        <Component
+          alt="A Life in the Fair Jungle"
+          src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
+        >
+          <styled.img
+            alt="A Life in the Fair Jungle"
+            aria-hidden={true}
+            src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
+          >
+            <img
+              alt="A Life in the Fair Jungle"
+              aria-hidden={true}
+              className="c1"
+              src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
+            />
+          </styled.img>
+        </Component>
+      </div>
+    </Base>
+  </Styled(Base)>
+</BookCover>
+`;

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Responsive font sizes 1`] = `
+.c0 {
+  font-size: 15px;
+}
+
+@media screen and (min-width:40em) {
+  .c0 {
+    font-size: 20px;
+  }
+}
+
+<p
+  className="c0"
+  fontSize={
+    Array [
+      15,
+      20,
+    ]
+  }
+>
+  Responsive font size
+</p>
+`;
+
+exports[`Responsive line heights 1`] = `
+.c0 {
+  line-height: 15px;
+}
+
+@media screen and (min-width:40em) {
+  .c0 {
+    line-height: 20px;
+  }
+}
+
+<p
+  className="c0"
+>
+  Responsive font size
+</p>
+`;

@@ -13,4 +13,4 @@ import Container from '../components/Container';
 
 storiesOf('ReadingLevel', module)
   .addDecorator(story => <Container>{story()}</Container>)
-  .add('ReadingLevel', () => <ReadingLevel>Level 1</ReadingLevel>);
+  .add('ReadingLevel', () => <ReadingLevel level="1" />);

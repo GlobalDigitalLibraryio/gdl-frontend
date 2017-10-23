@@ -14,14 +14,14 @@ import {
   width,
   flex,
   responsiveStyle,
-  textAlign,
 } from 'styled-system';
 import tag from 'tag-hoc';
+import height from './helpers/height';
+import textAlign from './helpers/textAlign';
 
 const order = responsiveStyle('order');
 const maxWidth = responsiveStyle('max-width', 'mw');
 const maxHeight = responsiveStyle('max-height', 'mh');
-const height = responsiveStyle('height', 'h');
 
 // The inline array here is the list of props that are blacklisted, meaning they aren't passed to the DOM node
 const Base = tag([
@@ -53,7 +53,7 @@ const Base = tag([
   'h',
   'color',
   'bg',
-  'align',
+  'textAlign',
 ])('div');
 
 const Box = styled(Base)`

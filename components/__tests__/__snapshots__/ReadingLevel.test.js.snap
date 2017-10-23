@@ -3,16 +3,115 @@
 exports[`Renders 1`] = `
 .c0 {
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.12),0 2px 2px 0 rgba(0,0,0,0.12);
-  border-radius: 39px;
-  background-color: #edfff4;
-  color: #359258;
+  border-radius: 4px;
+  background-color: #666;
+  color: #fff;
   padding-left: 10px;
   padding-right: 10px;
+  font-size: 11px;
+  line-height: 17px;
 }
 
-<span
-  className="c0"
+@media (min-width:40em) {
+  .c0 {
+    font-size: 12px;
+    line-height: 18px;
+  }
+}
+
+<Component
+  level="1"
+  theme={
+    Object {
+      "grays": Object {
+        "dark": "#444",
+        "desertStorm": "#f8f8f8",
+        "gainsboro": "#ddd",
+        "gallery": "#eff0f2",
+        "jumbo": "#888",
+        "platinum": "#e3e3e3",
+        "steel": "#666",
+        "white": "#fff",
+      },
+      "primaries": Object {
+        "dark": "#184673",
+        "highlight": "#edf7ff",
+        "light": "#ceddea",
+        "primary": "#20588f",
+        "secondary": "#507aa4",
+        "tertiary": "#a5bcd3",
+      },
+      "supports": Object {
+        "greenDark": "#359258",
+        "greenHighlight": "#edfff4",
+        "greenPrimary": "#5cbc80",
+      },
+    }
+  }
 >
-  Level 1
-</span>
+  <styled.span
+    theme={
+      Object {
+        "grays": Object {
+          "dark": "#444",
+          "desertStorm": "#f8f8f8",
+          "gainsboro": "#ddd",
+          "gallery": "#eff0f2",
+          "jumbo": "#888",
+          "platinum": "#e3e3e3",
+          "steel": "#666",
+          "white": "#fff",
+        },
+        "primaries": Object {
+          "dark": "#184673",
+          "highlight": "#edf7ff",
+          "light": "#ceddea",
+          "primary": "#20588f",
+          "secondary": "#507aa4",
+          "tertiary": "#a5bcd3",
+        },
+        "supports": Object {
+          "greenDark": "#359258",
+          "greenHighlight": "#edfff4",
+          "greenPrimary": "#5cbc80",
+        },
+      }
+    }
+  >
+    <span
+      className="c0"
+    >
+      <withI18n
+        id="Level {level}"
+        values={
+          Object {
+            "level": "1",
+          }
+        }
+      >
+        <Trans
+          i18n={undefined}
+          id="Level {level}"
+          values={
+            Object {
+              "level": "1",
+            }
+          }
+        >
+          <Render
+            className={undefined}
+            render={undefined}
+            value="Level {level}"
+          >
+            <span
+              className={undefined}
+            >
+              Level {level}
+            </span>
+          </Render>
+        </Trans>
+      </withI18n>
+    </span>
+  </styled.span>
+</Component>
 `;
