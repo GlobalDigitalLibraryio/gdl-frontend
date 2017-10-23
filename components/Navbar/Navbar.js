@@ -77,7 +77,7 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
   render() {
     return (
       <Nav>
-        <Container mw="1075px" is={Flex} w={1} align="stretch">
+        <Container mw="1075px" is={Flex} w={1}>
           <Flex
             justify={['flex-start', 'flex-end']}
             flex="1 1 0"

@@ -14,10 +14,10 @@ import {
   width,
   flex,
   responsiveStyle,
-  textAlign,
 } from 'styled-system';
 import tag from 'tag-hoc';
 import height from './helpers/height';
+import textAlign from './helpers/textAlign';
 
 const order = responsiveStyle('order');
 const maxWidth = responsiveStyle('max-width', 'mw');
@@ -53,7 +53,7 @@ const Base = tag([
   'h',
   'color',
   'bg',
-  'align',
+  'textAlign',
 ])('div');
 
 const Box = styled(Base)`

@@ -24,7 +24,7 @@ storiesOf('Hero', module)
   .add('Colorful hero', () => (
     <Hero colorful>
       <Container>
-        <Card align="center">Such colorful hero with a cool gradient</Card>
+        <Card textAlign="center">Such colorful hero with a cool gradient</Card>
       </Container>
     </Hero>
   ));

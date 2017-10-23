@@ -170,11 +170,9 @@ class BookPage extends React.Component<Props> {
 
         <Hero colorful py={[15, 40]}>
           <Container>
-            <Card style={{ textAlign: 'center' }} pt={[18]} pb={[15]} px={[10]}>
-              <Box>
-                <H1 fontSize={[28, 38]} align="center">
-                  {book.title}
-                </H1>
+            <Card textAlign="center" pt={[18]} pb={[15]} px={[10]}>
+              <Box ml={15}>
+                <H1 fontSize={[28, 38]}>{book.title}</H1>
                 <P fontSize={[12, 14]}>
                   <Trans>
                     from <A href="">{book.publisher.name}</A>
