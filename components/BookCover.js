@@ -8,6 +8,7 @@
 import * as React from 'react';
 import { css } from 'styled-components';
 import { CardBase } from './Card';
+import media from './helpers/media';
 import Img from './Img';
 import type { Book } from '../types';
 
@@ -22,9 +23,30 @@ const coverCss = css`
 
 const Cover = CardBase.extend`
   ${coverCss};
+  ${props =>
+    props.isHiddenMobile &&
+    css`
+      display: none;
+      ${media.tablet`
+      display: flex;
+    `};
+    `};
+  ${props =>
+    props.isHiddenTablet &&
+    media.tablet`
+      display: none;
+    `};
 `;
 
-const BookCover = ({ book, ...props }: { book: Book }) => (
+const BookCover = ({
+  book,
+  ...props
+}: {
+  book: Book,
+  // Escape hatches for responsive layout
+  isHiddenTablet?: boolean,
+  isHiddenMobile?: boolean,
+}) => (
   <Cover {...props}>
     <Img src={book.coverPhoto && book.coverPhoto.small} alt={book.title} />
   </Cover>

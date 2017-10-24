@@ -170,33 +170,34 @@ class BookPage extends React.Component<Props> {
 
         <Hero colorful py={[15, 40]}>
           <Container>
-            <Card textAlign="center" pt={[18]} pb={[15]} px={[10]}>
-              <Box ml={15}>
-                <H1 fontSize={[28, 38]}>{book.title}</H1>
-                <P fontSize={[12, 14]}>
-                  <Trans>
-                    from <A href="">{book.publisher.name}</A>
-                  </Trans>
-                </P>
-              </Box>
-              <BookCover book={book} mx="auto" my={15} />
-              <Box>
-                <P fontSize={[14, 16]}>{book.description}</P>
-                <Button
-                  onClick={() =>
-                    Router.pushRoute(
-                      'book',
-                      {
-                        id: book.id,
-                        lang: book.language.code,
-                        chapter: 1,
-                      },
-                      { shallow: true },
-                    )}
-                >
-                  <Trans>Read</Trans>
-                </Button>
-              </Box>
+            <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
+              <Flex flexDirection={['column', 'row']}>
+                <BookCover book={book} mr={20} isHiddenMobile flex="0 0 auto" />
+                <Box>
+                  <H1 fontSize={[28, 38]}>{book.title}</H1>
+                  <P fontSize={[12, 14]}>
+                    <Trans>
+                      from <A href="">{book.publisher.name}</A>
+                    </Trans>
+                  </P>
+                  <BookCover book={book} mx="auto" isHiddenTablet />
+                  <P fontSize={[14, 16]}>{book.description}</P>
+                  <Button
+                    onClick={() =>
+                      Router.pushRoute(
+                        'book',
+                        {
+                          id: book.id,
+                          lang: book.language.code,
+                          chapter: 1,
+                        },
+                        { shallow: true },
+                      )}
+                  >
+                    <Trans>Read</Trans>
+                  </Button>
+                </Box>
+              </Flex>
             </Card>
           </Container>
         </Hero>
