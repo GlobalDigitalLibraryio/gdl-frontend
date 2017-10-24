@@ -7,22 +7,23 @@
  */
 
 import styled from 'styled-components';
+import media from './helpers/media';
 
 const Button = styled.button`
   color: ${props => props.theme.grays.white};
   border-radius: 4px;
-  background: linear-gradient(
-    180deg,
-    ${props => props.theme.supports.greenPrimary} 0%,
-    #056d2c 100%
-  );
-  line-height: 1.1;
-  padding: 10px 30px;
-  font-size: 1.4rem;
-  font-weight: 600;
-  min-width: 150px;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  min-height: 38px;
+  font-size: 16px;
+  ${media.tablet`
+    min-height: 48px;
+    font-size: 18px;
+  `} font-weight: 500;
+  line-height: 22px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   border-style: none;
   &:hover,
   &:active {
