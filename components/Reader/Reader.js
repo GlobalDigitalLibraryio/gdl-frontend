@@ -126,8 +126,6 @@ class Reader extends React.Component<Props, State> {
         <Container
           h={['100vh', '994px']}
           w={['100vw', 738]}
-          mh="100vh"
-          mw="100vw"
           px={0}
           mt={[0, 80]}
         >

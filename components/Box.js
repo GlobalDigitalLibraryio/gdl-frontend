@@ -20,8 +20,6 @@ import height from './helpers/height';
 import textAlign from './helpers/textAlign';
 
 const order = responsiveStyle('order');
-const maxWidth = responsiveStyle('max-width', 'mw');
-const maxHeight = responsiveStyle('max-height', 'mh');
 
 // The inline array here is the list of props that are blacklisted, meaning they aren't passed to the DOM node
 const Base = tag([
@@ -48,8 +46,6 @@ const Base = tag([
   'align',
   'justify',
   'column',
-  'mh',
-  'mw',
   'h',
   'color',
   'bg',
@@ -57,7 +53,7 @@ const Base = tag([
 ])('div');
 
 const Box = styled(Base)`
-  ${fontSize} ${width} ${space} ${flex} ${order} ${height} ${maxHeight} ${maxWidth} ${color} ${textAlign};
+  ${fontSize} ${width} ${space} ${flex} ${order} ${height} ${color} ${textAlign};
 `;
 
 export default Box;
@@ -92,9 +88,6 @@ type Props = {
 
   is: string | React.Component
 
-  mh: responsiveStringProp,
-  mw: responsiveStringProp,
-  h: responsiveStringProp,
   color: responsiveStringProp,
   bg: responsiveStringProp,
   align: responseStringProp,

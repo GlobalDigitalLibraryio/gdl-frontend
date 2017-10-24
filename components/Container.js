@@ -7,6 +7,7 @@
  */
 
 import Box from './Box';
+import maxWidth from './helpers/maxWidth';
 
 /**
  * Center content horizontally
@@ -14,6 +15,7 @@ import Box from './Box';
 const Container = Box.extend`
   margin-left: auto;
   margin-right: auto;
+  ${maxWidth};
 `;
 
 Container.defaultProps = {
