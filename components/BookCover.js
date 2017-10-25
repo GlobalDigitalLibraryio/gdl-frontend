@@ -9,7 +9,7 @@ import * as React from 'react';
 import { css } from 'styled-components';
 import { CardBase } from './Card';
 import media from './helpers/media';
-import CoverImage from './Cover';
+import CoverImage from './CoverImage';
 import type { Book } from '../types';
 import theme from '../style/theme';
 
