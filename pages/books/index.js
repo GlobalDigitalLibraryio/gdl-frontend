@@ -192,7 +192,7 @@ class BooksPage extends React.Component<Props> {
           </Container>
         </Hero>
         {levels.map((level, index) => (
-          <Hero py={[15, 22]}>
+          <Hero py={[15, 22]} key={level}>
             <Container>
               <H3>
                 <Trans>Level {level}</Trans>{' '}
