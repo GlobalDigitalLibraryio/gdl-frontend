@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
 import Card from './Card';
 
+/* eslint-disable react/no-multi-comp */
+
 const Toolbar = styled.div`
   background: ${props => props.theme.grays.white};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
@@ -27,12 +29,14 @@ const Item = styled.div`
   display: inline-block;
 `;
 
-const A = styled.a`
+const DropdownButton = styled.a.attrs({
+  href: '',
+})`
   padding: 10px 15px;
   display: block;
 `;
 
-const ToolbarDropdownItem = styled.a`
+const DropdownItemAnchor = styled.a`
   display: block;
   padding: 10px 15px;
   &:not(:last-child) {
@@ -54,6 +58,23 @@ const ToolbarDropdownItem = styled.a`
     `background-color: ${props.theme.supports.greenHighlight}`};
 `;
 
+/**
+ * Next.js links 'steals' onClick's. Working around this with this small trick so the dropdown closes when selecting in the dropdown
+ * See https://github.com/zeit/next.js/issues/1490#issuecomment-290724312
+ */
+class ToolbarDropdownItem extends React.Component<{
+  onClick: Function,
+  onCustomClick: Function,
+}> {
+  handleClick = (event: Event) => {
+    this.props.onClick(event);
+    this.props.onCustomClick(event);
+  };
+  render() {
+    return <DropdownItemAnchor {...this.props} onClick={this.handleClick} />;
+  }
+}
+
 type Props = {
   id: string, // Because we want to avoid using Downshift's automatically generated id to prevent checksums errors with SSR
   text: string,
@@ -65,27 +86,25 @@ type Props = {
   selectedItem: ?string,
 };
 
-class ToolbarItem extends React.Component<Props, { isExpanded: boolean }> {
-  state = {
-    isExpanded: false,
-  };
-
+// eslint-disable-next-line react/prefer-stateless-function
+class ToolbarItem extends React.Component<Props> {
   render() {
     return (
       <Downshift selectedItem={this.props.selectedItem} id={this.props.id}>
         {({
           getButtonProps,
           getRootProps,
-          isOpen,
           getItemProps,
           highlightedIndex,
           selectedItem,
+          isOpen,
+          closeMenu,
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
-            <A href="" {...getButtonProps()}>
+            <DropdownButton {...getButtonProps()}>
               {this.props.text}{' '}
               {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-            </A>
+            </DropdownButton>
             {isOpen && (
               <Card
                 px={0}
@@ -104,7 +123,10 @@ class ToolbarItem extends React.Component<Props, { isExpanded: boolean }> {
                 }}
               >
                 {this.props.children({
-                  getItemProps,
+                  getItemProps: args => ({
+                    ...getItemProps(args),
+                    onCustomClick: closeMenu,
+                  }),
                   selectedItem,
                   highlightedIndex,
                 })}
