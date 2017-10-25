@@ -12,8 +12,8 @@ import type { Book } from '../types';
 import { CardBase } from './Card';
 import ReadingLevel from './ReadingLevel';
 import Box from './Box';
-import Cover from './Cover';
 import theme from '../style/theme';
+import CoverImage from './CoverImage';
 
 const Div = Box.extend`
   text-align: center;
@@ -37,11 +37,7 @@ export default ({ book, ...props }: { book: Book }) => (
     style={{ overflow: 'hidden' }}
     {...props}
   >
-    <Cover
-      h={[130, 160]}
-      w="100%"
-      src={book.coverPhoto && book.coverPhoto.large}
-    />
+    <CoverImage h={[130, 160]} src={book.coverPhoto && book.coverPhoto.large} />
     <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
       <BookTitle>{book.title}</BookTitle>
       <ReadingLevel level={book.readingLevel} />
