@@ -33,6 +33,7 @@ import Toolbar, {
 } from '../../components/Toolbar';
 
 const BOOKS_PAGE_SIZE = 5;
+const LANG_QUERY = 'lang';
 
 type Props = {
   editorPick: Book,
@@ -41,96 +42,68 @@ type Props = {
   levels: Array<string>,
   languages: Array<Language>,
   languageFilter: Language,
-  levelFilter: ?string,
   i18n: I18n,
+  booksByLevel: Array<Array<Book>>,
 };
-
-const langQuery = 'lang';
-const levelQuery = 'level';
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    // Read the level and language from the query parameters
-    let level = query[levelQuery];
-    const language = query[langQuery];
+    const language = query[LANG_QUERY];
 
     // Fetch these first, cause they don't use the reading level
-    const [editorPicksRes, levelsRes, languagesRes] = await Promise.all([
+    const [
+      editorPicksRes,
+      levelsRes,
+      languagesRes,
+      justArrivedRes,
+    ] = await Promise.all([
       fetch(`${env.bookApiUrl}/book-api/v1/editorpicks/${language || ''}`),
       fetch(`${env.bookApiUrl}/book-api/v1/levels/${language || ''}`),
       fetch(`${env.bookApiUrl}/book-api/v1/languages`),
+      fetch(
+        `${env.bookApiUrl}/book-api/v1/books/${language ||
+          ''}?sort=popular&page-size=${BOOKS_PAGE_SIZE}`,
+      ),
     ]);
 
-    const [editorPicks, levels, languages] = await Promise.all([
+    const [editorPicks, levels, languages, justArrived] = await Promise.all([
       editorPicksRes.json(),
       levelsRes.json(),
       languagesRes.json(),
-    ]);
-
-    // If the levels doesn't include the level from the query param, nullify it, so we don't apply the filter to the API call and get empty results
-    if (!levels.includes(level)) {
-      level = null;
-    }
-
-    // Now that we've cleaned up the reading level in the query param, fetch the rest
-    const [popluarRes, justArrivedRes] = await Promise.all([
-      fetch(
-        `${env.bookApiUrl}/book-api/v1/books/${language ||
-          ''}?sort=popular&page-size=${BOOKS_PAGE_SIZE}${level
-          ? `&reading-level=${level}`
-          : ''}`,
-      ),
-      fetch(
-        `${env.bookApiUrl}/book-api/v1/books/${language ||
-          ''}?sort=-arrivaldate&page-size=${BOOKS_PAGE_SIZE}${level
-          ? `&reading-level=${level}`
-          : ''}`,
-      ),
-    ]);
-
-    const [popular, justArrived] = await Promise.all([
-      popluarRes.json(),
       justArrivedRes.json(),
     ]);
 
+    const booksByLevelsRes = await Promise.all(
+      levels.map(level =>
+        fetch(
+          `${env.bookApiUrl}/book-api/v1/books/${language ||
+            ''}?sort=-arrivaldate&page-size=${BOOKS_PAGE_SIZE}&reading-level=${level}`,
+        ),
+      ),
+    );
+
+    const booksByLevel = await Promise.all(
+      booksByLevelsRes.map(res => res.json()),
+    );
+
     return {
       editorPick: editorPicks[0], // This returns an array. For now we only want a single book
-      popular: popular.results,
-      justArrived: justArrived.results,
-      languageFilter: popular.language,
-      levelFilter: level,
+      justArrived: justArrived.results, // currently we are only interested in the array, not all the other metadata (paging etc.)
+      languageFilter: justArrived.language,
       languages,
       levels,
+      booksByLevel: booksByLevel.map(books => books.results), // currently we are only interested in the array, not all the other metadata (paging etc.)
     };
-  }
-
-  // Generate the query param object for the links in the level and language filter.
-  // Keeps existing value for the other type of query param, and removes undefined values because we don't want ?lang=eng&level=undefined
-  makeParamsObj({ level, language }: { level?: string, language?: string }) {
-    const params = {
-      [langQuery]: language || this.props.languageFilter.code,
-      [levelQuery]: level || this.props.levelFilter,
-    };
-
-    if (!params[langQuery]) {
-      delete params[langQuery];
-    }
-
-    if (!params[levelQuery]) {
-      delete params[levelQuery];
-    }
-
-    return params;
   }
 
   render() {
     const {
       editorPick,
       languages,
-      levels,
       languageFilter,
-      levelFilter,
       i18n,
+      levels,
+      booksByLevel,
     } = this.props;
 
     return (
@@ -151,7 +124,7 @@ class BooksPage extends React.Component<Props> {
                     key={language.code}
                     route="books"
                     passHref
-                    params={this.makeParamsObj({ language: language.code })}
+                    params={{ [LANG_QUERY]: language.code }}
                   >
                     <ToolbarDropdownItem
                       {...getItemProps({ item: language.code })}
@@ -163,49 +136,6 @@ class BooksPage extends React.Component<Props> {
                     </ToolbarDropdownItem>
                   </Link>
                 ))}
-            </ToolbarItem>
-
-            <ToolbarItem
-              id="levelFilter"
-              text="Level"
-              selectedItem={levelFilter}
-            >
-              {({ getItemProps, selectedItem, highlightedIndex }) => [
-                <Link
-                  key="All"
-                  passHref
-                  route="books"
-                  params={{
-                    [langQuery]: languageFilter.code,
-                  }}
-                >
-                  <ToolbarDropdownItem
-                    {...getItemProps({ item: 'all' })}
-                    isActive={highlightedIndex === 0}
-                    isSelected={!selectedItem}
-                  >
-                    <MdCheck /> <Trans>All levels</Trans>
-                  </ToolbarDropdownItem>
-                </Link>,
-                ...levels.map((level, index) => (
-                  <Link
-                    key={level}
-                    passHref
-                    route="books"
-                    params={this.makeParamsObj({
-                      level,
-                    })}
-                  >
-                    <ToolbarDropdownItem
-                      {...getItemProps({ item: level })}
-                      isActive={highlightedIndex === index + 1}
-                      isSelected={selectedItem === level}
-                    >
-                      <MdCheck /> <Trans id="level">Level {level}</Trans>
-                    </ToolbarDropdownItem>
-                  </Link>
-                )),
-              ]}
             </ToolbarItem>
           </Container>
         </Toolbar>
@@ -256,20 +186,21 @@ class BooksPage extends React.Component<Props> {
         <Hero py={[15, 22]}>
           <Container>
             <H3>
-              <Trans>Just arrived in {languageFilter.name}</Trans>{' '}
-            </H3>
-            <HorizontalBookList books={this.props.popular} mt={20} />
-          </Container>
-        </Hero>
-
-        <Hero py={[15, 22]}>
-          <Container>
-            <H3>
-              <Trans>Popular in {languageFilter.name}</Trans>{' '}
+              <Trans>Just arrived</Trans>{' '}
             </H3>
             <HorizontalBookList books={this.props.justArrived} mt={20} />
           </Container>
         </Hero>
+        {levels.map((level, index) => (
+          <Hero py={[15, 22]} key={level}>
+            <Container>
+              <H3>
+                <Trans>Level {level}</Trans>{' '}
+              </H3>
+              <HorizontalBookList books={booksByLevel[index]} mt={20} />
+            </Container>
+          </Hero>
+        ))}
       </div>
     );
   }
