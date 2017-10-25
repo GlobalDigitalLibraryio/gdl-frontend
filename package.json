@@ -42,7 +42,7 @@
     "compression": "1.7.1",
     "cookie-parser": "1.4.3",
     "domurl": "2.1.7",
-    "downshift": "1.15.0",
+    "downshift": "1.16.0",
     "express": "4.16.2",
     "express-request-language": "1.1.12",
     "glob": "7.1.2",

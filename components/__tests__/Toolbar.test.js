@@ -9,6 +9,8 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
 import { mount } from 'enzyme';
+import Link from 'next/link';
+import Router from 'next/router';
 import type { Language } from '../../types';
 import { ToolbarItem, ToolbarDropdownItem } from '../Toolbar';
 import { theme } from '../../hocs/withTheme';
@@ -51,4 +53,48 @@ test('Displays items when open', () => {
   tree.find('a').simulate('click');
 
   expect(tree.find(ToolbarDropdownItem)).toHaveLength(languages.length);
+});
+
+test('Closes the dropdown when selecting an item, even when wrapped with next Link', () => {
+  // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
+  const mockedRouter = { push: () => Promise.resolve(), prefetch: () => {} };
+  Router.router = mockedRouter;
+
+  tree = mount(
+    <ThemeProvider theme={theme}>
+      <ToolbarItem id="langFilter" text="Language" selectedItem="eng">
+        {({ getItemProps, selectedItem, highlightedIndex }) =>
+          languages.map((lang, index) => (
+            <Link href="test" passHref key={lang.code}>
+              <ToolbarDropdownItem
+                {...getItemProps({ item: lang.code })}
+                isActive={highlightedIndex === index}
+                isSelected={selectedItem === lang.code}
+              >
+                {lang.name}
+              </ToolbarDropdownItem>
+            </Link>
+          ))}
+      </ToolbarItem>
+    </ThemeProvider>,
+  );
+
+  // Open the dropdown
+  const dropdownButton = tree.find('a');
+  dropdownButton.simulate('click');
+  // Should be expanded now
+  expect(dropdownButton.getDOMNode().getAttribute('aria-expanded')).toEqual(
+    'true',
+  );
+
+  // Click an item in the dropdown
+  tree
+    .find(ToolbarDropdownItem)
+    .first()
+    .simulate('click');
+
+  // The dropdown should now be closed
+  expect(dropdownButton.getDOMNode().getAttribute('aria-expanded')).toEqual(
+    'false',
+  );
 });

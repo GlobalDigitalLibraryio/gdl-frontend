@@ -2790,9 +2790,9 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-downshift@1.15.0:
-  version "1.15.0"
-  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.15.0.tgz#2923a163c7ae836ea29e0ba62ec0efefc0dd6c87"
+downshift@1.16.0:
+  version "1.16.0"
+  resolved "https://registry.yarnpkg.com/downshift/-/downshift-1.16.0.tgz#1efd71ca987b849989b27468f5b46fc1adde426e"
 
 ecc-jsbn@~0.1.1:
   version "0.1.1"
