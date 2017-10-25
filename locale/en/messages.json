@@ -1,15 +1,11 @@
 {
   "level": {
     "translation": "",
-    "defaults": "Level {level}",
+    "defaults": "Level {0}",
     "origin": [
       [
         "components/BookCardCover.js",
         72
-      ],
-      [
-        "pages/books/index.js",
-        204
       ]
     ]
   },
@@ -19,6 +15,10 @@
       [
         "components/ReadingLevel.js",
         31
+      ],
+      [
+        "pages/books/index.js",
+        198
       ]
     ]
   },
@@ -36,7 +36,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        199
+        197
       ]
     ]
   },
@@ -45,7 +45,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        215
+        214
       ]
     ]
   },
@@ -54,7 +54,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        244
+        243
       ]
     ]
   },
@@ -63,7 +63,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        258
+        257
       ]
     ]
   },
@@ -72,7 +72,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        275
+        274
       ]
     ]
   },
@@ -81,7 +81,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        284
+        283
       ]
     ]
   },
@@ -90,7 +90,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        291
+        290
       ]
     ]
   },
@@ -99,7 +99,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        326
+        325
       ]
     ]
   },
@@ -108,7 +108,7 @@
     "origin": [
       [
         "pages/books/index.js",
-        138
+        111
       ]
     ]
   },
@@ -117,16 +117,7 @@
     "origin": [
       [
         "pages/books/index.js",
-        138
-      ]
-    ]
-  },
-  "All levels": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        187
+        111
       ]
     ]
   },
@@ -135,25 +126,16 @@
     "origin": [
       [
         "pages/books/index.js",
-        243
+        173
       ]
     ]
   },
-  "Just arrived in {0}": {
+  "Just arrived": {
     "translation": "",
     "origin": [
       [
         "pages/books/index.js",
-        259
-      ]
-    ]
-  },
-  "Popular in {0}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        268
+        189
       ]
     ]
   }
