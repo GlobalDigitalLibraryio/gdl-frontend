@@ -115,7 +115,11 @@ class BooksPage extends React.Component<Props> {
           <Container mw="1075px" px={[0, 15]}>
             <ToolbarItem
               id="langFilter"
-              text="Language"
+              text={
+                <Trans>
+                  Books in <strong>{languageFilter.name}</strong>
+                </Trans>
+              }
               selectedItem={languageFilter.code}
             >
               {({ getItemProps, selectedItem, highlightedIndex }) =>

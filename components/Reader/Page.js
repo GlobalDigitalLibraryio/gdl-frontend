@@ -14,7 +14,6 @@ const Page = styled.div`
   border-top: 1px solid ${props => props.theme.grays.platinum};
   border-bottom: 1px solid ${props => props.theme.grays.platinum};
   color: #000;
-  strong,
   b {
     font-weight: bold;
   }

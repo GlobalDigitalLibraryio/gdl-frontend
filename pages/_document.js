@@ -41,6 +41,10 @@ const globalStyles = css`
       color: ${theme.primaries.primary};
       text-decoration: none;
     }
+
+    strong {
+      font-weight: bold;
+    }
   }
 `;
 
