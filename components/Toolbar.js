@@ -9,6 +9,8 @@ import * as React from 'react';
 import Downshift from 'downshift';
 import styled from 'styled-components';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
+import media from './helpers/media';
+import Container from './Container';
 import Card from './Card';
 
 /* eslint-disable react/no-multi-comp */
@@ -18,37 +20,42 @@ const Toolbar = styled.div`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   font-size: 14px;
   position: relative;
+  ${Container} {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+  }
 `;
 
 const Item = styled.div`
-  border-right: solid 1px ${props => props.theme.grays.platinum};
-  &:first-child {
-    border-left: solid 1px ${props => props.theme.grays.platinum};
-  }
   position: relative;
   display: inline-block;
+  padding-right: 15px;
+  ${media.tablet`
+    padding-right: 20px;
+  `};
 `;
 
 const DropdownButton = styled.a.attrs({
   href: '',
 })`
-  padding: 10px 15px;
   display: block;
+  padding-top: 7px;
+  padding-bottom: 7px;
 `;
 
 const DropdownItemAnchor = styled.a`
   display: block;
-  padding: 10px 15px;
+  padding: 7px 15px;
   &:not(:last-child) {
     border-bottom: 1px solid ${props => props.theme.grays.platinum};
   }
 
   & svg {
-    color: ${props =>
-      props.isSelected
-        ? props.theme.supports.greenDark
-        : props.theme.grays.gainsboro};
+    color: ${props => props.theme.supports.greenDark};
     margin-right: 10px;
+    ${props => !props.isSelected && 'visibility: hidden'};
   }
 
   ${props =>
@@ -77,7 +84,7 @@ class ToolbarDropdownItem extends React.Component<{
 
 type Props = {
   id: string, // Because we want to avoid using Downshift's automatically generated id to prevent checksums errors with SSR
-  text: string,
+  text: string | React.Node,
   children: ({
     selectedItem: ?string,
     highlightedIndex: number,
@@ -107,16 +114,14 @@ class ToolbarItem extends React.Component<Props> {
             </DropdownButton>
             {isOpen && (
               <Card
-                px={0}
-                py={0}
-                mt="1px"
                 style={{
+                  padding: 0,
                   borderRadius: '0 0 4px 4px',
                   position: 'absolute',
                   zIndex: 20,
-                  left: '0',
+                  right: '0',
                   top: '100%',
-                  minWidth: '150px',
+                  minWidth: '220px',
                   overflow: 'hidden',
                   boxShadow:
                     '0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4)',
