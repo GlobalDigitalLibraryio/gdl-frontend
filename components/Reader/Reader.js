@@ -6,9 +6,9 @@
  * See LICENSE
  */
 import * as React from 'react';
-import Error from 'next/error';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
+import { Error } from '../../pages/_error';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
 import Page from './Page';
@@ -104,7 +104,7 @@ class Reader extends React.Component<Props, State> {
 
     // If this isn't a valid chapter. Render the 404 page
     if (chapter < 1 || chapter > this.props.book.chapters.length) {
-      return <Error statusCode={404} />;
+      return <Error statusCode={404} showNavbar={false} />;
     }
 
     const maybeChapter = this.state.chapters[chapter];
