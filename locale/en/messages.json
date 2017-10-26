@@ -1,4 +1,31 @@
 {
+  "This page could not be found": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/_error.js",
+        42
+      ]
+    ]
+  },
+  "An unexpected error has occurred": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/_error.js",
+        44
+      ]
+    ]
+  },
+  "Go to start page": {
+    "translation": "",
+    "origin": [
+      [
+        "pages/_error.js",
+        67
+      ]
+    ]
+  },
   "Books in <0>{0}</0>": {
     "translation": "",
     "origin": [
