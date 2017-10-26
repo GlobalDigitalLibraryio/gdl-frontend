@@ -150,35 +150,34 @@ class BooksPage extends React.Component<Props> {
             <Link
               route="book"
               params={{ id: editorPick.id, lang: editorPick.language.code }}
-              passHref
             >
-              <Card
-                is="a"
-                style={{ display: 'block', color: '#444' }}
-                h={['180px', '295px']}
-                pl={['15px', '20px']}
-                pr={['15px', '80px']}
-                pt={['15px', '20px']}
-              >
-                <Flex>
-                  <BookCover
-                    book={editorPick}
-                    h={['148px', '247px']}
-                    w={['120px', '200px']}
-                    mr={['15px', '20px']}
-                    flex="0 0 auto"
-                  />
-                  <Box>
-                    <H3>
-                      <Trans>Editor’s pick</Trans>
-                    </H3>
-                    <H4>{editorPick.title}</H4>
-                    <P fontSize={[12, 16]} lineHeight={[18, 24]}>
-                      {editorPick.description}
-                    </P>
-                  </Box>
-                </Flex>
-              </Card>
+              <a>
+                <Card
+                  h={['180px', '295px']}
+                  pl={['15px', '20px']}
+                  pr={['15px', '80px']}
+                  pt={['15px', '20px']}
+                >
+                  <Flex>
+                    <BookCover
+                      book={editorPick}
+                      h={['148px', '247px']}
+                      w={['120px', '200px']}
+                      mr={['15px', '20px']}
+                      flex="0 0 auto"
+                    />
+                    <Box>
+                      <H3>
+                        <Trans>Editor’s pick</Trans>
+                      </H3>
+                      <H4>{editorPick.title}</H4>
+                      <P fontSize={[12, 16]} lineHeight={[18, 24]}>
+                        {editorPick.description}
+                      </P>
+                    </Box>
+                  </Flex>
+                </Card>
+              </a>
             </Link>
           </Container>
         </Hero>

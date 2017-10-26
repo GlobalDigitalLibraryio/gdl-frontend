@@ -38,7 +38,7 @@ export default ({ book, ...props }: { book: Book }) => (
   <CardBase
     w={[105, 130]}
     flex="0 0 auto"
-    style={{ overflow: 'hidden', display: 'block' }}
+    style={{ overflow: 'hidden' }}
     {...props}
   >
     <Cover h={[130, 160]} w="100%">

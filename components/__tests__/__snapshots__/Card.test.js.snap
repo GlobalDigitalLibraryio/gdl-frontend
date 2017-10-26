@@ -10,36 +10,9 @@ exports[`Renders 1`] = `
   max-width: 100%;
 }
 
-<Base
+<div
   className="c0"
-  theme={
-    Object {
-      "grays": Object {
-        "dark": "#444",
-        "desertStorm": "#f8f8f8",
-        "gainsboro": "#ddd",
-        "gallery": "#eff0f2",
-        "jumbo": "#888",
-        "platinum": "#e3e3e3",
-        "steel": "#666",
-        "white": "#fff",
-      },
-      "primaries": Object {
-        "dark": "#184673",
-        "highlight": "#edf7ff",
-        "light": "#ceddea",
-        "primary": "#20588f",
-        "secondary": "#507aa4",
-        "tertiary": "#a5bcd3",
-      },
-      "supports": Object {
-        "greenDark": "#359258",
-        "greenHighlight": "#edfff4",
-        "greenPrimary": "#5cbc80",
-      },
-    }
-  }
 >
   I am in a card!
-</Base>
+</div>
 `;

@@ -23,9 +23,10 @@ export default ({ books, ...props }: { books: Array<Book> }) => (
         route="book"
         params={{ id: book.id, lang: book.language.code }}
         key={book.id}
-        passHref
       >
-        <BookCardCover book={book} mx={6} is="a" />
+        <a>
+          <BookCardCover book={book} mx={6} />
+        </a>
       </Link>
     ))}
   </FlexScroller>

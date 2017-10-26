@@ -23,10 +23,16 @@ const Nav = styled.nav`
   `}
   background: linear-gradient(0deg, #4884be 0%, ${props =>
     props.theme.primaries.primary} 100%);
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
   color: ${props => props.theme.grays.white};
+  
+  display: flex;
+  align-items: stretch;
+
+  ${Container} {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const NavItem = styled.div`
@@ -77,7 +83,7 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
   render() {
     return (
       <Nav>
-        <Container mw="1075px" is={Flex} w={1}>
+        <Container mw="1075px">
           <Flex
             justify={['flex-start', 'flex-end']}
             flex="1 1 0"

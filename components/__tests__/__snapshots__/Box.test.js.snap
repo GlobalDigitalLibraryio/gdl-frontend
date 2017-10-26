@@ -5,19 +5,13 @@ exports[`Can have different margins 1`] = `
   margin: 10px;
 }
 
-<Styled(Base)
+<styled.div
   m={10}
 >
-  <Base
+  <div
     className="c0"
-    m={10}
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;
 
 exports[`Can have different margins 2`] = `
@@ -28,21 +22,14 @@ exports[`Can have different margins 2`] = `
   margin-bottom: 10px;
 }
 
-<Styled(Base)
+<styled.div
   mx={5}
   my={10}
 >
-  <Base
+  <div
     className="c0"
-    mx={5}
-    my={10}
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;
 
 exports[`Can have different margins 3`] = `
@@ -53,25 +40,16 @@ exports[`Can have different margins 3`] = `
   margin-top: 3px;
 }
 
-<Styled(Base)
+<styled.div
   mb="1px"
   ml="2px"
   mr="4px"
   mt="3px"
 >
-  <Base
+  <div
     className="c0"
-    mb="1px"
-    ml="2px"
-    mr="4px"
-    mt="3px"
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;
 
 exports[`Can have different paddings 1`] = `
@@ -79,19 +57,13 @@ exports[`Can have different paddings 1`] = `
   padding: 10px;
 }
 
-<Styled(Base)
+<styled.div
   p={10}
 >
-  <Base
+  <div
     className="c0"
-    p={10}
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;
 
 exports[`Can have different paddings 2`] = `
@@ -102,21 +74,14 @@ exports[`Can have different paddings 2`] = `
   padding-bottom: 10px;
 }
 
-<Styled(Base)
+<styled.div
   px={5}
   py={10}
 >
-  <Base
+  <div
     className="c0"
-    px={5}
-    py={10}
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;
 
 exports[`Can have different paddings 3`] = `
@@ -127,39 +92,14 @@ exports[`Can have different paddings 3`] = `
   padding-top: 3px;
 }
 
-<Styled(Base)
+<styled.div
   pb="1px"
   pl="2px"
   pr="4px"
   pt="3px"
 >
-  <Base
+  <div
     className="c0"
-    pb="1px"
-    pl="2px"
-    pr="4px"
-    pt="3px"
-  >
-    <div
-      className="c0"
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
-`;
-
-exports[`Supports custom component 1`] = `
-<Styled(Base)
-  is="section"
->
-  <Base
-    className=""
-    is="section"
-  >
-    <section
-      className=""
-      is={null}
-    />
-  </Base>
-</Styled(Base)>
+  />
+</styled.div>
 `;

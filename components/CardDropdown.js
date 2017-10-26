@@ -60,16 +60,15 @@ class CardDropdown extends React.Component<Props> {
               <Target>{this.props.renderTarget(getButtonProps, isOpen)}</Target>
               {isOpen && (
                 <Popper
+                  component={Dropdown}
                   placement="bottom"
-                  style={{ width: '100%', zIndex: 999 }}
+                  style={{ width: '100%', zIndex: 999, padding: 0 }}
                 >
-                  <Dropdown px={0} py={0}>
-                    {this.props.children({
-                      getItemProps,
-                      selectedItem,
-                      highlightedIndex,
-                    })}
-                  </Dropdown>
+                  {this.props.children({
+                    getItemProps,
+                    selectedItem,
+                    highlightedIndex,
+                  })}
                 </Popper>
               )}
             </div>

@@ -12,12 +12,6 @@ import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
 import Box from '../Box';
 
-test('Supports custom component', () => {
-  const tree = mount(<Box is="section" />);
-
-  expect(toJson(tree)).toMatchSnapshot();
-});
-
 test('Can have different paddings', () => {
   let tree = mount(<Box p={10} />);
   expect(toJson(tree)).toMatchSnapshot();
