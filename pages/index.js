@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 import BlockLink from '../components/BlockLink';
 import Layout from '../components/Layout';
-import { Container, Section } from '../components/generic';
+import Container from '../components/Container';
 
 import Hero from '../components/Hero';
 
@@ -180,7 +180,7 @@ export default () => (
         </Container>
       </Hero.Body>
     </Hero>
-    <Section as="section" id="content">
+    <section id="content">
       <Container>
         <Card
           src="/static/index/children-smiling.jpg"
@@ -253,6 +253,6 @@ export default () => (
           <AboutLink href="/about">More about Global Digital Library</AboutLink>
         </div>
       </Container>
-    </Section>
+    </section>
   </Layout>
 );
