@@ -17,7 +17,11 @@ test('Returns statusCode from res (server)', async () => {
 });
 
 test('Returns statusCode from jsonPageRes (client)', async () => {
-  expect(await Error.getInitialProps({ jsonPageRes: { status: 418 } })).toEqual(
+  expect(
+    await Error.getInitialProps({
+      jsonPageRes: { status: 418 },
+    }),
+  ).toEqual(
     expect.objectContaining({
       statusCode: 418,
     }),

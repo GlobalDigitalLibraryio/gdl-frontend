@@ -16,15 +16,23 @@ import A from '../components/A';
 import Container from '../components/Container';
 import { Link } from '../routes';
 
-class Error extends React.Component<{
+type Props = {
   statusCode: ?number,
   showNavbar: boolean,
-}> {
+};
+
+class Error extends React.Component<Props> {
   static defaultProps = {
     showNavbar: true,
   };
 
-  static async getInitialProps({ res, jsonPageRes }) {
+  static async getInitialProps({
+    res,
+    jsonPageRes,
+  }: {
+    res?: *,
+    jsonPageRes?: *,
+  }) {
     let statusCode;
     if (res && res.statusCode) {
       statusCode = res.statusCode;
