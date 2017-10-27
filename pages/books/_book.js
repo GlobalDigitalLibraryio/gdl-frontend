@@ -19,6 +19,7 @@ import {
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
 import type { Book } from '../../types';
+import { Error } from '../_error';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
 import Box from '../../components/Box';
@@ -47,9 +48,8 @@ const SIMILAR_BOOKS_PAGE_SIZE = 5;
 const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
-  book: Book,
+  book: ?Book,
   similar: Array<Book>,
-  chapter?: number,
   url: {
     query: {
       chapter?: string,
@@ -112,18 +112,22 @@ class BookPage extends React.Component<Props> {
     ]);
 
     const [book, similar] = await Promise.all([
-      bookRes.json(),
-      similarRes.json(),
+      bookRes.ok ? bookRes.json() : null,
+      similarRes.ok ? (await similarRes.json()).results : [],
     ]);
 
     return {
       book,
-      similar: similar.results,
+      similar,
     };
   }
 
   render() {
     const { book } = this.props;
+
+    if (!book) {
+      return <Error statusCode={404} />;
+    }
 
     const contributors = book.contributors
       .map(contributor => (
