@@ -26,18 +26,12 @@ class Error extends React.Component<Props> {
     showNavbar: true,
   };
 
-  static async getInitialProps({
-    res,
-    jsonPageRes,
-  }: {
-    res?: *,
-    jsonPageRes?: *,
-  }) {
+  static async getInitialProps({ res, err }: { res?: *, err?: * }) {
     let statusCode;
     if (res && res.statusCode) {
       statusCode = res.statusCode;
-    } else if (jsonPageRes && jsonPageRes.status) {
-      statusCode = jsonPageRes.status;
+    } else if (err && err.statusCode) {
+      statusCode = err.statusCode;
     }
 
     return {
