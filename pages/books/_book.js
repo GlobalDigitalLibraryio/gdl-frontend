@@ -9,7 +9,6 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { DateFormat, Trans, Plural } from 'lingui-react';
-import fetch from 'isomorphic-unfetch';
 import {
   MdLanguage,
   MdTranslate,
@@ -18,7 +17,8 @@ import {
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import type { Book } from '../../types';
+import doFetch from '../../fetch';
+import type { Book, RemoteData } from '../../types';
 import { Error } from '../_error';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
@@ -48,7 +48,7 @@ const SIMILAR_BOOKS_PAGE_SIZE = 5;
 const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
-  book: ?Book,
+  book: RemoteData<Book>,
   similar: Array<Book>,
   url: {
     query: {
@@ -104,30 +104,26 @@ const Separator = styled.div`
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    const [bookRes, similarRes] = await Promise.all([
-      fetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
-      fetch(
+    const [book, similar] = await Promise.all([
+      doFetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
+      doFetch(
         `${env.bookApiUrl}/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
       ),
     ]);
 
-    const [book, similar] = await Promise.all([
-      bookRes.ok ? bookRes.json() : null,
-      similarRes.ok ? (await similarRes.json()).results : [],
-    ]);
-
     return {
       book,
-      similar,
+      // Similar books aren't that important, so we fallback to empty array here
+      similar: similar.results ? similar.results : [],
     };
   }
 
   render() {
-    const { book } = this.props;
-
-    if (!book) {
-      return <Error statusCode={404} />;
+    if (!this.props.book.sucess) {
+      return <Error statusCode={this.props.book.statusCode} />;
     }
+
+    const book = this.props.book.results;
 
     const contributors = book.contributors
       .map(contributor => (
