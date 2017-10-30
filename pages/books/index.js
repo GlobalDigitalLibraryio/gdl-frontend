@@ -7,11 +7,11 @@
  */
 
 import * as React from 'react';
-import fetch from 'isomorphic-unfetch';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { MdCheck } from 'react-icons/lib/md';
-import type { Book, Language } from '../../types';
+import doFetch from '../../fetch';
+import type { Book, Language, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -36,14 +36,12 @@ const BOOKS_PAGE_SIZE = 5;
 const LANG_QUERY = 'lang';
 
 type Props = {
-  editorPick: Book,
-  popular: Array<Book>,
-  justArrived: Array<Book>,
-  levels: Array<string>,
-  languages: Array<Language>,
-  languageFilter: Language,
+  editorPicks: RemoteData<Array<Book>>,
+  justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
+  levels: RemoteData<Array<string>>,
+  languages: RemoteData<Array<Language>>,
   i18n: I18n,
-  booksByLevel: Array<Array<Book>>,
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
 };
 
 class BooksPage extends React.Component<Props> {
@@ -51,60 +49,46 @@ class BooksPage extends React.Component<Props> {
     const language = query[LANG_QUERY];
 
     // Fetch these first, cause they don't use the reading level
-    const [
-      editorPicksRes,
-      levelsRes,
-      languagesRes,
-      justArrivedRes,
-    ] = await Promise.all([
-      fetch(`${env.bookApiUrl}/book-api/v1/editorpicks/${language || ''}`),
-      fetch(`${env.bookApiUrl}/book-api/v1/levels/${language || ''}`),
-      fetch(`${env.bookApiUrl}/book-api/v1/languages`),
-      fetch(
+    const [editorPicks, levels, languages, justArrived] = await Promise.all([
+      doFetch(`${env.bookApiUrl}/book-api/v1/editorpicks/${language || ''}`),
+      doFetch(`${env.bookApiUrl}/book-api/v1/levels/${language || ''}`),
+      doFetch(`${env.bookApiUrl}/book-api/v1/languages`),
+      doFetch(
         `${env.bookApiUrl}/book-api/v1/books/${language ||
-          ''}?sort=popular&page-size=${BOOKS_PAGE_SIZE}`,
+          ''}?sort=arrivaldate&page-size=${BOOKS_PAGE_SIZE}`,
       ),
     ]);
 
-    const [editorPicks, levels, languages, justArrived] = await Promise.all([
-      editorPicksRes.json(),
-      levelsRes.json(),
-      languagesRes.json(),
-      justArrivedRes.json(),
-    ]);
-
-    const booksByLevelsRes = await Promise.all(
+    const booksByLevel = await Promise.all(
       levels.map(level =>
-        fetch(
+        doFetch(
           `${env.bookApiUrl}/book-api/v1/books/${language ||
             ''}?sort=-arrivaldate&page-size=${BOOKS_PAGE_SIZE}&reading-level=${level}`,
         ),
       ),
     );
 
-    const booksByLevel = await Promise.all(
-      booksByLevelsRes.map(res => res.json()),
-    );
-
     return {
-      editorPick: editorPicks[0], // This returns an array. For now we only want a single book
-      justArrived: justArrived.results, // currently we are only interested in the array, not all the other metadata (paging etc.)
-      languageFilter: justArrived.language,
+      editorPicks,
+      justArrived,
       languages,
       levels,
-      booksByLevel: booksByLevel.map(books => books.results), // currently we are only interested in the array, not all the other metadata (paging etc.)
+      booksByLevel,
     };
   }
 
   render() {
     const {
-      editorPick,
+      editorPicks,
       languages,
-      languageFilter,
       i18n,
       levels,
       booksByLevel,
+      justArrived,
     } = this.props;
+
+    const editorPick = editorPicks[0];
+    const languageFilter = justArrived.language;
 
     return (
       <div>
@@ -191,7 +175,7 @@ class BooksPage extends React.Component<Props> {
             <H3>
               <Trans>Just arrived</Trans>{' '}
             </H3>
-            <HorizontalBookList books={this.props.justArrived} mt={20} />
+            <HorizontalBookList books={justArrived.results} mt={20} />
           </Container>
         </Hero>
         {levels.map((level, index) => (
@@ -200,7 +184,7 @@ class BooksPage extends React.Component<Props> {
               <H3>
                 <Trans>Level {level}</Trans>{' '}
               </H3>
-              <HorizontalBookList books={booksByLevel[index]} mt={20} />
+              <HorizontalBookList books={booksByLevel[index].results} mt={20} />
             </Container>
           </Hero>
         ))}

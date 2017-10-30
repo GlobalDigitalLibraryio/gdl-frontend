@@ -19,7 +19,6 @@ import {
 import styled from 'styled-components';
 import doFetch from '../../fetch';
 import type { Book, RemoteData } from '../../types';
-import { Error } from '../_error';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
 import Box from '../../components/Box';
@@ -120,11 +119,7 @@ class BookPage extends React.Component<Props> {
   }
 
   render() {
-    if (!this.props.book.success) {
-      return <Error statusCode={this.props.book.statusCode} />;
-    }
-
-    const book = this.props.book.data;
+    const { similar, book } = this.props;
 
     const contributors = book.contributors
       .map(contributor => (
@@ -325,13 +320,7 @@ class BookPage extends React.Component<Props> {
             <H3>
               <Trans>Similar</Trans>
             </H3>
-            {this.props.similar.data &&
-              this.props.similar.data.results.length > 0 && (
-                <HorizontalBookList
-                  books={this.props.similar.data.results}
-                  mt={20}
-                />
-              )}
+            <HorizontalBookList books={similar.results} mt={20} />
           </Container>
         </Hero>
       </div>

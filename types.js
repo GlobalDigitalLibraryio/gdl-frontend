@@ -40,19 +40,8 @@ export type ChapterSummary = {
   url: string,
 };
 
-export type Failure = {|
-  code: string,
-  description: string,
-  statusCode: number,
-  success: false,
-|};
-
-export type Success<T> = {|
-  data: T,
-  success: true,
-|};
-
-export type RemoteData<T> = Failure | Success<T>;
+// Future proofing. In the future we might want to define success and failure cases using ADTs
+export type RemoteData<T> = T;
 
 export type Book = {|
   +id: number,
