@@ -40,21 +40,21 @@ export type ChapterSummary = {
   url: string,
 };
 
-export type Failure = {
+export type Failure = {|
   code: string,
   description: string,
   statusCode: number,
   success: false,
-};
+|};
 
-export type Success<T> = {
-  results: T,
-  sucess: true,
-};
+export type Success<T> = {|
+  data: T,
+  success: true,
+|};
 
 export type RemoteData<T> = Failure | Success<T>;
 
-export type Book = {
+export type Book = {|
   +id: number,
   +title: string,
   +description: string,
@@ -75,4 +75,4 @@ export type Book = {
     large: string,
     small: string,
   },
-};
+|};

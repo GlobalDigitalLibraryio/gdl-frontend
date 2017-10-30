@@ -18,18 +18,23 @@ export default async function(url: string): Promise<RemoteData<*>> {
 
     if (response.headers.get('Content-Type').includes('application/json')) {
       const json = await response.json();
+      // Check if the response is in the 200-299 range
       if (response.ok) {
-        return { sucess: true, results: json };
+        return { data: json, success: true };
       }
       return {
         statusCode: response.status,
         description: json.description || 'Unknown error',
         code: json.code || 'Unknown error',
-        sucess: false,
+        success: false,
       };
     }
-
-    return { sucess: true, results: await response.text() };
+    return {
+      statusCode: response.status,
+      description: 'Unknown error',
+      code: 'Unknown error',
+      success: false,
+    };
   } catch (error) {
     // If we are here, it is probably a network error. Treat errors without a response as 500s
     const statusCode = error.response ? error.response.status : 500;
@@ -37,7 +42,7 @@ export default async function(url: string): Promise<RemoteData<*>> {
       statusCode,
       description: error.message || 'Uknown error',
       code: 'Unknown error',
-      sucess: false,
+      success: false,
     };
   }
 }

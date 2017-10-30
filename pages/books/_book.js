@@ -49,7 +49,9 @@ const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
   book: RemoteData<Book>,
-  similar: Array<Book>,
+  similar: RemoteData<{
+    results: Array<Book>,
+  }>,
   url: {
     query: {
       chapter?: string,
@@ -113,17 +115,16 @@ class BookPage extends React.Component<Props> {
 
     return {
       book,
-      // Similar books aren't that important, so we fallback to empty array here
-      similar: similar.results ? similar.results : [],
+      similar,
     };
   }
 
   render() {
-    if (!this.props.book.sucess) {
+    if (!this.props.book.success) {
       return <Error statusCode={this.props.book.statusCode} />;
     }
 
-    const book = this.props.book.results;
+    const book = this.props.book.data;
 
     const contributors = book.contributors
       .map(contributor => (
@@ -324,7 +325,13 @@ class BookPage extends React.Component<Props> {
             <H3>
               <Trans>Similar</Trans>
             </H3>
-            <HorizontalBookList books={this.props.similar} mt={20} />
+            {this.props.similar.data &&
+              this.props.similar.data.results.length > 0 && (
+                <HorizontalBookList
+                  books={this.props.similar.data.results}
+                  mt={20}
+                />
+              )}
           </Container>
         </Hero>
       </div>

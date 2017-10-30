@@ -13,9 +13,6 @@ import Reader from '../components/Reader';
 
 const book: Book = {
   id: 28,
-  revision: 1,
-  externalId: '31',
-  uuid: '0ee71a23-8c86-4453-b062-4a1a4e2659f9',
   title: 'Indlu kaMpukwana',
   description: 'Indlu kaMpukwana',
   language: { code: 'xho', name: 'Xhosa' },
@@ -29,13 +26,7 @@ const book: Book = {
   },
   publisher: { id: 2, revision: 1, name: 'Bookdash' },
   readingLevel: '2',
-  typicalAgeRange: '4-7',
-  educationalUse: 'reading',
-  educationalRole: 'learner',
-  timeRequired: 'PT10M',
   datePublished: '2017-10-05',
-  dateCreated: '2017-10-05',
-  dateArrived: '2017-10-05',
   categories: [
     { id: 1, revision: 1, name: 'Animals' },
     { id: 2, revision: 1, name: 'Running' },
@@ -52,7 +43,6 @@ const book: Book = {
     pdf:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/download/pdf/xho/0ee71a23-8c86-4453-b062-4a1a4e2659f9.pdf',
   },
-  tags: [],
   contributors: [
     {
       id: 60,
