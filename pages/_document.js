@@ -38,7 +38,7 @@ const globalStyles = css`
     color: ${theme.grays.dark};
 
     a {
-      color: ${theme.primaries.primary};
+      color: #1566b6;
       text-decoration: none;
     }
 
