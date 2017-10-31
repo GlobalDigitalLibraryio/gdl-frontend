@@ -7,252 +7,177 @@
  */
 
 import * as React from 'react';
-import { Link as ScrollLink } from 'react-scroll';
+import styled from 'styled-components';
 import Link from 'next/link';
-
-import BlockLink from '../components/BlockLink';
-import Layout from '../components/Layout';
+import H1 from '../components/H1';
+import H3 from '../components/H3';
+import P from '../components/P';
+import A from '../components/A';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import Flex from '../components/Flex';
+import Box from '../components/Box';
 import Container from '../components/Container';
+import defaultPage from '../hocs/defaultPage';
+import Meta from '../components/Meta';
 
 import Hero from '../components/Hero';
 
-const Card = ({
-  children,
-  header,
-  src,
-  alt,
-}: {
-  children?: React.Node,
-  src: string,
-  alt: string,
-  header: string,
-}) => (
-  <div className="root">
-    <figure>
-      <img src={src} alt={alt} />
-    </figure>
+const PartnerImg = styled.img`
+  object-fit: scale-down;
+  height: 40px;
+  widht: 90px;
+`;
 
-    <div className="content">
-      <h2>{header}</h2>
-      {children}
-    </div>
-    <style jsx>{`
-      @media screen and (min-width: 600px) {
-        .root {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          background: #fff;
-          box-shadow: 0px 5px 20px -4px rgba(0, 0, 0, 0.35);
-          font-size: 1.2rem;
-        }
+const HeroImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
 
-        .root:nth-of-type(odd) figure {
-          order: 2;
-        }
-        figure {
-          width: 50%;
-        }
+const SocialLink = styled.a`
+  &:hover,
+  &:focus {
+    margin-top: -5px;
+  }
+`;
 
-        .content {
-          padding: 10px 30px;
-          width: 50%;
-        }
-      }
-
-      .root:not(:first-child) {
-        margin: 60px 0;
-      }
-
-      a {
-        color: #20588f;
-      }
-
-      img {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
-
-      h2 {
-        margin-bottom: 16px;
-        color: #1c5791;
-        font-size: 2rem;
-      }
-    `}</style>
-  </div>
-);
-
-const AboutLink = ({ children, ...props }) => (
-  <Link>
-    <a {...props}>
-      {children}
-      <style jsx>{`
-        a {
-          background: #309556;
-          display: inline-block;
-          padding: 10px 20px;
-          margin-top: 20px;
-          color: #fff;
-          border-radius: 0;
-          -webkit-appearance: none;
-          text-decoration: none;
-          text-transform: uppercase;
-          border: none;
-          transition: background-color 100ms ease-in-out;
-        }
-        a:hover,
-        a:focus {
-          background: #60bb82;
-        }
-      `}</style>
-    </a>
-  </Link>
-);
-
-export default () => (
-  <Layout>
-    <Hero teachingIcons>
-      <Hero.Body>
-        <Container>
-          <h1>
-            Global digital <small>library</small>
-          </h1>
-          <p>
-            The Global Digital Library (GDL) is being developed to increase the
-            availability of high quality mother tongue learning resources
-            worldwide.
-          </p>
-          <p>
-            The GDL-project is currently in an initial stage; establishing the
-            implementation plan and steering structure and piloting the
-            technical platform.
-          </p>
-          <ScrollLink
-            aria-label="Read more"
-            href="#content"
-            to="content"
-            smooth
-            className="read-more-arrow"
-            title="Click here to read more about Global Digital Library"
-          >
-            Read more
-          </ScrollLink>
-          <style jsx>{`
-            :global(.read-more-arrow) {
-              display: block;
-              padding: 5px;
-              width: 70px;
-              height: 70px;
-              text-indent: -9000px;
-              background: url('static/hero/arrow.png') no-repeat center 65%;
-              background-size: 70% 70%;
-              border: 5px solid #fff;
-              transition: all 150ms ease-in-out;
-              border-radius: 50%;
-              margin-bottom: 5em;
-            }
-            :global(.read-more-arrow:hover) {
-              background-size: 80% 80%;
-            }
-
-            p {
-              font-size: 1.3rem;
-            }
-
-            h1 {
-              font-size: 2.4rem;
-              margin-bottom: 20px;
-            }
-
-            @media screen and (min-width: 900px) {
-              h1 {
-                font-size: 5rem;
-              }
-            }
-
-            h1 small {
-              text-transform: uppercase;
-              display: block;
-              text-indent: 1em;
-            }
-          `}</style>
-        </Container>
-      </Hero.Body>
+const Home = () => (
+  <div>
+    <Meta
+      title="Global Digital Library"
+      description="Global Digital Library (GDL)"
+    />
+    <Hero colorful style={{ color: '#fff' }} py={64}>
+      <Container mw={1075}>
+        <H1 style={{ textTransform: 'uppercase' }}>Global digital library</H1>
+        <P fontSize={26}>
+          The Global Digital Library (GDL) is being developed to increase the
+          availability of high quality reading resources in languages children
+          and youth speak and understand.
+        </P>
+        <P fontSize={26}>
+          The GDL-project is currently collecting reading resources and piloting
+          the technical platform. The platform is expected to launch before
+          April 2018.
+        </P>
+      </Container>
     </Hero>
-    <section id="content">
-      <Container>
-        <Card
-          src="/static/index/children-smiling.jpg"
-          alt="Smiling children"
-          header="About the Global Digital Library"
-        >
-          <div>
-            <p>
-              The Global Digital Library will expand access to mother tongue
-              (MT) content by providing openly licensed, downloadable materials
-              that allow sharing, electronic use and large scale printing, as
-              well as linking to other sources for those materials.
-            </p>
-            <p>
-              The initial focus will be on learning resources that can support
-              children’s literacy learning. Other learning resources will be
-              included at a later stage.
-            </p>
-
-            <BlockLink href="/about">Read more about the project</BlockLink>
-          </div>
-        </Card>
-
-        <Card
-          src="/static/index/children-cheering.jpg"
-          alt="Happy children"
-          header="Compilation of digital libraries"
-        >
-          <div>
-            <p>
+    <Container mw={1075}>
+      <Card my={60}>
+        <Flex>
+          <Box w={0.5} py={10} px={30}>
+            <H3>About the Global Digital Library</H3>
+            <P>
+              The GDL will collect existing high quality open educational
+              reading resources, and make them available on web, mobile and for
+              print. It will also facilitate translation and localization of
+              these resources to more than 300 languages. The goal is to make at
+              least 50.000 titles in 100 languages available on the GDL-platform
+              by the end of 2020.
+            </P>
+            <P>
+              The GDL’s initial purpose is to support access to high quality
+              early-grade reading resources. Other types of learning resources
+              may be included at a later stage.
+            </P>
+            <A href="">Read more about the project</A>
+          </Box>
+          <Box w={0.5}>
+            <HeroImg src="/static/children-306607.jpg" alt="Girl reading" />
+          </Box>
+        </Flex>
+      </Card>
+      <Card my={60}>
+        <Flex>
+          <Box w={0.5}>
+            <HeroImg src="/static/kids-playing.jpg" alt="Kids playing" />
+          </Box>
+          <Box w={0.5} py={10} px={30}>
+            <H3>Compilation of digital libraries</H3>
+            <P>
               If you are looking for reading resources, All Children Reading
               have made a compilation of digital libraries, carefully curated to
               feature a variety of sites that provide local language early grade
               reading materials.
-            </p>
-            <BlockLink
-              href="https://allchildrenreading.org/digital-libraries/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              All Children Reading
-            </BlockLink>
-          </div>
-        </Card>
-
-        <Card
-          src="/static/index/children-laughing.jpg"
-          alt="Children in the grass with computer"
-          header="Project partners"
-        >
-          <div>
-            <p>
-              The Norwegian Agency for Development Cooperation (NORAD) and
-              Norwegian Digital Learning Arena (NDLA) are leading the
-              development of the Global Digital Library as part of the Global
-              Book Alliance. Other collaborating partners include the All
-              Children Reading: A Grand Challenge for Development partners
-              (USAID, World Vision, and the Australian Government).
-            </p>
-            <BlockLink
-              href="http://globalbookalliance.org/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Global book alliance
-            </BlockLink>
-          </div>
-        </Card>
-        <div style={{ textAlign: 'center' }}>
-          <AboutLink href="/about">More about Global Digital Library</AboutLink>
-        </div>
+            </P>
+            <A href="https://allchildrenreading.org/digital-libraries/">
+              All children reading
+            </A>
+          </Box>
+        </Flex>
+      </Card>
+      <Card my={60}>
+        <Flex>
+          <Box w={0.5} py={10} px={30}>
+            <H3>Who is behind the GDL?</H3>
+            <P>
+              The GDL-platform is a collaborative endeavour which will require
+              involvement from a broad spectrum of stakeholders in order to be
+              truly successful and widely used. It is being built based on
+              existing quality learning resources provided from a variety of
+              initiatives.
+            </P>
+            <P>
+              The idea to develop a Global Digital Library for reading resources
+              came from All Children Reading: a Grand Challenge for Development
+              (ACR) in 2014. The GDL-platform is being developed and will
+              initially be operated by the Norwegian Digital Learning Arena
+              (NDLA). The Norwegian Agency for Development Cooperation (Norad)
+              has the overall project management responsibility.
+            </P>
+            <A href="http://globalbookalliance.org/">
+              The Global Digital Library is part of the Global Book Alliance
+            </A>
+          </Box>
+          <Box w={0.5}>
+            <HeroImg src="/static/boy-reading.jpg" alt="Boy reading" />
+          </Box>
+        </Flex>
+      </Card>
+      <Box textAlign="center">
+        <Button>More about Global Digital Library</Button>
+      </Box>
+      {/* <SocialLink
+        href="https://www.facebook.com/globaldigitallibrary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Facebook
+      </SocialLink>
+      <SocialLink
+        id="twitter"
+        href="https://twitter.com/gdigitallibrary"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Twitter
+      </SocialLink>
+      <SocialLink href="mailto:christer@digitallibrary.io">E-mail</SocialLink> */}
+    </Container>
+    <Hero mt={32}>
+      <Container py={32} mw={1075}>
+        <Flex justify="space-between" wrap>
+          <PartnerImg
+            src="/static/footer/all-children.png"
+            alt="All Children Reading logo"
+            style={{ width: '14%' }}
+          />
+          <PartnerImg src="/static/footer/usaid.png" alt="US Aid logo" />
+          <PartnerImg
+            src="/static/footer/world-vision.png"
+            alt="World Vision logo"
+          />
+          <PartnerImg
+            src="/static/footer/australian-aid.png"
+            alt="Australian Aid logo"
+          />
+          <PartnerImg src="/static/footer/norad.png" alt="Norad logo" />
+          <PartnerImg src="/static/footer/ndla.png" alt="NDLA logo" />
+        </Flex>
       </Container>
-    </section>
-  </Layout>
+    </Hero>
+  </div>
 );
+
+export default defaultPage(Home);
