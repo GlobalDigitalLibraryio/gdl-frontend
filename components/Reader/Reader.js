@@ -8,7 +8,7 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
-import { Error } from '../../pages/_error';
+import Error from '../Error';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
 import Page from './Page';

@@ -40,7 +40,10 @@ export type ChapterSummary = {
   url: string,
 };
 
-export type Book = {
+// Future proofing. In the future we might want to define success and failure cases using ADTs
+export type RemoteData<T> = T;
+
+export type Book = {|
   +id: number,
   +title: string,
   +description: string,
@@ -61,4 +64,4 @@ export type Book = {
     large: string,
     small: string,
   },
-};
+|};

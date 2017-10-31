@@ -9,7 +9,6 @@
 import * as React from 'react';
 import dynamic from 'next/dynamic';
 import { DateFormat, Trans, Plural } from 'lingui-react';
-import fetch from 'isomorphic-unfetch';
 import {
   MdLanguage,
   MdTranslate,
@@ -18,7 +17,8 @@ import {
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import type { Book } from '../../types';
+import doFetch from '../../fetch';
+import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
 import Box from '../../components/Box';
@@ -47,9 +47,10 @@ const SIMILAR_BOOKS_PAGE_SIZE = 5;
 const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
-  book: Book,
-  similar: Array<Book>,
-  chapter?: number,
+  book: RemoteData<Book>,
+  similar: RemoteData<{
+    results: Array<Book>,
+  }>,
   url: {
     query: {
       chapter?: string,
@@ -104,26 +105,21 @@ const Separator = styled.div`
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    const [bookRes, similarRes] = await Promise.all([
-      fetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
-      fetch(
+    const [book, similar] = await Promise.all([
+      doFetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
+      doFetch(
         `${env.bookApiUrl}/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
       ),
     ]);
 
-    const [book, similar] = await Promise.all([
-      bookRes.json(),
-      similarRes.json(),
-    ]);
-
     return {
       book,
-      similar: similar.results,
+      similar,
     };
   }
 
   render() {
-    const { book } = this.props;
+    const { similar, book } = this.props;
 
     const contributors = book.contributors
       .map(contributor => (
@@ -324,7 +320,7 @@ class BookPage extends React.Component<Props> {
             <H3>
               <Trans>Similar</Trans>
             </H3>
-            <HorizontalBookList books={this.props.similar} mt={20} />
+            <HorizontalBookList books={similar.results} mt={20} />
           </Container>
         </Hero>
       </div>
