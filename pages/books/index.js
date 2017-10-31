@@ -27,6 +27,7 @@ import HorizontalBookList from '../../components/HorizontalBookList';
 import P from '../../components/P';
 import H3 from '../../components/H3';
 import H4 from '../../components/H4';
+import More from '../../components/More';
 import Toolbar, {
   ToolbarItem,
   ToolbarDropdownItem,
@@ -174,6 +175,9 @@ class BooksPage extends React.Component<Props> {
           <Container>
             <H3>
               <Trans>Just arrived</Trans>{' '}
+              <More href="">
+                <Trans>More</Trans>
+              </More>
             </H3>
             <HorizontalBookList books={justArrived.results} mt={20} />
           </Container>
@@ -183,6 +187,9 @@ class BooksPage extends React.Component<Props> {
             <Container>
               <H3>
                 <Trans>Level {level}</Trans>{' '}
+                <More href="">
+                  <Trans>More</Trans>
+                </More>
               </H3>
               <HorizontalBookList books={booksByLevel[index].results} mt={20} />
             </Container>
