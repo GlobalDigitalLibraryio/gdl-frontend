@@ -6767,13 +6767,6 @@ react-proxy@^3.0.0-alpha.0:
   dependencies:
     lodash "^4.6.1"
 
-react-scroll@1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/react-scroll/-/react-scroll-1.5.5.tgz#52410d856e19a4259b98d0632df3a47df59036ba"
-  dependencies:
-    object-assign "^4.1.1"
-    prop-types "^15.5.8"
-
 react-simple-di@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/react-simple-di/-/react-simple-di-1.2.0.tgz#dde0e5bf689f391ef2ab02c9043b213fe239c6d0"

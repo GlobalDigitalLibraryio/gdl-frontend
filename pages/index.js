@@ -40,6 +40,16 @@ const SocialLink = styled.a`
   &:focus {
     margin-top: -5px;
   }
+
+  .fcebook {
+    background-image: url('/static/footer/facebook.png');
+  }
+  #twitter {
+    background-image: url('/static/footer/twitter.png');
+  }
+  .mail {
+    background-image: url('/static/footer/mail.png');
+  }
 `;
 
 const Home = () => (
@@ -65,8 +75,8 @@ const Home = () => (
     </Hero>
     <Container mw={1075}>
       <Card my={60}>
-        <Flex>
-          <Box w={0.5} py={10} px={30}>
+        <Flex wrap={[true, false]}>
+          <Box w={[1, 0.5]} py={10} px={30} order={[1, 0]}>
             <H3>About the Global Digital Library</H3>
             <P>
               The GDL will collect existing high quality open educational
@@ -81,19 +91,21 @@ const Home = () => (
               early-grade reading resources. Other types of learning resources
               may be included at a later stage.
             </P>
-            <A href="">Read more about the project</A>
+            <Link href="/about" passHref prefetch>
+              <A>Read more about the project</A>
+            </Link>
           </Box>
-          <Box w={0.5}>
+          <Box w={[1, 0.5]}>
             <HeroImg src="/static/children-306607.jpg" alt="Girl reading" />
           </Box>
         </Flex>
       </Card>
       <Card my={60}>
-        <Flex>
-          <Box w={0.5}>
+        <Flex wrap={[true, false]}>
+          <Box w={[1, 0.5]}>
             <HeroImg src="/static/kids-playing.jpg" alt="Kids playing" />
           </Box>
-          <Box w={0.5} py={10} px={30}>
+          <Box w={[1, 0.5]} py={10} px={30}>
             <H3>Compilation of digital libraries</H3>
             <P>
               If you are looking for reading resources, All Children Reading
@@ -108,8 +120,8 @@ const Home = () => (
         </Flex>
       </Card>
       <Card my={60}>
-        <Flex>
-          <Box w={0.5} py={10} px={30}>
+        <Flex wrap={[true, false]}>
+          <Box w={[1, 0.5]} py={10} px={30} order={[1, 0]}>
             <H3>Who is behind the GDL?</H3>
             <P>
               The GDL-platform is a collaborative endeavour which will require
@@ -130,7 +142,7 @@ const Home = () => (
               The Global Digital Library is part of the Global Book Alliance
             </A>
           </Box>
-          <Box w={0.5}>
+          <Box w={[1, 0.5]}>
             <HeroImg src="/static/boy-reading.jpg" alt="Boy reading" />
           </Box>
         </Flex>
@@ -138,22 +150,24 @@ const Home = () => (
       <Box textAlign="center">
         <Button>More about Global Digital Library</Button>
       </Box>
-      {/* <SocialLink
-        href="https://www.facebook.com/globaldigitallibrary"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Facebook
-      </SocialLink>
-      <SocialLink
-        id="twitter"
-        href="https://twitter.com/gdigitallibrary"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Twitter
-      </SocialLink>
-      <SocialLink href="mailto:christer@digitallibrary.io">E-mail</SocialLink> */}
+      <Flex>
+        <SocialLink
+          href="https://www.facebook.com/globaldigitallibrary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Facebook
+        </SocialLink>
+        <SocialLink
+          id="twitter"
+          href="https://twitter.com/gdigitallibrary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Twitter
+        </SocialLink>
+        <SocialLink href="mailto:christer@digitallibrary.io">E-mail</SocialLink>
+      </Flex>
     </Container>
     <Hero mt={32}>
       <Container py={32} mw={1075}>

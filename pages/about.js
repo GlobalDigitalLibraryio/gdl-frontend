@@ -7,94 +7,139 @@
  */
 
 import * as React from 'react';
-import Layout from '../components/Layout';
+import Link from 'next/link';
+import defaultPage from '../hocs/defaultPage';
+import A from '../components/A';
 import Card from '../components/Card';
-import Hero from '../components/Hero';
-import BlockLink from '../components/BlockLink';
 import Container from '../components/Container';
+import Meta from '../components/Meta';
 import H1 from '../components/H1';
 import H3 from '../components/H3';
 import P from '../components/P';
 
-export default () => (
-  <Layout title="About - Global Digital Library">
-    <Hero fixed>
-      <Hero.Body size="large" />
-    </Hero>
-    <Container>
-      <Card>
+const About = () => (
+  <div>
+    <Meta title="About" description="About the Global Digial Library" />
+    <Container mw={1075}>
+      <Card px={80} py={20}>
         <H1>The Global Digital Library</H1>
+        <H3>Introduction</H3>
         <P>
-          Although there have been major strides in education enrolment over the
-          past 15 years, about 250 million children of primary school age are
-          still unable to recognize basic letters and numbers. Worryingly, 130
-          million of these children attend 4 years or more of school and still
-          leave without basic foundational skills.
+          Major progress has been made towards increasing primary school
+          enrolment rates. Still, 250 million children of primary school age are
+          not able to recognize basic letters and numbers, despite most of them
+          having attended school for several years. There are also 750 million
+          illiterate youth and adults. One important reason for one billion
+          people not learning to read is that they do not have access to quality
+          early grade reading resources in a language they understand.
         </P>
         <P>
-          Evidence supports the role of books in improving learning and reading
-          acquisition. Over the past few decades, donors, including bilateral
-          organizations and private foundations, have therefore provided
-          millions of dollars in funding and programmatic support to improve the
-          provision and usage of books. Despite these efforts, millions of
-          children lack access to reading books and textbooks in the languages
-          they speak and understand.
+          The Global Digital Library (GDL) is being developed to increase the
+          availability of high quality reading resources in underserved
+          languages worldwide. “Underserved languages” refer to languages where
+          there is currently a lack of quality early grade reading resources.
+          “Reading resources” refer primarily to supplementary reading books and
+          reading textbooks, but the GDL will also link to some more interactive
+          resources, such as literacy games.
+        </P>
+        <H3>What is the purpose of the Global Digital Library?</H3>
+        <P>
+          The GDL will collect existing high quality open educational reading
+          resources, and make them available on web, mobile and for print. It
+          will also facilitate translation and localization of these resources
+          to more than 300 languages. The GDL’s initial purpose is to support
+          access to high quality early-grade reading resources. Other types of
+          learning resources may be included at a later stage.
         </P>
         <P>
-          The Global Digital Library will expand access to mother tongue (MT)
-          content by providing openly licensed, downloadable materials that
-          allow sharing, electronic use and large scale printing, as well as
-          linking to other sources for those materials.
+          The goal is to make at least 50.000 titles in 100 languages available
+          on the GDL-platform by the end of 2020.
+        </P>
+        <H3>Who can use the Global Digital Library?</H3>
+        <P>
+          The GDL is aimed at many different types of users and the platform
+          will be open for everyone. Intended users include ministries of
+          education, school managers, teachers, donor agencies and their
+          implementing partners, international and national non-governmental
+          organizations, local publishers, digital distributors and content
+          providers, and households in developing countries.
+        </P>
+        <H3>Who is behind the Global Digital Library?</H3>
+        <P>
+          The GDL-platform is a collaborative endeavor which will require
+          involvement from a broad spectrum of stakeholders in order to be truly
+          successful and widely used. It is being built based on existing
+          quality learning resources provided from a variety of initiatives. The
+          content pool will expand over time through discovery and sharing or
+          more existing quality content, translations and localizations of the
+          platform’s content, as well as additions of newly created content. The
+          Platform will be designed both for direct use by a variety of user
+          groups and for integration with existing initiatives in the field.
         </P>
         <P>
-          The GDL will be a reliable source for high-quality MT books and other
-          learning resources. This reliable supply, in concert with outreach,
-          advocacy, and training could increase the use of MT books in schools
-          and communities and improve literacy outcomes worldwide. The GDL will
-          be a web-based platform. It will initially facilitate the
-          identification of and access to high-quality, early grade reading
-          educational materials in MT languages, whereas other types of learning
-          resources are expected to be included later. The GDL content will be
-          accessible in a print ready format as well as other relevant formats
-          for web and mobile platforms.
+          The Global Digital Library is part of The Global Book Alliance, an
+          international effort involving multiple stakeholders working to
+          transform book development, procurement and distribution to ensure
+          that no child is without books. The mission of the Global Book
+          Alliance is to guarantee that children everywhere have the books and
+          learning materials they need to learn to read and read to learn.
         </P>
-
-        <H3>Open licenses</H3>
         <P>
-          The GDL platform will hold digital copies of Creative Commons or
-          otherwise openly licensed, publicly accessible materials in
-          print-ready formats. The primary licenses for the GDL will be CC BY
-          and CC BY-SA. These licenses drive innovation and creativity,
-          including commercial reuse. They also support the overall goal of
-          sharing, translation and re-contextualization of early grade reading
-          educational materials, open textbooks and other open educational
-          resources.
+          The idea to develop a Global Digital Library for reading resources
+          came from All Children Reading: a Grand Challenge for Development
+          (ACR) in 2014. ACR and the Norwegian Agency for Development
+          Cooperation (Norad) subsequently conducted joint feasibility work in
+          2015 and 2016, which outlined important parameters for such a project.
         </P>
-
-        <H3>Target audience</H3>
         <P>
-          The target audiences for the GDL include ministries of education,
-          school managers, teachers, donor agencies and their implementing
-          partners, international and national non-governmental organizations,
-          local publishers and households in developing countries. The platform
-          will be open for all users, including end users with access to mobile
-          devices and internet. The GDL’s initial purpose is to support access
-          to early-grade reading materials in children’s mother tongues. Other
-          types of learning resources are expected to be included at a later
-          stage.
+          The GDL-platform is being developed and will initially be operated by
+          the{' '}
+          <A href="http://ndla.no/">Norwegian Digital Learning Arena (NDLA)</A>,
+          based on NDLA’s open source digital infrastructure.{' '}
+          <A href="https://norad.no/en/front/">
+            The Norwegian Agency for Development Cooperation (Norad)
+          </A>{' '}
+          has the overall project management responsibility.
         </P>
-
-        <H3>Continuous quality assurance</H3>
         <P>
-          The GDL will be set up to ensure continuous quality assurance and
-          «guiding» of content providers, technology developers, and other
-          contributors. In establishing the GDL, the project team will extract a
-          number of MT books from existing digital libraries. In this process it
-          will be ensured that metadata are accurate and that GDL quality
-          assurance support is provided.
+          GDL-content is currently being provided by the following initiatives
+          and organizations;{' '}
+          <A href="https://storyweaver.org.in/">Storyweaver</A>,
+          <A href="http://www.africanstorybook.org/">
+            African Storybook Project
+          </A>,
+          <A href="https://www.usaid.gov/">USAID</A> missions,{' '}
+          <A href="https://allchildrenreading.org/">
+            All Children Reading: a Grand Challenge for Development
+          </A>{' '}
+          and <A href="https://benetech.org/">Benetech</A>. GDL’s open
+          source-digital infrastructure has so far been provided by NDLA and the{' '}
+          <A href="https://www.nypl.org/">New York Public Library</A>.
         </P>
-        <BlockLink href="/">Back</BlockLink>
+        <P>
+          A GDL advisory group provides technical advice and expertise input for
+          the project implementation. The group is composed by representatives
+          from the following organizations;{' '}
+          <A href="https://allchildrenreading.org/">
+            All Children Reading: a Grand Challenge for Development
+          </A>, <A href="http://en.unesco.org/">UNESCO</A>,{' '}
+          <A href="http://www.globalpartnership.org/">
+            The Global Partnership for Education
+          </A>, <A href="https://www.unicef.org/">UNICEF</A>,{' '}
+          <A href="http://globalbookalliance.org/">the Global Book Alliance</A>,
+          <A href="https://benetech.org/">Benetech</A>,{' '}
+          <A href="https://storyweaver.org.in/">Storyweaver</A>,{' '}
+          <A href="https://creativecommons.org/">Creative Commons</A>, and the{' '}
+          <A href="https://www.gsma.com/">GSMA</A>. In addition a range of
+          institutions and individuals have provided and are providing
+          invaluable input.
+        </P>
+        <Link href="/" passHref prefetch>
+          <A>Back</A>
+        </Link>
       </Card>
     </Container>
-  </Layout>
+  </div>
 );
+
+export default defaultPage(About);
