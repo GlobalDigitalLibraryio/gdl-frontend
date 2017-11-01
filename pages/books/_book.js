@@ -17,7 +17,7 @@ import {
   MdKeyboardArrowUp,
 } from 'react-icons/lib/md';
 import styled from 'styled-components';
-import doFetch from '../../fetch';
+import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
@@ -25,7 +25,6 @@ import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
 import ReadingLevel from '../../components/ReadingLevel';
-import env from '../../env';
 import A from '../../components/A';
 import H3 from '../../components/H3';
 import H1 from '../../components/H1';
@@ -40,9 +39,6 @@ import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import More from '../../components/More';
 import HorizontalBookList from '../../components/HorizontalBookList';
-
-// Number of similar books to fetch
-const SIMILAR_BOOKS_PAGE_SIZE = 5;
 
 // Download the Reader component on demand
 const Reader = dynamic(import('../../components/Reader'));
@@ -107,10 +103,8 @@ const Separator = styled.div`
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     const [book, similar] = await Promise.all([
-      doFetch(`${env.bookApiUrl}/book-api/v1/books/${query.lang}/${query.id}`),
-      doFetch(
-        `${env.bookApiUrl}/book-api/v1/books/${query.lang}/similar/${query.id}?page-size=${SIMILAR_BOOKS_PAGE_SIZE}`,
-      ),
+      fetchBook(query.id, query.lang),
+      fetchSimilarBooks(query.id, query.lang),
     ]);
 
     return {

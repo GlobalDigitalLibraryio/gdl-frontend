@@ -10,13 +10,18 @@ import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { MdCheck } from 'react-icons/lib/md';
-import doFetch from '../../fetch';
+import {
+  fetchEditorPicks,
+  fetchLevels,
+  fetchLanguages,
+  fetchJustArrivedBooks,
+  fetchBooksByLevel,
+} from '../../fetch';
 import type { Book, Language, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
-import env from '../../env';
 import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import { Link } from '../../routes';
@@ -33,7 +38,6 @@ import Toolbar, {
   ToolbarDropdownItem,
 } from '../../components/Toolbar';
 
-const BOOKS_PAGE_SIZE = 5;
 const LANG_QUERY = 'lang';
 
 type Props = {
@@ -47,26 +51,18 @@ type Props = {
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    const language = query[LANG_QUERY];
+    const language: ?string = query[LANG_QUERY];
 
     // Fetch these first, cause they don't use the reading level
     const [editorPicks, levels, languages, justArrived] = await Promise.all([
-      doFetch(`${env.bookApiUrl}/book-api/v1/editorpicks/${language || ''}`),
-      doFetch(`${env.bookApiUrl}/book-api/v1/levels/${language || ''}`),
-      doFetch(`${env.bookApiUrl}/book-api/v1/languages`),
-      doFetch(
-        `${env.bookApiUrl}/book-api/v1/books/${language ||
-          ''}?sort=arrivaldate&page-size=${BOOKS_PAGE_SIZE}`,
-      ),
+      fetchEditorPicks(language),
+      fetchLevels(language),
+      fetchLanguages(),
+      fetchJustArrivedBooks(language),
     ]);
 
     const booksByLevel = await Promise.all(
-      levels.map(level =>
-        doFetch(
-          `${env.bookApiUrl}/book-api/v1/books/${language ||
-            ''}?sort=-arrivaldate&page-size=${BOOKS_PAGE_SIZE}&reading-level=${level}`,
-        ),
-      ),
+      levels.map(level => fetchBooksByLevel(level, language)),
     );
 
     return {
