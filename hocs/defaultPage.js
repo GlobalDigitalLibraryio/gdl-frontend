@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import withEnv from './withEnv';
 import withI18n from './withI18n';
 import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
@@ -19,6 +18,4 @@ export default (
   Page: React.ComponentType<any>,
   wrapWithErrorBoundary: boolean = true,
 ) =>
-  withTheme(
-    withEnv(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page)),
-  );
+  withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page));

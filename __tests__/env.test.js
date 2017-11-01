@@ -6,12 +6,8 @@
  * See LICENSE
  */
 
-import env from '../env';
+import { bookApiUrl } from '../env';
 
-test('Object with URLs', () => {
-  expect(env).toEqual(
-    expect.objectContaining({
-      bookApiUrl: expect.any(String),
-    }),
-  );
+test('Exports book api url', () => {
+  expect(bookApiUrl).toEqual(expect.any(String));
 });

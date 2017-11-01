@@ -71,11 +71,19 @@ class GDLDocument extends Document {
   }
 
   render() {
+    // Since we want immutable multi enviroment docker deployments, we add the environment to head here
+    // We can then read it in env.js on both the client and the server
+    // See https://github.com/zeit/next.js/issues/1488#issuecomment-289108931
+    /* eslint-disable react/no-danger */
+    const envScript = `window.GDL_ENVIRONMENT = '${process.env
+      .GDL_ENVIRONMENT || 'test'}'`;
+
     return (
       <html lang={this.props.language}>
         <Head>
           <title>Global Digital Library</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <script dangerouslySetInnerHTML={{ __html: envScript }} />
           {this.props.styleTags}
         </Head>
         <body>
