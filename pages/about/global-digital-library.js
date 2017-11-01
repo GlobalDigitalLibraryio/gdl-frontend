@@ -2,22 +2,23 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
 import * as React from 'react';
-import Link from 'next/link';
-import defaultPage from '../hocs/defaultPage';
-import A from '../components/A';
-import Card from '../components/Card';
-import Container from '../components/Container';
-import Meta from '../components/Meta';
-import H1 from '../components/H1';
-import H3 from '../components/H3';
-import P from '../components/P';
+import { Link } from '../../routes';
+import defaultPage from '../../hocs/defaultPage';
+import A from '../../components/A';
+import Card from '../../components/Card';
+import Container from '../../components/Container';
+import Meta from '../../components/Meta';
+import H1 from '../../components/H1';
+import H3 from '../../components/H3';
+import P from '../../components/P';
+import Footer from '../../components/Footer';
 
-const About = () => (
+const GlobalDigitalLibrary = () => (
   <div>
     <Meta title="About" description="About the Global Digial Library" />
     <Container mw={1075}>
@@ -134,12 +135,13 @@ const About = () => (
           institutions and individuals have provided and are providing
           invaluable input.
         </P>
-        <Link href="/" passHref prefetch>
+        <Link route="about" passHref prefetch>
           <A>Back</A>
         </Link>
       </Card>
     </Container>
+    <Footer />
   </div>
 );
 
-export default defaultPage(About);
+export default defaultPage(GlobalDigitalLibrary);
