@@ -36,19 +36,17 @@ const HeroImg = styled.img`
 `;
 
 const SocialLink = styled.a`
-  &:hover,
-  &:focus {
+  margin-left: 10px;
+  margin-right: 10px;
+  &:focus img,
+  &:hover img {
     margin-top: -5px;
   }
 
-  .fcebook {
-    background-image: url('/static/footer/facebook.png');
-  }
-  #twitter {
-    background-image: url('/static/footer/twitter.png');
-  }
-  .mail {
-    background-image: url('/static/footer/mail.png');
+  img {
+    transition: margin-top 100ms ease-in-out;
+    width: 50px;
+    height: 50px;
   }
 `;
 
@@ -148,15 +146,17 @@ const Home = () => (
         </Flex>
       </Card>
       <Box textAlign="center">
-        <Button>More about Global Digital Library</Button>
+        <Link href="/about">
+          <Button>More about Global Digital Library</Button>
+        </Link>
       </Box>
-      <Flex>
+      <Flex justify="center" mt={40}>
         <SocialLink
           href="https://www.facebook.com/globaldigitallibrary"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Facebook
+          <img src="/static/footer/facebook.png" alt="GDL on Facebook" />
         </SocialLink>
         <SocialLink
           id="twitter"
@@ -164,9 +164,11 @@ const Home = () => (
           target="_blank"
           rel="noopener noreferrer"
         >
-          Twitter
+          <img src="/static/footer/twitter.png" alt="GDL on Twitter" />
         </SocialLink>
-        <SocialLink href="mailto:christer@digitallibrary.io">E-mail</SocialLink>
+        <SocialLink href="mailto:christer@digitallibrary.io">
+          <img src="/static/footer/mail.png" alt="Send us an e-mail" />
+        </SocialLink>
       </Flex>
     </Container>
     <Hero mt={32}>
@@ -175,7 +177,6 @@ const Home = () => (
           <PartnerImg
             src="/static/footer/all-children.png"
             alt="All Children Reading logo"
-            style={{ width: '14%' }}
           />
           <PartnerImg src="/static/footer/usaid.png" alt="US Aid logo" />
           <PartnerImg
