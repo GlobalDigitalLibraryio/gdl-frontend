@@ -37,8 +37,7 @@ import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
-import More from '../../components/More';
-import HorizontalBookList from '../../components/HorizontalBookList';
+import BookList from '../../components/BookList';
 
 // Download the Reader component on demand
 const Reader = dynamic(import('../../components/Reader'));
@@ -314,11 +313,8 @@ class BookPage extends React.Component<Props> {
           <Container>
             <H3>
               <Trans>Similar</Trans>
-              <More href="">
-                <Trans>More</Trans>
-              </More>
             </H3>
-            <HorizontalBookList books={similar.results} mt={20} />
+            <BookList books={similar.results} mt={20} />
           </Container>
         </Hero>
       </div>

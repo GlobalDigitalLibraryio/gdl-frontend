@@ -14,8 +14,7 @@ import {
   fetchEditorPicks,
   fetchLevels,
   fetchLanguages,
-  fetchJustArrivedBooks,
-  fetchBooksByLevel,
+  fetchBooks,
 } from '../fetch';
 import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
@@ -28,7 +27,7 @@ import { Link } from '../routes';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Meta from '../components/Meta';
-import HorizontalBookList from '../components/HorizontalBookList';
+import BookList from '../components/BookList';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H4 from '../components/H4';
@@ -58,11 +57,11 @@ class BooksPage extends React.Component<Props> {
       fetchEditorPicks(language),
       fetchLevels(language),
       fetchLanguages(),
-      fetchJustArrivedBooks(language),
+      fetchBooks(language),
     ]);
 
     const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooksByLevel(level, language)),
+      levels.map(level => fetchBooks(language, { level })),
     );
 
     return {
@@ -170,12 +169,18 @@ class BooksPage extends React.Component<Props> {
         <Hero py={[15, 22]}>
           <Container>
             <H3>
-              <Trans>Just arrived</Trans>{' '}
-              <More href="">
-                <Trans>More</Trans>
-              </More>
+              <Trans>New arrivals</Trans>{' '}
+              <Link
+                route="new"
+                params={{ lang: justArrived.language.code }}
+                passHref
+              >
+                <More>
+                  <Trans>More</Trans>
+                </More>
+              </Link>
             </H3>
-            <HorizontalBookList books={justArrived.results} mt={20} />
+            <BookList books={justArrived.results} mt={20} />
           </Container>
         </Hero>
         {levels.map((level, index) => (
@@ -183,11 +188,17 @@ class BooksPage extends React.Component<Props> {
             <Container>
               <H3>
                 <Trans>Level {level}</Trans>{' '}
-                <More href="">
-                  <Trans>More</Trans>
-                </More>
+                <Link
+                  route="level"
+                  params={{ lang: justArrived.language.code, level }}
+                  passHref
+                >
+                  <More>
+                    <Trans>More</Trans>
+                  </More>
+                </Link>
               </H3>
-              <HorizontalBookList books={booksByLevel[index].results} mt={20} />
+              <BookList books={booksByLevel[index].results} mt={20} />
             </Container>
           </Hero>
         ))}
