@@ -7,193 +7,323 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
-import { MdCheck } from 'react-icons/lib/md';
+import dynamic from 'next/dynamic';
+import { DateFormat, Trans, Plural } from 'lingui-react';
 import {
-  fetchEditorPicks,
-  fetchLevels,
-  fetchLanguages,
-  fetchJustArrivedBooks,
-  fetchBooksByLevel,
-} from '../../fetch';
-import type { Book, Language, RemoteData } from '../../types';
+  MdLanguage,
+  MdTranslate,
+  MdFileDownload,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp,
+} from 'react-icons/lib/md';
+import styled from 'styled-components';
+import { fetchBook, fetchSimilarBooks } from '../../fetch';
+import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
+import { Link, Router } from '../../routes';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Navbar from '../../components/Navbar';
-import Card from '../../components/Card';
+import ReadingLevel from '../../components/ReadingLevel';
+import A from '../../components/A';
+import H3 from '../../components/H3';
+import H1 from '../../components/H1';
+import H6 from '../../components/H6';
+import P from '../../components/P';
+import Card, { CardBase } from '../../components/Card';
+import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
-import { Link } from '../../routes';
+import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
-import HorizontalBookList from '../../components/HorizontalBookList';
-import P from '../../components/P';
-import H3 from '../../components/H3';
-import H4 from '../../components/H4';
 import More from '../../components/More';
-import Toolbar, {
-  ToolbarItem,
-  ToolbarDropdownItem,
-} from '../../components/Toolbar';
+import HorizontalBookList from '../../components/HorizontalBookList';
 
-const LANG_QUERY = 'lang';
+// Download the Reader component on demand
+const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
-  editorPicks: RemoteData<Array<Book>>,
-  justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
-  levels: RemoteData<Array<string>>,
-  languages: RemoteData<Array<Language>>,
-  i18n: I18n,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+  book: RemoteData<Book>,
+  similar: RemoteData<{
+    results: Array<Book>,
+  }>,
+  url: {
+    query: {
+      chapter?: string,
+    },
+  },
 };
 
-class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query }) {
-    const language: ?string = query[LANG_QUERY];
+const BookMetaData = ({
+  heading,
+  children,
+}: {
+  heading: string,
+  children: React.Node,
+}) => (
+  <Box mb={2}>
+    <H6>{heading}</H6>
+    {children}
+  </Box>
+);
 
-    // Fetch these first, cause they don't use the reading level
-    const [editorPicks, levels, languages, justArrived] = await Promise.all([
-      fetchEditorPicks(language),
-      fetchLevels(language),
-      fetchLanguages(),
-      fetchJustArrivedBooks(language),
+const DropdownAction = styled.a`
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  & svg:nth-of-type(1) {
+    margin-right: 10px;
+  }
+  & svg:nth-of-type(2) {
+    margin-left: auto;
+  }
+`;
+
+// Specially desgined for "underlining" everything but the first icon of the download book link
+const Hr = styled.hr`
+  background-color: ${props => props.theme.grays.platinum};
+  height: 1px;
+  border: none;
+  margin-left: 33px;
+  margin-right: -15px;
+`;
+
+// Extend the regular Card, allowing us to alter the border radius responsively
+const CardNested = Card.extend`
+  border-radius: 0;
+`;
+
+const Separator = styled.div`
+  height: 4px;
+  background-color: ${props => props.theme.grays.gallery};
+`;
+
+class BookPage extends React.Component<Props> {
+  static async getInitialProps({ query }) {
+    const [book, similar] = await Promise.all([
+      fetchBook(query.id, query.lang),
+      fetchSimilarBooks(query.id, query.lang),
     ]);
 
-    const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooksByLevel(level, language)),
-    );
-
     return {
-      editorPicks,
-      justArrived,
-      languages,
-      levels,
-      booksByLevel,
+      book,
+      similar,
     };
   }
 
   render() {
-    const {
-      editorPicks,
-      languages,
-      i18n,
-      levels,
-      booksByLevel,
-      justArrived,
-    } = this.props;
+    const { similar, book } = this.props;
 
-    const editorPick = editorPicks[0];
-    const languageFilter = justArrived.language;
+    const contributors = book.contributors
+      .map(contributor => (
+        <A href="" key={contributor.id}>
+          {contributor.name}
+        </A>
+      ))
+      .map((item, index) => [index > 0 && ', ', item]);
+
+    const categories = book.categories
+      .map(category => (
+        <A href="" key={category.id}>
+          {category.name}
+        </A>
+      ))
+      .map((item, index) => [index > 0 && ', ', item]);
+
+    const availableLanguages = book.availableLanguages.length - 1;
 
     return (
       <div>
-        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
+        <Meta
+          title={book.title}
+          description={book.description}
+          image={book.coverPhoto ? book.coverPhoto.large : null}
+        />
         <Navbar />
 
-        <Toolbar>
-          <Container mw="1075px" px={[0, 15]}>
-            <ToolbarItem
-              id="langFilter"
-              text={
-                <Trans>
-                  Books in <strong>{languageFilter.name}</strong>
-                </Trans>
-              }
-              selectedItem={languageFilter.code}
-            >
-              {({ getItemProps, selectedItem, highlightedIndex }) =>
-                languages.map((language, index) => (
-                  <Link
-                    key={language.code}
-                    route="books"
-                    passHref
-                    params={{ [LANG_QUERY]: language.code }}
-                  >
-                    <ToolbarDropdownItem
-                      {...getItemProps({ item: language.code })}
-                      isActive={highlightedIndex === index}
-                      isSelected={selectedItem === language.code}
-                    >
-                      <MdCheck />
-                      {language.name}
-                    </ToolbarDropdownItem>
-                  </Link>
-                ))}
-            </ToolbarItem>
-          </Container>
-        </Toolbar>
+        {this.props.url.query.chapter && (
+          <Reader
+            book={book}
+            chapter={this.props.url.query.chapter}
+            onClose={() =>
+              Router.pushRoute(
+                'book',
+                {
+                  id: book.id,
+                  lang: book.language.code,
+                },
+                { shallow: true },
+              )}
+          />
+        )}
 
-        <Hero
-          colorful
-          h={['237px', '390px']}
-          pt={['15px', '40px']}
-          pb={['42px', '54px']}
-        >
+        <Hero colorful py={[15, 40]}>
           <Container>
-            <Link
-              route="book"
-              params={{ id: editorPick.id, lang: editorPick.language.code }}
-            >
-              <a>
-                <Card
-                  h={['180px', '295px']}
-                  pl={['15px', '20px']}
-                  pr={['15px', '80px']}
-                  pt={['15px', '20px']}
-                >
-                  <Flex>
-                    <BookCover
-                      book={editorPick}
-                      h={['148px', '255px']}
-                      w={['120px', '200px']}
-                      mr={['15px', '20px']}
-                      flex="0 0 auto"
-                    />
-                    <Box>
-                      <H3>
-                        <Trans>Editor’s pick</Trans>
-                      </H3>
-                      <H4>{editorPick.title}</H4>
-                      <P fontSize={[12, 16]} lineHeight={[18, 24]}>
-                        {editorPick.description}
-                      </P>
-                    </Box>
-                  </Flex>
-                </Card>
-              </a>
-            </Link>
+            <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
+              <Flex flexDirection={['column', 'row']}>
+                <BookCover book={book} mr={20} isHiddenMobile flex="0 0 auto" />
+                <Box>
+                  <H1 fontSize={[28, 38]}>{book.title}</H1>
+                  <P fontSize={[12, 14]}>
+                    <Trans>
+                      from <A href="">{book.publisher.name}</A>
+                    </Trans>
+                  </P>
+                  <BookCover book={book} mx="auto" isHiddenTablet />
+                  <P fontSize={[14, 16]}>{book.description}</P>
+                  <Button
+                    onClick={() =>
+                      Router.pushRoute(
+                        'book',
+                        {
+                          id: book.id,
+                          lang: book.language.code,
+                          chapter: 1,
+                        },
+                        { shallow: true },
+                      )}
+                  >
+                    <Trans>Read</Trans>
+                  </Button>
+                </Box>
+              </Flex>
+            </Card>
           </Container>
         </Hero>
+        <Container py={[15, 20]}>
+          <CardBase>
+            <Flex wrap>
+              <Flex w={[1, 1 / 2]} column>
+                <CardNested p={15}>
+                  <CardDropdown
+                    id="book-language"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <DropdownAction href="" {...getTargetProps()}>
+                        <MdLanguage />{' '}
+                        <Trans>Book language: {book.language.name}</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </DropdownAction>
+                    )}
+                  >
+                    {({ getItemProps, highlightedIndex }) =>
+                      book.availableLanguages
+                        .filter(lang => lang.code !== book.language.code)
+                        .map((lang, index) => (
+                          <Link
+                            passHref
+                            route="book"
+                            key={lang.code}
+                            params={{ id: book.id, lang: lang.code }}
+                          >
+                            <CardDropdownItem
+                              {...getItemProps({ item: lang.code })}
+                              isActive={highlightedIndex === index}
+                            >
+                              {lang.name}
+                            </CardDropdownItem>
+                          </Link>
+                        ))}
+                  </CardDropdown>
+                  <Hr />
+                  <Plural
+                    value={availableLanguages}
+                    _0="This book is not available in other languages"
+                    one="This book is available in another language"
+                    other="This book is available in # other languages"
+                    render="small"
+                  />
+                </CardNested>
+                <Separator />
+                <CardNested p={15}>
+                  <CardDropdown
+                    id="download-book"
+                    renderTarget={(getTargetProps, isOpen) => (
+                      <DropdownAction {...getTargetProps()} href="">
+                        <MdFileDownload /> <Trans>Download book</Trans>
+                        {isOpen ? (
+                          <MdKeyboardArrowUp />
+                        ) : (
+                          <MdKeyboardArrowDown />
+                        )}
+                      </DropdownAction>
+                    )}
+                  >
+                    {({ getItemProps, highlightedIndex }) => [
+                      <CardDropdownItem
+                        key="epub"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.epub}
+                        {...getItemProps({ item: 'epub' })}
+                        isActive={highlightedIndex === 0}
+                      >
+                        <MdFileDownload /> <Trans>Download ePub</Trans>
+                      </CardDropdownItem>,
+                      <CardDropdownItem
+                        key="pdf"
+                        onClick={event => event.stopPropagation()}
+                        href={book.downloads.pdf}
+                        {...getItemProps({ item: 'pdf' })}
+                        isActive={highlightedIndex === 1}
+                      >
+                        <MdFileDownload /> <Trans>Download PDF</Trans>
+                      </CardDropdownItem>,
+                    ]}
+                  </CardDropdown>
+                </CardNested>
+                <CardNested flex="1 0 auto" p={15}>
+                  <DropdownAction>
+                    <MdTranslate /> <Trans>Translate book</Trans>
+                  </DropdownAction>
+                </CardNested>
+              </Flex>
+              <Box w={[1, 1 / 2]}>
+                <CardNested
+                  fontSize={[13, 15]}
+                  p={15}
+                  style={{ height: '100%' }}
+                >
+                  <ReadingLevel
+                    style={{ float: 'right' }}
+                    level={book.readingLevel}
+                  />
+                  {book.datePublished && (
+                    <BookMetaData heading="Published">
+                      <DateFormat value={new Date(book.datePublished)} />
+                    </BookMetaData>
+                  )}
+                  <BookMetaData my={10} heading="Authors">
+                    {contributors}
+                  </BookMetaData>
+                  <BookMetaData heading="License">
+                    <A href={book.license.url}>{book.license.description}</A>
+                  </BookMetaData>
+                  <BookMetaData heading="categories">{categories}</BookMetaData>
+                </CardNested>
+              </Box>
+            </Flex>
+          </CardBase>
+        </Container>
 
-        <Hero py={[15, 22]}>
+        <Hero pb={[15, 22]}>
           <Container>
             <H3>
-              <Trans>Just arrived</Trans>{' '}
+              <Trans>Similar</Trans>
               <More href="">
                 <Trans>More</Trans>
               </More>
             </H3>
-            <HorizontalBookList books={justArrived.results} mt={20} />
+            <HorizontalBookList books={similar.results} mt={20} />
           </Container>
         </Hero>
-        {levels.map((level, index) => (
-          <Hero py={[15, 22]} key={level}>
-            <Container>
-              <H3>
-                <Trans>Level {level}</Trans>{' '}
-                <More href="">
-                  <Trans>More</Trans>
-                </More>
-              </H3>
-              <HorizontalBookList books={booksByLevel[index].results} mt={20} />
-            </Container>
-          </Hero>
-        ))}
       </div>
     );
   }
 }
 
-export default defaultPage(BooksPage);
+export default defaultPage(BookPage);

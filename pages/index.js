@@ -2,257 +2,198 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
 import * as React from 'react';
-import { Link as ScrollLink } from 'react-scroll';
-import Link from 'next/link';
-
-import BlockLink from '../components/BlockLink';
-import Layout from '../components/Layout';
+import { Trans } from 'lingui-react';
+import type { I18n } from 'lingui-i18n';
+import { MdCheck } from 'react-icons/lib/md';
+import {
+  fetchEditorPicks,
+  fetchLevels,
+  fetchLanguages,
+  fetchJustArrivedBooks,
+  fetchBooksByLevel,
+} from '../fetch';
+import type { Book, Language, RemoteData } from '../types';
+import defaultPage from '../hocs/defaultPage';
+import Box from '../components/Box';
+import Flex from '../components/Flex';
+import Navbar from '../components/Navbar';
+import Card from '../components/Card';
+import BookCover from '../components/BookCover';
+import { Link } from '../routes';
 import Container from '../components/Container';
-
 import Hero from '../components/Hero';
+import Meta from '../components/Meta';
+import HorizontalBookList from '../components/HorizontalBookList';
+import P from '../components/P';
+import H3 from '../components/H3';
+import H4 from '../components/H4';
+import More from '../components/More';
+import Toolbar, {
+  ToolbarItem,
+  ToolbarDropdownItem,
+} from '../components/Toolbar';
 
-const Card = ({
-  children,
-  header,
-  src,
-  alt,
-}: {
-  children?: React.Node,
-  src: string,
-  alt: string,
-  header: string,
-}) => (
-  <div className="root">
-    <figure>
-      <img src={src} alt={alt} />
-    </figure>
+const LANG_QUERY = 'lang';
 
-    <div className="content">
-      <h2>{header}</h2>
-      {children}
-    </div>
-    <style jsx>{`
-      @media screen and (min-width: 600px) {
-        .root {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          background: #fff;
-          box-shadow: 0px 5px 20px -4px rgba(0, 0, 0, 0.35);
-          font-size: 1.2rem;
-        }
+type Props = {
+  editorPicks: RemoteData<Array<Book>>,
+  justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
+  levels: RemoteData<Array<string>>,
+  languages: RemoteData<Array<Language>>,
+  i18n: I18n,
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+};
 
-        .root:nth-of-type(odd) figure {
-          order: 2;
-        }
-        figure {
-          width: 50%;
-        }
+class BooksPage extends React.Component<Props> {
+  static async getInitialProps({ query }) {
+    const language: ?string = query[LANG_QUERY];
 
-        .content {
-          padding: 10px 30px;
-          width: 50%;
-        }
-      }
+    // Fetch these first, cause they don't use the reading level
+    const [editorPicks, levels, languages, justArrived] = await Promise.all([
+      fetchEditorPicks(language),
+      fetchLevels(language),
+      fetchLanguages(),
+      fetchJustArrivedBooks(language),
+    ]);
 
-      .root:not(:first-child) {
-        margin: 60px 0;
-      }
+    const booksByLevel = await Promise.all(
+      levels.map(level => fetchBooksByLevel(level, language)),
+    );
 
-      a {
-        color: #20588f;
-      }
+    return {
+      editorPicks,
+      justArrived,
+      languages,
+      levels,
+      booksByLevel,
+    };
+  }
 
-      img {
-        display: block;
-        width: 100%;
-        height: auto;
-      }
+  render() {
+    const {
+      editorPicks,
+      languages,
+      i18n,
+      levels,
+      booksByLevel,
+      justArrived,
+    } = this.props;
 
-      h2 {
-        margin-bottom: 16px;
-        color: #1c5791;
-        font-size: 2rem;
-      }
-    `}</style>
-  </div>
-);
+    const editorPick = editorPicks[0];
+    const languageFilter = justArrived.language;
 
-const AboutLink = ({ children, ...props }) => (
-  <Link>
-    <a {...props}>
-      {children}
-      <style jsx>{`
-        a {
-          background: #309556;
-          display: inline-block;
-          padding: 10px 20px;
-          margin-top: 20px;
-          color: #fff;
-          border-radius: 0;
-          -webkit-appearance: none;
-          text-decoration: none;
-          text-transform: uppercase;
-          border: none;
-          transition: background-color 100ms ease-in-out;
-        }
-        a:hover,
-        a:focus {
-          background: #60bb82;
-        }
-      `}</style>
-    </a>
-  </Link>
-);
+    return (
+      <div>
+        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
+        <Navbar />
 
-export default () => (
-  <Layout>
-    <Hero teachingIcons>
-      <Hero.Body>
-        <Container>
-          <h1>
-            Global digital <small>library</small>
-          </h1>
-          <p>
-            The Global Digital Library (GDL) is being developed to increase the
-            availability of high quality mother tongue learning resources
-            worldwide.
-          </p>
-          <p>
-            The GDL-project is currently in an initial stage; establishing the
-            implementation plan and steering structure and piloting the
-            technical platform.
-          </p>
-          <ScrollLink
-            aria-label="Read more"
-            href="#content"
-            to="content"
-            smooth
-            className="read-more-arrow"
-            title="Click here to read more about Global Digital Library"
-          >
-            Read more
-          </ScrollLink>
-          <style jsx>{`
-            :global(.read-more-arrow) {
-              display: block;
-              padding: 5px;
-              width: 70px;
-              height: 70px;
-              text-indent: -9000px;
-              background: url('static/hero/arrow.png') no-repeat center 65%;
-              background-size: 70% 70%;
-              border: 5px solid #fff;
-              transition: all 150ms ease-in-out;
-              border-radius: 50%;
-              margin-bottom: 5em;
-            }
-            :global(.read-more-arrow:hover) {
-              background-size: 80% 80%;
-            }
-
-            p {
-              font-size: 1.3rem;
-            }
-
-            h1 {
-              font-size: 2.4rem;
-              margin-bottom: 20px;
-            }
-
-            @media screen and (min-width: 900px) {
-              h1 {
-                font-size: 5rem;
+        <Toolbar>
+          <Container mw="1075px" px={[0, 15]}>
+            <ToolbarItem
+              id="langFilter"
+              text={
+                <Trans>
+                  Books in <strong>{languageFilter.name}</strong>
+                </Trans>
               }
-            }
-
-            h1 small {
-              text-transform: uppercase;
-              display: block;
-              text-indent: 1em;
-            }
-          `}</style>
-        </Container>
-      </Hero.Body>
-    </Hero>
-    <section id="content">
-      <Container>
-        <Card
-          src="/static/index/children-smiling.jpg"
-          alt="Smiling children"
-          header="About the Global Digital Library"
-        >
-          <div>
-            <p>
-              The Global Digital Library will expand access to mother tongue
-              (MT) content by providing openly licensed, downloadable materials
-              that allow sharing, electronic use and large scale printing, as
-              well as linking to other sources for those materials.
-            </p>
-            <p>
-              The initial focus will be on learning resources that can support
-              children’s literacy learning. Other learning resources will be
-              included at a later stage.
-            </p>
-
-            <BlockLink href="/about">Read more about the project</BlockLink>
-          </div>
-        </Card>
-
-        <Card
-          src="/static/index/children-cheering.jpg"
-          alt="Happy children"
-          header="Compilation of digital libraries"
-        >
-          <div>
-            <p>
-              If you are looking for reading resources, All Children Reading
-              have made a compilation of digital libraries, carefully curated to
-              feature a variety of sites that provide local language early grade
-              reading materials.
-            </p>
-            <BlockLink
-              href="https://allchildrenreading.org/digital-libraries/"
-              rel="noopener noreferrer"
-              target="_blank"
+              selectedItem={languageFilter.code}
             >
-              All Children Reading
-            </BlockLink>
-          </div>
-        </Card>
+              {({ getItemProps, selectedItem, highlightedIndex }) =>
+                languages.map((language, index) => (
+                  <Link
+                    key={language.code}
+                    route="books"
+                    passHref
+                    params={{ [LANG_QUERY]: language.code }}
+                  >
+                    <ToolbarDropdownItem
+                      {...getItemProps({ item: language.code })}
+                      isActive={highlightedIndex === index}
+                      isSelected={selectedItem === language.code}
+                    >
+                      <MdCheck />
+                      {language.name}
+                    </ToolbarDropdownItem>
+                  </Link>
+                ))}
+            </ToolbarItem>
+          </Container>
+        </Toolbar>
 
-        <Card
-          src="/static/index/children-laughing.jpg"
-          alt="Children in the grass with computer"
-          header="Project partners"
+        <Hero
+          colorful
+          h={['237px', '390px']}
+          pt={['15px', '40px']}
+          pb={['42px', '54px']}
         >
-          <div>
-            <p>
-              The Norwegian Agency for Development Cooperation (NORAD) and
-              Norwegian Digital Learning Arena (NDLA) are leading the
-              development of the Global Digital Library as part of the Global
-              Book Alliance. Other collaborating partners include the All
-              Children Reading: A Grand Challenge for Development partners
-              (USAID, World Vision, and the Australian Government).
-            </p>
-            <BlockLink
-              href="http://globalbookalliance.org/"
-              target="_blank"
-              rel="noopener noreferrer"
+          <Container>
+            <Link
+              route="book"
+              params={{ id: editorPick.id, lang: editorPick.language.code }}
             >
-              Global book alliance
-            </BlockLink>
-          </div>
-        </Card>
-        <div style={{ textAlign: 'center' }}>
-          <AboutLink href="/about">More about Global Digital Library</AboutLink>
-        </div>
-      </Container>
-    </section>
-  </Layout>
-);
+              <a>
+                <Card
+                  h={['180px', '295px']}
+                  pl={['15px', '20px']}
+                  pr={['15px', '80px']}
+                  pt={['15px', '20px']}
+                >
+                  <Flex>
+                    <BookCover
+                      book={editorPick}
+                      h={['148px', '255px']}
+                      w={['120px', '200px']}
+                      mr={['15px', '20px']}
+                      flex="0 0 auto"
+                    />
+                    <Box>
+                      <H3>
+                        <Trans>Editor’s pick</Trans>
+                      </H3>
+                      <H4>{editorPick.title}</H4>
+                      <P fontSize={[12, 16]} lineHeight={[18, 24]}>
+                        {editorPick.description}
+                      </P>
+                    </Box>
+                  </Flex>
+                </Card>
+              </a>
+            </Link>
+          </Container>
+        </Hero>
+
+        <Hero py={[15, 22]}>
+          <Container>
+            <H3>
+              <Trans>Just arrived</Trans>{' '}
+              <More href="">
+                <Trans>More</Trans>
+              </More>
+            </H3>
+            <HorizontalBookList books={justArrived.results} mt={20} />
+          </Container>
+        </Hero>
+        {levels.map((level, index) => (
+          <Hero py={[15, 22]} key={level}>
+            <Container>
+              <H3>
+                <Trans>Level {level}</Trans>{' '}
+                <More href="">
+                  <Trans>More</Trans>
+                </More>
+              </H3>
+              <HorizontalBookList books={booksByLevel[index].results} mt={20} />
+            </Container>
+          </Hero>
+        ))}
+      </div>
+    );
+  }
+}
+
+export default defaultPage(BooksPage);

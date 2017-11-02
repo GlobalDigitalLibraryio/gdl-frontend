@@ -15,8 +15,7 @@ const gdlEnviroment = process.browser
 /**
  * Resolves book API url based on the current environment
  */
-// eslint-disable-next-line import/prefer-default-export
-export const bookApiUrl = (() => {
+const bookApiUrl = (() => {
   switch (gdlEnviroment) {
     case 'prod':
       return 'http://prod-proxy-658342484.eu-central-1.elb.amazonaws.com/book-api/v1';
@@ -27,3 +26,10 @@ export const bookApiUrl = (() => {
       return 'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1';
   }
 })();
+
+const IS_PROD = gdlEnviroment === 'prod';
+
+module.exports = {
+  bookApiUrl,
+  IS_PROD,
+};
