@@ -16,13 +16,18 @@ import Meta from '../../components/Meta';
 import H1 from '../../components/H1';
 import H3 from '../../components/H3';
 import P from '../../components/P';
+import { HeroWithIcons } from './index';
 import Footer from '../../components/Footer';
 
 const GlobalDigitalLibrary = () => (
   <div>
-    <Meta title="About" description="About the Global Digial Library" />
-    <Container mw={1075}>
-      <Card px={80} py={20}>
+    <Meta title="Who are we?" description="Behind the Global Digital Library" />
+    <HeroWithIcons
+      h={455}
+      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: -1 }}
+    />
+    <Container mw={1075} mt={[20, 100]}>
+      <Card px={[20, 80]} py={20}>
         <H1>The Global Digital Library</H1>
         <H3>Introduction</H3>
         <P>

@@ -23,10 +23,16 @@ import Meta from '../../components/Meta';
 import Footer from '../../components/Footer';
 import Hero from '../../components/Hero';
 
-const HeroImg = styled.img`
+const CardImg = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+export const HeroWithIcons = styled(Hero)`
+  color: #fff;
+  background: url('/static/about/books.png'),
+    linear-gradient(135deg, #004b91 0%, #5abc7f 100%);
 `;
 
 const About = () => (
@@ -35,7 +41,7 @@ const About = () => (
       title="About - Global Digital Library"
       description="Global Digital Library (GDL)"
     />
-    <Hero colorful style={{ color: '#fff' }} py={64}>
+    <HeroWithIcons py={64}>
       <Container mw={1075}>
         <H1 style={{ textTransform: 'uppercase' }}>Global digital library</H1>
         <P fontSize={26}>
@@ -49,7 +55,7 @@ const About = () => (
           April 2018.
         </P>
       </Container>
-    </Hero>
+    </HeroWithIcons>
     <Container mw={1075}>
       <Card my={60}>
         <Flex wrap={[true, false]}>
@@ -73,7 +79,7 @@ const About = () => (
             </Link>
           </Box>
           <Box w={[1, 0.5]}>
-            <HeroImg
+            <CardImg
               src="/static/about/children-306607.jpg"
               alt="Girl reading"
             />
@@ -83,7 +89,7 @@ const About = () => (
       <Card my={60}>
         <Flex wrap={[true, false]}>
           <Box w={[1, 0.5]}>
-            <HeroImg src="/static/about/kids-playing.jpg" alt="Kids playing" />
+            <CardImg src="/static/about/kids-playing.jpg" alt="Kids playing" />
           </Box>
           <Box w={[1, 0.5]} py={10} px={30}>
             <H3>Compilation of digital libraries</H3>
@@ -123,7 +129,7 @@ const About = () => (
             </A>
           </Box>
           <Box w={[1, 0.5]}>
-            <HeroImg src="/static/about/boy-reading.jpg" alt="Boy reading" />
+            <CardImg src="/static/about/boy-reading.jpg" alt="Boy reading" />
           </Box>
         </Flex>
       </Card>
