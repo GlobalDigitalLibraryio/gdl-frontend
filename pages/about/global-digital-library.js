@@ -100,8 +100,9 @@ const GlobalDigitalLibrary = () => (
         <P>
           The GDL-platform is being developed and will initially be operated by
           the{' '}
-          <A href="http://ndla.no/">Norwegian Digital Learning Arena (NDLA)</A>,
-          based on NDLA’s open source digital infrastructure.{' '}
+          <A href="https://ndla.no/">
+            Norwegian Digital Learning Arena (NDLA)
+          </A>, based on NDLA’s open source digital infrastructure.{' '}
           <A href="https://norad.no/en/front/">
             The Norwegian Agency for Development Cooperation (Norad)
           </A>{' '}

@@ -82,7 +82,7 @@ const Footer = () => (
           <a href="https://norad.no/en/front/">
             <PartnerImg src="/static/footer/norad.png" alt="NORAD" />
           </a>
-          <a href="http://ndla.no/">
+          <a href="https://ndla.no/">
             <PartnerImg src="/static/footer/ndla.png" alt="NDLA" />
           </a>
         </Flex>
