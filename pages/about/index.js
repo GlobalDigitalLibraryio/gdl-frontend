@@ -37,10 +37,7 @@ export const HeroWithIcons = Hero.extend`
 
 const About = () => (
   <div>
-    <Meta
-      title="About - Global Digital Library"
-      description="Global Digital Library (GDL)"
-    />
+    <Meta title="About" description="About the Global Digital Library (GDL)" />
     <HeroWithIcons py={64}>
       <Container mw={1075}>
         <H1 style={{ textTransform: 'uppercase' }}>Global digital library</H1>
