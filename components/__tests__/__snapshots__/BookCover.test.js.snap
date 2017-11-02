@@ -86,10 +86,10 @@ exports[`Renders 1`] = `
       "grays": Object {
         "dark": "#444",
         "desertStorm": "#f8f8f8",
-        "gainsboro": "#ddd",
         "gallery": "#eff0f2",
         "jumbo": "#888",
         "platinum": "#e3e3e3",
+        "silverSand": "#bbb",
         "steel": "#666",
         "white": "#fff",
       },
@@ -127,10 +127,10 @@ exports[`Renders 1`] = `
         "grays": Object {
           "dark": "#444",
           "desertStorm": "#f8f8f8",
-          "gainsboro": "#ddd",
           "gallery": "#eff0f2",
           "jumbo": "#888",
           "platinum": "#e3e3e3",
+          "silverSand": "#bbb",
           "steel": "#666",
           "white": "#fff",
         },

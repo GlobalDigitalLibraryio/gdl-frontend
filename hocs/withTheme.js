@@ -31,7 +31,7 @@ const theme = {
     white: '#fff',
     steel: '#666',
     jumbo: '#888',
-    gainsboro: '#ddd',
+    silverSand: '#bbb',
     platinum: '#e3e3e3',
     gallery: '#eff0f2',
     desertStorm: '#f8f8f8',
