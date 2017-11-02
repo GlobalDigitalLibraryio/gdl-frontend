@@ -53,7 +53,7 @@ const BookCover = ({
 );
 
 BookCover.defaultProps = {
-  h: ['185px', '225px'],
+  h: ['185px', '255px'],
   w: ['150px', '200px'],
 };
 

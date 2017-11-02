@@ -146,7 +146,7 @@ class BooksPage extends React.Component<Props> {
                   <Flex>
                     <BookCover
                       book={editorPick}
-                      h={['148px', '247px']}
+                      h={['148px', '255px']}
                       w={['120px', '200px']}
                       mr={['15px', '20px']}
                       flex="0 0 auto"
