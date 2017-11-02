@@ -17,7 +17,7 @@ import H1 from '../../components/H1';
 import H3 from '../../components/H3';
 import P from '../../components/P';
 import { HeroWithIcons } from './index';
-import Footer from '../../components/Footer';
+import Footer from '../../components/AboutFooter';
 
 const GlobalDigitalLibrary = () => (
   <div>
@@ -113,8 +113,7 @@ const GlobalDigitalLibrary = () => (
           <A href="https://storyweaver.org.in/">Storyweaver</A>,
           <A href="http://www.africanstorybook.org/">
             African Storybook Project
-          </A>,
-          <A href="https://www.usaid.gov/">USAID</A> missions,{' '}
+          </A>, <A href="https://www.usaid.gov/">USAID</A> missions,{' '}
           <A href="https://allchildrenreading.org/">
             All Children Reading: a Grand Challenge for Development
           </A>{' '}

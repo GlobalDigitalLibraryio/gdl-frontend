@@ -20,7 +20,7 @@ import Box from '../../components/Box';
 import Container from '../../components/Container';
 import defaultPage from '../../hocs/defaultPage';
 import Meta from '../../components/Meta';
-import Footer from '../../components/Footer';
+import Footer from '../../components/AboutFooter';
 import Hero from '../../components/Hero';
 
 const CardImg = styled.img`

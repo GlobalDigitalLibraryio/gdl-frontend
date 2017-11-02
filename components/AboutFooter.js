@@ -60,21 +60,31 @@ const Footer = () => (
     <Hero mt={32}>
       <Container py={32} mw={1075}>
         <Flex justify="space-between" wrap>
-          <PartnerImg
-            src="/static/footer/all-children.png"
-            alt="All Children Reading logo"
-          />
-          <PartnerImg src="/static/footer/usaid.png" alt="US Aid logo" />
-          <PartnerImg
-            src="/static/footer/world-vision.png"
-            alt="World Vision logo"
-          />
+          <a href="https://allchildrenreading.org/">
+            <PartnerImg
+              src="/static/footer/all-children.png"
+              alt="All Children Reading"
+            />
+          </a>
+          <a href="https://www.usaid.gov/">
+            <PartnerImg src="/static/footer/usaid.png" alt="USAID" />
+          </a>
+          <a href="https://www.worldvision.org/">
+            <PartnerImg
+              src="/static/footer/world-vision.png"
+              alt="World Vision"
+            />
+          </a>
           <PartnerImg
             src="/static/footer/australian-aid.png"
-            alt="Australian Aid logo"
+            alt="Australian Aid"
           />
-          <PartnerImg src="/static/footer/norad.png" alt="Norad logo" />
-          <PartnerImg src="/static/footer/ndla.png" alt="NDLA logo" />
+          <a href="https://norad.no/en/front/">
+            <PartnerImg src="/static/footer/norad.png" alt="NORAD" />
+          </a>
+          <a href="http://ndla.no/">
+            <PartnerImg src="/static/footer/ndla.png" alt="NDLA" />
+          </a>
         </Flex>
       </Container>
     </Hero>
