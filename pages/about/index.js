@@ -29,7 +29,7 @@ const CardImg = styled.img`
   object-fit: cover;
 `;
 
-export const HeroWithIcons = styled(Hero)`
+export const HeroWithIcons = Hero.extend`
   color: #fff;
   background: url('/static/about/books.png'),
     linear-gradient(135deg, #004b91 0%, #5abc7f 100%);
