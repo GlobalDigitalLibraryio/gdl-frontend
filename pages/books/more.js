@@ -49,9 +49,19 @@ class BookPage extends React.Component<Props> {
         <Navbar />
 
         <Container pt={20}>
-          <H1>
-            {level ? <Trans>Level {level}</Trans> : <Trans>New arrivals</Trans>}
-          </H1>
+          {books.results.length > 0 ? (
+            <H1>
+              {level ? (
+                <Trans>Level {level}</Trans>
+              ) : (
+                <Trans>New arrivals</Trans>
+              )}
+            </H1>
+          ) : (
+            <H1 textAlign="center">
+              <Trans>No books found</Trans>
+            </H1>
+          )}
           <BookGrid books={books.results} />
         </Container>
       </div>

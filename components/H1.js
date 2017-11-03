@@ -8,9 +8,10 @@
 
 import styled from 'styled-components';
 import media from './helpers/media';
+import textAlign from './helpers/textAlign';
 
 const H1 = styled.h1`
-  &:first-child {
+  ${textAlign} &:first-child {
     margin-top: 0;
   }
   font-weight: 500;
