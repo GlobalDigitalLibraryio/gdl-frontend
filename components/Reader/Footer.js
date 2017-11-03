@@ -12,22 +12,23 @@ import media from '../helpers/media';
 import { Button } from './Header';
 
 type Props = {
-  onNextChapter(): void,
-  onPrevChapter(): void,
+  onRequestNext(): void,
+  onRequestPrevious(): void,
   disableNext: boolean,
   disablePrev: boolean,
   children: React.Node,
 };
 
-const Div = styled.div`
-  display: flex;
+const Nav = styled.nav`
+  display: none;
   align-items: center;
   flex: 0 0 auto;
   color: ${props => props.theme.grays.jumbo};
+  background-color: ${props => props.theme.grays.desertStorm};
+  border-top: 1px solid ${props => props.theme.grays.platinum};
 
-  font-size: 12px;
-  min-height: 48px;
   ${media.tablet`
+    display: flex;
     min-height: 54px;
     font-size: 14px;
   `};
@@ -42,9 +43,9 @@ const Div = styled.div`
 `;
 
 const Footer = (props: Props) => (
-  <Div>
+  <Nav>
     <Button
-      onClick={props.onPrevChapter}
+      onClick={props.onRequestPrevious}
       disabled={props.disablePrev}
       aria-label="Previous chapter"
       title="Previous chapter"
@@ -53,14 +54,14 @@ const Footer = (props: Props) => (
     </Button>
     {props.children}
     <Button
-      onClick={props.onNextChapter}
+      onClick={props.onRequestNext}
       disabled={props.disableNext}
       aria-label="Next chapter"
       title="Next chapter"
     >
       <MdKeyboardArrowRight />
     </Button>
-  </Div>
+  </Nav>
 );
 
 export default Footer;
