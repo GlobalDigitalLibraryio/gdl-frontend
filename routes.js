@@ -20,7 +20,15 @@ if (env.IS_PROD) {
   routes.add('about');
 }
 
+// Book grid by level
+routes.add('level', '/books/:lang/level:level(\\d+)', 'books/more');
+// Book grid for new books
+routes.add('new', '/books/:lang/new', 'books/more');
+
+// Book page
 routes.add('book', '/books/:lang/:id(\\d+)/:chapter(\\d+)?', 'books/index');
+
+// About the global digital library
 routes.add(
   'global-digital-library',
   'about/global-digital-library',

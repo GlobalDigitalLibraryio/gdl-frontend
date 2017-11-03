@@ -41,6 +41,12 @@ export default doFetch;
 // Default page size
 const PAGE_SIZE = 5;
 
+type Options = {
+  pageSize?: number,
+  level?: string,
+  sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
+};
+
 export function fetchLevels(
   language: ?string,
 ): Promise<RemoteData<Array<string>>> {
@@ -69,25 +75,18 @@ export function fetchSimilarBooks(
   language: string,
 ): Promise<RemoteData<{ results: Array<Book> }>> {
   return doFetch(
-    `${bookApiUrl}/books/${language}/similar/${id}?page-size=${PAGE_SIZE}`,
+    `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`,
   );
 }
 
-export function fetchJustArrivedBooks(
+export function fetchBooks(
   language: ?string,
+  options: Options = {},
 ): Promise<RemoteData<{ results: Array<Book> }>> {
   return doFetch(
-    `${bookApiUrl}/books/${language ||
-      ''}?sort=-arrivaldate&page-size=${PAGE_SIZE}`,
-  );
-}
-
-export function fetchBooksByLevel(
-  level: string,
-  language: ?string,
-): Promise<RemoteData<{ results: Array<Book> }>> {
-  return doFetch(
-    `${bookApiUrl}/books/${language ||
-      ''}?sort=-arrivaldate&page-size=${PAGE_SIZE}&reading-level=${level}`,
+    `${bookApiUrl}/books/${language || ''}?sort=${options.sort ||
+      '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${options.level
+      ? `&reading-level=${options.level}`
+      : ''}`,
   );
 }
