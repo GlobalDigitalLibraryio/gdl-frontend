@@ -42,19 +42,7 @@ class Read extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
-        <Reader
-          book={book}
-          chapter={this.props.url.query.chapter}
-          onClose={() =>
-            Router.pushRoute(
-              'book',
-              {
-                id: book.id,
-                lang: book.language.code,
-              },
-              { shallow: true },
-            )}
-        />
+        <Reader book={book} />
       </div>
     );
   }

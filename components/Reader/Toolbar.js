@@ -31,14 +31,18 @@ const Button = styled.button.attrs({
   background: transparent;
   border-radius: 0;
   border: none;
+  font-size: 14px;
   color: ${props => props.theme.grays.dark};
+  :disabled {
+    color: ${p => p.theme.grays.silverSand};
+  }
 `;
 
 type Props = {
   onRequestClose(): void,
 };
 
-const Header = (props: Props) => (
+const Toolbar = (props: Props) => (
   <Div>
     <Button onClick={props.onRequestClose}>
       <MdBackspace /> <Trans>Close book</Trans>
@@ -46,4 +50,4 @@ const Header = (props: Props) => (
   </Div>
 );
 
-export { Header as default, Button };
+export { Toolbar as default, Button };

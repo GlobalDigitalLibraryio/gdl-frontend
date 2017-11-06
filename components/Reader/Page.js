@@ -22,6 +22,7 @@ const Page = styled.div`
   & :first-child {
     margin-top: 0;
   }
+  overflow-y: auto;
 `;
 
 export default Page;

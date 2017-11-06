@@ -34,10 +34,12 @@ export type Language = {
 
 export type Chapter = {
   content: string,
+  seqNo: number,
 };
 
 export type ChapterSummary = {
   url: string,
+  seqNo: number,
 };
 
 // Future proofing. In the future we might want to define success and failure cases using ADTs

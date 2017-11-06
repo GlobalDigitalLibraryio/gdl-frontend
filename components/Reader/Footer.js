@@ -9,7 +9,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
 import media from '../helpers/media';
-import { Button } from './Header';
+import { Button } from './Toolbar';
 
 type Props = {
   onRequestNext(): void,
