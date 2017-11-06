@@ -7,3 +7,4 @@ npm-debug.log
 # Ignore the compiled translation files
 locale/*/*.js
 locale/_build/
+.idea
