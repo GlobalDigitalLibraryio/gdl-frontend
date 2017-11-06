@@ -12,8 +12,15 @@ import { MdBackspace } from 'react-icons/lib/md';
 import media from '../helpers/media';
 
 const Div = styled.div`
-  display: flex;
-  color: ${props => props.theme.grays.jumbo};
+  display: ${p => (p.showOnMobile ? 'flex' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  ${media.tablet`
+    display: flex;
+    position: sticky;
+  `} color: ${props => props.theme.grays.jumbo};
   background-color: ${props => props.theme.grays.desertStorm};
   border-bottom: 1px solid ${props => props.theme.grays.platinum};
 
@@ -39,11 +46,12 @@ const Button = styled.button.attrs({
 `;
 
 type Props = {
+  showOnMobile: boolean,
   onRequestClose(): void,
 };
 
 const Toolbar = (props: Props) => (
-  <Div>
+  <Div showOnMobile={props.showOnMobile}>
     <Button onClick={props.onRequestClose}>
       <MdBackspace /> <Trans>Close book</Trans>
     </Button>

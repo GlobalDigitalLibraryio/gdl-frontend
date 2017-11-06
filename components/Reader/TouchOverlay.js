@@ -29,10 +29,10 @@ type Props = {
 
 const TouchOverlay = (props: Props) => [
   <Div key="left" style={{ left: 0 }} onClick={props.onRequestPrev}>
-    <MdKeyboardArrowLeft />
+    <MdKeyboardArrowLeft size={50} />
   </Div>,
   <Div key="right" style={{ right: 0 }} onClick={props.onRequestNext}>
-    <MdKeyboardArrowRight />
+    <MdKeyboardArrowRight size={50} />
   </Div>,
 ];
 

@@ -10,7 +10,6 @@ import * as React from 'react';
 import { fetchBook } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import { Router } from '../../routes';
 import Meta from '../../components/Meta';
 import Reader from '../../components/Reader';
 

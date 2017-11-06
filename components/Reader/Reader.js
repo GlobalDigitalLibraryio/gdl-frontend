@@ -9,7 +9,6 @@ import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
 import Box from '../Box';
-import Error from '../Error';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
 import Page from './Page';
@@ -17,7 +16,6 @@ import Toolbar from './Toolbar';
 import Footer from './Footer';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
-import media from '../helpers/media';
 import BookMeta from './BookMeta';
 import OnTouch from './OnTouch';
 import TouchOverlay from './TouchOverlay';
@@ -31,7 +29,7 @@ function createMarkup(chapter: Chapter) {
 
 const Card = styled.div`
   background: ${props => props.theme.grays.white};
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -47,30 +45,23 @@ type ReaderProps = {
 };
 
 type ReaderState = {
-  showToolbar: boolean,
-  showTouchOverlay: boolean,
+  showOverlay: boolean,
 };
 
 class Reader extends React.Component<ReaderProps, ReaderState> {
   state = {
-    showToolbar: false,
-    showTouchOverlay: false,
+    showOverlay: false,
   };
 
-  onTouch = (event: TouchEvent) => {
+  onTouch = event => {
     console.log(event);
-    this.setState({ showTouchOverlay: true });
-    window.setTimeout(() => this.setState({ showTouchOverlay: false }), 3000);
+    this.setState({ showOverlay: true });
+    window.setTimeout(() => this.setState({ showOverlay: false }), 3000);
   };
 
   render() {
     const { book, chapter, chapterNumber } = this.props;
     const numOfChapters = book.chapters.length;
-
-    // If this isn't a valid chapter. Render the 404 page
-    /* if (chapter < 1 || chapter > this.props.book.chapters.length) {
-      return <Error statusCode={404} showNavbar={false} />;
-    } */
 
     const disableNext = chapterNumber >= numOfChapters;
     const disablePrev = chapterNumber <= 1;
@@ -80,13 +71,21 @@ class Reader extends React.Component<ReaderProps, ReaderState> {
         <Backdrop />
         <OnTouch onTouch={this.onTouch}>
           <Card>
-            <Toolbar onRequestClose={this.props.onRequestClose} />
-            {this.state.showTouchOverlay && (
+            {this.state.showOverlay && (
               <TouchOverlay
                 onRequestNext={this.props.onRequestNext}
                 onRequestPrev={this.props.onRequestPrevious}
               />
             )}
+            <Toolbar
+              showOnMobile={this.state.showOverlay}
+              onRequestClose={this.props.onRequestClose}
+            />
+            <BookMeta
+              currentChapter={chapterNumber}
+              totalChapters={numOfChapters}
+              hideOnTablet
+            />
             <Box px={[40, 120]} pb={20} flex="1 0 auto">
               {chapter && (
                 <Page dangerouslySetInnerHTML={createMarkup(chapter)} />

@@ -9,6 +9,9 @@ import styled from 'styled-components';
 
 const Page = styled.div`
   color: #000;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
   b {
     font-weight: bold;
   }
