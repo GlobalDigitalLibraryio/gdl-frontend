@@ -10,28 +10,46 @@ import * as React from 'react';
 
 type Props = {
   children: React.Node,
-  onTouch(event: TouchEvent): void,
+  onTap(event: SyntheticTouchEvent<>): void,
 };
 
 export default class OnTouch extends React.Component<Props> {
   constructor(props) {
     super(props);
     this.touchStarted = false;
-    this.currentX = 0;
-    this.currentY = 0;
+    this.touchMoved = false;
+    this.startX = 0;
+    this.startY = 0;
   }
 
-  handleTouchStart = (event: TouchEvent) => {
+  handleTouchStart = (event: SyntheticTouchEvent<>) => {
     this.touchStarted = true;
+    this.touchMoved = false;
+    this.startX = event.touches[0].clientX;
+    this.startY = event.touches[0].clientY;
   };
 
-  handleTouchEnd = (event: TouchEvent) => {
+  handleTouchEnd = (event: SyntheticTouchEvent<>) => {
     this.touchStarted = false;
-    this.props.onTouch(event);
+    if (!this.touchMoved) {
+      this.props.onTap(event);
+    }
+  };
+
+  handleTouchMove = (event: SyntheticTouchEvent<>) => {
+    if (!this.touchMoved) {
+      const currentX = event.touches[0].clientX;
+      const currentY = event.touches[0].clientY;
+
+      this.touchMoved =
+        Math.abs(this.startX - currentX) > 10 ||
+        Math.abs(this.startY - currentY) > 10;
+    }
   };
 
   handleTouchCancel = () => {
     this.touchStarted = false;
+    this.touchMoved = false;
   };
 
   render() {
@@ -39,6 +57,7 @@ export default class OnTouch extends React.Component<Props> {
     return React.cloneElement(children, {
       onTouchStart: this.handleTouchStart,
       onTouchEnd: this.handleTouchEnd,
+      onTouchMove: this.handleTouchMove,
       onTouchCancel: this.handleTouchCancel,
     });
   }

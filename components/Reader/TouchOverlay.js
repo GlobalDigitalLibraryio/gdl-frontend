@@ -23,8 +23,8 @@ const Div = styled.button`
 `;
 
 type Props = {
-  onRequestNext(event: Event): void,
-  onRequestPrev(event: Event): void,
+  onRequestNext(event: SyntheticEvent<HTMLButtonElement>): void,
+  onRequestPrev(event: SyntheticEvent<HTMLButtonElement>): void,
 };
 
 const TouchOverlay = (props: Props) => [

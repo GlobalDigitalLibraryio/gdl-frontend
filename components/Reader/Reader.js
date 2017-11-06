@@ -53,10 +53,15 @@ class Reader extends React.Component<ReaderProps, ReaderState> {
     showOverlay: false,
   };
 
-  onTouch = event => {
-    console.log(event);
-    this.setState({ showOverlay: true });
-    window.setTimeout(() => this.setState({ showOverlay: false }), 3000);
+  onTap = (event: SyntheticTouchEvent<>) => {
+    const currentX = event.changedTouches[0].clientX;
+    if (currentX < 70) {
+      this.props.onRequestPrevious();
+    } else if (currentX > screen.width - 70) {
+      this.props.onRequestNext();
+    } else {
+      this.setState(state => ({ showOverlay: !state.showOverlay }));
+    }
   };
 
   render() {
@@ -69,14 +74,18 @@ class Reader extends React.Component<ReaderProps, ReaderState> {
     return (
       <Container px={0}>
         <Backdrop />
-        <OnTouch onTouch={this.onTouch}>
-          <Card>
-            {this.state.showOverlay && (
-              <TouchOverlay
-                onRequestNext={this.props.onRequestNext}
-                onRequestPrev={this.props.onRequestPrevious}
-              />
-            )}
+        {this.state.showOverlay && (
+          <TouchOverlay
+            onRequestNext={this.props.onRequestNext}
+            onRequestPrev={this.props.onRequestPrevious}
+          />
+        )}
+        <OnTouch onTap={this.onTap}>
+          <Card
+            innerRef={c => {
+              this.page = c;
+            }}
+          >
             <Toolbar
               showOnMobile={this.state.showOverlay}
               onRequestClose={this.props.onRequestClose}
@@ -142,7 +151,7 @@ export default class ReaderContainer extends React.Component<
 
   componentDidMount() {
     this.loadChapter(this.state.chapter);
-    // Load the next one
+    // Load the next chapter
     this.loadChapter(this.state.chapter + 1);
   }
 
