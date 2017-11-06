@@ -142,6 +142,8 @@ export default class ReaderContainer extends React.Component<
 
   componentDidMount() {
     this.loadChapter(this.state.chapter);
+    // Load the next one
+    this.loadChapter(this.state.chapter + 1);
   }
 
   onRequestClose = () => {
@@ -152,40 +154,33 @@ export default class ReaderContainer extends React.Component<
   };
 
   onRequestNext = () => {
-    this.setState(
-      state => {
-        if (state.chapter < this.props.book.chapters.length) {
-          return { chapter: state.chapter + 1 };
-        }
-        return {};
-      },
-      () => this.loadChapter(this.state.chapter),
-    );
+    if (this.state.chapter < this.props.book.chapters.length) {
+      this.loadChapter(this.state.chapter + 1);
+      this.loadChapter(this.state.chapter + 2);
+      this.setState(state => ({ chapter: state.chapter + 1 }));
+    }
   };
 
   onRequestPrevious = () => {
-    this.setState(
-      state => {
-        if (state.chapter > 1) {
-          return { chapter: state.chapter - 1 };
-        }
-        return {};
-      },
-      () => this.loadChapter(this.state.chapter),
-    );
+    if (this.state.chapter > 1) {
+      this.loadChapter(this.state.chapter - 1);
+      this.loadChapter(this.state.chapter - 2);
+      this.setState(state => ({ chapter: state.chapter - 1 }));
+    }
   };
 
   async loadChapter(chapterNumber: number) {
-    // Bail out if the chapter number is out of range
-    if (chapterNumber < 1 || chapterNumber > this.props.book.chapters.length) {
+    const chapterIndex = chapterNumber - 1;
+    // Bail out if the chapter is out of range
+    if (chapterIndex < 0 || chapterIndex >= this.props.book.chapters.length) {
       return;
     }
 
     const maybeChapter = this.state.chapters[chapterNumber];
 
-    if (!maybeChapter && this.props.book.chapters[chapterNumber - 1]) {
+    if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
       const chapterRes = await fetch(
-        this.props.book.chapters[chapterNumber - 1].url,
+        this.props.book.chapters[chapterIndex].url,
       );
       const chapter = await chapterRes.json();
 
