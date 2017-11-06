@@ -40,7 +40,11 @@ if (env.IS_PROD) {
   );
 
   // Read book
-  routes.add('read', '/:lang/books/:id(\\d+)/read', 'books/read');
+  routes.add(
+    'read',
+    '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
+    'books/read',
+  );
 }
 
 module.exports = routes;

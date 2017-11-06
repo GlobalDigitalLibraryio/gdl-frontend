@@ -16,6 +16,11 @@ import Reader from '../../components/Reader';
 
 type Props = {
   book: RemoteData<Book>,
+  url: {
+    query: {
+      chapter?: string,
+    },
+  },
 };
 
 class Read extends React.Component<Props> {
@@ -32,7 +37,7 @@ class Read extends React.Component<Props> {
   }
 
   render() {
-    const { book } = this.props;
+    const { book, url } = this.props;
 
     return (
       <div>
@@ -42,7 +47,7 @@ class Read extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
-        <Reader book={book} />
+        <Reader book={book} initialChapter={url.query.chapter} />
       </div>
     );
   }

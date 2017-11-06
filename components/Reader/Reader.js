@@ -76,7 +76,7 @@ class Reader extends React.Component<ReaderProps, ReaderState> {
     const disablePrev = chapterNumber <= 1;
 
     return (
-      <Container px={0} style={{ position: 'relative' }}>
+      <Container px={0}>
         <Backdrop />
         <OnTouch onTouch={this.onTouch}>
           <Card>
@@ -129,6 +129,7 @@ type ReaderContainerState = {
 
 type ReaderContainerProps = {
   book: Book,
+  initialChapter: ?string,
 };
 
 export default class ReaderContainer extends React.Component<
@@ -137,7 +138,7 @@ export default class ReaderContainer extends React.Component<
 > {
   state = {
     chapters: {},
-    chapter: 1,
+    chapter: parseInt(this.props.initialChapter, 10) || 1,
   };
 
   componentDidMount() {
