@@ -83,6 +83,7 @@ class GDLDocument extends Document {
         <Head>
           <title>Global Digital Library</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           <script dangerouslySetInnerHTML={{ __html: envScript }} />
           {this.props.styleTags}
         </Head>
