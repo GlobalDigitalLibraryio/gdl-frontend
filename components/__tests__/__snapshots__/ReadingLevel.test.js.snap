@@ -90,7 +90,6 @@ exports[`Renders 1`] = `
         }
       >
         <Trans
-          i18n={undefined}
           id="Level {level}"
           values={
             Object {
@@ -99,13 +98,9 @@ exports[`Renders 1`] = `
           }
         >
           <Render
-            className={undefined}
-            render={undefined}
             value="Level {level}"
           >
-            <span
-              className={undefined}
-            >
+            <span>
               Level {level}
             </span>
           </Render>
