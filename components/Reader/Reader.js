@@ -48,7 +48,7 @@ type ReaderState = {
   showOverlay: boolean,
 };
 
-class Reader extends React.Component<ReaderProps, ReaderState> {
+class Reader extends React.PureComponent<ReaderProps, ReaderState> {
   state = {
     showOverlay: false,
   };
@@ -144,10 +144,20 @@ export default class ReaderContainer extends React.Component<
   ReaderContainerProps,
   ReaderContainerState,
 > {
-  state = {
-    chapters: {},
-    chapter: parseInt(this.props.initialChapter, 10) || 1,
-  };
+  constructor(props: ReaderContainerProps) {
+    super(props);
+
+    // Convert the chapter in the url to an int and make sure it is in a valid chapter range (or be set to 1)
+    let initialChapter = parseInt(props.initialChapter, 10) || 1;
+    if (initialChapter < 1 || initialChapter > props.book.chapters.length) {
+      initialChapter = 1;
+    }
+
+    this.state = {
+      chapters: {},
+      chapter: initialChapter,
+    };
+  }
 
   componentDidMount() {
     this.loadChapter(this.state.chapter);
@@ -155,6 +165,7 @@ export default class ReaderContainer extends React.Component<
     this.loadChapter(this.state.chapter + 1);
   }
 
+  // Go back to the book details when closing the reader
   onRequestClose = () => {
     Router.replaceRoute('book', {
       id: this.props.book.id,
@@ -166,7 +177,10 @@ export default class ReaderContainer extends React.Component<
     if (this.state.chapter < this.props.book.chapters.length) {
       this.loadChapter(this.state.chapter + 1);
       this.loadChapter(this.state.chapter + 2);
-      this.setState(state => ({ chapter: state.chapter + 1 }));
+      this.setState(
+        state => ({ chapter: state.chapter + 1 }),
+        this.changeChapterInUrl,
+      );
     }
   };
 
@@ -174,9 +188,23 @@ export default class ReaderContainer extends React.Component<
     if (this.state.chapter > 1) {
       this.loadChapter(this.state.chapter - 1);
       this.loadChapter(this.state.chapter - 2);
-      this.setState(state => ({ chapter: state.chapter - 1 }));
+      this.setState(
+        state => ({ chapter: state.chapter - 1 }),
+        this.changeChapterInUrl,
+      );
     }
   };
+
+  changeChapterInUrl = () =>
+    Router.replaceRoute(
+      'read',
+      {
+        id: this.props.book.id,
+        lang: this.props.book.language.code,
+        chapter: this.state.chapter,
+      },
+      { shallow: true },
+    );
 
   async loadChapter(chapterNumber: number) {
     const chapterIndex = chapterNumber - 1;
