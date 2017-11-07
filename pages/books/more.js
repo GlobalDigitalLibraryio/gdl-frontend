@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import { fetchBooks } from '../../fetch';
-import type { Book, RemoteData } from '../../types';
+import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import H1 from '../../components/H1';
@@ -20,6 +20,7 @@ import BookGrid from '../../components/BookGrid';
 type Props = {
   books: RemoteData<{
     results: Array<Book>,
+    language: Language,
   }>,
   level: ?string,
 };
@@ -41,7 +42,10 @@ class BookPage extends React.Component<Props> {
     const { books, level } = this.props;
 
     return (
-      <Layout currentPage={level ? `Level ${level}` : 'New arrivals'}>
+      <Layout
+        currentPage={level ? `Level ${level}` : 'New arrivals'}
+        lang={books.language.code}
+      >
         <Meta
           title={level ? `Level ${level} books` : 'New arrivals'}
           description="More books"

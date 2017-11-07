@@ -38,10 +38,11 @@ const Ol = styled.ol`
 type Props = {
   i18n: I18n,
   currentPage?: string,
+  lang: string,
 };
 
 const Separator = (
-  <li aria-hidden role="presentation">
+  <li aria-hidden role="presentation" key="sep">
     <MdKeyboardArrowRight />
   </li>
 );
@@ -50,8 +51,8 @@ class Breadcrumb extends React.Component<Props> {
   renderHome() {
     if (this.props.currentPage) {
       return [
-        <li>
-          <Link route="books" passHref>
+        <li key="home">
+          <Link route="books" passHref params={{ lang: this.props.lang }}>
             <a aria-label="Home" title="Home">
               <MdHome />
             </a>

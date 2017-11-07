@@ -87,6 +87,7 @@ class BooksPage extends React.Component<Props> {
 
     return (
       <Layout
+        lang={languageFilter.code}
         toolbarEnd={
           <ToolbarDropdown
             id="langFilter"
