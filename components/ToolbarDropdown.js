@@ -9,39 +9,19 @@ import * as React from 'react';
 import Downshift from 'downshift';
 import styled from 'styled-components';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
-import media from './helpers/media';
-import Container from './Container';
 import Card from './Card';
 
 /* eslint-disable react/no-multi-comp */
 
-const Toolbar = styled.div`
-  background: ${props => props.theme.grays.white};
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  font-size: 14px;
-  position: relative;
-  ${Container} {
-    width: 100%;
-    display: flex;
-    align-items: stretch;
-  }
-`;
-
 const Item = styled.div`
   position: relative;
   display: inline-block;
-  padding-right: 15px;
-  ${media.tablet`
-    padding-right: 20px;
-  `};
 `;
 
 const DropdownButton = styled.a.attrs({
   href: '',
 })`
   display: block;
-  padding-top: 7px;
-  padding-bottom: 7px;
 `;
 
 const DropdownItemAnchor = styled.a`
@@ -143,4 +123,4 @@ class ToolbarItem extends React.Component<Props> {
   }
 }
 
-export { Toolbar as default, ToolbarItem, ToolbarDropdownItem };
+export { ToolbarItem as default, ToolbarDropdownItem };

@@ -7,22 +7,35 @@
  */
 
 import * as React from 'react';
+import styled from 'styled-components';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import Container from './Container';
-import Toolbar from './Toolbar';
 
 type Props = {
   children: React.Node,
-  currentPage: string,
+  currentPage?: string,
+  toolbarEnd?: React.Node,
 };
 
-const Layout = ({ children, currentPage }: Props) => (
+const Toolbar = styled.div`
+  background: ${props => props.theme.grays.white};
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  position: relative;
+  ${Container} {
+    width: 100%;
+    display: flex;
+  }
+`;
+
+const Layout = ({ children, toolbarEnd, currentPage }: Props) => (
   <div>
     <Navbar />
     <Toolbar>
       <Container mw="1075px">
         <Breadcrumb currentPage={currentPage} />
+        {toolbarEnd}
       </Container>
     </Toolbar>
     {children}

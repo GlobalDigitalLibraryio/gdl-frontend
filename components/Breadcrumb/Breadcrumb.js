@@ -13,6 +13,12 @@ import { withI18n } from 'lingui-react';
 import styled from 'styled-components';
 import { Link } from '../../routes';
 
+const Nav = styled.nav`
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+`;
+
 const Ol = styled.ol`
   display: flex;
   list-style: none;
@@ -31,7 +37,7 @@ const Ol = styled.ol`
 
 type Props = {
   i18n: I18n,
-  currentPage: string,
+  currentPage?: string,
 };
 
 const Separator = (
@@ -58,16 +64,19 @@ class Breadcrumb extends React.Component<Props> {
   }
 
   render() {
-    const { currentPage } = this.props;
+    const { currentPage, i18n } = this.props;
     return (
-      <nav aria-label={this.props.i18n.t`Breadcrumb`} role="navigation">
+      <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
         <Ol>
           {this.renderHome()}
-          <li aria-current="page" aria-label={currentPage ? 'Home' : null}>
+          <li
+            aria-current="page"
+            aria-label={currentPage ? i18n.t`Home` : null}
+          >
             {currentPage || <MdHome />}
           </li>
         </Ol>
-      </nav>
+      </Nav>
     );
   }
 }
