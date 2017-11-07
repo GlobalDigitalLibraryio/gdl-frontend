@@ -23,7 +23,7 @@ import defaultPage from '../../hocs/defaultPage';
 import { Link, Router } from '../../routes';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
-import Navbar from '../../components/Navbar';
+import Layout from '../../components/Layout';
 import ReadingLevel from '../../components/ReadingLevel';
 import A from '../../components/A';
 import H3 from '../../components/H3';
@@ -134,13 +134,12 @@ class BookPage extends React.Component<Props> {
     const availableLanguages = book.availableLanguages.length - 1;
 
     return (
-      <div>
+      <Layout currentPage={book.title}>
         <Meta
           title={book.title}
           description={book.description}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
-        <Navbar />
 
         {this.props.url.query.chapter && (
           <Reader
@@ -317,7 +316,7 @@ class BookPage extends React.Component<Props> {
             <BookList books={similar.results} mt={20} />
           </Container>
         </Hero>
-      </div>
+      </Layout>
     );
   }
 }

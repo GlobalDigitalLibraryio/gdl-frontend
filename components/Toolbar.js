@@ -23,8 +23,7 @@ const Toolbar = styled.div`
   ${Container} {
     width: 100%;
     display: flex;
-    justify-content: flex-end;
-    padding: 0;
+    align-items: stretch;
   }
 `;
 

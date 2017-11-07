@@ -11,7 +11,7 @@ import { Trans } from 'lingui-react';
 import { fetchBooks } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import Navbar from '../../components/Navbar';
+import Layout from '../../components/Layout';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
@@ -41,12 +41,11 @@ class BookPage extends React.Component<Props> {
     const { books, level } = this.props;
 
     return (
-      <div>
+      <Layout currentPage={level ? `Level ${level}` : 'New arrivals'}>
         <Meta
           title={level ? `Level ${level} books` : 'New arrivals'}
           description="More books"
         />
-        <Navbar />
 
         <Container pt={20}>
           {books.results.length > 0 ? (
@@ -64,7 +63,7 @@ class BookPage extends React.Component<Props> {
           )}
           <BookGrid books={books.results} />
         </Container>
-      </div>
+      </Layout>
     );
   }
 }
