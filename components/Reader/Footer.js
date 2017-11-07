@@ -21,13 +21,15 @@ type Props = {
 
 const Nav = styled.nav`
   display: none;
-  align-items: center;
-  flex: 0 0 auto;
-  color: ${props => props.theme.grays.jumbo};
-  background-color: ${props => props.theme.grays.desertStorm};
-  border-top: 1px solid ${props => props.theme.grays.platinum};
 
   ${media.tablet`
+    position: sticky;
+    bottom: 0;
+    align-items: center;
+    flex: 0 0 auto;
+    color: ${props => props.theme.grays.jumbo};
+    background-color: ${props => props.theme.grays.desertStorm};
+    border-top: 1px solid ${props => props.theme.grays.platinum};
     display: flex;
     min-height: 54px;
     font-size: 14px;

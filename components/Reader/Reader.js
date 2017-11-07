@@ -72,7 +72,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     const disablePrev = chapterNumber <= 1;
 
     return (
-      <Container px={0}>
+      <Container px={0} mw={1075}>
         <Backdrop />
         {this.state.showOverlay && (
           <TouchOverlay
@@ -81,11 +81,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           />
         )}
         <OnTouch onTap={this.onTap}>
-          <Card
-            innerRef={c => {
-              this.page = c;
-            }}
-          >
+          <Card>
             <Toolbar
               showOnMobile={this.state.showOverlay}
               onRequestClose={this.props.onRequestClose}

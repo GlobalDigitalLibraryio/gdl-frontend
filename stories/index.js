@@ -13,6 +13,5 @@ require('./HeroExample');
 require('./ToolbarExample');
 require('./ContainerExample');
 require('./ButtonExample');
-require('./ReaderExample');
 require('./ReadingLevelExample');
 require('./CardDropdownExample');

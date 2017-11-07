@@ -9,18 +9,25 @@
 import * as React from 'react';
 
 type Props = {
-  children: React.Node,
+  children: React.Element<any>,
   onTap(event: SyntheticTouchEvent<>): void,
 };
 
+const TAP_TOLERANCE = 10;
+
 export default class OnTouch extends React.Component<Props> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.touchStarted = false;
     this.touchMoved = false;
     this.startX = 0;
     this.startY = 0;
   }
+
+  startX: number;
+  startY: number;
+  touchStarted: boolean;
+  touchMoved: boolean;
 
   handleTouchStart = (event: SyntheticTouchEvent<>) => {
     this.touchStarted = true;
@@ -42,8 +49,8 @@ export default class OnTouch extends React.Component<Props> {
       const currentY = event.touches[0].clientY;
 
       this.touchMoved =
-        Math.abs(this.startX - currentX) > 10 ||
-        Math.abs(this.startY - currentY) > 10;
+        Math.abs(this.startX - currentX) > TAP_TOLERANCE ||
+        Math.abs(this.startY - currentY) > TAP_TOLERANCE;
     }
   };
 
@@ -53,8 +60,7 @@ export default class OnTouch extends React.Component<Props> {
   };
 
   render() {
-    const children = React.Children.only(this.props.children);
-    return React.cloneElement(children, {
+    return React.cloneElement(this.props.children, {
       onTouchStart: this.handleTouchStart,
       onTouchEnd: this.handleTouchEnd,
       onTouchMove: this.handleTouchMove,
