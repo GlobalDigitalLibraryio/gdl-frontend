@@ -16,11 +16,16 @@ const FlexScroller = Flex.extend`
   overflow-x: auto;
 `;
 
-export default ({ books, ...props }: { books: Array<Book> }) => (
+type Props = {
+  books: Array<Book>,
+  route: 'book' | 'bookByLevel' | 'bookByNew',
+};
+
+const BookList = ({ books, route, ...props }: Props) => (
   <FlexScroller mx={-6} {...props}>
     {books.map(book => (
       <Link
-        route="book"
+        route={route}
         params={{ id: book.id, lang: book.language.code }}
         key={book.id}
       >
@@ -31,3 +36,9 @@ export default ({ books, ...props }: { books: Array<Book> }) => (
     ))}
   </FlexScroller>
 );
+
+BookList.defaultProps = {
+  route: 'book',
+};
+
+export default BookList;

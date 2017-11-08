@@ -36,8 +36,6 @@ import ToolbarDropdown, {
   ToolbarDropdownItem,
 } from '../components/ToolbarDropdown';
 
-const LANG_QUERY = 'lang';
-
 type Props = {
   editorPicks: RemoteData<Array<Book>>,
   justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
@@ -49,7 +47,7 @@ type Props = {
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    const language: ?string = query[LANG_QUERY];
+    const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
     const [editorPicks, levels, languages, justArrived] = await Promise.all([
@@ -104,7 +102,7 @@ class BooksPage extends React.Component<Props> {
                   key={language.code}
                   route="books"
                   passHref
-                  params={{ [LANG_QUERY]: language.code }}
+                  params={{ lang: language.code }}
                 >
                   <ToolbarDropdownItem
                     {...getItemProps({ item: language.code })}
@@ -177,7 +175,7 @@ class BooksPage extends React.Component<Props> {
                 </More>
               </Link>
             </H3>
-            <BookList books={justArrived.results} mt={20} />
+            <BookList books={justArrived.results} route="bookByNew" mt={20} />
           </Container>
         </Hero>
         {levels.map((level, index) => (

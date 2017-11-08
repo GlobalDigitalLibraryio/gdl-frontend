@@ -41,6 +41,11 @@ class BookPage extends React.Component<Props> {
   render() {
     const { books, level } = this.props;
 
+    // The route to book differs based on "where we come from". This is because of breadcrumbs
+    const route = level
+      ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
+      : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
+
     return (
       <Layout
         currentPage={level ? `Level ${level}` : 'New arrivals'}
@@ -65,7 +70,7 @@ class BookPage extends React.Component<Props> {
               <Trans>No books found</Trans>
             </H1>
           )}
-          <BookGrid books={books.results} />
+          <BookGrid books={books.results} route={route} />
         </Container>
       </Layout>
     );

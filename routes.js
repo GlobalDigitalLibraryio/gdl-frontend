@@ -16,17 +16,23 @@ if (env.IS_PROD) {
   routes.add('books', '/books', 'index');
 } else {
   // in other environments we want the books page to be the landing page
-  routes.add('books', '/', 'index');
+  routes.add('books', '/:lang?', 'index');
   routes.add('about');
 }
 
 // Book grid by level
-routes.add('level', '/books/:lang/level:level(\\d+)', 'books/more');
+routes.add('level', '/:lang/books/level:level(\\d+)', 'books/more');
 // Book grid for new books
-routes.add('new', '/books/:lang/new', 'books/more');
+routes.add('new', '/:lang/books/new', 'books/more');
 
 // Book page
-routes.add('book', '/books/:lang/:id(\\d+)/:chapter(\\d+)?', 'books/index');
+routes.add('book', '/:lang/books/:id(\\d+)/:chapter(\\d+)?', 'books/index');
+routes.add('bookByNew', '/:lang/books/new/:id(\\d+)', 'books/index');
+routes.add(
+  'bookByLevel',
+  '/:lang/books/level:level(\\d+)/:id(\\d+)',
+  'books/index',
+);
 
 // About the global digital library
 routes.add(
