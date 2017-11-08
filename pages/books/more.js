@@ -47,10 +47,7 @@ class BookPage extends React.Component<Props> {
       : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
 
     return (
-      <Layout
-        currentPage={level ? `Level ${level}` : 'New arrivals'}
-        lang={books.language.code}
-      >
+      <Layout currentPage={level ? `Level ${level}` : 'New arrivals'}>
         <Meta
           title={level ? `Level ${level} books` : 'New arrivals'}
           description="More books"

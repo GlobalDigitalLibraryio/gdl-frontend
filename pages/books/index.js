@@ -134,7 +134,7 @@ class BookPage extends React.Component<Props> {
     const availableLanguages = book.availableLanguages.length - 1;
 
     return (
-      <Layout currentPage={book.title} lang={book.language.code}>
+      <Layout currentPage={book.title}>
         <Meta
           title={book.title}
           description={book.description}

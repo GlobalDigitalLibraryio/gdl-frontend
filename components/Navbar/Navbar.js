@@ -73,7 +73,7 @@ const LogoA = styled.a`
 `;
 
 type Props = {
-  lang: string,
+  lang: ?string,
 };
 
 class Navbar extends React.Component<Props, { isExpanded: boolean }> {

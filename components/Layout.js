@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'next/router';
 import media from './helpers/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
@@ -17,7 +18,12 @@ type Props = {
   children: React.Node,
   currentPage?: string,
   toolbarEnd?: React.Node,
-  lang: string,
+  router: {
+    query: {
+      lang?: string,
+    },
+    asPath: string,
+  },
 };
 
 const Toolbar = styled.div`
@@ -36,12 +42,12 @@ const Toolbar = styled.div`
   }
 `;
 
-const Layout = ({ children, toolbarEnd, currentPage, lang }: Props) => (
+const Layout = ({ children, toolbarEnd, currentPage, router }: Props) => (
   <div>
-    <Navbar lang={lang} />
+    <Navbar lang={router.query.lang} />
     <Toolbar>
       <Container mw="1075px">
-        <Breadcrumb currentPage={currentPage} lang={lang} />
+        <Breadcrumb currentPage={currentPage} lang={router.query.lang} />
         {toolbarEnd}
       </Container>
     </Toolbar>
@@ -49,4 +55,4 @@ const Layout = ({ children, toolbarEnd, currentPage, lang }: Props) => (
   </div>
 );
 
-export default Layout;
+export default withRouter(Layout);
