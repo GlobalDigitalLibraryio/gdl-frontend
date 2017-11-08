@@ -27,9 +27,10 @@ export default class Error extends React.Component<Props> {
 
   render() {
     const { statusCode, showNavbar } = this.props;
+    // FIXME: lang prop in navbar here :/
     return (
       <div>
-        {showNavbar && <Navbar />}
+        {showNavbar && <Navbar lang="eng" />}
         <Container mt={[15, 40]}>
           <Card px={17} py={24} textAlign="center">
             <H1>

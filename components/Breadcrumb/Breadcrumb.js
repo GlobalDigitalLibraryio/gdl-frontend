@@ -37,8 +37,14 @@ const Ol = styled.ol`
 
 type Props = {
   i18n: I18n,
-  currentPage?: string,
+  currentPage: ?string,
   lang: string,
+  router: {
+    asPath: string,
+    query: {
+      [string]: ?string,
+    },
+  },
 };
 
 const Separator = (
@@ -49,33 +55,66 @@ const Separator = (
 
 class Breadcrumb extends React.Component<Props> {
   renderHome() {
+    // Render as link
     if (this.props.currentPage) {
-      return [
-        <li key="home">
-          <Link route="books" passHref params={{ lang: this.props.lang }}>
-            <a aria-label="Home" title="Home">
+      return (
+        <li>
+          <Link route="books" params={{ lang: this.props.lang }}>
+            <a title="Home" aria-label="Home">
               <MdHome />
             </a>
           </Link>
-        </li>,
-        Separator,
-      ];
+        </li>
+      );
     }
+    // Render as not a link :p
+    return (
+      <li aria-current="page">
+        <MdHome aria-label="Home" />
+      </li>
+    );
+  }
+
+  renderMiddlePart() {
+    const { query, asPath } = this.props.router;
+    const { lang } = this.props;
+
+    if (query.level && query.id) {
+      return (
+        <li>
+          <Link route={`/${lang}/books/level${query.level}`}>
+            <a>Level {query.level}</a>
+          </Link>
+        </li>
+      );
+    } else if (query.id && asPath.includes('/new/')) {
+      return (
+        <li>
+          <Link route={`/${lang}/books/new`}>
+            <a>New arrivals</a>
+          </Link>
+        </li>
+      );
+    }
+
     return null;
   }
 
   render() {
-    const { currentPage, i18n } = this.props;
+    const { i18n, currentPage } = this.props;
+
+    const middle = this.renderMiddlePart();
+
     return (
       <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
         <Ol>
           {this.renderHome()}
-          <li
-            aria-current="page"
-            aria-label={currentPage ? i18n.t`Home` : null}
-          >
-            {currentPage || <MdHome />}
-          </li>
+          {middle && Separator}
+          {middle}
+          {currentPage && [
+            Separator,
+            <li aria-current="page">{currentPage}</li>,
+          ]}
         </Ol>
       </Nav>
     );

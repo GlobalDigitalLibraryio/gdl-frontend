@@ -16,13 +16,12 @@ import Container from './Container';
 
 type Props = {
   children: React.Node,
-  currentPage?: string,
   toolbarEnd?: React.Node,
+  currentPage?: string,
   router: {
     query: {
       lang?: string,
     },
-    asPath: string,
   },
 };
 
@@ -36,9 +35,8 @@ const Toolbar = styled.div`
     font-size: 14px;
     height: 38px;
   `} ${Container} {
-    width: 100%;
-    height: 100%;
     display: flex;
+    height: 100%;
   }
 `;
 
@@ -47,7 +45,11 @@ const Layout = ({ children, toolbarEnd, currentPage, router }: Props) => (
     <Navbar lang={router.query.lang} />
     <Toolbar>
       <Container mw="1075px">
-        <Breadcrumb currentPage={currentPage} lang={router.query.lang} />
+        <Breadcrumb
+          lang={router.query.lang}
+          router={router}
+          currentPage={currentPage}
+        />
         {toolbarEnd}
       </Container>
     </Toolbar>

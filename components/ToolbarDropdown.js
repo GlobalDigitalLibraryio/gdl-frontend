@@ -15,14 +15,13 @@ import Card from './Card';
 
 const Item = styled.div`
   position: relative;
-  display: inline-block;
+  display: flex;
+  align-items: center;
 `;
 
 const DropdownButton = styled.a.attrs({
   href: '',
-})`
-  display: block;
-`;
+})``;
 
 const DropdownItemAnchor = styled.a`
   display: block;

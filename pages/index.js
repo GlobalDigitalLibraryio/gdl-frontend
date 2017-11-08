@@ -174,7 +174,12 @@ class BooksPage extends React.Component<Props> {
                 </More>
               </Link>
             </H3>
-            <BookList books={justArrived.results} route="bookByNew" mt={20} />
+            <BookList
+              books={justArrived.results}
+              mt={20}
+              route={(book: Book) =>
+                `/${book.language.code}/books/new/${book.id}`}
+            />
           </Container>
         </Hero>
         {levels.map((level, index) => (
@@ -192,7 +197,12 @@ class BooksPage extends React.Component<Props> {
                   </More>
                 </Link>
               </H3>
-              <BookList books={booksByLevel[index].results} mt={20} />
+              <BookList
+                books={booksByLevel[index].results}
+                route={(book: Book) =>
+                  `/${book.language.code}/books/level${level}/${book.id}`}
+                mt={20}
+              />
             </Container>
           </Hero>
         ))}
