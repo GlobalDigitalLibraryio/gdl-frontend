@@ -9,9 +9,9 @@
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import { fetchBooks } from '../../fetch';
-import type { Book, RemoteData } from '../../types';
+import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import Navbar from '../../components/Navbar';
+import Layout from '../../components/Layout';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
@@ -20,6 +20,7 @@ import BookGrid from '../../components/BookGrid';
 type Props = {
   books: RemoteData<{
     results: Array<Book>,
+    language: Language,
   }>,
   level: ?string,
 };
@@ -40,13 +41,17 @@ class BookPage extends React.Component<Props> {
   render() {
     const { books, level } = this.props;
 
+    // The route to book differs based on "where we come from". This is because of breadcrumbs
+    const route = level
+      ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
+      : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
+
     return (
-      <div>
+      <Layout currentPage={level ? `Level ${level}` : 'New arrivals'}>
         <Meta
           title={level ? `Level ${level} books` : 'New arrivals'}
           description="More books"
         />
-        <Navbar />
 
         <Container pt={20}>
           {books.results.length > 0 ? (
@@ -62,9 +67,9 @@ class BookPage extends React.Component<Props> {
               <Trans>No books found</Trans>
             </H1>
           )}
-          <BookGrid books={books.results} />
+          <BookGrid books={books.results} route={route} />
         </Container>
-      </div>
+      </Layout>
     );
   }
 }

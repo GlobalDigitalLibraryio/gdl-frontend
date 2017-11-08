@@ -16,14 +16,15 @@ const FlexScroller = Flex.extend`
   overflow-x: auto;
 `;
 
-export default ({ books, ...props }: { books: Array<Book> }) => (
+type Props = {
+  books: Array<Book>,
+  route(book: Book): string,
+};
+
+const BookList = ({ books, route, ...props }: Props) => (
   <FlexScroller mx={-6} {...props}>
     {books.map(book => (
-      <Link
-        route="book"
-        params={{ id: book.id, lang: book.language.code }}
-        key={book.id}
-      >
+      <Link route={route(book)} key={book.id}>
         <a>
           <BookCardCover book={book} mx={6} />
         </a>
@@ -31,3 +32,9 @@ export default ({ books, ...props }: { books: Array<Book> }) => (
     ))}
   </FlexScroller>
 );
+
+BookList.defaultProps = {
+  route: (book: Book) => `/${book.language.code}/books/${book.id}`,
+};
+
+export default BookList;

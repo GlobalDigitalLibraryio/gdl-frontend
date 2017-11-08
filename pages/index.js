@@ -18,9 +18,9 @@ import {
 } from '../fetch';
 import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
+import Layout from '../components/Layout';
 import Box from '../components/Box';
 import Flex from '../components/Flex';
-import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import BookCover from '../components/BookCover';
 import { Link } from '../routes';
@@ -32,12 +32,9 @@ import P from '../components/P';
 import H3 from '../components/H3';
 import H4 from '../components/H4';
 import More from '../components/More';
-import Toolbar, {
-  ToolbarItem,
+import ToolbarDropdown, {
   ToolbarDropdownItem,
-} from '../components/Toolbar';
-
-const LANG_QUERY = 'lang';
+} from '../components/ToolbarDropdown';
 
 type Props = {
   editorPicks: RemoteData<Array<Book>>,
@@ -50,7 +47,7 @@ type Props = {
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
-    const language: ?string = query[LANG_QUERY];
+    const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
     const [editorPicks, levels, languages, justArrived] = await Promise.all([
@@ -87,42 +84,39 @@ class BooksPage extends React.Component<Props> {
     const languageFilter = justArrived.language;
 
     return (
-      <div>
-        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
-        <Navbar />
-
-        <Toolbar>
-          <Container mw="1075px" px={[0, 15]}>
-            <ToolbarItem
-              id="langFilter"
-              text={
-                <Trans>
-                  Books in <strong>{languageFilter.name}</strong>
-                </Trans>
-              }
-              selectedItem={languageFilter.code}
-            >
-              {({ getItemProps, selectedItem, highlightedIndex }) =>
-                languages.map((language, index) => (
-                  <Link
-                    key={language.code}
-                    route="books"
-                    passHref
-                    params={{ [LANG_QUERY]: language.code }}
+      <Layout
+        toolbarEnd={
+          <ToolbarDropdown
+            id="langFilter"
+            text={
+              <Trans>
+                Books in <strong>{languageFilter.name}</strong>
+              </Trans>
+            }
+            selectedItem={languageFilter.code}
+          >
+            {({ getItemProps, selectedItem, highlightedIndex }) =>
+              languages.map((language, index) => (
+                <Link
+                  key={language.code}
+                  route="books"
+                  passHref
+                  params={{ lang: language.code }}
+                >
+                  <ToolbarDropdownItem
+                    {...getItemProps({ item: language.code })}
+                    isActive={highlightedIndex === index}
+                    isSelected={selectedItem === language.code}
                   >
-                    <ToolbarDropdownItem
-                      {...getItemProps({ item: language.code })}
-                      isActive={highlightedIndex === index}
-                      isSelected={selectedItem === language.code}
-                    >
-                      <MdCheck />
-                      {language.name}
-                    </ToolbarDropdownItem>
-                  </Link>
-                ))}
-            </ToolbarItem>
-          </Container>
-        </Toolbar>
+                    <MdCheck />
+                    {language.name}
+                  </ToolbarDropdownItem>
+                </Link>
+              ))}
+          </ToolbarDropdown>
+        }
+      >
+        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
 
         <Hero
           colorful
@@ -180,7 +174,12 @@ class BooksPage extends React.Component<Props> {
                 </More>
               </Link>
             </H3>
-            <BookList books={justArrived.results} mt={20} />
+            <BookList
+              books={justArrived.results}
+              mt={20}
+              route={(book: Book) =>
+                `/${book.language.code}/books/new/${book.id}`}
+            />
           </Container>
         </Hero>
         {levels.map((level, index) => (
@@ -198,11 +197,16 @@ class BooksPage extends React.Component<Props> {
                   </More>
                 </Link>
               </H3>
-              <BookList books={booksByLevel[index].results} mt={20} />
+              <BookList
+                books={booksByLevel[index].results}
+                route={(book: Book) =>
+                  `/${book.language.code}/books/level${level}/${book.id}`}
+                mt={20}
+              />
             </Container>
           </Hero>
         ))}
-      </div>
+      </Layout>
     );
   }
 }

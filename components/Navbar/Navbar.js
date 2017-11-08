@@ -72,7 +72,11 @@ const LogoA = styled.a`
   }
 `;
 
-class Navbar extends React.Component<{}, { isExpanded: boolean }> {
+type Props = {
+  lang: ?string,
+};
+
+class Navbar extends React.Component<Props, { isExpanded: boolean }> {
   state = {
     isExpanded: false,
   };
@@ -99,7 +103,11 @@ class Navbar extends React.Component<{}, { isExpanded: boolean }> {
             </HamburgerButton>
           </Flex>
           <Flex justify={['center', 'flex-start']} flex="1 1 0">
-            <Link route="books" passHref>
+            <Link
+              route="books"
+              passHref
+              params={this.props.lang ? { lang: this.props.lang } : {}}
+            >
               <LogoA>
                 <Logo style={{ height: '35px' }} />
               </LogoA>

@@ -12,14 +12,15 @@ import type { Book } from '../types';
 import BookCardCover from './BookCardCover';
 import { Link } from '../routes';
 
-export default ({ books, ...props }: { books: Array<Book> }) => (
+type Props = {
+  books: Array<Book>,
+  route(book: Book): string,
+};
+
+const BookGrid = ({ books, route, ...props }: Props) => (
   <Flex wrap mx={-6} {...props}>
     {books.map(book => (
-      <Link
-        route="book"
-        params={{ id: book.id, lang: book.language.code }}
-        key={book.id}
-      >
+      <Link route={route(book)} key={book.id}>
         <a>
           <BookCardCover book={book} mx={6} mb={20} />
         </a>
@@ -27,3 +28,5 @@ export default ({ books, ...props }: { books: Array<Book> }) => (
     ))}
   </Flex>
 );
+
+export default BookGrid;

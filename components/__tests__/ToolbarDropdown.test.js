@@ -12,7 +12,7 @@ import { mount } from 'enzyme';
 import Link from 'next/link';
 import Router from 'next/router';
 import type { Language } from '../../types';
-import { ToolbarItem, ToolbarDropdownItem } from '../Toolbar';
+import ToolbarItem, { ToolbarDropdownItem } from '../ToolbarDropdown';
 import { theme } from '../../hocs/withTheme';
 
 const languages: Array<Language> = [
