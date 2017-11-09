@@ -35,11 +35,6 @@ const Nav = styled.nav`
   }
 `;
 
-const NavItem = styled.div`
-  display: flex;
-  padding: 0.5rem 0.75rem;
-`;
-
 const HamburgerButton = styled.button.attrs({
   type: 'button',
 })`
@@ -74,50 +69,39 @@ const LogoA = styled.a`
 
 type Props = {
   lang: ?string,
+  menuIsExpanded: boolean,
+  onMenuClick(): void,
 };
 
-class Navbar extends React.Component<Props, { isExpanded: boolean }> {
-  state = {
-    isExpanded: false,
-  };
+const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
+  <Nav>
+    <Container mw="1075px">
+      <Flex justify={['flex-start', 'flex-end']} flex="1 1 0" order={[0, 2]}>
+        <HamburgerButton
+          aria-label="Menu"
+          onClick={onMenuClick}
+          aria-expanded={menuIsExpanded}
+          aria-controls="sidenav"
+        >
+          <MdMenu />
+          <span>Menu</span>
+        </HamburgerButton>
+      </Flex>
+      <Flex justify={['center', 'flex-start']} flex="1 1 0">
+        <Link route="books" passHref params={lang ? { lang } : {}}>
+          <LogoA>
+            <Logo style={{ height: '35px' }} />
+          </LogoA>
+        </Link>
+      </Flex>
+      <Flex flex="1 1 0" order={[0, 1]} />
+    </Container>
+  </Nav>
+);
 
-  handleHamburgerClick = () =>
-    this.setState(state => ({ isExpanded: !state.isExpanded }));
+Navbar.defaultProps = {
+  menuIsExpanded: false,
+  onMenuClick() {},
+};
 
-  render() {
-    return (
-      <Nav>
-        <Container mw="1075px">
-          <Flex
-            justify={['flex-start', 'flex-end']}
-            flex="1 1 0"
-            order={[0, 2]}
-          >
-            <HamburgerButton
-              aria-label="Menu"
-              onClick={this.handleHamburgerClick}
-              aria-expanded={this.state.isExpanded}
-            >
-              <MdMenu />
-              <span>Menu</span>
-            </HamburgerButton>
-          </Flex>
-          <Flex justify={['center', 'flex-start']} flex="1 1 0">
-            <Link
-              route="books"
-              passHref
-              params={this.props.lang ? { lang: this.props.lang } : {}}
-            >
-              <LogoA>
-                <Logo style={{ height: '35px' }} />
-              </LogoA>
-            </Link>
-          </Flex>
-          <Flex flex="1 1 0" order={[0, 1]} />
-        </Container>
-      </Nav>
-    );
-  }
-}
-
-export { NavItem, HamburgerButton, Nav, Navbar as default };
+export default Navbar;
