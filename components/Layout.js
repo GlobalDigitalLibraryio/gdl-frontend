@@ -8,24 +8,12 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import { withRouter } from 'next/router';
 import type { Language } from '../types';
 import media from './helpers/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import Container from './Container';
-
-type Props = {
-  children: React.Node,
-  toolbarEnd?: React.Node,
-  currentPage?: string,
-  language: Language,
-  router: {
-    query: {
-      lang?: string,
-    },
-  },
-};
+import Sidemenu from './Sidemenu';
 
 const Toolbar = styled.div`
   background: ${props => props.theme.grays.white};
@@ -42,28 +30,48 @@ const Toolbar = styled.div`
   }
 `;
 
-const Layout = ({
-  children,
-  toolbarEnd,
-  language,
-  currentPage,
-  router,
-}: Props) => (
-  <div>
-    <Navbar lang={router.query.lang} />
-    <Toolbar>
-      <Container mw="1075px">
-        <Breadcrumb
-          language={language}
-          lang={router.query.lang}
-          router={router}
-          currentPage={currentPage}
-        />
-        {toolbarEnd}
-      </Container>
-    </Toolbar>
-    {children}
-  </div>
-);
+type Props = {
+  children: React.Node,
+  toolbarEnd?: React.Node,
+  currentPage?: string,
+  language: Language,
+};
 
-export default withRouter(Layout);
+type State = {
+  menuIsExpanded: boolean,
+};
+
+class Layout extends React.Component<Props, State> {
+  state = {
+    menuIsExpanded: false,
+  };
+
+  render() {
+    const { children, toolbarEnd, language, currentPage } = this.props;
+    return (
+      <div>
+        <Navbar
+          lang={language.code}
+          onMenuClick={() => this.setState({ menuIsExpanded: true })}
+          menuIsExpanded={this.state.menuIsExpanded}
+        />
+        <Toolbar>
+          <Container mw="1075px">
+            <Breadcrumb language={language} currentPage={currentPage} />
+            {toolbarEnd}
+          </Container>
+        </Toolbar>
+        {this.state.menuIsExpanded && (
+          <Sidemenu
+            id="sidenav"
+            onCloseRequested={() => this.setState({ menuIsExpanded: false })}
+            language={language}
+          />
+        )}
+        {children}
+      </div>
+    );
+  }
+}
+
+export default Layout;

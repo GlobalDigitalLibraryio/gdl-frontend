@@ -85,6 +85,7 @@ class BooksPage extends React.Component<Props> {
 
     return (
       <Layout
+        language={justArrived.language}
         toolbarEnd={
           <ToolbarDropdown
             id="langFilter"
@@ -112,7 +113,8 @@ class BooksPage extends React.Component<Props> {
                     {language.name}
                   </ToolbarDropdownItem>
                 </Link>
-              ))}
+              ))
+            }
           </ToolbarDropdown>
         }
       >
@@ -172,7 +174,8 @@ class BooksPage extends React.Component<Props> {
               books={justArrived.results}
               mt={20}
               route={(book: Book) =>
-                `/${book.language.code}/books/new/${book.id}`}
+                `/${book.language.code}/books/new/${book.id}`
+              }
             />
           </Container>
         </Hero>
@@ -194,7 +197,8 @@ class BooksPage extends React.Component<Props> {
               <BookList
                 books={booksByLevel[index].results}
                 route={(book: Book) =>
-                  `/${book.language.code}/books/level${level}/${book.id}`}
+                  `/${book.language.code}/books/level${level}/${book.id}`
+                }
                 mt={20}
               />
             </Container>

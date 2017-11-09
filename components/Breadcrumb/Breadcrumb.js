@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
+import { withRouter } from 'next/router';
 import type { I18n } from 'lingui-i18n';
 import { withI18n } from 'lingui-react';
 import styled from 'styled-components';
@@ -42,7 +43,6 @@ const Ol = styled.ol`
 type Props = {
   i18n: I18n,
   currentPage: ?string,
-  lang: string,
   language: Language,
   router: {
     asPath: string,
@@ -64,7 +64,7 @@ class Breadcrumb extends React.Component<Props> {
     if (this.props.currentPage) {
       return (
         <li>
-          <Link route="books" params={{ lang: this.props.lang }}>
+          <Link route="books" params={{ lang: this.props.language.code }}>
             <a title="Home" aria-label="Home">
               <MdHome />
             </a>
@@ -82,12 +82,12 @@ class Breadcrumb extends React.Component<Props> {
 
   renderMiddlePart() {
     const { query, asPath } = this.props.router;
-    const { lang } = this.props;
+    const { language } = this.props;
 
     if (query.level && query.id) {
       return (
         <li>
-          <Link route={`/${lang}/books/level${query.level}`}>
+          <Link route={`/${language.code}/books/level${query.level}`}>
             <a>Level {query.level}</a>
           </Link>
         </li>
@@ -95,7 +95,7 @@ class Breadcrumb extends React.Component<Props> {
     } else if (query.id && asPath.includes('/new/')) {
       return (
         <li>
-          <Link route={`/${lang}/books/new`}>
+          <Link route={`/${language.code}/books/new`}>
             <a>New arrivals</a>
           </Link>
         </li>
@@ -114,7 +114,7 @@ class Breadcrumb extends React.Component<Props> {
       <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
         <Ol>
           {this.renderHome()}
-          {language && [
+          {currentPage && [
             Separator,
             <li key="lang">
               <Link route="books" params={{ lang: language.code }}>
@@ -136,4 +136,4 @@ class Breadcrumb extends React.Component<Props> {
   }
 }
 
-export default withI18n()(Breadcrumb);
+export default withRouter(withI18n()(Breadcrumb));
