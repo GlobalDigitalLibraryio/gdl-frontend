@@ -13,7 +13,6 @@ import Card from '../components/Card';
 import H1 from '../components/H1';
 import A from '../components/A';
 import Container from '../components/Container';
-import { Link } from '../routes';
 
 type Props = {
   statusCode: ?number,
@@ -58,11 +57,15 @@ export default class Error extends React.Component<Props> {
                 {statusCode}
               </Card>
             )}
-            <Link route="books" passHref>
-              <A>
+            {typeof window !== 'undefined' && window.history.length > 1 ? (
+              <A href="" onClick={() => window.history.back()}>
+                <Trans>Go back</Trans>
+              </A>
+            ) : (
+              <A href="/">
                 <Trans>Go to start page</Trans>
               </A>
-            </Link>
+            )}
           </Card>
         </Container>
       </div>
