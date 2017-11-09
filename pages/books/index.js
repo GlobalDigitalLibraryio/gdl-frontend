@@ -301,7 +301,11 @@ class BookPage extends React.Component<Props> {
                   <BookMetaData heading="License">
                     <A href={book.license.url}>{book.license.description}</A>
                   </BookMetaData>
-                  <BookMetaData heading="categories">{categories}</BookMetaData>
+                  {book.categories.length > 0 && (
+                    <BookMetaData heading="categories">
+                      {categories}
+                    </BookMetaData>
+                  )}
                 </CardNested>
               </Box>
             </Flex>
