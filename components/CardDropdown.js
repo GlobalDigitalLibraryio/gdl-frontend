@@ -6,7 +6,6 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { Manager, Target, Popper } from 'react-popper';
 import Downshift from 'downshift';
 import styled from 'styled-components';
 import Card from './Card';
@@ -29,6 +28,8 @@ const Dropdown = Card.extend`
   border-radius: 0 0 4px 4px;
   overflow: hidden;
   margin-top: 10px;
+  position: absolute;
+  left: 0;
 `;
 
 type Props = {
@@ -40,43 +41,29 @@ type Props = {
   }) => React.ChildrenArray<React.Element<typeof CardDropdownItem>>,
 };
 
-class CardDropdown extends React.Component<Props> {
-  static defaultProps = {
-    disabled: false,
-  };
-
-  render() {
-    return (
-      <Manager tag={false}>
-        <Downshift id={this.props.id}>
-          {({
-            getButtonProps,
-            isOpen,
-            getItemProps,
-            highlightedIndex,
-            selectedItem,
-          }) => (
-            <div>
-              <Target>{this.props.renderTarget(getButtonProps, isOpen)}</Target>
-              {isOpen && (
-                <Popper
-                  component={Dropdown}
-                  placement="bottom"
-                  style={{ width: '100%', zIndex: 999, padding: 0 }}
-                >
-                  {this.props.children({
-                    getItemProps,
-                    selectedItem,
-                    highlightedIndex,
-                  })}
-                </Popper>
-              )}
-            </div>
-          )}
-        </Downshift>
-      </Manager>
-    );
-  }
-}
+const CardDropdown = (props: Props) => (
+  <Downshift id={props.id}>
+    {({
+      getButtonProps,
+      isOpen,
+      getItemProps,
+      highlightedIndex,
+      selectedItem,
+    }) => (
+      <div>
+        {props.renderTarget(getButtonProps, isOpen)}
+        {isOpen && (
+          <Dropdown style={{ width: '100%', zIndex: 999, padding: 0 }}>
+            {props.children({
+              getItemProps,
+              selectedItem,
+              highlightedIndex,
+            })}
+          </Dropdown>
+        )}
+      </div>
+    )}
+  </Downshift>
+);
 
 export { CardDropdown as default, CardDropdownItem };
