@@ -113,7 +113,9 @@ class Breadcrumb extends React.Component<Props> {
           {middle}
           {currentPage && [
             Separator,
-            <li aria-current="page">{currentPage}</li>,
+            <li key="page" aria-current="page">
+              {currentPage}
+            </li>,
           ]}
         </Ol>
       </Nav>
