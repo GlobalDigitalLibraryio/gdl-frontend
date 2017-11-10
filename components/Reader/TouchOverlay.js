@@ -6,13 +6,14 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
+import styled from 'styled-components';
+import media from '../helpers/media';
 
 const Div = styled.button`
   color: #fff;
   position: fixed;
-  background-color: rgba(68, 68, 68, 0.2);
+  background-color: rgba(68, 68, 68, 0.1);
   height: 100%;
   width: 70px;
   top: 0;
@@ -20,6 +21,16 @@ const Div = styled.button`
   align-items: center;
   justify-content: center;
   border-style: none;
+  ${media.tablet`
+    background: none; 
+    
+    &:hover, &:focus {
+      background: linear-gradient(90deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
+    }
+    transition: opacity 0.3s;
+    width: 120px;
+
+  `};
 `;
 
 type Props = {
@@ -28,10 +39,20 @@ type Props = {
 };
 
 const TouchOverlay = (props: Props) => [
-  <Div key="left" style={{ left: 0 }} onClick={props.onRequestPrev}>
+  <Div
+    key="left"
+    style={{ left: 0 }}
+    onClick={props.onRequestPrev}
+    type="button"
+  >
     <MdKeyboardArrowLeft size={50} />
   </Div>,
-  <Div key="right" style={{ right: 0 }} onClick={props.onRequestNext}>
+  <Div
+    key="right"
+    style={{ right: 0 }}
+    onClick={props.onRequestNext}
+    type="button"
+  >
     <MdKeyboardArrowRight size={50} />
   </Div>,
 ];

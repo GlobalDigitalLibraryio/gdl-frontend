@@ -17,7 +17,9 @@ const Div = styled.div`
   top: 0;
   left: 0;
   right: 0;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
   ${media.tablet`
+    box-shadow: none;
     display: flex;
     position: sticky;
     margin-bottom: 50px;

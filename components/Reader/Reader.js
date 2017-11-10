@@ -47,19 +47,30 @@ type ReaderState = {
   showOverlay: boolean,
 };
 
+const OVERLAY_TIMEOUT = 3000; // 3 seconds
+
 class Reader extends React.PureComponent<ReaderProps, ReaderState> {
   state = {
     showOverlay: false,
   };
 
   onTap = (event: SyntheticTouchEvent<>) => {
+    console.log('onTap');
     const currentX = event.changedTouches[0].clientX;
     if (currentX < 70) {
       this.props.onRequestPrevious();
     } else if (currentX > screen.width - 70) {
       this.props.onRequestNext();
     } else {
-      this.setState(state => ({ showOverlay: !state.showOverlay }));
+      this.setState(
+        state => ({ showOverlay: !state.showOverlay }),
+        () => {
+          this.timerId = setTimeout(
+            () => this.setState({ showOverlay: false }),
+            OVERLAY_TIMEOUT,
+          );
+        },
+      );
     }
   };
 
@@ -73,28 +84,26 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     return (
       <Container px={0} mw={1075}>
         <Backdrop />
-        {this.state.showOverlay && (
-          <TouchOverlay
-            onRequestNext={this.props.onRequestNext}
-            onRequestPrev={this.props.onRequestPrevious}
-          />
-        )}
         <Swipeable
           onSwipedLeft={this.props.onRequestNext}
           onSwipedRight={this.props.onRequestPrevious}
           onTap={this.onTap}
         >
+          <TouchOverlay
+            onRequestNext={this.props.onRequestNext}
+            onRequestPrev={this.props.onRequestPrevious}
+          />
           <Card>
             <Toolbar
               showOnMobile={this.state.showOverlay}
               onRequestClose={this.props.onRequestClose}
             />
-            <BookMeta
-              currentChapter={chapterNumber}
-              totalChapters={numOfChapters}
-              hideOnTablet
-            />
             <Box px={[40, 120]} pb={20} flex="1 0 auto">
+              <BookMeta
+                currentChapter={chapterNumber}
+                totalChapters={numOfChapters}
+                hideOnTablet
+              />
               {chapter && (
                 <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
               )}
