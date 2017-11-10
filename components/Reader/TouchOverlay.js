@@ -23,11 +23,13 @@ const Div = styled.button`
   border-style: none;
   ${media.tablet`
     background: none; 
+    color: #444;
     
     &:hover, &:focus {
       background: linear-gradient(90deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
+      color: #fff;
     }
-    transition: opacity 0.3s;
+    transition: color 0.3s ease;
     width: 120px;
 
   `};
