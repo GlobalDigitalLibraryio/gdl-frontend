@@ -54,9 +54,30 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     showOverlay: false,
   };
 
+  componentWillUnmount() {
+    // Make sure we clean up after ourselves so we don't try to setState after we've unmounted
+    if (this.timerId) {
+      window.clearTimeout(this.timerId);
+    }
+  }
+
   onTap = (event: SyntheticTouchEvent<>) => {
-    console.log('onTap');
-    const currentX = event.changedTouches[0].clientX;
+    // Toggle the overlay and clear/set timer accordingly
+    this.setState(
+      state => ({ showOverlay: !state.showOverlay }),
+      () => {
+        if (this.state.showOverlay) {
+          this.timerId = window.setTimeout(
+            () => this.setState({ showOverlay: false }),
+            OVERLAY_TIMEOUT,
+          );
+        } else {
+          window.clearTimeout(this.timerId);
+        }
+      },
+    );
+
+    /* const currentX = event.changedTouches[0].clientX;
     if (currentX < 70) {
       this.props.onRequestPrevious();
     } else if (currentX > screen.width - 70) {
@@ -71,8 +92,10 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           );
         },
       );
-    }
+    } */
   };
+
+  timerId: number;
 
   render() {
     const { book, chapter, chapterNumber } = this.props;
