@@ -13,6 +13,8 @@ const Lines = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 20px;
   &:before,
   &:after {
     display: block;
@@ -21,7 +23,12 @@ const Lines = styled.div`
     content: '';
     background-color: ${p => p.theme.grays.platinum};
     width: 90px;
-    margin: 20px;
+  }
+  &:before {
+    margin-right: 20px;
+  }
+  &:after {
+    margin-left: 20px;
   }
 `;
 
