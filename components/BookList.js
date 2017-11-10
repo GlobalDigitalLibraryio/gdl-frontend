@@ -18,7 +18,7 @@ const FlexScroller = Flex.extend`
 
 type Props = {
   books: Array<Book>,
-  route(book: Book): string,
+  route: (book: Book) => string,
 };
 
 const BookList = ({ books, route, ...props }: Props) => (

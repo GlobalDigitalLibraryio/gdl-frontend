@@ -117,7 +117,7 @@ class BookPage extends React.Component<Props> {
 
     const contributors = book.contributors
       .map(contributor => (
-        <A href="" key={contributor.id}>
+        <A key={contributor.id}>
           {contributor.name}
         </A>
       ))
@@ -125,7 +125,7 @@ class BookPage extends React.Component<Props> {
 
     const categories = book.categories
       .map(category => (
-        <A href="" key={category.id}>
+        <A key={category.id}>
           {category.name}
         </A>
       ))
@@ -166,7 +166,7 @@ class BookPage extends React.Component<Props> {
                   <H1 fontSize={[28, 38]}>{book.title}</H1>
                   <P fontSize={[12, 14]}>
                     <Trans>
-                      from <A href="">{book.publisher.name}</A>
+                      from <A>{book.publisher.name}</A>
                     </Trans>
                   </P>
                   <BookCover book={book} mx="auto" isHiddenTablet />

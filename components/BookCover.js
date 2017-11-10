@@ -38,15 +38,16 @@ const Cover = CardBase.extend`
     `};
 `;
 
-const BookCover = ({
-  book,
-  ...props
-}: {
+type Props = {
   book: Book,
   // Escape hatches for responsive layout
   isHiddenTablet?: boolean,
   isHiddenMobile?: boolean,
-}) => (
+  w?: string | number | Array<string | number>,
+  h?: string | number | Array<string | number>,
+};
+
+const BookCover = ({ book, ...props }: Props) => (
   <Cover {...props}>
     <Img src={book.coverPhoto && book.coverPhoto.small} alt={book.title} />
   </Cover>
