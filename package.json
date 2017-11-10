@@ -59,6 +59,7 @@
     "react": "16.1.0",
     "react-dom": "16.1.0",
     "react-icons": "2.2.7",
+    "react-swipeable": "^4.2.0",
     "serialize-javascript": "1.4.0",
     "styled-components": "2.2.3",
     "styled-system": "1.0.8"

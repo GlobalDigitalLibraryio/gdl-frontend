@@ -8,16 +8,15 @@
 import * as React from 'react';
 import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
+import Swipeable from 'react-swipeable';
 import Box from '../Box';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
 import Page from './Page';
 import Toolbar from './Toolbar';
-import Footer from './Footer';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
 import BookMeta from './BookMeta';
-import OnTouch from './OnTouch';
 import TouchOverlay from './TouchOverlay';
 import { Router } from '../../routes';
 
@@ -80,7 +79,11 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
             onRequestPrev={this.props.onRequestPrevious}
           />
         )}
-        <OnTouch onTap={this.onTap}>
+        <Swipeable
+          onSwipedLeft={this.props.onRequestNext}
+          onSwipedRight={this.props.onRequestPrevious}
+          onTap={this.onTap}
+        >
           <Card>
             <Toolbar
               showOnMobile={this.state.showOverlay}
@@ -101,16 +104,8 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
                 title={book.title}
               />
             </Box>
-            <Footer
-              disableNext={disableNext}
-              disablePrev={disablePrev}
-              onRequestNext={this.props.onRequestNext}
-              onRequestPrevious={this.props.onRequestPrevious}
-            >
-              {chapterNumber} / {numOfChapters}
-            </Footer>
           </Card>
-        </OnTouch>
+        </Swipeable>
         <KeyDown
           when="ArrowRight"
           then={this.props.onRequestNext}

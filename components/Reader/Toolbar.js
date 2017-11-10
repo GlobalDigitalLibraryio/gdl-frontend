@@ -20,6 +20,7 @@ const Div = styled.div`
   ${media.tablet`
     display: flex;
     position: sticky;
+    margin-bottom: 50px;
   `} color: ${props => props.theme.grays.jumbo};
   background-color: ${props => props.theme.grays.desertStorm};
   border-bottom: 1px solid ${props => props.theme.grays.platinum};
