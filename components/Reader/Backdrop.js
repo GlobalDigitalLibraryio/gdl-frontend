@@ -8,6 +8,7 @@
 import styled from 'styled-components';
 import media from '../helpers/media';
 
+// A grey backdrop that's only visible on tablets/desktops
 const Backdrop = styled.div`
   display: none;
   ${media.tablet`

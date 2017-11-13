@@ -17,7 +17,7 @@ import Toolbar from './Toolbar';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
 import BookMeta from './BookMeta';
-import TouchOverlay from './TouchOverlay';
+import ButtonOverlay from './ButtonOverlay';
 import { Router } from '../../routes';
 
 /* eslint-disable react/no-multi-comp */
@@ -62,6 +62,11 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
   }
 
   onTap = (event: SyntheticTouchEvent<>) => {
+    // If we clicked a button, ignore the tap
+    if (event.target.type === 'button') {
+      return;
+    }
+
     // Toggle the overlay and clear/set timer accordingly
     this.setState(
       state => ({ showOverlay: !state.showOverlay }),
@@ -76,23 +81,6 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
         }
       },
     );
-
-    /* const currentX = event.changedTouches[0].clientX;
-    if (currentX < 70) {
-      this.props.onRequestPrevious();
-    } else if (currentX > screen.width - 70) {
-      this.props.onRequestNext();
-    } else {
-      this.setState(
-        state => ({ showOverlay: !state.showOverlay }),
-        () => {
-          this.timerId = setTimeout(
-            () => this.setState({ showOverlay: false }),
-            OVERLAY_TIMEOUT,
-          );
-        },
-      );
-    } */
   };
 
   timerId: number;
@@ -112,9 +100,12 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           onSwipedRight={this.props.onRequestPrevious}
           onTap={this.onTap}
         >
-          <TouchOverlay
+          <ButtonOverlay
+            showOnMobile={this.state.showOverlay}
             onRequestNext={this.props.onRequestNext}
             onRequestPrev={this.props.onRequestPrevious}
+            disableNext={disableNext}
+            disablePrev={disablePrev}
           />
           <Card>
             <Toolbar

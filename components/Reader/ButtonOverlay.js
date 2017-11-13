@@ -10,7 +10,7 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
 import styled from 'styled-components';
 import media from '../helpers/media';
 
-const Div = styled.button`
+const Left = styled.button`
   color: #fff;
   position: fixed;
   background-color: rgba(68, 68, 68, 0.1);
@@ -21,42 +21,58 @@ const Div = styled.button`
   align-items: center;
   justify-content: center;
   border-style: none;
+  opacity: ${p => (p.showOnMobile ? 1 : 0)};
   ${media.tablet`
+    opacity: 1;
     background: none; 
     color: #444;
     
     &:hover, &:focus {
-      background: linear-gradient(90deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
       color: #fff;
+      background: linear-gradient(270deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
     }
     transition: color 0.3s ease;
     width: 120px;
+  `};
+`;
 
+const Right = styled(Left)`
+  ${media.tablet`
+    &:hover, &:focus {
+      background: linear-gradient(90deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
+    }
   `};
 `;
 
 type Props = {
   onRequestNext(event: SyntheticEvent<HTMLButtonElement>): void,
   onRequestPrev(event: SyntheticEvent<HTMLButtonElement>): void,
+  disableNext: boolean,
+  disablePrev: boolean,
+  showOnMobile: boolean,
 };
 
 const TouchOverlay = (props: Props) => [
-  <Div
+  <Left
     key="left"
     style={{ left: 0 }}
     onClick={props.onRequestPrev}
     type="button"
+    disabled={props.disablePrev}
+    showOnMobile={props.showOnMobile}
   >
     <MdKeyboardArrowLeft size={50} />
-  </Div>,
-  <Div
+  </Left>,
+  <Right
     key="right"
     style={{ right: 0 }}
     onClick={props.onRequestNext}
     type="button"
+    disabled={props.disableNext}
+    showOnMobile={props.showOnMobile}
   >
     <MdKeyboardArrowRight size={50} />
-  </Div>,
+  </Right>,
 ];
 
 export default TouchOverlay;

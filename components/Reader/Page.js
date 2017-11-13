@@ -15,9 +15,9 @@ const Page = styled.div`
   b {
     font-weight: bold;
   }
+
   & img {
     max-width: 100%;
-    max-height: 100%;
     display: block;
     margin-left: auto;
     margin-right: auto;

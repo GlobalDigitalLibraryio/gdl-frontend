@@ -43,9 +43,6 @@ const Button = styled.button.attrs({
   border: none;
   font-size: 14px;
   color: ${props => props.theme.grays.dark};
-  :disabled {
-    color: ${p => p.theme.grays.silverSand};
-  }
 `;
 
 type Props = {
