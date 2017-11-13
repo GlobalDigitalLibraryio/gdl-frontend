@@ -175,8 +175,9 @@ export default class ReaderContainer extends React.Component<
 
   componentDidMount() {
     this.loadChapter(this.state.chapter);
-    // Load the next chapter
+    // Load the next and previous chapters
     this.loadChapter(this.state.chapter + 1);
+    this.loadChapter(this.state.chapter - 1);
   }
 
   // Go back to the book details when closing the reader
@@ -189,7 +190,7 @@ export default class ReaderContainer extends React.Component<
 
   onRequestNext = () => {
     if (this.state.chapter < this.props.book.chapters.length) {
-      this.loadChapter(this.state.chapter + 1);
+      // Start loading the chaper that follows the one we're changing to
       this.loadChapter(this.state.chapter + 2);
       this.setState(
         state => ({ chapter: state.chapter + 1 }),
@@ -200,7 +201,7 @@ export default class ReaderContainer extends React.Component<
 
   onRequestPrevious = () => {
     if (this.state.chapter > 1) {
-      this.loadChapter(this.state.chapter - 1);
+      // Start loading the chaper that precedes the one we're changing to
       this.loadChapter(this.state.chapter - 2);
       this.setState(
         state => ({ chapter: state.chapter - 1 }),
