@@ -13,6 +13,9 @@ import lineHeight from './helpers/lineHeight';
 const P = styled.p`
   ${fontSize};
   ${lineHeight};
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 export default P;

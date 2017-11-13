@@ -118,12 +118,7 @@ class BooksPage extends React.Component<Props> {
       >
         <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
 
-        <Hero
-          colorful
-          h={['237px', '390px']}
-          pt={['15px', '40px']}
-          pb={['42px', '54px']}
-        >
+        <Hero colorful pt={['15px', '40px']} pb={['42px', '54px']}>
           <Container>
             <Link
               route="book"
@@ -131,10 +126,9 @@ class BooksPage extends React.Component<Props> {
             >
               <a>
                 <Card
-                  h={['180px', '295px']}
                   pl={['15px', '20px']}
                   pr={['15px', '80px']}
-                  pt={['15px', '20px']}
+                  py={['15px', '20px']}
                 >
                   <Flex>
                     <BookCover
@@ -148,7 +142,7 @@ class BooksPage extends React.Component<Props> {
                       <H3>
                         <Trans>Editor’s pick</Trans>
                       </H3>
-                      <H4>{editorPick.title}</H4>
+                      <H4 style={{ margin: 0 }}>{editorPick.title}</H4>
                       <P fontSize={[12, 16]} lineHeight={[18, 24]}>
                         {editorPick.description}
                       </P>

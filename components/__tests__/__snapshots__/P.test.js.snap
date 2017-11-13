@@ -5,6 +5,10 @@ exports[`Responsive font sizes 1`] = `
   font-size: 15px;
 }
 
+.c0:last-child {
+  margin-bottom: 0;
+}
+
 @media screen and (min-width:40em) {
   .c0 {
     font-size: 20px;
@@ -27,6 +31,10 @@ exports[`Responsive font sizes 1`] = `
 exports[`Responsive line heights 1`] = `
 .c0 {
   line-height: 15px;
+}
+
+.c0:last-child {
+  margin-bottom: 0;
 }
 
 @media screen and (min-width:40em) {
