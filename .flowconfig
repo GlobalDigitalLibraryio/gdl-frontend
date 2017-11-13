@@ -6,6 +6,7 @@
 .*/node_modules/immutable/dist/.*
 .*/node_modules/config-chain/test/.*
 .*/node_modules/npmconf/test/.*
+.*/node_modules/radium/.*
 
 [include]
 

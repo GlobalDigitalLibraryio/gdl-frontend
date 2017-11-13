@@ -7,7 +7,9 @@
  */
 import * as React from 'react';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
+import { Trans } from 'lingui-react';
 import styled from 'styled-components';
+import SrOnly from '../SrOnly';
 import media from '../helpers/media';
 
 const Left = styled.button`
@@ -61,6 +63,9 @@ const TouchOverlay = (props: Props) => [
     disabled={props.disablePrev}
     showOnMobile={props.showOnMobile}
   >
+    <SrOnly>
+      <Trans>Previous chapter</Trans>
+    </SrOnly>
     <MdKeyboardArrowLeft size={50} />
   </Left>,
   <Right
@@ -71,6 +76,9 @@ const TouchOverlay = (props: Props) => [
     disabled={props.disableNext}
     showOnMobile={props.showOnMobile}
   >
+    <SrOnly>
+      <Trans>Next chapter</Trans>
+    </SrOnly>
     <MdKeyboardArrowRight size={50} />
   </Right>,
 ];
