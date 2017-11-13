@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import dynamic from 'next/dynamic';
 import { DateFormat, Trans, Plural } from 'lingui-react';
 import {
   MdLanguage,
@@ -20,7 +19,7 @@ import styled from 'styled-components';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import { Link, Router } from '../../routes';
+import { Link } from '../../routes';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Layout from '../../components/Layout';
@@ -38,9 +37,6 @@ import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import BookList from '../../components/BookList';
-
-// Download the Reader component on demand
-const Reader = dynamic(import('../../components/Reader'));
 
 type Props = {
   book: RemoteData<Book>,
@@ -141,22 +137,6 @@ class BookPage extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
-        {this.props.url.query.chapter && (
-          <Reader
-            book={book}
-            chapter={this.props.url.query.chapter}
-            onClose={() =>
-              Router.pushRoute(
-                'book',
-                {
-                  id: book.id,
-                  lang: book.language.code,
-                },
-                { shallow: true },
-              )}
-          />
-        )}
-
         <Hero colorful py={[15, 40]}>
           <Container>
             <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
@@ -171,20 +151,14 @@ class BookPage extends React.Component<Props> {
                   </P>
                   <BookCover book={book} mx="auto" isHiddenTablet />
                   <P fontSize={[14, 16]}>{book.description}</P>
-                  <Button
-                    onClick={() =>
-                      Router.pushRoute(
-                        'book',
-                        {
-                          id: book.id,
-                          lang: book.language.code,
-                          chapter: 1,
-                        },
-                        { shallow: true },
-                      )}
+                  <Link
+                    route="read"
+                    params={{ id: book.id, lang: book.language.code }}
                   >
-                    <Trans>Read</Trans>
-                  </Button>
+                    <Button>
+                      <Trans>Read</Trans>
+                    </Button>
+                  </Link>
                 </Box>
               </Flex>
             </Card>

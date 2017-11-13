@@ -38,6 +38,13 @@ if (env.IS_PROD) {
     '/:lang/books/level:level(\\d)/:id(\\d+)',
     'books/index',
   );
+
+  // Read book
+  routes.add(
+    'read',
+    '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
+    'books/read',
+  );
 }
 
 module.exports = routes;

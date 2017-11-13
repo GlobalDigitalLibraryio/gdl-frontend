@@ -1,0 +1,61 @@
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2017 GDL
+ *
+ * See LICENSE
+ */
+import * as React from 'react';
+import styled from 'styled-components';
+import { Trans } from 'lingui-react';
+import { MdBackspace } from 'react-icons/lib/md';
+import media from '../helpers/media';
+
+const Div = styled.div`
+  display: ${p => (p.showOnMobile ? 'flex' : 'none')};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
+  ${media.tablet`
+    box-shadow: none;
+    display: flex;
+    position: sticky;
+    margin-bottom: 50px;
+  `} color: ${props => props.theme.grays.jumbo};
+  background-color: ${props => props.theme.grays.desertStorm};
+  border-bottom: 1px solid ${props => props.theme.grays.platinum};
+
+  font-size: 14px;
+  min-height: 48px;
+  ${media.tablet`
+    min-height: 48px;
+    font-size: 16px;
+  `};
+`;
+
+const Button = styled.button.attrs({
+  type: 'button',
+})`
+  background: transparent;
+  border-radius: 0;
+  border: none;
+  font-size: 14px;
+  color: ${props => props.theme.grays.dark};
+`;
+
+type Props = {
+  showOnMobile: boolean,
+  onRequestClose(): void,
+};
+
+const Toolbar = (props: Props) => (
+  <Div showOnMobile={props.showOnMobile}>
+    <Button onClick={props.onRequestClose}>
+      <MdBackspace /> <Trans>Close book</Trans>
+    </Button>
+  </Div>
+);
+
+export { Toolbar as default, Button };
