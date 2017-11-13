@@ -20,13 +20,13 @@ const bookApiUrl = (() => {
     case 'prod':
       return 'http://prod-proxy-658342484.eu-central-1.elb.amazonaws.com/book-api/v1';
     case 'staging':
-      return 'http://staging-proxy-95967625.eu-central-1.elb.amazonaws.com/book-api/v1';
+      return 'https://api.staging.digitallibrary.io/book-api/v1';
     case 'local':
       return 'http://proxy.gdl-local/book-api/v1';
     case 'test':
     default:
       // test
-      return 'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/book-api/v1';
+      return 'https://api.test.digitallibrary.io/book-api/v1';
   }
 })();
 
