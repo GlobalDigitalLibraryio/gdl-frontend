@@ -112,25 +112,17 @@ class BookPage extends React.Component<Props> {
     const { similar, book } = this.props;
 
     const contributors = book.contributors
-      .map(contributor => (
-        <A key={contributor.id}>
-          {contributor.name}
-        </A>
-      ))
+      .map(contributor => <A key={contributor.id}>{contributor.name}</A>)
       .map((item, index) => [index > 0 && ', ', item]);
 
     const categories = book.categories
-      .map(category => (
-        <A key={category.id}>
-          {category.name}
-        </A>
-      ))
+      .map(category => <A key={category.id}>{category.name}</A>)
       .map((item, index) => [index > 0 && ', ', item]);
 
     const availableLanguages = book.availableLanguages.length - 1;
 
     return (
-      <Layout currentPage={book.title}>
+      <Layout currentPage={book.title} language={book.language}>
         <Meta
           title={book.title}
           description={book.description}
@@ -200,7 +192,8 @@ class BookPage extends React.Component<Props> {
                               {lang.name}
                             </CardDropdownItem>
                           </Link>
-                        ))}
+                        ))
+                    }
                   </CardDropdown>
                   <Hr />
                   <Plural

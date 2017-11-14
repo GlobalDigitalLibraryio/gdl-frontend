@@ -9,6 +9,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { withRouter } from 'next/router';
+import type { Language } from '../types';
 import media from './helpers/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
@@ -18,6 +19,7 @@ type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
   currentPage?: string,
+  language: Language,
   router: {
     query: {
       lang?: string,
@@ -40,12 +42,19 @@ const Toolbar = styled.div`
   }
 `;
 
-const Layout = ({ children, toolbarEnd, currentPage, router }: Props) => (
+const Layout = ({
+  children,
+  toolbarEnd,
+  language,
+  currentPage,
+  router,
+}: Props) => (
   <div>
     <Navbar lang={router.query.lang} />
     <Toolbar>
       <Container mw="1075px">
         <Breadcrumb
+          language={language}
           lang={router.query.lang}
           router={router}
           currentPage={currentPage}

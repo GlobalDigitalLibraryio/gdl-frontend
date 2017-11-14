@@ -11,12 +11,16 @@ import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
 import type { I18n } from 'lingui-i18n';
 import { withI18n } from 'lingui-react';
 import styled from 'styled-components';
+import type { Language } from '../../types';
 import { Link } from '../../routes';
 
 const Nav = styled.nav`
   display: flex;
   align-items: stretch;
   flex: 1;
+  overflow: hidden;
+  overflow-x: auto;
+  white-space: nowrap;
 `;
 
 const Ol = styled.ol`
@@ -39,6 +43,7 @@ type Props = {
   i18n: I18n,
   currentPage: ?string,
   lang: string,
+  language: Language,
   router: {
     asPath: string,
     query: {
@@ -101,7 +106,7 @@ class Breadcrumb extends React.Component<Props> {
   }
 
   render() {
-    const { i18n, currentPage } = this.props;
+    const { i18n, currentPage, language } = this.props;
 
     const middle = this.renderMiddlePart();
 
@@ -109,6 +114,14 @@ class Breadcrumb extends React.Component<Props> {
       <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
         <Ol>
           {this.renderHome()}
+          {language && [
+            Separator,
+            <li key="lang">
+              <Link route="books" params={{ lang: language.code }}>
+                <a>{language.name}</a>
+              </Link>
+            </li>,
+          ]}
           {middle && Separator}
           {middle}
           {currentPage && [
