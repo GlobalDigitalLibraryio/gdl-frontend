@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 @PROJECT@
- * 
+ *
  * See LICENSE
  */
 
@@ -28,6 +28,9 @@ app
 
     // Gzip responses
     server.use(compression());
+
+    // 404 all requests for favicons since we don't have one, and it attempts to match with our next routes
+    server.get('/favicon.ico', (req, res) => res.sendStatus(404));
 
     // Health check for AWS
     server.get('/health', (req, res) => {
