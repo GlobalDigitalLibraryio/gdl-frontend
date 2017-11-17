@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import SrOnly from '../SrOnly';
 import media from '../helpers/media';
 
-const Left = styled.button`
+const Button = styled.button`
   color: #fff;
   position: fixed;
   background-color: rgba(68, 68, 68, 0.1);
@@ -27,22 +27,14 @@ const Left = styled.button`
   ${media.tablet`
     opacity: 1;
     background: none; 
-    color: #444;
+    color: #fff;
     
     &:hover, &:focus {
       color: #fff;
-      background: linear-gradient(270deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
+      background: rgba(0,0,0,0.1);
     }
-    transition: color 0.3s ease;
+    transition: background 0.3s ease;
     width: 120px;
-  `};
-`;
-
-const Right = styled(Left)`
-  ${media.tablet`
-    &:hover, &:focus {
-      background: linear-gradient(90deg,rgba(1,1,1,0),rgba(1,1,1,0.3));
-    }
   `};
 `;
 
@@ -55,7 +47,7 @@ type Props = {
 };
 
 const TouchOverlay = (props: Props) => [
-  <Left
+  <Button
     key="left"
     style={{ left: 0 }}
     onClick={props.onRequestPrev}
@@ -67,8 +59,8 @@ const TouchOverlay = (props: Props) => [
       <Trans>Previous chapter</Trans>
     </SrOnly>
     <MdKeyboardArrowLeft size={50} />
-  </Left>,
-  <Right
+  </Button>,
+  <Button
     key="right"
     style={{ right: 0 }}
     onClick={props.onRequestNext}
@@ -80,7 +72,7 @@ const TouchOverlay = (props: Props) => [
       <Trans>Next chapter</Trans>
     </SrOnly>
     <MdKeyboardArrowRight size={50} />
-  </Right>,
+  </Button>,
 ];
 
 export default TouchOverlay;
