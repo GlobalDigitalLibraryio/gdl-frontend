@@ -21,6 +21,7 @@ const CardDropdownItem = styled.a`
   }
   ${props =>
     props.isActive && `background-color: ${props.theme.primaries.highlight}`};
+  transition: background-color 0.2s ease;
 `;
 
 const Dropdown = Card.extend`

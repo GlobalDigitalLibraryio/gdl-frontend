@@ -41,6 +41,8 @@ const DropdownItemAnchor = styled.a`
   ${props =>
     props.isSelected &&
     `background-color: ${props.theme.supports.greenHighlight}`};
+
+  transition: background-color 0.2s ease;
 `;
 
 /**
