@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -44,6 +44,11 @@ const globalStyles = css`
 
     strong {
       font-weight: bold;
+    }
+
+    button,
+    [role='button'] {
+      cursor: pointer;
     }
   }
 `;
