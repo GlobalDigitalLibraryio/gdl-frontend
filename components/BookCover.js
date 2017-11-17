@@ -2,14 +2,14 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 import * as React from 'react';
 import { css } from 'styled-components';
 import { CardBase } from './Card';
 import media from './helpers/media';
-import Img from './Img';
+import CoverImage from './Cover';
 import type { Book } from '../types';
 
 // Export css for reuse for book cover with title and and reading level
@@ -49,7 +49,11 @@ type Props = {
 
 const BookCover = ({ book, ...props }: Props) => (
   <Cover {...props}>
-    <Img src={book.coverPhoto && book.coverPhoto.small} alt={book.title} />
+    <CoverImage
+      src={book.coverPhoto && book.coverPhoto.large}
+      h="100%"
+      w="100%"
+    />
   </Cover>
 );
 

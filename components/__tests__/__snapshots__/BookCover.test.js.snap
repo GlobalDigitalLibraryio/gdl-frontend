@@ -2,8 +2,15 @@
 
 exports[`Renders 1`] = `
 .c1 {
-  max-height: 100%;
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  background-image: url(http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg);
+  background-position: center center;
+  background-size: cover;
+}
+
+.c1 img {
+  opacity: 0;
 }
 
 .c0 {
@@ -26,6 +33,19 @@ exports[`Renders 1`] = `
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+@supports (object-fit:cover) {
+  .c1 {
+    background-image: none;
+  }
+
+  .c1 img {
+    opacity: 1;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
 }
 
 @media screen and (min-width:40em) {
@@ -159,23 +179,28 @@ exports[`Renders 1`] = `
     <div
       className="c0"
     >
-      <Component
-        alt="A Life in the Fair Jungle"
-        src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
+      <Cover
+        h="100%"
+        src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg"
+        w="100%"
       >
-        <styled.img
-          alt="A Life in the Fair Jungle"
-          aria-hidden={true}
-          src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
+        <styled.div
+          h="100%"
+          src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg"
+          w="100%"
         >
-          <img
-            alt="A Life in the Fair Jungle"
-            aria-hidden={true}
+          <div
             className="c1"
-            src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200"
-          />
-        </styled.img>
-      </Component>
+            src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg"
+          >
+            <img
+              alt=""
+              aria-hidden={true}
+              src="http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg"
+            />
+          </div>
+        </styled.div>
+      </Cover>
     </div>
   </styled.div>
 </BookCover>

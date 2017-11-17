@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -11,13 +11,8 @@ import styled from 'styled-components';
 import type { Book } from '../types';
 import { CardBase } from './Card';
 import ReadingLevel from './ReadingLevel';
-import Img from './Img';
 import Box from './Box';
-import { coverCss } from './BookCover';
-
-const Cover = Box.extend`
-  ${coverCss};
-`;
+import Cover from './Cover';
 
 const Div = Box.extend`
   text-align: center;
@@ -41,9 +36,11 @@ export default ({ book, ...props }: { book: Book }) => (
     style={{ overflow: 'hidden' }}
     {...props}
   >
-    <Cover h={[130, 160]} w="100%">
-      <Img src={book.coverPhoto && book.coverPhoto.small} alt={book.title} />
-    </Cover>
+    <Cover
+      h={[130, 160]}
+      w="100%"
+      src={book.coverPhoto && book.coverPhoto.large}
+    />
     <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
       <BookTitle>{book.title}</BookTitle>
       <ReadingLevel level={book.readingLevel} />
