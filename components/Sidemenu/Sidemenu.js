@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
+import { withRouter } from 'next/router';
 import Downshift from 'downshift';
 import { Trans } from 'lingui-react';
 import {
@@ -39,6 +40,9 @@ type Props = {
   onCloseRequested(): void,
   id: string,
   language: Language,
+  router: {
+    asPath: string,
+  },
 };
 
 type State = {
@@ -56,7 +60,7 @@ const stateCache: Cache = {
   language: null,
 };
 
-export default class Sidebar extends React.Component<Props, State> {
+class Sidebar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     if (
@@ -75,24 +79,17 @@ export default class Sidebar extends React.Component<Props, State> {
     }
   }
 
-  // $FlowFixMe Flow complains if componentDidMount is async... Even though it shouldn't?
-  async componentDidMount() {
-    // Bail out of refetching if we already have set stuff from the cache in the contructor
-    if (this.state.levels.length > 0) {
-      return;
+  componentDidMount() {
+    // Only fetch if we haven't already set stuff from the cache in the constructor
+    if (this.state.levels.length === 0) {
+      this.getMenuData();
     }
+  }
 
-    const [languages, levels] = await Promise.all([
-      fetchLanguages(),
-      fetchLevels(),
-    ]);
-
-    // Eslint should allow this? We are async after all
-    // eslint-disable-next-line react/no-did-mount-set-state
-    this.setState({
-      levels,
-      languages,
-    });
+  componentWillReceiveProps(nextProps) {
+    if (this.props.router !== nextProps.router) {
+      nextProps.onCloseRequested();
+    }
   }
 
   /**
@@ -114,6 +111,18 @@ export default class Sidebar extends React.Component<Props, State> {
     ) {
       this.props.onCloseRequested();
     }
+  };
+
+  getMenuData = async () => {
+    const [languages, levels] = await Promise.all([
+      fetchLanguages(),
+      fetchLevels(this.props.language.code),
+    ]);
+
+    this.setState({
+      levels,
+      languages,
+    });
   };
 
   wrap: ?HTMLDivElement;
@@ -152,7 +161,10 @@ export default class Sidebar extends React.Component<Props, State> {
             <MenuLabel>
               <Trans>Language</Trans>
             </MenuLabel>
-            <Downshift id="bookLanguageMenu">
+            <Downshift
+              id="bookLanguageMenu"
+              selectedItem={this.props.language.code}
+            >
               {({ getButtonProps, isOpen, closeMenu, getItemProps }) => (
                 <div>
                   <MenuItem {...getButtonProps()} tabIndex="0">
@@ -178,14 +190,16 @@ export default class Sidebar extends React.Component<Props, State> {
                         <Trans>Language</Trans>
                       </Flex>
                       {this.state.languages.map(lang => (
-                        <MenuItem
+                        <Link
+                          passHref
                           key={lang.code}
-                          {...getItemProps({ item: lang.code })}
+                          route="books"
+                          params={{ lang: lang.code }}
                         >
-                          <Link route="books" params={{ lang: lang.code }}>
-                            <a>{lang.name}</a>
-                          </Link>
-                        </MenuItem>
+                          <MenuItem {...getItemProps({ item: lang.code })}>
+                            {lang.name}
+                          </MenuItem>
+                        </Link>
                       ))}
                     </Bar>
                   )}
@@ -197,24 +211,27 @@ export default class Sidebar extends React.Component<Props, State> {
               <Trans>Content</Trans>
             </MenuLabel>
             {this.state.levels.map(level => (
-              <MenuItem key={level}>
-                <Link route="level" params={{ lang: language.code, level }}>
-                  <a>
-                    <Trans>Level {level}</Trans>
-                  </a>
-                </Link>
-              </MenuItem>
-            ))}
-            <MenuItem style={{ marginTop: '3px' }}>
-              <Link route="new" params={{ lang: language.code }}>
-                <a>
-                  <Trans>New arrivals</Trans>
-                </a>
+              <Link
+                passHref
+                key={level}
+                route="level"
+                params={{ lang: language.code, level }}
+              >
+                <MenuItem key={level}>
+                  <Trans>Level {level}</Trans>
+                </MenuItem>
               </Link>
-            </MenuItem>
+            ))}
+            <Link passHref route="new" params={{ lang: language.code }}>
+              <MenuItem style={{ marginTop: '3px' }}>
+                <Trans>New arrivals</Trans>
+              </MenuItem>
+            </Link>
           </Bar>
         </Container>
       </Backdrop>
     );
   }
 }
+
+export default withRouter(Sidebar);

@@ -7,18 +7,20 @@
  */
 import styled from 'styled-components';
 
-const MenuItem = styled.div`
+const MenuItem = styled.a`
   font-size: 14px;
-  padding: 7px 15px;
   margin-bottom: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  min-height: 38px;
 
-  a {
-    width: 100%;
+  padding: 7px 15px;
+  min-height: 38px;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 100%;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.3);
   }
+  transition: background-color 0.2s ease;
 `;
 
 export default MenuItem;

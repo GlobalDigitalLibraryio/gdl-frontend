@@ -11,6 +11,7 @@ const MenuLabel = styled.div`
   font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;
+  background-color: rgba(255, 255, 255, 0.05);
   padding: 4px 15px;
 `;
 
