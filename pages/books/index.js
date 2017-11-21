@@ -112,11 +112,11 @@ class BookPage extends React.Component<Props> {
     const { similar, book } = this.props;
 
     const contributors = book.contributors
-      .map(contributor => <A key={contributor.id}>{contributor.name}</A>)
+      .map(contributor => <span key={contributor.id}>{contributor.name}</span>)
       .map((item, index) => [index > 0 && ', ', item]);
 
     const categories = book.categories
-      .map(category => <A key={category.id}>{category.name}</A>)
+      .map(category => <span key={category.id}>{category.name}</span>)
       .map((item, index) => [index > 0 && ', ', item]);
 
     const availableLanguages = book.availableLanguages.length - 1;
@@ -138,7 +138,7 @@ class BookPage extends React.Component<Props> {
                   <H1 fontSize={[28, 38]}>{book.title}</H1>
                   <P fontSize={[12, 14]}>
                     <Trans>
-                      from <A>{book.publisher.name}</A>
+                      from <span>{book.publisher.name}</span>
                     </Trans>
                   </P>
                   <BookCover book={book} mx="auto" isHiddenTablet />
