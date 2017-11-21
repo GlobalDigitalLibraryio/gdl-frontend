@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -14,6 +14,7 @@ import { Link } from '../routes';
 
 const FlexScroller = Flex.extend`
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 `;
 
 type Props = {
