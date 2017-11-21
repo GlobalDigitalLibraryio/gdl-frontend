@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -45,6 +45,7 @@ type Options = {
   pageSize?: number,
   level?: string,
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
+  page?: number,
 };
 
 export function fetchLevels(
@@ -75,18 +76,26 @@ export function fetchSimilarBooks(
   language: string,
 ): Promise<RemoteData<{ results: Array<Book> }>> {
   return doFetch(
-    `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`,
+    `${bookApiUrl}/books/${language}/similar/${
+      id
+    }?sort=-arrivaldate&page-size=${PAGE_SIZE}`,
   );
 }
 
 export function fetchBooks(
   language: ?string,
   options: Options = {},
-): Promise<RemoteData<{ results: Array<Book> }>> {
+): Promise<
+  RemoteData<{
+    results: Array<Book>,
+    language: Language,
+    page: number,
+    totalCount: number,
+  }>,
+> {
   return doFetch(
-    `${bookApiUrl}/books/${language || ''}?sort=${options.sort ||
-      '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${options.level
-      ? `&reading-level=${options.level}`
-      : ''}`,
+    `${bookApiUrl}/books/${language || ''}?page=${options.page ||
+      1}&sort=${options.sort || '-arrivaldate'}&page-size=${options.pageSize ||
+      PAGE_SIZE}${options.level ? `&reading-level=${options.level}` : ''}`,
   );
 }

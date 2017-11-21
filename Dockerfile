@@ -16,6 +16,7 @@ COPY pages $APP_PATH/pages
 COPY static $APP_PATH/static
 COPY server.js $APP_PATH
 COPY hocs $APP_PATH/hocs
+COPY style $APP_PATH/style
 COPY locale $APP_PATH/locale
 COPY routes.js $APP_PATH
 COPY .babelrc $APP_PATH
