@@ -4,6 +4,7 @@ exports[`Renders 1`] = `
 .c0 {
   float: right;
   font-size: 12px;
+  padding: 0 0 5px 5px;
 }
 
 @media (min-width:40em) {
