@@ -8,57 +8,17 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet, injectGlobal, css } from 'styled-components';
-import { normalize } from 'polished';
-import theme from '../style/theme';
+import { ServerStyleSheet, injectGlobal } from 'styled-components';
+import globalStyles from '../style/globalStyles';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
-
-// Add global styles
-// eslint-disable-next-line no-unused-expressions
-const globalStyles = css`
-  ${normalize(true)} *, *:before, *:after {
-    box-sizing: inherit;
-  }
-
-  html {
-    box-sizing: border-box;
-    font-size: 16px;
-  }
-
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    background: ${theme.colors.grayLighter};
-    color: ${theme.colors.dark};
-
-    a {
-      color: ${theme.colors.link};
-      text-decoration: none;
-    }
-
-    strong {
-      font-weight: bold;
-    }
-
-    button,
-    [role='button'] {
-      cursor: pointer;
-    }
-  }
-`;
 
 // eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${globalStyles}
 `;
 
-class GDLDocument extends Document {
+export default class GDLDocument extends Document {
   static getInitialProps({ renderPage, req }) {
     const sheet = new ServerStyleSheet();
 
@@ -100,5 +60,3 @@ class GDLDocument extends Document {
     );
   }
 }
-
-export { GDLDocument as default, globalStyles };
