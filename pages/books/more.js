@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Trans } from 'lingui-react';
 import { MdSync } from 'react-icons/lib/md';
 import styled from 'styled-components';
+import SrOnly from '../../components/SrOnly';
 import { fetchBooks } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -102,7 +103,7 @@ class BookPage extends React.Component<Props, State> {
       books: {
         // Set the newly fetched results
         ...books,
-        // But append the array to the books vi we already have
+        // But append the array to the books we already have
         results: state.books.results.concat(books.results),
       },
     }));
@@ -145,11 +146,18 @@ class BookPage extends React.Component<Props, State> {
             </H1>
           )}
           <BookGrid books={books.results} route={route} />
-          <Box pt={6} pb={30} textAlign="center">
+          <Box pt={6} pb={30} textAlign="center" aria-live="polite">
             {this.state.isLoadingMore ? (
-              <MdSync
-                style={{ animation: `${rotate360} 2s linear infinite` }}
-              />
+              [
+                <MdSync
+                  key="indicator"
+                  aria-hidden
+                  style={{ animation: `${rotate360} 2s linear infinite` }}
+                />,
+                <SrOnly key="sr">
+                  <Trans>Loading books</Trans>
+                </SrOnly>,
+              ]
             ) : (
               <MoreButton
                 disabled={!this.canLoadMore()}
