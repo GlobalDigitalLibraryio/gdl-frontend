@@ -46,7 +46,7 @@ const HamburgerButton = styled.button.attrs({
   border: 1px solid transparent;
   color: ${theme.colors.white};
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   > span {
     margin-left: 6px;
     ${media.mobile`

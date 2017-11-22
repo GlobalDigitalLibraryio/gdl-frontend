@@ -66,7 +66,7 @@ const BookMetaData = ({
 
 const DropdownAction = styled.a`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   & svg:nth-of-type(1) {
