@@ -88,11 +88,6 @@ class BookPage extends React.Component<Props, State> {
    * Load more books when demanded
    */
   handleLoadMore = async () => {
-    // If it isn't possible to fetch more books. Bail out
-    if (this.state.books.totalCount === this.state.books.results.length) {
-      return;
-    }
-
     this.setState({ isLoadingMore: true });
     const { query } = this.props.url;
 
