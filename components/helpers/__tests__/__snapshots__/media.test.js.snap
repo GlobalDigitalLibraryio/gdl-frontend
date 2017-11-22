@@ -6,14 +6,16 @@ Array [
     background: blue;
     ",
   "
-    @media (min-width: ",
-  "40",
-  "em) {
-      ",
+  @media (",
+  "min",
+  "-width: ",
+  "769",
+  "px) {
+    ",
   "background-red;",
   ";
-    }
-  ",
+  }
+",
   ";
   ",
 ]

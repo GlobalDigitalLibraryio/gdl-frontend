@@ -36,7 +36,7 @@ const Ol = styled.ol`
     align-items: center;
   }
   li:last-child {
-    font-weight: 500;
+    font-weight: bold;
   }
 `;
 

@@ -12,7 +12,7 @@ exports[`Renders 1`] = `
   line-height: 17px;
 }
 
-@media (min-width:40em) {
+@media (min-width:769px) {
   .c0 {
     font-size: 12px;
     line-height: 18px;
@@ -21,63 +21,8 @@ exports[`Renders 1`] = `
 
 <Component
   level="1"
-  theme={
-    Object {
-      "grays": Object {
-        "dark": "#444",
-        "desertStorm": "#f8f8f8",
-        "gallery": "#eff0f2",
-        "jumbo": "#888",
-        "platinum": "#e3e3e3",
-        "silverSand": "#bbb",
-        "steel": "#666",
-        "white": "#fff",
-      },
-      "primaries": Object {
-        "dark": "#184673",
-        "highlight": "#edf7ff",
-        "light": "#ceddea",
-        "primary": "#20588f",
-        "secondary": "#507aa4",
-        "tertiary": "#a5bcd3",
-      },
-      "supports": Object {
-        "greenDark": "#359258",
-        "greenHighlight": "#edfff4",
-        "greenPrimary": "#5cbc80",
-      },
-    }
-  }
 >
-  <styled.span
-    theme={
-      Object {
-        "grays": Object {
-          "dark": "#444",
-          "desertStorm": "#f8f8f8",
-          "gallery": "#eff0f2",
-          "jumbo": "#888",
-          "platinum": "#e3e3e3",
-          "silverSand": "#bbb",
-          "steel": "#666",
-          "white": "#fff",
-        },
-        "primaries": Object {
-          "dark": "#184673",
-          "highlight": "#edf7ff",
-          "light": "#ceddea",
-          "primary": "#20588f",
-          "secondary": "#507aa4",
-          "tertiary": "#a5bcd3",
-        },
-        "supports": Object {
-          "greenDark": "#359258",
-          "greenHighlight": "#edfff4",
-          "greenPrimary": "#5cbc80",
-        },
-      }
-    }
-  >
+  <styled.span>
     <span
       className="c0"
     >

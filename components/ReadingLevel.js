@@ -10,12 +10,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Trans } from 'lingui-react';
 import media from './helpers/media';
+import theme from '../style/theme';
 
 const Label = styled.span`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
-  background-color: ${props => props.theme.grays.steel};
-  color: ${props => props.theme.grays.white};
+  background-color: ${theme.colors.grayDarker};
+  color: ${theme.colors.white};
   padding-left: 10px;
   padding-right: 10px;
   font-size: 11px;

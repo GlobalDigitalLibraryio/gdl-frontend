@@ -14,9 +14,10 @@ import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import Container from './Container';
 import Sidemenu from './Sidemenu';
+import theme from '../style/theme';
 
 const Toolbar = styled.div`
-  background: ${props => props.theme.grays.white};
+  background: ${theme.colors.white};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   position: relative;
   font-size: 12px;

@@ -10,7 +10,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
-import { theme } from '../../hocs/withTheme';
+import theme from '../../style/theme';
 import Card from '../Card';
 
 test('Renders', () => {

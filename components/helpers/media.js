@@ -7,28 +7,28 @@
  */
 
 import { css } from 'styled-components';
-import { constants } from 'styled-system';
 import type { TaggedTemplateLiteral } from 'styled-components';
+import { TABLET_BREAKPOINT } from '../../style/theme';
 
 /**
  * Mobile first media template
  *
- * Keeps compability with styled-system (hence the breakpoint import)
+ * (Also has a mobile only query)
+ *
  */
 
-const sizes = {
-  tablet: constants.breakpoints[0],
+// A function returning a function :)
+const query = (condition: 'min' | 'max', width: number) => (
+  ...args: TaggedTemplateLiteral
+) => css`
+  @media (${condition}-width: ${width}px) {
+    ${css(...args)};
+  }
+`;
+
+const media = {
+  mobile: query('max', TABLET_BREAKPOINT - 1),
+  tablet: query('min', TABLET_BREAKPOINT),
 };
-
-// Iterate through the sizes and create a media template
-const media = Object.keys(sizes).reduce((acc, label) => {
-  acc[label] = (...args: TaggedTemplateLiteral) => css`
-    @media (min-width: ${sizes[label]}em) {
-      ${css(...args)};
-    }
-  `;
-
-  return acc;
-}, {});
 
 export default media;

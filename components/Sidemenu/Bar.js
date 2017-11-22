@@ -6,11 +6,12 @@
  * See LICENSE
  */
 import styled from 'styled-components';
+import theme from '../../style/theme';
 import media from '../helpers/media';
 
 const Bar = styled.div`
-  color: #fff;
-  background-color: #444444;
+  color: ${theme.colors.white};
+  background-color: ${theme.colors.dark};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4);
   width: 295px;
   height: 100%;

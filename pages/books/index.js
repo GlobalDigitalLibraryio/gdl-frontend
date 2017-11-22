@@ -37,6 +37,7 @@ import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
 import BookList from '../../components/BookList';
+import theme from '../../style/theme';
 
 type Props = {
   book: RemoteData<Book>,
@@ -78,7 +79,7 @@ const DropdownAction = styled.a`
 
 // Specially desgined for "underlining" everything but the first icon of the download book link
 const Hr = styled.hr`
-  background-color: ${props => props.theme.grays.platinum};
+  background-color: ${theme.colors.grayLight};
   height: 1px;
   border: none;
   margin-left: 33px;
@@ -92,7 +93,7 @@ const CardNested = Card.extend`
 
 const Separator = styled.div`
   height: 4px;
-  background-color: ${props => props.theme.grays.gallery};
+  background-color: ${theme.colors.grayLighter};
 `;
 
 class BookPage extends React.Component<Props> {

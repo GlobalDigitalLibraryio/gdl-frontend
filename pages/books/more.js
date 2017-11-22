@@ -64,7 +64,7 @@ const MoreButton = styled.button`
   `};
   &[disabled] {
     cursor: not-allowed;
-    color: ${theme.grays.silverSand};
+    color: ${theme.colors.gray};
   }
 `;
 

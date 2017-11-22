@@ -9,29 +9,28 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Trans } from 'lingui-react';
 import { MdBackspace } from 'react-icons/lib/md';
+import theme from '../../style/theme';
 import media from '../helpers/media';
 
 const Div = styled.div`
-  display: ${p => (p.showOnMobile ? 'flex' : 'none')};
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
-  ${media.tablet`
-    box-shadow: none;
-    display: flex;
-    position: sticky;
-    margin-bottom: 50px;
-  `} color: ${props => props.theme.grays.jumbo};
-  background-color: ${props => props.theme.grays.desertStorm};
-  border-bottom: 1px solid ${props => props.theme.grays.platinum};
+  color: ${theme.colors.grayDark};
+  background-color: ${theme.colors.whiteTer};
+  border-bottom: 1px solid ${theme.colors.grayLight};
 
   font-size: 14px;
   min-height: 48px;
   ${media.tablet`
     min-height: 48px;
     font-size: 16px;
+    box-shadow: none;
+    display: flex !important;
+    position: sticky;
+    margin-bottom: 50px;
   `};
 `;
 
@@ -42,7 +41,7 @@ const Button = styled.button.attrs({
   border-radius: 0;
   border: none;
   font-size: 14px;
-  color: ${props => props.theme.grays.dark};
+  color: ${theme.colors.dark};
 `;
 
 type Props = {
@@ -51,7 +50,7 @@ type Props = {
 };
 
 const Toolbar = (props: Props) => (
-  <Div showOnMobile={props.showOnMobile}>
+  <Div style={{ display: props.showOnMobile ? 'flex' : 'none' }}>
     <Button onClick={props.onRequestClose}>
       <MdBackspace /> <Trans>Close book</Trans>
     </Button>

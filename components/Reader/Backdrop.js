@@ -10,16 +10,15 @@ import media from '../helpers/media';
 
 // A grey backdrop that's only visible on tablets/desktops
 const Backdrop = styled.div`
-  display: none;
-  ${media.tablet`
-    display: block;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    position: fixed;
-    z-index: -2;
-    background-color: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+  z-index: -2;
+  background-color: rgba(0, 0, 0, 0.5);
+  ${media.mobile`
+    display: none;
   `};
 `;
 

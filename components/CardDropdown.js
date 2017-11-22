@@ -9,18 +9,18 @@ import * as React from 'react';
 import Downshift from 'downshift';
 import styled from 'styled-components';
 import Card from './Card';
+import theme from '../style/theme';
 
 const CardDropdownItem = styled.a`
   display: block;
   padding: 10px 15px;
   &:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.grays.platinum};
+    border-bottom: 1px solid ${theme.colors.grayLight};
   }
   & svg {
     margin-right: 10px;
   }
-  ${props =>
-    props.isActive && `background-color: ${props.theme.primaries.highlight}`};
+  ${props => props.isActive && `background-color: ${theme.colors.highlight}`};
   transition: background-color 0.2s ease;
 `;
 

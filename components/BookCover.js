@@ -11,10 +11,11 @@ import { CardBase } from './Card';
 import media from './helpers/media';
 import CoverImage from './Cover';
 import type { Book } from '../types';
+import theme from '../style/theme';
 
 // Export css for reuse for book cover with title and and reading level
 const coverCss = css`
-  background-color: ${props => props.theme.grays.desertStorm};
+  background-color: ${theme.colors.whiteTer};
   overflow: hidden;
   display: flex;
   align-items: center;

@@ -12,7 +12,7 @@ exports[`Renders 1`] = `
   margin-top: 0;
 }
 
-@media (min-width:40em) {
+@media (min-width:769px) {
   .c0 {
     font-size: 20px;
     line-height: 26px;

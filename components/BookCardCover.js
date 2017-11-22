@@ -13,12 +13,13 @@ import { CardBase } from './Card';
 import ReadingLevel from './ReadingLevel';
 import Box from './Box';
 import Cover from './Cover';
+import theme from '../style/theme';
 
 const Div = Box.extend`
   text-align: center;
-  color: ${props => props.theme.grays.dark};
-  border-top: 1px solid ${props => props.theme.grays.platinum};
-  background-color: ${props => props.theme.grays.white};
+  color: ${theme.colors.dark};
+  border-top: 1px solid ${theme.colors.grayLight};
+  background-color: ${theme.colors.white};
 `;
 
 const BookTitle = styled.div`

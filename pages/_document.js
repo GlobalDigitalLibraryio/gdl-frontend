@@ -10,7 +10,7 @@ import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet, injectGlobal, css } from 'styled-components';
 import { normalize } from 'polished';
-import { theme } from '../hocs/withTheme';
+import theme from '../style/theme';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
 
@@ -34,11 +34,11 @@ const globalStyles = css`
       'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    background: ${theme.grays.gallery};
-    color: ${theme.grays.dark};
+    background: ${theme.colors.grayLighter};
+    color: ${theme.colors.dark};
 
     a {
-      color: #1566b6;
+      color: ${theme.colors.link};
       text-decoration: none;
     }
 

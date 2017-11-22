@@ -8,6 +8,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import media from '../helpers/media';
+import theme from '../../style/theme';
 
 const Lines = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const Lines = styled.div`
     flex: 1;
     height: 1px;
     content: '';
-    background-color: ${p => p.theme.grays.platinum};
+    background-color: ${theme.colors.grayLight};
     width: 90px;
   }
   &:before {

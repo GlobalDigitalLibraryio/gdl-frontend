@@ -6,36 +6,26 @@
  * See LICENSE
  */
 
+const TABLET_BREAKPOINT = 769;
+
 // TODO: Move all colors into the colors object
 const theme = {
   colors: {
     link: '#1566b6',
     white: '#fff',
     dark: '#444',
-  },
-  primaries: {
     primary: '#20588f',
-    secondary: '#507aa4',
-    tertiary: '#a5bcd3',
-    light: '#ceddea',
-    highlight: '#edf7ff',
-    dark: '#184673',
-  },
-  supports: {
-    greenPrimary: '#5cbc80',
+    grayDarker: '#666', // Grey steel
+    grayDark: '#888', // Grey Jumbo
+    gray: '#bbb', // Silver Sand
+    grayLight: '#e3e3e3', // Gray Platinum
+    grayLighter: '#eff0f2', // Gray gallery
+    whiteTer: '#f8f8f8', // Desert storm
     greenHighlight: '#edfff4',
     greenDark: '#359258',
+    highlight: '#edf7ff',
   },
-  grays: {
-    dark: '#444',
-    white: '#fff',
-    steel: '#666',
-    jumbo: '#888',
-    silverSand: '#bbb',
-    platinum: '#e3e3e3',
-    gallery: '#eff0f2',
-    desertStorm: '#f8f8f8',
-  },
+  breakpoints: [`${TABLET_BREAKPOINT}px`],
 };
 
-export default theme;
+export { theme as default, TABLET_BREAKPOINT };

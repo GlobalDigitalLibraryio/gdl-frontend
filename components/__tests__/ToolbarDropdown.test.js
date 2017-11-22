@@ -13,7 +13,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import type { Language } from '../../types';
 import ToolbarItem, { ToolbarDropdownItem } from '../ToolbarDropdown';
-import { theme } from '../../hocs/withTheme';
+import theme from '../../style/theme';
 
 const languages: Array<Language> = [
   { code: 'ahm', name: 'Amharic' },
@@ -42,7 +42,8 @@ test('Displays items when open', () => {
             >
               {lang.name}
             </ToolbarDropdownItem>
-          ))}
+          ))
+        }
       </ToolbarItem>
     </ThemeProvider>,
   );
@@ -74,7 +75,8 @@ test('Closes the dropdown when selecting an item, even when wrapped with next Li
                 {lang.name}
               </ToolbarDropdownItem>
             </Link>
-          ))}
+          ))
+        }
       </ToolbarItem>
     </ThemeProvider>,
   );

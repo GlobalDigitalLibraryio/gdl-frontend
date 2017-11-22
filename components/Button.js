@@ -8,9 +8,10 @@
 
 import styled from 'styled-components';
 import media from './helpers/media';
+import theme from '../style/theme';
 
 const Button = styled.button`
-  color: ${props => props.theme.grays.white};
+  color: ${theme.colors.white};
   border-radius: 4px;
   background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);

@@ -11,7 +11,6 @@ import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import 'jest-styled-components';
 import type { Book } from '../../types';
-import { theme } from '../../hocs/withTheme';
 import BookCover from '../BookCover';
 
 const book: Book = {
@@ -51,7 +50,7 @@ const book: Book = {
 };
 
 test('Renders', () => {
-  const tree = mount(<BookCover book={book} theme={theme} />);
+  const tree = mount(<BookCover book={book} />);
 
   expect(toJson(tree)).toMatchSnapshot();
 });

@@ -2,41 +2,16 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'styled-components';
+import theme from '../style/theme';
 
 /* eslint-disable react/no-multi-comp */
-
-const theme = {
-  primaries: {
-    primary: '#20588f',
-    secondary: '#507aa4',
-    tertiary: '#a5bcd3',
-    light: '#ceddea',
-    highlight: '#edf7ff',
-    dark: '#184673',
-  },
-  supports: {
-    greenPrimary: '#5cbc80',
-    greenHighlight: '#edfff4',
-    greenDark: '#359258',
-  },
-  grays: {
-    dark: '#444',
-    white: '#fff',
-    steel: '#666',
-    jumbo: '#888',
-    silverSand: '#bbb',
-    platinum: '#e3e3e3',
-    gallery: '#eff0f2',
-    desertStorm: '#f8f8f8',
-  },
-};
 
 class Theme extends React.Component<{ children: React.Node }> {
   static childContextTypes = {
@@ -78,4 +53,4 @@ function withTheme(Page: React.ComponentType<any>) {
   };
 }
 
-export { Theme, theme, withTheme as default };
+export { Theme, withTheme as default };

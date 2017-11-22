@@ -10,10 +10,11 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
 import { Trans } from 'lingui-react';
 import styled from 'styled-components';
 import SrOnly from '../SrOnly';
+import theme from '../../style/theme';
 import media from '../helpers/media';
 
 const Button = styled.button`
-  color: #fff;
+  color: ${theme.colors.white};
   position: fixed;
   background-color: rgba(68, 68, 68, 0.1);
   height: 100%;
@@ -23,14 +24,11 @@ const Button = styled.button`
   align-items: center;
   justify-content: center;
   border-style: none;
-  opacity: ${p => (p.showOnMobile ? 1 : 0)};
   ${media.tablet`
-    opacity: 1;
+    opacity: 1 !important;
     background: none; 
-    color: #fff;
     
     &:hover, &:focus {
-      color: #fff;
       background: rgba(0,0,0,0.1);
     }
     transition: background 0.3s ease;
@@ -49,11 +47,10 @@ type Props = {
 const TouchOverlay = (props: Props) => [
   <Button
     key="left"
-    style={{ left: 0 }}
+    style={{ left: 0, opacity: props.showOnMobile ? 1 : 0 }}
     onClick={props.onRequestPrev}
     type="button"
     disabled={props.disablePrev}
-    showOnMobile={props.showOnMobile}
   >
     <SrOnly>
       <Trans>Previous chapter</Trans>
@@ -62,11 +59,10 @@ const TouchOverlay = (props: Props) => [
   </Button>,
   <Button
     key="right"
-    style={{ right: 0 }}
+    style={{ right: 0, opacity: props.showOnMobile ? 1 : 0 }}
     onClick={props.onRequestNext}
     type="button"
     disabled={props.disableNext}
-    showOnMobile={props.showOnMobile}
   >
     <SrOnly>
       <Trans>Next chapter</Trans>

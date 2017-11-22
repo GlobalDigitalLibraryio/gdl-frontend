@@ -14,6 +14,7 @@ import { Link } from '../../routes';
 import Container from '../Container';
 import Flex from '../Flex';
 import Logo from './GDL-logo.svg';
+import theme from '../../style/theme';
 
 const Nav = styled.nav`
   position: relative;
@@ -21,9 +22,8 @@ const Nav = styled.nav`
   ${media.tablet`
     min-height: 80px;
   `}
-  background: linear-gradient(0deg, #4884be 0%, ${props =>
-    props.theme.primaries.primary} 100%);
-  color: ${props => props.theme.grays.white};
+  background: linear-gradient(0deg, #4884be 0%, ${theme.colors.primary} 100%);
+  color: ${theme.colors.white};
   
   display: flex;
   align-items: stretch;
@@ -44,14 +44,13 @@ const HamburgerButton = styled.button.attrs({
   align-items: center;
   vertical-align: top;
   border: 1px solid transparent;
-  color: ${props => props.theme.grays.white};
+  color: ${theme.colors.white};
   font-size: 18px;
   font-weight: 600;
   > span {
     margin-left: 6px;
-    display: none;
-    ${media.tablet`
-      display: unset;
+    ${media.mobile`
+      display: none;
     `};
   }
 `;

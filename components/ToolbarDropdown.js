@@ -9,6 +9,7 @@ import * as React from 'react';
 import Downshift from 'downshift';
 import styled from 'styled-components';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
+import theme from '../style/theme';
 import Card from './Card';
 
 /* eslint-disable react/no-multi-comp */
@@ -27,20 +28,18 @@ const DropdownItemAnchor = styled.a`
   display: block;
   padding: 7px 15px;
   &:not(:last-child) {
-    border-bottom: 1px solid ${props => props.theme.grays.platinum};
+    border-bottom: 1px solid ${theme.colors.grayLight};
   }
 
   & svg {
-    color: ${props => props.theme.supports.greenDark};
+    color: ${theme.colors.greenDark};
     margin-right: 10px;
     ${props => !props.isSelected && 'visibility: hidden'};
   }
 
+  ${props => props.isActive && `background-color: ${theme.colors.highlight}`};
   ${props =>
-    props.isActive && `background-color: ${props.theme.primaries.highlight}`};
-  ${props =>
-    props.isSelected &&
-    `background-color: ${props.theme.supports.greenHighlight}`};
+    props.isSelected && `background-color: ${theme.colors.greenHighlight}`};
 
   transition: background-color 0.2s ease;
 `;
