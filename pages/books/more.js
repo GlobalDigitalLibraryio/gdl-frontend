@@ -161,7 +161,7 @@ class BookPage extends React.Component<Props, State> {
                 onClick={this.handleLoadMore}
                 type="button"
               >
-                Load more books
+                <Trans>Load more books</Trans>
               </MoreButton>
             )}
           </Box>
