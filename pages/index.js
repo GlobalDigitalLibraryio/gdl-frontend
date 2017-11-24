@@ -142,7 +142,7 @@ class BooksPage extends React.Component<Props> {
                     />
                     <Box>
                       <H3>
-                        <Trans>Editor’s pick</Trans>
+                        <Trans>Featured</Trans>
                       </H3>
                       <H4 style={{ margin: 0 }}>{editorPick.title}</H4>
                       <P fontSize={[12, 16]} lineHeight={[18, 24]}>
