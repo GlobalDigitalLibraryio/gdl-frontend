@@ -58,28 +58,10 @@ const Separator = (
   </li>
 );
 
+/**
+ * Only renders if currentPage is provided (so we don't render an unclickable icon the landing page)
+ */
 class Breadcrumb extends React.Component<Props> {
-  renderHome() {
-    // Render as link
-    if (this.props.currentPage) {
-      return (
-        <li>
-          <Link route="books" params={{ lang: this.props.language.code }}>
-            <a title="Home" aria-label="Home">
-              <MdHome />
-            </a>
-          </Link>
-        </li>
-      );
-    }
-    // Render as not a link :p
-    return (
-      <li aria-current="page">
-        <MdHome aria-label="Home" />
-      </li>
-    );
-  }
-
   renderMiddlePart() {
     const { query, asPath } = this.props.router;
     const { language } = this.props;
@@ -107,21 +89,29 @@ class Breadcrumb extends React.Component<Props> {
 
   render() {
     const { i18n, currentPage, language } = this.props;
+    if (!currentPage) {
+      // Push the language filter to the right if we aren't displaying any breadcrumb
+      return <div style={{ marginRight: 'auto' }} />;
+    }
 
     const middle = this.renderMiddlePart();
 
     return (
       <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
         <Ol>
-          {this.renderHome()}
-          {currentPage && [
-            Separator,
-            <li key="lang">
-              <Link route="books" params={{ lang: language.code }}>
-                <a>{language.name}</a>
-              </Link>
-            </li>,
-          ]}
+          <li>
+            <Link route="books" params={{ lang: this.props.language.code }}>
+              <a title="Home" aria-label="Home">
+                <MdHome />
+              </a>
+            </Link>
+          </li>
+          {Separator}
+          <li>
+            <Link route="books" params={{ lang: language.code }}>
+              <a>{language.name}</a>
+            </Link>
+          </li>
           {middle && Separator}
           {middle}
           {currentPage && [
