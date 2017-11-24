@@ -17,7 +17,7 @@ const NO_COVER_PLACEHOLDER_URL = '/static/placeholder-cover.png';
  */
 const CoverImage = ({ src, ...props }: { src: ?string }) => {
   const srcOrPlaceholder =
-    (src && `${src}?focalX=50&focalY=50&ratio=0.81`) ||
+    (src && `${src}?focalX=50&focalY=50&ratio=0.81&width=200`) ||
     NO_COVER_PLACEHOLDER_URL;
 
   return <Image src={srcOrPlaceholder} {...props} />;
