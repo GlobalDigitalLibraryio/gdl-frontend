@@ -16,7 +16,7 @@ import Meta from '../../components/Meta';
 import H1 from '../../components/H1';
 import H3 from '../../components/H3';
 import P from '../../components/P';
-import { HeroWithIcons } from './index';
+import { HeroWithIcons } from '../about';
 import Footer from '../../components/AboutFooter';
 
 const GlobalDigitalLibrary = () => (
@@ -100,9 +100,8 @@ const GlobalDigitalLibrary = () => (
         <P>
           The GDL-platform is being developed and will initially be operated by
           the{' '}
-          <A href="https://ndla.no/">
-            Norwegian Digital Learning Arena (NDLA)
-          </A>, based on NDLA’s open source digital infrastructure.{' '}
+          <A href="https://ndla.no/">Norwegian Digital Learning Arena (NDLA)</A>,
+          based on NDLA’s open source digital infrastructure.{' '}
           <A href="https://norad.no/en/front/">
             The Norwegian Agency for Development Cooperation (Norad)
           </A>{' '}

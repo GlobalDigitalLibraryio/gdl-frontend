@@ -8,20 +8,20 @@
 
 import * as React from 'react';
 import styled from 'styled-components';
-import { Link } from '../../routes';
-import H1 from '../../components/H1';
-import H3 from '../../components/H3';
-import P from '../../components/P';
-import A from '../../components/A';
-import Button from '../../components/Button';
-import Card from '../../components/Card';
-import Flex from '../../components/Flex';
-import Box from '../../components/Box';
-import Container from '../../components/Container';
-import defaultPage from '../../hocs/defaultPage';
-import Meta from '../../components/Meta';
-import Footer from '../../components/AboutFooter';
-import Hero from '../../components/Hero';
+import { Link } from '../routes';
+import H1 from '../components/H1';
+import H3 from '../components/H3';
+import P from '../components/P';
+import A from '../components/A';
+import Button from '../components/Button';
+import Card from '../components/Card';
+import Flex from '../components/Flex';
+import Box from '../components/Box';
+import Container from '../components/Container';
+import defaultPage from '../hocs/defaultPage';
+import Meta from '../components/Meta';
+import Footer from '../components/AboutFooter';
+import Hero from '../components/Hero';
 
 const CardImg = styled.img`
   width: 100%;

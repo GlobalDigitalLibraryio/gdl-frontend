@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 const nextRoutes = require('next-routes');
@@ -19,7 +19,7 @@ routes.add(
 
 // Locking down all other sites except the two about pages in PROD
 if (env.IS_PROD) {
-  routes.add('about', '/', 'about/index');
+  routes.add('about', '/', 'about');
 } else {
   routes.add('about');
   // in other environments we want the books page to be the landing page
@@ -30,13 +30,13 @@ if (env.IS_PROD) {
   routes.add('new', '/:lang/books/new', 'books/more');
 
   // Book page
-  routes.add('book', '/:lang/books/:id(\\d+)/:chapter(\\d+)?', 'books/index');
-  routes.add('bookByNew', '/:lang/books/new/:id(\\d+)', 'books/index');
+  routes.add('book', '/:lang/books/:id(\\d+)/:chapter(\\d+)?', 'books/_book');
+  routes.add('bookByNew', '/:lang/books/new/:id(\\d+)', 'books/_book');
   // We only allow a single digit in the level, so no + in the regex
   routes.add(
     'bookByLevel',
     '/:lang/books/level:level(\\d)/:id(\\d+)',
-    'books/index',
+    'books/_book',
   );
 
   // Read book
