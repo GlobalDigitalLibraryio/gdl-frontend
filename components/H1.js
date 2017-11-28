@@ -7,8 +7,8 @@
  */
 
 import styled from 'styled-components';
-import media from './helpers/media';
-import textAlign from './helpers/textAlign';
+import media from '../style/media';
+import textAlign from '../style/textAlign';
 
 const H1 = styled.h1`
   margin: 0;

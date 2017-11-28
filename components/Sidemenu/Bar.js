@@ -7,7 +7,7 @@
  */
 import styled from 'styled-components';
 import theme from '../../style/theme';
-import media from '../helpers/media';
+import media from '../../style/media';
 
 const Bar = styled.div`
   color: ${theme.colors.white};

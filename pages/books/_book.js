@@ -32,7 +32,7 @@ import P from '../../components/P';
 import Card, { CardBase } from '../../components/Card';
 import CardDropdown, { CardDropdownItem } from '../../components/CardDropdown';
 import BookCover from '../../components/BookCover';
-import Button from '../../components/Button';
+import ButtonLink from '../../components/ButtonLink';
 import Container from '../../components/Container';
 import Hero from '../../components/Hero';
 import Meta from '../../components/Meta';
@@ -130,8 +130,33 @@ class BookPage extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
-        <Hero colorful py={[15, 40]}>
+        <Hero py={[15, 20]}>
           <Container>
+            <Flex>
+              <BookCover book={book} />
+              <Card textAlign="center">
+                <H1 fontSize={[28, 38]}>{book.title}</H1>
+                <P fontSize={[12, 14]}>
+                  <Trans>
+                    from <span>{book.publisher.name}</span>
+                  </Trans>
+                </P>
+                <BookCover book={book} mx="auto" isHiddenTablet />
+                <P fontSize={[14, 16]}>{book.description}</P>
+                <Link
+                  route="read"
+                  passHref
+                  params={{ id: book.id, lang: book.language.code }}
+                  prefetch
+                >
+                  <ButtonLink>
+                    <Trans>Read</Trans>
+                  </ButtonLink>
+                </Link>
+              </Card>
+            </Flex>
+          </Container>
+          {/* <Container>
             <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
               <Flex flexDirection={['column', 'row']}>
                 <BookCover book={book} mr={20} isHiddenMobile flex="0 0 auto" />
@@ -155,7 +180,7 @@ class BookPage extends React.Component<Props> {
                 </Box>
               </Flex>
             </Card>
-          </Container>
+          </Container> */}
         </Hero>
         <Container py={[15, 20]}>
           <CardBase>

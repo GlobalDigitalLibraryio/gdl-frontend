@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -15,8 +15,8 @@ import {
   flex,
   responsiveStyle,
 } from 'styled-system';
-import height from './helpers/height';
-import textAlign from './helpers/textAlign';
+import height from '../style/height';
+import textAlign from '../style/textAlign';
 
 const order = responsiveStyle('order');
 

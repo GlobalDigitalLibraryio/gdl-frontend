@@ -9,7 +9,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import type { Language } from '../types';
-import media from './helpers/media';
+import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import Container from './Container';

@@ -7,14 +7,16 @@
  */
 
 import styled from 'styled-components';
-import theme from '../style/theme';
 import media from '../style/media';
+import theme from '../style/theme';
 
-const Button = styled.button`
+const ButtonLink = styled('a')`
   color: ${theme.colors.white};
-  border-radius: 4px;
-  background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  background: ${theme.colors.primary};
+  border-radius: 50px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   min-width: 150px;
   min-height: 38px;
   font-size: 16px;
@@ -24,12 +26,6 @@ const Button = styled.button`
   `} font-weight: 500;
   line-height: 22px;
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-  border-style: none;
-  &:hover,
-  &:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  }
 `;
 
-export default Button;
+export default ButtonLink;

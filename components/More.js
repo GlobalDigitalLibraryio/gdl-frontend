@@ -7,7 +7,7 @@
  */
 
 import styled from 'styled-components';
-import media from './helpers/media';
+import media from '../style/media';
 
 /**
  * Right aligned more links in header tags

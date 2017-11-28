@@ -20,15 +20,14 @@ import {
 import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
-import Box from '../components/Box';
 import Flex from '../components/Flex';
 import Card from '../components/Card';
-import BookCover from '../components/BookCover';
 import { Link } from '../routes';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Meta from '../components/Meta';
 import BookList from '../components/BookList';
+import ButtonLink from '../components/ButtonLink';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H4 from '../components/H4';
@@ -37,7 +36,7 @@ import ToolbarDropdown, {
   ToolbarDropdownItem,
 } from '../components/ToolbarDropdown';
 import theme from '../style/theme';
-import media from '../components/helpers/media';
+import media from '../style/media';
 
 type Props = {
   editorPicks: RemoteData<Array<Book>>,
@@ -151,22 +150,30 @@ class BooksPage extends React.Component<Props> {
           <HeroCovertitle>
             <Trans>Featured book</Trans>
           </HeroCovertitle>
-          <Container>
-            <Card p={['15px', '20px']}>
-              <Flex align="center" justify="center" column textAlign="center">
-                <H4>{editorPick.title}</H4>
-                <P fontSize={[12, 16]} lineHeight={[18, 24]}>
-                  {editorPick.description}
-                </P>
-                <Link
-                  route="book"
-                  params={{ id: editorPick.id, lang: editorPick.language.code }}
-                >
-                  <a>Go to book</a>
-                </Link>
-              </Flex>
-            </Card>
-          </Container>
+          <Card
+            p={['15px', '20px']}
+            w={375}
+            style={{
+              top: '20px',
+              right: '20px',
+              position: 'absolute',
+              height: '350px',
+            }}
+          >
+            <Flex align="center" justify="center" column textAlign="center">
+              <H4>{editorPick.title}</H4>
+              <P fontSize={[12, 16]} lineHeight={[18, 24]}>
+                {editorPick.description}
+              </P>
+              <Link
+                route="book"
+                params={{ id: editorPick.id, lang: editorPick.language.code }}
+                passHref
+              >
+                <ButtonLink>Go to book</ButtonLink>
+              </Link>
+            </Flex>
+          </Card>
         </HeroCover>
 
         <Hero py={[15, 22]}>

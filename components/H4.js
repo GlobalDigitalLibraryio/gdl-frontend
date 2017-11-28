@@ -7,7 +7,7 @@
  */
 
 import styled from 'styled-components';
-import media from './helpers/media';
+import media from '../style/media';
 
 const H4 = styled.h4`
   font-weight: 500;

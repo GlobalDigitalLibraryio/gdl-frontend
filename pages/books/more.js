@@ -14,15 +14,15 @@ import SrOnly from '../../components/SrOnly';
 import { fetchBooks } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import media from '../../components/helpers/media';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
 import BookGrid from '../../components/BookGrid';
-import rotate360 from '../../components/helpers/rotate360';
+import rotate360 from '../../style/rotate360';
 import theme from '../../style/theme';
+import media from '../../style/media';
 
 const PAGE_SIZE = 30;
 
