@@ -57,7 +57,7 @@ class Layout extends React.Component<Props, State> {
           menuIsExpanded={this.state.menuIsExpanded}
         />
         <Toolbar>
-          <Container mw="1075px">
+          <Container size="large">
             <Breadcrumb language={language} currentPage={currentPage} />
             {toolbarEnd}
           </Container>
@@ -69,7 +69,13 @@ class Layout extends React.Component<Props, State> {
             language={language}
           />
         )}
-        {children}
+        <Container
+          px={0}
+          style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)' }}
+          size="large"
+        >
+          {children}
+        </Container>
       </div>
     );
   }

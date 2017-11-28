@@ -74,7 +74,7 @@ type Props = {
 
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
   <Nav>
-    <Container mw="1075px">
+    <Container size="large">
       <Flex justify={['flex-start', 'flex-end']} flex="1 1 0" order={[0, 2]}>
         <HamburgerButton
           aria-label="Menu"

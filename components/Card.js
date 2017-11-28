@@ -11,7 +11,7 @@ import theme from '../style/theme';
 
 const CardBase = Box.extend`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
+  border-radius: ${theme.borderRadius};
   color: ${theme.colors.dark};
 `;
 

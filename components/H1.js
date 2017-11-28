@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -11,9 +11,7 @@ import media from './helpers/media';
 import textAlign from './helpers/textAlign';
 
 const H1 = styled.h1`
-  ${textAlign} &:first-child {
-    margin-top: 0;
-  }
+  margin: 0;
   font-weight: 500;
   font-size: 26px;
   line-height: 30px;
@@ -21,6 +19,7 @@ const H1 = styled.h1`
     font-size: 36px;
     line-height: 42px;
   `};
+  ${textAlign};
 `;
 
 export default H1;

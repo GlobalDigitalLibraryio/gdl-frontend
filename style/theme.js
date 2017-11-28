@@ -26,6 +26,11 @@ const theme = {
     highlight: '#edf7ff',
   },
   breakpoints: [`${TABLET_BREAKPOINT}px`],
+  borderRadius: '0px',
+  containers: {
+    large: '1024px',
+    small: '738px',
+  },
 };
 
 export { theme as default, TABLET_BREAKPOINT };

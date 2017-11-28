@@ -31,7 +31,7 @@ export default css`
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    background: ${theme.colors.grayLighter};
+    background: ${theme.colors.whiteTer};
     color: ${theme.colors.dark};
 
     a {
