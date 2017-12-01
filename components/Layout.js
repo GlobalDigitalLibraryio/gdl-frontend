@@ -53,7 +53,10 @@ class Layout extends React.Component<Props, State> {
   render() {
     const { children, toolbarEnd, language, currentPage } = this.props;
     return (
-      <div column style={{ minHeight: '100vh' }}>
+      <div
+        column
+        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
         <Navbar
           lang={language.code}
           onMenuClick={() => this.setState({ menuIsExpanded: true })}
@@ -72,17 +75,18 @@ class Layout extends React.Component<Props, State> {
             language={language}
           />
         )}
-        <Container
-          px={0}
+        <Box
+          mx="auto"
           style={{
             boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)',
             background: theme.colors.grayLighter,
             flex: '1',
+            width: '100%',
+            maxWidth: theme.containers.large,
           }}
-          size="large"
         >
           {children}
-        </Container>
+        </Box>
       </div>
     );
   }
