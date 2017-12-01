@@ -9,6 +9,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import type { Language } from '../types';
+import Flex from './Flex';
+import Box from './Box';
 import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
@@ -22,6 +24,7 @@ const Toolbar = styled.div`
   position: relative;
   font-size: 12px;
   height: 28px;
+  z-index: 10;
   ${media.tablet`
     font-size: 14px;
     height: 38px;
@@ -50,7 +53,7 @@ class Layout extends React.Component<Props, State> {
   render() {
     const { children, toolbarEnd, language, currentPage } = this.props;
     return (
-      <div>
+      <div column style={{ minHeight: '100vh' }}>
         <Navbar
           lang={language.code}
           onMenuClick={() => this.setState({ menuIsExpanded: true })}
@@ -71,7 +74,11 @@ class Layout extends React.Component<Props, State> {
         )}
         <Container
           px={0}
-          style={{ boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)' }}
+          style={{
+            boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)',
+            background: theme.colors.grayLighter,
+            flex: '1',
+          }}
           size="large"
         >
           {children}

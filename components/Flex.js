@@ -23,9 +23,13 @@ const column = props => (props.column ? 'flex-direction:column;' : null);
 
 const order = responsiveStyle('order');
 
+const display = responsiveStyle('display');
+
 const Flex = styled('div')`
-  display: flex;
-  ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
+  ${display} ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
 `;
 
+Flex.defaultProps = {
+  display: 'flex',
+};
 export default Flex;

@@ -20,7 +20,7 @@ import {
 import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
-import Flex from '../components/Flex';
+import Box from '../components/Box';
 import Card from '../components/Card';
 import { Link } from '../routes';
 import Container from '../components/Container';
@@ -37,6 +37,7 @@ import ToolbarDropdown, {
 } from '../components/ToolbarDropdown';
 import theme from '../style/theme';
 import media from '../style/media';
+import { flexCenter } from '../style/flex';
 
 type Props = {
   editorPicks: RemoteData<Array<Book>>,
@@ -48,12 +49,18 @@ type Props = {
 };
 
 const HeroCover = styled('div')`
-  background-image: url(${p => p.src});
+  background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
+  position: relative;
+  display: flex;
+  height: 210px;
+  padding: 15px;
+  justify-content: center;
   ${media.tablet`
     height: 390px;
-  `} height: 210px;
-  position: relative;
+    padding: 20px;
+    justify-content: flex-end;
+  `};
 `;
 
 const HeroCovertitle = styled('h3')`
@@ -64,7 +71,18 @@ const HeroCovertitle = styled('h3')`
   background: rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
   margin: 0;
-  padding: 5px;
+  padding: 8px;
+`;
+
+const CARD_OFFSET = '160px';
+const HeroCard = styled(Card)`
+  height: 100%;
+  ${flexCenter};
+  max-width: 375px;
+  flex: 1;
+  ${media.mobile`
+    margin-top: ${CARD_OFFSET};
+  `};
 `;
 
 class BooksPage extends React.Component<Props> {
@@ -145,22 +163,10 @@ class BooksPage extends React.Component<Props> {
         <HeroCover
           pt={['15px', '40px']}
           pb={['42px', '54px']}
-          src={editorPick.coverPhoto.large}
+          src={editorPick.coverPhoto && editorPick.coverPhoto.large}
         >
-          <HeroCovertitle>
-            <Trans>Featured book</Trans>
-          </HeroCovertitle>
-          <Card
-            p={['15px', '20px']}
-            w={375}
-            style={{
-              top: '20px',
-              right: '20px',
-              position: 'absolute',
-              height: '350px',
-            }}
-          >
-            <Flex align="center" justify="center" column textAlign="center">
+          <HeroCard p={[15, 20]}>
+            <Box textAlign="center">
               <H4>{editorPick.title}</H4>
               <P fontSize={[12, 16]} lineHeight={[18, 24]}>
                 {editorPick.description}
@@ -170,13 +176,16 @@ class BooksPage extends React.Component<Props> {
                 params={{ id: editorPick.id, lang: editorPick.language.code }}
                 passHref
               >
-                <ButtonLink>Go to book</ButtonLink>
+                <ButtonLink>Read book</ButtonLink>
               </Link>
-            </Flex>
-          </Card>
+            </Box>
+          </HeroCard>
+          <HeroCovertitle>
+            <Trans>Featured book</Trans>
+          </HeroCovertitle>
         </HeroCover>
 
-        <Hero py={[15, 22]}>
+        <Hero py={[15, 22]} mt={[CARD_OFFSET, 0]}>
           <Container>
             <H3>
               <Trans>New arrivals</Trans>{' '}
