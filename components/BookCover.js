@@ -6,15 +6,14 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { css } from 'styled-components';
-import { CardBase } from './Card';
+import styled from 'styled-components';
+import Card from './Card';
 import CoverImage from './CoverImage';
 import type { Book } from '../types';
-import theme from '../style/theme';
-import media from '../style/media';
+import { flexCenter } from '../style/flex';
 
 // Export css for reuse for book cover with title and and reading level
-const coverCss = css`
+/* const coverCss = css`
   background-color: ${theme.colors.whiteTer};
   overflow: hidden;
   display: flex;
@@ -63,4 +62,24 @@ BookCover.defaultProps = {
   w: ['150px', '200px'],
 };
 
-export { BookCover as default, coverCss };
+export { BookCover as default, coverCss }; */
+
+type Props = {
+  book: Book,
+};
+
+const Frame = styled(Card)`
+  ${flexCenter};
+`;
+
+const BookCover = ({ book }: Props) => (
+  <Frame p={5}>
+    <CoverImage
+      src={book.coverPhoto && book.coverPhoto.large}
+      h="100%"
+      w="100%"
+    />
+  </Frame>
+);
+
+export default BookCover;

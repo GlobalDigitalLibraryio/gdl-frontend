@@ -71,7 +71,12 @@ const HeroCovertitle = styled('h3')`
   background: rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
   margin: 0;
-  padding: 8px;
+  padding: 5px 15px;
+  font-weight: 500;
+  font-size: 14px;
+  ${media.tablet`
+    font-size: 18px;
+  `};
 `;
 
 const CARD_OFFSET = '160px';

@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { DateFormat, Trans } from 'lingui-react';
+import styled from 'styled-components';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -35,6 +36,12 @@ type Props = {
   }>,
 };
 
+// TODO: Replace background image
+const Hero = styled('div')`
+  background-image: url(/static/about/icons.png);
+  background-size: contain;
+`;
+
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
     const [book, similar] = await Promise.all([
@@ -59,7 +66,7 @@ class BookPage extends React.Component<Props> {
       .map(category => <span key={category.id}>{category.name}</span>)
       .map((item, index) => [index > 0 && ', ', item]);
 
-    const availableLanguages = book.availableLanguages.length - 1;
+    // const availableLanguages = book.availableLanguages.length - 1;
 
     return (
       <Layout currentPage={book.title} language={book.language}>
@@ -68,35 +75,41 @@ class BookPage extends React.Component<Props> {
           description={book.description}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
-
-        <Container py={[15, 20]}>
-          <Flex>
-            <Box w={2 / 5}>
-              <BookCover book={book} />
-            </Box>
-            <Card textAlign="center" w={3 / 5} p={[15, 20]}>
-              <H1 fontSize={[28, 38]}>{book.title}</H1>
-              <P fontSize={[12, 14]}>
-                <Trans>
-                  from <span>{book.publisher.name}</span>
-                </Trans>
-              </P>
-              <Link
-                route="read"
-                passHref
-                params={{ id: book.id, lang: book.language.code }}
-                prefetch
-              >
-                <ButtonLink>
-                  <Trans>Read Book</Trans>
-                </ButtonLink>
-              </Link>
-              <P fontSize={[14, 16]} lineHeight="1.5">
-                {book.description}
-              </P>
-            </Card>
-          </Flex>
-        </Container>
+        <Hero>
+          <Container py={[15, 20]}>
+            <Flex>
+              <Box h={[180, 365]} flex={['0', '0 0 260px']} mr={20}>
+                <BookCover book={book} />
+              </Box>
+              <Card textAlign="center" p={[15, 20]}>
+                <H1 fontSize={[28, 38]}>{book.title}</H1>
+                <P fontSize={[12, 14]}>
+                  <Trans>
+                    from <span>{book.publisher.name}</span>
+                  </Trans>
+                </P>
+                <P fontSize={[14, 16]} lineHeight="1.5">
+                  {book.description}
+                </P>
+                <Link
+                  route="read"
+                  passHref
+                  params={{ id: book.id, lang: book.language.code }}
+                  prefetch
+                >
+                  <ButtonLink>
+                    <Trans>Read Book</Trans>
+                  </ButtonLink>
+                </Link>
+                <Box>
+                  <a>
+                    <Trans>Download book</Trans>
+                  </a>
+                </Box>
+              </Card>
+            </Flex>
+          </Container>
+        </Hero>
         {/* <Container>
             <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
               <Flex flexDirection={['column', 'row']}>
@@ -125,34 +138,37 @@ class BookPage extends React.Component<Props> {
         <Container py={[15, 20]}>
           <Card p={[15, 20]}>
             <Flex display={['block', 'flex']}>
-              <Box w={[1, 0.45]}>
-                {book.datePublished && [
-                  <H6 key="header">
-                    <Trans>Published</Trans>
-                  </H6>,
-                  <DateFormat
-                    key="value"
-                    value={new Date(book.datePublished)}
-                  />,
-                ]}
-                <H6>
-                  <Trans>Authors</Trans>
-                </H6>
-                {contributors}
+              <Box>
+                {book.datePublished && (
+                  <Box my={10}>
+                    <H6>
+                      <Trans>Published</Trans>
+                    </H6>
+                    <DateFormat value={new Date(book.datePublished)} />
+                  </Box>
+                )}
+                <Box my={10}>
+                  <H6>
+                    <Trans>Authors</Trans>
+                  </H6>
+                  {contributors}
+                </Box>
               </Box>
-              <Box w={[1, 0.45]}>
+              <Box my={10}>
                 <H6>
                   <Trans>License</Trans>
                 </H6>
                 <A href={book.license.url}>{book.license.description}</A>
-                {book.categories.length > 0 && [
+              </Box>
+              {book.categories.length > 0 && (
+                <Box my={10}>
                   <H6>
                     <Trans>categories</Trans>
                   </H6>,
-                  { categories },
-                ]}
-              </Box>
-              <Box w={0.15}>Level 1</Box>
+                  {categories},
+                </Box>
+              )}
+              <Box flex="0 0 100px">Level 1</Box>
             </Flex>
           </Card>
           {/* <CardBase>
