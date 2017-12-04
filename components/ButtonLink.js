@@ -7,6 +7,7 @@
  */
 
 import styled from 'styled-components';
+import { lighten } from 'polished';
 import media from '../style/media';
 import theme from '../style/theme';
 
@@ -23,11 +24,17 @@ const ButtonLink = styled('a')`
   line-height: 22px;
   text-transform: uppercase;
   min-height: 38px;
+  min-width: 210px;
   font-size: 16px;
   ${media.tablet`
     min-height: 48px;
     font-size: 18px;
   `};
+  transition: all 0.15s ease-out;
+  &:hover {
+    transform: translateY(-1px);
+    background: ${lighten(0.04, theme.colors.link)};
+  }
 `;
 
 export default ButtonLink;

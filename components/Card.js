@@ -7,7 +7,7 @@
  */
 
 import styled, { css } from 'styled-components';
-import { space } from 'styled-system';
+import { space, flex } from 'styled-system';
 import Box from './Box';
 import theme from '../style/theme';
 import textAlign from '../style/textAlign';
@@ -36,6 +36,7 @@ const Card = styled('div')`
   ${cardCss};
   ${space};
   ${textAlign};
+  ${flex};
 `;
 
 export { Card as default, CardBase };

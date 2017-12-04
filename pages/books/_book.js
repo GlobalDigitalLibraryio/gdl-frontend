@@ -28,6 +28,7 @@ import ButtonLink from '../../components/ButtonLink';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
 import BookList from '../../components/BookList';
+import media from '../../style/media';
 
 type Props = {
   book: RemoteData<Book>,
@@ -35,6 +36,23 @@ type Props = {
     results: Array<Book>,
   }>,
 };
+
+const CoverWrap = styled('div')`
+  ${media.mobile`
+    position: absolute;
+    top: -120px;
+    z-index: 10;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150px;
+  `} height: 190px;
+
+  ${media.tablet`
+    height: 365px;
+    flex: 0 0 260px;
+    margin-right: 20px;
+  `};
+`;
 
 // TODO: Replace background image
 const Hero = styled('div')`
@@ -77,18 +95,18 @@ class BookPage extends React.Component<Props> {
         />
         <Hero>
           <Container py={[15, 20]}>
-            <Flex>
-              <Box h={[180, 365]} flex={['0', '0 0 260px']} mr={20}>
+            <Flex mt={[120, 0]} style={{ position: 'relative' }}>
+              <CoverWrap>
                 <BookCover book={book} />
-              </Box>
-              <Card textAlign="center" p={[15, 20]}>
+              </CoverWrap>
+              <Card textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
                 <H1 fontSize={[28, 38]}>{book.title}</H1>
-                <P fontSize={[12, 14]}>
+                <P fontSize={14}>
                   <Trans>
                     from <span>{book.publisher.name}</span>
                   </Trans>
                 </P>
-                <P fontSize={[14, 16]} lineHeight="1.5">
+                <P fontSize={[14, 16]} lineHeight={[22, 26]}>
                   {book.description}
                 </P>
                 <Link
@@ -101,10 +119,10 @@ class BookPage extends React.Component<Props> {
                     <Trans>Read Book</Trans>
                   </ButtonLink>
                 </Link>
-                <Box>
-                  <a>
+                <Box mt={[15, 20]}>
+                  <A href={book.downloads.epub}>
                     <Trans>Download book</Trans>
-                  </a>
+                  </A>
                 </Box>
               </Card>
             </Flex>
@@ -135,7 +153,7 @@ class BookPage extends React.Component<Props> {
               </Flex>
             </Card>
           </Container> */}
-        <Container py={[15, 20]}>
+        <Container pb={[15, 20]}>
           <Card p={[15, 20]}>
             <Flex display={['block', 'flex']}>
               <Box>
@@ -158,7 +176,7 @@ class BookPage extends React.Component<Props> {
                 <H6>
                   <Trans>License</Trans>
                 </H6>
-                <A href={book.license.url}>{book.license.description}</A>
+                <a href={book.license.url}>{book.license.description}</a>
               </Box>
               {book.categories.length > 0 && (
                 <Box my={10}>
@@ -171,127 +189,6 @@ class BookPage extends React.Component<Props> {
               <Box flex="0 0 100px">Level 1</Box>
             </Flex>
           </Card>
-          {/* <CardBase>
-            <Flex wrap>
-              <Flex w={[1, 1 / 2]} column>
-                <CardNested p={15}>
-                  <CardDropdown
-                    id="book-language"
-                    renderTarget={(getTargetProps, isOpen) => (
-                      <DropdownAction href="" {...getTargetProps()}>
-                        <MdLanguage />{' '}
-                        <Trans>Book language: {book.language.name}</Trans>
-                        {isOpen ? (
-                          <MdKeyboardArrowUp />
-                        ) : (
-                          <MdKeyboardArrowDown />
-                        )}
-                      </DropdownAction>
-                    )}
-                  >
-                    {({ getItemProps, highlightedIndex }) =>
-                      book.availableLanguages
-                        .filter(lang => lang.code !== book.language.code)
-                        .map((lang, index) => (
-                          <Link
-                            passHref
-                            route="book"
-                            key={lang.code}
-                            params={{ id: book.id, lang: lang.code }}
-                          >
-                            <CardDropdownItem
-                              {...getItemProps({ item: lang.code })}
-                              isActive={highlightedIndex === index}
-                            >
-                              {lang.name}
-                            </CardDropdownItem>
-                          </Link>
-                        ))
-                    }
-                  </CardDropdown>
-                  <Hr />
-                  <Plural
-                    value={availableLanguages}
-                    _0="This book is not available in other languages"
-                    one="This book is available in another language"
-                    other="This book is available in # other languages"
-                    render="small"
-                  />
-                </CardNested>
-                <Separator />
-                <CardNested p={15}>
-                  <CardDropdown
-                    id="download-book"
-                    renderTarget={(getTargetProps, isOpen) => (
-                      <DropdownAction {...getTargetProps()} href="">
-                        <MdFileDownload /> <Trans>Download book</Trans>
-                        {isOpen ? (
-                          <MdKeyboardArrowUp />
-                        ) : (
-                          <MdKeyboardArrowDown />
-                        )}
-                      </DropdownAction>
-                    )}
-                  >
-                    {({ getItemProps, highlightedIndex }) => [
-                      <CardDropdownItem
-                        key="epub"
-                        onClick={event => event.stopPropagation()}
-                        href={book.downloads.epub}
-                        {...getItemProps({ item: 'epub' })}
-                        isActive={highlightedIndex === 0}
-                      >
-                        <MdFileDownload /> <Trans>Download ePub</Trans>
-                      </CardDropdownItem>,
-                      <CardDropdownItem
-                        key="pdf"
-                        onClick={event => event.stopPropagation()}
-                        href={book.downloads.pdf}
-                        {...getItemProps({ item: 'pdf' })}
-                        isActive={highlightedIndex === 1}
-                      >
-                        <MdFileDownload /> <Trans>Download PDF</Trans>
-                      </CardDropdownItem>,
-                    ]}
-                  </CardDropdown>
-                </CardNested>
-                <CardNested flex="1 0 auto" p={15}>
-                  <DropdownAction>
-                    <MdTranslate /> <Trans>Translate book</Trans>
-                  </DropdownAction>
-                </CardNested>
-              </Flex>
-              <Box w={[1, 1 / 2]}>
-                <CardNested
-                  fontSize={[13, 15]}
-                  p={15}
-                  style={{ height: '100%' }}
-                >
-                  <ReadingLevel
-                    style={{ float: 'right' }}
-                    level={book.readingLevel}
-                  />
-                  {book.datePublished && (
-                    <BookMetaData heading="Published">
-                      <DateFormat value={new Date(book.datePublished)} />
-                    </BookMetaData>
-                  )}
-                  <BookMetaData my={10} heading="Authors">
-                    {contributors}
-                  </BookMetaData>
-                  <BookMetaData heading="License">
-                    <A href={book.license.url}>{book.license.description}</A>
-                  </BookMetaData>
-                  {book.categories.length > 0 && (
-                    <BookMetaData heading="categories">
-                      {categories}
-                    </BookMetaData>
-                  )}
-                </CardNested>
-              </Box>
-            </Flex>
-                </CardBase> */}
-
           <H3>
             <Trans>Similar</Trans>
           </H3>

@@ -70,10 +70,12 @@ type Props = {
 
 const Frame = styled(Card)`
   ${flexCenter};
+  width: 100%;
+  height: 100%;
 `;
 
 const BookCover = ({ book }: Props) => (
-  <Frame p={5}>
+  <Frame p={[5, 10]}>
     <CoverImage
       src={book.coverPhoto && book.coverPhoto.large}
       h="100%"

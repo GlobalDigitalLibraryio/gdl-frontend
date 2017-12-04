@@ -31,6 +31,7 @@ import ButtonLink from '../components/ButtonLink';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H4 from '../components/H4';
+import H1 from '../components/H1';
 import More from '../components/More';
 import ToolbarDropdown, {
   ToolbarDropdownItem,
@@ -81,10 +82,12 @@ const HeroCovertitle = styled('h3')`
 
 const CARD_OFFSET = '160px';
 const HeroCard = styled(Card)`
-  height: 100%;
   ${flexCenter};
-  max-width: 375px;
+  height: 100%;
   flex: 1;
+  ${media.tablet`
+    max-width: 375px;
+  `};
   ${media.mobile`
     margin-top: ${CARD_OFFSET};
   `};
@@ -172,8 +175,8 @@ class BooksPage extends React.Component<Props> {
         >
           <HeroCard p={[15, 20]}>
             <Box textAlign="center">
-              <H4>{editorPick.title}</H4>
-              <P fontSize={[12, 16]} lineHeight={[18, 24]}>
+              <H1>{editorPick.title}</H1>
+              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
                 {editorPick.description}
               </P>
               <Link
