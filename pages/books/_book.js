@@ -16,7 +16,7 @@ import { Link } from '../../routes';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Layout from '../../components/Layout';
-import ReadingLevel from '../../components/ReadingLevel';
+import Ribbon from '../../components/Ribbon';
 import A from '../../components/A';
 import H3 from '../../components/H3';
 import H1 from '../../components/H1';
@@ -84,8 +84,6 @@ class BookPage extends React.Component<Props> {
       .map(category => <span key={category.id}>{category.name}</span>)
       .map((item, index) => [index > 0 && ', ', item]);
 
-    // const availableLanguages = book.availableLanguages.length - 1;
-
     return (
       <Layout currentPage={book.title} language={book.language}>
         <Meta
@@ -128,65 +126,40 @@ class BookPage extends React.Component<Props> {
             </Flex>
           </Container>
         </Hero>
-        {/* <Container>
-            <Card textAlign={['center', 'left']} py={20} px={[15, 20]}>
-              <Flex flexDirection={['column', 'row']}>
-                <BookCover book={book} mr={20} isHiddenMobile flex="0 0 auto" />
-                <Box>
-                  <H1 fontSize={[28, 38]}>{book.title}</H1>
-                  <P fontSize={[12, 14]}>
-                    <Trans>
-                      from <span>{book.publisher.name}</span>
-                    </Trans>
-                  </P>
-                  <BookCover book={book} mx="auto" isHiddenTablet />
-                  <P fontSize={[14, 16]}>{book.description}</P>
-                  <Link
-                    route="read"
-                    params={{ id: book.id, lang: book.language.code }}
-                  >
-                    <Button>
-                      <Trans>Read</Trans>
-                    </Button>
-                  </Link>
-                </Box>
-              </Flex>
-            </Card>
-          </Container> */}
         <Container pb={[15, 20]}>
           <Card p={[15, 20]}>
+            <Ribbon level={book.readingLevel} />
             <Flex display={['block', 'flex']}>
               <Box>
                 {book.datePublished && (
-                  <Box my={10}>
+                  <Box mb={10}>
                     <H6>
                       <Trans>Published</Trans>
                     </H6>
                     <DateFormat value={new Date(book.datePublished)} />
                   </Box>
                 )}
-                <Box my={10}>
+                <Box mb={10}>
                   <H6>
                     <Trans>Authors</Trans>
                   </H6>
                   {contributors}
                 </Box>
               </Box>
-              <Box my={10}>
+              <Box mb={10}>
                 <H6>
                   <Trans>License</Trans>
                 </H6>
                 <a href={book.license.url}>{book.license.description}</a>
               </Box>
               {book.categories.length > 0 && (
-                <Box my={10}>
+                <Box mb={10}>
                   <H6>
                     <Trans>categories</Trans>
                   </H6>,
                   {categories},
                 </Box>
               )}
-              <Box flex="0 0 100px">Level 1</Box>
             </Flex>
           </Card>
           <H3>

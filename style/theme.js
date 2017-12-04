@@ -14,7 +14,6 @@ const theme = {
     link: '#0085dd',
     white: '#fff',
     dark: '#444',
-    primary: '#20588f',
     grayDarker: '#666', // Grey steel
     grayDark: '#888', // Grey Jumbo
     gray: '#bbb', // Silver Sand
@@ -29,6 +28,9 @@ const theme = {
       blue: '#1466b5',
       light: '#2c79b9',
       lighter: '#73a9d9',
+    },
+    greens: {
+      green: '#00ba6e',
     },
   },
   breakpoints: [`${TABLET_BREAKPOINT}px`],

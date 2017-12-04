@@ -30,7 +30,6 @@ import BookList from '../components/BookList';
 import ButtonLink from '../components/ButtonLink';
 import P from '../components/P';
 import H3 from '../components/H3';
-import H4 from '../components/H4';
 import H1 from '../components/H1';
 import More from '../components/More';
 import ToolbarDropdown, {

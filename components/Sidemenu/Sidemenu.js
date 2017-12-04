@@ -134,7 +134,7 @@ class Sidebar extends React.Component<Props, State> {
       <Backdrop onClick={this.onOutsideClick}>
         <KeyDown when="Escape" then={this.props.onCloseRequested} />
         <Container
-          mw={1075}
+          size="large"
           style={{ height: '100%', paddingLeft: 0, paddingRight: 0 }}
         >
           <Bar

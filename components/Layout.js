@@ -9,8 +9,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import type { Language } from '../types';
-import Flex from './Flex';
-import Box from './Box';
 import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
@@ -22,16 +20,26 @@ const Toolbar = styled.div`
   background: ${theme.colors.white};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   position: relative;
-  font-size: 12px;
+  font-size: 13px;
   height: 28px;
   z-index: 10;
   ${media.tablet`
-    font-size: 14px;
+    font-size: 16px;
     height: 38px;
   `} ${Container} {
     display: flex;
     height: 100%;
   }
+`;
+
+const Content = styled('div')`
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  background: ${theme.colors.grayLighter};
+  flex: 1;
+  width: 100%;
+  max-width: ${theme.containers.large};
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 type Props = {
@@ -75,18 +83,7 @@ class Layout extends React.Component<Props, State> {
             language={language}
           />
         )}
-        <Box
-          mx="auto"
-          style={{
-            boxShadow: '0 0 20px rgba(0, 0, 0, 0.2)',
-            background: theme.colors.grayLighter,
-            flex: '1',
-            width: '100%',
-            maxWidth: theme.containers.large,
-          }}
-        >
-          {children}
-        </Box>
+        <Content>{children}</Content>
       </div>
     );
   }
