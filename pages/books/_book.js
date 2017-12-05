@@ -29,6 +29,7 @@ import Container from '../../components/Container';
 import Meta from '../../components/Meta';
 import BookList from '../../components/BookList';
 import media from '../../style/media';
+import { flexColumnCentered } from '../../style/flex';
 
 type Props = {
   book: RemoteData<Book>,
@@ -52,6 +53,10 @@ const CoverWrap = styled('div')`
     flex: 0 0 260px;
     margin-right: 20px;
   `};
+`;
+
+const HeroCard = styled(Card)`
+  ${flexColumnCentered};
 `;
 
 // TODO: Replace background image
@@ -97,7 +102,7 @@ class BookPage extends React.Component<Props> {
               <CoverWrap>
                 <BookCover book={book} />
               </CoverWrap>
-              <Card textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
+              <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
                 <H1 fontSize={[28, 38]}>{book.title}</H1>
                 <P fontSize={14}>
                   <Trans>
@@ -122,7 +127,7 @@ class BookPage extends React.Component<Props> {
                     <Trans>Download book</Trans>
                   </A>
                 </Box>
-              </Card>
+              </HeroCard>
             </Flex>
           </Container>
         </Hero>
