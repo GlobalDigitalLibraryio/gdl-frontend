@@ -14,4 +14,3 @@ require('./ToolbarExample');
 require('./ContainerExample');
 require('./ButtonExample');
 require('./ReadingLevelExample');
-require('./CardDropdownExample');
