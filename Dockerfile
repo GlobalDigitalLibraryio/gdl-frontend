@@ -18,6 +18,7 @@ COPY server.js $APP_PATH
 COPY hocs $APP_PATH/hocs
 COPY style $APP_PATH/style
 COPY locale $APP_PATH/locale
+COPY lib $APP_PATH/lib
 COPY routes.js $APP_PATH
 COPY .babelrc $APP_PATH
 COPY env.js $APP_PATH

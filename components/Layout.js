@@ -63,6 +63,11 @@ type State = {
 };
 
 class Layout extends React.Component<Props, State> {
+  static defaultProps = {
+    language: {
+      lang: 'eng',
+    },
+  };
   state = {
     menuIsExpanded: false,
   };

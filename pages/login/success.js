@@ -1,0 +1,36 @@
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2017 GDL
+ *
+ * See LICENSE
+ */
+
+import * as React from 'react';
+import { Trans } from 'lingui-react';
+import defaultPage from '../../hocs/defaultPage';
+import Layout from '../../components/Layout';
+import Container from '../../components/Container';
+import Meta from '../../components/Meta';
+import { extractInfoFromHash } from '../../lib/auth/authHelpers';
+
+class LoginPage extends React.Component {
+  componentDidMount() {
+    // const { query: { access_token } } = this.props.url;
+    const { token } = extractInfoFromHash();
+    console.log(token);
+  }
+
+  render() {
+    const { i18n } = this.props;
+
+    return (
+      <Layout>
+        <Meta title={i18n.t`Login`} description={i18n.t`Login`} />
+        <Container>You are logged in bro!</Container>
+      </Layout>
+    );
+  }
+}
+
+export default defaultPage(LoginPage);

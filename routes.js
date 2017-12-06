@@ -22,6 +22,7 @@ if (env.IS_PROD) {
   routes.add('about', '/', 'about');
 } else {
   routes.add('about');
+  routes.add('login');
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
   // Book grid by level (we only allow a single digit for level, so no + in the regex)
