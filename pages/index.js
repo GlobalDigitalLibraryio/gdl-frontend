@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
+import styled from 'styled-components';
 import { MdCheck } from 'react-icons/lib/md';
 import {
   fetchEditorPicks,
@@ -20,21 +21,23 @@ import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
 import Box from '../components/Box';
-import Flex from '../components/Flex';
 import Card from '../components/Card';
-import BookCover from '../components/BookCover';
 import { Link } from '../routes';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Meta from '../components/Meta';
 import BookList from '../components/BookList';
+import ButtonLink from '../components/ButtonLink';
 import P from '../components/P';
 import H3 from '../components/H3';
-import H4 from '../components/H4';
+import H1 from '../components/H1';
 import More from '../components/More';
 import ToolbarDropdown, {
   ToolbarDropdownItem,
 } from '../components/ToolbarDropdown';
+import theme from '../style/theme';
+import media from '../style/media';
+import { flexCenter } from '../style/flex';
 
 type Props = {
   editorPicks: RemoteData<Array<Book>>,
@@ -44,6 +47,50 @@ type Props = {
   i18n: I18n,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
 };
+
+const HeroCover = styled('div')`
+  background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
+  background-size: cover;
+  position: relative;
+  display: flex;
+  height: 210px;
+  padding: 15px;
+  justify-content: center;
+  ${media.tablet`
+    height: 390px;
+    padding: 20px;
+    justify-content: flex-end;
+  `};
+`;
+
+const HeroCovertitle = styled('h3')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: ${theme.colors.white};
+  background: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  margin: 0;
+  padding: 5px 15px;
+  font-weight: 500;
+  font-size: 14px;
+  ${media.tablet`
+    font-size: 18px;
+  `};
+`;
+
+const CARD_OFFSET = '160px';
+const HeroCard = styled(Card)`
+  ${flexCenter};
+  height: 100%;
+  flex: 1;
+  ${media.tablet`
+    max-width: 375px;
+  `};
+  ${media.mobile`
+    margin-top: ${CARD_OFFSET};
+  `};
+`;
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query }) {
@@ -120,43 +167,32 @@ class BooksPage extends React.Component<Props> {
       >
         <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
 
-        <Hero colorful pt={['15px', '40px']} pb={['42px', '54px']}>
-          <Container>
-            <Link
-              route="book"
-              params={{ id: editorPick.id, lang: editorPick.language.code }}
-            >
-              <a>
-                <Card
-                  pl={['15px', '20px']}
-                  pr={['15px', '80px']}
-                  py={['15px', '20px']}
-                >
-                  <Flex>
-                    <BookCover
-                      book={editorPick}
-                      h={['148px', '255px']}
-                      w={['120px', '200px']}
-                      mr={['15px', '20px']}
-                      flex="0 0 auto"
-                    />
-                    <Box>
-                      <H3>
-                        <Trans>Featured book</Trans>
-                      </H3>
-                      <H4 style={{ margin: 0 }}>{editorPick.title}</H4>
-                      <P fontSize={[12, 16]} lineHeight={[18, 24]}>
-                        {editorPick.description}
-                      </P>
-                    </Box>
-                  </Flex>
-                </Card>
-              </a>
-            </Link>
-          </Container>
-        </Hero>
+        <HeroCover
+          pt={['15px', '40px']}
+          pb={['42px', '54px']}
+          src={editorPick.coverPhoto && editorPick.coverPhoto.large}
+        >
+          <HeroCard p={[15, 20]}>
+            <Box textAlign="center">
+              <H1>{editorPick.title}</H1>
+              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+                {editorPick.description}
+              </P>
+              <Link
+                route="book"
+                params={{ id: editorPick.id, lang: editorPick.language.code }}
+                passHref
+              >
+                <ButtonLink>Read book</ButtonLink>
+              </Link>
+            </Box>
+          </HeroCard>
+          <HeroCovertitle>
+            <Trans>Featured book</Trans>
+          </HeroCovertitle>
+        </HeroCover>
 
-        <Hero py={[15, 22]}>
+        <Hero py={[15, 22]} mt={[CARD_OFFSET, 0]}>
           <Container>
             <H3>
               <Trans>New arrivals</Trans>{' '}

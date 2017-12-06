@@ -9,22 +9,21 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { MdMenu } from 'react-icons/lib/md';
-import media from '../helpers/media';
 import { Link } from '../../routes';
 import Container from '../Container';
 import Flex from '../Flex';
 import Logo from './GDL-logo.svg';
 import theme from '../../style/theme';
+import media from '../../style/media';
 
 const Nav = styled.nav`
   position: relative;
   min-height: 54px;
   ${media.tablet`
     min-height: 80px;
-  `}
-  background: linear-gradient(0deg, #4884be 0%, ${theme.colors.primary} 100%);
+  `} background: ${theme.colors.blues.blue};
   color: ${theme.colors.white};
-  
+
   display: flex;
   align-items: stretch;
 
@@ -74,7 +73,7 @@ type Props = {
 
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
   <Nav>
-    <Container mw="1075px">
+    <Container size="large">
       <Flex justify={['flex-start', 'flex-end']} flex="1 1 0" order={[0, 2]}>
         <HamburgerButton
           aria-label="Menu"

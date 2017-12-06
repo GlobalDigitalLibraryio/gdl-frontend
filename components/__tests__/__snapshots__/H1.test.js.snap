@@ -2,13 +2,10 @@
 
 exports[`Renders 1`] = `
 .c0 {
+  margin: 0;
   font-weight: 500;
   font-size: 26px;
   line-height: 30px;
-}
-
-.c0:first-child {
-  margin-top: 0;
 }
 
 @media (min-width:769px) {

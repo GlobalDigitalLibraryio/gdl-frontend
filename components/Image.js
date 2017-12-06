@@ -8,7 +8,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { width } from 'styled-system';
-import height from './helpers/height';
+import height from '../style/height';
 
 // Base on gatbsy-image Kyle Mathews
 // See https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-image/src/index.js

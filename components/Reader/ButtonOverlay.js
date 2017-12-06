@@ -11,7 +11,7 @@ import { Trans } from 'lingui-react';
 import styled from 'styled-components';
 import SrOnly from '../SrOnly';
 import theme from '../../style/theme';
-import media from '../helpers/media';
+import media from '../../style/media';
 
 const Button = styled.button`
   color: ${theme.colors.white};

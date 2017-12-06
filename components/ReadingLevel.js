@@ -9,7 +9,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Trans } from 'lingui-react';
-import media from './helpers/media';
+import media from '../style/media';
 import theme from '../style/theme';
 
 const Label = styled.span`

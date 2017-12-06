@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -12,14 +12,24 @@ import {
   flexDirection,
   flexWrap,
   alignItems,
+  space,
+  flex,
+  responsiveStyle,
 } from 'styled-system';
-import Box from './Box';
+import height from '../style/height';
+import textAlign from '../style/textAlign';
 
 const column = props => (props.column ? 'flex-direction:column;' : null);
 
-const Flex = styled(Box)`
-  display: flex;
-  ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent};
+const order = responsiveStyle('order');
+
+const display = responsiveStyle('display');
+
+const Flex = styled('div')`
+  ${display} ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
 `;
 
+Flex.defaultProps = {
+  display: 'flex',
+};
 export default Flex;

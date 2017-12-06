@@ -22,11 +22,13 @@ type Props = {
   route: (book: Book) => string,
 };
 
+// The inline style here on the anchor ensures the box shadow doesn't get clipped.
+// TODO: Fix this properly
 const BookList = ({ books, route, ...props }: Props) => (
   <FlexScroller mx={-6} {...props}>
     {books.map(book => (
       <Link route={route(book)} key={book.id}>
-        <a>
+        <a style={{ marginBottom: '2px' }}>
           <BookCardCover book={book} mx={6} />
         </a>
       </Link>

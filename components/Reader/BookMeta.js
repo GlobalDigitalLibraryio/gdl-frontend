@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'styled-components';
-import media from '../helpers/media';
+import media from '../../style/media';
 import theme from '../../style/theme';
 
 const Lines = styled.div`

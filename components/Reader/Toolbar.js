@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { Trans } from 'lingui-react';
 import { MdBackspace } from 'react-icons/lib/md';
 import theme from '../../style/theme';
-import media from '../helpers/media';
+import media from '../../style/media';
 
 const Div = styled.div`
   position: fixed;

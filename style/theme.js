@@ -11,10 +11,9 @@ const TABLET_BREAKPOINT = 769;
 // TODO: Move all colors into the colors object
 const theme = {
   colors: {
-    link: '#1566b6',
+    link: '#0085dd',
     white: '#fff',
     dark: '#444',
-    primary: '#20588f',
     grayDarker: '#666', // Grey steel
     grayDark: '#888', // Grey Jumbo
     gray: '#bbb', // Silver Sand
@@ -24,8 +23,22 @@ const theme = {
     greenHighlight: '#edfff4',
     greenDark: '#359258',
     highlight: '#edf7ff',
+    blues: {
+      dark: '#004380',
+      blue: '#1466b5',
+      light: '#2c79b9',
+      lighter: '#73a9d9',
+    },
+    greens: {
+      green: '#00ba6e',
+    },
   },
   breakpoints: [`${TABLET_BREAKPOINT}px`],
+  borderRadius: '0px',
+  containers: {
+    large: '1024px',
+    small: '738px',
+  },
 };
 
 export { theme as default, TABLET_BREAKPOINT };

@@ -8,7 +8,7 @@
 
 import { css } from 'styled-components';
 import type { TaggedTemplateLiteral } from 'styled-components';
-import { TABLET_BREAKPOINT } from '../../style/theme';
+import { TABLET_BREAKPOINT } from './theme';
 
 /**
  * Mobile first media template

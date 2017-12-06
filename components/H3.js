@@ -2,12 +2,12 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
 import styled from 'styled-components';
-import media from './helpers/media';
+import media from '../style/media';
 
 const H3 = styled.h3`
   &:first-child {

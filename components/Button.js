@@ -7,8 +7,8 @@
  */
 
 import styled from 'styled-components';
-import media from './helpers/media';
 import theme from '../style/theme';
+import media from '../style/media';
 
 const Button = styled.button`
   color: ${theme.colors.white};

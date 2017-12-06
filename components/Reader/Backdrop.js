@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import styled from 'styled-components';
-import media from '../helpers/media';
+import media from '../../style/media';
 
 // A grey backdrop that's only visible on tablets/desktops
 const Backdrop = styled.div`

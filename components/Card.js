@@ -6,19 +6,24 @@
  * See LICENSE
  */
 
-import Box from './Box';
+import styled, { css } from 'styled-components';
+import { space, flex } from 'styled-system';
 import theme from '../style/theme';
+import textAlign from '../style/textAlign';
 
-const CardBase = Box.extend`
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  color: ${theme.colors.dark};
-`;
-
-const Card = CardBase.extend`
+const cardCss = css`
   background: ${theme.colors.white};
   position: relative;
   max-width: 100%;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  color: ${theme.colors.dark};
 `;
 
-export { Card as default, CardBase };
+const Card = styled('div')`
+  ${cardCss};
+  ${space};
+  ${textAlign};
+  ${flex};
+`;
+
+export default Card;
