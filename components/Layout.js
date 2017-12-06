@@ -62,7 +62,6 @@ class Layout extends React.Component<Props, State> {
     const { children, toolbarEnd, language, currentPage } = this.props;
     return (
       <div
-        column
         style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
       >
         <Navbar

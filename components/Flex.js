@@ -19,14 +19,12 @@ import {
 import height from '../style/height';
 import textAlign from '../style/textAlign';
 
-const column = props => (props.column ? 'flex-direction:column;' : null);
-
 const order = responsiveStyle('order');
 
 const display = responsiveStyle('display');
 
 const Flex = styled('div')`
-  ${display} ${flexWrap} ${column} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
+  ${display} ${flexWrap} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
 `;
 
 Flex.defaultProps = {
