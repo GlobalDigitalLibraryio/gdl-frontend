@@ -12,13 +12,21 @@ import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
-import { extractInfoFromHash } from '../../lib/auth/authHelpers';
+import {
+  extractInfoFromHash,
+  setToken,
+  parseHash,
+} from '../../lib/auth/authHelpers';
 
-class LoginPage extends React.Component {
-  componentDidMount() {
+class Success extends React.Component {
+  async componentDidMount() {
     // const { query: { access_token } } = this.props.url;
-    const { token } = extractInfoFromHash();
-    console.log(token);
+    // const { token } = extractInfoFromHash();
+    const authResult = await parseHash();
+    console.log(authResult);
+    if (authResult.idToken) {
+      setToken(authResult.idToken);
+    }
   }
 
   render() {
@@ -33,4 +41,4 @@ class LoginPage extends React.Component {
   }
 }
 
-export default defaultPage(LoginPage);
+export default defaultPage(Success);
