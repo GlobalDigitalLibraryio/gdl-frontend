@@ -94,7 +94,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     const disablePrev = chapterNumber <= 1;
 
     return (
-      <Container px={0} mw={1075}>
+      <Container px={0} size="large">
         <Backdrop />
         <Swipeable
           onSwipedLeft={this.props.onRequestNext}
@@ -110,23 +110,15 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           />
           <Card>
             <Toolbar
-              showOnMobile={this.state.showOverlay}
               onRequestClose={this.props.onRequestClose}
+              currentChapter={chapterNumber}
+              totalChapters={numOfChapters}
             />
             <Box px={[40, 120]} pb={20} flex="1 0 auto">
-              <BookMeta
-                currentChapter={chapterNumber}
-                totalChapters={numOfChapters}
-                hideOnTablet
-              />
               {chapter && (
                 <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
               )}
-              <BookMeta
-                currentChapter={chapterNumber}
-                totalChapters={numOfChapters}
-                title={book.title}
-              />
+              <BookMeta title={book.title} />
             </Box>
           </Card>
         </Swipeable>
@@ -135,6 +127,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           then={this.props.onRequestNext}
           disabled={disableNext}
         />
+        <KeyDown when="Escape" then={this.props.onRequestClose} />
         <KeyDown
           when="ArrowLeft"
           then={this.props.onRequestPrevious}

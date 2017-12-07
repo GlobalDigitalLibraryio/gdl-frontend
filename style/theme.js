@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-const TABLET_BREAKPOINT = 769;
+const TABLET_BREAKPOINT = 768;
 
 // TODO: Move all colors into the colors object
 const theme = {
@@ -35,6 +35,10 @@ const theme = {
   },
   breakpoints: [`${TABLET_BREAKPOINT}px`],
   borderRadius: '0px',
+  boxShadows: {
+    small: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    large: '0 4px 20px rgba(0, 0, 0, 0.2)',
+  },
   containers: {
     large: '1024px',
     small: '738px',

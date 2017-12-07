@@ -10,7 +10,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { MdMenu } from 'react-icons/lib/md';
 import { Link } from '../../routes';
-import Container from '../Container';
+import { navContainerFragment } from '../Container';
 import Flex from '../Flex';
 import Logo from './GDL-logo.svg';
 import theme from '../../style/theme';
@@ -26,17 +26,9 @@ const Nav = styled.nav`
 
   display: flex;
   align-items: stretch;
-
-  ${Container} {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
 `;
 
-const HamburgerButton = styled.button.attrs({
-  type: 'button',
-})`
+const HamburgerButton = styled.button`
   background: transparent;
   display: inline-flex;
   justify-content: center;
@@ -71,11 +63,19 @@ type Props = {
   onMenuClick(): void,
 };
 
+const Container = styled('div')`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  ${navContainerFragment};
+`;
+
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
   <Nav>
-    <Container size="large">
+    <Container>
       <Flex justify={['flex-start', 'flex-end']} flex="1 1 0" order={[0, 2]}>
         <HamburgerButton
+          type="button"
           aria-label="Menu"
           onClick={onMenuClick}
           aria-expanded={menuIsExpanded}

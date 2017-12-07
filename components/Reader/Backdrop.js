@@ -16,7 +16,7 @@ const Backdrop = styled.div`
   top: 0;
   position: fixed;
   z-index: -2;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   ${media.mobile`
     display: none;
   `};

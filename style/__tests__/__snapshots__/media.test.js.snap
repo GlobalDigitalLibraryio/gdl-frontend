@@ -9,7 +9,7 @@ Array [
   @media (",
   "min",
   "-width: ",
-  "769",
+  "768",
   "px) {
     ",
   "background-red;",

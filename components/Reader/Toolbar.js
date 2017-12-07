@@ -8,51 +8,60 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Trans } from 'lingui-react';
-import { MdBackspace } from 'react-icons/lib/md';
+import { MdClose } from 'react-icons/lib/md';
+import SrOnly from '../SrOnly';
 import theme from '../../style/theme';
 import media from '../../style/media';
+import { flexCenter } from '../../style/flex';
 
 const Div = styled.div`
-  position: fixed;
+  position: relative;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
-  box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.2);
   color: ${theme.colors.grayDark};
-  background-color: ${theme.colors.whiteTer};
   border-bottom: 1px solid ${theme.colors.grayLight};
+  background: ${theme.colors.white};
+  ${flexCenter};
 
   font-size: 14px;
   min-height: 48px;
+  margin-bottom: 20px;
+  span {
+    margin-left: auto;
+    margin-right: auto;
+  }
   ${media.tablet`
-    min-height: 48px;
-    font-size: 16px;
-    box-shadow: none;
-    display: flex !important;
-    position: sticky;
     margin-bottom: 50px;
   `};
 `;
 
-const Button = styled.button.attrs({
-  type: 'button',
-})`
+const Button = styled.button`
   background: transparent;
-  border-radius: 0;
   border: none;
-  font-size: 14px;
+  padding: 10px;
+  position: absolute;
+  right: 0;
   color: ${theme.colors.dark};
 `;
 
 type Props = {
-  showOnMobile: boolean,
   onRequestClose(): void,
+  currentChapter: number,
+  totalChapters: number,
 };
 
 const Toolbar = (props: Props) => (
-  <Div style={{ display: props.showOnMobile ? 'flex' : 'none' }}>
-    <Button onClick={props.onRequestClose}>
-      <MdBackspace /> <Trans>Close book</Trans>
+  <Div>
+    <span>
+      {props.currentChapter} / {props.totalChapters}
+    </span>
+    <Button onClick={props.onRequestClose} type="button">
+      <MdClose />{' '}
+      <SrOnly>
+        <Trans>Close book</Trans>
+      </SrOnly>
     </Button>
   </Div>
 );

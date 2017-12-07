@@ -12,13 +12,13 @@ import type { Language } from '../types';
 import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
-import Container from './Container';
+import { navContainerFragment } from './Container';
 import Sidemenu from './Sidemenu';
 import theme from '../style/theme';
 
 const Toolbar = styled.div`
   background: ${theme.colors.white};
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  box-shadow: ${theme.boxShadows.small};
   position: relative;
   font-size: 13px;
   height: 28px;
@@ -26,20 +26,29 @@ const Toolbar = styled.div`
   ${media.tablet`
     font-size: 16px;
     height: 38px;
-  `} ${Container} {
-    display: flex;
-    height: 100%;
-  }
+  `};
 `;
 
-const Content = styled('div')`
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+const Container = styled('div')`
+  display: flex;
+  height: 100%;
+  ${navContainerFragment};
+`;
+
+const ContentWrapper = styled('div')`
+  box-shadow: ${theme.boxShadows.large};
   background: ${theme.colors.grayLighter};
   flex: 1;
   width: 100%;
   max-width: ${theme.containers.large};
   margin-left: auto;
   margin-right: auto;
+`;
+
+const PageWrapper = styled('div')`
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 `;
 
 type Props = {
@@ -61,16 +70,14 @@ class Layout extends React.Component<Props, State> {
   render() {
     const { children, toolbarEnd, language, currentPage } = this.props;
     return (
-      <div
-        style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
-      >
+      <PageWrapper>
         <Navbar
           lang={language.code}
           onMenuClick={() => this.setState({ menuIsExpanded: true })}
           menuIsExpanded={this.state.menuIsExpanded}
         />
         <Toolbar>
-          <Container size="large">
+          <Container>
             <Breadcrumb language={language} currentPage={currentPage} />
             {toolbarEnd}
           </Container>
@@ -82,8 +89,8 @@ class Layout extends React.Component<Props, State> {
             language={language}
           />
         )}
-        <Content>{children}</Content>
-      </div>
+        <ContentWrapper>{children}</ContentWrapper>
+      </PageWrapper>
     );
   }
 }

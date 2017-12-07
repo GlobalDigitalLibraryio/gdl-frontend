@@ -133,9 +133,9 @@ class BookPage extends React.Component<Props> {
         </Hero>
         <Container pb={[15, 20]}>
           <Card p={[15, 20]}>
-            <Ribbon level={book.readingLevel} />
             <Flex display={['block', 'flex']}>
-              <Box>
+              <Ribbon level={book.readingLevel} />
+              <Box flex="1 1 50%" mr={[0, '5%']}>
                 {book.datePublished && (
                   <Box mb={10}>
                     <H6>
@@ -151,7 +151,7 @@ class BookPage extends React.Component<Props> {
                   {contributors}
                 </Box>
               </Box>
-              <Box mb={10}>
+              <Box flex="1 1 50%">
                 <H6>
                   <Trans>License</Trans>
                 </H6>

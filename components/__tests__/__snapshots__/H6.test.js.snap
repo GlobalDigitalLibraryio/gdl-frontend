@@ -10,7 +10,7 @@ exports[`Renders 1`] = `
   line-height: 16px;
 }
 
-@media (min-width:769px) {
+@media (min-width:768px) {
   .c0 {
     font-size: 12px;
     line-height: 18px;
