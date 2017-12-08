@@ -12,18 +12,11 @@ import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Meta from '../../components/Meta';
-import {
-  extractInfoFromHash,
-  setToken,
-  parseHash,
-} from '../../lib/auth/authHelpers';
+import { setToken, parseHash } from '../../lib/auth/authHelpers';
 
 class Success extends React.Component {
   async componentDidMount() {
-    // const { query: { access_token } } = this.props.url;
-    // const { token } = extractInfoFromHash();
     const authResult = await parseHash();
-    console.log(authResult);
     if (authResult.idToken) {
       setToken(authResult.idToken);
     }
