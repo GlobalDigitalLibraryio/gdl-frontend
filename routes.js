@@ -47,6 +47,9 @@ if (env.IS_PROD) {
     '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
     'books/read',
   );
+
+  // Translate book
+  routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
 }
 
 module.exports = routes;

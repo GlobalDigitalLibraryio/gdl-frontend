@@ -18,11 +18,11 @@ import H1 from '../components/H1';
 import { loginSocialMedia } from '../lib/auth/authHelpers';
 import { buttonFragment } from '../components/ButtonLink';
 
-const Google = styled('button')`
+const GoogleButton = styled('button')`
   ${buttonFragment('#db3236')};
 `;
 
-const Facebook = styled('button')`
+const FacebookButton = styled('button')`
   ${buttonFragment('#3b5998')};
 `;
 
@@ -39,14 +39,14 @@ class LoginPage extends React.Component {
               <H1>Login using</H1>
             </Trans>
             <p>
-              <Google onClick={() => loginSocialMedia('google-oauth2')}>
+              <GoogleButton onClick={() => loginSocialMedia('google-oauth2')}>
                 Google
-              </Google>
+              </GoogleButton>
             </p>
             <p>
-              <Facebook onClick={() => loginSocialMedia('facebook')}>
+              <FacebookButton onClick={() => loginSocialMedia('facebook')}>
                 Facebook
-              </Facebook>
+              </FacebookButton>
             </p>
           </Box>
         </Container>
