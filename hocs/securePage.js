@@ -7,22 +7,28 @@
  */
 
 import * as React from 'react';
+import Link from 'next/link';
 import defaultPage from './defaultPage';
-import { getAccessToken } from '../lib/auth/authHelpers';
+import { getAuthTokenTokenFromLocalStorage } from '../lib/auth/token';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
 
+/**
+ * A HoC that ensures users are authenticated before displaying content
+ */
 const securePageHoc = Page =>
   class SecurePage extends React.Component<any> {
     static getInitialProps(ctx) {
-      return Page.getInitialProps && Page.getInitialProps(ctx);
+      return typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx);
     }
 
     render() {
-      if (!getAccessToken()) {
+      if (!getAuthTokenTokenFromLocalStorage()) {
         return (
           <Layout>
-            <Container>Please login to continue</Container>
+            <Container pt={50}>
+              Please <Link href="/auth/sign-in" prefetch><a>login</a></Link> to continue
+            </Container>
           </Layout>
         );
       }

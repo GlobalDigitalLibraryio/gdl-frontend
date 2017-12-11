@@ -29,13 +29,13 @@ const Toolbar = styled.div`
   `};
 `;
 
-const Container = styled('div')`
+const Container = styled('div') `
   display: flex;
   height: 100%;
   ${navContainerFragment};
 `;
 
-const ContentWrapper = styled('div')`
+const ContentWrapper = styled('div') `
   box-shadow: ${theme.boxShadows.large};
   background: ${theme.colors.grayLighter};
   flex: 1;
@@ -45,7 +45,7 @@ const ContentWrapper = styled('div')`
   margin-right: auto;
 `;
 
-const PageWrapper = styled('div')`
+const PageWrapper = styled('div') `
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -65,7 +65,8 @@ type State = {
 class Layout extends React.Component<Props, State> {
   static defaultProps = {
     language: {
-      lang: 'eng',
+      code: 'eng',
+      name: 'English',
     },
   };
   state = {

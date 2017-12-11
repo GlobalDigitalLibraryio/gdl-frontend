@@ -26,8 +26,10 @@ type Props = {
 };
 
 class TranslatePage extends React.Component<Props> {
-  static async getInitialProps({ query }) {
-    const [book] = await Promise.all([fetchBook(query.id, query.lang)]);
+  static async getInitialProps({ query, accessToken }) {
+    const [book] = await Promise.all([
+      fetchBook(query.id, query.lang)(accessToken),
+    ]);
 
     return {
       book,

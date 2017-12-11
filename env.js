@@ -35,4 +35,9 @@ const IS_PROD = gdlEnviroment === 'prod';
 module.exports = {
   bookApiUrl,
   IS_PROD,
+  clientAuth: {
+    clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
+    audience: 'gdl_system',
+    domain: 'digitallibrary.eu.auth0.com',
+  },
 };
