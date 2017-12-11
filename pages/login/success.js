@@ -18,7 +18,7 @@ class Success extends React.Component {
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.idToken) {
-      setToken(authResult.idToken);
+      setToken(authResult.accessToken, authResult.idToken);
     }
   }
 

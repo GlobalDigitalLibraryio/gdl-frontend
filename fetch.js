@@ -9,13 +9,19 @@
 import fetch from 'isomorphic-unfetch';
 import { bookApiUrl } from './env';
 import type { RemoteData, Language, Book } from './types';
+import { getAccessToken } from './lib/auth/authHelpers';
 
 /*
 * Wrap fetch with some error handling and automatic json parsing
 */
 async function doFetch(url: string): Promise<RemoteData<any>> {
   try {
-    const response = await fetch(url);
+    const token = getAccessToken();
+    const response = await fetch(url, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : null,
+      },
+    });
 
     if (response.headers.get('Content-Type').includes('application/json')) {
       const json = await response.json();

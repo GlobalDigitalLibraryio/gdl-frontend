@@ -6,14 +6,14 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
 import media from '../style/media';
 import theme from '../style/theme';
 
-const ButtonLink = styled('a')`
+const buttonFragment = (color: string) => css`
   color: ${theme.colors.white};
-  background: ${theme.colors.link};
+  background: ${color};
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   font-weight: 500;
   border-radius: 50px;
@@ -33,8 +33,12 @@ const ButtonLink = styled('a')`
   transition: all 0.15s ease-out;
   &:hover {
     transform: translateY(-1px);
-    background: ${lighten(0.04, theme.colors.link)};
+    background: ${lighten(0.04, color)};
   }
 `;
 
-export default ButtonLink;
+const ButtonLink = styled('a')`
+  ${buttonFragment(theme.colors.link)};
+`;
+
+export { buttonFragment, ButtonLink as default };
