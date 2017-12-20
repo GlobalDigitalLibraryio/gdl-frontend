@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import { bookApiUrl } from '../env';
+import { bookApiUrl } from '../config';
 
 test('Exports book api url', () => {
   expect(bookApiUrl).toEqual(expect.any(String));

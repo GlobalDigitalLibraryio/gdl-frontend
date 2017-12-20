@@ -7,7 +7,7 @@
  */
 
 import fetch from 'isomorphic-unfetch';
-import { bookApiUrl } from './env';
+import { bookApiUrl } from './config';
 import type { RemoteData, Language, Book } from './types';
 import {
   getAccessTokenFromLocalStorage,

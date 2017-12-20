@@ -7,23 +7,20 @@
  */
 
 const fetch = require('isomorphic-unfetch');
-
-const URL = 'https://digitallibrary.eu.auth0.com/oauth/token';
-const CLIENT_ID = process.env.GDL_AUTH_CLIENT_ID;
-const CLIENT_SECRET = process.env.GDL_AUTH_CLIENT_SECRET;
+const config = require('../../config');
 
 
 async function getToken() {
-  const tokenRes = await fetch(URL, {
+  const tokenRes = await fetch(config.serverAuth.authUrl, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      audience: 'gdl_system',
+      audience: config.serverAuth.audience,
       grant_type: 'client_credentials',
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
+      client_id: config.serverAuth.clientId,
+      client_secret: config.serverAuth.clientSecret,
     }),
   });
 

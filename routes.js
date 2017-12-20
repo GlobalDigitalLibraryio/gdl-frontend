@@ -6,7 +6,7 @@
  * See LICENSE
  */
 const nextRoutes = require('next-routes');
-const env = require('./env');
+const config = require('./config');
 
 const routes = nextRoutes();
 
@@ -18,7 +18,7 @@ routes.add(
 );
 
 // Locking down all other sites except the two about pages in PROD
-if (env.IS_PROD) {
+if (config.STATIC_PAGES_ONLY) {
   routes.add('about', '/', 'about');
 } else {
   routes.add('about');
