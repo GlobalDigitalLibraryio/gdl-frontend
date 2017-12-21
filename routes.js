@@ -50,6 +50,7 @@ if (config.STATIC_PAGES_ONLY) {
 
   // Translate book
   routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
+  routes.add('translations', '/:lang/translations', 'user/_translations');
 }
 
 module.exports = routes;

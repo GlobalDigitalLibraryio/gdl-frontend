@@ -23,7 +23,7 @@ const securePageHoc = Page =>
     }
 
     render() {
-      if (!getAuthTokenTokenFromLocalStorage()) {
+      /*if (!getAuthTokenTokenFromLocalStorage()) {
         return (
           <Layout>
             <Container pt={50}>
@@ -31,7 +31,7 @@ const securePageHoc = Page =>
             </Container>
           </Layout>
         );
-      }
+      }*/
       return <Page {...this.props} />;
     }
   };

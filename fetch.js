@@ -7,12 +7,9 @@
  */
 
 import fetch from 'isomorphic-unfetch';
-import { bookApiUrl } from './config';
-import type {RemoteData, Language, Book, FeaturedContent} from './types';
-import {
-  getAccessTokenFromLocalStorage,
-  setAnonToken,
-} from './lib/auth/token';
+import type { RemoteData, Language, Book, FeaturedContent } from './types';
+import { bookApiUrl, translationApiUrl } from './config';
+import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
 
 let getTokenOnServer;
 
@@ -25,7 +22,7 @@ if (!process.browser) {
  */
 export async function fetchAnonToken(): Promise<{
   access_token: string,
-  expires_in: number,
+  expires_in: number
 }> {
   if (!process.browser) {
     const token = await getTokenOnServer();
@@ -44,12 +41,12 @@ export async function fetchAnonToken(): Promise<{
 * Also ensures we have a valid access token.
 */
 function fetchWithToken(
-  url: string,
+  url: string
 ): (accessToken: ?string) => Promise<RemoteData<any>> {
   return async (accessToken: ?string) => {
     if (!process.browser && !accessToken) {
       throw new Error(
-        'accessToken is a required parameter when calling fetch on the server',
+        'accessToken is a required parameter when calling fetch on the server'
       );
     }
 
@@ -65,8 +62,8 @@ function fetchWithToken(
 
       const response = await fetch(url, {
         headers: {
-          Authorization: token ? `Bearer ${token}` : null,
-        },
+          Authorization: token ? `Bearer ${token}` : null
+        }
       });
 
       if (response.headers.get('Content-Type').includes('application/json')) {
@@ -98,24 +95,24 @@ type Options = {
   pageSize?: number,
   level?: string,
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
-  page?: number,
+  page?: number
 };
 
 export function fetchLevels(
-  language: ?string,
+  language: ?string
 ): (accessToken: ?string) => Promise<RemoteData<Array<string>>> {
   return accessToken =>
     fetchWithToken(`${bookApiUrl}/levels/${language || ''}`)(accessToken);
 }
 
 export function fetchLanguages(): (
-  accessToken: ?string,
+  accessToken: ?string
 ) => Promise<RemoteData<Array<Language>>> {
   return accessToken => fetchWithToken(`${bookApiUrl}/languages`)(accessToken);
 }
 
 export function fetchFeaturedContent(
-  language: ?string,
+  language: ?string
 ): (accessToken: ?string) => Promise<RemoteData<Array<FeaturedContent>>> {
   return accessToken =>
     fetchWithToken(`${bookApiUrl}/featured/${language || ''}`)(accessToken);
@@ -123,7 +120,7 @@ export function fetchFeaturedContent(
 
 export function fetchBook(
   id: string | number,
-  language: string,
+  language: string
 ): (accessToken: ?string) => Promise<RemoteData<Book>> {
   return accessToken =>
     fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(accessToken);
@@ -131,35 +128,42 @@ export function fetchBook(
 
 export function fetchSimilarBooks(
   id: string | number,
-  language: string,
+  language: string
 ): (accessToken: ?string) => Promise<RemoteData<{ results: Array<Book> }>> {
   return accessToken =>
     fetchWithToken(
-      `${bookApiUrl}/books/${language}/similar/${
-      id
-      }?sort=-arrivaldate&page-size=${PAGE_SIZE}`,
+      `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
     )(accessToken);
 }
 
 export function fetchBooks(
   language: ?string,
-  options: Options = {},
+  options: Options = {}
 ): (
-    accessToken: ?string,
-  ) => Promise<
+  accessToken: ?string
+) => Promise<
   RemoteData<{
     results: Array<Book>,
     language: Language,
     page: number,
-    totalCount: number,
-  }>,
-    > {
+    totalCount: number
+  }>
+> {
   return accessToken =>
     fetchWithToken(
       `${bookApiUrl}/books/${language || ''}?page=${options.page ||
-      1}&sort=${options.sort ||
-      '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${
-      options.level ? `&reading-level=${options.level}` : ''
-      }`,
+        1}&sort=${options.sort ||
+        '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${
+        options.level ? `&reading-level=${options.level}` : ''
+      }`
     )(accessToken);
+}
+
+export function fetchSupportedLanguages(): (
+  acccessToken: ?string
+) => Promise<RemoteData<Array<Language>>> {
+  return accessToken =>
+    fetchWithToken(`${translationApiUrl}/translations/supported-languages`)(
+      accessToken
+    );
 }

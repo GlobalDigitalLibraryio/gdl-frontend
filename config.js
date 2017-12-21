@@ -31,6 +31,7 @@ function getConfig() {
       // Fallback to test environment
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'N/A',
+      translationApiUrl: 'https://api.test.digitallibrary.io/translation-api/v1',
     },
 
     local: {
@@ -40,16 +41,19 @@ function getConfig() {
     test: {
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111724798-1',
+      translationApiUrl: 'https://api.test.digitallibrary.io/translation-api/v1',
     },
 
     staging: {
       bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111796456-1',
+      translationApiUrl: 'https://api.staging.digitallibrary.io/translation-api/v1',
     },
 
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111771573-1',
+      translationApiUrl: 'https://api.digitallibrary.io/translation-api/v1',
       STATIC_PAGES_ONLY: true,
     }
   };

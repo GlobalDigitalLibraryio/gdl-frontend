@@ -45,11 +45,9 @@ const buttonFragment = (color: string) => css`
 
 const ButtonLink = styled('a')(buttonFragment(theme.colors.link));
 
-const Button = styled('button')`
+const Button = styled('button') `
   ${buttonFragment(theme.colors.link)};
-  ${p =>
-    p.loading &&
-    `
+  ${p => p.loading && `
     color: transparent;
     text-shadow: none;
     position: relative;
@@ -68,7 +66,7 @@ const Button = styled('button')`
       left: calc(50% - (1em / 2));
       top: calc(50% - (1em / 2));
     }
-  `};
+  `}
 `;
 
 export { buttonFragment, ButtonLink, Button };
