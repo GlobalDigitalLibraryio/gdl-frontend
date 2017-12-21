@@ -66,10 +66,10 @@ const Hero = styled('div')`
 `;
 
 class BookPage extends React.Component<Props> {
-  static async getInitialProps({ query }) {
+  static async getInitialProps({ query, accessToken }) {
     const [book, similar] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSimilarBooks(query.id, query.lang),
+      fetchBook(query.id, query.lang)(accessToken),
+      fetchSimilarBooks(query.id, query.lang)(accessToken),
     ]);
 
     return {

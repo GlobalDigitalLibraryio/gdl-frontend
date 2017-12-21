@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "auth0-js": "8.12.1"
+  }
+}

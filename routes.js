@@ -22,6 +22,8 @@ if (env.IS_PROD) {
   routes.add('about', '/', 'about');
 } else {
   routes.add('about');
+  routes.add('login');
+  routes.add('logout');
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
   // Book grid by level (we only allow a single digit for level, so no + in the regex)
@@ -45,6 +47,9 @@ if (env.IS_PROD) {
     '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
     'books/read',
   );
+
+  // Translate book
+  routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
 }
 
 module.exports = routes;

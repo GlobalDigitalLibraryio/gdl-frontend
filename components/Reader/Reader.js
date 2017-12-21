@@ -6,9 +6,9 @@
  * See LICENSE
  */
 import * as React from 'react';
-import fetch from 'isomorphic-unfetch';
 import styled from 'styled-components';
 import Swipeable from 'react-swipeable';
+import fetchWithToken from '../../fetch';
 import Box from '../Box';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
@@ -225,10 +225,9 @@ export default class ReaderContainer extends React.Component<
     const maybeChapter = this.state.chapters[chapterNumber];
 
     if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
-      const chapterRes = await fetch(
+      const chapter = await fetchWithToken(
         this.props.book.chapters[chapterIndex].url,
-      );
-      const chapter = await chapterRes.json();
+      )();
 
       this.setState((state: ReaderContainerState) => ({
         chapters: {

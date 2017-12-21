@@ -23,8 +23,8 @@ type Props = {
 };
 
 class Read extends React.Component<Props> {
-  static async getInitialProps({ query }) {
-    const book = await fetchBook(query.id, query.lang);
+  static async getInitialProps({ query, accessToken }) {
+    const book = await fetchBook(query.id, query.lang)(accessToken);
 
     // Make sure the chapters are sorted by the chapter numbers
     // Cause further down we rely on the array indexes
