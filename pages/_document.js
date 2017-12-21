@@ -10,6 +10,7 @@ import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet, injectGlobal } from 'styled-components';
 import globalStyles from '../style/globalStyles';
+import config from '../config';
 
 // See https://www.styled-components.com/docs/advanced#nextjs
 
@@ -36,12 +37,7 @@ export default class GDLDocument extends Document {
   }
 
   render() {
-    // Since we want immutable multi enviroment docker deployments, we add the environment to head here
-    // We can then read it in env.js on both the client and the server
-    // See https://github.com/zeit/next.js/issues/1488#issuecomment-289108931
     /* eslint-disable react/no-danger */
-    const envScript = `window.GDL_ENVIRONMENT = '${process.env
-      .GDL_ENVIRONMENT || 'test'}'`;
 
     return (
       <html lang={this.props.language}>
@@ -49,7 +45,7 @@ export default class GDLDocument extends Document {
           <title>Global Digital Library</title>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-          <script dangerouslySetInnerHTML={{ __html: envScript }} />
+          <script dangerouslySetInnerHTML={{ __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env.GDL_ENVIRONMENT || 'test'}';` }} />
           {this.props.styleTags}
         </Head>
         <body>

@@ -13,6 +13,6 @@ import Document from '../../pages/_document';
 test('Sets global GDL environment variable, defaults to \'test\'', () => {
   const tree = shallow(<Document />);
   expect(tree.find('script').html()).toEqual(
-    '<script>window.GDL_ENVIRONMENT = \'test\'</script>',
+    '<script>window.__GDL_ENVIRONMENT__ = \'test\';</script>',
   );
 });

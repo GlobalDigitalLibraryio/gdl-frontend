@@ -21,7 +21,7 @@ COPY locale $APP_PATH/locale
 COPY lib $APP_PATH/lib
 COPY routes.js $APP_PATH
 COPY .babelrc $APP_PATH
-COPY env.js $APP_PATH
+COPY config.js $APP_PATH
 COPY fetch.js $APP_PATH
 
 # Build client code
