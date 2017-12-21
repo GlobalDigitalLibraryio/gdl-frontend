@@ -58,8 +58,8 @@ const defaultPage = Page =>
     }
 
     componentDidMount() {
-      // cDM only runs on the client, so if the we get a token via props, set it in local storage
-      // cannot read it from the cookies on the client, because we won't be able to access the expiration date then.
+      // cDM only runs on the client, so if we get a token via props, set it in local storage.
+      // We cannot read it from the cookies on the client, because we won't be able to access the expiration date then.
       if (this.props.fullToken) {
         setAnonToken(this.props.fullToken);
       }

@@ -77,7 +77,7 @@ function fetchWithToken(
         }
       }
       const err = new Error('Remote data error');
-      // $FlowFixMe Ignorore the flow error here. Should really extend the Error class, but that requires special Babel configuration. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
+      // $FlowFixMe Ignore the flow error here. Should really extend the Error class, but that requires special Babel configuration. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
       err.statusCode = response.status || 500;
       throw err;
     } catch (error) {
