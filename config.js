@@ -33,7 +33,7 @@ function getConfig() {
     },
 
     local: {
-      bookApiUrl: 'http://proxy.gdl-local/book-api/v1',
+      bookApiUrl: 'http://api-gateway.gdl-local/book-api/v1',
     },
 
     test: {
@@ -45,7 +45,7 @@ function getConfig() {
     },
 
     prod: {
-      bookApiUrl: 'http://prod-proxy-658342484.eu-central-1.elb.amazonaws.com/book-api/v1',
+      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       STATIC_PAGES_ONLY: true,
     }
   }
