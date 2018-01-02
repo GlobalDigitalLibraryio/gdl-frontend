@@ -46,9 +46,6 @@ export default class GDLDocument extends Document {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
         <script dangerouslySetInnerHTML={{ __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env.GDL_ENVIRONMENT || 'test'}';` }} />
-        <script dangerouslySetInnerHTML={{__html: `window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create', '${config.googleAnalyticsTrackingID}', 'auto');ga('send', 'pageview');`}} />
-        {/* eslint-disable react/self-closing-comp */}
-        <script async src="https://www.google-analytics.com/analytics.js"></script>
         {this.props.styleTags}
       </Head>
         <body>
