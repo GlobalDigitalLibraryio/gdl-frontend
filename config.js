@@ -38,17 +38,20 @@ function getConfig() {
 
     test: {
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
+      googleAnalyticsTrackingID: 'UA-111724798-1',
     },
 
     staging: {
       bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
+      googleAnalyticsTrackingID: 'UA-111796456-1',
     },
 
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
+      googleAnalyticsTrackingID: 'UA-111771573-1',
       STATIC_PAGES_ONLY: true,
     }
-  }
+  };
 
   return {
     ...config.common,
