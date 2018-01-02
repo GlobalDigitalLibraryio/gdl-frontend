@@ -8,13 +8,15 @@
 
 import * as React from 'react';
 import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
+import styled from 'styled-components';
+import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
 import { fetchBook, fetchSupportedLanguages } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
+import Flex from '../../components/Flex';
 import H1 from '../../components/H1';
 import { Button } from '../../components/Button';
 import H4 from '../../components/H4';
@@ -23,10 +25,12 @@ import Card from '../../components/Card';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import theme from '../../style/theme';
+import { Menu, MenuItem, IconButton } from '../../components/Menu';
+import MenuHeader from '../../components/Menu/Header';
+import BookCover from '../../components/BookCover';
 
 type Props = {
   book: RemoteData<Book>,
-  i18n: I18n,
   supportedLanguages: RemoteData<Array<Language>>
 };
 
@@ -35,6 +39,18 @@ type State = {
   preparingTranslation: boolean
 };
 
+const LinkLike = styled('button')`
+  background: transparent;
+  color: ${theme.colors.link};
+  border: none;
+  font-size: inherit;
+  &[disabled] {
+    cursor: not-allowed;
+    color: ${theme.colors.gray};
+  }
+  ${p => p.isUppercased && 'text-transform: uppercase;'};
+`;
+
 class TranslatePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }) {
     const [book, supportedLanguages] = await Promise.all([
@@ -42,9 +58,15 @@ class TranslatePage extends React.Component<Props, State> {
       fetchSupportedLanguages()(accessToken)
     ]);
 
+    const bookLanguages = book.availableLanguages.map(lang => lang.code);
+
+    const filteredLanguages = supportedLanguages.filter(
+      lang => !bookLanguages.includes(lang.code)
+    );
+
     return {
       book,
-      supportedLanguages
+      supportedLanguages: filteredLanguages
     };
   }
 
@@ -56,38 +78,84 @@ class TranslatePage extends React.Component<Props, State> {
   handlePrepareTranslation = () =>
     this.setState({ preparingTranslation: true });
 
+  handleChangeLanguage = (lang: Language) =>
+    this.setState({ selectedLanguage: lang });
+
   render() {
-    const { book, i18n } = this.props;
+    const { book, supportedLanguages } = this.props;
 
     return (
-      <Layout currentPage={book.title} language={book.language}>
+      <Layout currentPage="Translate book" language={book.language}>
         <Head
-          title={i18n`Translate ${book.title}`}
-          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
+          title={book.title}
+          description={book.description}
+          image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Container py={[15, 20]} style={{ textAlign: 'center' }}>
           <H1>
             <Trans>Translate book</Trans>
           </H1>
           <Card p={[15, 20]} mt={20} textAlign="left">
-            <H4>{book.title}</H4>
-            <P color={theme.colors.grayDark}>
-              <Trans>from {book.publisher.name}</Trans>
-            </P>
+            <Flex>
+              <Box w={[70, 120]} h={[75, 150]}>
+                <BookCover book={book} />
+              </Box>
+              <Box>
+                <H4>{book.title}</H4>
+                <P color={theme.colors.grayDark}>
+                  <Trans>from {book.publisher.name}</Trans>
+                </P>
+              </Box>
+            </Flex>
           </Card>
-          <Box>
-            <P>
-              <Trans>
-                <small>Translate from</small>{' '}
-                <strong>{book.language.name}</strong>
-              </Trans>
+          <Box mb={20}>
+            <P color={theme.colors.grayDark}>
+              <Trans>Translate from</Trans>
             </P>
-            <MdArrowDownward color={theme.colors.oranges.orange} />
-            <P>
-              <Trans>
-                <small>Translate to</small> <strong>Amharic</strong>
-              </Trans>
+            <div>{book.language.name}</div>
+            <MdArrowDownward color={theme.colors.oranges.orange} size={50} />
+            <P color={theme.colors.grayDark}>
+              <Trans>Translate to</Trans>
             </P>
+            <Downshift
+              onChange={this.handleChangeLanguage}
+              itemToString={(lang: Language) => lang.name}
+              id="translationLangMenu"
+              render={({
+                isOpen,
+                getButtonProps,
+                getItemProps,
+                selectedItem
+              }) => (
+                <div>
+                  {selectedItem ? (
+                    <div>
+                      <strong>{selectedItem.name}</strong>
+                      <LinkLike {...getButtonProps()} isUppercased>
+                        Change
+                      </LinkLike>
+                    </div>
+                  ) : (
+                    <LinkLike {...getButtonProps()}>Choose language</LinkLike>
+                  )}
+                  {isOpen && (
+                    <Menu>
+                      <MenuHeader h={48} onClose={getButtonProps().onClick}>
+                        <Trans>Choose language</Trans>
+                      </MenuHeader>
+                      {supportedLanguages.map(lang => (
+                        <MenuItem
+                          key={lang.code}
+                          {...getItemProps({ item: lang })}
+                        >
+                          {lang.name}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  )}
+                </div>
+              )}
+            />
           </Box>
           <Button
             disabled={this.state.selectedLanguage == null}
