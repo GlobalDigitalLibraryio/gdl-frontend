@@ -30,6 +30,7 @@ function getConfig() {
       },
       // Fallback to test environment
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
+      googleAnalyticsTrackingID: 'N/A',
     },
 
     local: {
