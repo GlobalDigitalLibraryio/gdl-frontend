@@ -19,7 +19,12 @@ import {
   LOGOUT_KEY,
 } from '../lib/auth/token';
 import { fetchAnonToken } from '../fetch';
-import { logPageView } from '../lib/analytics'
+import { logPageView } from '../lib/analytics';
+
+
+if (typeof window !== 'undefined') {
+  logPageView();
+}
 
 /**
  * HoC that combines all necessary pages wrapper so we get a single point of entry
@@ -65,7 +70,6 @@ const defaultPage = Page =>
         setAnonToken(this.props.fullToken);
       }
       window.addEventListener('storage', this.logout, false);
-      logPageView();
     }
 
     componentWillUnmount() {
