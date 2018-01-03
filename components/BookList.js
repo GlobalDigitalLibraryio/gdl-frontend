@@ -15,6 +15,17 @@ import { Link } from '../routes';
 const FlexScroller = Flex.extend`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  a {
+    margin-bottom: 2px;
+    margin-left: 6px;
+    margin-right: 6px;
+  }
+  a:first-child {
+    margin-left: 0px;
+  }
+  a:last-child {
+    padding-right: 15px;
+  }
 `;
 
 type Props = {
@@ -22,14 +33,12 @@ type Props = {
   route: (book: Book) => string,
 };
 
-// The inline style here on the anchor ensures the box shadow doesn't get clipped.
-// TODO: Fix this properly
 const BookList = ({ books, route, ...props }: Props) => (
-  <FlexScroller mx={-6} {...props}>
+  <FlexScroller mx={[-15, -20]} px={[15, 20]} {...props}>
     {books.map(book => (
       <Link route={route(book)} key={book.id}>
-        <a style={{ marginBottom: '2px' }}>
-          <BookCardCover book={book} mx={6} />
+        <a>
+          <BookCardCover book={book} />
         </a>
       </Link>
     ))}
