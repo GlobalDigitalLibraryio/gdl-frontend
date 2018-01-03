@@ -19,12 +19,10 @@ import {
   LOGOUT_KEY,
 } from '../lib/auth/token';
 import { fetchAnonToken } from '../fetch';
-import { logPageView } from '../lib/analytics';
+import logPageView from '../lib/analytics';
 
 
-if (typeof window !== 'undefined') {
-  logPageView();
-}
+logPageView();
 
 /**
  * HoC that combines all necessary pages wrapper so we get a single point of entry
