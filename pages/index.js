@@ -48,7 +48,7 @@ type Props = {
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
 };
 
-const HeroCover = styled('div')`
+const HeroCover = styled('div') `
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
   position: relative;
@@ -63,7 +63,7 @@ const HeroCover = styled('div')`
   `};
 `;
 
-const HeroCovertitle = styled('h3')`
+const HeroCovertitle = styled('h3') `
   position: absolute;
   top: 0;
   left: 0;
@@ -79,17 +79,24 @@ const HeroCovertitle = styled('h3')`
   `};
 `;
 
-const CARD_OFFSET = '160px';
-const HeroCard = styled(Card)`
+const HeroCardMobile = styled(Card) `
   ${flexCenter};
-  height: 100%;
-  flex: 1;
+  padding: 15px;
+  margin-top: -50px;
+  margin-left: 15px;
+  margin-right: 15px;
   ${media.tablet`
-    max-width: 375px;
-  `};
+    display: none;
+  `}
+`;
+
+const HeroCardTablet = styled(Card) `
+  ${flexCenter};
+  padding: 20px;
+  max-width: 375px;
   ${media.mobile`
-    margin-top: ${CARD_OFFSET};
-  `};
+    display: none;
+  `}
 `;
 
 class BooksPage extends React.Component<Props> {
@@ -152,7 +159,7 @@ class BooksPage extends React.Component<Props> {
                   params={{ lang: language.code }}
                 >
                   <ToolbarDropdownItem
-                    {...getItemProps({ item: language.code })}
+                    {...getItemProps({ item: language.code }) }
                     isActive={highlightedIndex === index}
                     isSelected={selectedItem === language.code}
                   >
@@ -172,7 +179,7 @@ class BooksPage extends React.Component<Props> {
           pb={['42px', '54px']}
           src={editorPick.coverPhoto && editorPick.coverPhoto.large}
         >
-          <HeroCard p={[15, 20]}>
+          <HeroCardTablet>
             <Box textAlign="center">
               <H1>{editorPick.title}</H1>
               <P fontSize={[14, 16]} lineHeight={[22, 26]}>
@@ -186,13 +193,28 @@ class BooksPage extends React.Component<Props> {
                 <ButtonLink>Read book</ButtonLink>
               </Link>
             </Box>
-          </HeroCard>
+          </HeroCardTablet>
           <HeroCovertitle>
             <Trans>Featured book</Trans>
           </HeroCovertitle>
         </HeroCover>
+        <HeroCardMobile>
+          <Box textAlign="center">
+            <H1>{editorPick.title}</H1>
+            <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+              {editorPick.description}
+            </P>
+            <Link
+              route="book"
+              params={{ id: editorPick.id, lang: editorPick.language.code }}
+              passHref
+            >
+              <ButtonLink>Read book</ButtonLink>
+            </Link>
+          </Box>
+        </HeroCardMobile>
 
-        <Hero py={[15, 22]} mt={[CARD_OFFSET, 0]}>
+        <Hero py={[15, 22]}>
           <Container>
             <H3>
               <Trans>New arrivals</Trans>{' '}
