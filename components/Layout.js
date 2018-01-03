@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
+import { PortalWithState } from 'react-portal';
 import type { Language } from '../types';
 import media from '../style/media';
 import Navbar from './Navbar';
@@ -58,43 +59,40 @@ type Props = {
   language: Language
 };
 
-type State = {
-  menuIsExpanded: boolean
-};
-
-class Layout extends React.Component<Props, State> {
+class Layout extends React.Component<Props> {
   static defaultProps = {
     language: {
       code: 'eng',
       name: 'English'
     }
   };
-  state = {
-    menuIsExpanded: false
-  };
 
   render() {
     const { children, toolbarEnd, language, currentPage } = this.props;
     return (
       <PageWrapper>
-        <Navbar
-          lang={language.code}
-          onMenuClick={() => this.setState({ menuIsExpanded: true })}
-          menuIsExpanded={this.state.menuIsExpanded}
-        />
-        <Toolbar>
-          <Container>
-            <Breadcrumb language={language} currentPage={currentPage} />
-            {toolbarEnd}
-          </Container>
-        </Toolbar>
-        {this.state.menuIsExpanded && (
-          <Sidemenu
-            id="sidenav"
-            onCloseRequested={() => this.setState({ menuIsExpanded: false })}
-            language={language}
-          />
-        )}
+        <PortalWithState closeOnOutsideClick closeOnEsc>
+          {({ portal, closePortal, openPortal, isOpen }) => [
+            <Navbar
+              lang={language.code}
+              onMenuClick={openPortal}
+              menuIsExpanded={isOpen}
+            />,
+            <Toolbar>
+              <Container>
+                <Breadcrumb language={language} currentPage={currentPage} />
+                {toolbarEnd}
+              </Container>
+            </Toolbar>,
+            portal(
+              <Sidemenu
+                id="sidenav"
+                onCloseRequested={closePortal}
+                language={language}
+              />
+            )
+          ]}
+        </PortalWithState>
         <ContentWrapper>{children}</ContentWrapper>
       </PageWrapper>
     );

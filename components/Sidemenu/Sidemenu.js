@@ -21,12 +21,12 @@ import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
 import Container from '../Container';
 import Flex from '../Flex';
-import Backdrop from './Backdrop';
-import Bar from './Bar';
 import { Link } from '../../routes';
-import KeyDown from '../KeyDown';
-import MenuLabel from './MenuLabel';
-import MenuItem from './MenuItem';
+import MenuItem from '../Menu/MenuItem';
+import Backdrop from '../Menu/Backdrop';
+import Card from '../Menu/ModalCard';
+import theme from '../../style/theme';
+import SrOnly from '../SrOnly';
 
 const Button = styled.button`
   background: transparent;
@@ -58,6 +58,8 @@ const stateCache: Cache = {
   language: null
 };
 
+const freeze = e => e.preventDefault();
+
 class Sidebar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -82,6 +84,7 @@ class Sidebar extends React.Component<Props, State> {
     if (this.state.levels.length === 0) {
       this.getMenuData();
     }
+    // document.body.addEventListener('touchmove', freeze, false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -97,19 +100,8 @@ class Sidebar extends React.Component<Props, State> {
     stateCache.languages = this.state.languages;
     stateCache.levels = this.state.levels;
     stateCache.language = this.props.language;
+    // document.body.removeEventListener('touchmove', freeze, false);
   }
-  /**
-   * If click event didn't originate from inside the sidenav, we close it
-   */
-  onOutsideClick = (event: SyntheticEvent<>) => {
-    if (
-      this.wrap &&
-      event.target instanceof Node &&
-      !this.wrap.contains(event.target)
-    ) {
-      this.props.onCloseRequested();
-    }
-  };
 
   getMenuData = async () => {
     const [languages, levels] = await Promise.all([
@@ -123,27 +115,22 @@ class Sidebar extends React.Component<Props, State> {
     });
   };
 
-  wrap: ?HTMLDivElement;
-
   render() {
     const { language } = this.props;
 
     return (
-      <Backdrop onClick={this.onOutsideClick}>
-        <KeyDown when="Escape" then={this.props.onCloseRequested} />
+      <Backdrop>
         <Container
           size="large"
           style={{ height: '100%', paddingLeft: 0, paddingRight: 0 }}
         >
-          <Bar
-            id={this.props.id}
-            innerRef={c => {
-              this.wrap = c;
-            }}
-          >
+          <Card id={this.props.id}>
             <Flex h={[48, 80]} px={15} justify="space-between" align="center">
-              <Link route="books" params={{ lang: 'eng' }}>
+              <Link route="books" params={{ lang: language.code }}>
                 <Button type="button">
+                  <SrOnly>
+                    <Trans>Home</Trans>
+                  </SrOnly>
                   <MdHome />
                 </Button>
               </Link>
@@ -157,16 +144,13 @@ class Sidebar extends React.Component<Props, State> {
               </Button>
             </Flex>
 
-            <MenuLabel>
-              <Trans>Language</Trans>
-            </MenuLabel>
             <Downshift
               id="bookLanguageMenu"
               selectedItem={this.props.language.code}
             >
               {({ getButtonProps, isOpen, closeMenu, getItemProps }) => (
                 <div>
-                  <MenuItem {...getButtonProps()} tabIndex="0">
+                  <MenuItem {...getButtonProps()} tabIndex="0" thickBorder>
                     <span>
                       <Trans>
                         Books in <strong>{language.name}</strong>
@@ -175,11 +159,12 @@ class Sidebar extends React.Component<Props, State> {
                     <MdKeyboardArrowRight style={{ marginLeft: 'auto' }} />
                   </MenuItem>
                   {isOpen && (
-                    <Bar
+                    <Card
                       style={{
-                        marginLeft: '28px',
                         position: 'absolute',
-                        top: 0
+                        top: 0,
+                        right: 0,
+                        left: 0
                       }}
                     >
                       <Flex h={48} align="center">
@@ -195,20 +180,20 @@ class Sidebar extends React.Component<Props, State> {
                           route="books"
                           params={{ lang: lang.code }}
                         >
-                          <MenuItem {...getItemProps({ item: lang.code })}>
+                          <MenuItem
+                            {...getItemProps({ item: lang.code })}
+                            thinBorder
+                          >
                             {lang.name}
                           </MenuItem>
                         </Link>
                       ))}
-                    </Bar>
+                    </Card>
                   )}
                 </div>
               )}
             </Downshift>
 
-            <MenuLabel>
-              <Trans>Content</Trans>
-            </MenuLabel>
             {this.state.levels.map(level => (
               <Link
                 passHref
@@ -216,17 +201,22 @@ class Sidebar extends React.Component<Props, State> {
                 route="level"
                 params={{ lang: language.code, level }}
               >
-                <MenuItem key={level}>
+                <MenuItem key={level} thinBorder>
                   <Trans>Level {level}</Trans>
                 </MenuItem>
               </Link>
             ))}
             <Link passHref route="new" params={{ lang: language.code }}>
-              <MenuItem style={{ marginTop: '3px' }}>
+              <MenuItem style={{ marginTop: '3px' }} thickBorder>
                 <Trans>New arrivals</Trans>
               </MenuItem>
             </Link>
-          </Bar>
+            <Link passHref route="about">
+              <MenuItem>
+                <Trans>About Global Digital Library</Trans>
+              </MenuItem>
+            </Link>
+          </Card>
         </Container>
       </Backdrop>
     );

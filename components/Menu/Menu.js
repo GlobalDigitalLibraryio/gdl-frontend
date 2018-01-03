@@ -29,12 +29,12 @@ class Menu extends React.Component<Props, State> {
 
     return (
       <Backdrop onClick={this.props.onCloseRequested}>
-        <KeyDown when="Escape" then={this.props.onCloseRequested} />
         <Container
           size="large"
           style={{ height: '100%', paddingLeft: 0, paddingRight: 0, overflowY: 'auto' }}
         >
           <Card>
+            <KeyDown when="Escape" then={this.props.onCloseRequested} />
             {this.props.children}
           </Card>
         </Container>

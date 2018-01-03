@@ -125,7 +125,8 @@ class TranslatePage extends React.Component<Props, State> {
                 isOpen,
                 getButtonProps,
                 getItemProps,
-                selectedItem
+                selectedItem,
+                closeMenu
               }) => (
                 <div>
                   {selectedItem ? (
@@ -140,13 +141,14 @@ class TranslatePage extends React.Component<Props, State> {
                   )}
                   {isOpen && (
                     <Menu>
-                      <MenuHeader h={48} onClose={getButtonProps().onClick}>
+                      <MenuHeader h={48} onClose={closeMenu}>
                         <Trans>Choose language</Trans>
                       </MenuHeader>
                       {supportedLanguages.map(lang => (
                         <MenuItem
                           key={lang.code}
                           {...getItemProps({ item: lang })}
+                          thinBorder
                         >
                           {lang.name}
                         </MenuItem>

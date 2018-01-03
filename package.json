@@ -63,6 +63,7 @@
     "react-emotion": "9.0.0-1",
     "react-ga": "^2.4.0",
     "react-icons": "2.2.7",
+    "react-portal": "^4.1.2",
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",
     "styled-system": "1.1.1"
