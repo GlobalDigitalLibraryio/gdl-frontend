@@ -31,14 +31,14 @@
   "scripts": {
     "pretest": "npm run lint",
     "test": "jest",
-    "lint": "eslint --ext .js --ext .jsx pages components hocs",
+    "lint": "eslint --ext .js pages components hocs lib style server",
     "dev": "npm run i18n:compile && node server",
     "build": "npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format": "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\"",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
     "flow": "flow",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },

@@ -19,6 +19,8 @@ const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = routes.getRequestHandler(app);
 
+/* eslint-disable no-console */
+
 const languages = glob.sync('locale/*/messages.js').map(f => f.split('/')[1]);
 console.log('Found translations for the following languages: ', languages);
 
