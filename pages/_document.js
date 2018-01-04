@@ -12,13 +12,17 @@ import { ServerStyleSheet, injectGlobal } from 'styled-components';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
 
-// See https://www.styled-components.com/docs/advanced#nextjs
+
 
 // eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${globalStyles}
 `;
 
+
+/**
+ * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
+ */
 export default class GDLDocument extends Document {
   static getInitialProps({ renderPage, req }) {
     const sheet = new ServerStyleSheet();
@@ -33,6 +37,7 @@ export default class GDLDocument extends Document {
       ...page,
       language: req.language,
       styleTags,
+      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
     };
   }
 
@@ -41,13 +46,14 @@ export default class GDLDocument extends Document {
 
     return (
       <html lang={this.props.language}>
-      <Head>
-        <title>Global Digital Library</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-        <script dangerouslySetInnerHTML={{ __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env.GDL_ENVIRONMENT || 'test'}';` }} />
-        {this.props.styleTags}
-      </Head>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          {/* Adding next-head to the following meta tag ensures it gets deduped properly on the client in our own Head component */}
+          <meta property="og:url" content={this.props.url} className="next-head" />
+          <script dangerouslySetInnerHTML={{ __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env.GDL_ENVIRONMENT || 'test'}';` }} />
+          {this.props.styleTags}
+        </Head>
         <body>
           <Main />
           <NextScript />

@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from 'lingui-react';
+import type { I18n } from 'lingui-i18n';
 import { MdSync } from 'react-icons/lib/md';
 import styled from 'styled-components';
 import SrOnly from '../../components/SrOnly';
@@ -18,7 +19,7 @@ import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
 import rotate360 from '../../style/rotate360';
 import theme from '../../style/theme';
@@ -39,6 +40,7 @@ type Props = {
       lang: string,
     },
   },
+  i18n: I18n,
 };
 
 type State = {
@@ -113,6 +115,7 @@ class BookPage extends React.Component<Props, State> {
     this.state.books.totalCount > this.state.books.results.length;
 
   render() {
+    const { i18n } = this.props;
     const { level } = this.props.url.query;
     const { books } = this.state;
 
@@ -123,12 +126,11 @@ class BookPage extends React.Component<Props, State> {
 
     return (
       <Layout
-        currentPage={level ? `Level ${level}` : 'New arrivals'}
+        currentPage={level ? i18n.t`Level ${level}` : i18n.t`New arrivals`}
         language={books.language}
       >
-        <Meta
-          title={level ? `Level ${level} books` : 'New arrivals'}
-          description="More books"
+        <Head
+          title={level ? i18n.t`Browse level ${level} books` : i18n.t`Browse new arrivals`}
         />
 
         <Container pt={20}>
@@ -137,14 +139,14 @@ class BookPage extends React.Component<Props, State> {
               {level ? (
                 <Trans>Level {level}</Trans>
               ) : (
-                <Trans>New arrivals</Trans>
-              )}
+                  <Trans>New arrivals</Trans>
+                )}
             </H1>
           ) : (
-            <H1 textAlign="center">
-              <Trans>No books found</Trans>
-            </H1>
-          )}
+              <H1 textAlign="center">
+                <Trans>No books found</Trans>
+              </H1>
+            )}
           <BookGrid books={books.results} mt={30} route={route} />
           <Box pt={6} pb={30} textAlign="center" aria-live="polite">
             {this.state.isLoadingMore ? (
@@ -159,14 +161,14 @@ class BookPage extends React.Component<Props, State> {
                 </SrOnly>,
               ]
             ) : (
-              <MoreButton
-                disabled={!this.canLoadMore()}
-                onClick={this.handleLoadMore}
-                type="button"
-              >
-                <Trans>Load more books</Trans>
-              </MoreButton>
-            )}
+                <MoreButton
+                  disabled={!this.canLoadMore()}
+                  onClick={this.handleLoadMore}
+                  type="button"
+                >
+                  <Trans>Load more books</Trans>
+                </MoreButton>
+              )}
           </Box>
         </Container>
       </Layout>

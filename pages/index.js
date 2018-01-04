@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
 import styled from 'styled-components';
 import { MdCheck } from 'react-icons/lib/md';
 import {
@@ -25,7 +24,7 @@ import Card from '../components/Card';
 import { Link } from '../routes';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
-import Meta from '../components/Meta';
+import Head from '../components/Head';
 import BookList from '../components/BookList';
 import ButtonLink from '../components/ButtonLink';
 import P from '../components/P';
@@ -44,7 +43,6 @@ type Props = {
   justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
-  i18n: I18n,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
 };
 
@@ -128,7 +126,6 @@ class BooksPage extends React.Component<Props> {
     const {
       editorPicks,
       languages,
-      i18n,
       levels,
       booksByLevel,
       justArrived,
@@ -172,8 +169,7 @@ class BooksPage extends React.Component<Props> {
           </ToolbarDropdown>
         }
       >
-        <Meta title={i18n.t`Books`} description={i18n.t`Enjoy all the books`} />
-
+        <Head />
         <HeroCover
           pt={['15px', '40px']}
           pb={['42px', '54px']}

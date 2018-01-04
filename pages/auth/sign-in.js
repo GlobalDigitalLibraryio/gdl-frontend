@@ -14,7 +14,7 @@ import Box from '../../components/Box';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import H1 from '../../components/H1';
 import { loginSocialMedia } from '../../lib/auth';
 import { buttonFragment } from '../../components/ButtonLink';
@@ -33,21 +33,23 @@ type Props = {
 
 const LoginPage = ({ i18n }: Props) => (
   <Layout>
-    <Meta title={i18n.t`Login`} description={i18n.t`Login`} />
+    <Head title={i18n.t`Login`} />
     <Container pt={50}>
       <Box textAlign="center">
-        <Trans>
-          <H1>Log in using</H1>
-        </Trans>
+        <H1>
+          <Trans>
+            Log in using
+          </Trans>
+        </H1>
         <p>
           <GoogleButton onClick={() => loginSocialMedia('google-oauth2')}>
             Google
-              </GoogleButton>
+          </GoogleButton>
         </p>
         <p>
           <FacebookButton onClick={() => loginSocialMedia('facebook')}>
             Facebook
-              </FacebookButton>
+          </FacebookButton>
         </p>
       </Box>
     </Container>

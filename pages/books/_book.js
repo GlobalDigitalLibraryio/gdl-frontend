@@ -26,7 +26,7 @@ import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import ButtonLink from '../../components/ButtonLink';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import BookList from '../../components/BookList';
 import media from '../../style/media';
 import { flexColumnCentered } from '../../style/flex';
@@ -38,7 +38,7 @@ type Props = {
   }>,
 };
 
-const CoverWrap = styled('div')`
+const CoverWrap = styled('div') `
   ${media.mobile`
     position: absolute;
     top: -120px;
@@ -55,12 +55,12 @@ const CoverWrap = styled('div')`
   `};
 `;
 
-const HeroCard = styled(Card)`
+const HeroCard = styled(Card) `
   ${flexColumnCentered};
 `;
 
 // TODO: Replace background image
-const Hero = styled('div')`
+const Hero = styled('div') `
   background-image: url(/static/about/icons.png);
   background-size: contain;
 `;
@@ -91,10 +91,11 @@ class BookPage extends React.Component<Props> {
 
     return (
       <Layout currentPage={book.title} language={book.language}>
-        <Meta
+        <Head
+          isBookType
           title={book.title}
           description={book.description}
-          image={book.coverPhoto ? book.coverPhoto.large : null}
+          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Hero>
           <Container py={[15, 20]}>

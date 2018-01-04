@@ -12,7 +12,7 @@ import defaultPage from '../../hocs/defaultPage';
 import A from '../../components/A';
 import Card from '../../components/Card';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import H1 from '../../components/H1';
 import H3 from '../../components/H3';
 import P from '../../components/P';
@@ -21,7 +21,7 @@ import Footer from '../../components/AboutFooter';
 
 const GlobalDigitalLibrary = () => (
   <div>
-    <Meta title="Who are we?" description="Behind the Global Digital Library" />
+    <Head title="Who are we?" />
     <HeroWithIcons
       h={455}
       style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: -1 }}
