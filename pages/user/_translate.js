@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from 'lingui-react';
+import type { I18n } from 'lingui-i18n';
 import { MdArrowDownward } from 'react-icons/lib/md';
 import { fetchBook } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
@@ -18,11 +19,12 @@ import H1 from '../../components/H1';
 import P from '../../components/P';
 import Card from '../../components/Card';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import theme from '../../style/theme';
 
 type Props = {
   book: RemoteData<Book>,
+  i18n: I18n,
 };
 
 class TranslatePage extends React.Component<Props> {
@@ -37,14 +39,13 @@ class TranslatePage extends React.Component<Props> {
   }
 
   render() {
-    const { book } = this.props;
+    const { book, i18n } = this.props;
 
     return (
       <Layout currentPage={book.title} language={book.language}>
-        <Meta
-          title={book.title}
-          description={book.description}
-          image={book.coverPhoto ? book.coverPhoto.large : null}
+        <Head
+          title={i18n`Translate ${book.title}`}
+          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Container py={[15, 20]}>
           <Card p={[15, 20]}>

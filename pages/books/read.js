@@ -10,7 +10,7 @@ import * as React from 'react';
 import { fetchBook } from '../../fetch';
 import type { Book, RemoteData } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import Reader from '../../components/Reader';
 
 type Props = {
@@ -40,10 +40,11 @@ class Read extends React.Component<Props> {
 
     return (
       <div>
-        <Meta
+        <Head
           title={book.title}
+          isBookType
           description={book.description}
-          image={book.coverPhoto ? book.coverPhoto.large : null}
+          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
         <Reader book={book} initialChapter={url.query.chapter} />

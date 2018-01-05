@@ -19,7 +19,7 @@ import Flex from '../components/Flex';
 import Box from '../components/Box';
 import Container from '../components/Container';
 import defaultPage from '../hocs/defaultPage';
-import Meta from '../components/Meta';
+import Head from '../components/Head';
 import Footer from '../components/AboutFooter';
 import Hero from '../components/Hero';
 
@@ -37,7 +37,7 @@ export const HeroWithIcons = Hero.extend`
 
 const About = () => (
   <div>
-    <Meta title="About" description="About the Global Digital Library (GDL)" />
+    <Head title="About" />
     <HeroWithIcons py={64}>
       <Container mw={1075}>
         <H1 style={{ textTransform: 'uppercase' }}>Global digital library</H1>
