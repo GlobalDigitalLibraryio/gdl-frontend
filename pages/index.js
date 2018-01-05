@@ -14,7 +14,7 @@ import {
   fetchEditorPicks,
   fetchLevels,
   fetchLanguages,
-  fetchBooks,
+  fetchBooks
 } from '../fetch';
 import type { Book, Language, RemoteData } from '../types';
 import defaultPage from '../hocs/defaultPage';
@@ -32,7 +32,7 @@ import H3 from '../components/H3';
 import H1 from '../components/H1';
 import More from '../components/More';
 import ToolbarDropdown, {
-  ToolbarDropdownItem,
+  ToolbarDropdownItem
 } from '../components/ToolbarDropdown';
 import theme from '../style/theme';
 import media from '../style/media';
@@ -43,10 +43,10 @@ type Props = {
   justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>
 };
 
-const HeroCover = styled('div') `
+const HeroCover = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
   position: relative;
@@ -61,7 +61,7 @@ const HeroCover = styled('div') `
   `};
 `;
 
-const HeroCovertitle = styled('h3') `
+const HeroCovertitle = styled('h3')`
   position: absolute;
   top: 0;
   left: 0;
@@ -77,7 +77,7 @@ const HeroCovertitle = styled('h3') `
   `};
 `;
 
-const HeroCardMobile = styled(Card) `
+const HeroCardMobile = styled(Card)`
   ${flexCenter};
   padding: 15px;
   margin-top: -50px;
@@ -85,16 +85,16 @@ const HeroCardMobile = styled(Card) `
   margin-right: 15px;
   ${media.tablet`
     display: none;
-  `}
+  `};
 `;
 
-const HeroCardTablet = styled(Card) `
+const HeroCardTablet = styled(Card)`
   ${flexCenter};
   padding: 20px;
   max-width: 375px;
   ${media.mobile`
     display: none;
-  `}
+  `};
 `;
 
 class BooksPage extends React.Component<Props> {
@@ -106,11 +106,11 @@ class BooksPage extends React.Component<Props> {
       fetchEditorPicks(language)(accessToken),
       fetchLevels(language)(accessToken),
       fetchLanguages()(accessToken),
-      fetchBooks(language)(accessToken),
+      fetchBooks(language)(accessToken)
     ]);
 
     const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooks(language, { level })(accessToken)),
+      levels.map(level => fetchBooks(language, { level })(accessToken))
     );
 
     return {
@@ -118,7 +118,7 @@ class BooksPage extends React.Component<Props> {
       justArrived,
       languages,
       levels,
-      booksByLevel,
+      booksByLevel
     };
   }
 
@@ -128,7 +128,7 @@ class BooksPage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      justArrived,
+      justArrived
     } = this.props;
 
     const editorPick = editorPicks[0];
@@ -156,7 +156,7 @@ class BooksPage extends React.Component<Props> {
                   params={{ lang: language.code }}
                 >
                   <ToolbarDropdownItem
-                    {...getItemProps({ item: language.code }) }
+                    {...getItemProps({ item: language.code })}
                     isActive={highlightedIndex === index}
                     isSelected={selectedItem === language.code}
                   >
@@ -210,29 +210,6 @@ class BooksPage extends React.Component<Props> {
           </Box>
         </HeroCardMobile>
 
-        <Hero py={[15, 22]}>
-          <Container>
-            <H3>
-              <Trans>New arrivals</Trans>{' '}
-              <Link
-                route="new"
-                params={{ lang: justArrived.language.code }}
-                passHref
-              >
-                <More>
-                  <Trans>More</Trans>
-                </More>
-              </Link>
-            </H3>
-            <BookList
-              books={justArrived.results}
-              mt={20}
-              route={(book: Book) =>
-                `/${book.language.code}/books/new/${book.id}`
-              }
-            />
-          </Container>
-        </Hero>
         {levels.map((level, index) => (
           <Hero py={[15, 22]} key={level}>
             <Container>
@@ -258,6 +235,29 @@ class BooksPage extends React.Component<Props> {
             </Container>
           </Hero>
         ))}
+        <Hero py={[15, 22]}>
+          <Container>
+            <H3>
+              <Trans>New arrivals</Trans>{' '}
+              <Link
+                route="new"
+                params={{ lang: justArrived.language.code }}
+                passHref
+              >
+                <More>
+                  <Trans>More</Trans>
+                </More>
+              </Link>
+            </H3>
+            <BookList
+              books={justArrived.results}
+              mt={20}
+              route={(book: Book) =>
+                `/${book.language.code}/books/new/${book.id}`
+              }
+            />
+          </Container>
+        </Hero>
       </Layout>
     );
   }
