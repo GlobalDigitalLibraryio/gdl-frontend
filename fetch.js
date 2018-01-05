@@ -10,6 +10,7 @@ import fetch from 'isomorphic-unfetch';
 import type { RemoteData, Language, Book, FeaturedContent } from './types';
 import { bookApiUrl, translationApiUrl } from './config';
 import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
+import { bookApiUrl } from './config';
 
 let getTokenOnServer;
 
@@ -163,7 +164,13 @@ export function fetchSupportedLanguages(): (
   acccessToken: ?string
 ) => Promise<RemoteData<Array<Language>>> {
   return accessToken =>
-    fetchWithToken(`${translationApiUrl}/translations/supported-languages`)(
+    fetchWithToken(`${bookApiUrl}/translations/supported-languages`)(
       accessToken
     );
+}
+
+export function fetchMyTranslations(): (
+  acccessToken: ?string
+) => Promise<RemoteData<Array<Book>>> {
+  return accessToken => fetchWithToken(`${bookApiUrl}/books/mine`)(accessToken);
 }
