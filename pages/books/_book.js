@@ -90,12 +90,20 @@ class BookPage extends React.Component<Props> {
       .map((item, index) => [index > 0 && ', ', item]);
 
     return (
-      <Layout currentPage={book.title} language={book.language}>
+      <Layout
+        crumbs={[
+          <Link route="books" params={{ language: book.language.code }}>
+            <a>{book.language.name}</a>
+          </Link>,
+          book.title
+        ]}
+        language={book.language}
+      >
         <Head
-          isBookType
           title={book.title}
           description={book.description}
           imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
+          isBookType
         />
         <Hero>
           <Container py={[15, 20]}>

@@ -14,6 +14,7 @@ import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import { navContainerFragment } from './Container';
+import Box from './Box';
 import Sidemenu from './Sidemenu';
 import theme from '../style/theme';
 
@@ -55,6 +56,7 @@ const PageWrapper = styled('div')`
 type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
+<<<<<<< HEAD
   currentPage?: string,
   language: Language
 };
@@ -96,7 +98,51 @@ class Layout extends React.Component<Props> {
         <ContentWrapper>{children}</ContentWrapper>
       </PageWrapper>
     );
+=======
+  language: Language,
+  crumbs?: Array<React.Node | string>
+};
+
+const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
+  <PageWrapper>
+    <PortalWithState closeOnOutsideClick closeOnEsc>
+      {({ portal, closePortal, openPortal, isOpen }) => (
+        <React.Fragment>
+          <Navbar
+            lang={language.code}
+            onMenuClick={openPortal}
+            menuIsExpanded={isOpen}
+          />
+          <Toolbar>
+            <Container>
+              {crumbs ? (
+                <Breadcrumb language={language.code} crumbs={crumbs} />
+              ) : (
+                <Box mr="auto" />
+              )}
+              {toolbarEnd}
+            </Container>
+          </Toolbar>
+          {portal(
+            <Sidemenu
+              id="sidenav"
+              onCloseRequested={closePortal}
+              language={language}
+            />
+          )}
+        </React.Fragment>
+      )}
+    </PortalWithState>
+    <ContentWrapper>{children}</ContentWrapper>
+  </PageWrapper>
+);
+
+Layout.defaultProps = {
+  language: {
+    code: 'eng',
+    name: 'English'
+>>>>>>> Refactor breadcrumb component to be more declarative
   }
-}
+};
 
 export default Layout;

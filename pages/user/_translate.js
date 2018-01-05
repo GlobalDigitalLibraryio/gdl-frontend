@@ -13,6 +13,7 @@ import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
 import { fetchBook, fetchSupportedLanguages } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
+import { Link } from '../../routes';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -25,7 +26,7 @@ import Card from '../../components/Card';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import theme from '../../style/theme';
-import { Menu, MenuItem, IconButton } from '../../components/Menu';
+import { Menu, MenuItem } from '../../components/Menu';
 import MenuHeader from '../../components/Menu/Header';
 import BookCover from '../../components/BookCover';
 
@@ -85,7 +86,15 @@ class TranslatePage extends React.Component<Props, State> {
     const { book, supportedLanguages } = this.props;
 
     return (
-      <Layout currentPage="Translate book" language={book.language}>
+      <Layout
+        crumbs={[
+          <Link route="book" params={{ lang: book.language.code, id: book.id }}>
+            <a>{book.title}</a>
+          </Link>,
+          <Trans>Translate book</Trans>
+        ]}
+        language={book.language}
+      >
         <Head
           title={book.title}
           description={book.description}

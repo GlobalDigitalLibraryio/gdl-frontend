@@ -20,7 +20,7 @@ import P from '../../components/P';
 import Card from '../../components/Card';
 import More from '../../components/More';
 import Container from '../../components/Container';
-import Meta from '../../components/Meta';
+import Head from '../../components/Head';
 import theme from '../../style/theme';
 
 type Props = {
@@ -41,7 +41,7 @@ class MyTranslationsPage extends React.Component<Props> {
 
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>
-        <Meta title="My translations" description="" />
+        <Head title="My translations" />
         <Container py={[15, 20]}>
           <H1 textAlign="center">
             <Trans>My translations</Trans>

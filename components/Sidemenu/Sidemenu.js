@@ -58,8 +58,6 @@ const stateCache: Cache = {
   language: null
 };
 
-const freeze = e => e.preventDefault();
-
 class Sidebar extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -84,7 +82,6 @@ class Sidebar extends React.Component<Props, State> {
     if (this.state.levels.length === 0) {
       this.getMenuData();
     }
-    // document.body.addEventListener('touchmove', freeze, false);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,7 +97,6 @@ class Sidebar extends React.Component<Props, State> {
     stateCache.languages = this.state.languages;
     stateCache.levels = this.state.levels;
     stateCache.language = this.props.language;
-    // document.body.removeEventListener('touchmove', freeze, false);
   }
 
   getMenuData = async () => {
