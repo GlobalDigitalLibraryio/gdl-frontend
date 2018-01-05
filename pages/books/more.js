@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
-import styled from 'styled-components';
 import { fetchBooks } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -20,8 +19,6 @@ import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
-import theme from '../../style/theme';
-import media from '../../style/media';
 
 const PAGE_SIZE = 30;
 
