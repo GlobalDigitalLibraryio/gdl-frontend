@@ -26,7 +26,7 @@ import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Head from '../components/Head';
 import BookList from '../components/BookList';
-import ButtonLink from '../components/ButtonLink';
+import { ButtonLink } from '../components/Button';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H1 from '../components/H1';

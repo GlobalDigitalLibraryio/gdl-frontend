@@ -6,30 +6,71 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
-import theme from '../style/theme';
+import styled, { css } from 'styled-components';
+import { lighten } from 'polished';
+import rotate360 from '../style/rotate360';
 import media from '../style/media';
+import theme from '../style/theme';
 
-const Button = styled.button`
+const buttonFragment = (color: string) => css`
   color: ${theme.colors.white};
-  border-radius: 4px;
-  background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  background: ${color};
+  border-style: none;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  font-weight: 500;
+  border-radius: 50px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   min-width: 150px;
+  line-height: 22px;
+  text-transform: uppercase;
   min-height: 38px;
+  min-width: 210px;
   font-size: 16px;
+  &[disabled] {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
   ${media.tablet`
     min-height: 48px;
     font-size: 18px;
-  `} font-weight: 500;
-  line-height: 22px;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
-  border-style: none;
-  &:hover,
-  &:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  `};
+  transition: all 0.15s ease-out;
+  &:hover:not([disabled]) {
+    transform: translateY(-1px);
+    background: ${lighten(0.04, color)};
   }
 `;
 
-export default Button;
+const ButtonLink = styled('a')`
+  ${buttonFragment(theme.colors.link)};
+`;
+
+const Button = styled('button')`
+  ${buttonFragment(theme.colors.link)};
+  ${p =>
+    p.loading &&
+    `
+    color: transparent;
+    text-shadow: none;
+    position: relative;
+    pointer-events: none;
+    &:after {
+      animation: ${rotate360} 500ms infinite linear;
+      border: 2px solid ${theme.colors.white};
+      border-radius: 100px;
+      border-right-color: transparent;
+      border-top-color: transparent;
+      content: '';
+      display: block;
+      width: 1em;
+      height: 1em;
+      position: absolute;
+      left: calc(50% - (1em / 2));
+      top: calc(50% - (1em / 2));
+    }
+  `};
+`;
+
+export { buttonFragment, ButtonLink, Button };
