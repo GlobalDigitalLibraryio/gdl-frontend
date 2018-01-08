@@ -7,10 +7,15 @@
  */
 
 import fetch from 'isomorphic-unfetch';
-import type { RemoteData, Language, Book, FeaturedContent } from './types';
-import { bookApiUrl, translationApiUrl } from './config';
-import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
+import type {
+  RemoteData,
+  Language,
+  Book,
+  FeaturedContent,
+  Translation
+} from './types';
 import { bookApiUrl } from './config';
+import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
 
 let getTokenOnServer;
 
@@ -42,7 +47,11 @@ export async function fetchAnonToken(): Promise<{
 * Also ensures we have a valid access token.
 */
 function fetchWithToken(
-  url: string
+  url: string,
+  options: ?{
+    method: 'POST' | 'GET',
+    body: ?any
+  }
 ): (accessToken: ?string) => Promise<RemoteData<any>> {
   return async (accessToken: ?string) => {
     if (!process.browser && !accessToken) {
@@ -55,7 +64,7 @@ function fetchWithToken(
 
     try {
       // Automatically renew token on the client if it is expired
-      if (process.browser && accessToken == null) {
+      if (process.browser && token == null) {
         const fullToken = await fetchAnonToken();
         setAnonToken(fullToken);
         token = fullToken.access_token;
@@ -64,7 +73,8 @@ function fetchWithToken(
       const response = await fetch(url, {
         headers: {
           Authorization: token ? `Bearer ${token}` : null
-        }
+        },
+        ...options
       });
 
       if (response.headers.get('Content-Type').includes('application/json')) {
@@ -173,4 +183,15 @@ export function fetchMyTranslations(): (
   acccessToken: ?string
 ) => Promise<RemoteData<Array<Book>>> {
   return accessToken => fetchWithToken(`${bookApiUrl}/books/mine`)(accessToken);
+}
+
+export function sendToTranslation(
+  bookId: number | string,
+  fromLanguage: string,
+  toLanguage: string
+): Promise<RemoteData<Translation>> {
+  return fetchWithToken(`${bookApiUrl}/translations`, {
+    method: 'POST',
+    body: JSON.stringify({ bookId, fromLanguage, toLanguage })
+  })();
 }

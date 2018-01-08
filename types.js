@@ -46,6 +46,11 @@ export type ChapterSummary = {
 // Future proofing. In the future we might want to define success and failure cases using ADTs
 export type RemoteData<T> = T;
 
+export type Translation = {
+  bookId: number,
+  crowdinUrl: string
+};
+
 export type Book = {|
   +id: number,
   +title: string,

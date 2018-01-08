@@ -24,7 +24,7 @@ import Head from '../../components/Head';
 import theme from '../../style/theme';
 
 type Props = {
-  books: RemoteData<Array<Book>>
+  books: RemoteData<{ results: Array<Book> }>
 };
 
 class MyTranslationsPage extends React.Component<Props> {
@@ -46,7 +46,7 @@ class MyTranslationsPage extends React.Component<Props> {
           <H1 textAlign="center">
             <Trans>My translations</Trans>
           </H1>
-          {books.map(book => (
+          {books.results.map(book => (
             <Card key={book.id} p={[15, 20]} mt={20}>
               <H4>{book.title}</H4>
               <P color={theme.colors.grayDark}>

@@ -11,15 +11,19 @@ import { Trans } from 'lingui-react';
 import styled from 'styled-components';
 import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
-import { fetchBook, fetchSupportedLanguages } from '../../fetch';
-import type { Book, RemoteData, Language } from '../../types';
+import {
+  fetchBook,
+  fetchSupportedLanguages,
+  sendToTranslation
+} from '../../fetch';
+import type { Book, RemoteData, Language, Translation } from '../../types';
 import { Link } from '../../routes';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import H1 from '../../components/H1';
-import { Button } from '../../components/Button';
+import { Button, ButtonLink } from '../../components/Button';
 import H4 from '../../components/H4';
 import P from '../../components/P';
 import Card from '../../components/Card';
@@ -37,7 +41,8 @@ type Props = {
 
 type State = {
   selectedLanguage: ?Language,
-  preparingTranslation: boolean
+  preparingTranslation: boolean,
+  translation?: Translation
 };
 
 const LinkLike = styled('button')`
@@ -76,8 +81,17 @@ class TranslatePage extends React.Component<Props, State> {
     preparingTranslation: false
   };
 
-  handlePrepareTranslation = () =>
+  handlePrepareTranslation = async () => {
     this.setState({ preparingTranslation: true });
+    if (this.state.selectedLanguage) {
+      const translation = await sendToTranslation(
+        this.props.book.id,
+        this.props.book.language.code,
+        this.state.selectedLanguage.code
+      );
+      this.setState({ translation });
+    }
+  };
 
   handleChangeLanguage = (lang: Language) =>
     this.setState({ selectedLanguage: lang });
@@ -168,13 +182,33 @@ class TranslatePage extends React.Component<Props, State> {
               )}
             />
           </Box>
-          <Button
-            disabled={this.state.selectedLanguage == null}
-            loading={this.state.preparingTranslation}
-            onClick={this.handlePrepareTranslation}
-          >
-            <Trans>Prepare translation</Trans>
-          </Button>
+          {this.state.translation ? (
+            <React.Fragment>
+              <ButtonLink
+                href={this.state.translation.crowdinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Trans>Start translation</Trans>
+              </ButtonLink>
+              <p>
+                <small>
+                  <Trans>
+                    Opens 3rd party site{' '}
+                    <a href="https://crowdin.com/">Crowdin</a> in a new window.
+                  </Trans>
+                </small>
+              </p>
+            </React.Fragment>
+          ) : (
+            <Button
+              disabled={this.state.selectedLanguage == null}
+              loading={this.state.preparingTranslation}
+              onClick={this.handlePrepareTranslation}
+            >
+              <Trans>Prepare translation</Trans>
+            </Button>
+          )}
         </Container>
       </Layout>
     );
