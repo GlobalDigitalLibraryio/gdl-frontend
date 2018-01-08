@@ -16,7 +16,7 @@ import {
   fetchLanguages,
   fetchBooks
 } from '../fetch';
-import type { Book, Language, RemoteData } from '../types';
+import type { Book, Language, RemoteData, FeaturedContent } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
 import Box from '../components/Box';
