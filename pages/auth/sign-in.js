@@ -17,18 +17,18 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import H1 from '../../components/H1';
 import { loginSocialMedia } from '../../lib/auth';
-import { buttonFragment } from '../../components/ButtonLink';
+import { buttonFragment } from '../../components/Button';
 
-const GoogleButton = styled('button') `
+const GoogleButton = styled('button')`
   ${buttonFragment('#db3236')};
 `;
 
-const FacebookButton = styled('button') `
+const FacebookButton = styled('button')`
   ${buttonFragment('#3b5998')};
 `;
 
 type Props = {
-  i18n: I18n,
+  i18n: I18n
 };
 
 const LoginPage = ({ i18n }: Props) => (
@@ -37,9 +37,7 @@ const LoginPage = ({ i18n }: Props) => (
     <Container pt={50}>
       <Box textAlign="center">
         <H1>
-          <Trans>
-            Log in using
-          </Trans>
+          <Trans>Log in using</Trans>
         </H1>
         <p>
           <GoogleButton onClick={() => loginSocialMedia('google-oauth2')}>

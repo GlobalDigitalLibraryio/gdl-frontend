@@ -13,7 +13,6 @@ import H1 from '../components/H1';
 import H3 from '../components/H3';
 import P from '../components/P';
 import A from '../components/A';
-import Button from '../components/Button';
 import Card from '../components/Card';
 import Flex from '../components/Flex';
 import Box from '../components/Box';
@@ -22,6 +21,8 @@ import defaultPage from '../hocs/defaultPage';
 import Head from '../components/Head';
 import Footer from '../components/AboutFooter';
 import Hero from '../components/Hero';
+import theme from '../style/theme';
+import media from '../style/media';
 
 const CardImg = styled.img`
   width: 100%;
@@ -33,6 +34,28 @@ export const HeroWithIcons = Hero.extend`
   color: #fff;
   background: url('/static/about/books.png'),
     linear-gradient(135deg, #004b91 0%, #5abc7f 100%);
+`;
+
+const Button = styled.button`
+  color: ${theme.colors.white};
+  border-radius: 4px;
+  background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+  min-width: 150px;
+  min-height: 38px;
+  font-size: 16px;
+  ${media.tablet`
+    min-height: 48px;
+    font-size: 18px;
+  `} font-weight: 500;
+  line-height: 22px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  border-style: none;
+  &:hover,
+  &:active {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const About = () => (

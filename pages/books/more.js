@@ -9,21 +9,16 @@
 import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
-import { MdSync } from 'react-icons/lib/md';
-import styled from 'styled-components';
-import SrOnly from '../../components/SrOnly';
 import { fetchBooks } from '../../fetch';
 import type { Book, RemoteData, Language } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
+import { Button } from '../../components/Button';
 import Box from '../../components/Box';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
-import rotate360 from '../../style/rotate360';
-import theme from '../../style/theme';
-import media from '../../style/media';
 
 const PAGE_SIZE = 30;
 
@@ -32,15 +27,15 @@ type Props = {
     results: Array<Book>,
     language: Language,
     page: number,
-    totalCount: number,
+    totalCount: number
   }>,
   url: {
     query: {
       level?: string,
-      lang: string,
-    },
+      lang: string
+    }
   },
-  i18n: I18n,
+  i18n: I18n
 };
 
 type State = {
@@ -48,43 +43,26 @@ type State = {
     results: Array<Book>,
     language: Language,
     page: number,
-    totalCount: number,
+    totalCount: number
   },
-  isLoadingMore: boolean,
+  isLoadingMore: boolean
 };
-
-const MoreButton = styled.button`
-  background: transparent;
-  border: none;
-  color: ${theme.colors.link};
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 5px 12px;
-  ${media.tablet`
-    font-size: 14px;
-  `};
-  &[disabled] {
-    cursor: not-allowed;
-    color: ${theme.colors.gray};
-  }
-`;
 
 class BookPage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
-      level: query.level,
+      level: query.level
     })(accessToken);
 
     return {
-      books,
+      books
     };
   }
 
   state = {
     books: this.props.books,
-    isLoadingMore: false,
+    isLoadingMore: false
   };
 
   /**
@@ -97,7 +75,7 @@ class BookPage extends React.Component<Props, State> {
     const books = await fetchBooks(query.lang, {
       level: query.level,
       page: this.state.books.page + 1,
-      pageSize: PAGE_SIZE,
+      pageSize: PAGE_SIZE
     })();
 
     this.setState(state => ({
@@ -106,8 +84,8 @@ class BookPage extends React.Component<Props, State> {
         // Set the newly fetched results
         ...books,
         // But append the array to the books we already have
-        results: state.books.results.concat(books.results),
-      },
+        results: state.books.results.concat(books.results)
+      }
     }));
   };
 
@@ -130,7 +108,11 @@ class BookPage extends React.Component<Props, State> {
         language={books.language}
       >
         <Head
-          title={level ? i18n.t`Browse level ${level} books` : i18n.t`Browse new arrivals`}
+          title={
+            level
+              ? i18n.t`Browse level ${level} books`
+              : i18n.t`Browse new arrivals`
+          }
         />
 
         <Container pt={20}>
@@ -139,36 +121,29 @@ class BookPage extends React.Component<Props, State> {
               {level ? (
                 <Trans>Level {level}</Trans>
               ) : (
-                  <Trans>New arrivals</Trans>
-                )}
+                <Trans>New arrivals</Trans>
+              )}
             </H1>
           ) : (
-              <H1 textAlign="center">
-                <Trans>No books found</Trans>
-              </H1>
-            )}
+            <H1 textAlign="center">
+              <Trans>No books found</Trans>
+            </H1>
+          )}
           <BookGrid books={books.results} mt={30} route={route} />
-          <Box pt={6} pb={30} textAlign="center" aria-live="polite">
-            {this.state.isLoadingMore ? (
-              [
-                <MdSync
-                  key="indicator"
-                  aria-hidden
-                  style={{ animation: `${rotate360} 2s linear infinite` }}
-                />,
-                <SrOnly key="sr">
-                  <Trans>Loading books</Trans>
-                </SrOnly>,
-              ]
-            ) : (
-                <MoreButton
-                  disabled={!this.canLoadMore()}
-                  onClick={this.handleLoadMore}
-                  type="button"
-                >
-                  <Trans>Load more books</Trans>
-                </MoreButton>
+          <Box pt={6} pb={30} textAlign="center">
+            <Button
+              aria-live="polite"
+              disabled={!this.canLoadMore()}
+              onClick={this.handleLoadMore}
+              loading={this.state.isLoadingMore}
+              type="button"
+            >
+              {this.state.isLoadingMore ? (
+                <Trans>Loading books</Trans>
+              ) : (
+                <Trans>Load more books</Trans>
               )}
+            </Button>
           </Box>
         </Container>
       </Layout>

@@ -24,7 +24,7 @@ import H6 from '../../components/H6';
 import P from '../../components/P';
 import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
-import ButtonLink from '../../components/ButtonLink';
+import { ButtonLink } from '../../components/Button';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
@@ -34,11 +34,11 @@ import { flexColumnCentered } from '../../style/flex';
 type Props = {
   book: RemoteData<Book>,
   similar: RemoteData<{
-    results: Array<Book>,
-  }>,
+    results: Array<Book>
+  }>
 };
 
-const CoverWrap = styled('div') `
+const CoverWrap = styled('div')`
   ${media.mobile`
     position: absolute;
     top: -120px;
@@ -55,12 +55,12 @@ const CoverWrap = styled('div') `
   `};
 `;
 
-const HeroCard = styled(Card) `
+const HeroCard = styled(Card)`
   ${flexColumnCentered};
 `;
 
 // TODO: Replace background image
-const Hero = styled('div') `
+const Hero = styled('div')`
   background-image: url(/static/about/icons.png);
   background-size: contain;
 `;
@@ -69,12 +69,12 @@ class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, accessToken }) {
     const [book, similar] = await Promise.all([
       fetchBook(query.id, query.lang)(accessToken),
-      fetchSimilarBooks(query.id, query.lang)(accessToken),
+      fetchSimilarBooks(query.id, query.lang)(accessToken)
     ]);
 
     return {
       book,
-      similar,
+      similar
     };
   }
 
