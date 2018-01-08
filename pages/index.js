@@ -11,12 +11,12 @@ import { Trans } from 'lingui-react';
 import styled from 'styled-components';
 import { MdCheck } from 'react-icons/lib/md';
 import {
-  fetchEditorPicks,
+  fetchFeaturedContent,
   fetchLevels,
   fetchLanguages,
   fetchBooks
 } from '../fetch';
-import type { Book, Language, RemoteData } from '../types';
+import type { Book, Language, RemoteData, FeaturedContent } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
 import Box from '../components/Box';
@@ -39,7 +39,7 @@ import media from '../style/media';
 import { flexCenter } from '../style/flex';
 
 type Props = {
-  editorPicks: RemoteData<Array<Book>>,
+  featuredContent: RemoteData<Array<FeaturedContent>>,
   justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
@@ -102,8 +102,8 @@ class BooksPage extends React.Component<Props> {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
-    const [editorPicks, levels, languages, justArrived] = await Promise.all([
-      fetchEditorPicks(language)(accessToken),
+    const [featuredContent, levels, languages, justArrived] = await Promise.all([
+      fetchFeaturedContent(language)(accessToken),
       fetchLevels(language)(accessToken),
       fetchLanguages()(accessToken),
       fetchBooks(language)(accessToken)
@@ -114,7 +114,7 @@ class BooksPage extends React.Component<Props> {
     );
 
     return {
-      editorPicks,
+      featuredContent,
       justArrived,
       languages,
       levels,
@@ -124,14 +124,14 @@ class BooksPage extends React.Component<Props> {
 
   render() {
     const {
-      editorPicks,
+      featuredContent,
       languages,
       levels,
       booksByLevel,
       justArrived
     } = this.props;
 
-    const editorPick = editorPicks[0];
+    const featured = featuredContent[0];
     const languageFilter = justArrived.language;
 
     return (
@@ -173,40 +173,28 @@ class BooksPage extends React.Component<Props> {
         <HeroCover
           pt={['15px', '40px']}
           pb={['42px', '54px']}
-          src={editorPick.coverPhoto && editorPick.coverPhoto.large}
+          src={featured.imageUrl}
         >
           <HeroCardTablet>
             <Box textAlign="center">
-              <H1>{editorPick.title}</H1>
+              <H1>{featured.title}</H1>
               <P fontSize={[14, 16]} lineHeight={[22, 26]}>
-                {editorPick.description}
+                {featured.description}
               </P>
-              <Link
-                route="book"
-                params={{ id: editorPick.id, lang: editorPick.language.code }}
-                passHref
-              >
-                <ButtonLink>Read book</ButtonLink>
-              </Link>
+              <ButtonLink href={featured.link}>More</ButtonLink>
             </Box>
           </HeroCardTablet>
           <HeroCovertitle>
-            <Trans>Featured book</Trans>
+            <Trans>Featured</Trans>
           </HeroCovertitle>
         </HeroCover>
         <HeroCardMobile>
           <Box textAlign="center">
-            <H1>{editorPick.title}</H1>
+            <H1>{featured.title}</H1>
             <P fontSize={[14, 16]} lineHeight={[22, 26]}>
-              {editorPick.description}
+              {featured.description}
             </P>
-            <Link
-              route="book"
-              params={{ id: editorPick.id, lang: editorPick.language.code }}
-              passHref
-            >
-              <ButtonLink>Read book</ButtonLink>
-            </Link>
+            <ButtonLink href={featured.link}>More</ButtonLink>
           </Box>
         </HeroCardMobile>
 

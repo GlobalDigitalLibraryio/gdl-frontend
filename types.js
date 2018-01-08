@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -66,4 +66,11 @@ export type Book = {|
     large: string,
     small: string,
   },
+|};
+
+export type FeaturedContent = {|
+  +title: string,
+  +description: string,
+  +link: string,
+  +imageUrl: string
 |};

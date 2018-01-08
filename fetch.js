@@ -8,7 +8,7 @@
 
 import fetch from 'isomorphic-unfetch';
 import { bookApiUrl } from './config';
-import type { RemoteData, Language, Book } from './types';
+import type {RemoteData, Language, Book, FeaturedContent} from './types';
 import {
   getAccessTokenFromLocalStorage,
   setAnonToken,
@@ -114,11 +114,11 @@ export function fetchLanguages(): (
   return accessToken => fetchWithToken(`${bookApiUrl}/languages`)(accessToken);
 }
 
-export function fetchEditorPicks(
+export function fetchFeaturedContent(
   language: ?string,
-): (accessToken: ?string) => Promise<RemoteData<Array<Book>>> {
+): (accessToken: ?string) => Promise<RemoteData<Array<FeaturedContent>>> {
   return accessToken =>
-    fetchWithToken(`${bookApiUrl}/editorpicks/${language || ''}`)(accessToken);
+    fetchWithToken(`${bookApiUrl}/featured/${language || ''}`)(accessToken);
 }
 
 export function fetchBook(
