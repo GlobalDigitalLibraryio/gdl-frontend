@@ -12,13 +12,10 @@ import { ServerStyleSheet, injectGlobal } from 'styled-components';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
 
-
-
 // eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${globalStyles}
 `;
-
 
 /**
  * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
@@ -28,7 +25,7 @@ export default class GDLDocument extends Document {
     const sheet = new ServerStyleSheet();
 
     const page = renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />),
+      sheet.collectStyles(<App {...props} />)
     );
 
     const styleTags = sheet.getStyleElement();
@@ -37,7 +34,7 @@ export default class GDLDocument extends Document {
       ...page,
       language: req.language,
       styleTags,
-      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     };
   }
 
@@ -49,9 +46,25 @@ export default class GDLDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          {/* IE automatically looks for  browserconfig.xml in the root directory of the server if this is not explictly turned off */}
+          <meta name="msapplication-config" content="none" />
           {/* Adding next-head to the following meta tag ensures it gets deduped properly on the client in our own Head component */}
-          <meta property="og:url" content={this.props.url} className="next-head" />
-          <script dangerouslySetInnerHTML={{ __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env.GDL_ENVIRONMENT || 'test'}';` }} />
+          <meta
+            property="og:url"
+            content={this.props.url}
+            className="next-head"
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env
+                .GDL_ENVIRONMENT || 'test'}';`
+            }}
+          />
+          <script
+            src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,String.prototype.includes"
+            defer
+            async
+          />
           {this.props.styleTags}
         </Head>
         <body>
