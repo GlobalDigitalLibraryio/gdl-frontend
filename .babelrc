@@ -4,7 +4,15 @@
       "presets": ["next/babel", "lingui-react"]
     },
     "production": {
-      "presets": ["next/babel", "lingui-react"]
+      "presets": [
+        [
+          "next/babel",
+          {
+            "preset-env": { "targets": { "ie": 11 } }
+          }
+        ],
+        "lingui-react"
+      ]
     },
     "test": {
       "presets": [
