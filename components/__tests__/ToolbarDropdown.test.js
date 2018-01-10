@@ -7,18 +7,16 @@
  */
 
 import React from 'react';
-import { ThemeProvider } from 'styled-components';
 import { mount } from 'enzyme';
 import Link from 'next/link';
 import Router from 'next/router';
 import type { Language } from '../../types';
 import ToolbarItem, { ToolbarDropdownItem } from '../ToolbarDropdown';
-import theme from '../../style/theme';
 
 const languages: Array<Language> = [
   { code: 'ahm', name: 'Amharic' },
   { code: 'ben', name: 'Bengali' },
-  { code: 'eng', name: 'English' },
+  { code: 'eng', name: 'English' }
 ];
 
 let tree;
@@ -30,22 +28,20 @@ afterEach(() => {
 
 test('Displays items when open', () => {
   tree = mount(
-    <ThemeProvider theme={theme}>
-      <ToolbarItem id="langFilter" text="Language" selectedItem="eng">
-        {({ getItemProps, selectedItem, highlightedIndex }) =>
-          languages.map((lang, index) => (
-            <ToolbarDropdownItem
-              key={lang.code}
-              {...getItemProps({ item: lang.code })}
-              isActive={highlightedIndex === index}
-              isSelected={selectedItem === lang.code}
-            >
-              {lang.name}
-            </ToolbarDropdownItem>
-          ))
-        }
-      </ToolbarItem>
-    </ThemeProvider>,
+    <ToolbarItem id="langFilter" text="Language" selectedItem="eng">
+      {({ getItemProps, selectedItem, highlightedIndex }) =>
+        languages.map((lang, index) => (
+          <ToolbarDropdownItem
+            key={lang.code}
+            {...getItemProps({ item: lang.code })}
+            isActive={highlightedIndex === index}
+            isSelected={selectedItem === lang.code}
+          >
+            {lang.name}
+          </ToolbarDropdownItem>
+        ))
+      }
+    </ToolbarItem>
   );
 
   // Before we've trigged the dropdown, we shouldn't display any elements
@@ -62,23 +58,21 @@ test('Closes the dropdown when selecting an item, even when wrapped with next Li
   Router.router = mockedRouter;
 
   tree = mount(
-    <ThemeProvider theme={theme}>
-      <ToolbarItem id="langFilter" text="Language" selectedItem="eng">
-        {({ getItemProps, selectedItem, highlightedIndex }) =>
-          languages.map((lang, index) => (
-            <Link href="test" passHref key={lang.code}>
-              <ToolbarDropdownItem
-                {...getItemProps({ item: lang.code })}
-                isActive={highlightedIndex === index}
-                isSelected={selectedItem === lang.code}
-              >
-                {lang.name}
-              </ToolbarDropdownItem>
-            </Link>
-          ))
-        }
-      </ToolbarItem>
-    </ThemeProvider>,
+    <ToolbarItem id="langFilter" text="Language" selectedItem="eng">
+      {({ getItemProps, selectedItem, highlightedIndex }) =>
+        languages.map((lang, index) => (
+          <Link href="test" passHref key={lang.code}>
+            <ToolbarDropdownItem
+              {...getItemProps({ item: lang.code })}
+              isActive={highlightedIndex === index}
+              isSelected={selectedItem === lang.code}
+            >
+              {lang.name}
+            </ToolbarDropdownItem>
+          </Link>
+        ))
+      }
+    </ToolbarItem>
   );
 
   // Open the dropdown
@@ -86,7 +80,7 @@ test('Closes the dropdown when selecting an item, even when wrapped with next Li
   dropdownButton.simulate('click');
   // Should be expanded now
   expect(dropdownButton.getDOMNode().getAttribute('aria-expanded')).toEqual(
-    'true',
+    'true'
   );
 
   // Click an item in the dropdown
@@ -97,6 +91,6 @@ test('Closes the dropdown when selecting an item, even when wrapped with next Li
 
   // The dropdown should now be closed
   expect(dropdownButton.getDOMNode().getAttribute('aria-expanded')).toEqual(
-    'false',
+    'false'
   );
 });

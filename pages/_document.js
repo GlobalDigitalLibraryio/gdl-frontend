@@ -37,7 +37,7 @@ export default class GDLDocument extends Document {
     };
   }
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     const { __NEXT_DATA__, ids } = props;
     if (ids) {
