@@ -86,7 +86,7 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.5.1",
-    "flow-bin": "0.56.0",
+    "flow-bin": "0.63.1",
     "jest": "22.0.4",
     "jest-styled-components": "4.9.0",
     "lingui-cli": "1.4.4",

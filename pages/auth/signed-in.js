@@ -17,7 +17,6 @@ import { setAuthToken } from '../../lib/auth/token';
 import { parseHash } from '../../lib/auth';
 
 class Success extends React.Component<*> {
-  // $FlowFixMe
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.accessToken) {
@@ -27,7 +26,6 @@ class Success extends React.Component<*> {
   }
 
   render() {
-
     return (
       <Layout>
         <Container pt={50}>

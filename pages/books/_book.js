@@ -10,7 +10,7 @@ import * as React from 'react';
 import { DateFormat, Trans } from 'lingui-react';
 import styled from 'styled-components';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, RemoteData } from '../../types';
+import type { Book, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link } from '../../routes';
 import Box from '../../components/Box';
@@ -66,7 +66,7 @@ const Hero = styled('div')`
 `;
 
 class BookPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query, accessToken }: Context) {
     const [book, similar] = await Promise.all([
       fetchBook(query.id, query.lang)(accessToken),
       fetchSimilarBooks(query.id, query.lang)(accessToken)

@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { fetchBook } from '../../fetch';
-import type { Book, RemoteData } from '../../types';
+import type { Book, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Head from '../../components/Head';
 import Reader from '../../components/Reader';
@@ -17,13 +17,13 @@ type Props = {
   book: RemoteData<Book>,
   url: {
     query: {
-      chapter?: string,
-    },
-  },
+      chapter?: string
+    }
+  }
 };
 
 class Read extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query, accessToken }: Context) {
     const book = await fetchBook(query.id, query.lang)(accessToken);
 
     // Make sure the chapters are sorted by the chapter numbers
@@ -31,7 +31,7 @@ class Read extends React.Component<Props> {
     book.chapters.sort((a, b) => a.seqNo - b.seqNo);
 
     return {
-      book,
+      book
     };
   }
 
