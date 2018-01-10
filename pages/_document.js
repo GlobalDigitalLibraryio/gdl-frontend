@@ -8,7 +8,7 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { injectGlobal } from 'styled-components';
+import { injectGlobal } from 'emotion';
 import { extractCritical } from 'emotion-server';
 import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
