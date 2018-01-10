@@ -26,6 +26,7 @@
     "polished",
     "transform-flow-strip-types",
     "inline-react-svg",
+    "emotion",
     ["babel-plugin-styled-components", { "ssr": true }]
   ]
 }
