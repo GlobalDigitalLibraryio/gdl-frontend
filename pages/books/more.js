@@ -10,7 +10,7 @@ import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { fetchBooks } from '../../fetch';
-import type { Book, RemoteData, Language } from '../../types';
+import type { Book, RemoteData, Language, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import { Button } from '../../components/Button';
@@ -49,7 +49,7 @@ type State = {
 };
 
 class BookPage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query, accessToken }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
       level: query.level

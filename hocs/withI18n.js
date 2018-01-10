@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -14,6 +14,7 @@ import Head from 'next/head';
 import { unpackCatalog } from 'lingui-i18n';
 import serializeJS from 'serialize-javascript';
 import Url from 'domurl';
+import type { Context } from '../types';
 
 // required in development only (huge dependency)
 const dev =
@@ -24,13 +25,13 @@ const dev =
 type Props = {
   language: string,
   catalog: string,
-  href: string,
+  href: string
 };
 
 // Currently next.js doesn't support variables with dynamic imports,
 // So for now we have to add each translation specifically
 const translations = {
-  en: import('../locale/en/messages'),
+  en: import('../locale/en/messages')
 };
 
 /**
@@ -40,7 +41,7 @@ export default (Page: React.ComponentType<any>) => {
   const I18nPage = withI18n()(Page);
 
   return class PageWithI18n extends React.Component<Props> {
-    static async getInitialProps(context) {
+    static async getInitialProps(context: Context) {
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
       // Check if it actually is a next page
@@ -51,6 +52,7 @@ export default (Page: React.ComponentType<any>) => {
       // et the 'language' from the request object on the server.
       // In the browser, use the same values that the server serialized.
       const { req } = context;
+      // $FlowFixMe: How to handle that we get 'language' on the request object?
       let { language } = req || window.__NEXT_DATA__.props;
 
       // Fallback to english if the language isn't found in the translations object
@@ -63,19 +65,19 @@ export default (Page: React.ComponentType<any>) => {
       const catalog = serializeJS(await translations[language]);
 
       let href;
-      if (process.browser) {
+      if (req != null) {
+        // On the server, we build it up based on the request object
+        href = `${req.protocol}://${req.headers.host}${req.originalUrl}`;
+      } else {
         // In the browser, we simly read the window location
         href = window.location.href;
-      } else {
-        // On the server, we build it up based on the request object
-        href = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
       }
 
       return {
         ...composedInitialProps,
         language,
         catalog,
-        href,
+        href
       };
     }
 
@@ -91,7 +93,7 @@ export default (Page: React.ComponentType<any>) => {
         <I18nProvider
           language={language}
           catalogs={{
-            [language]: unpackCatalog(eval(`(${catalog})`)),
+            [language]: unpackCatalog(eval(`(${catalog})`))
           }}
           defaultRender={null}
           development={dev}

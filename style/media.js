@@ -19,6 +19,7 @@ import { TABLET_BREAKPOINT } from './theme';
 
 // A function returning a function :)
 const query = (condition: 'min' | 'max', width: number) => (
+  // $FlowFixMe Flow doesn't play nice with template literals https://github.com/facebook/flow/issues/2616
   ...args: TaggedTemplateLiteral
 ) => css`
   @media (${condition}-width: ${width}px) {
@@ -28,7 +29,7 @@ const query = (condition: 'min' | 'max', width: number) => (
 
 const media = {
   mobile: query('max', TABLET_BREAKPOINT - 1),
-  tablet: query('min', TABLET_BREAKPOINT),
+  tablet: query('min', TABLET_BREAKPOINT)
 };
 
 export default media;

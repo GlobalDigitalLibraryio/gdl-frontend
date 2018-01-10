@@ -9,6 +9,7 @@
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheet, injectGlobal } from 'styled-components';
+import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
 
@@ -21,7 +22,7 @@ injectGlobal`
  * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
  */
 export default class GDLDocument extends Document {
-  static getInitialProps({ renderPage, req }) {
+  static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
     const sheet = new ServerStyleSheet();
 
     const page = renderPage(App => props =>
@@ -32,9 +33,11 @@ export default class GDLDocument extends Document {
 
     return {
       ...page,
+      // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
       styleTags,
-      url: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+      // $FlowFixMe This is only rendered on the server, so req shouldn't be undefined
+      url: `${req.protocol}://${req.headers.host}${req.originalUrl}`
     };
   }
 

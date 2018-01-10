@@ -11,16 +11,16 @@ import Router from 'next/router';
 import withI18n from './withI18n';
 import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
+import type { Context } from '../types';
 import {
   setAnonToken,
   getAccessTokenFromRequest,
   getAccessTokenFromLocalStorage,
   setAnonTokenOnResponse,
-  LOGOUT_KEY,
+  LOGOUT_KEY
 } from '../lib/auth/token';
 import { fetchAnonToken } from '../fetch';
 import logPageView from '../lib/analytics';
-
 
 logPageView();
 
@@ -31,7 +31,7 @@ logPageView();
 
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
-    static async getInitialProps(ctx) {
+    static async getInitialProps(ctx: Context) {
       const accessToken = process.browser
         ? getAccessTokenFromLocalStorage()
         : getAccessTokenFromRequest(ctx.req);
@@ -46,6 +46,7 @@ const defaultPage = Page =>
         }
       }
 
+      // $FlowFixMe
       ctx.accessToken = accessToken || (fullToken && fullToken.access_token);
 
       // Evaluate the composed component's getInitialProps()
@@ -57,7 +58,7 @@ const defaultPage = Page =>
 
       return {
         fullToken,
-        ...composedInitialProps,
+        ...composedInitialProps
       };
     }
 
@@ -74,12 +75,11 @@ const defaultPage = Page =>
       window.removeEventListener('storage', this.logout, false);
     }
 
-    // $FlowFixMe: StorageEvent was added to Flow in v0.58.0, so remove this line after we've upgraded 
     logout = (event: StorageEvent) => {
-      if (event.key === LOGOUT_KEY) {
+      if (event.key === LOGOUT_KEY && event.newValue) {
         Router.push(`/?logout=${event.newValue}`);
       }
-    }
+    };
 
     render() {
       const { token, ...props } = this.props;
@@ -89,8 +89,8 @@ const defaultPage = Page =>
 
 export default (
   Page: React.ComponentType<any>,
-  wrapWithErrorBoundary: boolean = true,
+  wrapWithErrorBoundary: boolean = true
 ) =>
   defaultPage(
-    withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page)),
+    withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page))
   );

@@ -16,7 +16,13 @@ import {
   fetchLanguages,
   fetchBooks
 } from '../fetch';
-import type { Book, Language, RemoteData, FeaturedContent } from '../types';
+import type {
+  Book,
+  Language,
+  RemoteData,
+  FeaturedContent,
+  Context
+} from '../types';
 import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
 import Box from '../components/Box';
@@ -98,16 +104,18 @@ const HeroCardTablet = styled(Card)`
 `;
 
 class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query, accessToken }: Context) {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
-    const [featuredContent, levels, languages, justArrived] = await Promise.all([
-      fetchFeaturedContent(language)(accessToken),
-      fetchLevels(language)(accessToken),
-      fetchLanguages()(accessToken),
-      fetchBooks(language)(accessToken)
-    ]);
+    const [featuredContent, levels, languages, justArrived] = await Promise.all(
+      [
+        fetchFeaturedContent(language)(accessToken),
+        fetchLevels(language)(accessToken),
+        fetchLanguages()(accessToken),
+        fetchBooks(language)(accessToken)
+      ]
+    );
 
     const booksByLevel = await Promise.all(
       levels.map(level => fetchBooks(language, { level })(accessToken))

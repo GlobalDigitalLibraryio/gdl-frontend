@@ -33,11 +33,13 @@ app
     server.use(compression());
 
     // 404 all requests for favicons since we don't have one, and it attempts to match with our next routes
+    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/favicon.ico', (req, res) => res.sendStatus(404));
 
     /**
      * Generate access tokens for anonymous users
      */
+    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/get_token', async (req, res) => {
       try {
         const token = await getToken();
@@ -48,6 +50,7 @@ app
     });
 
     // Health check for AWS
+    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/health', (req, res) => {
       res.status(200).json({ status: 200, text: 'Health check ok' });
     });
@@ -61,11 +64,12 @@ app
         languages,
         queryName: 'hl',
         cookie: {
-          name: 'language',
-        },
-      }),
+          name: 'language'
+        }
+      })
     );
 
+    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('*', (req, res) => {
       handle(req, res);
     });

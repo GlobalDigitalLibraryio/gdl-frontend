@@ -1,12 +1,7 @@
 [ignore]
-# Ignore flow errors from styled-components source: https://www.styled-components.com/docs/api#ignore-styledcomponents-source
-.*/node_modules/styled-components/.*
-# Ignore flow error caused by this babel-plugin
-.*/node_modules/babel-plugin-transform-react-remove-prop-types/.*
-.*/node_modules/immutable/dist/.*
+# We don't have direct dependencies on these libraries, so we ignore the Flow errors
 .*/node_modules/config-chain/test/.*
 .*/node_modules/npmconf/test/.*
-.*/node_modules/radium/.*
 
 [include]
 
@@ -14,5 +9,3 @@
 types/
 
 [options]
-# js-lingui uses this, enabling this to remove errors
-unsafe.enable_getters_and_setters=true
