@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import type { Book } from '../types';
 import Card from './Card';
 import ReadingLevel from './ReadingLevel';
@@ -15,7 +15,7 @@ import Box from './Box';
 import theme from '../style/theme';
 import CoverImage from './CoverImage';
 
-const Div = Box.extend`
+const Div = styled(Box)`
   text-align: center;
   color: ${theme.colors.dark};
   border-top: 1px solid ${theme.colors.grayLight};

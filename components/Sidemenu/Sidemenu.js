@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { withRouter } from 'next/router';
 import Downshift from 'downshift';
 import { Trans } from 'lingui-react';
@@ -15,7 +15,7 @@ import {
   MdClose,
   MdHome,
   MdKeyboardArrowRight,
-  MdKeyboardArrowLeft,
+  MdKeyboardArrowLeft
 } from 'react-icons/lib/md';
 import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
@@ -28,9 +28,7 @@ import KeyDown from '../KeyDown';
 import MenuLabel from './MenuLabel';
 import MenuItem from './MenuItem';
 
-const Button = styled.button.attrs({
-  type: 'button',
-})`
+const Button = styled.button`
   background: transparent;
   border: none;
   color: inherit;
@@ -41,23 +39,23 @@ type Props = {
   id: string,
   language: Language,
   router: {
-    asPath: string,
-  },
+    asPath: string
+  }
 };
 
 type State = {
   languages: Array<Language>,
-  levels: Array<string>,
+  levels: Array<string>
 };
 
 type Cache = State & {
-  language: ?Language,
+  language: ?Language
 };
 
 const stateCache: Cache = {
   languages: [],
   levels: [],
-  language: null,
+  language: null
 };
 
 class Sidebar extends React.Component<Props, State> {
@@ -69,12 +67,12 @@ class Sidebar extends React.Component<Props, State> {
     ) {
       this.state = {
         languages: stateCache.languages,
-        levels: stateCache.levels,
+        levels: stateCache.levels
       };
     } else {
       this.state = {
         languages: [],
-        levels: [],
+        levels: []
       };
     }
   }
@@ -116,12 +114,12 @@ class Sidebar extends React.Component<Props, State> {
   getMenuData = async () => {
     const [languages, levels] = await Promise.all([
       fetchLanguages()(),
-      fetchLevels(this.props.language.code)(),
+      fetchLevels(this.props.language.code)()
     ]);
 
     this.setState({
       levels,
-      languages,
+      languages
     });
   };
 
@@ -145,7 +143,7 @@ class Sidebar extends React.Component<Props, State> {
           >
             <Flex h={[48, 80]} px={15} justify="space-between" align="center">
               <Link route="books" params={{ lang: 'eng' }}>
-                <Button>
+                <Button type="button">
                   <MdHome />
                 </Button>
               </Link>
@@ -153,6 +151,7 @@ class Sidebar extends React.Component<Props, State> {
               <Button
                 onClick={this.props.onCloseRequested}
                 aria-label="Close menu"
+                type="button"
               >
                 <MdClose />
               </Button>
@@ -180,7 +179,7 @@ class Sidebar extends React.Component<Props, State> {
                       style={{
                         marginLeft: '28px',
                         position: 'absolute',
-                        top: 0,
+                        top: 0
                       }}
                     >
                       <Flex h={48} align="center">

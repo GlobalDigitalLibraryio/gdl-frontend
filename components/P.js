@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { fontSize } from 'styled-system';
 import lineHeight from '../style/lineHeight';
 

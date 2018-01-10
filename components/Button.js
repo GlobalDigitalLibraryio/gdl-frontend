@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled, { css } from 'styled-components';
+import styled, { css } from 'react-emotion';
 import { lighten } from 'polished';
 import rotate360 from '../style/rotate360';
 import media from '../style/media';

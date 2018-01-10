@@ -6,14 +6,14 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import {
   fontSize,
   space,
   color,
   width,
   flex,
-  responsiveStyle,
+  responsiveStyle
 } from 'styled-system';
 import height from '../style/height';
 import textAlign from '../style/textAlign';

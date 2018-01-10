@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import Router from 'next/router';
+import { hydrate } from 'react-emotion';
 import withI18n from './withI18n';
 import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
@@ -23,6 +24,12 @@ import { fetchAnonToken } from '../fetch';
 import logPageView from '../lib/analytics';
 
 logPageView();
+
+// Adds server generated styles to emotion cache.
+// '__NEXT_DATA__.ids' is set in '_document.js'
+if (typeof window !== 'undefined') {
+  hydrate(window.__NEXT_DATA__.ids);
+}
 
 /**
  * HoC that combines all necessary pages wrapper so we get a single point of entry

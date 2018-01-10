@@ -2,11 +2,11 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { hideVisually } from 'polished';
 
 // A component whose content is only visible to screen readers

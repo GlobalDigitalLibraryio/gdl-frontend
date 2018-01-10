@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { Trans } from 'lingui-react';
 import media from '../style/media';
 import theme from '../style/theme';

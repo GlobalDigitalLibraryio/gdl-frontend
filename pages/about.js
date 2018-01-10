@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { Link } from '../routes';
 import H1 from '../components/H1';
 import H3 from '../components/H3';
@@ -30,7 +30,7 @@ const CardImg = styled.img`
   object-fit: cover;
 `;
 
-export const HeroWithIcons = Hero.extend`
+export const HeroWithIcons = styled(Hero)`
   color: #fff;
   background: url('/static/about/books.png'),
     linear-gradient(135deg, #004b91 0%, #5abc7f 100%);

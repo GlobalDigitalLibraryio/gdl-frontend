@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'emotion-theming';
 import type { Context } from '../types';
 import theme from '../style/theme';
 

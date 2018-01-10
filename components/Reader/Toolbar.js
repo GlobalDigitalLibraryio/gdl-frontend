@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { Trans } from 'lingui-react';
 import { MdClose } from 'react-icons/lib/md';
 import SrOnly from '../SrOnly';
@@ -49,7 +49,7 @@ const Button = styled.button`
 type Props = {
   onRequestClose(): void,
   currentChapter: number,
-  totalChapters: number,
+  totalChapters: number
 };
 
 const Toolbar = (props: Props) => (

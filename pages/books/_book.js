@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { DateFormat, Trans } from 'lingui-react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';

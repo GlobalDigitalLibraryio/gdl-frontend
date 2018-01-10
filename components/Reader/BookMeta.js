@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 
 const Div = styled.div`
   font-size: 14px;
@@ -15,7 +15,7 @@ const Div = styled.div`
 `;
 
 type Props = {
-  title?: string,
+  title?: string
 };
 
 const BookMeta = (props: Props) => <Div>{props.title}</Div>;

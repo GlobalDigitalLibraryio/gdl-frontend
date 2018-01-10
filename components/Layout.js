@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import type { Language } from '../types';
 import media from '../style/media';
 import Navbar from './Navbar';
@@ -29,13 +29,13 @@ const Toolbar = styled.div`
   `};
 `;
 
-const Container = styled('div') `
+const Container = styled('div')`
   display: flex;
   height: 100%;
   ${navContainerFragment};
 `;
 
-const ContentWrapper = styled('div') `
+const ContentWrapper = styled('div')`
   box-shadow: ${theme.boxShadows.large};
   background: ${theme.colors.grayLighter};
   flex: 1;
@@ -45,7 +45,7 @@ const ContentWrapper = styled('div') `
   margin-right: auto;
 `;
 
-const PageWrapper = styled('div') `
+const PageWrapper = styled('div')`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -55,22 +55,22 @@ type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
   currentPage?: string,
-  language: Language,
+  language: Language
 };
 
 type State = {
-  menuIsExpanded: boolean,
+  menuIsExpanded: boolean
 };
 
 class Layout extends React.Component<Props, State> {
   static defaultProps = {
     language: {
       code: 'eng',
-      name: 'English',
-    },
+      name: 'English'
+    }
   };
   state = {
-    menuIsExpanded: false,
+    menuIsExpanded: false
   };
 
   render() {
