@@ -20,8 +20,15 @@ import textAlign from '../style/textAlign';
 
 const order = responsiveStyle('order');
 
-const Box = styled.div`
-  ${fontSize} ${width} ${space} ${flex} ${order} ${height} ${color} ${textAlign};
-`;
+const Box = styled('div')(
+  fontSize,
+  width,
+  space,
+  flex,
+  order,
+  height,
+  color,
+  textAlign
+);
 
 export default Box;

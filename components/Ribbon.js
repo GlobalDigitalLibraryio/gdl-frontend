@@ -19,7 +19,7 @@ const HEIGHT = '30px';
  * Currently this component is specially tailored for use on the metadata card on the book page
  * Ie. this is not a reusable component at the moment
  */
-const Ribbon = styled.div`
+const Ribbon = styled('div')`
   display: inline-flex;
   justify-content: center;
   align-items: center;

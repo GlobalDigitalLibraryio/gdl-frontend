@@ -43,9 +43,7 @@ const buttonFragment = (color: string) => css`
   }
 `;
 
-const ButtonLink = styled('a')`
-  ${buttonFragment(theme.colors.link)};
-`;
+const ButtonLink = styled('a')(buttonFragment(theme.colors.link));
 
 const Button = styled('button')`
   ${buttonFragment(theme.colors.link)};

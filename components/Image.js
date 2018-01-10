@@ -52,7 +52,7 @@ const listenToIntersections = (el, cb) => {
   listeners.push([el, cb]);
 };
 
-const Img = styled.img`
+const Img = styled('img')`
   width: 100%;
   height: 100%;
   object-fit: cover;

@@ -10,8 +10,6 @@ import styled from 'react-emotion';
 import { hideVisually } from 'polished';
 
 // A component whose content is only visible to screen readers
-const SrOnly = styled.span`
-  ${hideVisually()};
-`;
+const SrOnly = styled('span')(hideVisually);
 
 export default SrOnly;

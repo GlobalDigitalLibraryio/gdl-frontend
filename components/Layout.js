@@ -16,7 +16,7 @@ import { navContainerFragment } from './Container';
 import Sidemenu from './Sidemenu';
 import theme from '../style/theme';
 
-const Toolbar = styled.div`
+const Toolbar = styled('div')`
   background: ${theme.colors.white};
   box-shadow: ${theme.boxShadows.small};
   position: relative;

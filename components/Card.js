@@ -19,11 +19,6 @@ const cardCss = css`
   color: ${theme.colors.dark};
 `;
 
-const Card = styled('div')`
-  ${cardCss};
-  ${space};
-  ${textAlign};
-  ${flex};
-`;
+const Card = styled('div')(cardCss, space, textAlign, flex);
 
 export default Card;

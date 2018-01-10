@@ -19,13 +19,9 @@ import H1 from '../../components/H1';
 import { loginSocialMedia } from '../../lib/auth';
 import { buttonFragment } from '../../components/Button';
 
-const GoogleButton = styled('button')`
-  ${buttonFragment('#db3236')};
-`;
+const GoogleButton = styled('button')(buttonFragment('#db3236'));
 
-const FacebookButton = styled('button')`
-  ${buttonFragment('#3b5998')};
-`;
+const FacebookButton = styled('button')(buttonFragment('#3b5998'));
 
 type Props = {
   i18n: I18n

@@ -14,13 +14,11 @@ import Card from './Card';
 
 /* eslint-disable react/no-multi-comp */
 
-const Item = styled.div`
+const Item = styled('div')`
   position: relative;
   display: flex;
   align-items: center;
 `;
-
-const DropdownButton = styled.a``;
 
 const DropdownItemAnchor = styled.a`
   display: block;
@@ -85,10 +83,10 @@ class ToolbarItem extends React.Component<Props> {
           closeMenu
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
-            <DropdownButton href="" {...getButtonProps()}>
+            <a href="" {...getButtonProps()}>
               {this.props.text}{' '}
               {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
-            </DropdownButton>
+            </a>
             {isOpen && (
               <Card
                 style={{
