@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
 import { withRouter } from 'next/router';
 import Downshift from 'downshift';
 import { Trans } from 'lingui-react';
@@ -26,14 +25,9 @@ import MenuItem from '../Menu/MenuItem';
 import Backdrop from '../Menu/Backdrop';
 import ModalCard from '../Menu/ModalCard';
 import Container from '../Menu/Container';
+import IconButton from '../Menu/IconButton';
 import theme from '../../style/theme';
 import SrOnly from '../SrOnly';
-
-const Button = styled.button`
-  background: transparent;
-  border: none;
-  color: inherit;
-`;
 
 type Props = {
   onCloseRequested(): void,
@@ -112,15 +106,29 @@ class Sidebar extends React.Component<Props, State> {
     });
   };
 
+  handleOutsideClick = event => {
+    if (
+      this.modal &&
+      event.target instanceof Node &&
+      !this.modal.contains(event.target)
+    ) {
+      this.props.onCloseRequested();
+    }
+  };
+
+  modal: ?HTMLDivElement;
+
   render() {
     const { language } = this.props;
 
     return (
-      <Backdrop>
+      <Backdrop onClick={this.handleOutsideClick}>
         <Container size="large">
           <ModalCard
             id={this.props.id}
-            style={{ marginLeft: 'auto', minWidth: '33%' }}
+            innerRef={c => {
+              this.modal = c;
+            }}
           >
             <Flex
               h={[48, 80]}
@@ -138,13 +146,13 @@ class Sidebar extends React.Component<Props, State> {
                 </a>
               </Link>
               <Trans>Menu</Trans>{' '}
-              <Button
+              <IconButton
                 onClick={this.props.onCloseRequested}
                 aria-label="Close menu"
                 type="button"
               >
                 <MdClose />
-              </Button>
+              </IconButton>
             </Flex>
 
             <Downshift
@@ -177,9 +185,9 @@ class Sidebar extends React.Component<Props, State> {
                           borderBottom: `1px solid ${theme.colors.grayLight}`
                         }}
                       >
-                        <Button onClick={closeMenu}>
+                        <IconButton onClick={closeMenu}>
                           <MdKeyboardArrowLeft />
-                        </Button>
+                        </IconButton>
                         <Trans>Language</Trans>
                       </Flex>
                       {this.state.languages.map(lang => (
@@ -216,7 +224,7 @@ class Sidebar extends React.Component<Props, State> {
               </Link>
             ))}
             <Link passHref route="new" params={{ lang: language.code }}>
-              <MenuItem style={{ marginTop: '3px' }} thickBorder>
+              <MenuItem thickBorder>
                 <Trans>New arrivals</Trans>
               </MenuItem>
             </Link>
