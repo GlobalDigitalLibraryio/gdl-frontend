@@ -56,49 +56,6 @@ const PageWrapper = styled('div')`
 type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
-<<<<<<< HEAD
-  currentPage?: string,
-  language: Language
-};
-
-class Layout extends React.Component<Props> {
-  static defaultProps = {
-    language: {
-      code: 'eng',
-      name: 'English'
-    }
-  };
-
-  render() {
-    const { children, toolbarEnd, language, currentPage } = this.props;
-    return (
-      <PageWrapper>
-        <PortalWithState closeOnOutsideClick closeOnEsc>
-          {({ portal, closePortal, openPortal, isOpen }) => [
-            <Navbar
-              lang={language.code}
-              onMenuClick={openPortal}
-              menuIsExpanded={isOpen}
-            />,
-            <Toolbar>
-              <Container>
-                <Breadcrumb language={language} currentPage={currentPage} />
-                {toolbarEnd}
-              </Container>
-            </Toolbar>,
-            portal(
-              <Sidemenu
-                id="sidenav"
-                onCloseRequested={closePortal}
-                language={language}
-              />
-            )
-          ]}
-        </PortalWithState>
-        <ContentWrapper>{children}</ContentWrapper>
-      </PageWrapper>
-    );
-=======
   language: Language,
   crumbs?: Array<React.Node | string>
 };
@@ -141,7 +98,6 @@ Layout.defaultProps = {
   language: {
     code: 'eng',
     name: 'English'
->>>>>>> Refactor breadcrumb component to be more declarative
   }
 };
 

@@ -6,16 +6,15 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import Card from '../Card';
 import media from '../../style/media';
 
-export default styled(Card) `
+export default styled(Card)`
   ${media.mobile`
     height: 100%;
     width: 100%;
-  `}
-  max-height: 100%;
+  `} max-height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
 `;

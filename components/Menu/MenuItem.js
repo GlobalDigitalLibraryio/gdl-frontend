@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import theme from '../../style/theme';
 
 const MenuItem = styled.a`
@@ -17,8 +17,10 @@ const MenuItem = styled.a`
   padding: 7px 15px;
   min-height: 38px;
   width: 100%;
-  ${p => p.thinBorder && `border-bottom: 1px solid ${theme.colors.grayLight};`}
-  ${p => p.thickBorder && `border-bottom: 2px solid ${theme.colors.grayLight};`}
+  ${p =>
+    p.thinBorder &&
+    `border-bottom: 1px solid ${theme.colors.grayLight};`} ${p =>
+      p.thickBorder && `border-bottom: 2px solid ${theme.colors.grayLight};`};
 `;
 
 export default MenuItem;

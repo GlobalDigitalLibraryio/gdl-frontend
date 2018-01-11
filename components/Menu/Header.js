@@ -7,25 +7,22 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { Trans } from 'lingui-react';
-import {
-  MdClose,
-} from 'react-icons/lib/md';
+import { MdClose } from 'react-icons/lib/md';
 import Flex from '../Flex';
 import SrOnly from '../SrOnly';
 import IconButton from './IconButton';
 import theme from '../../style/theme';
 
-
-const Div = styled(Flex) `
+const Div = styled(Flex)`
   border-bottom: 1px solid ${theme.colors.grayLight};
   font-size: 16px;
   font-weight: 500;
 `;
 
 type Props = {
-  onClose: (event: SyntheticEvent<HTMLButtonElement>) => void,
+  onClose: (event: SyntheticEvent<HTMLButtonElement>) => void
 };
 
 const Header = ({ children, onClose, ...props }: Props) => (
