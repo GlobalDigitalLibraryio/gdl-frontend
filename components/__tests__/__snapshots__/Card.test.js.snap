@@ -10,7 +10,7 @@ exports[`Renders 1`] = `
 }
 
 <div
-  className="emotion-0"
+  className="emotion-0 emotion-1"
 >
   I am in a card!
 </div>

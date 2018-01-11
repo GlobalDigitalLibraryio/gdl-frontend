@@ -6,7 +6,7 @@ exports[`Is underlined anchor 1`] = `
 }
 
 <a
-  className="emotion-0"
+  className="emotion-0 emotion-1"
 >
   Link
 </a>

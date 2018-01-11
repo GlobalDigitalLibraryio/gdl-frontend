@@ -24,7 +24,7 @@ exports[`Renders 1`] = `
 >
   <Styled(span)>
     <span
-      className="emotion-0"
+      className="emotion-0 emotion-1"
     >
       <withI18n
         id="Level {level}"

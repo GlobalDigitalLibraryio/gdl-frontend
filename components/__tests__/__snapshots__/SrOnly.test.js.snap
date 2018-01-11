@@ -17,7 +17,7 @@ exports[`Renders 1`] = `
 }
 
 <span
-  className="emotion-0"
+  className="emotion-0 emotion-1"
 >
   Screen reader only
 </span>

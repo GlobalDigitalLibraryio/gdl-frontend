@@ -16,7 +16,7 @@ exports[`Responsive font sizes 1`] = `
 }
 
 <p
-  className="emotion-0"
+  className="emotion-0 emotion-1"
   fontSize={
     Array [
       15,
@@ -44,7 +44,7 @@ exports[`Responsive line heights 1`] = `
 }
 
 <p
-  className="emotion-0"
+  className="emotion-0 emotion-1"
 >
   Responsive font size
 </p>

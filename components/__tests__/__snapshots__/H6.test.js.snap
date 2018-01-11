@@ -18,7 +18,7 @@ exports[`Renders 1`] = `
 }
 
 <h6
-  className="emotion-0"
+  className="emotion-0 emotion-1"
 >
   Header 6
 </h6>

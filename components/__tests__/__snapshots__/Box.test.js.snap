@@ -9,7 +9,7 @@ exports[`Can have different margins 1`] = `
   m={10}
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
@@ -27,7 +27,7 @@ exports[`Can have different margins 2`] = `
   my={10}
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
@@ -47,7 +47,7 @@ exports[`Can have different margins 3`] = `
   mt="3px"
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
@@ -61,7 +61,7 @@ exports[`Can have different paddings 1`] = `
   p={10}
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
@@ -79,7 +79,7 @@ exports[`Can have different paddings 2`] = `
   py={10}
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
@@ -99,7 +99,7 @@ exports[`Can have different paddings 3`] = `
   pt="3px"
 >
   <div
-    className="emotion-0"
+    className="emotion-0 emotion-1"
   />
 </Styled(div)>
 `;
