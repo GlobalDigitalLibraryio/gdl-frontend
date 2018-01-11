@@ -83,7 +83,10 @@ class ToolbarItem extends React.Component<Props> {
           closeMenu
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
-            <a href="" {...getButtonProps()}>
+            {/* 
+            eslint-disable jsx-a11y/anchor-is-valid TODO:
+            */}
+            <a {...getButtonProps()}>
               {this.props.text}{' '}
               {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
             </a>
