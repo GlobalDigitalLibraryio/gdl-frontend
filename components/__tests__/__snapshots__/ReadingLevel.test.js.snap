@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renders 1`] = `
-.c0 {
+.emotion-0 {
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.12),0 2px 2px 0 rgba(0,0,0,0.12);
   border-radius: 4px;
   background-color: #666;
@@ -13,7 +13,7 @@ exports[`Renders 1`] = `
 }
 
 @media (min-width:768px) {
-  .c0 {
+  .emotion-0 {
     font-size: 12px;
     line-height: 18px;
   }
@@ -22,9 +22,9 @@ exports[`Renders 1`] = `
 <Component
   level="1"
 >
-  <styled.span>
+  <Styled(span)>
     <span
-      className="c0"
+      className="emotion-0"
     >
       <withI18n
         id="Level {level}"
@@ -52,6 +52,6 @@ exports[`Renders 1`] = `
         </Trans>
       </withI18n>
     </span>
-  </styled.span>
+  </Styled(span)>
 </Component>
 `;

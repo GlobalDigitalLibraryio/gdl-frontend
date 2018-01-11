@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renders 1`] = `
-.c0 {
+.emotion-0 {
   text-transform: uppercase;
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
 }
 
-.c0:first-child {
+.emotion-0:first-child {
   margin-top: 0;
 }
 
 @media (min-width:768px) {
-  .c0 {
+  .emotion-0 {
     font-size: 20px;
     line-height: 26px;
   }
 }
 
 <h3
-  className="c0"
+  className="emotion-0"
 >
   Header 3
 </h3>

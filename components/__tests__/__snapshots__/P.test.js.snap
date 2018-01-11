@@ -1,22 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Responsive font sizes 1`] = `
-.c0 {
+.emotion-0 {
   font-size: 15px;
 }
 
-.c0:last-child {
-  margin-bottom: 0;
-}
-
 @media screen and (min-width:40em) {
-  .c0 {
+  .emotion-0 {
     font-size: 20px;
   }
 }
 
+.emotion-0:last-child {
+  margin-bottom: 0;
+}
+
 <p
-  className="c0"
+  className="emotion-0"
   fontSize={
     Array [
       15,
@@ -29,22 +29,22 @@ exports[`Responsive font sizes 1`] = `
 `;
 
 exports[`Responsive line heights 1`] = `
-.c0 {
+.emotion-0 {
   line-height: 15px;
 }
 
-.c0:last-child {
-  margin-bottom: 0;
-}
-
 @media screen and (min-width:40em) {
-  .c0 {
+  .emotion-0 {
     line-height: 20px;
   }
 }
 
+.emotion-0:last-child {
+  margin-bottom: 0;
+}
+
 <p
-  className="c0"
+  className="emotion-0"
 >
   Responsive font size
 </p>

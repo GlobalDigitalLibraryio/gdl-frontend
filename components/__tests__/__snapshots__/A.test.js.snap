@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Is underlined anchor 1`] = `
-.c0 {
+.emotion-0 {
   text-decoration: underline;
 }
 
 <a
-  className="c0"
+  className="emotion-0"
 >
   Link
 </a>
