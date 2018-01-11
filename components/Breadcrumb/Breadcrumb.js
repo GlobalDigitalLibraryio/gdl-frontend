@@ -11,7 +11,7 @@ import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
 import { withRouter } from 'next/router';
 import type { I18n } from 'lingui-i18n';
 import { withI18n } from 'lingui-react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import type { Language } from '../../types';
 import { Link } from '../../routes';
 

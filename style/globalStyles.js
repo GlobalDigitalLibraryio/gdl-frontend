@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import { css } from 'styled-components';
+import { css } from 'react-emotion';
 import { normalize } from 'polished';
 import theme from './theme';
 

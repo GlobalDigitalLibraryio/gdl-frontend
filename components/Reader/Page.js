@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'styled-components';
+import styled from 'react-emotion';
 
 const Page = styled.div`
   color: #000;

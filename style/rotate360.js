@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import { keyframes } from 'styled-components';
+import { keyframes } from 'react-emotion';
 
 export default keyframes`
   from {

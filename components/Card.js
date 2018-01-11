@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled, { css } from 'styled-components';
+import styled, { css } from 'react-emotion';
 import { space, flex } from 'styled-system';
 import theme from '../style/theme';
 import textAlign from '../style/textAlign';
@@ -19,11 +19,6 @@ const cardCss = css`
   color: ${theme.colors.dark};
 `;
 
-const Card = styled('div')`
-  ${cardCss};
-  ${space};
-  ${textAlign};
-  ${flex};
-`;
+const Card = styled('div')(cardCss, space, textAlign, flex);
 
 export default Card;

@@ -6,11 +6,11 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { fontSize } from 'styled-system';
 import lineHeight from '../style/lineHeight';
 
-const P = styled.p`
+const P = styled('p')`
   ${fontSize};
   ${lineHeight};
   &:last-child {

@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled, { css } from 'styled-components';
+import styled, { css } from 'react-emotion';
 import { space } from 'styled-system';
 
 import theme from '../style/theme';
@@ -43,7 +43,7 @@ const Container = styled('div')`
 
 Container.defaultProps = {
   size: 'small',
-  px: [15, 20],
+  px: [15, 20]
 };
 
 export { Container as default, navContainerFragment };

@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { configure, addDecorator } from '@storybook/react';
-import { injectGlobal } from 'styled-components';
+import { injectGlobal } from 'emotion';
 import globalStyles from '../style/globalStyles';
 import { Theme } from '../hocs/withTheme';
 

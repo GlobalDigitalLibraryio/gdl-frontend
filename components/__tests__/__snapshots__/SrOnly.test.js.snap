@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renders 1`] = `
-.c0 {
-  border: 0;
+.emotion-0 {
+  border: 0px;
   -webkit-clip: rect(0 0 0 0);
   clip: rect(0 0 0 0);
   -webkit-clip-path: inset(50%);
@@ -10,14 +10,14 @@ exports[`Renders 1`] = `
   height: 1px;
   margin: -1px;
   overflow: hidden;
-  padding: 0;
+  padding: 0px;
   position: absolute;
   white-space: nowrap;
   width: 1px;
 }
 
 <span
-  className="c0"
+  className="emotion-0 emotion-1"
 >
   Screen reader only
 </span>

@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'styled-components';
+import styled from 'react-emotion';
 
 const MenuLabel = styled.div`
   font-size: 10px;

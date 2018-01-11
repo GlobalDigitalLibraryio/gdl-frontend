@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import {
   justifyContent,
   flexDirection,
@@ -14,7 +14,7 @@ import {
   alignItems,
   space,
   flex,
-  responsiveStyle,
+  responsiveStyle
 } from 'styled-system';
 import height from '../style/height';
 import textAlign from '../style/textAlign';
@@ -23,11 +23,20 @@ const order = responsiveStyle('order');
 
 const display = responsiveStyle('display');
 
-const Flex = styled('div')`
-  ${display} ${flexWrap} ${flexDirection} ${alignItems} ${justifyContent} ${space} ${height} ${textAlign} ${flex} ${order};
-`;
+const Flex = styled('div')(
+  display,
+  flexWrap,
+  flexDirection,
+  alignItems,
+  justifyContent,
+  space,
+  height,
+  textAlign,
+  flex,
+  order
+);
 
 Flex.defaultProps = {
-  display: 'flex',
+  display: 'flex'
 };
 export default Flex;

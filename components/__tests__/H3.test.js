@@ -9,8 +9,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import 'jest-styled-components';
+import { createSerializer } from 'jest-emotion';
+import * as emotion from 'emotion';
 import H3 from '../H3';
+
+expect.addSnapshotSerializer(createSerializer(emotion));
 
 test('Renders', () => {
   const tree = shallow(<H3>Header 3</H3>);

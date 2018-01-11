@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import media from '../../style/media';
 
 // A grey backdrop that's only visible on tablets/desktops

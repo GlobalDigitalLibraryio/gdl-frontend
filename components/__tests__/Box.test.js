@@ -9,8 +9,11 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import 'jest-styled-components';
+import { createSerializer } from 'jest-emotion';
+import * as emotion from 'emotion';
 import Box from '../Box';
+
+expect.addSnapshotSerializer(createSerializer(emotion));
 
 test('Can have different paddings', () => {
   let tree = mount(<Box p={10} />);

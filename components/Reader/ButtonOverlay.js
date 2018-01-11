@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
 import { Trans } from 'lingui-react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import SrOnly from '../SrOnly';
 import theme from '../../style/theme';
 import media from '../../style/media';
@@ -41,7 +41,7 @@ type Props = {
   onRequestPrev(event: SyntheticEvent<HTMLButtonElement>): void,
   disableNext: boolean,
   disablePrev: boolean,
-  showOnMobile: boolean,
+  showOnMobile: boolean
 };
 
 const TouchOverlay = (props: Props) => [
@@ -68,7 +68,7 @@ const TouchOverlay = (props: Props) => [
       <Trans>Next chapter</Trans>
     </SrOnly>
     <MdKeyboardArrowRight size={50} />
-  </Button>,
+  </Button>
 ];
 
 export default TouchOverlay;

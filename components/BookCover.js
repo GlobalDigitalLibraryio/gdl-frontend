@@ -6,14 +6,14 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import Card from './Card';
 import CoverImage from './CoverImage';
 import type { Book } from '../types';
 import { flexCenter } from '../style/flex';
 
 type Props = {
-  book: Book,
+  book: Book
 };
 
 const Frame = styled(Card)`

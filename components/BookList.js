@@ -7,12 +7,13 @@
  */
 
 import * as React from 'react';
+import { css } from 'react-emotion';
 import Flex from './Flex';
 import type { Book } from '../types';
 import BookCardCover from './BookCardCover';
 import { Link } from '../routes';
 
-const FlexScroller = Flex.extend`
+const scroll = css`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   a {
@@ -30,11 +31,11 @@ const FlexScroller = Flex.extend`
 
 type Props = {
   books: Array<Book>,
-  route: (book: Book) => string,
+  route: (book: Book) => string
 };
 
 const BookList = ({ books, route, ...props }: Props) => (
-  <FlexScroller mx={[-15, -20]} px={[15, 20]} {...props}>
+  <Flex mx={[-15, -20]} px={[15, 20]} className={scroll} {...props}>
     {books.map(book => (
       <Link route={route(book)} key={book.id}>
         <a>
@@ -42,11 +43,11 @@ const BookList = ({ books, route, ...props }: Props) => (
         </a>
       </Link>
     ))}
-  </FlexScroller>
+  </Flex>
 );
 
 BookList.defaultProps = {
-  route: (book: Book) => `/${book.language.code}/books/${book.id}`,
+  route: (book: Book) => `/${book.language.code}/books/${book.id}`
 };
 
 export default BookList;

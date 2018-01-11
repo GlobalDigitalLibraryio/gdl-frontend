@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import theme from '../../style/theme';
 import media from '../../style/media';
 

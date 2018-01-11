@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { width } from 'styled-system';
 import height from '../style/height';
 
@@ -43,7 +43,7 @@ if (typeof window !== 'undefined' && window.IntersectionObserver) {
         });
       });
     },
-    { rootMargin: '200px' },
+    { rootMargin: '200px' }
   );
 }
 
@@ -52,7 +52,7 @@ const listenToIntersections = (el, cb) => {
   listeners.push([el, cb]);
 };
 
-const Img = styled.img`
+const Img = styled('img')`
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -70,14 +70,14 @@ type Props = {
   alt?: ?string,
   src: string,
   h?: Array<string | number>,
-  w?: string,
+  w?: string
 };
 
 type State = { isVisible: boolean, imgLoaded: boolean, IOSupported: boolean };
 
 export default class Image extends React.Component<Props, State> {
   static defaultProps = {
-    alt: '',
+    alt: ''
   };
 
   constructor(props: Props) {
@@ -111,7 +111,7 @@ export default class Image extends React.Component<Props, State> {
     this.state = {
       isVisible,
       imgLoaded,
-      IOSupported,
+      IOSupported
     };
   }
 
@@ -132,7 +132,7 @@ export default class Image extends React.Component<Props, State> {
             src={src}
             alt={alt}
             style={{
-              opacity: this.state.imgLoaded ? 1 : 0,
+              opacity: this.state.imgLoaded ? 1 : 0
             }}
             onLoad={() =>
               this.state.IOSupported && this.setState({ imgLoaded: true })

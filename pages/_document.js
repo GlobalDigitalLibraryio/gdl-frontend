@@ -8,7 +8,8 @@
 
 import React from 'react';
 import Document, { Head, Main, NextScript } from 'next/document';
-import { ServerStyleSheet, injectGlobal } from 'styled-components';
+import { injectGlobal } from 'emotion';
+import { extractCritical } from 'emotion-server';
 import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
@@ -23,22 +24,25 @@ injectGlobal`
  */
 export default class GDLDocument extends Document {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
-    const sheet = new ServerStyleSheet();
-
-    const page = renderPage(App => props =>
-      sheet.collectStyles(<App {...props} />)
-    );
-
-    const styleTags = sheet.getStyleElement();
+    const page = renderPage();
+    const styleTags = extractCritical(page.html);
 
     return {
       ...page,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
-      styleTags,
+      ...styleTags,
       // $FlowFixMe This is only rendered on the server, so req shouldn't be undefined
       url: `${req.protocol}://${req.headers.host}${req.originalUrl}`
     };
+  }
+
+  constructor(props: any) {
+    super(props);
+    const { __NEXT_DATA__, ids } = props;
+    if (ids) {
+      __NEXT_DATA__.ids = ids;
+    }
   }
 
   render() {
@@ -68,7 +72,7 @@ export default class GDLDocument extends Document {
             defer
             async
           />
-          {this.props.styleTags}
+          <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>
           <Main />

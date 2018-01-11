@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { MdMenu } from 'react-icons/lib/md';
 import { Link } from '../../routes';
 import { navContainerFragment } from '../Container';
@@ -60,7 +60,7 @@ const LogoA = styled.a`
 type Props = {
   lang: ?string,
   menuIsExpanded: boolean,
-  onMenuClick(): void,
+  onMenuClick(): void
 };
 
 const Container = styled('div')`
@@ -99,7 +99,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
 
 Navbar.defaultProps = {
   menuIsExpanded: false,
-  onMenuClick() {},
+  onMenuClick() {}
 };
 
 export default Navbar;

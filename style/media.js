@@ -6,8 +6,7 @@
  * See LICENSE
  */
 
-import { css } from 'styled-components';
-import type { TaggedTemplateLiteral } from 'styled-components';
+import { css } from 'react-emotion';
 import { TABLET_BREAKPOINT } from './theme';
 
 /**
@@ -20,7 +19,7 @@ import { TABLET_BREAKPOINT } from './theme';
 // A function returning a function :)
 const query = (condition: 'min' | 'max', width: number) => (
   // $FlowFixMe Flow doesn't play nice with template literals https://github.com/facebook/flow/issues/2616
-  ...args: TaggedTemplateLiteral
+  ...args
 ) => css`
   @media (${condition}-width: ${width}px) {
     ${css(...args)};

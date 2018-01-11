@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { triangle } from 'polished';
 import { Trans } from 'lingui-react';
 import media from '../style/media';
@@ -19,7 +19,7 @@ const HEIGHT = '30px';
  * Currently this component is specially tailored for use on the metadata card on the book page
  * Ie. this is not a reusable component at the moment
  */
-const Ribbon = styled.div`
+const Ribbon = styled('div')`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -54,7 +54,7 @@ const Ribbon = styled.div`
       width: '20px',
       height: HEIGHT,
       foregroundColor: theme.colors.white,
-      backgroundColor: theme.colors.greens.green,
+      backgroundColor: theme.colors.greens.green
     })};
   }
 `;

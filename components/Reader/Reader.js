@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
 import fetchWithToken from '../../fetch';
 import Box from '../Box';

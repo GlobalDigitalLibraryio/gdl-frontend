@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import Hero from './Hero';
 import Container from './Container';
 import Flex from './Flex';

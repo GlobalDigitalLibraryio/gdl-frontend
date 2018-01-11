@@ -7,12 +7,12 @@
  */
 
 import * as React from 'react';
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import { Trans } from 'lingui-react';
 import media from '../style/media';
 import theme from '../style/theme';
 
-const Label = styled.span`
+const Label = styled('span')`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   border-radius: 4px;
   background-color: ${theme.colors.grayDarker};

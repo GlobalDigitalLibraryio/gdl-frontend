@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Renders 1`] = `
-.c0 {
+.emotion-0 {
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
@@ -9,14 +9,14 @@ exports[`Renders 1`] = `
 }
 
 @media (min-width:768px) {
-  .c0 {
+  .emotion-0 {
     font-size: 20px;
     line-height: 26px;
   }
 }
 
 <h4
-  className="c0"
+  className="emotion-0 emotion-1"
 >
   Header 4
 </h4>

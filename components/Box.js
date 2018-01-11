@@ -6,22 +6,29 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import {
   fontSize,
   space,
   color,
   width,
   flex,
-  responsiveStyle,
+  responsiveStyle
 } from 'styled-system';
 import height from '../style/height';
 import textAlign from '../style/textAlign';
 
 const order = responsiveStyle('order');
 
-const Box = styled.div`
-  ${fontSize} ${width} ${space} ${flex} ${order} ${height} ${color} ${textAlign};
-`;
+const Box = styled('div')(
+  fontSize,
+  width,
+  space,
+  flex,
+  order,
+  height,
+  color,
+  textAlign
+);
 
 export default Box;

@@ -6,14 +6,14 @@
  * See LICENSE
  */
 
-import styled from 'styled-components';
+import styled from 'react-emotion';
 import media from '../style/media';
 
 /**
  * Right aligned more links in header tags
  *
  */
-const More = styled.a`
+const More = styled('a')`
   float: right;
   font-size: 12px;
   ${media.tablet`
