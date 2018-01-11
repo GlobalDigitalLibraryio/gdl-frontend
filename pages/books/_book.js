@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { DateFormat, Trans } from 'lingui-react';
 import styled from 'react-emotion';
+import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
@@ -136,6 +137,19 @@ class BookPage extends React.Component<Props> {
                     <Trans>Download book</Trans>
                   </A>
                 </Box>
+                {config.TRANSLATION_PAGES && (
+                  <Box mt={[15, 20]}>
+                    <Link
+                      route="translate"
+                      passHref
+                      params={{ id: book.id, lang: book.language.code }}
+                    >
+                      <A>
+                        <Trans>Translate book</Trans>
+                      </A>
+                    </Link>
+                  </Box>
+                )}
               </HeroCard>
             </Flex>
           </Container>

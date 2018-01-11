@@ -19,19 +19,25 @@ import Container from '../components/Container';
 const securePageHoc = Page =>
   class SecurePage extends React.Component<any> {
     static getInitialProps(ctx) {
-      return typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx);
+      return (
+        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
+      );
     }
 
     render() {
-      /*if (!getAuthTokenTokenFromLocalStorage()) {
+      if (!getAuthTokenTokenFromLocalStorage()) {
         return (
           <Layout>
             <Container pt={50}>
-              Please <Link href="/auth/sign-in" prefetch><a>login</a></Link> to continue
+              Please{' '}
+              <Link href="/auth/sign-in" prefetch>
+                <a>login</a>
+              </Link>{' '}
+              to continue
             </Container>
           </Layout>
         );
-      }*/
+      }
       return <Page {...this.props} />;
     }
   };

@@ -17,14 +17,15 @@ import {
   MdKeyboardArrowRight,
   MdKeyboardArrowLeft
 } from 'react-icons/lib/md';
+import config from '../../config';
 import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
-import Container from '../Container';
 import Flex from '../Flex';
 import { Link } from '../../routes';
 import MenuItem from '../Menu/MenuItem';
 import Backdrop from '../Menu/Backdrop';
-import Card from '../Menu/ModalCard';
+import ModalCard from '../Menu/ModalCard';
+import Container from '../Menu/Container';
 import theme from '../../style/theme';
 import SrOnly from '../SrOnly';
 
@@ -116,19 +117,25 @@ class Sidebar extends React.Component<Props, State> {
 
     return (
       <Backdrop>
-        <Container
-          size="large"
-          style={{ height: '100%', paddingLeft: 0, paddingRight: 0 }}
-        >
-          <Card id={this.props.id}>
-            <Flex h={[48, 80]} px={15} justify="space-between" align="center">
+        <Container size="large">
+          <ModalCard
+            id={this.props.id}
+            style={{ marginLeft: 'auto', minWidth: '33%' }}
+          >
+            <Flex
+              h={[48, 80]}
+              px={15}
+              justify="space-between"
+              align="center"
+              style={{ borderBottom: `1px solid ${theme.colors.grayLight}` }}
+            >
               <Link route="books" params={{ lang: language.code }}>
-                <Button type="button">
+                <a>
                   <SrOnly>
                     <Trans>Home</Trans>
                   </SrOnly>
                   <MdHome />
-                </Button>
+                </a>
               </Link>
               <Trans>Menu</Trans>{' '}
               <Button
@@ -155,7 +162,7 @@ class Sidebar extends React.Component<Props, State> {
                     <MdKeyboardArrowRight style={{ marginLeft: 'auto' }} />
                   </MenuItem>
                   {isOpen && (
-                    <Card
+                    <ModalCard
                       style={{
                         position: 'absolute',
                         top: 0,
@@ -163,7 +170,13 @@ class Sidebar extends React.Component<Props, State> {
                         left: 0
                       }}
                     >
-                      <Flex h={48} align="center">
+                      <Flex
+                        h={48}
+                        align="center"
+                        style={{
+                          borderBottom: `1px solid ${theme.colors.grayLight}`
+                        }}
+                      >
                         <Button onClick={closeMenu}>
                           <MdKeyboardArrowLeft />
                         </Button>
@@ -184,7 +197,7 @@ class Sidebar extends React.Component<Props, State> {
                           </MenuItem>
                         </Link>
                       ))}
-                    </Card>
+                    </ModalCard>
                   )}
                 </div>
               )}
@@ -212,7 +225,14 @@ class Sidebar extends React.Component<Props, State> {
                 <Trans>About Global Digital Library</Trans>
               </MenuItem>
             </Link>
-          </Card>
+            {config.TRANSLATION_PAGES && (
+              <Link passHref route="translations">
+                <MenuItem>
+                  <Trans>My translations</Trans>
+                </MenuItem>
+              </Link>
+            )}
+          </ModalCard>
         </Container>
       </Backdrop>
     );

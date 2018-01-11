@@ -17,4 +17,8 @@ export default styled(Card)`
   `} max-height: 100%;
   overflow: auto;
   overscroll-behavior: contain;
+  ${media.tablet`
+    margin-left: auto;
+    min-width: 33%;
+  `};
 `;

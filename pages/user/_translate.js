@@ -8,7 +8,8 @@
 
 import * as React from 'react';
 import { Trans } from 'lingui-react';
-import styled from 'styled-components';
+import type { I18n } from 'lingui-i18n';
+import styled from 'react-emotion';
 import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
 import {
@@ -36,7 +37,8 @@ import BookCover from '../../components/BookCover';
 
 type Props = {
   book: RemoteData<Book>,
-  supportedLanguages: RemoteData<Array<Language>>
+  supportedLanguages: RemoteData<Array<Language>>,
+  i18n: I18n
 };
 
 type State = {
@@ -97,7 +99,7 @@ class TranslatePage extends React.Component<Props, State> {
     this.setState({ selectedLanguage: lang });
 
   render() {
-    const { book, supportedLanguages } = this.props;
+    const { book, supportedLanguages, i18n } = this.props;
 
     return (
       <Layout
@@ -110,7 +112,7 @@ class TranslatePage extends React.Component<Props, State> {
         language={book.language}
       >
         <Head
-          title={book.title}
+          title={i18n.t`Translate ${book.title}`}
           description={book.description}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />

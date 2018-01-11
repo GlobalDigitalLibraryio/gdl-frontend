@@ -23,20 +23,18 @@ const order = responsiveStyle('order');
 
 const display = responsiveStyle('display');
 
-const Flex = styled('div')(
-  display,
-  flexWrap,
-  flexDirection,
-  alignItems,
-  justifyContent,
-  space,
-  height,
-  textAlign,
-  flex,
-  order
-);
+const Flex = styled('div')`
+  display: flex;
+  ${flexWrap}
+  ${flexDirection}
+  ${alignItems}
+  ${justifyContent}
+  ${space}
+  ${height}
+  ${textAlign}
+  ${flex}
+  ${order}
+  ${display}
+`;
 
-Flex.defaultProps = {
-  display: 'flex'
-};
 export default Flex;
