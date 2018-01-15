@@ -229,11 +229,9 @@ class Sidebar extends React.Component<Props, State> {
                 <Trans>New arrivals</Trans>
               </MenuItem>
             </Link>
-            <Link passHref route="about">
-              <MenuItem>
-                <Trans>About Global Digital Library</Trans>
-              </MenuItem>
-            </Link>
+            <MenuItem href="https://home.digitallibrary.io/about/">
+              <Trans>About Global Digital Library</Trans>
+            </MenuItem>
             {config.TRANSLATION_PAGES && (
               <Link passHref route="translations">
                 <MenuItem>
