@@ -77,6 +77,8 @@ class Sidebar extends React.Component<Props, State> {
     if (this.state.levels.length === 0) {
       this.getMenuData();
     }
+    // Remember the last language we mounted with in the cache
+    stateCache.language = this.props.language;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -91,7 +93,6 @@ class Sidebar extends React.Component<Props, State> {
   componentWillUnmount() {
     stateCache.languages = this.state.languages;
     stateCache.levels = this.state.levels;
-    stateCache.language = this.props.language;
   }
 
   getMenuData = async () => {
