@@ -66,6 +66,7 @@ const Breadcrumb = ({ i18n, crumbs, language }: Props) => (
       </li>
       {crumbs &&
         crumbs.map((crumb, index) => (
+          // eslint-disable-next-line react/no-array-index-key
           <React.Fragment key={index}>
             {Separator}
             <li aria-current={index + 1 === crumbs.length ? 'page' : null}>

@@ -22,7 +22,8 @@ const Div = styled(Flex)`
 `;
 
 type Props = {
-  onClose: (event: SyntheticEvent<HTMLButtonElement>) => void
+  onClose: (event: SyntheticEvent<HTMLButtonElement>) => void,
+  children: React.Node
 };
 
 const Header = ({ children, onClose, ...props }: Props) => (

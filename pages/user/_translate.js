@@ -165,7 +165,7 @@ class TranslatePage extends React.Component<Props, State> {
                     <LinkLike {...getButtonProps()}>Choose language</LinkLike>
                   )}
                   {isOpen && (
-                    <Menu>
+                    <Menu onCloseRequested={closeMenu}>
                       <MenuHeader h={48} onClose={closeMenu}>
                         <Trans>Choose language</Trans>
                       </MenuHeader>

@@ -53,7 +53,7 @@ const defaultPage = Page =>
       if (!accessToken) {
         fullToken = await fetchAnonToken();
         // On the client, this is set in componentDidMount()
-        if (!process.browser) {
+        if (!process.browser && ctx.res) {
           setAnonTokenOnResponse(ctx.res, fullToken);
         }
       }
