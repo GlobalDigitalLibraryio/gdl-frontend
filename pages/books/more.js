@@ -96,9 +96,6 @@ class BookPage extends React.Component<Props, State> {
     }));
   };
 
-  canLoadMore = () =>
-    this.state.books.totalCount > this.state.books.results.length;
-
   render() {
     const { i18n } = this.props;
     const { level } = this.props.url.query;
@@ -108,6 +105,8 @@ class BookPage extends React.Component<Props, State> {
     const route = level
       ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
       : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
+
+    const canLoadMore = this.state.books.totalCount > this.state.books.results.length; 
 
     return (
       <Layout
@@ -145,7 +144,7 @@ class BookPage extends React.Component<Props, State> {
           <Box pt={6} pb={30} textAlign="center">
             <Button
               aria-live="polite"
-              disabled={!this.canLoadMore()}
+              disabled={!canLoadMore}
               onClick={this.handleLoadMore}
               loading={this.state.isLoadingMore}
               type="button"
