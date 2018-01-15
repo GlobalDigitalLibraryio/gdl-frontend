@@ -66,9 +66,10 @@ class MyTranslationsPage extends React.Component<Props> {
                     <Trans>from {book.publisher.name}</Trans>
                   </P>
                   <Box>
+                    {/* book.translatedFrom.name isn't implmented yet */}
                     {book.language.name}{' '}
                     <MdArrowForward color={theme.colors.oranges.orange} />{' '}
-                    <strong>Nepali</strong>
+                    <strong>{book.language.name}</strong>
                   </Box>
                   <Box ml="auto">
                     <More>
