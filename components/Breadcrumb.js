@@ -59,7 +59,7 @@ const Breadcrumb = ({ i18n, crumbs, language }: Props) => (
     <Ol>
       <li>
         <Link route="books" params={{ lang: language }}>
-          <a title="Home" aria-label="Home">
+          <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
             <MdHome />
           </a>
         </Link>
