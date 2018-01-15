@@ -46,6 +46,11 @@ export type ChapterSummary = {
 // Future proofing. In the future we might want to define success and failure cases using ADTs
 export type RemoteData<T> = T;
 
+export type Translation = {
+  bookId: number,
+  crowdinUrl: string
+};
+
 export type Book = {|
   +id: number,
   +title: string,
@@ -84,5 +89,6 @@ export type Context = {
   res?: $Response,
   req?: $Request,
   // The accessToken isn't really part of the context object passed to
-  accessToken: string
+  accessToken: string,
+  isAuthenticated: boolean
 };

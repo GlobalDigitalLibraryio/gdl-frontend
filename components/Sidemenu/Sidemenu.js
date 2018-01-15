@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
 import { withRouter } from 'next/router';
 import Downshift from 'downshift';
 import { Trans } from 'lingui-react';
@@ -17,22 +16,18 @@ import {
   MdKeyboardArrowRight,
   MdKeyboardArrowLeft
 } from 'react-icons/lib/md';
+import config from '../../config';
 import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
-import Container from '../Container';
 import Flex from '../Flex';
-import Backdrop from './Backdrop';
-import Bar from './Bar';
 import { Link } from '../../routes';
-import KeyDown from '../KeyDown';
-import MenuLabel from './MenuLabel';
-import MenuItem from './MenuItem';
-
-const Button = styled.button`
-  background: transparent;
-  border: none;
-  color: inherit;
-`;
+import MenuItem from '../Menu/MenuItem';
+import Backdrop from '../Menu/Backdrop';
+import ModalCard from '../Menu/ModalCard';
+import Container from '../Menu/Container';
+import IconButton from '../Menu/IconButton';
+import theme from '../../style/theme';
+import SrOnly from '../SrOnly';
 
 type Props = {
   onCloseRequested(): void,
@@ -82,6 +77,8 @@ class Sidebar extends React.Component<Props, State> {
     if (this.state.levels.length === 0) {
       this.getMenuData();
     }
+    // Remember the last language we mounted with in the cache
+    stateCache.language = this.props.language;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -96,20 +93,7 @@ class Sidebar extends React.Component<Props, State> {
   componentWillUnmount() {
     stateCache.languages = this.state.languages;
     stateCache.levels = this.state.levels;
-    stateCache.language = this.props.language;
   }
-  /**
-   * If click event didn't originate from inside the sidenav, we close it
-   */
-  onOutsideClick = (event: SyntheticEvent<>) => {
-    if (
-      this.wrap &&
-      event.target instanceof Node &&
-      !this.wrap.contains(event.target)
-    ) {
-      this.props.onCloseRequested();
-    }
-  };
 
   getMenuData = async () => {
     const [languages, levels] = await Promise.all([
@@ -123,50 +107,62 @@ class Sidebar extends React.Component<Props, State> {
     });
   };
 
-  wrap: ?HTMLDivElement;
+  handleOutsideClick = event => {
+    if (
+      this.modal &&
+      event.target instanceof Node &&
+      !this.modal.contains(event.target)
+    ) {
+      this.props.onCloseRequested();
+    }
+  };
+
+  modal: ?HTMLDivElement;
 
   render() {
     const { language } = this.props;
 
     return (
-      <Backdrop onClick={this.onOutsideClick}>
-        <KeyDown when="Escape" then={this.props.onCloseRequested} />
-        <Container
-          size="large"
-          style={{ height: '100%', paddingLeft: 0, paddingRight: 0 }}
-        >
-          <Bar
+      <Backdrop onClick={this.handleOutsideClick}>
+        <Container size="large">
+          <ModalCard
             id={this.props.id}
             innerRef={c => {
-              this.wrap = c;
+              this.modal = c;
             }}
           >
-            <Flex h={[48, 80]} px={15} justify="space-between" align="center">
-              <Link route="books" params={{ lang: 'eng' }}>
-                <Button type="button">
+            <Flex
+              h={[48, 80]}
+              px={15}
+              justify="space-between"
+              align="center"
+              style={{ borderBottom: `1px solid ${theme.colors.grayLight}` }}
+            >
+              <Link route="books" params={{ lang: language.code }}>
+                <a>
+                  <SrOnly>
+                    <Trans>Home</Trans>
+                  </SrOnly>
                   <MdHome />
-                </Button>
+                </a>
               </Link>
               <Trans>Menu</Trans>{' '}
-              <Button
+              <IconButton
                 onClick={this.props.onCloseRequested}
                 aria-label="Close menu"
                 type="button"
               >
                 <MdClose />
-              </Button>
+              </IconButton>
             </Flex>
 
-            <MenuLabel>
-              <Trans>Language</Trans>
-            </MenuLabel>
             <Downshift
               id="bookLanguageMenu"
               selectedItem={this.props.language.code}
             >
               {({ getButtonProps, isOpen, closeMenu, getItemProps }) => (
                 <div>
-                  <MenuItem {...getButtonProps()} tabIndex="0">
+                  <MenuItem {...getButtonProps()} tabIndex="0" thickBorder>
                     <span>
                       <Trans>
                         Books in <strong>{language.name}</strong>
@@ -175,17 +171,24 @@ class Sidebar extends React.Component<Props, State> {
                     <MdKeyboardArrowRight style={{ marginLeft: 'auto' }} />
                   </MenuItem>
                   {isOpen && (
-                    <Bar
+                    <ModalCard
                       style={{
-                        marginLeft: '28px',
                         position: 'absolute',
-                        top: 0
+                        top: 0,
+                        right: 0,
+                        left: 0
                       }}
                     >
-                      <Flex h={48} align="center">
-                        <Button onClick={closeMenu}>
+                      <Flex
+                        h={48}
+                        align="center"
+                        style={{
+                          borderBottom: `1px solid ${theme.colors.grayLight}`
+                        }}
+                      >
+                        <IconButton onClick={closeMenu}>
                           <MdKeyboardArrowLeft />
-                        </Button>
+                        </IconButton>
                         <Trans>Language</Trans>
                       </Flex>
                       {this.state.languages.map(lang => (
@@ -195,20 +198,20 @@ class Sidebar extends React.Component<Props, State> {
                           route="books"
                           params={{ lang: lang.code }}
                         >
-                          <MenuItem {...getItemProps({ item: lang.code })}>
+                          <MenuItem
+                            {...getItemProps({ item: lang.code })}
+                            thinBorder
+                          >
                             {lang.name}
                           </MenuItem>
                         </Link>
                       ))}
-                    </Bar>
+                    </ModalCard>
                   )}
                 </div>
               )}
             </Downshift>
 
-            <MenuLabel>
-              <Trans>Content</Trans>
-            </MenuLabel>
             {this.state.levels.map(level => (
               <Link
                 passHref
@@ -216,17 +219,27 @@ class Sidebar extends React.Component<Props, State> {
                 route="level"
                 params={{ lang: language.code, level }}
               >
-                <MenuItem key={level}>
+                <MenuItem key={level} thinBorder>
                   <Trans>Level {level}</Trans>
                 </MenuItem>
               </Link>
             ))}
             <Link passHref route="new" params={{ lang: language.code }}>
-              <MenuItem style={{ marginTop: '3px' }}>
+              <MenuItem thickBorder>
                 <Trans>New arrivals</Trans>
               </MenuItem>
             </Link>
-          </Bar>
+            <MenuItem href="https://home.digitallibrary.io/about/">
+              <Trans>About Global Digital Library</Trans>
+            </MenuItem>
+            {config.TRANSLATION_PAGES && (
+              <Link passHref route="translations">
+                <MenuItem>
+                  <Trans>My translations</Trans>
+                </MenuItem>
+              </Link>
+            )}
+          </ModalCard>
         </Container>
       </Backdrop>
     );

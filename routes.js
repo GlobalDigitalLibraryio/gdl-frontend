@@ -14,7 +14,7 @@ const routes = nextRoutes();
 routes.add(
   'global-digital-library',
   'about/global-digital-library',
-  'about/global-digital-library',
+  'about/global-digital-library'
 );
 
 // Locking down all other sites except the two about pages in PROD
@@ -38,18 +38,21 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add(
     'bookByLevel',
     '/:lang/books/level:level(\\d)/:id(\\d+)',
-    'books/_book',
+    'books/_book'
   );
 
   // Read book
   routes.add(
     'read',
     '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
-    'books/read',
+    'books/read'
   );
 
   // Translate book
-  routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
+  if (config.TRANSLATION_PAGES) {
+    routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
+    routes.add('translations', '/translations', 'user/_translations');
+  }
 }
 
 module.exports = routes;

@@ -28,7 +28,7 @@ type Props = {
 };
 
 const LoginPage = ({ i18n }: Props) => (
-  <Layout>
+  <Layout crumbs={[<Trans>Login</Trans>]}>
     <Head title={i18n.t`Login`} />
     <Container pt={50}>
       <Box textAlign="center">

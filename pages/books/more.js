@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { fetchBooks } from '../../fetch';
+import { Link } from '../../routes';
 import type { Book, RemoteData, Language, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
@@ -95,9 +96,6 @@ class BookPage extends React.Component<Props, State> {
     }));
   };
 
-  canLoadMore = () =>
-    this.state.books.totalCount > this.state.books.results.length;
-
   render() {
     const { i18n } = this.props;
     const { level } = this.props.url.query;
@@ -108,10 +106,17 @@ class BookPage extends React.Component<Props, State> {
       ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
       : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
 
+    const canLoadMore = this.state.books.totalCount > this.state.books.results.length; 
+
     return (
       <Layout
-        currentPage={level ? i18n.t`Level ${level}` : i18n.t`New arrivals`}
         language={books.language}
+        crumbs={[
+          <Link route="books" params={{ lang: books.language.code }}>
+            <a>{books.language.name}</a>
+          </Link>,
+          level ? i18n.t`Level ${level}` : i18n.t`New arrivals`
+        ]}
       >
         <Head
           title={
@@ -139,7 +144,7 @@ class BookPage extends React.Component<Props, State> {
           <Box pt={6} pb={30} textAlign="center">
             <Button
               aria-live="polite"
-              disabled={!this.canLoadMore()}
+              disabled={!canLoadMore}
               onClick={this.handleLoadMore}
               loading={this.state.isLoadingMore}
               type="button"

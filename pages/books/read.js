@@ -39,7 +39,7 @@ class Read extends React.Component<Props> {
     const { book, url } = this.props;
 
     return (
-      <div>
+      <React.Fragment>
         <Head
           title={book.title}
           isBookType
@@ -48,7 +48,7 @@ class Read extends React.Component<Props> {
         />
 
         <Reader book={book} initialChapter={url.query.chapter} />
-      </div>
+      </React.Fragment>
     );
   }
 }

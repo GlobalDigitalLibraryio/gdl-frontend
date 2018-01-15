@@ -8,11 +8,13 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
+import { PortalWithState } from 'react-portal';
 import type { Language } from '../types';
 import media from '../style/media';
 import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import { navContainerFragment } from './Container';
+import Box from './Box';
 import Sidemenu from './Sidemenu';
 import theme from '../style/theme';
 
@@ -54,51 +56,49 @@ const PageWrapper = styled('div')`
 type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
-  currentPage?: string,
-  language: Language
+  language: Language,
+  crumbs?: Array<React.Node | string>
 };
 
-type State = {
-  menuIsExpanded: boolean
-};
-
-class Layout extends React.Component<Props, State> {
-  static defaultProps = {
-    language: {
-      code: 'eng',
-      name: 'English'
-    }
-  };
-  state = {
-    menuIsExpanded: false
-  };
-
-  render() {
-    const { children, toolbarEnd, language, currentPage } = this.props;
-    return (
-      <PageWrapper>
-        <Navbar
-          lang={language.code}
-          onMenuClick={() => this.setState({ menuIsExpanded: true })}
-          menuIsExpanded={this.state.menuIsExpanded}
-        />
-        <Toolbar>
-          <Container>
-            <Breadcrumb language={language} currentPage={currentPage} />
-            {toolbarEnd}
-          </Container>
-        </Toolbar>
-        {this.state.menuIsExpanded && (
-          <Sidemenu
-            id="sidenav"
-            onCloseRequested={() => this.setState({ menuIsExpanded: false })}
-            language={language}
+const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
+  <PageWrapper>
+    <PortalWithState closeOnEsc>
+      {({ portal, closePortal, openPortal, isOpen }) => (
+        <React.Fragment>
+          <Navbar
+            lang={language.code}
+            onMenuClick={openPortal}
+            menuIsExpanded={isOpen}
           />
-        )}
-        <ContentWrapper>{children}</ContentWrapper>
-      </PageWrapper>
-    );
+          <Toolbar>
+            <Container>
+              {crumbs ? (
+                <Breadcrumb language={language.code} crumbs={crumbs} />
+              ) : (
+                <Box mr="auto" />
+              )}
+              {toolbarEnd}
+            </Container>
+          </Toolbar>
+          {portal(
+            <Sidemenu
+              id="sidenav"
+              onCloseRequested={closePortal}
+              language={language}
+            />
+          )}
+        </React.Fragment>
+      )}
+    </PortalWithState>
+    <ContentWrapper>{children}</ContentWrapper>
+  </PageWrapper>
+);
+
+Layout.defaultProps = {
+  language: {
+    code: 'eng',
+    name: 'English'
   }
-}
+};
 
 export default Layout;
