@@ -65,6 +65,12 @@ class BookPage extends React.Component<Props, State> {
     isLoadingMore: false
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.books !== this.props.books) {
+      this.setState({ books: nextProps.books });
+    }
+  }
+
   /**
    * Load more books when demanded
    */
