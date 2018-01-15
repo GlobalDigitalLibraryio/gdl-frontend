@@ -8,8 +8,8 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import type { Context } from '../types';
 import defaultPage from './defaultPage';
-import { getAuthTokenTokenFromLocalStorage } from '../lib/auth/token';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
 
@@ -18,14 +18,14 @@ import Container from '../components/Container';
  */
 const securePageHoc = Page =>
   class SecurePage extends React.Component<any> {
-    static getInitialProps(ctx) {
+    static getInitialProps(ctx: Context) {
       return (
         typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
       );
     }
 
     render() {
-      if (!getAuthTokenTokenFromLocalStorage()) {
+      if (!this.props.isAuthenticated) {
         return (
           <Layout>
             <Container pt={50}>

@@ -89,5 +89,6 @@ export type Context = {
   res?: $Response,
   req?: $Request,
   // The accessToken isn't really part of the context object passed to
-  accessToken: string
+  accessToken: string,
+  isAuthenticated: boolean
 };

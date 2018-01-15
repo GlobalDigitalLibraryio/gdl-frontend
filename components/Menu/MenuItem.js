@@ -17,9 +17,15 @@ const MenuItem = styled.a`
   min-height: 38px;
   width: 100%;
   transition: background-color 0.2s ease;
+
   &:hover {
     background-color: ${theme.colors.highlight};
   }
+
+  &:active {
+    color: ${theme.colors.dark};
+  }
+
   ${p =>
     p.thinBorder &&
     `border-bottom: 1px solid ${theme.colors.grayLight};`} ${p =>

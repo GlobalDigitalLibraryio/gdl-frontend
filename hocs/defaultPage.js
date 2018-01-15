@@ -14,9 +14,9 @@ import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
 import type { Context } from '../types';
 import {
+  getAuthToken,
+  getAnonToken,
   setAnonToken,
-  getAccessTokenFromRequest,
-  getAccessTokenFromLocalStorage,
   setAnonTokenOnResponse,
   LOGOUT_KEY
 } from '../lib/auth/token';
@@ -40,9 +40,13 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
-      const accessToken = process.browser
-        ? getAccessTokenFromLocalStorage()
-        : getAccessTokenFromRequest(ctx.req);
+      let accessToken = getAuthToken(ctx.req);
+      const isAuthenticated = Boolean(accessToken);
+
+      // If we aren't authenticated proper, check if we have an anonomyous access token
+      if (!isAuthenticated) {
+        accessToken = getAnonToken(ctx.req);
+      }
 
       let fullToken;
       // If there is no access token and we're on the server, generate one and set it as a cookie
@@ -56,6 +60,7 @@ const defaultPage = Page =>
 
       // $FlowFixMe
       ctx.accessToken = accessToken || (fullToken && fullToken.access_token);
+      ctx.isAuthenticated = isAuthenticated;
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
@@ -66,6 +71,7 @@ const defaultPage = Page =>
 
       return {
         fullToken,
+        isAuthenticated,
         ...composedInitialProps
       };
     }
@@ -90,8 +96,7 @@ const defaultPage = Page =>
     };
 
     render() {
-      const { token, ...props } = this.props;
-      return <Page {...props} />;
+      return <Page {...this.props} />;
     }
   };
 

@@ -16,7 +16,7 @@ function getConfig() {
     common: {
       GLOBAL_VAR_NAME: globalVarName,
       STATIC_PAGES_ONLY: false,
-      TRANSLATION_PAGES: false,
+      TRANSLATION_PAGES: true,
       clientAuth: {
         clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
         audience: 'gdl_system',
@@ -37,25 +37,25 @@ function getConfig() {
     },
 
     local: {
-      bookApiUrl: 'http://api-gateway.gdl-local/book-api/v1',
-      TRANSLATION_PAGES: true
+      bookApiUrl: 'http://api-gateway.gdl-local/book-api/v1'
     },
 
     test: {
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
-      googleAnalyticsTrackingID: 'UA-111724798-1',
-      TRANSLATION_PAGES: true
+      googleAnalyticsTrackingID: 'UA-111724798-1'
     },
 
     staging: {
       bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
-      googleAnalyticsTrackingID: 'UA-111796456-1'
+      googleAnalyticsTrackingID: 'UA-111796456-1',
+      TRANSLATION_PAGES: false
     },
 
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111771573-1',
-      STATIC_PAGES_ONLY: true
+      STATIC_PAGES_ONLY: true,
+      TRANSLATION_PAGES: false
     }
   };
 
