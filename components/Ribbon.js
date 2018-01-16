@@ -27,7 +27,7 @@ const Ribbon = styled('div')`
   background-color: ${theme.colors.greens.green};
   color: ${theme.colors.white};
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  padding-left: 30px;
+  padding-left: 20px;
   padding-right: 10px;
   font-weight: bold;
   font-size: 14px;
@@ -46,12 +46,12 @@ const Ribbon = styled('div')`
     content: '';
     display: block;
     position: absolute;
-    left: 0;
+    left: -1px;
     top: 0;
     bottom: 0;
     ${triangle({
       pointingDirection: 'right',
-      width: '20px',
+      width: '15px',
       height: HEIGHT,
       foregroundColor: theme.colors.white,
       backgroundColor: theme.colors.greens.green
