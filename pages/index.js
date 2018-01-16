@@ -57,11 +57,12 @@ const HeroCover = styled('div')`
   background-size: cover;
   position: relative;
   display: flex;
-  height: 210px;
   padding: 15px;
   justify-content: center;
-  ${media.tablet`
-    height: 390px;
+  ${media.mobile`
+    height: 210px;
+  `} ${media.tablet`
+    min-height: 390px;
     padding: 20px;
     justify-content: flex-end;
   `};
