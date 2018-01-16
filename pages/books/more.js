@@ -106,7 +106,8 @@ class BookPage extends React.Component<Props, State> {
       ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
       : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
 
-    const canLoadMore = this.state.books.totalCount > this.state.books.results.length; 
+    const canLoadMore =
+      this.state.books.totalCount > this.state.books.results.length;
 
     return (
       <Layout
@@ -127,19 +128,18 @@ class BookPage extends React.Component<Props, State> {
         />
 
         <Container pt={20}>
-          {books.results.length > 0 ? (
-            <H1>
-              {level ? (
+          <H1 textAlign="center">
+            {/* eslint-disable no-nested-ternary */}
+            {books.results.length > 0 ? (
+              level ? (
                 <Trans>Level {level}</Trans>
               ) : (
                 <Trans>New arrivals</Trans>
-              )}
-            </H1>
-          ) : (
-            <H1 textAlign="center">
+              )
+            ) : (
               <Trans>No books found</Trans>
-            </H1>
-          )}
+            )}
+          </H1>
           <BookGrid books={books.results} mt={30} route={route} />
           <Box pt={6} pb={30} textAlign="center">
             <Button
