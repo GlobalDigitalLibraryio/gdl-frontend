@@ -16,10 +16,15 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next"
+    ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -33,17 +38,16 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format":
-      "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
     "flow": "flow",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
-    "auth0-js": "9.0.2",
+    "auth0-js": "9.0.3",
     "compression": "1.7.1",
     "cookie-parser": "1.4.3",
     "domurl": "2.1.7",
-    "downshift": "1.23.2",
+    "downshift": "1.25.0",
     "emotion": "9.0.0-1",
     "emotion-server": "9.0.0-1",
     "emotion-theming": "9.0.0-1",
@@ -70,7 +74,7 @@
   },
   "devDependencies": {
     "@storybook/react": "3.2.18",
-    "babel-eslint": "8.1.2",
+    "babel-eslint": "8.2.1",
     "babel-plugin-emotion": "9.0.0-1",
     "babel-plugin-inline-react-svg": "0.5.2",
     "babel-plugin-polished": "1.1.0",
@@ -87,11 +91,11 @@
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.5.1",
     "flow-bin": "0.63.1",
-    "jest": "22.0.4",
+    "jest": "22.1.1",
     "jest-emotion": "9.0.0-1",
     "lingui-cli": "1.4.4",
     "nock": "^9.1.4",
-    "prettier-eslint": "8.7.1",
+    "prettier-eslint": "8.7.4",
     "prettier-eslint-cli": "4.7.0",
     "react-test-renderer": "16.2.0"
   }
