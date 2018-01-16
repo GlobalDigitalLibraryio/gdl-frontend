@@ -93,7 +93,7 @@ class BookPage extends React.Component<Props> {
     return (
       <Layout
         crumbs={[
-          <Link route="books" params={{ language: book.language.code }}>
+          <Link route="books" params={{ lang: book.language.code }}>
             <a>{book.language.name}</a>
           </Link>,
           book.title
