@@ -9,7 +9,7 @@
 import * as React from 'react';
 import Image from './Image';
 
-const NO_COVER_PLACEHOLDER_URL = '/static/placeholder-cover.png';
+const NO_COVER_PLACEHOLDER_URL = require('../static/placeholder-cover.png');
 
 /**
  * Add query parameters to book cover images so they fit our wanted ratio
