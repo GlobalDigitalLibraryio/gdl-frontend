@@ -63,7 +63,7 @@ const HeroCard = styled(Card)`
 `;
 
 const Hero = styled('div')`
-  background-image: url(${iconsPNG});
+  background-image: url('${iconsPNG}');
   background-size: contain;
 `;
 
