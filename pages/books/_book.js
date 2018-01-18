@@ -32,6 +32,8 @@ import BookList from '../../components/BookList';
 import media from '../../style/media';
 import { flexColumnCentered } from '../../style/flex';
 
+const iconsPNG = require('../../static/about/icons.png');
+
 type Props = {
   book: RemoteData<Book>,
   similar: RemoteData<{
@@ -60,9 +62,8 @@ const HeroCard = styled(Card)`
   ${flexColumnCentered};
 `;
 
-// TODO: Replace background image
 const Hero = styled('div')`
-  background-image: url(/static/about/icons.png);
+  background-image: url('${iconsPNG}');
   background-size: contain;
 `;
 

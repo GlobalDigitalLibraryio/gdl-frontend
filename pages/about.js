@@ -24,6 +24,11 @@ import Hero from '../components/Hero';
 import theme from '../style/theme';
 import media from '../style/media';
 
+const childrenJPG = require('../static/about/children-306607.jpg');
+const playingJPG = require('../static/about/kids-playing.jpg');
+const readingJPG = require('../static/about/boy-reading.jpg');
+const booksPNG = require('../static/about/books.png');
+
 const CardImg = styled.img`
   width: 100%;
   height: 100%;
@@ -32,7 +37,7 @@ const CardImg = styled.img`
 
 export const HeroWithIcons = styled(Hero)`
   color: #fff;
-  background: url('/static/about/books.png'),
+  background: url('${booksPNG}'),
     linear-gradient(135deg, #004b91 0%, #5abc7f 100%);
 `;
 
@@ -99,17 +104,14 @@ const About = () => (
             </Link>
           </Box>
           <Box w={[1, 0.5]}>
-            <CardImg
-              src="/static/about/children-306607.jpg"
-              alt="Girl reading"
-            />
+            <CardImg src={childrenJPG} alt="Girl reading" />
           </Box>
         </Flex>
       </Card>
       <Card my={60}>
         <Flex wrap={[true, false]}>
           <Box w={[1, 0.5]}>
-            <CardImg src="/static/about/kids-playing.jpg" alt="Kids playing" />
+            <CardImg src={playingJPG} alt="Kids playing" />
           </Box>
           <Box w={[1, 0.5]} py={10} px={30}>
             <H3>Compilation of digital libraries</H3>
@@ -149,7 +151,7 @@ const About = () => (
             </A>
           </Box>
           <Box w={[1, 0.5]}>
-            <CardImg src="/static/about/boy-reading.jpg" alt="Boy reading" />
+            <CardImg src={readingJPG} alt="Boy reading" />
           </Box>
         </Flex>
       </Card>
