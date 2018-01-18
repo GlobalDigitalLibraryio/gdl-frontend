@@ -27,7 +27,7 @@ import media from '../style/media';
 const childrenJPG = require('../static/about/children-306607.jpg');
 const playingJPG = require('../static/about/kids-playing.jpg');
 const readingJPG = require('../static/about/boy-reading.jpg');
-const iconsPNG = require('../static/about/books.png');
+const booksPNG = require('../static/about/books.png');
 
 const CardImg = styled.img`
   width: 100%;
@@ -37,7 +37,7 @@ const CardImg = styled.img`
 
 export const HeroWithIcons = styled(Hero)`
   color: #fff;
-  background: url('${iconsPNG}'),
+  background: url('${booksPNG}'),
     linear-gradient(135deg, #004b91 0%, #5abc7f 100%);
 `;
 
