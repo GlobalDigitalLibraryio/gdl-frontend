@@ -22,11 +22,12 @@ const buttonFragment = (color: string) => css`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  min-width: 150px;
+  min-width: 210px;
   line-height: 22px;
   text-transform: uppercase;
   min-height: 38px;
-  min-width: 210px;
+  padding-left: 30px;
+  padding-right: 30px;
   font-size: 16px;
   &[disabled] {
     opacity: 0.3;
@@ -36,7 +37,7 @@ const buttonFragment = (color: string) => css`
     min-height: 48px;
     font-size: 18px;
   `};
-  transition: all 0.15s ease-out;
+  transition: transform 0.15s ease-out, background 0.15s ease-out;
   &:hover:not([disabled]) {
     transform: translateY(-1px);
     background: ${lighten(0.04, color)};
