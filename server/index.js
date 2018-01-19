@@ -36,19 +36,6 @@ app
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/favicon.ico', (req, res) => res.sendStatus(404));
 
-    /**
-     * Generate access tokens for anonymous users
-     */
-    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-    server.get('/get_token', async (req, res) => {
-      try {
-        const token = await getToken();
-        res.json(token);
-      } catch (err) {
-        res.status(500).json({ message: err.message });
-      }
-    });
-
     // Health check for AWS
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/health', (req, res) => {
@@ -70,7 +57,20 @@ app
     );
 
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-    server.get('*', (req, res) => {
+    server.get('*', async (req, res) => {
+      // Generate tokens if we aren't requesting static assets/app bundles
+      if (!app.isInternalUrl(req)) {
+        try {
+          const token = await getToken();
+          console.log('Generated token', token);
+          res.cookie('anon-access-token', token.access_token, {
+            // auth0 returns seconds, but maxAge is in ms
+            maxAge: token.expires_in * 1000
+          });
+        } catch (error) {
+          console.warn('Unable to get token for user. Continuing');
+        }
+      }
       handle(req, res);
     });
 

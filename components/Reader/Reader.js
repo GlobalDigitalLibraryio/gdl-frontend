@@ -8,7 +8,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
-import fetchWithToken from '../../fetch';
+import doFetch from '../../fetch';
 import Box from '../Box';
 import type { Book, Chapter } from '../../types';
 import Backdrop from './Backdrop';
@@ -41,18 +41,18 @@ type ReaderProps = {
   chapter: ?Chapter,
   chapterNumber: number,
   onRequestNext(): void,
-  onRequestPrevious(): void,
+  onRequestPrevious(): void
 };
 
 type ReaderState = {
-  showOverlay: boolean,
+  showOverlay: boolean
 };
 
 const OVERLAY_TIMEOUT = 3000; // 3 seconds
 
 class Reader extends React.PureComponent<ReaderProps, ReaderState> {
   state = {
-    showOverlay: false,
+    showOverlay: false
   };
 
   componentWillUnmount() {
@@ -75,12 +75,12 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
         if (this.state.showOverlay) {
           this.timerId = window.setTimeout(
             () => this.setState({ showOverlay: false }),
-            OVERLAY_TIMEOUT,
+            OVERLAY_TIMEOUT
           );
         } else {
           window.clearTimeout(this.timerId);
         }
-      },
+      }
     );
   };
 
@@ -140,17 +140,17 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
 
 type ReaderContainerState = {
   chapters: { [number]: Chapter },
-  chapter: number,
+  chapter: number
 };
 
 type ReaderContainerProps = {
   book: Book,
-  initialChapter: ?string,
+  initialChapter: ?string
 };
 
 export default class ReaderContainer extends React.Component<
   ReaderContainerProps,
-  ReaderContainerState,
+  ReaderContainerState
 > {
   constructor(props: ReaderContainerProps) {
     super(props);
@@ -163,7 +163,7 @@ export default class ReaderContainer extends React.Component<
 
     this.state = {
       chapters: {},
-      chapter: initialChapter,
+      chapter: initialChapter
     };
   }
 
@@ -178,7 +178,7 @@ export default class ReaderContainer extends React.Component<
   onRequestClose = () => {
     Router.replaceRoute('book', {
       id: this.props.book.id,
-      lang: this.props.book.language.code,
+      lang: this.props.book.language.code
     });
   };
 
@@ -188,7 +188,7 @@ export default class ReaderContainer extends React.Component<
       this.loadChapter(this.state.chapter + 2);
       this.setState(
         state => ({ chapter: state.chapter + 1 }),
-        this.changeChapterInUrl,
+        this.changeChapterInUrl
       );
     }
   };
@@ -199,7 +199,7 @@ export default class ReaderContainer extends React.Component<
       this.loadChapter(this.state.chapter - 2);
       this.setState(
         state => ({ chapter: state.chapter - 1 }),
-        this.changeChapterInUrl,
+        this.changeChapterInUrl
       );
     }
   };
@@ -210,9 +210,9 @@ export default class ReaderContainer extends React.Component<
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
-        chapter: this.state.chapter,
+        chapter: this.state.chapter
       },
-      { shallow: true },
+      { shallow: true }
     );
 
   async loadChapter(chapterNumber: number) {
@@ -225,15 +225,13 @@ export default class ReaderContainer extends React.Component<
     const maybeChapter = this.state.chapters[chapterNumber];
 
     if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
-      const chapter = await fetchWithToken(
-        this.props.book.chapters[chapterIndex].url,
-      )();
+      const chapter = await doFetch(this.props.book.chapters[chapterIndex].url);
 
       this.setState((state: ReaderContainerState) => ({
         chapters: {
           ...state.chapters,
-          [chapterNumber]: chapter,
-        },
+          [chapterNumber]: chapter
+        }
       }));
     }
   }

@@ -50,11 +50,11 @@ type State = {
 };
 
 class BookPage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
       level: query.level
-    })(accessToken);
+    });
 
     return {
       books
@@ -83,7 +83,7 @@ class BookPage extends React.Component<Props, State> {
       level: query.level,
       page: this.state.books.page + 1,
       pageSize: PAGE_SIZE
-    })();
+    });
 
     this.setState(state => ({
       isLoadingMore: false,

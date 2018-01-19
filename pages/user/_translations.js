@@ -32,12 +32,12 @@ type Props = {
 };
 
 class MyTranslationsPage extends React.Component<Props> {
-  static async getInitialProps({ accessToken, isAuthenticated }: Context) {
+  static async getInitialProps({ isAuthenticated }: Context) {
     if (!isAuthenticated) {
       return {};
     }
 
-    const books = await fetchMyTranslations()(accessToken);
+    const books = await fetchMyTranslations();
 
     return {
       books
