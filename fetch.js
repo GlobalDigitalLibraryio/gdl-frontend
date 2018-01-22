@@ -15,7 +15,7 @@ import type {
   Translation
 } from './types';
 import { bookApiUrl } from './config';
-import { getAccessTokenFromLocalStorage } from './lib/auth/token';
+import { getSessionToken } from './lib/auth/token';
 
 /*
 * Wrap fetch with some error handling and automatic json parsing
@@ -28,16 +28,9 @@ async function doFetch(
     body: ?any
   }
 ): Promise<RemoteData<any>> {
-  const token = process.browser ? getAccessTokenFromLocalStorage() : null;
+  const token = getSessionToken();
 
   try {
-    // Automatically renew token on the client if it is expired
-    /* if (process.browser && token == null) {
-        const fullToken = await fetchAnonToken();
-        setAnonToken(fullToken);
-        token = fullToken.access_token;
-      } */
-
     const response = await fetch(url, {
       headers: {
         Authorization: token ? `Bearer ${token}` : null

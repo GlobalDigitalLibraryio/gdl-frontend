@@ -13,7 +13,7 @@ import withI18n from './withI18n';
 import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
 import type { Context } from '../types';
-import { getAuthToken, LOGOUT_KEY } from '../lib/auth/token';
+import { getPersonalToken, LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
 
 logPageView();
@@ -33,7 +33,7 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
-      const personalToken = getAuthToken(ctx.req);
+      const personalToken = getPersonalToken(ctx.req);
       const isAuthenticated = Boolean(personalToken);
 
       ctx.isAuthenticated = isAuthenticated;

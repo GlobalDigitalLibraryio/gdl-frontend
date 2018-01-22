@@ -62,13 +62,15 @@ app
       if (!app.isInternalUrl(req)) {
         try {
           const token = await getToken();
-          console.log('Generated token', token);
-          res.cookie('anon-access-token', token.access_token, {
+          res.cookie('session', token.access_token, {
             // auth0 returns seconds, but maxAge is in ms
             maxAge: token.expires_in * 1000
           });
+          global.sessionAccessToken = token.access_token;
         } catch (error) {
-          console.warn('Unable to get token for user. Continuing');
+          console.warn(
+            'Unable to generate token. Session will be rate limited'
+          );
         }
       }
       handle(req, res);
