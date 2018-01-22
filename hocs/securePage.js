@@ -10,6 +10,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import type { Context } from '../types';
 import defaultPage from './defaultPage';
+import { getPersonalToken } from '../lib/auth/token';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
 
@@ -18,10 +19,21 @@ import Container from '../components/Container';
  */
 const securePageHoc = Page =>
   class SecurePage extends React.Component<any> {
-    static getInitialProps(ctx: Context) {
-      return (
-        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
-      );
+    static async getInitialProps(ctx: Context) {
+      const personalToken = getPersonalToken(ctx.req);
+      const isAuthenticated = Boolean(personalToken);
+
+      // Evaluate the composed component's getInitialProps()
+      let composedInitialProps;
+      // Check if it actually is a next page
+      if (typeof Page.getInitialProps === 'function') {
+        composedInitialProps = await Page.getInitialProps(ctx);
+      }
+
+      return {
+        isAuthenticated,
+        ...composedInitialProps
+      };
     }
 
     render() {

@@ -13,7 +13,7 @@ import withI18n from './withI18n';
 import withTheme from './withTheme';
 import withErrorBoundary from './withErrorBoundary';
 import type { Context } from '../types';
-import { getPersonalToken, LOGOUT_KEY } from '../lib/auth/token';
+import { LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
 
 logPageView();
@@ -27,28 +27,14 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 
 /**
  * HoC that combines all necessary pages wrapper so we get a single point of entry
- * It also makes sure we have a token to the APIs
  */
 
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
-    static async getInitialProps(ctx: Context) {
-      const personalToken = getPersonalToken(ctx.req);
-      const isAuthenticated = Boolean(personalToken);
-
-      ctx.isAuthenticated = isAuthenticated;
-
-      // Evaluate the composed component's getInitialProps()
-      let composedInitialProps;
-      // Check if it actually is a next page
-      if (typeof Page.getInitialProps === 'function') {
-        composedInitialProps = await Page.getInitialProps(ctx);
-      }
-
-      return {
-        isAuthenticated,
-        ...composedInitialProps
-      };
+    static getInitialProps(ctx: Context) {
+      return (
+        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
+      );
     }
 
     componentDidMount() {

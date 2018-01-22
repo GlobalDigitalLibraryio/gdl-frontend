@@ -7,6 +7,7 @@
  */
 
 import fetch from 'isomorphic-unfetch';
+import Router from 'next/router';
 import type {
   RemoteData,
   Language,
@@ -15,7 +16,7 @@ import type {
   Translation
 } from './types';
 import { bookApiUrl } from './config';
-import { getSessionToken } from './lib/auth/token';
+import { getSessionToken, getPersonalToken } from './lib/auth/token';
 
 /*
 * Wrap fetch with some error handling and automatic json parsing
@@ -26,10 +27,9 @@ async function doFetch(
   options: ?{
     method: 'POST' | 'GET',
     body: ?any
-  }
+  },
+  token: ?string = getSessionToken()
 ): Promise<RemoteData<any>> {
-  const token = getSessionToken();
-
   try {
     const response = await fetch(url, {
       headers: {
@@ -126,7 +126,13 @@ export function fetchSupportedLanguages(): Promise<
 }
 
 export function fetchMyTranslations(): Promise<RemoteData<Array<Book>>> {
-  return doFetch(`${bookApiUrl}/books/mine`);
+  const personalToken = getPersonalToken();
+
+  if (!personalToken) {
+    Router.push('/auth/sign-in');
+  }
+
+  return doFetch(`${bookApiUrl}/books/mine`, null, personalToken);
 }
 
 export function sendToTranslation(
@@ -134,8 +140,18 @@ export function sendToTranslation(
   fromLanguage: string,
   toLanguage: string
 ): Promise<RemoteData<Translation>> {
-  return doFetch(`${bookApiUrl}/translations`, {
-    method: 'POST',
-    body: JSON.stringify({ bookId, fromLanguage, toLanguage })
-  });
+  const personalToken = getPersonalToken();
+
+  if (!personalToken) {
+    Router.push('/auth/sign-in');
+  }
+
+  return doFetch(
+    `${bookApiUrl}/translations`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ bookId, fromLanguage, toLanguage })
+    },
+    personalToken
+  );
 }

@@ -24,6 +24,13 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add('about');
   routes.add('login');
   routes.add('logout');
+
+  // Translate book
+  if (config.TRANSLATION_PAGES) {
+    routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
+    routes.add('translations', '/translations', 'user/_translations');
+  }
+
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
   // Book grid by level (we only allow a single digit for level, so no + in the regex)
@@ -47,12 +54,6 @@ if (config.STATIC_PAGES_ONLY) {
     '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
     'books/read'
   );
-
-  // Translate book
-  if (config.TRANSLATION_PAGES) {
-    routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
-    routes.add('translations', '/translations', 'user/_translations');
-  }
 }
 
 module.exports = routes;

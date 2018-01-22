@@ -11,7 +11,7 @@ import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { MdArrowForward, MdSync, MdSettings } from 'react-icons/lib/md';
 import { fetchMyTranslations } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { Book, RemoteData } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -27,25 +27,27 @@ import BookCover from '../../components/BookCover';
 import theme from '../../style/theme';
 
 type Props = {
-  books: RemoteData<{ results: Array<Book> }>,
   i18n: I18n
 };
 
-class MyTranslationsPage extends React.Component<Props> {
-  static async getInitialProps({ isAuthenticated }: Context) {
-    if (!isAuthenticated) {
-      return {};
-    }
+type State = {
+  books: RemoteData<{ results: Array<Book> }>
+};
 
+class MyTranslationsPage extends React.Component<Props, State> {
+  state = {
+    books: { results: [] }
+  };
+
+  async componentDidMount() {
     const books = await fetchMyTranslations();
-
-    return {
-      books
-    };
+    // eslint-disable-next-line react/no-did-mount-set-state
+    this.setState({ books });
   }
 
   render() {
-    const { books, i18n } = this.props;
+    const { i18n } = this.props;
+    const { books } = this.state;
 
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>
@@ -54,35 +56,36 @@ class MyTranslationsPage extends React.Component<Props> {
           <H1 textAlign="center">
             <Trans>My translations</Trans>
           </H1>
-          {books.results.map(book => (
-            <Card key={book.id} p={[15, 20]} mt={20}>
-              <Flex>
-                <Box w={[70, 120]} h={[75, 150]}>
-                  <BookCover book={book} />
-                </Box>
-                <Box>
-                  <H4>{book.title}</H4>
-                  <P color={theme.colors.grayDark}>
-                    <Trans>from {book.publisher.name}</Trans>
-                  </P>
+          {books &&
+            books.results.map(book => (
+              <Card key={book.id} p={[15, 20]} mt={20}>
+                <Flex>
+                  <Box w={[70, 120]} h={[75, 150]}>
+                    <BookCover book={book} />
+                  </Box>
                   <Box>
-                    {/* book.translatedFrom.name isn't implmented yet */}
-                    {book.language.name}{' '}
-                    <MdArrowForward color={theme.colors.oranges.orange} />{' '}
-                    <strong>{book.language.name}</strong>
+                    <H4>{book.title}</H4>
+                    <P color={theme.colors.grayDark}>
+                      <Trans>from {book.publisher.name}</Trans>
+                    </P>
+                    <Box>
+                      {/* book.translatedFrom.name isn't implmented yet */}
+                      {book.language.name}{' '}
+                      <MdArrowForward color={theme.colors.oranges.orange} />{' '}
+                      <strong>{book.language.name}</strong>
+                    </Box>
+                    <Box ml="auto">
+                      <More>
+                        <MdSettings /> <Trans>Edit</Trans>
+                      </More>
+                      <More>
+                        <MdSync /> <Trans>Sync</Trans>
+                      </More>
+                    </Box>
                   </Box>
-                  <Box ml="auto">
-                    <More>
-                      <MdSettings /> <Trans>Edit</Trans>
-                    </More>
-                    <More>
-                      <MdSync /> <Trans>Sync</Trans>
-                    </More>
-                  </Box>
-                </Box>
-              </Flex>
-            </Card>
-          ))}
+                </Flex>
+              </Card>
+            ))}
         </Container>
       </Layout>
     );
