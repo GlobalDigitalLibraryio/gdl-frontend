@@ -105,21 +105,21 @@ const HeroCardTablet = styled(Card)`
 `;
 
 class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query }: Context) {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
     const [featuredContent, levels, languages, justArrived] = await Promise.all(
       [
-        fetchFeaturedContent(language)(accessToken),
-        fetchLevels(language)(accessToken),
-        fetchLanguages()(accessToken),
-        fetchBooks(language)(accessToken)
+        fetchFeaturedContent(language),
+        fetchLevels(language),
+        fetchLanguages(),
+        fetchBooks(language)
       ]
     );
 
     const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooks(language, { level })(accessToken))
+      levels.map(level => fetchBooks(language, { level }))
     );
 
     return {

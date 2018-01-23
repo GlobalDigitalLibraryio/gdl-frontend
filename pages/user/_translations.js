@@ -11,7 +11,7 @@ import { Trans } from 'lingui-react';
 import type { I18n } from 'lingui-i18n';
 import { MdArrowForward, MdSync, MdSettings } from 'react-icons/lib/md';
 import { fetchMyTranslations } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { Book, RemoteData } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -27,25 +27,28 @@ import BookCover from '../../components/BookCover';
 import theme from '../../style/theme';
 
 type Props = {
-  books: RemoteData<{ results: Array<Book> }>,
   i18n: I18n
 };
 
-class MyTranslationsPage extends React.Component<Props> {
-  static async getInitialProps({ accessToken, isAuthenticated }: Context) {
-    if (!isAuthenticated) {
-      return {};
-    }
+type State = {
+  books: RemoteData<{ results: Array<Book> }>
+};
 
-    const books = await fetchMyTranslations()(accessToken);
+class MyTranslationsPage extends React.Component<Props, State> {
+  state = {
+    books: { results: [] }
+  };
 
-    return {
-      books
-    };
+  async componentDidMount() {
+    const books = await fetchMyTranslations();
+    /* eslint-disable react/no-did-mount-set-state */
+    // $FlowFixMe Not sure why Flow complains here....
+    this.setState({ books });
   }
 
   render() {
-    const { books, i18n } = this.props;
+    const { i18n } = this.props;
+    const { books } = this.state;
 
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>

@@ -9,11 +9,11 @@
 import * as React from 'react';
 import defaultPage from '../../hocs/defaultPage';
 import { logout } from '../../lib/auth/';
-import { unsetAuthToken } from '../../lib/auth/token';
+import { unsetPersonalToken } from '../../lib/auth/token';
 
 class SignOff extends React.Component<*> {
   componentDidMount() {
-    unsetAuthToken();
+    unsetPersonalToken();
     logout();
   }
 

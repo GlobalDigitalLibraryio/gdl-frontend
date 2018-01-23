@@ -60,10 +60,10 @@ const LinkLike = styled('button')`
 `;
 
 class TranslatePage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query }) {
     const [book, supportedLanguages] = await Promise.all([
-      fetchBook(query.id, query.lang)(accessToken),
-      fetchSupportedLanguages()(accessToken)
+      fetchBook(query.id, query.lang),
+      fetchSupportedLanguages()
     ]);
 
     const bookLanguages = book.availableLanguages.map(lang => lang.code);

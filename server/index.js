@@ -13,7 +13,8 @@ const cookieParser = require('cookie-parser');
 const glob = require('glob');
 const compression = require('compression');
 const routes = require('../routes');
-const { getToken } = require('./lib/auth');
+const { requestToken } = require('./lib/auth');
+const { RATE_LIMIT_TOKEN_GLOBAL_VAR } = require('../lib/auth/constants');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -36,19 +37,6 @@ app
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/favicon.ico', (req, res) => res.sendStatus(404));
 
-    /**
-     * Generate access tokens for anonymous users
-     */
-    // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-    server.get('/get_token', async (req, res) => {
-      try {
-        const token = await getToken();
-        res.json(token);
-      } catch (err) {
-        res.status(500).json({ message: err.message });
-      }
-    });
-
     // Health check for AWS
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
     server.get('/health', (req, res) => {
@@ -70,7 +58,19 @@ app
     );
 
     // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-    server.get('*', (req, res) => {
+    server.get('*', async (req, res) => {
+      // Generate a token so our backend won't be rate limited
+      if (!app.isInternalUrl(req)) {
+        try {
+          const token = await requestToken();
+          // Set the token in a global var so we can access it when fetching on the server
+          global[RATE_LIMIT_TOKEN_GLOBAL_VAR] = token.access_token;
+        } catch (error) {
+          console.warn(
+            'Unable to generate token. Session will be rate limited'
+          );
+        }
+      }
       handle(req, res);
     });
 

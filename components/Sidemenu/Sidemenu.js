@@ -97,8 +97,8 @@ class Sidebar extends React.Component<Props, State> {
 
   getMenuData = async () => {
     const [languages, levels] = await Promise.all([
-      fetchLanguages()(),
-      fetchLevels(this.props.language.code)()
+      fetchLanguages(),
+      fetchLevels(this.props.language.code)
     ]);
 
     this.setState({
