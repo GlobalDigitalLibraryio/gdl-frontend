@@ -1,4 +1,3 @@
-// @flow
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 @PROJECT@
@@ -9,7 +8,7 @@
 const fetch = require('isomorphic-unfetch');
 const config = require('../../config');
 
-async function getToken() {
+async function requestToken() {
   const tokenRes = await fetch(config.serverAuth.authUrl, {
     method: 'POST',
     headers: {
@@ -26,17 +25,6 @@ async function getToken() {
   return tokenRes.json();
 }
 
-/* function setToken(
-  res: $Response,
-  token: { access_token: string, expires_in: number }
-) {
-  res.cookie(ANON_ACCESS_TOKEN_KEY, token.access_token, {
-    // auth0 returns seconds, but maxAge is in ms
-    maxAge: token.expires_in * 1000
-  });
-} */
-
 module.exports = {
-  getToken
-  // setToken
+  requestToken
 };

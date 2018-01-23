@@ -16,7 +16,7 @@ import type {
   Translation
 } from './types';
 import { bookApiUrl } from './config';
-import { getSessionToken, getPersonalToken } from './lib/auth/token';
+import { getSsrToken, getPersonalToken } from './lib/auth/token';
 
 /*
 * Wrap fetch with some error handling and automatic json parsing
@@ -28,7 +28,7 @@ async function doFetch(
     method: 'POST' | 'GET',
     body: ?any
   },
-  token: ?string = getSessionToken()
+  token: ?string = getSsrToken()
 ): Promise<RemoteData<any>> {
   try {
     const response = await fetch(url, {

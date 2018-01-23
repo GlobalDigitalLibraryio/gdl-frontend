@@ -41,7 +41,8 @@ class MyTranslationsPage extends React.Component<Props, State> {
 
   async componentDidMount() {
     const books = await fetchMyTranslations();
-    // eslint-disable-next-line react/no-did-mount-set-state
+    /* eslint-disable react/no-did-mount-set-state */
+    // $FlowFixMe Not sure why Flow complains here....
     this.setState({ books });
   }
 
@@ -56,36 +57,35 @@ class MyTranslationsPage extends React.Component<Props, State> {
           <H1 textAlign="center">
             <Trans>My translations</Trans>
           </H1>
-          {books &&
-            books.results.map(book => (
-              <Card key={book.id} p={[15, 20]} mt={20}>
-                <Flex>
-                  <Box w={[70, 120]} h={[75, 150]}>
-                    <BookCover book={book} />
-                  </Box>
+          {books.results.map(book => (
+            <Card key={book.id} p={[15, 20]} mt={20}>
+              <Flex>
+                <Box w={[70, 120]} h={[75, 150]}>
+                  <BookCover book={book} />
+                </Box>
+                <Box>
+                  <H4>{book.title}</H4>
+                  <P color={theme.colors.grayDark}>
+                    <Trans>from {book.publisher.name}</Trans>
+                  </P>
                   <Box>
-                    <H4>{book.title}</H4>
-                    <P color={theme.colors.grayDark}>
-                      <Trans>from {book.publisher.name}</Trans>
-                    </P>
-                    <Box>
-                      {/* book.translatedFrom.name isn't implmented yet */}
-                      {book.language.name}{' '}
-                      <MdArrowForward color={theme.colors.oranges.orange} />{' '}
-                      <strong>{book.language.name}</strong>
-                    </Box>
-                    <Box ml="auto">
-                      <More>
-                        <MdSettings /> <Trans>Edit</Trans>
-                      </More>
-                      <More>
-                        <MdSync /> <Trans>Sync</Trans>
-                      </More>
-                    </Box>
+                    {/* book.translatedFrom.name isn't implmented yet */}
+                    {book.language.name}{' '}
+                    <MdArrowForward color={theme.colors.oranges.orange} />{' '}
+                    <strong>{book.language.name}</strong>
                   </Box>
-                </Flex>
-              </Card>
-            ))}
+                  <Box ml="auto">
+                    <More>
+                      <MdSettings /> <Trans>Edit</Trans>
+                    </More>
+                    <More>
+                      <MdSync /> <Trans>Sync</Trans>
+                    </More>
+                  </Box>
+                </Box>
+              </Flex>
+            </Card>
+          ))}
         </Container>
       </Layout>
     );
