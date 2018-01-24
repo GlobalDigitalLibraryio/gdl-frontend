@@ -8,8 +8,8 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
+import { Trans } from '@lingui/react';
+import type { I18n } from '../../types';
 import Box from '../../components/Box';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';

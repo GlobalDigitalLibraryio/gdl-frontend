@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
 import H1 from '../components/H1';
@@ -16,7 +16,7 @@ import Container from '../components/Container';
 
 type Props = {
   statusCode: ?number,
-  showNavbar: boolean,
+  showNavbar: boolean
 };
 
 const Error = (props: Props) => {
@@ -46,7 +46,7 @@ const Error = (props: Props) => {
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'center'
               }}
             >
               {statusCode}
@@ -69,7 +69,7 @@ const Error = (props: Props) => {
 };
 
 Error.defaultProps = {
-  showNavbar: true,
+  showNavbar: true
 };
 
 export default Error;

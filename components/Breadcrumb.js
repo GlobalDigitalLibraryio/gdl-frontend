@@ -8,9 +8,9 @@
 
 import * as React from 'react';
 import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
-import type { I18n } from 'lingui-i18n';
-import { withI18n } from 'lingui-react';
+import { withI18n } from '@lingui/react';
 import styled from 'react-emotion';
+import type { I18n } from '../types';
 import { Link } from '../routes';
 import theme from '../style/theme';
 

@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import Router from 'next/router';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';

@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { withRouter } from 'next/router';
 import Downshift from 'downshift';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import {
   MdClose,
   MdHome,

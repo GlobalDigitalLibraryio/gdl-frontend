@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { DateFormat, Trans } from 'lingui-react';
+import { DateFormat, Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';

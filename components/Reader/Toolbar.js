@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import { MdClose } from 'react-icons/lib/md';
 import SrOnly from '../SrOnly';
 import theme from '../../style/theme';

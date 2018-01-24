@@ -7,11 +7,10 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
+import { Trans } from '@lingui/react';
 import { MdArrowForward, MdSync, MdSettings } from 'react-icons/lib/md';
 import { fetchMyTranslations } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { Book, RemoteData, Context, I18n } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
