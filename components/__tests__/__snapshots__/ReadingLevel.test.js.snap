@@ -45,9 +45,7 @@ exports[`Renders 1`] = `
           <Render
             value="Level {level}"
           >
-            <span>
-              Level {level}
-            </span>
+            Level {level}
           </Render>
         </Trans>
       </withI18n>

@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
+import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { MdCheck } from 'react-icons/lib/md';
 import {

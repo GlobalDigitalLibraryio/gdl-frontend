@@ -7,11 +7,10 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
+import { Trans } from '@lingui/react';
 import { fetchBooks } from '../../fetch';
 import { Link } from '../../routes';
-import type { Book, RemoteData, Language, Context } from '../../types';
+import type { Book, RemoteData, Language, Context, I18n } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import { Button } from '../../components/Button';

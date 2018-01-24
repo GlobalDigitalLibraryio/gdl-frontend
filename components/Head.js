@@ -2,23 +2,21 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
 import * as React from 'react';
 import NextHead from 'next/head';
-import { withI18n } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
-
+import { withI18n } from '@lingui/react';
+import type { I18n } from '../types';
 
 const META = {
   TWITTER: '@GDigitalLibrary',
   KEYWORDS: 'Books, Reading, Children, Library, Learning',
   TITLE: 'Global Digital Library',
-  TITLE_ABBR: 'GDL',
+  TITLE_ABBR: 'GDL'
 };
-
 
 type Props = {
   description?: string,
@@ -26,27 +24,33 @@ type Props = {
   imageUrl?: ?string,
   children?: React.Node,
   i18n: I18n,
-  isBookType: boolean,
+  isBookType: boolean
 };
 
 /**
  * The og:url meta property is generated in _document on SSR
  */
 
-const Head = ({ title, description, i18n, imageUrl, isBookType, children }: Props) => {
+const Head = ({
+  title,
+  description,
+  i18n,
+  imageUrl,
+  isBookType,
+  children
+}: Props) => {
   const actualTitle = title ? `${META.TITLE_ABBR} - ${title}` : META.TITLE;
-  const actualDescription = description || i18n.t`Enjoy free reading resources. Available for everyone. Forever`;
+  const actualDescription =
+    description ||
+    i18n.t`Enjoy free reading resources. Available for everyone. Forever`;
 
   return (
     <NextHead>
       <title>{actualTitle}</title>
-      <meta
-        property="og:title"
-        content={actualTitle}
-      />
-      {process.browser &&
+      <meta property="og:title" content={actualTitle} />
+      {process.browser && (
         <meta property="og:url" content={window.location.href} />
-      }
+      )}
       <meta name="keywords" content={META.KEYWORDS} />
       <meta name="twitter:site" content={META.TWITTER} />
       <meta name="twitter:card" content="summary" />
@@ -61,7 +65,7 @@ const Head = ({ title, description, i18n, imageUrl, isBookType, children }: Prop
 };
 
 Head.defaultProps = {
-  isBookType: false,
+  isBookType: false
 };
 
 export default withI18n()(Head);

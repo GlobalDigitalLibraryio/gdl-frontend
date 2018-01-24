@@ -9,18 +9,11 @@
 /* eslint-disable no-underscore-dangle, no-eval */
 
 import * as React from 'react';
-import { I18nProvider, withI18n } from 'lingui-react';
+import { I18nProvider, withI18n } from '@lingui/react';
 import Head from 'next/head';
-import { unpackCatalog } from 'lingui-i18n';
 import serializeJS from 'serialize-javascript';
 import Url from 'domurl';
 import type { Context } from '../types';
-
-// required in development only (huge dependency)
-const dev =
-  process.env.NODE_ENV !== 'production'
-    ? require('lingui-i18n/dev')
-    : undefined;
 
 type Props = {
   language: string,
@@ -93,10 +86,8 @@ export default (Page: React.ComponentType<any>) => {
         <I18nProvider
           language={language}
           catalogs={{
-            [language]: unpackCatalog(eval(`(${catalog})`))
+            [language]: eval(`(${catalog})`)
           }}
-          defaultRender={null}
-          development={dev}
         >
           <Head>
             <link href={url.toString()} rel="canonical" />

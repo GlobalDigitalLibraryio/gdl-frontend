@@ -92,3 +92,7 @@ export type Context = {
   accessToken: string,
   isAuthenticated: boolean
 };
+
+export type I18n = {
+  t: (Array<string>) => string
+};

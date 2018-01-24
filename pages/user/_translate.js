@@ -7,8 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from 'lingui-react';
-import type { I18n } from 'lingui-i18n';
+import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
@@ -17,7 +16,13 @@ import {
   fetchSupportedLanguages,
   sendToTranslation
 } from '../../fetch';
-import type { Book, RemoteData, Language, Translation } from '../../types';
+import type {
+  Book,
+  RemoteData,
+  Language,
+  Translation,
+  I18n
+} from '../../types';
 import { Link } from '../../routes';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
