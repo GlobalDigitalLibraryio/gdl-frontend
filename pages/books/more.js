@@ -146,7 +146,6 @@ class BookPage extends React.Component<Props, State> {
               disabled={!canLoadMore}
               onClick={this.handleLoadMore}
               isLoading={this.state.isLoadingMore}
-              type="button"
             >
               {this.state.isLoadingMore ? (
                 <Trans>Loading books</Trans>

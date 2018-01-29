@@ -100,7 +100,7 @@ export default function({
   );
 
   return props.href == null ? (
-    <button className={style} {...props} />
+    <button className={style} type="button" {...props} />
   ) : (
     <a className={style} {...props} />
   );
