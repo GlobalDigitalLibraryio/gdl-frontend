@@ -21,7 +21,7 @@ const Nav = styled.nav`
   min-height: 54px;
   ${media.tablet`
     min-height: 80px;
-  `} background: ${theme.colors.blues.blue};
+  `} background: ${theme.colors.blues.dark};
   color: ${theme.colors.white};
 
   display: flex;
