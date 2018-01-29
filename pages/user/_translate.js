@@ -29,7 +29,7 @@ import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import H1 from '../../components/H1';
-import { Button, ButtonLink } from '../../components/Button';
+import Button from '../../components/Button';
 import H4 from '../../components/H4';
 import P from '../../components/P';
 import Card from '../../components/Card';
@@ -191,13 +191,13 @@ class TranslatePage extends React.Component<Props, State> {
           </Box>
           {this.state.translation ? (
             <React.Fragment>
-              <ButtonLink
+              <Button
                 href={this.state.translation.crowdinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <Trans>Start translation</Trans>
-              </ButtonLink>
+              </Button>
               <p>
                 <small>
                   <Trans>
@@ -210,7 +210,7 @@ class TranslatePage extends React.Component<Props, State> {
           ) : (
             <Button
               disabled={this.state.selectedLanguage == null}
-              loading={this.state.preparingTranslation}
+              isLoading={this.state.preparingTranslation}
               onClick={this.handlePrepareTranslation}
             >
               <Trans>Prepare translation</Trans>

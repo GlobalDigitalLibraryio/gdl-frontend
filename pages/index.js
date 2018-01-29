@@ -32,7 +32,7 @@ import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Head from '../components/Head';
 import BookList from '../components/BookList';
-import { ButtonLink } from '../components/Button';
+import Button from '../components/Button';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H1 from '../components/H1';
@@ -190,7 +190,7 @@ class BooksPage extends React.Component<Props> {
               <P fontSize={[14, 16]} lineHeight={[22, 26]}>
                 {featured.description}
               </P>
-              <ButtonLink href={featured.link}>More</ButtonLink>
+              <Button href={featured.link}>More</Button>
             </Box>
           </HeroCardTablet>
           <HeroCovertitle>
@@ -203,7 +203,7 @@ class BooksPage extends React.Component<Props> {
             <P fontSize={[14, 16]} lineHeight={[22, 26]}>
               {featured.description}
             </P>
-            <ButtonLink href={featured.link}>More</ButtonLink>
+            <Button href={featured.link}>More</Button>
           </Box>
         </HeroCardMobile>
 

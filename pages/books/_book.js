@@ -25,7 +25,7 @@ import H6 from '../../components/H6';
 import P from '../../components/P';
 import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
-import { ButtonLink } from '../../components/Button';
+import Button from '../../components/Button';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
@@ -129,9 +129,9 @@ class BookPage extends React.Component<Props> {
                   params={{ id: book.id, lang: book.language.code }}
                   prefetch
                 >
-                  <ButtonLink>
+                  <Button color="green">
                     <Trans>Read Book</Trans>
-                  </ButtonLink>
+                  </Button>
                 </Link>
                 <Box mt={[15, 20]}>
                   <A href={book.downloads.epub}>

@@ -6,13 +6,27 @@
  * See LICENSE
  */
 
-import styled, { css } from 'react-emotion';
+import React from 'react';
+import { cx, css } from 'react-emotion';
 import { lighten } from 'polished';
 import rotate360 from '../style/rotate360';
 import media from '../style/media';
 import theme from '../style/theme';
 
-const buttonFragment = (color: string) => css`
+type Props = {
+  color?: 'link' | 'green',
+  customColor?: string,
+  href?: string,
+  className?: string,
+  isLoading?: boolean,
+  disabled?: boolean,
+  type?: 'submit' | 'reset' | 'button',
+  onClick?: (
+    event: SyntheticEvent<HTMLButtonElement> | SyntheticEvent<HTMLAnchorElement>
+  ) => any
+};
+
+const buttonStyle = (color: string) => css`
   color: ${theme.colors.white};
   background: ${color};
   border-style: none;
@@ -44,32 +58,50 @@ const buttonFragment = (color: string) => css`
   }
 `;
 
-const ButtonLink = styled('a')(buttonFragment(theme.colors.link));
-
-const Button = styled('button')`
-  ${buttonFragment(theme.colors.link)};
-  ${p =>
-    p.loading &&
-    `
-    color: transparent;
-    text-shadow: none;
-    position: relative;
-    pointer-events: none;
-    &:after {
-      animation: ${rotate360} 500ms infinite linear;
-      border: 2px solid ${theme.colors.white};
-      border-radius: 100px;
-      border-right-color: transparent;
-      border-top-color: transparent;
-      content: '';
-      display: block;
-      width: 1em;
-      height: 1em;
-      position: absolute;
-      left: calc(50% - (1em / 2));
-      top: calc(50% - (1em / 2));
-    }
-  `};
+const loadingStyle = css`
+  color: transparent;
+  text-shadow: none;
+  position: relative;
+  pointer-events: none;
+  &:after {
+    animation: ${rotate360} 500ms infinite linear;
+    border: 2px solid ${theme.colors.white};
+    border-radius: 100px;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    content: '';
+    display: block;
+    width: 1em;
+    height: 1em;
+    position: absolute;
+    left: calc(50% - (1em / 2));
+    top: calc(50% - (1em / 2));
+  }
 `;
 
-export { buttonFragment, ButtonLink, Button };
+/* eslint-disable jsx-a11y/anchor-has-content */
+export default function({
+  color,
+  customColor,
+  isLoading,
+  className,
+  ...props
+}: Props) {
+  // customColor takes precedence of the color prop
+  const bgColor =
+    customColor || color === 'green'
+      ? theme.colors.greens.green
+      : theme.colors.link;
+
+  const style = cx(
+    buttonStyle(bgColor),
+    { [loadingStyle]: isLoading },
+    className
+  );
+
+  return props.href == null ? (
+    <button className={style} {...props} />
+  ) : (
+    <a className={style} {...props} />
+  );
+}
