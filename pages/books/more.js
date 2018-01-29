@@ -13,7 +13,7 @@ import { Link } from '../../routes';
 import type { Book, RemoteData, Language, Context, I18n } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
-import { Button } from '../../components/Button';
+import Button from '../../components/Button';
 import Box from '../../components/Box';
 import H1 from '../../components/H1';
 import Container from '../../components/Container';
@@ -145,8 +145,7 @@ class BookPage extends React.Component<Props, State> {
               aria-live="polite"
               disabled={!canLoadMore}
               onClick={this.handleLoadMore}
-              loading={this.state.isLoadingMore}
-              type="button"
+              isLoading={this.state.isLoadingMore}
             >
               {this.state.isLoadingMore ? (
                 <Trans>Loading books</Trans>

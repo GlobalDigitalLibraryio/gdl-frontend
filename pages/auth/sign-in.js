@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import type { I18n } from '../../types';
 import Box from '../../components/Box';
@@ -17,11 +16,10 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import H1 from '../../components/H1';
 import { loginSocialMedia } from '../../lib/auth';
-import { buttonFragment } from '../../components/Button';
+import Button from '../../components/Button';
 
-const GoogleButton = styled('button')(buttonFragment('#db3236'));
-
-const FacebookButton = styled('button')(buttonFragment('#3b5998'));
+const googleColor = '#db3236';
+const facebookColor = '#3b5998';
 
 type Props = {
   i18n: I18n
@@ -36,14 +34,20 @@ const LoginPage = ({ i18n }: Props) => (
           <Trans>Log in using</Trans>
         </H1>
         <p>
-          <GoogleButton onClick={() => loginSocialMedia('google-oauth2')}>
+          <Button
+            customColor={googleColor}
+            onClick={() => loginSocialMedia('google-oauth2')}
+          >
             Google
-          </GoogleButton>
+          </Button>
         </p>
         <p>
-          <FacebookButton onClick={() => loginSocialMedia('facebook')}>
+          <Button
+            customColor={facebookColor}
+            onClick={() => loginSocialMedia('facebook')}
+          >
             Facebook
-          </FacebookButton>
+          </Button>
         </p>
       </Box>
     </Container>
