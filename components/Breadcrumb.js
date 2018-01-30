@@ -40,6 +40,9 @@ const Ol = styled.ol`
   li[role='presentation'] {
     color: ${theme.colors.gray};
   }
+  a:hover {
+    color: ${theme.colors.blues.dark};
+  }
 `;
 
 type Props = {

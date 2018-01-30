@@ -8,9 +8,10 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { MdArrowForward, MdSync, MdSettings } from 'react-icons/lib/md';
+import { MdArrowForward } from 'react-icons/lib/md';
 import { fetchMyTranslations } from '../../fetch';
-import type { Book, RemoteData, Context, I18n } from '../../types';
+import { Link } from '../../routes';
+import type { Book, RemoteData, I18n } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -19,49 +20,60 @@ import H1 from '../../components/H1';
 import H4 from '../../components/H4';
 import P from '../../components/P';
 import Card from '../../components/Card';
-import More from '../../components/More';
+import A from '../../components/A';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import theme from '../../style/theme';
 
 type Props = {
-  books: RemoteData<{ results: Array<Book> }>,
   i18n: I18n
 };
 
-class MyTranslationsPage extends React.Component<Props> {
-  static async getInitialProps({ accessToken, isAuthenticated }: Context) {
-    if (!isAuthenticated) {
-      return {};
+type State = {
+  books: RemoteData<{ results: Array<Book> }>
+};
+
+class MyTranslationsPage extends React.Component<Props, State> {
+  state = {
+    books: {
+      results: []
     }
-
-    const books = await fetchMyTranslations()(accessToken);
-
-    return {
-      books
-    };
+  };
+  async componentDidMount() {
+    const books = await fetchMyTranslations()();
+    /* eslint-disable react/no-did-mount-set-state */
+    // $FlowFixMe Not sure why Flow complains here....
+    this.setState({ books });
   }
 
   render() {
-    const { books, i18n } = this.props;
+    const { i18n } = this.props;
+    const { books } = this.state;
 
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>
         <Head title={i18n.t`My translations`} />
-        <Container py={[15, 20]}>
+        <Container py={[15, 40]}>
           <H1 textAlign="center">
             <Trans>My translations</Trans>
           </H1>
           {books.results.map(book => (
             <Card key={book.id} p={[15, 20]} mt={20}>
               <Flex>
-                <Box w={[70, 120]} h={[75, 150]}>
-                  <BookCover book={book} />
+                <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
+                  <Link
+                    route="book"
+                    params={{ lang: book.language.code, id: book.id }}
+                  >
+                    <a>
+                      <BookCover book={book} p={5} />
+                    </a>
+                  </Link>
                 </Box>
-                <Box>
+                <Box flex="1">
                   <H4>{book.title}</H4>
-                  <P color={theme.colors.grayDark}>
+                  <P color={theme.colors.grayDark} style={{ marginTop: 0 }}>
                     <Trans>from {book.publisher.name}</Trans>
                   </P>
                   <Box>
@@ -70,14 +82,14 @@ class MyTranslationsPage extends React.Component<Props> {
                     <MdArrowForward color={theme.colors.oranges.orange} />{' '}
                     <strong>{book.language.name}</strong>
                   </Box>
-                  <Box ml="auto">
-                    <More>
-                      <MdSettings /> <Trans>Edit</Trans>
-                    </More>
-                    <More>
-                      <MdSync /> <Trans>Sync</Trans>
-                    </More>
-                  </Box>
+                  <div style={{ float: 'right' }}>
+                    <A isUppercased isBold>
+                      <Trans>Sync</Trans>
+                    </A>
+                    <A isUppercased isBold style={{ marginLeft: '30px' }}>
+                      <Trans>Edit</Trans>
+                    </A>
+                  </div>
                 </Box>
               </Flex>
             </Card>

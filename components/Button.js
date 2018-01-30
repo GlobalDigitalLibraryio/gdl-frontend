@@ -89,9 +89,8 @@ export default function({
 }: Props) {
   // customColor takes precedence of the color prop
   const bgColor =
-    customColor || color === 'green'
-      ? theme.colors.greens.green
-      : theme.colors.link;
+    customColor ||
+    (color === 'green' ? theme.colors.greens.green : theme.colors.link);
 
   const style = cx(
     buttonStyle(bgColor),

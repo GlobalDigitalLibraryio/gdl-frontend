@@ -13,7 +13,8 @@ import type { Book } from '../types';
 import { flexCenter } from '../style/flex';
 
 type Props = {
-  book: Book
+  book: Book,
+  p: Array<number> | number
 };
 
 const Frame = styled(Card)`
@@ -22,8 +23,8 @@ const Frame = styled(Card)`
   height: 100%;
 `;
 
-const BookCover = ({ book }: Props) => (
-  <Frame p={[5, 10]}>
+const BookCover = ({ book, ...props }: Props) => (
+  <Frame {...props}>
     <CoverImage
       src={book.coverPhoto && book.coverPhoto.large}
       h="100%"
@@ -31,5 +32,9 @@ const BookCover = ({ book }: Props) => (
     />
   </Frame>
 );
+
+BookCover.defaultProps = {
+  p: [5, 10]
+};
 
 export default BookCover;

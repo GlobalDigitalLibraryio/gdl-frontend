@@ -121,14 +121,21 @@ class TranslatePage extends React.Component<Props, State> {
           description={book.description}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
-        <Container py={[15, 20]} style={{ textAlign: 'center' }}>
+        <Container py={[15, 40]} style={{ textAlign: 'center' }}>
           <H1>
             <Trans>Translate book</Trans>
           </H1>
-          <Card p={[15, 20]} mt={20} textAlign="left">
+          <Card p={[15, 20]} my={[20, 50]} textAlign="left">
             <Flex>
-              <Box w={[70, 120]} h={[75, 150]}>
-                <BookCover book={book} />
+              <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
+                <Link
+                  route="book"
+                  params={{ lang: book.language.code, id: book.id }}
+                >
+                  <a>
+                    <BookCover book={book} p={5} />
+                  </a>
+                </Link>
               </Box>
               <Box>
                 <H4>{book.title}</H4>
@@ -195,6 +202,7 @@ class TranslatePage extends React.Component<Props, State> {
                 href={this.state.translation.crowdinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                color="green"
               >
                 <Trans>Start translation</Trans>
               </Button>
