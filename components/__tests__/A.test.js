@@ -13,10 +13,16 @@ import { createSerializer } from 'jest-emotion';
 import * as emotion from 'emotion';
 import A from '../A';
 
-expect.addSnapshotSerializer(createSerializer(emotion))
+expect.addSnapshotSerializer(createSerializer(emotion));
 
-test('Is underlined anchor', () => {
-  const tree = shallow(<A>Link</A>);
+test('Is uppercased anchor', () => {
+  const tree = shallow(<A isUppercased>Link</A>);
+
+  expect(toJson(tree)).toMatchSnapshot();
+});
+
+test('Is bold anchor', () => {
+  const tree = shallow(<A isBold>Link</A>);
 
   expect(toJson(tree)).toMatchSnapshot();
 });

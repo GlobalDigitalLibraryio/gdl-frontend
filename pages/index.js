@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { MdCheck } from 'react-icons/lib/md';
 import {
   fetchFeaturedContent,
@@ -36,7 +36,7 @@ import Button from '../components/Button';
 import P from '../components/P';
 import H3 from '../components/H3';
 import H1 from '../components/H1';
-import More from '../components/More';
+import A from '../components/A';
 import ToolbarDropdown, {
   ToolbarDropdownItem
 } from '../components/ToolbarDropdown';
@@ -102,6 +102,15 @@ const HeroCardTablet = styled(Card)`
   ${media.mobile`
     display: none;
   `};
+`;
+
+const moreStyle = css`
+  float: right;
+  font-size: 12px;
+  ${media.tablet`
+    font-size: 14px;
+  `};
+  height: 40px;
 `;
 
 class BooksPage extends React.Component<Props> {
@@ -217,9 +226,9 @@ class BooksPage extends React.Component<Props> {
                   params={{ lang: justArrived.language.code, level }}
                   passHref
                 >
-                  <More>
+                  <A isUppercased className={moreStyle}>
                     <Trans>More</Trans>
-                  </More>
+                  </A>
                 </Link>
               </H3>
               <BookList
@@ -241,9 +250,9 @@ class BooksPage extends React.Component<Props> {
                 params={{ lang: justArrived.language.code }}
                 passHref
               >
-                <More>
+                <A isUppercased className={moreStyle}>
                   <Trans>More</Trans>
-                </More>
+                </A>
               </Link>
             </H3>
             <BookList

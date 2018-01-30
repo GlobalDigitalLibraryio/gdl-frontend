@@ -21,6 +21,11 @@ routes.add(
 if (config.STATIC_PAGES_ONLY) {
   routes.add('about', '/', 'about');
 } else {
+  // Translate book
+  if (config.TRANSLATION_PAGES) {
+    routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
+    routes.add('translations', '/translations', 'user/_translations');
+  }
   routes.add('about');
   routes.add('login');
   routes.add('logout');
@@ -47,12 +52,6 @@ if (config.STATIC_PAGES_ONLY) {
     '/:lang/books/:id(\\d+)/read/:chapter(\\d+)?',
     'books/read'
   );
-
-  // Translate book
-  if (config.TRANSLATION_PAGES) {
-    routes.add('translate', '/:lang/translate/:id(\\d+)', 'user/_translate');
-    routes.add('translations', '/translations', 'user/_translations');
-  }
 }
 
 module.exports = routes;
