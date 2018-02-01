@@ -27,7 +27,7 @@
     "pretest": "npm run lint",
     "test": "jest",
     "lint": "eslint --ext .js pages components hocs lib style server",
-    "dev": "npm run i18n:compile && node server",
+    "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "lingui extract",
