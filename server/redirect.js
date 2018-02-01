@@ -22,7 +22,7 @@ app.get('*', (req, res) => {
   if (hostname == null) {
     res.send(400);
   }
-  res.direct(301, `https://${hostname}${req.url}`);
+  res.redirect(301, `https://${hostname}${req.url}`);
 });
 
 module.exports = app;
