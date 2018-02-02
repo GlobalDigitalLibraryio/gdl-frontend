@@ -11,6 +11,14 @@ const Page = styled.div`
   color: #000;
   overflow-wrap: break-word;
   word-wrap: break-word;
+  font-size: 18px;
+  text-align: center;
+  line-height: 1.5;
+  font-family: Palatino, Iowan, 'Times New Roman', Times, serif;
+
+  br {
+    display: none;
+  }
 
   b {
     font-weight: bold;
@@ -21,8 +29,9 @@ const Page = styled.div`
     display: block;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 30px;
   }
-  & :first-child {
+  &:first-child {
     margin-top: 0;
   }
   overflow-y: auto;
