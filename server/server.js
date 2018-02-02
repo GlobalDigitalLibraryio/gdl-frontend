@@ -68,7 +68,7 @@ async function setup() {
 
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
   server.get('*', (req, res) => {
-    // Add cache headers to our static assets if we are in running in development mode
+    // Add cache headers to our static assets if we aren't running in development mode
     if (!dev && /^\/static\//.test(req.url)) {
       res.setHeader('Cache-Control', 'max-age=31536000, immutable');
     }
