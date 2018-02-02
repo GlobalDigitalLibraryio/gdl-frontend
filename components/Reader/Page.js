@@ -24,8 +24,9 @@ const Page = styled.div`
     font-weight: bold;
   }
 
-  & img {
+  img {
     max-width: 100%;
+    max-height: 66vh;
     display: block;
     margin-left: auto;
     margin-right: auto;
