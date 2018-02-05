@@ -16,10 +16,16 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next", "/flow-typed"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next",
+      "/flow-typed"
+    ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -33,21 +39,20 @@
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format":
-      "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
+    "format": "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
     "flow": "flow",
     "storybook": "start-storybook -p 9001 -c .storybook"
   },
   "dependencies": {
-    "@lingui/react": "2.0.0",
+    "@lingui/react": "2.0.2",
     "auth0-js": "9.0.3",
     "compression": "1.7.1",
     "cookie-parser": "1.4.3",
     "domurl": "2.1.7",
-    "downshift": "1.26.0",
-    "emotion": "9.0.0-1",
-    "emotion-server": "9.0.0-1",
-    "emotion-theming": "9.0.0-1",
+    "downshift": "1.27.1",
+    "emotion": "9.0.0",
+    "emotion-server": "9.0.0",
+    "emotion-theming": "9.0.0",
     "express": "4.16.2",
     "express-request-language": "1.1.12",
     "glob": "7.1.2",
@@ -60,20 +65,20 @@
     "prop-types": "15.6.0",
     "react": "16.2.0",
     "react-dom": "16.2.0",
-    "react-emotion": "9.0.0-1",
+    "react-emotion": "9.0.0",
     "react-ga": "^2.4.0",
     "react-icons": "2.2.7",
     "react-portal": "^4.1.2",
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",
-    "styled-system": "1.1.1"
+    "styled-system": "1.1.4"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "2.0.0",
-    "@lingui/cli": "2.0.0",
+    "@lingui/babel-preset-react": "2.0.2",
+    "@lingui/cli": "2.0.2",
     "@storybook/react": "3.2.18",
     "babel-eslint": "8.2.1",
-    "babel-plugin-emotion": "9.0.0-1",
+    "babel-plugin-emotion": "9.0.0",
     "babel-plugin-inline-react-svg": "0.5.2",
     "babel-plugin-polished": "1.1.0",
     "babel-plugin-transform-assets": "0.2.0",
@@ -81,7 +86,7 @@
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "enzyme-to-json": "3.3.1",
-    "eslint": "4.16.0",
+    "eslint": "4.17.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-config-prettier": "2.9.0",
     "eslint-plugin-flowtype": "2.42.0",
@@ -90,7 +95,7 @@
     "eslint-plugin-react": "7.6.1",
     "flow-bin": "0.64.0",
     "jest": "22.1.4",
-    "jest-emotion": "9.0.0-1",
+    "jest-emotion": "9.0.0",
     "nock": "^9.1.4",
     "prettier-eslint": "8.8.1",
     "prettier-eslint-cli": "4.7.0",
