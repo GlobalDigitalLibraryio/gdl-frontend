@@ -12,30 +12,23 @@ import { withI18n } from '@lingui/react';
 import type { I18n } from '../types';
 
 const META = {
-  TWITTER: '@GDigitalLibrary',
-  KEYWORDS: 'Books, Reading, Children, Library, Learning',
   TITLE: 'Global Digital Library',
   TITLE_ABBR: 'GDL'
 };
 
-type Props = {
+type Props = {|
   description?: string,
   title?: string,
-  imageUrl?: ?string,
+  image?: ?string,
   children?: React.Node,
-  i18n: I18n,
-  isBookType: boolean
-};
-
-/**
- * The og:url meta property is generated in _document on SSR
- */
+  i18n: I18n
+|};
 
 const Head = ({
   title,
   description,
   i18n,
-  imageUrl,
+  image,
   isBookType,
   children
 }: Props) => {
@@ -47,25 +40,20 @@ const Head = ({
   return (
     <NextHead>
       <title>{actualTitle}</title>
-      <meta property="og:title" content={actualTitle} />
-      {process.browser && (
-        <meta property="og:url" content={window.location.href} />
-      )}
-      <meta name="keywords" content={META.KEYWORDS} />
-      <meta name="twitter:site" content={META.TWITTER} />
-      <meta name="twitter:card" content="summary" />
       <meta name="description" content={actualDescription} />
+
+      <meta property="og:title" content={actualTitle} />
       <meta property="og:description" content={actualDescription} />
-      <meta property="og:type" content={isBookType ? 'book' : 'website'} />
-      <meta property="og:site_name" content={META.TITLE} />
-      {imageUrl && <meta property="og:image" content={imageUrl} />}
+
+      <meta property="twitter:title" content={actualTitle} />
+      <meta property="twitter:description" content={actualDescription} />
+
+      {/* TODO: Add fallback image */}
+      {image && <meta property="og:image" content={image} />}
+      {image && <meta property="twitter:image" content={image} />}
       {children}
     </NextHead>
   );
-};
-
-Head.defaultProps = {
-  isBookType: false
 };
 
 export default withI18n()(Head);

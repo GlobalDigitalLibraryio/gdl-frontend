@@ -52,17 +52,22 @@ export default class GDLDocument extends Document {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-          {/* IE automatically looks for  browserconfig.xml in the root directory of the server if this is not explictly turned off */}
+          {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
+          <meta
+            name="keywords"
+            content="Books, Reading, Children, Library, Learning"
+          />
           {config.BLOCK_SEARCH_INDEXING && (
             <meta name="robots" content="noindex, nofollow" />
           )}
-          {/* Adding next-head to the following meta tag ensures it gets deduped properly on the client in our own Head component */}
-          <meta
-            property="og:url"
-            content={this.props.url}
-            className="next-head"
-          />
+          {/* Twitter */}
+          <meta name="twitter:site" content="@GDigitalLibrary" />
+          <meta name="twitter:card" content="summary" />
+          {/* Open Graph */}
+          <meta property="og:type" content="website" />
+          <meta property="og:site_name" content="Global Digital Library" />
+
           <script
             dangerouslySetInnerHTML={{
               __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env

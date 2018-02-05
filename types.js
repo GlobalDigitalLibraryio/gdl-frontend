@@ -8,13 +8,18 @@
 import type { $Request, $Response } from 'express';
 
 export type Publisher = {
-  +id: number,
   +name: string
 };
 
 export type Contributor = {
   +id: number,
-  +name: string
+  +name: string,
+  +type:
+    | 'Author'
+    | 'Illustrator'
+    | 'Translator'
+    | 'Photographer'
+    | 'Contributor'
 };
 
 export type License = {
@@ -67,6 +72,7 @@ export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
 export type Book = $ReadOnly<{|
   id: number,
+  uuid: string,
   title: string,
   description: string,
   category: Category,

@@ -184,6 +184,12 @@ class BooksPage extends React.Component<Props> {
                 language.code
               }/books/category/${categoryTypeForUrl}`}
             />
+            <meta
+              property="og:url"
+              content={`${locationOrigin}/${
+                language.code
+              }/books/category/${categoryTypeForUrl}`}
+            />
           </Head>
         )}
         <HomePage

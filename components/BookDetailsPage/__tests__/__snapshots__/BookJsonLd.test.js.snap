@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`With contributors 1`] = `
+<script
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "{\\"@context\\":\\"http://schema.org/\\",\\"@type\\":\\"WebPage\\",\\"mainEntity\\":{\\"@id\\":\\"abc123\\",\\"@type\\":\\"Book\\",\\"isFamilyFriendly\\":true,\\"bookFormat\\":\\"EBook\\",\\"inLanguage\\":\\"eng\\",\\"isAccessibleForFree\\":true,\\"name\\":\\"A Life in the Fair Jungle\\",\\"description\\":\\"Sindi buzzes with colorful songs and dance. Will starting school end all that?\\",\\"publisher\\":\\"Pratham Books\\",\\"license\\":\\"https://creativecommons.org/licenses/by/4.0/\\",\\"author\\":\\"Ms Writer\\",\\"illustrator\\":[\\"Mrs. Drawer\\",\\"Son of Mrs. Drawer\\"]}}",
+    }
+  }
+  type="application/ld+json"
+/>
+`;
+
+exports[`With coverphoto 1`] = `
+<script
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "{\\"@context\\":\\"http://schema.org/\\",\\"@type\\":\\"WebPage\\",\\"mainEntity\\":{\\"@id\\":\\"abc123\\",\\"@type\\":\\"Book\\",\\"isFamilyFriendly\\":true,\\"bookFormat\\":\\"EBook\\",\\"inLanguage\\":\\"eng\\",\\"isAccessibleForFree\\":true,\\"name\\":\\"A Life in the Fair Jungle\\",\\"description\\":\\"Sindi buzzes with colorful songs and dance. Will starting school end all that?\\",\\"publisher\\":\\"Pratham Books\\",\\"license\\":\\"https://creativecommons.org/licenses/by/4.0/\\",\\"image\\":\\"http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg\\"}}",
+    }
+  }
+  type="application/ld+json"
+/>
+`;
+
+exports[`Without coverphoto and contributors 1`] = `
+<script
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "{\\"@context\\":\\"http://schema.org/\\",\\"@type\\":\\"WebPage\\",\\"mainEntity\\":{\\"@id\\":\\"abc123\\",\\"@type\\":\\"Book\\",\\"isFamilyFriendly\\":true,\\"bookFormat\\":\\"EBook\\",\\"inLanguage\\":\\"eng\\",\\"isAccessibleForFree\\":true,\\"name\\":\\"A Life in the Fair Jungle\\",\\"description\\":\\"Sindi buzzes with colorful songs and dance. Will starting school end all that?\\",\\"publisher\\":\\"Pratham Books\\",\\"license\\":\\"https://creativecommons.org/licenses/by/4.0/\\"}}",
+    }
+  }
+  type="application/ld+json"
+/>
+`;
