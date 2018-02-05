@@ -187,7 +187,7 @@ class BooksPage extends React.Component<Props> {
           </ToolbarDropdown>
         }
       >
-        <Head />
+        <Head imageUrl={featured.imageUrl} />
         <HeroCover
           pt={['15px', '40px']}
           pb={['42px', '54px']}
