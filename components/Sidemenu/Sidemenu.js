@@ -16,11 +16,13 @@ import {
   MdKeyboardArrowRight,
   MdKeyboardArrowLeft
 } from 'react-icons/lib/md';
+import Link from 'next/link';
+
 import config from '../../config';
 import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
 import Flex from '../Flex';
-import { Link } from '../../routes';
+import { Link as RouteLink } from '../../routes';
 import MenuItem from '../Menu/MenuItem';
 import Backdrop from '../Menu/Backdrop';
 import ModalCard from '../Menu/ModalCard';
@@ -28,6 +30,7 @@ import Container from '../Menu/Container';
 import IconButton from '../Menu/IconButton';
 import theme from '../../style/theme';
 import SrOnly from '../SrOnly';
+import { getAuthToken } from '../../lib/auth/token';
 
 type Props = {
   onCloseRequested(): void,
@@ -138,14 +141,14 @@ class Sidebar extends React.Component<Props, State> {
               align="center"
               style={{ borderBottom: `1px solid ${theme.colors.grayLight}` }}
             >
-              <Link route="books" params={{ lang: language.code }}>
+              <RouteLink route="books" params={{ lang: language.code }}>
                 <a>
                   <SrOnly>
                     <Trans>Home</Trans>
                   </SrOnly>
                   <MdHome />
                 </a>
-              </Link>
+              </RouteLink>
               <Trans>Menu</Trans>{' '}
               <IconButton
                 onClick={this.props.onCloseRequested}
@@ -192,7 +195,7 @@ class Sidebar extends React.Component<Props, State> {
                         <Trans>Language</Trans>
                       </Flex>
                       {this.state.languages.map(lang => (
-                        <Link
+                        <RouteLink
                           passHref
                           key={lang.code}
                           route="books"
@@ -204,7 +207,7 @@ class Sidebar extends React.Component<Props, State> {
                           >
                             {lang.name}
                           </MenuItem>
-                        </Link>
+                        </RouteLink>
                       ))}
                     </ModalCard>
                   )}
@@ -213,7 +216,7 @@ class Sidebar extends React.Component<Props, State> {
             </Downshift>
 
             {this.state.levels.map(level => (
-              <Link
+              <RouteLink
                 passHref
                 key={level}
                 route="level"
@@ -222,22 +225,31 @@ class Sidebar extends React.Component<Props, State> {
                 <MenuItem key={level} thinBorder>
                   <Trans>Level {level}</Trans>
                 </MenuItem>
-              </Link>
+              </RouteLink>
             ))}
-            <Link passHref route="new" params={{ lang: language.code }}>
+            <RouteLink passHref route="new" params={{ lang: language.code }}>
               <MenuItem thickBorder>
                 <Trans>New arrivals</Trans>
               </MenuItem>
-            </Link>
+            </RouteLink>
             <MenuItem href="https://home.digitallibrary.io/about/">
               <Trans>About Global Digital Library</Trans>
             </MenuItem>
             {config.TRANSLATION_PAGES && (
-              <Link passHref route="translations">
-                <MenuItem>
-                  <Trans>My translations</Trans>
-                </MenuItem>
-              </Link>
+              <React.Fragment>
+                <RouteLink passHref route="translations">
+                  <MenuItem>
+                    <Trans>My translations</Trans>
+                  </MenuItem>
+                </RouteLink>
+                {getAuthToken() != null && (
+                  <Link passHref href="/auth/sign-off">
+                    <MenuItem>
+                      <Trans>Log out</Trans>
+                    </MenuItem>
+                  </Link>
+                )}
+              </React.Fragment>
             )}
           </ModalCard>
         </Container>

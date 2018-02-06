@@ -7,8 +7,12 @@
  */
 
 import * as React from 'react';
-import Link from 'next/link';
+import { Trans } from '@lingui/react';
+import Router from 'next/router';
+
+import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
+import Box from '../components/Box';
 import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
@@ -24,16 +28,29 @@ const securePageHoc = Page =>
       );
     }
 
+    /**
+     * If we aren't authenticated, automatically redirect to the login page on mount
+     */
+    componentDidMount() {
+      if (!this.props.isAuthenticated) {
+        setRedirectUrl({
+          pathname: this.props.url.pathname,
+          asPath: this.props.url.asPath
+        });
+        Router.replace('/auth/sign-in');
+      }
+    }
+
     render() {
       if (!this.props.isAuthenticated) {
         return (
           <Layout>
             <Container pt={50}>
-              Please{' '}
-              <Link href="/auth/sign-in" prefetch>
-                <a>login</a>
-              </Link>{' '}
-              to continue
+              <Box textAlign="center">
+                <Trans>
+                  Login required. Please wait while we redirect you.
+                </Trans>
+              </Box>
             </Container>
           </Layout>
         );

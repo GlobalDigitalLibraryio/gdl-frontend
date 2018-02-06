@@ -14,20 +14,21 @@ import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Box from '../../components/Box';
 import { setAuthToken } from '../../lib/auth/token';
-import { parseHash } from '../../lib/auth';
+import { parseHash, getRedirectUrl } from '../../lib/auth';
 
 class Success extends React.Component<*> {
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.accessToken) {
       setAuthToken(authResult);
-      Router.push('/');
+
+      Router.push(getRedirectUrl() || '/');
     }
   }
 
   render() {
     return (
-      <Layout>
+      <Layout crumbs={[<Trans>Redirecting...</Trans>]}>
         <Container pt={50}>
           <Box textAlign="center">
             <Trans>Logged in, please wait while we redirect you!</Trans>
