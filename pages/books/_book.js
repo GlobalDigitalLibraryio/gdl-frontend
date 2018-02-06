@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 import { DateFormat, Trans } from '@lingui/react';
+import { MdTranslate } from 'react-icons/lib/md';
+
 import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -138,19 +140,6 @@ class BookPage extends React.Component<Props> {
                     <Trans>Download book</Trans>
                   </A>
                 </Box>
-                {config.TRANSLATION_PAGES && (
-                  <Box mt={[15, 20]}>
-                    <Link
-                      route="translate"
-                      passHref
-                      params={{ id: book.id, lang: book.language.code }}
-                    >
-                      <A>
-                        <Trans>Translate book</Trans>
-                      </A>
-                    </Link>
-                  </Box>
-                )}
               </HeroCard>
             </Flex>
           </Container>
@@ -191,6 +180,19 @@ class BookPage extends React.Component<Props> {
               )}
             </Flex>
           </Card>
+          {config.TRANSLATION_PAGES && (
+            <Box mt={[15, 20]} textAlign="center">
+              <Link
+                route="translate"
+                passHref
+                params={{ id: book.id, lang: book.language.code }}
+              >
+                <Button>
+                  <MdTranslate /> <Trans>Translate book</Trans>
+                </Button>
+              </Link>
+            </Box>
+          )}
           <H3>
             <Trans>Similar</Trans>
           </H3>
