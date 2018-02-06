@@ -17,6 +17,7 @@ function getConfig() {
       GLOBAL_VAR_NAME: globalVarName,
       STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,
+      BLOCK_SEARCH_INDEXING: true,
       clientAuth: {
         clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
         audience: 'gdl_system',
@@ -55,7 +56,8 @@ function getConfig() {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111771573-1',
       STATIC_PAGES_ONLY: true,
-      TRANSLATION_PAGES: false
+      TRANSLATION_PAGES: false,
+      BLOCK_SEARCH_INDEXING: false
     }
   };
 
