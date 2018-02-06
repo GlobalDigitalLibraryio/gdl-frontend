@@ -19,3 +19,16 @@ test('Sets global GDL environment variable, defaults to \'test\'', () => {
       .html()
   ).toEqual('<script>window.__GDL_ENVIRONMENT__ = \'test\';</script>');
 });
+
+test('Has the no robots meta tag', () => {
+  const tree = shallow(<Document />);
+  expect(
+    tree
+      .find('meta')
+      .filterWhere(
+        meta =>
+          meta.prop('name') === 'robots' && meta.prop('content') === 'noindex'
+      )
+      .exists()
+  ).toBeTruthy();
+});
