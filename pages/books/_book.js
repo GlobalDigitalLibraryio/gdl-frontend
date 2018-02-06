@@ -34,8 +34,6 @@ import BookList from '../../components/BookList';
 import media from '../../style/media';
 import { flexColumnCentered } from '../../style/flex';
 
-const iconsPNG = require('../../static/about/icons.png');
-
 type Props = {
   book: RemoteData<Book>,
   similar: RemoteData<{
@@ -62,11 +60,6 @@ const CoverWrap = styled('div')`
 
 const HeroCard = styled(Card)`
   ${flexColumnCentered};
-`;
-
-const Hero = styled('div')`
-  background-image: url('${iconsPNG}');
-  background-size: contain;
 `;
 
 class BookPage extends React.Component<Props> {
@@ -109,41 +102,39 @@ class BookPage extends React.Component<Props> {
           imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
           isBookType
         />
-        <Hero>
-          <Container py={[15, 20]}>
-            <Flex mt={[120, 0]} style={{ position: 'relative' }}>
-              <CoverWrap>
-                <BookCover book={book} />
-              </CoverWrap>
-              <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
-                <H1 fontSize={[28, 38]}>{book.title}</H1>
-                <P fontSize={14}>
-                  <Trans>
-                    from <span>{book.publisher.name}</span>
-                  </Trans>
-                </P>
-                <P fontSize={[14, 16]} lineHeight={[22, 26]}>
-                  {book.description}
-                </P>
-                <Link
-                  route="read"
-                  passHref
-                  params={{ id: book.id, lang: book.language.code }}
-                  prefetch
-                >
-                  <Button color="green">
-                    <Trans>Read Book</Trans>
-                  </Button>
-                </Link>
-                <Box mt={[15, 20]}>
-                  <A href={book.downloads.epub}>
-                    <Trans>Download book</Trans>
-                  </A>
-                </Box>
-              </HeroCard>
-            </Flex>
-          </Container>
-        </Hero>
+        <Container py={[15, 20]}>
+          <Flex mt={[120, 0]} style={{ position: 'relative' }}>
+            <CoverWrap>
+              <BookCover book={book} />
+            </CoverWrap>
+            <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
+              <H1 fontSize={[28, 38]}>{book.title}</H1>
+              <P fontSize={14}>
+                <Trans>
+                  from <span>{book.publisher.name}</span>
+                </Trans>
+              </P>
+              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+                {book.description}
+              </P>
+              <Link
+                route="read"
+                passHref
+                params={{ id: book.id, lang: book.language.code }}
+                prefetch
+              >
+                <Button color="green">
+                  <Trans>Read Book</Trans>
+                </Button>
+              </Link>
+              <Box mt={[15, 20]}>
+                <A href={book.downloads.epub}>
+                  <Trans>Download book</Trans>
+                </A>
+              </Box>
+            </HeroCard>
+          </Flex>
+        </Container>
         <Container pb={[15, 20]}>
           <Card p={[15, 20]}>
             <Flex display={['block', 'flex']}>
