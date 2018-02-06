@@ -245,7 +245,7 @@ class Sidebar extends React.Component<Props, State> {
                 {getAuthToken() != null && (
                   <Link passHref href="/auth/sign-off">
                     <MenuItem>
-                      <Trans>Sign out</Trans>
+                      <Trans>Log out</Trans>
                     </MenuItem>
                   </Link>
                 )}

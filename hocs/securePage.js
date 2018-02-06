@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import Link from 'next/link';
+import Router from 'next/router';
 
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
@@ -16,15 +16,6 @@ import Box from '../components/Box';
 import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
-
-/**
- * The trans component doesn't handle nested chilren very well, so by extracting to own component, we can safely use link inside <Trans />
- */
-const TransLink = ({ children, ...props }) => (
-  <Link {...props}>
-    <a>{children}</a>
-  </Link>
-);
 
 /**
  * A HoC that ensures users are authenticated before displaying content
@@ -37,25 +28,27 @@ const securePageHoc = Page =>
       );
     }
 
+    /**
+     * If we aren't authenticated, automatically redirect to the login page on mount
+     */
     componentDidMount() {
-      setRedirectUrl({
-        pathname: this.props.url.pathname,
-        asPath: this.props.url.asPath
-      });
+      if (!this.props.isAuthenticated) {
+        setRedirectUrl({
+          pathname: this.props.url.pathname,
+          asPath: this.props.url.asPath
+        });
+        Router.replace('/auth/sign-in');
+      }
     }
 
     render() {
       if (!this.props.isAuthenticated) {
         return (
-          <Layout crumbs={[<Trans>Login required</Trans>]}>
+          <Layout>
             <Container pt={50}>
               <Box textAlign="center">
                 <Trans>
-                  Please{' '}
-                  <TransLink href="/auth/sign-in" prefetch>
-                    login
-                  </TransLink>{' '}
-                  to continue.
+                  Login required. Please wait while we redirect you.
                 </Trans>
               </Box>
             </Container>

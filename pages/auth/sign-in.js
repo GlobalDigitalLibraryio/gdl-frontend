@@ -7,7 +7,10 @@
  */
 
 import * as React from 'react';
+import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
+import { FaGoogle, FaFacebook } from 'react-icons/lib/fa';
+
 import type { I18n } from '../../types';
 import Box from '../../components/Box';
 import defaultPage from '../../hocs/defaultPage';
@@ -25,30 +28,41 @@ type Props = {
   i18n: I18n
 };
 
+const EqualWidthButtonsWrapper = styled('div')`
+  display: inline-block;
+  button {
+    width: 100%;
+    display: flex;
+    margin-top: 30px;
+  }
+`;
+
 const LoginPage = ({ i18n }: Props) => (
   <Layout crumbs={[<Trans>Login</Trans>]}>
     <Head title={i18n.t`Login`} />
     <Container pt={50}>
       <Box textAlign="center">
         <H1>
-          <Trans>Log in using</Trans>
+          <Trans>Log in to continue</Trans>
         </H1>
-        <p>
+        <EqualWidthButtonsWrapper>
           <Button
             customColor={googleColor}
             onClick={() => loginSocialMedia('google-oauth2')}
           >
-            Google
+            <span>
+              <FaGoogle /> <Trans>log in using Google</Trans>
+            </span>
           </Button>
-        </p>
-        <p>
           <Button
             customColor={facebookColor}
             onClick={() => loginSocialMedia('facebook')}
           >
-            Facebook
+            <span>
+              <FaFacebook /> <Trans>log in using Facebook</Trans>
+            </span>
           </Button>
-        </p>
+        </EqualWidthButtonsWrapper>
       </Box>
     </Container>
   </Layout>
