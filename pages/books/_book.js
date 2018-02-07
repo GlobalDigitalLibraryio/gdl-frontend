@@ -180,22 +180,23 @@ class BookPage extends React.Component<Props> {
                 </Box>
               )}
             </Box>
-            {config.TRANSLATION_PAGES && (
-              <React.Fragment>
-                <Hr />
-                <Box my={[15, 20]} textAlign="center">
-                  <Link
-                    route="translate"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                  >
-                    <Button>
-                      <MdTranslate /> <Trans>Translate book</Trans>
-                    </Button>
-                  </Link>
-                </Box>
-              </React.Fragment>
-            )}
+            {config.TRANSLATION_PAGES &&
+              book.supportsTranslation && (
+                <React.Fragment>
+                  <Hr />
+                  <Box my={[15, 20]} textAlign="center">
+                    <Link
+                      route="translate"
+                      passHref
+                      params={{ id: book.id, lang: book.language.code }}
+                    >
+                      <Button>
+                        <MdTranslate /> <Trans>Translate book</Trans>
+                      </Button>
+                    </Link>
+                  </Box>
+                </React.Fragment>
+              )}
           </Box>
           <Hr />
           <H3>

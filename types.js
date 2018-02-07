@@ -59,6 +59,7 @@ export type Book = {|
   +publisher: Publisher,
   +license: License,
   +readingLevel: string,
+  +supportsTranslation: boolean,
   +categories: Array<Category>,
   +contributors: Array<Contributor>,
   +language: Language,
