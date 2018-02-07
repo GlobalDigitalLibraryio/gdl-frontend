@@ -32,6 +32,7 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
 import media from '../../style/media';
+import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 
 type Props = {
@@ -55,6 +56,17 @@ const CoverWrap = styled('div')`
     height: 365px;
     flex: 0 0 260px;
     margin-right: 20px;
+  `};
+`;
+
+const Hr = styled('hr')`
+  height: 1px;
+  background-color: ${theme.colors.grayLight};
+  border-style: none;
+  margin: 0;
+  ${media.mobile`
+    margin-left: -15px;
+    margin-right: -15px;
   `};
 `;
 
@@ -102,7 +114,7 @@ class BookPage extends React.Component<Props> {
           imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
           isBookType
         />
-        <Container py={[15, 20]}>
+        <Container pt={[15, 20]}>
           <Flex mt={[120, 0]} style={{ position: 'relative' }}>
             <CoverWrap>
               <BookCover book={book} />
@@ -128,7 +140,7 @@ class BookPage extends React.Component<Props> {
                 </Button>
               </Link>
               <Box mt={[15, 20]}>
-                <A href={book.downloads.epub}>
+                <A isBold isUnderlined href={book.downloads.epub}>
                   <Trans>Download book</Trans>
                 </A>
               </Box>
@@ -136,54 +148,56 @@ class BookPage extends React.Component<Props> {
           </Flex>
         </Container>
         <Container pb={[15, 20]}>
-          <Card p={[15, 20]}>
-            <Flex display={['block', 'flex']}>
+          <Box ml={[0, 'auto']} w={['auto', 438]}>
+            <Box p={[15, 20]} fontSize={[14, 16]}>
               <Ribbon level={book.readingLevel} />
-              <Box flex="1 1 50%" mr={[0, '5%']}>
-                {book.datePublished && (
-                  <Box mb={10}>
-                    <H6>
-                      <Trans>Published</Trans>
-                    </H6>
-                    <DateFormat value={new Date(book.datePublished)} />
-                  </Box>
-                )}
-                <Box mb={10}>
+              {book.datePublished && (
+                <Box mb={15}>
                   <H6>
-                    <Trans>Authors</Trans>
+                    <Trans>Published</Trans>
                   </H6>
-                  {contributors}
+                  <DateFormat value={new Date(book.datePublished)} />
                 </Box>
+              )}
+              <Box mb={15}>
+                <H6>
+                  <Trans>Authors</Trans>
+                </H6>
+                {contributors}
               </Box>
-              <Box flex="1 1 50%">
+              <Box>
                 <H6>
                   <Trans>License</Trans>
                 </H6>
-                <a href={book.license.url}>{book.license.description}</a>
+                <A href={book.license.url}>{book.license.description}</A>
               </Box>
               {book.categories.length > 0 && (
-                <Box mb={10}>
+                <Box mb={15}>
                   <H6>
                     <Trans>categories</Trans>
                   </H6>,
                   {categories},
                 </Box>
               )}
-            </Flex>
-          </Card>
-          {config.TRANSLATION_PAGES && (
-            <Box mt={[15, 20]} textAlign="center">
-              <Link
-                route="translate"
-                passHref
-                params={{ id: book.id, lang: book.language.code }}
-              >
-                <Button>
-                  <MdTranslate /> <Trans>Translate book</Trans>
-                </Button>
-              </Link>
             </Box>
-          )}
+            {config.TRANSLATION_PAGES && (
+              <React.Fragment>
+                <Hr />
+                <Box my={[15, 20]} textAlign="center">
+                  <Link
+                    route="translate"
+                    passHref
+                    params={{ id: book.id, lang: book.language.code }}
+                  >
+                    <Button>
+                      <MdTranslate /> <Trans>Translate book</Trans>
+                    </Button>
+                  </Link>
+                </Box>
+              </React.Fragment>
+            )}
+          </Box>
+          <Hr />
           <H3>
             <Trans>Similar</Trans>
           </H3>

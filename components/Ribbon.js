@@ -24,8 +24,8 @@ const Ribbon = styled('div')`
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  background-color: ${theme.colors.greens.green};
-  color: ${theme.colors.white};
+  background-color: ${theme.colors.white};
+  color: ${theme.colors.dark};
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   padding-left: 20px;
   padding-right: 10px;
@@ -34,15 +34,14 @@ const Ribbon = styled('div')`
   text-transform: uppercase;
   position: relative;
   height: ${HEIGHT};
-  margin-right: -15px;
+  float: right;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   ${media.mobile`
-    float: right;
+    position: absolute;
+    right: 0;
   `} ${media.tablet`
-    display: flex;
     margin-right: -20px;
-    order: 3;
-  `};
-  &:before {
+  `} &:before {
     content: '';
     display: block;
     position: absolute;
@@ -53,8 +52,7 @@ const Ribbon = styled('div')`
       pointingDirection: 'right',
       width: '15px',
       height: HEIGHT,
-      foregroundColor: theme.colors.white,
-      backgroundColor: theme.colors.greens.green
+      foregroundColor: theme.colors.grayLighter
     })};
   }
 `;

@@ -14,10 +14,10 @@ const H6 = styled.h6`
   margin-bottom: 0;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 16px;
   ${media.tablet`
-    font-size: 12px;
+    font-size: 14px;
     line-height: 18px;
   `};
 `;
