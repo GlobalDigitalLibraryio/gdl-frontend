@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 import { DateFormat, Trans } from '@lingui/react';
+import { MdTranslate } from 'react-icons/lib/md';
+
 import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -30,9 +32,8 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
 import media from '../../style/media';
+import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
-
-const iconsPNG = require('../../static/about/icons.png');
 
 type Props = {
   book: RemoteData<Book>,
@@ -58,13 +59,19 @@ const CoverWrap = styled('div')`
   `};
 `;
 
-const HeroCard = styled(Card)`
-  ${flexColumnCentered};
+const Hr = styled('hr')`
+  height: 1px;
+  background-color: ${theme.colors.grayLight};
+  border-style: none;
+  margin: 0;
+  ${media.mobile`
+    margin-left: -15px;
+    margin-right: -15px;
+  `};
 `;
 
-const Hero = styled('div')`
-  background-image: url('${iconsPNG}');
-  background-size: contain;
+const HeroCard = styled(Card)`
+  ${flexColumnCentered};
 `;
 
 class BookPage extends React.Component<Props> {
@@ -107,90 +114,90 @@ class BookPage extends React.Component<Props> {
           imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
           isBookType
         />
-        <Hero>
-          <Container py={[15, 20]}>
-            <Flex mt={[120, 0]} style={{ position: 'relative' }}>
-              <CoverWrap>
-                <BookCover book={book} />
-              </CoverWrap>
-              <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
-                <H1 fontSize={[28, 38]}>{book.title}</H1>
-                <P fontSize={14}>
-                  <Trans>
-                    from <span>{book.publisher.name}</span>
-                  </Trans>
-                </P>
-                <P fontSize={[14, 16]} lineHeight={[22, 26]}>
-                  {book.description}
-                </P>
-                <Link
-                  route="read"
-                  passHref
-                  params={{ id: book.id, lang: book.language.code }}
-                  prefetch
-                >
-                  <Button color="green">
-                    <Trans>Read Book</Trans>
-                  </Button>
-                </Link>
-                <Box mt={[15, 20]}>
-                  <A href={book.downloads.epub}>
-                    <Trans>Download book</Trans>
-                  </A>
-                </Box>
-                {config.TRANSLATION_PAGES && (
-                  <Box mt={[15, 20]}>
-                    <Link
-                      route="translate"
-                      passHref
-                      params={{ id: book.id, lang: book.language.code }}
-                    >
-                      <A>
-                        <Trans>Translate book</Trans>
-                      </A>
-                    </Link>
-                  </Box>
-                )}
-              </HeroCard>
-            </Flex>
-          </Container>
-        </Hero>
-        <Container pb={[15, 20]}>
-          <Card p={[15, 20]}>
-            <Flex display={['block', 'flex']}>
-              <Ribbon level={book.readingLevel} />
-              <Box flex="1 1 50%" mr={[0, '5%']}>
-                {book.datePublished && (
-                  <Box mb={10}>
-                    <H6>
-                      <Trans>Published</Trans>
-                    </H6>
-                    <DateFormat value={new Date(book.datePublished)} />
-                  </Box>
-                )}
-                <Box mb={10}>
-                  <H6>
-                    <Trans>Authors</Trans>
-                  </H6>
-                  {contributors}
-                </Box>
+        <Container pt={[15, 20]}>
+          <Flex mt={[120, 0]} style={{ position: 'relative' }}>
+            <CoverWrap>
+              <BookCover book={book} />
+            </CoverWrap>
+            <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
+              <H1 fontSize={[28, 38]}>{book.title}</H1>
+              <P fontSize={14}>
+                <Trans>
+                  from <span>{book.publisher.name}</span>
+                </Trans>
+              </P>
+              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+                {book.description}
+              </P>
+              <Link
+                route="read"
+                passHref
+                params={{ id: book.id, lang: book.language.code }}
+                prefetch
+              >
+                <Button color="green">
+                  <Trans>Read Book</Trans>
+                </Button>
+              </Link>
+              <Box mt={[15, 20]}>
+                <A isBold isUnderlined href={book.downloads.epub}>
+                  <Trans>Download book</Trans>
+                </A>
               </Box>
-              <Box flex="1 1 50%">
+            </HeroCard>
+          </Flex>
+        </Container>
+        <Container pb={[15, 20]}>
+          <Box ml={[0, 'auto']} w={['auto', 438]}>
+            <Box p={[15, 20]} fontSize={[14, 16]}>
+              <Ribbon level={book.readingLevel} />
+              {book.datePublished && (
+                <Box mb={15}>
+                  <H6>
+                    <Trans>Published</Trans>
+                  </H6>
+                  <DateFormat value={new Date(book.datePublished)} />
+                </Box>
+              )}
+              <Box mb={15}>
+                <H6>
+                  <Trans>Authors</Trans>
+                </H6>
+                {contributors}
+              </Box>
+              <Box>
                 <H6>
                   <Trans>License</Trans>
                 </H6>
-                <a href={book.license.url}>{book.license.description}</a>
+                <A href={book.license.url}>{book.license.description}</A>
               </Box>
               {book.categories.length > 0 && (
-                <Box mb={10}>
+                <Box mb={15}>
                   <H6>
                     <Trans>categories</Trans>
                   </H6>,
                   {categories},
                 </Box>
               )}
-            </Flex>
-          </Card>
+            </Box>
+            {config.TRANSLATION_PAGES && (
+              <React.Fragment>
+                <Hr />
+                <Box my={[15, 20]} textAlign="center">
+                  <Link
+                    route="translate"
+                    passHref
+                    params={{ id: book.id, lang: book.language.code }}
+                  >
+                    <Button>
+                      <MdTranslate /> <Trans>Translate book</Trans>
+                    </Button>
+                  </Link>
+                </Box>
+              </React.Fragment>
+            )}
+          </Box>
+          <Hr />
           <H3>
             <Trans>Similar</Trans>
           </H3>

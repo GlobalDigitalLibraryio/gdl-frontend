@@ -75,6 +75,7 @@ const ImageWrapper = styled('div')`
 
 type Props = {
   alt?: ?string,
+  className?: string,
   src: string,
   h?: Array<string | number>,
   w?: string
@@ -131,9 +132,9 @@ export default class Image extends React.Component<Props, State> {
   };
 
   render() {
-    const { src, alt, h, w } = this.props;
+    const { src, className, alt, h, w } = this.props;
     return (
-      <ImageWrapper h={h} w={w} innerRef={this.handleRef}>
+      <ImageWrapper className={className} h={h} w={w} innerRef={this.handleRef}>
         {this.state.isVisible && (
           <Img
             src={src}

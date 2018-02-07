@@ -13,6 +13,7 @@ type Props = {
   className?: string,
   isBold?: boolean,
   isUppercased?: boolean,
+  isUnderlined?: boolean,
   onClick?: (
     event: SyntheticEvent<HTMLButtonElement> | SyntheticEvent<HTMLAnchorElement>
   ) => any
@@ -39,13 +40,27 @@ const boldStyle = css`
   font-weight: 500;
 `;
 
+const underlineStyle = css`
+  text-decoration: underline;
+`;
+
 /* eslint-disable jsx-a11y/anchor-has-content */
-export default function({ isBold, isUppercased, className, ...props }: Props) {
+export default function({
+  isBold,
+  isUppercased,
+  isUnderlined,
+  className,
+  ...props
+}: Props) {
   return (
     <a
       className={cx(
         style,
-        { [uppcasedStyle]: isUppercased, [boldStyle]: isBold },
+        {
+          [uppcasedStyle]: isUppercased,
+          [boldStyle]: isBold,
+          [underlineStyle]: isUnderlined
+        },
         className
       )}
       {...props}
