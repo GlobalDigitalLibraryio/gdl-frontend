@@ -16,7 +16,7 @@ import Reader from '../Reader';
 // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
 const mockedRouter = {
   push: () => Promise.resolve(),
-  replace: () => Promise.resolve(),
+  replace: () => Promise.resolve()
 };
 Router.router = mockedRouter;
 
@@ -29,11 +29,11 @@ const book: Book = {
     id: 1,
     name: 'cc by 4.0',
     description: 'Attribution 4.0 International (CC BY 4.0)',
-    url: 'https://creativecommons.org/licenses/by/4.0/',
+    url: 'https://creativecommons.org/licenses/by/4.0/'
   },
   language: {
     code: 'eng',
-    name: 'English',
+    name: 'English'
   },
   categories: [],
   contributors: [],
@@ -41,24 +41,25 @@ const book: Book = {
   availableLanguages: [],
   publisher: {
     id: 1,
-    name: 'Pratham Books',
+    name: 'Pratham Books'
   },
+  supportsTranslation: false,
   coverPhoto: {
     large:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg',
     small:
-      'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200',
+      'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200'
   },
   chapters: [
     { url: 'http://www.example.no/chapter', seqNo: 1 },
     { url: 'http://www.example.no/chapter', seqNo: 2 },
     { url: 'http://www.example.no/chapter', seqNo: 3 },
-    { url: 'http://www.example.no/chapter', seqNo: 4 },
+    { url: 'http://www.example.no/chapter', seqNo: 4 }
   ],
   downloads: {
     epub: '',
-    pdf: '',
-  },
+    pdf: ''
+  }
 };
 
 beforeAll(() => {

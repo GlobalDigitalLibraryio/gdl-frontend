@@ -46,9 +46,22 @@ export type ChapterSummary = {
 // Future proofing. In the future we might want to define success and failure cases using ADTs
 export type RemoteData<T> = T;
 
+export type CoverPhoto = {
+  large: string,
+  small: string
+};
+
 export type Translation = {
-  bookId: number,
-  crowdinUrl: string
+  translatedFrom: Language,
+  translatedTo: Language,
+  id: number,
+  crowdinUrl: string,
+  synchronizeUrl: string,
+  title: string,
+  publisher: {
+    name: string
+  },
+  coverPhoto?: CoverPhoto
 };
 
 export type Book = {|
@@ -59,6 +72,7 @@ export type Book = {|
   +publisher: Publisher,
   +license: License,
   +readingLevel: string,
+  +supportsTranslation: boolean,
   +categories: Array<Category>,
   +contributors: Array<Contributor>,
   +language: Language,
@@ -68,10 +82,7 @@ export type Book = {|
     epub: string,
     pdf: string
   },
-  +coverPhoto?: {
-    large: string,
-    small: string
-  }
+  +coverPhoto?: CoverPhoto
 |};
 
 export type FeaturedContent = {|

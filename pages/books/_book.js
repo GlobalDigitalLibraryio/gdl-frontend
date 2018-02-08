@@ -117,7 +117,7 @@ class BookPage extends React.Component<Props> {
         <Container pt={[15, 20]}>
           <Flex mt={[120, 0]} style={{ position: 'relative' }}>
             <CoverWrap>
-              <BookCover book={book} />
+              <BookCover coverPhoto={book.coverPhoto} />
             </CoverWrap>
             <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
               <H1 fontSize={[28, 38]}>{book.title}</H1>
@@ -180,22 +180,23 @@ class BookPage extends React.Component<Props> {
                 </Box>
               )}
             </Box>
-            {config.TRANSLATION_PAGES && (
-              <React.Fragment>
-                <Hr />
-                <Box my={[15, 20]} textAlign="center">
-                  <Link
-                    route="translate"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                  >
-                    <Button>
-                      <MdTranslate /> <Trans>Translate book</Trans>
-                    </Button>
-                  </Link>
-                </Box>
-              </React.Fragment>
-            )}
+            {config.TRANSLATION_PAGES &&
+              book.supportsTranslation && (
+                <React.Fragment>
+                  <Hr />
+                  <Box my={[15, 20]} textAlign="center">
+                    <Link
+                      route="translate"
+                      passHref
+                      params={{ id: book.id, lang: book.language.code }}
+                    >
+                      <Button>
+                        <MdTranslate /> <Trans>Translate book</Trans>
+                      </Button>
+                    </Link>
+                  </Box>
+                </React.Fragment>
+              )}
           </Box>
           <Hr />
           <H3>

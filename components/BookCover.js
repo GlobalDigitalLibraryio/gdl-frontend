@@ -9,11 +9,11 @@ import * as React from 'react';
 import { css } from 'react-emotion';
 
 import CoverImage from './CoverImage';
-import type { Book } from '../types';
+import type { CoverPhoto } from '../types';
 import theme from '../style/theme';
 
 type Props = {
-  book: Book
+  coverPhoto: ?CoverPhoto
 };
 
 const style = css`
@@ -21,10 +21,10 @@ const style = css`
   box-shadow: ${theme.boxShadows.small};
 `;
 
-const BookCover = ({ book }: Props) => (
+const BookCover = ({ coverPhoto }: Props) => (
   <CoverImage
     className={style}
-    src={book.coverPhoto && book.coverPhoto.large}
+    src={coverPhoto && coverPhoto.large}
     h="100%"
     w="100%"
   />
