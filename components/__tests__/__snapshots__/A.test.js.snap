@@ -5,6 +5,7 @@ exports[`Is bold anchor 1`] = `
   font-size: inherit;
   border: none;
   background: transparent;
+  color: #0085dd;
   font-weight: 500;
 }
 
@@ -14,6 +15,7 @@ exports[`Is bold anchor 1`] = `
 
 <a
   className="emotion-0"
+  href="http://test.com"
 >
   Link
 </a>
@@ -24,6 +26,7 @@ exports[`Is uppercased anchor 1`] = `
   font-size: inherit;
   border: none;
   background: transparent;
+  color: #0085dd;
   text-transform: uppercase;
 }
 
@@ -33,6 +36,7 @@ exports[`Is uppercased anchor 1`] = `
 
 <a
   className="emotion-0"
+  href="http://test.com"
 >
   Link
 </a>

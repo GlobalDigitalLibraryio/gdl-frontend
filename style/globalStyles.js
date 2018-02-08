@@ -47,6 +47,7 @@ export default css`
       font-weight: bold;
     }
 
+    a,
     button,
     [role='button'] {
       cursor: pointer;

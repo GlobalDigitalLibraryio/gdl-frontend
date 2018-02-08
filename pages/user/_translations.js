@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { MdArrowForward } from 'react-icons/lib/md';
-import { fetchMyTranslations } from '../../fetch';
+import fetchWithToken, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, RemoteData, I18n } from '../../types';
 import securePage from '../../hocs/securePage';
@@ -34,6 +34,81 @@ type State = {
   translations: RemoteData<Array<Translation>>
 };
 
+/* eslint-disable react/no-multi-comp */
+
+class TranslationCard extends React.Component<
+  { translation: Translation },
+  { isLoading: boolean, isSynchronized: boolean }
+> {
+  state = {
+    isLoading: false,
+    isSynchronized: false
+  };
+
+  handleSynchronize = async event => {
+    event.preventDefault();
+    this.setState({ isLoading: true });
+    await fetchWithToken(this.props.translation.synchronizeUrl)();
+    this.setState({ isLoading: false, isSynchronized: true });
+  };
+
+  render() {
+    const { translation } = this.props;
+    return (
+      <Card key={translation.id} p={[15, 20]} mt={20}>
+        <Flex>
+          <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
+            <Link
+              route="book"
+              params={{
+                lang: translation.translatedTo.code,
+                id: translation.id
+              }}
+            >
+              <a>
+                <BookCover coverPhoto={translation.coverPhoto} />
+              </a>
+            </Link>
+          </Box>
+          <Box flex="1">
+            <H4>{translation.title}</H4>
+            <P color={theme.colors.grayDark} style={{ marginTop: 0 }}>
+              <Trans>from {translation.publisher.name}</Trans>
+            </P>
+            <Box>
+              {/* book.translatedFrom.name isn't implmented yet */}
+              {translation.translatedFrom.name}{' '}
+              <MdArrowForward color={theme.colors.oranges.orange} />{' '}
+              <strong>{translation.translatedTo.name}</strong>
+            </Box>
+            <div style={{ float: 'right' }}>
+              <A
+                isUppercased
+                isBold
+                onClick={this.handleSynchronize}
+                isLoading={this.state.isLoading}
+                disabled={this.state.isSynchronized}
+              >
+                <Trans>Sync</Trans>
+              </A>
+              <A
+                isUppercased
+                isBold
+                style={{ marginLeft: '30px' }}
+                href={translation.crowdinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Trans>Edit</Trans>
+              </A>
+            </div>
+          </Box>
+        </Flex>
+      </Card>
+    );
+  }
+}
+
 class MyTranslationsPage extends React.Component<Props, State> {
   state = {
     translations: []
@@ -42,7 +117,6 @@ class MyTranslationsPage extends React.Component<Props, State> {
   async componentDidMount() {
     const translations = await fetchMyTranslations()();
     /* eslint-disable react/no-did-mount-set-state */
-    // $FlowFixMe Not sure why Flow complains here....
     this.setState({ translations });
   }
 
@@ -58,50 +132,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
             <Trans>My translations</Trans>
           </H1>
           {translations.map(translation => (
-            <Card key={translation.id} p={[15, 20]} mt={20}>
-              <Flex>
-                <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
-                  <Link
-                    route="book"
-                    params={{
-                      lang: translation.translatedTo.code,
-                      id: translation.id
-                    }}
-                  >
-                    <a>
-                      <BookCover coverPhoto={translation.coverPhoto} />
-                    </a>
-                  </Link>
-                </Box>
-                <Box flex="1">
-                  <H4>{translation.title}</H4>
-                  <P color={theme.colors.grayDark} style={{ marginTop: 0 }}>
-                    <Trans>from {translation.publisher.name}</Trans>
-                  </P>
-                  <Box>
-                    {/* book.translatedFrom.name isn't implmented yet */}
-                    {translation.translatedFrom.name}{' '}
-                    <MdArrowForward color={theme.colors.oranges.orange} />{' '}
-                    <strong>{translation.translatedTo.name}</strong>
-                  </Box>
-                  <div style={{ float: 'right' }}>
-                    <A isUppercased isBold href={translation.synchronizeUrl}>
-                      <Trans>Sync</Trans>
-                    </A>
-                    <A
-                      isUppercased
-                      isBold
-                      style={{ marginLeft: '30px' }}
-                      href={translation.crowdinUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Trans>Edit</Trans>
-                    </A>
-                  </div>
-                </Box>
-              </Flex>
-            </Card>
+            <TranslationCard key={translation.id} translation={translation} />
           ))}
         </Container>
       </Layout>

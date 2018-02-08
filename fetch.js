@@ -46,7 +46,7 @@ export async function fetchAnonToken(): Promise<{
 * Wrap fetch with some error handling and automatic json parsing
 * Also ensures we have a valid access token.
 */
-function fetchWithToken(
+export default function fetchWithToken(
   url: string,
   options: ?{
     method: 'POST' | 'GET',
@@ -96,8 +96,6 @@ function fetchWithToken(
     }
   };
 }
-
-export default fetchWithToken;
 
 // Default page size
 const PAGE_SIZE = 5;

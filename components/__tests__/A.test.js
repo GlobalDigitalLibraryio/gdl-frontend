@@ -16,13 +16,21 @@ import A from '../A';
 expect.addSnapshotSerializer(createSerializer(emotion));
 
 test('Is uppercased anchor', () => {
-  const tree = shallow(<A isUppercased>Link</A>);
+  const tree = shallow(
+    <A isUppercased href="http://test.com">
+      Link
+    </A>
+  );
 
   expect(toJson(tree)).toMatchSnapshot();
 });
 
 test('Is bold anchor', () => {
-  const tree = shallow(<A isBold>Link</A>);
+  const tree = shallow(
+    <A isBold href="http://test.com">
+      Link
+    </A>
+  );
 
   expect(toJson(tree)).toMatchSnapshot();
 });
