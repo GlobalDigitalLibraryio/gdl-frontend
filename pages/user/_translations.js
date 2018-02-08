@@ -76,7 +76,6 @@ class TranslationCard extends React.Component<
               <Trans>from {translation.publisher.name}</Trans>
             </P>
             <Box>
-              {/* book.translatedFrom.name isn't implmented yet */}
               {translation.translatedFrom.name}{' '}
               <MdArrowForward color={theme.colors.oranges.orange} />{' '}
               <strong>{translation.translatedTo.name}</strong>

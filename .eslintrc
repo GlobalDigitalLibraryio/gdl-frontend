@@ -50,8 +50,7 @@
       {
         "components": ["Link", "A"],
         "specialLink": ["passHref"],
-        // Disable noHref, because the next.js Link component transparently passes href
-        "aspects": [/*"noHref",*/ "invalidHref" /*"preferButton"*/]
+        "aspects": ["invalidHref"]
       }
     ],
     "prefer-destructuring": [
