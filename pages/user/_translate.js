@@ -133,7 +133,7 @@ class TranslatePage extends React.Component<Props, State> {
                   params={{ lang: book.language.code, id: book.id }}
                 >
                   <a>
-                    <BookCover book={book} p={5} />
+                    <BookCover coverPhoto={book.coverPhoto} />
                   </a>
                 </Link>
               </Box>

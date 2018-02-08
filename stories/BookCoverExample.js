@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -28,11 +28,11 @@ const book: Book = {
     id: 1,
     name: 'cc by 4.0',
     description: 'Attribution 4.0 International (CC BY 4.0)',
-    url: 'https://creativecommons.org/licenses/by/4.0/',
+    url: 'https://creativecommons.org/licenses/by/4.0/'
   },
   language: {
     code: 'eng',
-    name: 'English',
+    name: 'English'
   },
   categories: [],
   contributors: [],
@@ -40,22 +40,23 @@ const book: Book = {
   availableLanguages: [],
   publisher: {
     id: 1,
-    name: 'Pratham Books',
+    name: 'Pratham Books'
   },
   coverPhoto: {
     large:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg',
     small:
-      'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200',
+      'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200'
   },
+  supportsTranslation: false,
   chapters: [],
   downloads: {
     epub: '',
-    pdf: '',
-  },
+    pdf: ''
+  }
 };
 
 storiesOf('BookCover', module)
   .addDecorator(story => <Container mt={50}>{story()}</Container>)
   .add('Book card cover', () => <BookCardCover book={book} />)
-  .add('Book cover', () => <BookCover book={book} />);
+  .add('Book cover', () => <BookCover coverPhoto={book.coverPhoto} />);

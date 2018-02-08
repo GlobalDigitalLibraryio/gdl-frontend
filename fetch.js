@@ -181,7 +181,7 @@ export function fetchSupportedLanguages(): (
 
 export function fetchMyTranslations(): (
   acccessToken: ?string
-) => Promise<RemoteData<Array<Book>>> {
+) => Promise<RemoteData<Array<Translation>>> {
   return accessToken => fetchWithToken(`${bookApiUrl}/books/mine`)(accessToken);
 }
 
