@@ -66,7 +66,10 @@ class TranslationCard extends React.Component<
               }}
             >
               <a>
-                <BookCover coverPhoto={translation.coverPhoto} />
+                <BookCover
+                  width={[75, 120]}
+                  coverPhoto={translation.coverPhoto}
+                />
               </a>
             </Link>
           </Box>

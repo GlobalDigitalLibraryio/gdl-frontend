@@ -77,8 +77,11 @@ type Props = {
   alt?: ?string,
   className?: string,
   src: string,
+  srcSet?: string,
   h?: Array<string | number>,
-  w?: string
+  w?: string,
+  // If source elements are provided, the img will we wrapped in a picture element
+  children?: React.ChildrenArray<React.Element<'source'>>
 };
 
 type State = { isVisible: boolean, imgLoaded: boolean, IOSupported: boolean };
@@ -131,22 +134,36 @@ export default class Image extends React.Component<Props, State> {
     }
   };
 
+  renderImg() {
+    const { src, srcSet, alt } = this.props;
+    return (
+      <Img
+        src={src}
+        srcSet={srcSet}
+        alt={alt}
+        style={{
+          opacity: this.state.imgLoaded ? 1 : 0
+        }}
+        onLoad={() =>
+          this.state.IOSupported && this.setState({ imgLoaded: true })
+        }
+      />
+    );
+  }
+
   render() {
-    const { src, className, alt, h, w } = this.props;
+    const { className, h, w } = this.props;
     return (
       <ImageWrapper className={className} h={h} w={w} innerRef={this.handleRef}>
-        {this.state.isVisible && (
-          <Img
-            src={src}
-            alt={alt}
-            style={{
-              opacity: this.state.imgLoaded ? 1 : 0
-            }}
-            onLoad={() =>
-              this.state.IOSupported && this.setState({ imgLoaded: true })
-            }
-          />
-        )}
+        {this.state.isVisible &&
+          (this.props.children ? (
+            <picture>
+              {this.props.children}
+              {this.renderImg()}
+            </picture>
+          ) : (
+            this.renderImg()
+          ))}
       </ImageWrapper>
     );
   }

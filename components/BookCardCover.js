@@ -34,6 +34,7 @@ export default ({ book, ...props }: { book: Book }) => (
   <Box w={[105, 130]} flex="0 0 auto" {...props}>
     <Card>
       <CoverImage
+        width={[105, 130]}
         h={[130, 160]}
         src={book.coverPhoto && book.coverPhoto.large}
       />
