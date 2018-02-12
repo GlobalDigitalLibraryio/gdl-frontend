@@ -13,7 +13,8 @@ import type { CoverPhoto } from '../types';
 import theme from '../style/theme';
 
 type Props = {
-  coverPhoto: ?CoverPhoto
+  coverPhoto: ?CoverPhoto,
+  width: [number, number]
 };
 
 const style = css`
@@ -21,9 +22,10 @@ const style = css`
   box-shadow: ${theme.boxShadows.small};
 `;
 
-const BookCover = ({ coverPhoto }: Props) => (
+const BookCover = ({ coverPhoto, width }: Props) => (
   <CoverImage
     className={style}
+    width={width}
     src={coverPhoto && coverPhoto.large}
     h="100%"
     w="100%"

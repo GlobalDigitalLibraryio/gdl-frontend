@@ -59,4 +59,6 @@ const book: Book = {
 storiesOf('BookCover', module)
   .addDecorator(story => <Container mt={50}>{story()}</Container>)
   .add('Book card cover', () => <BookCardCover book={book} />)
-  .add('Book cover', () => <BookCover coverPhoto={book.coverPhoto} />);
+  .add('Book cover', () => (
+    <BookCover width={[50, 150]} coverPhoto={book.coverPhoto} />
+  ));

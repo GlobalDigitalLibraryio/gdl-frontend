@@ -71,7 +71,7 @@ export default class GDLDocument extends Document {
             }}
           />
           <script
-            src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,String.prototype.includes"
+            src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,String.prototype.includes,Array.from"
             defer
             async
           />
