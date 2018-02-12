@@ -18,12 +18,13 @@ type Props = {
   width: [number, number]
 };
 
+const srcUrl = (src, width) =>
+  `${src}?focalX=50&focalY=50&ratio=0.81&width=${width}`;
+
 /** Generate srcset value for two different pixels densities */
 function srcSet(url: string, width: number) {
-  const urlWithParams = w => `${url}?focalX=50&focalY=50&ratio=0.81&width=${w}`;
-
   // Note: 1x descriptior is assumed when left out
-  return `${urlWithParams(width)}, ${urlWithParams(width * 2)} 2x`;
+  return `${srcUrl(url, width)}, ${srcUrl(url, width * 2)} 2x`;
 }
 
 /**
@@ -32,19 +33,11 @@ function srcSet(url: string, width: number) {
  */
 const CoverImage = ({ src, width, ...props }: Props) => {
   const srcOrPlaceholder =
-    (src && `${src}?focalX=50&focalY=50&ratio=0.81&width=260`) ||
-    NO_COVER_PLACEHOLDER_URL;
+    (src && srcUrl(src, 260)) || NO_COVER_PLACEHOLDER_URL;
 
   if (src == null) {
     return <Image src={NO_COVER_PLACEHOLDER_URL} {...props} />;
   }
-
-  // const srcSet = width.map(w => `${imageSrc(src, w)} ${w}w`).join(', ');
-
-  // Example of resulting string: (min-width: 768px) 260px, 150px
-  /* const sizes = `(min-width: ${TABLET_BREAKPOINT}px): ${width[1]}px, ${
-    width[0]
-  }px`; */
 
   return (
     <Image srcSet={srcSet(src, width[0])} src={srcOrPlaceholder} {...props}>
