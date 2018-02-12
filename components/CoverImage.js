@@ -18,9 +18,12 @@ type Props = {
   width: [number, number]
 };
 
+/** Generate srcset value for two different pixels densities */
 function srcSet(url: string, width: number) {
-  return `${url}?focalX=50&focalY=50&ratio=0.81&width=${width} 1x, ${url}?focalX=50&focalY=50&ratio=0.81&width=${width *
-    2} 2x`;
+  const urlWithParams = w => `${url}?focalX=50&focalY=50&ratio=0.81&width=${w}`;
+
+  // Note: 1x descriptior is assumed when left out
+  return `${urlWithParams(width)}, ${urlWithParams(width * 2)} 2x`;
 }
 
 /**
