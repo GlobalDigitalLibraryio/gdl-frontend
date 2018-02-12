@@ -198,11 +198,16 @@ class BookPage extends React.Component<Props> {
                 </React.Fragment>
               )}
           </Box>
-          <Hr />
-          <H3>
-            <Trans>Similar</Trans>
-          </H3>
-          <BookList books={similar.results} mt={20} />
+          {similar &&
+            similar.results.length > 0 && (
+              <React.Fragment>
+                <Hr />
+                <H3>
+                  <Trans>Similar</Trans>
+                </H3>
+                <BookList books={similar.results} mt={20} />
+              </React.Fragment>
+            )}
         </Container>
       </Layout>
     );
