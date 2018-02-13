@@ -71,7 +71,7 @@
     "react-portal": "^4.1.2",
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",
-    "styled-system": "1.1.4"
+    "styled-system": "1.1.7"
   },
   "devDependencies": {
     "@lingui/babel-preset-react": "2.0.2",
@@ -89,12 +89,12 @@
     "eslint": "4.17.0",
     "eslint-config-airbnb": "16.1.0",
     "eslint-config-prettier": "2.9.0",
-    "eslint-plugin-flowtype": "2.42.0",
+    "eslint-plugin-flowtype": "2.43.0",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jsx-a11y": "6.0.3",
     "eslint-plugin-react": "7.6.1",
-    "flow-bin": "0.64.0",
-    "jest": "22.1.4",
+    "flow-bin": "0.65.0",
+    "jest": "22.2.2",
     "jest-emotion": "9.0.0",
     "nock": "^9.1.4",
     "prettier-eslint": "8.8.1",
