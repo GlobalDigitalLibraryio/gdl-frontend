@@ -139,7 +139,9 @@ class BookPage extends React.Component<Props, State> {
               <Trans>No books found</Trans>
             )}
           </H1>
-          <BookGrid books={books.results} mt={30} route={route} />
+          <Box my={30}>
+            <BookGrid books={books.results} route={route} />
+          </Box>
           <Box pt={6} pb={30} textAlign="center">
             <Button
               aria-live="polite"
