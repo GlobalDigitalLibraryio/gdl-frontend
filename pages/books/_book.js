@@ -39,7 +39,13 @@ type Props = {
   book: RemoteData<Book>,
   similar: RemoteData<{
     results: Array<Book>
-  }>
+  }>,
+  url: {
+    query: {
+      level?: string
+    },
+    asPath: string
+  }
 };
 
 const CoverWrap = styled('div')`
@@ -87,6 +93,32 @@ class BookPage extends React.Component<Props> {
     };
   }
 
+  getCrumbs() {
+    const { book, url } = this.props;
+    const { level } = url.query;
+
+    const crumbs = [this.props.book.title];
+
+    if (level != null) {
+      crumbs.unshift(
+        <Link route="level" params={{ lang: book.language.code, level }}>
+          <a>
+            <Trans>Level {level}</Trans>
+          </a>
+        </Link>
+      );
+    } else if (url.asPath.includes('/new/')) {
+      crumbs.unshift(
+        <Link route="new" params={{ lang: book.language.code }}>
+          <a>
+            <Trans>New arrivals</Trans>
+          </a>
+        </Link>
+      );
+    }
+    return crumbs;
+  }
+
   render() {
     const { similar, book } = this.props;
 
@@ -99,15 +131,7 @@ class BookPage extends React.Component<Props> {
       .map((item, index) => [index > 0 && ', ', item]);
 
     return (
-      <Layout
-        crumbs={[
-          <Link route="books" params={{ lang: book.language.code }}>
-            <a>{book.language.name}</a>
-          </Link>,
-          book.title
-        ]}
-        language={book.language}
-      >
+      <Layout crumbs={this.getCrumbs()} language={book.language}>
         <Head
           title={book.title}
           description={book.description}

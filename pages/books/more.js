@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { fetchBooks } from '../../fetch';
-import { Link } from '../../routes';
 import type { Book, RemoteData, Language, Context, I18n } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
@@ -111,12 +110,7 @@ class BookPage extends React.Component<Props, State> {
     return (
       <Layout
         language={books.language}
-        crumbs={[
-          <Link route="books" params={{ lang: books.language.code }}>
-            <a>{books.language.name}</a>
-          </Link>,
-          level ? i18n.t`Level ${level}` : i18n.t`New arrivals`
-        ]}
+        crumbs={[level ? i18n.t`Level ${level}` : i18n.t`New arrivals`]}
       >
         <Head
           title={
