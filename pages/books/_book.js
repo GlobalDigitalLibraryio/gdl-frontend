@@ -99,15 +99,7 @@ class BookPage extends React.Component<Props> {
       .map((item, index) => [index > 0 && ', ', item]);
 
     return (
-      <Layout
-        crumbs={[
-          <Link route="books" params={{ lang: book.language.code }}>
-            <a>{book.language.name}</a>
-          </Link>,
-          book.title
-        ]}
-        language={book.language}
-      >
+      <Layout crumbs={[book.title]} language={book.language}>
         <Head
           title={book.title}
           description={book.description}
