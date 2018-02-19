@@ -193,3 +193,22 @@ export function sendToTranslation(
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   })();
 }
+
+export function search(
+  query: string,
+  language?: string,
+  options: Options = {}
+): (
+  acccessToken: ?string
+) => Promise<
+  RemoteData<{ page: number, totalCount: number, results: Array<Book> }>
+> {
+  return accessToken =>
+    fetchWithToken(
+      encodeURI(
+        `${bookApiUrl}/search/${language ||
+          ''}?query=${query}&page-size=${options.pageSize ||
+          PAGE_SIZE}&page=${options.page || 1}`
+      )
+    )(accessToken);
+}

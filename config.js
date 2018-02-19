@@ -18,6 +18,7 @@ function getConfig() {
       STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,
       BLOCK_SEARCH_INDEXING: true,
+      SEARCH_PAGE_SIZE: 10,
       clientAuth: {
         clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
         audience: 'gdl_system',
