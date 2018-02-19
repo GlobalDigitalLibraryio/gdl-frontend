@@ -32,21 +32,23 @@ const GlobalDigitalLibrary = () => (
         <H3>Introduction</H3>
         <P>
           Major progress has been made towards increasing primary school
-          enrolment rates. Still, 250 million children of primary school age are
-          not able to recognize basic letters and numbers, despite most of them
-          having attended school for several years. There are also 750 million
-          illiterate youth and adults. One important reason for one billion
-          people not learning to read is that they do not have access to quality
-          early grade reading resources in a language they understand.
+          enrolment rates. Still, 617 million youth and adolescents worldwide
+          are unable to read, despite most of them having attended school for
+          several years. One reason for this is that many do not have access to
+          quality early grade reading resources in a language they understand.
         </P>
         <P>
-          The Global Digital Library (GDL) is being developed to increase the
-          availability of high quality reading resources in underserved
-          languages worldwide. “Underserved languages” refer to languages where
-          there is currently a lack of quality early grade reading resources.
-          “Reading resources” refer primarily to supplementary reading books and
-          reading textbooks, but the GDL will also link to some more interactive
-          resources, such as literacy games.
+          The goal of the Global Book Alliance is therefore to provide access to
+          free, high-quality, early grade reading resources in languages that
+          children use and understand. As a flagship activity within the Global
+          Book Alliance, The Global Digital Library (GDL) is being developed to
+          increase the availability of high quality reading resources in
+          underserved languages worldwide. &quot;Underserved languages&quot;
+          refer to languages where there is currently a lack of quality early
+          grade reading resources. &quot;Reading resources&quot; refer primarily
+          to reading instruction books and storybooks for leisure reading, but
+          the GDL will also link to some more interactive resources, such as
+          literacy games.
         </P>
         <H3>What is the purpose of the Global Digital Library?</H3>
         <P>
@@ -58,8 +60,8 @@ const GlobalDigitalLibrary = () => (
           learning resources may be included at a later stage.
         </P>
         <P>
-          The goal is to make at least 50.000 titles in 100 languages available
-          on the GDL-platform by the end of 2020.
+          By the end of 2020 the library will provide books in more than 100
+          languages.
         </P>
         <H3>Who can use the Global Digital Library?</H3>
         <P>
@@ -109,16 +111,20 @@ const GlobalDigitalLibrary = () => (
         </P>
         <P>
           GDL-content is currently being provided by the following initiatives
-          and organizations;{' '}
-          <A href="https://storyweaver.org.in/">Storyweaver</A>,
+          and organizations; <A href="https://bookdash.org/">Bookdash</A>,{' '}
+          <A href="https://www.letsreadasia.org/">
+            Asia Foundation’s Let’s Read
+          </A>, <A href="https://storyweaver.org.in/">Storyweaver</A>,{' '}
           <A href="http://www.africanstorybook.org/">
             African Storybook Project
           </A>, <A href="https://www.usaid.gov/">USAID</A> missions,{' '}
           <A href="https://allchildrenreading.org/">
             All Children Reading: a Grand Challenge for Development
-          </A>{' '}
-          and <A href="https://benetech.org/">Benetech</A>. GDL’s open
-          source-digital infrastructure has so far been provided by NDLA and the{' '}
+          </A>, URC and{' '}
+          <A href="https://globalreadingnetwork.net/">
+            the Global Reading Network
+          </A>. GDL’s open source-digital infrastructure has so far been
+          provided by NDLA and the{' '}
           <A href="https://www.nypl.org/">New York Public Library</A>.
         </P>
         <P>

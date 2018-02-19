@@ -76,8 +76,8 @@ const About = () => (
         </P>
         <P fontSize={26}>
           The GDL-project is currently collecting reading resources and piloting
-          the technical platform. The platform is expected to launch before
-          April 2018.
+          the technical platform. The platform is expected to launch by the end
+          of April 2018.
         </P>
       </Container>
     </HeroWithIcons>
