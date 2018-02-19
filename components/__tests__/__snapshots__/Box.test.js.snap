@@ -23,7 +23,7 @@ exports[`Can have different margins 2`] = `
 }
 
 <Styled(div)
-  mx={5}
+  mx="5px"
   my={10}
 >
   <div
@@ -75,7 +75,7 @@ exports[`Can have different paddings 2`] = `
 }
 
 <Styled(div)
-  px={5}
+  px="5px"
   py={10}
 >
   <div

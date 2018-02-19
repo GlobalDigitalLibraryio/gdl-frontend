@@ -27,7 +27,7 @@ type Props = {
 };
 
 const Header = ({ children, onClose, ...props }: Props) => (
-  <Div justify="space-between" align="center" px={15} {...props}>
+  <Div justifyContent="space-between" alignItems="center" px={15} {...props}>
     {children}
     <IconButton type="button" onClick={onClose}>
       <MdClose />

@@ -14,14 +14,11 @@ import {
   alignItems,
   space,
   flex,
-  responsiveStyle
+  textAlign,
+  order,
+  display
 } from 'styled-system';
 import height from '../style/height';
-import textAlign from '../style/textAlign';
-
-const order = responsiveStyle('order');
-
-const display = responsiveStyle('display');
 
 const Flex = styled('div')`
   display: flex;

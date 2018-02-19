@@ -13,12 +13,10 @@ import {
   color,
   width,
   flex,
-  responsiveStyle
+  textAlign,
+  order
 } from 'styled-system';
 import height from '../style/height';
-import textAlign from '../style/textAlign';
-
-const order = responsiveStyle('order');
 
 const Box = styled('div')(
   fontSize,

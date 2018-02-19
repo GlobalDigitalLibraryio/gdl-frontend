@@ -83,7 +83,7 @@ const About = () => (
     </HeroWithIcons>
     <Container mw={1075}>
       <Card my={60}>
-        <Flex wrap={[true, false]}>
+        <Flex flexWrap={['wrap', 'nowrap']}>
           <Box w={[1, 0.5]} py={10} px={30} order={[1, 0]}>
             <H3>About the Global Digital Library</H3>
             <P>
@@ -109,7 +109,7 @@ const About = () => (
         </Flex>
       </Card>
       <Card my={60}>
-        <Flex wrap={[true, false]}>
+        <Flex flexWrap={['wrap', 'nowrap']}>
           <Box w={[1, 0.5]}>
             <CardImg src={playingJPG} alt="Kids playing" />
           </Box>
@@ -128,7 +128,7 @@ const About = () => (
         </Flex>
       </Card>
       <Card my={60}>
-        <Flex wrap={[true, false]}>
+        <Flex flexWrap={['wrap', 'nowrap']}>
           <Box w={[1, 0.5]} py={10} px={30} order={[1, 0]}>
             <H3>Who is behind the GDL?</H3>
             <P>
