@@ -21,7 +21,10 @@ import Footer from '../../components/AboutFooter';
 
 const GlobalDigitalLibrary = () => (
   <div>
-    <Head title="Who are we?" />
+    <Head title="About - Global Digital Library">
+      <title>About - Global Digital Library</title>
+      <meta property="og:title" content="About - Global Digital Library" />
+    </Head>
     <HeroWithIcons
       h={455}
       style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: -1 }}
