@@ -46,7 +46,7 @@ const SocialLink = styled.a`
 const Footer = () => (
   <footer>
     <Container>
-      <Flex justify="center" mt={40}>
+      <Flex justifyContent="center" mt={40}>
         <SocialLink
           href="https://www.facebook.com/globaldigitallibrary"
           target="_blank"
@@ -69,7 +69,7 @@ const Footer = () => (
     </Container>
     <Hero mt={32}>
       <Container py={32} mw={1075}>
-        <Flex justify="space-between" wrap>
+        <Flex justifyContent="space-between" flexWrap="wrap">
           <a href="https://allchildrenreading.org/">
             <PartnerImg src={allChildrenPNG} alt="All Children Reading" />
           </a>

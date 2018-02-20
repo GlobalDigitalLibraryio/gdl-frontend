@@ -73,7 +73,11 @@ const Container = styled('div')`
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
   <Nav>
     <Container>
-      <Flex justify={['flex-start', 'flex-end']} flex="1 1 0" order={[0, 2]}>
+      <Flex
+        justifyContent={['flex-start', 'flex-end']}
+        flex="1 1 0"
+        order={[0, 2]}
+      >
         <HamburgerButton
           type="button"
           aria-label="Menu"
@@ -85,7 +89,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
           <span>Menu</span>
         </HamburgerButton>
       </Flex>
-      <Flex justify={['center', 'flex-start']} flex="1 1 0">
+      <Flex justifyContent={['center', 'flex-start']} flex="1 1 0">
         <Link route="books" passHref params={lang ? { lang } : {}}>
           <LogoA>
             <Logo style={{ height: '35px' }} />

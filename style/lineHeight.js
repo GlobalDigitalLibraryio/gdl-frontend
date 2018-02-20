@@ -9,6 +9,6 @@
 import { responsiveStyle } from 'styled-system';
 
 export default responsiveStyle({
-  cssProperty: 'lineHeight',
+  prop: 'lineHeight',
   numberToPx: true,
 });

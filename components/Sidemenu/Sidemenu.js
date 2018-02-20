@@ -137,8 +137,8 @@ class Sidebar extends React.Component<Props, State> {
             <Flex
               h={[48, 80]}
               px={15}
-              justify="space-between"
-              align="center"
+              justifyContent="space-between"
+              alignItems="center"
               style={{ borderBottom: `1px solid ${theme.colors.grayLight}` }}
             >
               <RouteLink route="books" params={{ lang: language.code }}>
@@ -184,7 +184,7 @@ class Sidebar extends React.Component<Props, State> {
                     >
                       <Flex
                         h={48}
-                        align="center"
+                        alignItems="center"
                         style={{
                           borderBottom: `1px solid ${theme.colors.grayLight}`
                         }}

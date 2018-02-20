@@ -48,6 +48,10 @@ class ToolbarDropdownItem extends React.Component<{
   onClick: Function,
   onCustomClick: Function
 }> {
+  static defaultProps = {
+    onClick() {},
+    onCustomClick() {}
+  };
   handleClick = (event: Event) => {
     this.props.onClick(event);
     this.props.onCustomClick(event);
