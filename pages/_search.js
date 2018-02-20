@@ -6,8 +6,8 @@
  * See LICENSE
  */
 
-import * as React from 'react';
-import { Trans } from '@lingui/react';
+import React, { Fragment } from 'react';
+import { Trans, Plural } from '@lingui/react';
 import Router from 'next/router';
 import styled from 'react-emotion';
 
@@ -48,6 +48,7 @@ type State = {
     totalCount: number
   }>,
   searchQuery: string,
+  lastSearchQuery?: string,
   isLoadingMore: boolean
 };
 
@@ -73,11 +74,13 @@ class SearchPage extends React.Component<Props, State> {
   state = {
     searchResult: this.props.searchResult,
     searchQuery: this.props.url.query[QUERY_PARAM] || '',
+    lastSearchQuery: this.props.url.query[QUERY_PARAM],
     isLoadingMore: false
   };
 
   handleSearch = async event => {
     event.preventDefault();
+    this.setState(state => ({ lastSearchQuery: state.searchQuery }));
 
     Router.push(
       {
@@ -85,7 +88,8 @@ class SearchPage extends React.Component<Props, State> {
       },
       `/${this.props.url.query.lang}/search?${QUERY_PARAM}=${
         this.state.searchQuery
-      }`
+      }`,
+      { shallow: true }
     );
     const results = await search(
       this.state.searchQuery,
@@ -126,7 +130,7 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchQuery: event.target.value });
 
   render() {
-    const { searchResult } = this.state;
+    const { searchResult, lastSearchQuery } = this.state;
     return (
       <Layout crumbs={[<Trans>Search</Trans>]}>
         <Head title="Search" />
@@ -147,26 +151,34 @@ class SearchPage extends React.Component<Props, State> {
           {searchResult && (
             <ResultsMeta>
               {searchResult.results.length > 0 ? (
-                <Trans>
-                  {searchResult.totalCount} results for{' '}
-                  <strong>{this.props.url.query.q}</strong>
-                </Trans>
+                <Fragment>
+                  <Plural
+                    value={searchResult.totalCount}
+                    one="# result for"
+                    other="# results for"
+                  />{' '}
+                  <strong>&quot;{lastSearchQuery}&quot;</strong>
+                </Fragment>
               ) : (
                 <Trans>
-                  No results for <strong>{this.props.url.query.q}</strong>
+                  No results for <strong>&quot;{lastSearchQuery}&quot;</strong>
                 </Trans>
               )}
             </ResultsMeta>
           )}
         </Container>
 
-        <Container mt={[15, 20]} pt={[15, 20]} style={{ background: '#fff' }}>
+        <Container
+          mt={[15, 20]}
+          pt={[15, 20]}
+          style={{ background: '#fff', minHeight: '-webkit-fill-available' }}
+        >
           {// eslint-disable-next-line no-nested-ternary
           searchResult ? (
             searchResult.results.length === 0 ? (
               <NoResults />
             ) : (
-              <React.Fragment>
+              <Fragment>
                 {searchResult.results.map(book => (
                   <SearchHit
                     key={book.id}
@@ -184,13 +196,13 @@ class SearchPage extends React.Component<Props, State> {
                     isLoading={this.state.isLoadingMore}
                   >
                     {this.state.isLoadingMore ? (
-                      <Trans>Loading books</Trans>
+                      <Trans>Loading more</Trans>
                     ) : (
-                      <Trans>Load more books</Trans>
+                      <Trans>See more</Trans>
                     )}
                   </Button>
                 </Box>
-              </React.Fragment>
+              </Fragment>
             )
           ) : (
             <Placeholder />
