@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
-import { MdCheck } from 'react-icons/lib/md';
 import {
   fetchFeaturedContent,
   fetchLevels,
@@ -37,12 +36,10 @@ import P from '../components/P';
 import H3 from '../components/H3';
 import H1 from '../components/H1';
 import A from '../components/A';
-import ToolbarDropdown, {
-  ToolbarDropdownItem
-} from '../components/ToolbarDropdown';
 import theme from '../style/theme';
 import media from '../style/media';
 import { flexCenter } from '../style/flex';
+import Menu, { MenuItem } from '../components/Menuu';
 
 type Props = {
   featuredContent: RemoteData<Array<FeaturedContent>>,
@@ -113,7 +110,7 @@ const moreStyle = css`
   height: 40px;
 `;
 
-class BooksPage extends React.Component<Props> {
+class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
   static async getInitialProps({ query, accessToken }: Context) {
     const language: ?string = query.lang;
 
@@ -140,6 +137,15 @@ class BooksPage extends React.Component<Props> {
     };
   }
 
+  state = {
+    showLanguageMenu: false
+  };
+
+  toggleShowLanguageMenu = event => {
+    event.preventDefault();
+    this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
+  };
+
   render() {
     const {
       featuredContent,
@@ -156,35 +162,12 @@ class BooksPage extends React.Component<Props> {
       <Layout
         language={justArrived.language}
         toolbarEnd={
-          <ToolbarDropdown
-            id="langFilter"
-            text={
-              <Trans>
-                Books in <strong>{languageFilter.name}</strong>
-              </Trans>
-            }
-            selectedItem={languageFilter.code}
-          >
-            {({ getItemProps, selectedItem, highlightedIndex }) =>
-              languages.map((language, index) => (
-                <Link
-                  key={language.code}
-                  route="books"
-                  passHref
-                  params={{ lang: language.code }}
-                >
-                  <ToolbarDropdownItem
-                    {...getItemProps({ item: language.code })}
-                    isActive={highlightedIndex === index}
-                    isSelected={selectedItem === language.code}
-                  >
-                    <MdCheck />
-                    {language.name}
-                  </ToolbarDropdownItem>
-                </Link>
-              ))
-            }
-          </ToolbarDropdown>
+          <div>
+            {justArrived.language.name}{' '}
+            <a href="" onClick={this.toggleShowLanguageMenu}>
+              Change
+            </a>
+          </div>
         }
       >
         <Head imageUrl={featured.imageUrl} />
@@ -264,6 +247,26 @@ class BooksPage extends React.Component<Props> {
             />
           </Container>
         </Hero>
+        {this.state.showLanguageMenu && (
+          <Menu
+            heading={<Trans>Choose language</Trans>}
+            onClose={this.toggleShowLanguageMenu}
+          >
+            <MenuItem showKeyLine isSelected>
+              {languageFilter.name}
+            </MenuItem>
+            {languages.map(language => (
+              <Link
+                key={language.code}
+                route="books"
+                passHref
+                params={{ lang: language.code }}
+              >
+                <MenuItem>{language.name}</MenuItem>
+              </Link>
+            ))}
+          </Menu>
+        )}
       </Layout>
     );
   }

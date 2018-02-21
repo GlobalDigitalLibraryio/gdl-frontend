@@ -7,4 +7,4 @@
  */
 
 export { default } from './Menu';
-export { MenuItem } from './styled/Content';
+export { default as MenuItem } from './MenuItem';

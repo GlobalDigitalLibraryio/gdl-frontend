@@ -45,12 +45,20 @@ export const Button = styled('button')`
   border: none;
 `;
 
-export const MenuItem = styled('div')`
+export const Item = styled('div')`
   font-size: 0.9rem;
   padding-left: 55px;
   padding-top: 0.7rem;
   padding-bottom: 0.7rem;
   font-weight: 500;
+  position: relative;
   ${p => p.showKeyLine && `border-bottom: 1px solid ${BORDER_COLOR};`};
   ${p => p.isSelected && 'color: #00BA6E;'};
+`;
+
+export const ItemIcon = styled('span')`
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
