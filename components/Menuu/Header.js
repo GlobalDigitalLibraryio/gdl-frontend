@@ -12,6 +12,8 @@ import { Trans } from '@lingui/react';
 import { Header, Title, Button } from './styled/Content';
 import SrOnly from '../SrOnly';
 
+const JustifyShim = () => <span />;
+
 type Props = {
   /** The menu title; rendered in the header. */
   heading: string | Element<'Trans'>,
@@ -27,13 +29,15 @@ type Props = {
 
 const ModalHeader = ({ heading, isNestedMenu, onClose }: Props) => (
   <Header>
-    {isNestedMenu && (
+    {isNestedMenu ? (
       <Button type="button" onClick={onClose}>
         <MdArrowBack aria-hidden />
         <SrOnly>
           <Trans>Close menu</Trans>
         </SrOnly>
       </Button>
+    ) : (
+      <JustifyShim />
     )}
     <Title>{heading}</Title>
     {!isNestedMenu && (

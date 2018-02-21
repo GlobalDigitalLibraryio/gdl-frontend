@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 const BORDER_COLOR = '#e3e3e3';
 
@@ -46,6 +46,8 @@ export const Button = styled('button')`
 `;
 
 export const Item = styled('div')`
+  display: block;
+  color: inherit;
   font-size: 0.9rem;
   padding-left: 55px;
   padding-top: 0.7rem;

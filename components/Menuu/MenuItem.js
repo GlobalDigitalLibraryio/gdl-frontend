@@ -13,18 +13,38 @@ import { Item, ItemIcon } from './styled/Content';
 type Props = {
   isSelected?: boolean,
   showKeyLine?: boolean,
+  href?: string,
+  onClick?: (event: SyntheticMouseEvent<any>) => void,
   children: Node
 };
 
-const MenuItem = ({ isSelected, showKeyLine, children }: Props) => (
-  <Item isSelected={isSelected} showKeyLine={showKeyLine}>
-    {isSelected && (
-      <ItemIcon>
-        <MdCheck />
-      </ItemIcon>
-    )}
-    {children}
-  </Item>
-);
+const ItemLink = Item.withComponent('a');
+
+const MenuItem = ({
+  isSelected,
+  showKeyLine,
+  children,
+  onClick,
+  href
+}: Props) => {
+  const ItemComponent = href ? ItemLink : Item;
+
+  return (
+    <ItemComponent
+      onClick={onClick}
+      href={href}
+      isSelected={isSelected}
+      showKeyLine={showKeyLine}
+      tabIndex={href ? null : onClick ? '0' : null}
+    >
+      {isSelected && (
+        <ItemIcon aria-hidden>
+          <MdCheck />
+        </ItemIcon>
+      )}
+      {children}
+    </ItemComponent>
+  );
+};
 
 export default MenuItem;
