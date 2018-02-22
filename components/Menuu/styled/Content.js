@@ -43,6 +43,12 @@ export const Header = styled('div')`
 export const Button = styled('button')`
   background: transparent;
   border: none;
+  &:first-of-type {
+    padding-left: 0;
+  }
+  &:last-of-type {
+    padding-right: 0;
+  }
 `;
 
 export const Item = styled('div')`
@@ -56,6 +62,13 @@ export const Item = styled('div')`
   position: relative;
   ${p => p.showKeyLine && `border-bottom: 1px solid ${BORDER_COLOR};`};
   ${p => p.isSelected && 'color: #00BA6E;'};
+`;
+
+export const itemActionStyle = css`
+  &:hover {
+    background-color: #f8f8f8;
+  }
+  cursor: pointer;
 `;
 
 export const ItemIcon = styled('span')`

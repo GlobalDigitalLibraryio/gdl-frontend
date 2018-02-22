@@ -6,15 +6,17 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import { MdCheck } from 'react-icons/lib/md';
+import { MdCheck, MdKeyboardArrowRight } from 'react-icons/lib/md';
+import { cx } from 'react-emotion';
 
-import { Item, ItemIcon } from './styled/Content';
+import { Item, ItemIcon, itemActionStyle } from './styled/Content';
 
 type Props = {
   isSelected?: boolean,
   showKeyLine?: boolean,
   href?: string,
   onClick?: (event: SyntheticMouseEvent<any>) => void,
+  hasNestedMenu?: boolean,
   children: Node
 };
 
@@ -22,6 +24,7 @@ const ItemLink = Item.withComponent('a');
 
 const MenuItem = ({
   isSelected,
+  hasNestedMenu,
   showKeyLine,
   children,
   onClick,
@@ -31,6 +34,7 @@ const MenuItem = ({
 
   return (
     <ItemComponent
+      className={cx({ [itemActionStyle]: href || onClick })}
       onClick={onClick}
       href={href}
       isSelected={isSelected}
@@ -43,6 +47,11 @@ const MenuItem = ({
         </ItemIcon>
       )}
       {children}
+      {hasNestedMenu && (
+        <ItemIcon aria-hidden>
+          <MdKeyboardArrowRight />
+        </ItemIcon>
+      )}
     </ItemComponent>
   );
 };

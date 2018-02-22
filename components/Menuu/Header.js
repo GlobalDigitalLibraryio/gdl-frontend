@@ -12,8 +12,6 @@ import { Trans } from '@lingui/react';
 import { Header, Title, Button } from './styled/Content';
 import SrOnly from '../SrOnly';
 
-const JustifyShim = () => <span />;
-
 type Props = {
   /** The menu title; rendered in the header. */
   heading: string | Element<'Trans'>,
@@ -27,6 +25,9 @@ type Props = {
   ) => void
 };
 
+// Tiny trick to align title with button. Used to "push" element
+const JustifyShim = () => <span aria-hidden style={{ width: '24px' }} />;
+
 const ModalHeader = ({ heading, isNestedMenu, onClose }: Props) => (
   <Header>
     {isNestedMenu ? (
@@ -39,14 +40,18 @@ const ModalHeader = ({ heading, isNestedMenu, onClose }: Props) => (
     ) : (
       <JustifyShim />
     )}
+
     <Title>{heading}</Title>
-    {!isNestedMenu && (
+
+    {!isNestedMenu ? (
       <Button type="button" onClick={onClose}>
         <MdClose aria-hidden />
         <SrOnly>
           <Trans>Close menu</Trans>
         </SrOnly>
       </Button>
+    ) : (
+      <JustifyShim />
     )}
   </Header>
 );
