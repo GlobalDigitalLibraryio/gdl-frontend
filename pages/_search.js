@@ -13,12 +13,16 @@ import styled from 'react-emotion';
 
 import type { Book, RemoteData, Context } from '../types';
 import { SEARCH_PAGE_SIZE } from '../config';
-import { SearchHit, Placeholder, NoResults } from '../components/Search';
+import {
+  SearchField,
+  SearchHit,
+  Placeholder,
+  NoResults
+} from '../components/Search';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
 import Button from '../components/Button';
 import Container from '../components/Container';
-import TextField from '../components/TextField';
 import Box from '../components/Box';
 import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
@@ -136,11 +140,10 @@ class SearchPage extends React.Component<Props, State> {
         <Head title="Search" />
         <Container pt={[15, 20]}>
           <form onSubmit={this.handleSearch}>
-            <TextField
+            <SearchField
               autoFocus
               label="Search"
               id="booksearch"
-              type="search"
               onChange={this.handleQueryChange}
               value={this.state.searchQuery}
               placeholder="Search"
@@ -170,8 +173,12 @@ class SearchPage extends React.Component<Props, State> {
 
         <Container
           mt={[15, 20]}
-          pt={[15, 20]}
-          style={{ background: '#fff', minHeight: '-webkit-fill-available' }}
+          pt={[15, 30]}
+          style={{
+            background: '#fff',
+            minHeight: '-webkit-fill-available',
+            boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
+          }}
         >
           {// eslint-disable-next-line no-nested-ternary
           searchResult ? (
@@ -179,14 +186,16 @@ class SearchPage extends React.Component<Props, State> {
               <NoResults />
             ) : (
               <Fragment>
-                {searchResult.results.map(book => (
-                  <SearchHit
-                    key={book.id}
-                    book={book}
-                    route={b => `/${b.language.code}/books/${b.id}`}
-                  />
-                ))}
-                <Box pt={6} pb={30} textAlign="center">
+                <div>
+                  {searchResult.results.map(book => (
+                    <SearchHit
+                      key={book.id}
+                      book={book}
+                      route={b => `/${b.language.code}/books/${b.id}`}
+                    />
+                  ))}
+                </div>
+                <Box pb={30} textAlign="center">
                   <Button
                     aria-live="polite"
                     disabled={

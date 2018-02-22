@@ -9,15 +9,20 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { css } from 'react-emotion';
-import Box from '../../Box';
 
-import Search from '../illustrations/Search.svg';
+import Box from '../../Box';
+import media from '../../../style/media';
+import Search from '../illustrations/search.svg';
 
 const svgStyle = css`
-  width: 216px;
-  height: 145px;
   display: block;
   margin: 2rem auto;
+  width: 216px;
+  height: 145px;
+  ${media.tablet`
+    height: 220px;
+    width: 328px;
+  `};
 `;
 
 const Placeholder = () => (
