@@ -18,7 +18,11 @@ import A from '../../A';
 const BookTitle = styled('h3')`
   font-size: 1.1rem;
   margin: 0;
-  font-weight: normal;
+  font-weight: 600;
+  em {
+    font-weight: 800;
+    font-style: normal;
+  }
 `;
 
 const BookDescription = styled('p')`
@@ -56,6 +60,15 @@ const Div = styled('div')`
   margin-left: 15px;
 `;
 
+function renderTitle(book) {
+  if (book.highlightTitle) {
+    return (
+      <BookTitle dangerouslySetInnerHTML={{ __html: book.highlightTitle }} />
+    );
+  }
+  return <BookTitle>{book.title}</BookTitle>;
+}
+
 function renderBookDescription(book) {
   if (book.highlightDescription) {
     return (
@@ -89,9 +102,7 @@ const SearchHit = ({
       </CoverWrap>
       <Div>
         <Link route={bookRoute} passHref>
-          <A>
-            <BookTitle>{book.title}</BookTitle>
-          </A>
+          <A>{renderTitle(book)}</A>
         </Link>
         <Level>Level {book.readingLevel}</Level>
         {renderBookDescription(book)}
