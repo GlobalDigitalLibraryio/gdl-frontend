@@ -39,7 +39,7 @@ import A from '../components/A';
 import theme from '../style/theme';
 import media from '../style/media';
 import { flexCenter } from '../style/flex';
-import Menu, { MenuItem } from '../components/Menuu';
+import LanguageMenu from '../components/LanguageMenu';
 
 type Props = {
   featuredContent: RemoteData<Array<FeaturedContent>>,
@@ -164,9 +164,14 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         toolbarEnd={
           <div>
             {justArrived.language.name}{' '}
-            <a href="" onClick={this.toggleShowLanguageMenu}>
+            <A
+              href=""
+              onClick={this.toggleShowLanguageMenu}
+              isUppercased
+              isBold
+            >
               Change
-            </a>
+            </A>
           </div>
         }
       >
@@ -248,24 +253,11 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           </Container>
         </Hero>
         {this.state.showLanguageMenu && (
-          <Menu
-            heading={<Trans>Choose language</Trans>}
+          <LanguageMenu
+            selectedLanguage={languageFilter}
+            languages={languages}
             onClose={this.toggleShowLanguageMenu}
-          >
-            <MenuItem showKeyLine isSelected>
-              {languageFilter.name}
-            </MenuItem>
-            {languages.map(language => (
-              <Link
-                key={language.code}
-                route="books"
-                passHref
-                params={{ lang: language.code }}
-              >
-                <MenuItem>{language.name}</MenuItem>
-              </Link>
-            ))}
-          </Menu>
+          />
         )}
       </Layout>
     );

@@ -6,26 +6,20 @@
  * See LICENSE
  */
 
-import * as React from 'react';
+import React, { Fragment } from 'react';
 import { withRouter } from 'next/router';
-import Downshift from 'downshift';
 import { Trans } from '@lingui/react';
-import {
-  MdClose,
-  MdHome,
-  MdKeyboardArrowRight,
-  MdKeyboardArrowLeft
-} from 'react-icons/lib/md';
+import { MdHome } from 'react-icons/lib/md';
 import Link from 'next/link';
 
 import config from '../../config';
 import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
-import Flex from '../Flex';
 import { Link as RouteLink } from '../../routes';
 import { getAuthToken } from '../../lib/auth/token';
 import Menu, { MenuItem } from '../Menuu';
 import CreativeCommonsLogo from './cc-logo.svg';
+import LanguageMenu from '../LanguageMenu';
 
 type Props = {
   onClose(): void,
@@ -38,7 +32,8 @@ type Props = {
 
 type State = {
   languages: Array<Language>,
-  levels: Array<string>
+  levels: Array<string>,
+  showLanguageMenu: boolean
 };
 
 type Cache = State & {
@@ -60,17 +55,19 @@ class GlobalMenu extends React.Component<Props, State> {
     ) {
       this.state = {
         languages: stateCache.languages,
-        levels: stateCache.levels
+        levels: stateCache.levels,
+        showLanguageMenu: false
       };
     } else {
       this.state = {
         languages: [],
-        levels: []
+        levels: [],
+        showLanguageMenu: false
       };
     }
   }
 
-  /* componentDidMount() {
+  componentDidMount() {
     // Only fetch if we haven't already set stuff from the cache in the constructor
     if (this.state.levels.length === 0) {
       this.getMenuData();
@@ -79,7 +76,7 @@ class GlobalMenu extends React.Component<Props, State> {
     stateCache.language = this.props.language;
   }
 
-  componentWillReceiveProps(nextProps) {
+  /* componentWillReceiveProps(nextProps) {
     if (this.props.router !== nextProps.router) {
       nextProps.onCloseRequested();
     }
@@ -105,21 +102,59 @@ class GlobalMenu extends React.Component<Props, State> {
     });
   };
 
+  toggleShowLanguageMenu = event => {
+    event.preventDefault();
+    this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
+  };
+
   render() {
     const { language, onClose } = this.props;
 
     return (
-      <Menu heading={<Trans>Menu</Trans>} onClose={onClose}>
-        <MenuItem showKeyLine>
-          <Trans>Book language</Trans>
-        </MenuItem>
-        <MenuItem href="https://home.digitallibrary.io/about/">
-          <Trans>About Global Digital Library</Trans>
-        </MenuItem>
-        <MenuItem>
-          <CreativeCommonsLogo />
-        </MenuItem>
-      </Menu>
+      <Fragment>
+        {this.state.showLanguageMenu && (
+          <LanguageMenu
+            isNestedMenu
+            selectedLanguage={language}
+            languages={this.state.languages}
+            onClose={this.toggleShowLanguageMenu}
+          />
+        )}
+        <Menu heading={<Trans>Menu</Trans>} onClose={onClose}>
+          <MenuItem
+            showKeyLine
+            hasNestedMenu
+            onClick={this.toggleShowLanguageMenu}
+          >
+            <Trans>Book language</Trans>
+          </MenuItem>
+
+          <MenuItem href="https://home.digitallibrary.io/about/">
+            <Trans>About Global Digital Library</Trans>
+          </MenuItem>
+
+          {config.TRANSLATION_PAGES && (
+            <React.Fragment>
+              <RouteLink passHref route="translations">
+                <MenuItem>
+                  <Trans>My translations</Trans>
+                </MenuItem>
+              </RouteLink>
+              {getAuthToken() != null && (
+                <Link passHref href="/auth/sign-off">
+                  <MenuItem>
+                    <Trans>Log out</Trans>
+                  </MenuItem>
+                </Link>
+              )}
+            </React.Fragment>
+          )}
+
+          <MenuItem>
+            <CreativeCommonsLogo />
+          </MenuItem>
+        </Menu>
+      </Fragment>
     );
 
     /* return (

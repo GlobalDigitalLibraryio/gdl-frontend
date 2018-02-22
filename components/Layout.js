@@ -81,7 +81,7 @@ const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
               {toolbarEnd}
             </Container>
           </Toolbar>
-          {portal(<GlobalMenu onClose={closePortal} />)}
+          {portal(<GlobalMenu onClose={closePortal} language={language} />)}
         </React.Fragment>
       )}
     </PortalWithState>

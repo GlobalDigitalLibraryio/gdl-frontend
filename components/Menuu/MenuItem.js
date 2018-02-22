@@ -48,7 +48,7 @@ const MenuItem = ({
       )}
       {children}
       {hasNestedMenu && (
-        <ItemIcon aria-hidden>
+        <ItemIcon aria-hidden style={{ right: '10px', left: 'unset' }}>
           <MdKeyboardArrowRight />
         </ItemIcon>
       )}
