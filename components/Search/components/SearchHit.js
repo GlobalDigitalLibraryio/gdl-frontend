@@ -13,16 +13,21 @@ import { type Book } from '../../../types';
 import { Link } from '../../../routes';
 import theme from '../../../style/theme';
 import CoverImage from '../../CoverImage';
+import A from '../../A';
 
 const BookTitle = styled('h3')`
   font-size: 1.1rem;
   margin: 0;
   font-weight: normal;
 `;
+
 const BookDescription = styled('p')`
   font-size: 0.9rem;
   line-height: 1.3rem;
   margin: 0;
+  em {
+    font-weight: bold;
+  }
 `;
 
 const Level = styled('span')`
@@ -32,7 +37,7 @@ const Level = styled('span')`
   font-weight: 500;
 `;
 
-const Wrapper = styled('a')`
+const Wrapper = styled('div')`
   border-bottom: 1px solid ${theme.colors.grayLight};
   display: flex;
   padding-bottom: 15px;
@@ -51,28 +56,48 @@ const Div = styled('div')`
   margin-left: 15px;
 `;
 
+function renderBookDescription(book) {
+  if (book.highlightDescription) {
+    return (
+      <BookDescription
+        dangerouslySetInnerHTML={{ __html: book.highlightDescription }}
+      />
+    );
+  }
+  return <BookDescription>{book.description}</BookDescription>;
+}
+
 const SearchHit = ({
   book,
   route
 }: {
   book: Book,
   route(book: Book): string
-}) => (
-  <Link route={route(book)}>
+}) => {
+  const bookRoute = route(book);
+  return (
     <Wrapper>
       <CoverWrap>
-        <CoverImage
-          width={[80, 130]}
-          src={book.coverPhoto && book.coverPhoto.large}
-        />
+        <Link route={bookRoute} passHref>
+          <a>
+            <CoverImage
+              width={[80, 130]}
+              src={book.coverPhoto && book.coverPhoto.large}
+            />
+          </a>
+        </Link>
       </CoverWrap>
       <Div>
-        <BookTitle>{book.title}</BookTitle>
+        <Link route={bookRoute} passHref>
+          <A>
+            <BookTitle>{book.title}</BookTitle>
+          </A>
+        </Link>
         <Level>Level {book.readingLevel}</Level>
-        <BookDescription>{book.description}</BookDescription>
+        {renderBookDescription(book)}
       </Div>
     </Wrapper>
-  </Link>
-);
+  );
+};
 
 export default SearchHit;
