@@ -30,7 +30,7 @@ type Props = {
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
   <Nav>
     <Container>
-      <NavItem>
+      <NavItem order={[null, 2]}>
         <HamburgerButton
           type="button"
           aria-label="Menu"
@@ -44,7 +44,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
           </span>
         </HamburgerButton>
       </NavItem>
-      <NavItem>
+      <NavItem order={[null, 0]}>
         <Link route="books" passHref params={{ lang }}>
           <BrandLink>
             <GlobalDigitalLibraryLogo aria-hidden />
@@ -52,13 +52,13 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
           </BrandLink>
         </Link>
       </NavItem>
-      <NavItem>
+      <NavItem order={[null, 1]}>
         <Link route="search" params={{ lang }}>
           <a>
             <MdSearch aria-hidden />
-            <SrOnly>
+            <span>
               <Trans>Search</Trans>
-            </SrOnly>
+            </span>
           </a>
         </Link>
       </NavItem>

@@ -7,6 +7,7 @@
  */
 
 import styled from 'react-emotion';
+import { order } from 'styled-system';
 
 import theme from '../../style/theme';
 import media from '../../style/media';
@@ -15,7 +16,22 @@ import { navContainerFragment } from '../Container';
 export const Nav = styled('nav')`
   position: relative;
   background: ${theme.colors.blues.dark};
+`;
+
+export const NavItem = styled('div')`
+  ${order};
   color: ${theme.colors.white};
+  font-weight: 500;
+  font-size: 1.1rem;
+  a {
+    color: inherit;
+  }
+  span {
+    margin-left: 6px;
+    ${media.mobile`
+      display: none;
+    `};
+  }
 `;
 
 export const HamburgerButton = styled('button')`
@@ -25,21 +41,9 @@ export const HamburgerButton = styled('button')`
   align-items: center;
   vertical-align: top;
   border: 1px solid transparent;
-  color: ${theme.colors.white};
-  font-size: 18px;
-  font-weight: 500;
-  > span {
-    margin-left: 6px;
-    ${media.mobile`
-      display: none;
-    `};
-  }
-`;
-
-export const NavItem = styled('div')`
-  a {
-    color: ${theme.colors.white};
-  }
+  color: inherit;
+  font-weight: inherit;
+  font-size: inherit;
 `;
 
 export const BrandLink = styled('a')`
