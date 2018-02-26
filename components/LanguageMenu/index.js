@@ -45,7 +45,7 @@ export default class LanguageMenu extends React.Component<Props> {
             passHref
             params={{ lang: language.code }}
           >
-            <MenuItem>{language.name}</MenuItem>
+            <MenuItem onCustomClick={onClose}>{language.name}</MenuItem>
           </Link>
         ))}
       </Menu>

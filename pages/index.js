@@ -162,16 +162,18 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
       <Layout
         language={justArrived.language}
         toolbarEnd={
-          <div>
-            {justArrived.language.name}{' '}
-            <A
-              href=""
-              onClick={this.toggleShowLanguageMenu}
-              isUppercased
-              isBold
-            >
-              Change
-            </A>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div>
+              {justArrived.language.name}{' '}
+              <A
+                href=""
+                onClick={this.toggleShowLanguageMenu}
+                isUppercased
+                isBold
+              >
+                Change
+              </A>
+            </div>
           </div>
         }
       >
