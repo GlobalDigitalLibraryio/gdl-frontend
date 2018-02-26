@@ -20,7 +20,7 @@ import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
 let getTokenOnServer;
 
 if (!process.browser) {
-  getTokenOnServer = require('./server/lib/auth').getToken; // eslint-disable-line global-require
+  getTokenOnServer = require('./server/lib/auth').getToken;
 }
 
 /**

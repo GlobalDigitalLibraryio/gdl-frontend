@@ -16,32 +16,25 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": [
-      "/node_modules/",
-      "/.next",
-      "/flow-typed"
-    ]
+    "srcPathIgnorePatterns": ["/node_modules/", "/.next", "/flow-typed"]
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ]
+    "setupFiles": ["./jest.setup.js"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
   "scripts": {
-    "pretest": "npm run lint",
     "test": "jest",
-    "lint": "eslint --ext .js pages components hocs lib style server",
+    "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format": "prettier-eslint --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
-    "flow": "flow",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "format": "prettier --write \"**/*.js\"",
+    "format:check": "prettier --list-different \"**/*.js\"",
+    "flow": "flow"
   },
   "dependencies": {
     "@lingui/react": "2.0.2",
@@ -77,8 +70,7 @@
   "devDependencies": {
     "@lingui/babel-preset-react": "2.0.2",
     "@lingui/cli": "2.0.2",
-    "@storybook/react": "3.2.18",
-    "babel-eslint": "8.2.1",
+    "babel-eslint": "^8.2.2",
     "babel-plugin-emotion": "9.0.1",
     "babel-plugin-inline-react-svg": "0.5.2",
     "babel-plugin-polished": "1.1.0",
@@ -87,19 +79,18 @@
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
     "enzyme-to-json": "3.3.1",
-    "eslint": "4.18.0",
-    "eslint-config-airbnb": "16.1.0",
-    "eslint-config-prettier": "2.9.0",
-    "eslint-plugin-flowtype": "2.45.0",
-    "eslint-plugin-import": "2.8.0",
-    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint": "4.18.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "2.46.1",
+    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-jest": "^21.12.1",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "7.7.0",
     "flow-bin": "0.66.0",
     "jest": "22.3.0",
     "jest-emotion": "9.0.0",
     "nock": "^9.1.4",
-    "prettier-eslint": "8.8.1",
-    "prettier-eslint-cli": "4.7.1",
+    "prettier": "^1.9.2",
     "react-test-renderer": "16.2.0"
   }
 }

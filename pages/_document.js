@@ -14,7 +14,6 @@ import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
 
-// eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${globalStyles}
 `;

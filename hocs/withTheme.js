@@ -12,8 +12,6 @@ import { ThemeProvider } from 'emotion-theming';
 import type { Context } from '../types';
 import theme from '../style/theme';
 
-/* eslint-disable react/no-multi-comp */
-
 class Theme extends React.Component<{ children: React.Node }> {
   static childContextTypes = {
     reactIconBase: PropTypes.object

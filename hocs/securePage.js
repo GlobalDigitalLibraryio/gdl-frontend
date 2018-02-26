@@ -36,7 +36,7 @@ const securePageHoc = Page =>
         setRedirectUrl({
           pathname: this.props.url.pathname,
           asPath: this.props.url.asPath,
-          query: this.props.url.query,
+          query: this.props.url.query
         });
         Router.replace('/auth/sign-in');
       }

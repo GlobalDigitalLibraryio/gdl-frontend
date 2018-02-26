@@ -2,6 +2,8 @@ language: node_js
 node_js:
 - '8'
 script:
+- yarn run lint
+- yarn run format:check
 - yarn test
 - yarn run flow
 - yarn build

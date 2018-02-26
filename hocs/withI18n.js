@@ -6,8 +6,6 @@
  * See LICENSE
  */
 
-/* eslint-disable no-underscore-dangle, no-eval */
-
 import * as React from 'react';
 import { I18nProvider, withI18n } from '@lingui/react';
 import Head from 'next/head';
@@ -86,7 +84,7 @@ export default (Page: React.ComponentType<any>) => {
         <I18nProvider
           language={language}
           catalogs={{
-            [language]: eval(`(${catalog})`)
+            [language]: eval(`(${catalog})`) // eslint-disable-line no-eval
           }}
         >
           <Head>

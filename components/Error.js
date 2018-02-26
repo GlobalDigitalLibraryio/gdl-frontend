@@ -53,7 +53,6 @@ const Error = (props: Props) => {
             </Card>
           )}
           {typeof window !== 'undefined' && window.history.length > 1 ? (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <A href="" onClick={() => window.history.back()}>
               <Trans>Go back</Trans>
             </A>

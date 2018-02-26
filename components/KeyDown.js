@@ -11,7 +11,7 @@ import * as React from 'react';
 type Props = {
   when: string,
   then(): void,
-  disabled?: boolean,
+  disabled?: boolean
 };
 
 export default class KeyDown extends React.Component<Props> {

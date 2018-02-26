@@ -12,8 +12,6 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
 import theme from '../style/theme';
 import Card from './Card';
 
-/* eslint-disable react/no-multi-comp */
-
 const Item = styled('div')`
   position: relative;
   display: flex;
@@ -72,7 +70,6 @@ type Props = {
   selectedItem: ?string
 };
 
-// eslint-disable-next-line react/prefer-stateless-function
 class ToolbarItem extends React.Component<Props> {
   render() {
     return (
@@ -87,9 +84,6 @@ class ToolbarItem extends React.Component<Props> {
           closeMenu
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
-            {/* 
-            eslint-disable jsx-a11y/anchor-is-valid TODO:
-            */}
             <a {...getButtonProps()}>
               {this.props.text}{' '}
               {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}

@@ -122,7 +122,6 @@ class BookPage extends React.Component<Props, State> {
 
         <Container pt={20}>
           <H1 textAlign="center">
-            {/* eslint-disable no-nested-ternary */}
             {books.results.length > 0 ? (
               level ? (
                 <Trans>Level {level}</Trans>

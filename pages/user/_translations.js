@@ -34,8 +34,6 @@ type State = {
   translations: RemoteData<Array<Translation>>
 };
 
-/* eslint-disable react/no-multi-comp */
-
 class TranslationCard extends React.Component<
   { translation: Translation },
   { isLoading: boolean, isSynchronized: boolean }
@@ -118,7 +116,6 @@ class MyTranslationsPage extends React.Component<Props, State> {
 
   async componentDidMount() {
     const translations = await fetchMyTranslations()();
-    /* eslint-disable react/no-did-mount-set-state */
     this.setState({ translations });
   }
 

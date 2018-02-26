@@ -79,10 +79,10 @@ const loadingStyle = css`
   }
 `;
 
-/* eslint-disable jsx-a11y/anchor-has-content */
 export default function({
   color,
   customColor,
+  href,
   isLoading,
   className,
   ...props
@@ -101,6 +101,7 @@ export default function({
   return props.href == null ? (
     <button className={style} type="button" {...props} />
   ) : (
-    <a className={style} {...props} />
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
+    <a className={style} href={href} {...props} />
   );
 }

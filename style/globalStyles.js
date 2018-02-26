@@ -11,7 +11,6 @@ import { normalize } from 'polished';
 import theme from './theme';
 
 // Add global styles
-// eslint-disable-next-line no-unused-expressions
 export default css`
   ${normalize(true)} *, *:before, *:after {
     box-sizing: inherit;
