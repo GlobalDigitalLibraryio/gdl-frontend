@@ -7,7 +7,6 @@
  */
 
 import React, { Fragment } from 'react';
-import { withRouter } from 'next/router';
 import { Trans } from '@lingui/react';
 import { MdHome } from 'react-icons/lib/md';
 import Link from 'next/link';
@@ -20,23 +19,24 @@ import { getAuthToken } from '../../lib/auth/token';
 import Menu, { MenuItem } from '../Menuu';
 import CreativeCommonsLogo from './cc-logo.svg';
 import LanguageMenu from '../LanguageMenu';
+import CategoriesMenu from './CategoriesMenu';
 
 type Props = {
   onClose(): void,
   id: string,
-  language: Language,
-  router: {
-    asPath: string
-  }
+  language: Language
 };
 
 type State = {
   languages: Array<Language>,
   levels: Array<string>,
-  showLanguageMenu: boolean
+  showLanguageMenu: boolean,
+  showCategoriesMenu: boolean
 };
 
-type Cache = State & {
+type Cache = {
+  languages: Array<Language>,
+  levels: Array<string>,
   language: ?Language
 };
 
@@ -56,13 +56,15 @@ class GlobalMenu extends React.Component<Props, State> {
       this.state = {
         languages: stateCache.languages,
         levels: stateCache.levels,
-        showLanguageMenu: false
+        showLanguageMenu: false,
+        showCategoriesMenu: false
       };
     } else {
       this.state = {
         languages: [],
         levels: [],
-        showLanguageMenu: false
+        showLanguageMenu: false,
+        showCategoriesMenu: false
       };
     }
   }
@@ -75,12 +77,6 @@ class GlobalMenu extends React.Component<Props, State> {
     // Remember the last language we mounted with in the cache
     stateCache.language = this.props.language;
   }
-
-  /* componentWillReceiveProps(nextProps) {
-    if (this.props.router !== nextProps.router) {
-      nextProps.onCloseRequested();
-    }
-  } */
 
   /**
    * When unmounting, we keep the langauge and level results so we won't have to refetch it on a different page if the langauge is the same
@@ -102,10 +98,11 @@ class GlobalMenu extends React.Component<Props, State> {
     });
   };
 
-  toggleShowLanguageMenu = event => {
-    event.preventDefault();
+  toggleShowLanguageMenu = () =>
     this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
-  };
+
+  toggleShowCategoriesMenu = () =>
+    this.setState(state => ({ showCategoriesMenu: !state.showCategoriesMenu }));
 
   render() {
     const { language, onClose } = this.props;
@@ -120,6 +117,13 @@ class GlobalMenu extends React.Component<Props, State> {
             onClose={this.toggleShowLanguageMenu}
           />
         )}
+        {this.state.showCategoriesMenu && (
+          <CategoriesMenu
+            language={language}
+            levels={this.state.levels}
+            onClose={this.toggleShowCategoriesMenu}
+          />
+        )}
         <Menu heading={<Trans>Menu</Trans>} onClose={onClose}>
           <MenuItem
             showKeyLine
@@ -128,13 +132,20 @@ class GlobalMenu extends React.Component<Props, State> {
           >
             <Trans>Book language</Trans>
           </MenuItem>
+          <MenuItem
+            showKeyLine
+            hasNestedMenu
+            onClick={this.toggleShowCategoriesMenu}
+          >
+            <Trans>Categories</Trans>
+          </MenuItem>
 
           <MenuItem href="https://home.digitallibrary.io/about/">
             <Trans>About Global Digital Library</Trans>
           </MenuItem>
 
           {config.TRANSLATION_PAGES && (
-            <React.Fragment>
+            <Fragment>
               <RouteLink passHref route="translations">
                 <MenuItem>
                   <Trans>My translations</Trans>
@@ -147,146 +158,15 @@ class GlobalMenu extends React.Component<Props, State> {
                   </MenuItem>
                 </Link>
               )}
-            </React.Fragment>
+            </Fragment>
           )}
 
           <MenuItem>
-            <CreativeCommonsLogo />
+            <CreativeCommonsLogo style={{ width: '25%' }} />
           </MenuItem>
         </Menu>
       </Fragment>
     );
-
-    /* return (
-      <Backdrop onClick={this.handleOutsideClick}>
-        <Container size="large">
-          <ModalCard
-            id={this.props.id}
-            innerRef={c => {
-              this.modal = c;
-            }}
-          >
-            <Flex
-              h={[48, 80]}
-              px={15}
-              justifyContent="space-between"
-              alignItems="center"
-              style={{ borderBottom: `1px solid ${theme.colors.grayLight}` }}
-            >
-              <RouteLink route="books" params={{ lang: language.code }}>
-                <a>
-                  <SrOnly>
-                    <Trans>Home</Trans>
-                  </SrOnly>
-                  <MdHome />
-                </a>
-              </RouteLink>
-              <Trans>Menu</Trans>{' '}
-              <IconButton
-                onClick={this.props.onCloseRequested}
-                aria-label="Close menu"
-                type="button"
-              >
-                <MdClose />
-              </IconButton>
-            </Flex>
-
-            <Downshift
-              id="bookLanguageMenu"
-              selectedItem={this.props.language.code}
-            >
-              {({ getButtonProps, isOpen, closeMenu, getItemProps }) => (
-                <div>
-                  <MenuItem {...getButtonProps()} tabIndex="0" thickBorder>
-                    <span>
-                      <Trans>
-                        Books in <strong>{language.name}</strong>
-                      </Trans>
-                    </span>
-                    <MdKeyboardArrowRight style={{ marginLeft: 'auto' }} />
-                  </MenuItem>
-                  {isOpen && (
-                    <ModalCard
-                      style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        left: 0
-                      }}
-                    >
-                      <Flex
-                        h={48}
-                        alignItems="center"
-                        style={{
-                          borderBottom: `1px solid ${theme.colors.grayLight}`
-                        }}
-                      >
-                        <IconButton onClick={closeMenu}>
-                          <MdKeyboardArrowLeft />
-                        </IconButton>
-                        <Trans>Language</Trans>
-                      </Flex>
-                      {this.state.languages.map(lang => (
-                        <RouteLink
-                          passHref
-                          key={lang.code}
-                          route="books"
-                          params={{ lang: lang.code }}
-                        >
-                          <MenuItem
-                            {...getItemProps({ item: lang.code })}
-                            thinBorder
-                          >
-                            {lang.name}
-                          </MenuItem>
-                        </RouteLink>
-                      ))}
-                    </ModalCard>
-                  )}
-                </div>
-              )}
-            </Downshift>
-
-            {this.state.levels.map(level => (
-              <RouteLink
-                passHref
-                key={level}
-                route="level"
-                params={{ lang: language.code, level }}
-              >
-                <MenuItem key={level} thinBorder>
-                  <Trans>Level {level}</Trans>
-                </MenuItem>
-              </RouteLink>
-            ))}
-            <RouteLink passHref route="new" params={{ lang: language.code }}>
-              <MenuItem thickBorder>
-                <Trans>New arrivals</Trans>
-              </MenuItem>
-            </RouteLink>
-            <MenuItem href="https://home.digitallibrary.io/about/">
-              <Trans>About Global Digital Library</Trans>
-            </MenuItem>
-            {config.TRANSLATION_PAGES && (
-              <React.Fragment>
-                <RouteLink passHref route="translations">
-                  <MenuItem>
-                    <Trans>My translations</Trans>
-                  </MenuItem>
-                </RouteLink>
-                {getAuthToken() != null && (
-                  <Link passHref href="/auth/sign-off">
-                    <MenuItem>
-                      <Trans>Log out</Trans>
-                    </MenuItem>
-                  </Link>
-                )}
-              </React.Fragment>
-            )}
-          </ModalCard>
-        </Container>
-      </Backdrop>
-    ); */
   }
 }
 
