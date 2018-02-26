@@ -1,0 +1,4 @@
+.vscode/*
+.next/*
+locale/*
+flow-typed/*

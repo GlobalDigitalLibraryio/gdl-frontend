@@ -21,8 +21,6 @@ import ButtonOverlay from './ButtonOverlay';
 import { Router } from '../../routes';
 import theme from '../../style/theme';
 
-/* eslint-disable react/no-multi-comp */
-
 function createMarkup(chapter: Chapter) {
   return { __html: chapter.content };
 }

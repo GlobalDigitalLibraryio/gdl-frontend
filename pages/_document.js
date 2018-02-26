@@ -14,7 +14,6 @@ import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
 
-// eslint-disable-next-line no-unused-expressions
 injectGlobal`
   ${globalStyles}
 `;
@@ -33,7 +32,7 @@ export default class GDLDocument extends Document {
       language: req.language,
       ...styleTags,
       // $FlowFixMe This is only rendered on the server, so req shouldn't be undefined
-      url: `${req.protocol}://${req.headers.host}${req.originalUrl}`
+      url: `${req.protocol}://${req.headers.host}${req.originalUrl}`,
     };
   }
 
@@ -67,7 +66,7 @@ export default class GDLDocument extends Document {
           <script
             dangerouslySetInnerHTML={{
               __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env
-                .GDL_ENVIRONMENT || 'test'}';`
+                .GDL_ENVIRONMENT || 'test'}';`,
             }}
           />
           <script

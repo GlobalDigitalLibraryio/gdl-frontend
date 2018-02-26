@@ -1,3 +1,3 @@
 module.exports = {
-  extends: ['react-app', 'plugin:jest/recommended'],
-}
+  extends: ['react-app', 'plugin:jest/recommended']
+};

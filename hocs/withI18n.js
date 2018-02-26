@@ -6,8 +6,6 @@
  * See LICENSE
  */
 
-/* eslint-disable no-underscore-dangle, no-eval */
-
 import * as React from 'react';
 import { I18nProvider, withI18n } from '@lingui/react';
 import Head from 'next/head';
@@ -18,13 +16,13 @@ import type { Context } from '../types';
 type Props = {
   language: string,
   catalog: string,
-  href: string
+  href: string,
 };
 
 // Currently next.js doesn't support variables with dynamic imports,
 // So for now we have to add each translation specifically
 const translations = {
-  en: import('../locale/en/messages')
+  en: import('../locale/en/messages'),
 };
 
 /**
@@ -70,7 +68,7 @@ export default (Page: React.ComponentType<any>) => {
         ...composedInitialProps,
         language,
         catalog,
-        href
+        href,
       };
     }
 
@@ -86,7 +84,7 @@ export default (Page: React.ComponentType<any>) => {
         <I18nProvider
           language={language}
           catalogs={{
-            [language]: eval(`(${catalog})`)
+            [language]: eval(`(${catalog})`), // eslint-disable-line no-eval
           }}
         >
           <Head>

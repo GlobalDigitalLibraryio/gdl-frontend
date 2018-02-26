@@ -12,8 +12,6 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/lib/md';
 import theme from '../style/theme';
 import Card from './Card';
 
-/* eslint-disable react/no-multi-comp */
-
 const Item = styled('div')`
   position: relative;
   display: flex;
@@ -46,11 +44,11 @@ const DropdownItemAnchor = styled.a`
  */
 class ToolbarDropdownItem extends React.Component<{
   onClick: Function,
-  onCustomClick: Function
+  onCustomClick: Function,
 }> {
   static defaultProps = {
     onClick() {},
-    onCustomClick() {}
+    onCustomClick() {},
   };
   handleClick = (event: Event) => {
     this.props.onClick(event);
@@ -67,12 +65,11 @@ type Props = {
   children: ({
     selectedItem: ?string,
     highlightedIndex: number,
-    getItemProps: ({ item: string }) => void
+    getItemProps: ({ item: string }) => void,
   }) => React.ChildrenArray<React.Element<typeof ToolbarDropdownItem>>,
-  selectedItem: ?string
+  selectedItem: ?string,
 };
 
-// eslint-disable-next-line react/prefer-stateless-function
 class ToolbarItem extends React.Component<Props> {
   render() {
     return (
@@ -84,12 +81,9 @@ class ToolbarItem extends React.Component<Props> {
           highlightedIndex,
           selectedItem,
           isOpen,
-          closeMenu
+          closeMenu,
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
-            {/* 
-            eslint-disable jsx-a11y/anchor-is-valid TODO:
-            */}
             <a {...getButtonProps()}>
               {this.props.text}{' '}
               {isOpen ? <MdKeyboardArrowUp /> : <MdKeyboardArrowDown />}
@@ -106,16 +100,16 @@ class ToolbarItem extends React.Component<Props> {
                   minWidth: '220px',
                   overflow: 'hidden',
                   boxShadow:
-                    '0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4)'
+                    '0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4)',
                 }}
               >
                 {this.props.children({
                   getItemProps: args => ({
                     ...getItemProps(args),
-                    onCustomClick: closeMenu
+                    onCustomClick: closeMenu,
                   }),
                   selectedItem,
-                  highlightedIndex
+                  highlightedIndex,
                 })}
               </Card>
             )}

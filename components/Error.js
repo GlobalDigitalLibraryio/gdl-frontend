@@ -16,7 +16,7 @@ import Container from '../components/Container';
 
 type Props = {
   statusCode: ?number,
-  showNavbar: boolean
+  showNavbar: boolean,
 };
 
 const Error = (props: Props) => {
@@ -46,14 +46,13 @@ const Error = (props: Props) => {
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               {statusCode}
             </Card>
           )}
           {typeof window !== 'undefined' && window.history.length > 1 ? (
-            // eslint-disable-next-line jsx-a11y/anchor-is-valid
             <A href="" onClick={() => window.history.back()}>
               <Trans>Go back</Trans>
             </A>
@@ -69,7 +68,7 @@ const Error = (props: Props) => {
 };
 
 Error.defaultProps = {
-  showNavbar: true
+  showNavbar: true,
 };
 
 export default Error;
