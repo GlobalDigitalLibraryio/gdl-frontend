@@ -44,11 +44,11 @@ const DropdownItemAnchor = styled.a`
  */
 class ToolbarDropdownItem extends React.Component<{
   onClick: Function,
-  onCustomClick: Function,
+  onCustomClick: Function
 }> {
   static defaultProps = {
     onClick() {},
-    onCustomClick() {},
+    onCustomClick() {}
   };
   handleClick = (event: Event) => {
     this.props.onClick(event);
@@ -65,9 +65,9 @@ type Props = {
   children: ({
     selectedItem: ?string,
     highlightedIndex: number,
-    getItemProps: ({ item: string }) => void,
+    getItemProps: ({ item: string }) => void
   }) => React.ChildrenArray<React.Element<typeof ToolbarDropdownItem>>,
-  selectedItem: ?string,
+  selectedItem: ?string
 };
 
 class ToolbarItem extends React.Component<Props> {
@@ -81,7 +81,7 @@ class ToolbarItem extends React.Component<Props> {
           highlightedIndex,
           selectedItem,
           isOpen,
-          closeMenu,
+          closeMenu
         }) => (
           <Item {...getRootProps({ refKey: 'innerRef' })}>
             <a {...getButtonProps()}>
@@ -100,16 +100,16 @@ class ToolbarItem extends React.Component<Props> {
                   minWidth: '220px',
                   overflow: 'hidden',
                   boxShadow:
-                    '0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4)',
+                    '0 0 2px 0 rgba(0, 0, 0, 0.22), 0 20px 50px 0 rgba(0, 0, 0, 0.4)'
                 }}
               >
                 {this.props.children({
                   getItemProps: args => ({
                     ...getItemProps(args),
-                    onCustomClick: closeMenu,
+                    onCustomClick: closeMenu
                   }),
                   selectedItem,
-                  highlightedIndex,
+                  highlightedIndex
                 })}
               </Card>
             )}

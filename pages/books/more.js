@@ -26,15 +26,15 @@ type Props = {
     results: Array<Book>,
     language: Language,
     page: number,
-    totalCount: number,
+    totalCount: number
   }>,
   url: {
     query: {
       level?: string,
-      lang: string,
-    },
+      lang: string
+    }
   },
-  i18n: I18n,
+  i18n: I18n
 };
 
 type State = {
@@ -42,26 +42,26 @@ type State = {
     results: Array<Book>,
     language: Language,
     page: number,
-    totalCount: number,
+    totalCount: number
   },
-  isLoadingMore: boolean,
+  isLoadingMore: boolean
 };
 
 class BookPage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
-      level: query.level,
+      level: query.level
     })(accessToken);
 
     return {
-      books,
+      books
     };
   }
 
   state = {
     books: this.props.books,
-    isLoadingMore: false,
+    isLoadingMore: false
   };
 
   componentWillReceiveProps(nextProps) {
@@ -80,7 +80,7 @@ class BookPage extends React.Component<Props, State> {
     const books = await fetchBooks(query.lang, {
       level: query.level,
       page: this.state.books.page + 1,
-      pageSize: PAGE_SIZE,
+      pageSize: PAGE_SIZE
     })();
 
     this.setState(state => ({
@@ -89,8 +89,8 @@ class BookPage extends React.Component<Props, State> {
         // Set the newly fetched results
         ...books,
         // But append the array to the books we already have
-        results: state.books.results.concat(books.results),
-      },
+        results: state.books.results.concat(books.results)
+      }
     }));
   };
 

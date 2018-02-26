@@ -14,14 +14,14 @@ import theme from '../style/theme';
 
 class Theme extends React.Component<{ children: React.Node }> {
   static childContextTypes = {
-    reactIconBase: PropTypes.object,
+    reactIconBase: PropTypes.object
   };
 
   getChildContext() {
     return {
       reactIconBase: {
-        size: 24,
-      },
+        size: 24
+      }
     };
   }
 

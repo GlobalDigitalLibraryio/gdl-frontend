@@ -48,7 +48,7 @@ const Ol = styled.ol`
 type Props = {
   i18n: I18n,
   crumbs: Array<React.Node | string>,
-  language: string,
+  language: string
 };
 
 const Separator = (

@@ -2,7 +2,7 @@
 /**
  * Part of GDL gdl-frontend.
  * Copyright (C) 2017 GDL
- * 
+ *
  * See LICENSE
  */
 
@@ -10,16 +10,16 @@ import * as React from 'react';
 import ErrorComp from './Error';
 
 type Props = {
-  children: React.Node,
+  children: React.Node
 };
 
 type State = {
-  error: ?Error,
+  error: ?Error
 };
 
 export default class ErrorBoundary extends React.Component<Props, State> {
   state = {
-    error: null,
+    error: null
   };
 
   componentDidCatch(error: Error) {

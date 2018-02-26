@@ -27,20 +27,20 @@ import BookCover from '../../components/BookCover';
 import theme from '../../style/theme';
 
 type Props = {
-  i18n: I18n,
+  i18n: I18n
 };
 
 type State = {
-  translations: RemoteData<Array<Translation>>,
+  translations: RemoteData<Array<Translation>>
 };
 
 class TranslationCard extends React.Component<
   { translation: Translation },
-  { isLoading: boolean, isSynchronized: boolean },
+  { isLoading: boolean, isSynchronized: boolean }
 > {
   state = {
     isLoading: false,
-    isSynchronized: false,
+    isSynchronized: false
   };
 
   handleSynchronize = async event => {
@@ -60,7 +60,7 @@ class TranslationCard extends React.Component<
               route="book"
               params={{
                 lang: translation.translatedTo.code,
-                id: translation.id,
+                id: translation.id
               }}
             >
               <a>
@@ -111,7 +111,7 @@ class TranslationCard extends React.Component<
 
 class MyTranslationsPage extends React.Component<Props, State> {
   state = {
-    translations: [],
+    translations: []
   };
 
   async componentDidMount() {

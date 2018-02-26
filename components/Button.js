@@ -22,9 +22,8 @@ type Props = {
   disabled?: boolean,
   type?: 'submit' | 'reset' | 'button',
   onClick?: (
-    event: | SyntheticEvent<HTMLButtonElement>
-    | SyntheticEvent<HTMLAnchorElement>,
-  ) => any,
+    event: SyntheticEvent<HTMLButtonElement> | SyntheticEvent<HTMLAnchorElement>
+  ) => any
 };
 
 const buttonStyle = (color: string) => css`
@@ -96,7 +95,7 @@ export default function({
   const style = cx(
     buttonStyle(bgColor),
     { [loadingStyle]: isLoading },
-    className,
+    className
   );
 
   return props.href == null ? (

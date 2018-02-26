@@ -18,7 +18,7 @@ import {
   getAnonToken,
   setAnonToken,
   setAnonTokenOnResponse,
-  LOGOUT_KEY,
+  LOGOUT_KEY
 } from '../lib/auth/token';
 import { fetchAnonToken } from '../fetch';
 import logPageView from '../lib/analytics';
@@ -71,7 +71,7 @@ const defaultPage = Page =>
       return {
         fullToken,
         isAuthenticated,
-        ...composedInitialProps,
+        ...composedInitialProps
       };
     }
 
@@ -101,8 +101,8 @@ const defaultPage = Page =>
 
 export default (
   Page: React.ComponentType<any>,
-  wrapWithErrorBoundary: boolean = true,
+  wrapWithErrorBoundary: boolean = true
 ) =>
   defaultPage(
-    withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page)),
+    withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page))
   );

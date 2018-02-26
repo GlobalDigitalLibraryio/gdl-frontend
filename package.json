@@ -16,30 +16,24 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": [
-      "/node_modules/",
-      "/.next",
-      "/flow-typed"
-    ]
+    "srcPathIgnorePatterns": ["/node_modules/", "/.next", "/flow-typed"]
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ]
+    "setupFiles": ["./jest.setup.js"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
   "scripts": {
     "test": "jest",
-    "lint": "eslint . --ext .js --max-warnings=0",
+    "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "lingui extract",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
-    "format": "prettier --write \"components/**/*.js\" \"server/**/*.js\" \"pages/**/*.js\" \"hocs/**/*.js\" \"style/**/*.js\" \"lib/**/*.js\"",
-    "format:check": "prettier --list-different \"src/**/*.js\"",
+    "format": "prettier --write \"**/*.js\"",
+    "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow"
   },
   "dependencies": {

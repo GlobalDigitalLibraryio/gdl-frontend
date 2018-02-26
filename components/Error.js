@@ -16,7 +16,7 @@ import Container from '../components/Container';
 
 type Props = {
   statusCode: ?number,
-  showNavbar: boolean,
+  showNavbar: boolean
 };
 
 const Error = (props: Props) => {
@@ -46,7 +46,7 @@ const Error = (props: Props) => {
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'center'
               }}
             >
               {statusCode}
@@ -68,7 +68,7 @@ const Error = (props: Props) => {
 };
 
 Error.defaultProps = {
-  showNavbar: true,
+  showNavbar: true
 };
 
 export default Error;
