@@ -14,7 +14,8 @@ import theme from '../style/theme';
 
 type Props = {
   coverPhoto: ?CoverPhoto,
-  width: [number, number]
+  w: Array<string | number>,
+  h: Array<string | number>
 };
 
 const style = css`
@@ -22,13 +23,12 @@ const style = css`
   box-shadow: ${theme.boxShadows.small};
 `;
 
-const BookCover = ({ coverPhoto, width }: Props) => (
+const BookCover = ({ coverPhoto, w, h }: Props) => (
   <CoverImage
     className={style}
-    width={width}
     src={coverPhoto && coverPhoto.large}
-    h="100%"
-    w="100%"
+    h={h}
+    w={w}
   />
 );
 

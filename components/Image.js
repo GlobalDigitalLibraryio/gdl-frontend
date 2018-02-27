@@ -74,12 +74,11 @@ const ImageWrapper = styled('div')`
 `;
 
 type Props = {
-  alt?: ?string,
   className?: string,
   src: string,
   srcSet?: string,
-  h?: Array<string | number>,
-  w?: string,
+  h: Array<string | number>,
+  w: Array<string | number>,
   // If source elements are provided, the img will we wrapped in a picture element
   children?: React.ChildrenArray<React.Element<'source'>>
 };
@@ -87,10 +86,6 @@ type Props = {
 type State = { isVisible: boolean, imgLoaded: boolean, IOSupported: boolean };
 
 export default class Image extends React.Component<Props, State> {
-  static defaultProps = {
-    alt: ''
-  };
-
   constructor(props: Props) {
     super(props);
     // If the browser doesn't support the IntersectionObserver API
@@ -135,12 +130,12 @@ export default class Image extends React.Component<Props, State> {
   };
 
   renderImg() {
-    const { src, srcSet, alt } = this.props;
+    const { src, srcSet } = this.props;
     return (
       <Img
         src={src}
         srcSet={srcSet}
-        alt={alt}
+        alt=""
         style={{
           opacity: this.state.imgLoaded ? 1 : 0
         }}

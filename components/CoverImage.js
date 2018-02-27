@@ -12,10 +12,17 @@ import { TABLET_BREAKPOINT } from '../style/theme';
 
 const NO_COVER_PLACEHOLDER_URL = require('../static/placeholder-cover.png');
 
+// To prevent downloading the same covers again again with small differences
+// Set the "biggest" size for each viewport here.
+const COVER_WIDTHS = [130, 260];
+
+// Desktop size: 115 x 155
+// Mobile size: 80 x 108
+
 type Props = {
   src: ?string,
-  // The width of the image for mobile and => tablet
-  width: [number, number]
+  w: Array<string | number>,
+  h: Array<string | number>
 };
 
 const srcUrl = (src, width) =>
@@ -31,19 +38,23 @@ function srcSet(url: string, width: number) {
  * Add query parameters to book cover images so they fit our wanted ratio
  * This also means we don't download the full image, just the part we want
  */
-const CoverImage = ({ src, width, ...props }: Props) => {
+const CoverImage = ({ src, ...props }: Props) => {
   const srcOrPlaceholder =
-    (src && srcUrl(src, 260)) || NO_COVER_PLACEHOLDER_URL;
+    (src && srcUrl(src, COVER_WIDTHS[1])) || NO_COVER_PLACEHOLDER_URL;
 
   if (src == null) {
     return <Image src={NO_COVER_PLACEHOLDER_URL} {...props} />;
   }
 
   return (
-    <Image srcSet={srcSet(src, width[0])} src={srcOrPlaceholder} {...props}>
+    <Image
+      srcSet={srcSet(src, COVER_WIDTHS[0])}
+      src={srcOrPlaceholder}
+      {...props}
+    >
       <source
         media={`(min-width: ${TABLET_BREAKPOINT}px)`}
-        srcSet={srcSet(src, width[1])}
+        srcSet={srcSet(src, COVER_WIDTHS[1])}
       />
     </Image>
   );

@@ -53,14 +53,6 @@ export const Wrapper = styled('div')`
   `};
 `;
 
-export const CoverWrap = styled('div')`
-  flex: 0 0 80px;
-  min-height: 108px;
-  ${media.tablet`
-    min-height: 158px;
-  `};
-`;
-
 export const Div = styled('div')`
   margin-left: 15px;
 `;

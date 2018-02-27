@@ -127,13 +127,17 @@ class TranslatePage extends React.Component<Props, State> {
           </H1>
           <Card p={[15, 20]} my={[20, 50]} textAlign="left">
             <Flex>
-              <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
+              <Box mr={[10, 20]}>
                 <Link
                   route="book"
                   params={{ lang: book.language.code, id: book.id }}
                 >
                   <a>
-                    <BookCover coverPhoto={book.coverPhoto} width={[75, 120]} />
+                    <BookCover
+                      coverPhoto={book.coverPhoto}
+                      w={[75, 120]}
+                      h={[100, 150]}
+                    />
                   </a>
                 </Link>
               </Box>

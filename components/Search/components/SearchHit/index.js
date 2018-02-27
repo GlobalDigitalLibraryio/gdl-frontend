@@ -11,16 +11,9 @@ import { Trans } from '@lingui/react';
 
 import { type Book } from '../../../../types';
 import { Link } from '../../../../routes';
-import CoverImage from '../../../CoverImage';
+import BookCover from '../../../BookCover';
 import A from '../../../A';
-import {
-  BookTitle,
-  BookDescription,
-  BookLevel,
-  Wrapper,
-  CoverWrap,
-  Div
-} from './styled';
+import { BookTitle, BookDescription, BookLevel, Wrapper, Div } from './styled';
 
 function renderTitle(book) {
   if (book.highlightTitle) {
@@ -60,16 +53,15 @@ const SearchHit = ({
   const bookRoute = route(book);
   return (
     <Wrapper>
-      <CoverWrap aria-hidden>
-        <Link route={bookRoute} passHref>
-          <a title={book.title}>
-            <CoverImage
-              width={[80, 130]}
-              src={book.coverPhoto && book.coverPhoto.large}
-            />
-          </a>
-        </Link>
-      </CoverWrap>
+      <Link route={bookRoute} passHref>
+        <a title={book.title} tabIndex="-1" aria-hidden>
+          <BookCover
+            w={[80, 115]}
+            h={[108, 155]}
+            coverPhoto={book.coverPhoto}
+          />
+        </a>
+      </Link>
       <Div>
         <Link route={bookRoute} passHref>
           <A>{renderTitle(book)}</A>

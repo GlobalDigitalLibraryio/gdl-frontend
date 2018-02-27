@@ -30,11 +30,11 @@ const BookTitle = styled.div`
 `;
 
 // TODO: Figure out why box-shadow is clipped
-export default ({ book, ...props }: { book: Book }) => (
-  <Box w={[105, 130]} flex="0 0 auto" {...props}>
+export default ({ book }: { book: Book }) => (
+  <Box w={[105, 130]}>
     <Card>
       <CoverImage
-        width={[105, 130]}
+        w={[105, 130]}
         h={[130, 160]}
         src={book.coverPhoto && book.coverPhoto.large}
       />

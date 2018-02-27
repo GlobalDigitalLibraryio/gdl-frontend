@@ -175,15 +175,14 @@ class SearchPage extends React.Component<Props, State> {
 
         <Container
           mt={[15, 20]}
-          pt={[15, 30]}
+          py={[15, 30]}
           style={{
             background: '#fff',
             minHeight: '-webkit-fill-available',
             boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
           }}
         >
-          {// eslint-disable-next-line no-nested-ternary
-          searchResult ? (
+          {searchResult ? (
             searchResult.results.length === 0 ? (
               <NoResults />
             ) : (
@@ -197,7 +196,7 @@ class SearchPage extends React.Component<Props, State> {
                     />
                   ))}
                 </div>
-                <Box pb={30} textAlign="center">
+                <Box textAlign="center">
                   <Button
                     disabled={
                       searchResult.results.length >= searchResult.totalCount
