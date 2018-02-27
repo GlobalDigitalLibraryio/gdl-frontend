@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import theme from '../../../style/theme';
 import media from '../../../style/media';
 
@@ -42,6 +42,15 @@ export const Dialog = styled('div')`
     margin-left: auto;
     height: 400px;
   `};
+`;
+
+export const bodyCss = css`
+  overflow: hidden;
+  height: 100%;
+  #__next {
+    overflow: hidden;
+    height: 100%;
+  }
 `;
 
 /* margin: 60px auto; */

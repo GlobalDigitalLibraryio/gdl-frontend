@@ -16,10 +16,16 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next", "/flow-typed"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next",
+      "/flow-typed"
+    ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -67,7 +73,8 @@
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",
     "styled-map": "^2.0.1",
-    "styled-system": "2.1.0"
+    "styled-system": "2.1.0",
+    "tabbable": "^1.1.2"
   },
   "devDependencies": {
     "@lingui/babel-preset-react": "2.0.2",

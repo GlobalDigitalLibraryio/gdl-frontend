@@ -6,18 +6,13 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
+import tabbable from 'tabbable';
 import { findDOMNode } from 'react-dom';
 
 type Props = {
   autoFocus?: boolean,
   children?: Node
 };
-
-function tabbable(el: HTMLElement) {
-  return el.querySelectorAll(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"]'
-  );
-}
 
 const getAppContainerElement = () => document.getElementById('__next');
 

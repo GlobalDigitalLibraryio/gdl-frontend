@@ -54,9 +54,9 @@ type Props = {
 
 const Toolbar = (props: Props) => (
   <Div>
-    <span>
+    <div>
       {props.currentChapter} / {props.totalChapters}
-    </span>
+    </div>
     <Button onClick={props.onRequestClose} type="button">
       <MdClose />{' '}
       <SrOnly>

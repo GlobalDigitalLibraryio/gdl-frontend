@@ -55,8 +55,8 @@ class MenuItem extends React.Component<Props> {
         tabIndex={href ? null : onClick ? '0' : null}
       >
         {isSelected && (
-          <ItemIcon aria-hidden>
-            <MdCheck />
+          <ItemIcon>
+            <MdCheck aria-label="Selected" />
           </ItemIcon>
         )}
         {children}

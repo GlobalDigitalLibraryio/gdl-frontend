@@ -8,7 +8,8 @@
 import React, { type Node, type Element } from 'react';
 import { Portal } from 'react-portal';
 
-import { Dialog, FillScreen, Positioner } from './styled/Dialog';
+import { Dialog, FillScreen, Positioner, bodyCss } from './styled/Dialog';
+import FocusLock from './FocusLock';
 import Content from './Content';
 import Backdrop from './Backdrop';
 
@@ -19,6 +20,7 @@ type Props = {
   autoFocus?: boolean,
   /** The menu title; rendered in the header. */
   heading: string | Element<'Trans'>,
+  hasNestedMenu?: boolean,
   /** Will display a 'back' button instead of a close button in the header */
   isNestedMenu?: boolean,
   /** Content of the menu */
@@ -43,6 +45,14 @@ export default class Modal extends React.Component<Props> {
     shouldCloseOnOverlayClick: true
   };
 
+  componentDidMount() {
+    document.body.classList.add(bodyCss);
+  }
+
+  componentWillUnmount() {
+    document.body.classList.remove(bodyCss);
+  }
+
   handleDialogClick = (event: Event) => event.stopPropagation();
 
   handleOverlayClick = (event: SyntheticMouseEvent<any>) => {
@@ -53,6 +63,7 @@ export default class Modal extends React.Component<Props> {
 
   render() {
     const {
+      autoFocus,
       children,
       isNestedMenu,
       heading,
@@ -64,20 +75,22 @@ export default class Modal extends React.Component<Props> {
         <FillScreen>
           <Backdrop onClick={this.handleOverlayClick} />
           <Positioner>
-            <Dialog
-              role="dialog"
-              tabIndex="-1"
-              onClick={this.handleDialogClick}
-            >
-              <Content
-                isNestedMenu={isNestedMenu}
-                heading={heading}
-                onClose={onClose}
-                shouldCloseOnEscapePress={shouldCloseOnEscapePress}
+            <FocusLock autoFocus={autoFocus}>
+              <Dialog
+                role="dialog"
+                tabIndex="-1"
+                onClick={this.handleDialogClick}
               >
-                {children}
-              </Content>
-            </Dialog>
+                <Content
+                  isNestedMenu={isNestedMenu}
+                  heading={heading}
+                  onClose={onClose}
+                  shouldCloseOnEscapePress={shouldCloseOnEscapePress}
+                >
+                  {children}
+                </Content>
+              </Dialog>
+            </FocusLock>
           </Positioner>
         </FillScreen>
       </Portal>
