@@ -8,10 +8,10 @@
 
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
-import Router from 'next/router';
 import styled from 'react-emotion';
 
 import type { Book, RemoteData, Context } from '../types';
+import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
   SearchField,
@@ -87,15 +87,15 @@ class SearchPage extends React.Component<Props, State> {
     event.preventDefault();
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
 
-    Router.push(
+    Router.pushRoute(
+      'search',
       {
-        pathname: this.props.url.pathname
+        lang: this.props.url.query.lang,
+        [QUERY_PARAM]: this.state.searchQuery
       },
-      `/${this.props.url.query.lang}/search?${QUERY_PARAM}=${
-        this.state.searchQuery
-      }`,
       { shallow: true }
     );
+
     const results = await search(
       this.state.searchQuery,
       this.props.url.query.lang,
@@ -103,6 +103,7 @@ class SearchPage extends React.Component<Props, State> {
         pageSize: SEARCH_PAGE_SIZE
       }
     )();
+
     this.setState({ searchResult: results });
   };
 
