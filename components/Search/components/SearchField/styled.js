@@ -44,7 +44,14 @@ export const Input = styled('input')`
 export const Icon = styled('span')`
   position: absolute;
   color: ${theme.colors.grayDark};
-  margin-left: 12px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  width: 40px;
 `;
 
 export const Label = styled('label')(hideVisually);
