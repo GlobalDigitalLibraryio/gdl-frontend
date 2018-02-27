@@ -56,10 +56,11 @@ type State = {
   isLoadingMore: boolean
 };
 
-const ResultsMeta = styled('span')`
+const ResultsMeta = styled('h1')`
   text-align: center;
-  display: block;
   margin-top: 15px;
+  font-size: 1rem;
+  font-weight: normal;
 `;
 
 class SearchPage extends React.Component<Props, State> {
@@ -152,7 +153,7 @@ class SearchPage extends React.Component<Props, State> {
           </form>
 
           {searchResult && (
-            <ResultsMeta>
+            <ResultsMeta aria-live="polite">
               {searchResult.results.length > 0 ? (
                 <Fragment>
                   <Plural
@@ -197,18 +198,13 @@ class SearchPage extends React.Component<Props, State> {
                 </div>
                 <Box pb={30} textAlign="center">
                   <Button
-                    aria-live="polite"
                     disabled={
                       searchResult.results.length >= searchResult.totalCount
                     }
                     onClick={this.handeLoadMore}
                     isLoading={this.state.isLoadingMore}
                   >
-                    {this.state.isLoadingMore ? (
-                      <Trans>Loading more</Trans>
-                    ) : (
-                      <Trans>See more</Trans>
-                    )}
+                    <Trans>See more</Trans>
                   </Button>
                 </Box>
               </Fragment>

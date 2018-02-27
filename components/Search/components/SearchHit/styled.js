@@ -10,7 +10,7 @@ import styled from 'react-emotion';
 import theme from '../../../../style/theme';
 import media from '../../../../style/media';
 
-export const BookTitle = styled('h3')`
+export const BookTitle = styled('h2')`
   font-size: 1.1rem;
   margin: 0;
   font-weight: 600;

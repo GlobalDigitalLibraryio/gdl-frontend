@@ -12,7 +12,7 @@ import { css } from 'react-emotion';
 
 import Box from '../../Box';
 import media from '../../../style/media';
-import Search from '../illustrations/search.svg';
+import Search from '../illustrations/Search.svg';
 
 const svgStyle = css`
   display: block;
@@ -27,7 +27,7 @@ const svgStyle = css`
 
 const Placeholder = () => (
   <Box textAlign="center">
-    <Search className={svgStyle} />
+    <Search className={svgStyle} aria-hidden />
     <Trans>Type any word in the search field above to start your search.</Trans>
   </Box>
 );

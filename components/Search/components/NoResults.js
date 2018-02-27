@@ -26,7 +26,7 @@ const svgStyle = css`
 `;
 
 const NoResults = () => (
-  <Box textAlign="center">
+  <Box textAlign="center" aria-hidden>
     <PlayfulCat className={svgStyle} />
     <span>
       <Trans>
