@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 
-import { type Book } from '../../../../types';
+import type { Book } from '../../../../types';
 import { Link } from '../../../../routes';
 import BookCover from '../../../BookCover';
 import A from '../../../A';
