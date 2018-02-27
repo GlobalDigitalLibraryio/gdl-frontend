@@ -56,6 +56,7 @@ export const BrandLink = styled('a')`
   }
 `;
 
+// FIXME: The hack here to align logo correctly on desktop
 export const Container = styled('div')`
   display: flex;
   align-items: center;
@@ -63,6 +64,10 @@ export const Container = styled('div')`
   justify-content: space-between;
   min-height: 54px;
   ${media.tablet`
+    justify-content: flex-end;
     min-height: 80px;
+    div:nth-child(2) {
+      margin-right: auto;
+    }
   `};
 `;
