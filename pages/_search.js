@@ -141,7 +141,8 @@ class SearchPage extends React.Component<Props, State> {
       <Layout crumbs={[<Trans>Search</Trans>]}>
         <Head title="Search" />
         <Container pt={[15, 20]}>
-          <form onSubmit={this.handleSearch}>
+          {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
+          <form onSubmit={this.handleSearch} action=".">
             <SearchField
               autoFocus
               label="Search"
