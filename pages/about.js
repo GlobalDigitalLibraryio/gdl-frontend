@@ -93,9 +93,8 @@ const About = () => (
               The GDL will collect existing high quality open educational
               reading resources, and make them available on web, mobile and for
               print. It will also facilitate translation and localization of
-              these resources to more than 300 languages. The goal is to make at
-              least 50.000 titles in 100 languages available on the GDL-platform
-              by the end of 2020.
+              these resources to more than 300 languages. By the end of 2020 the
+              library will provide books in more than 100 languages.
             </P>
             <P>
               The GDL’s initial purpose is to support access to high quality
