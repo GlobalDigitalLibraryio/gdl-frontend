@@ -25,7 +25,7 @@ export const Body = styled('div')`
   overscroll-behavior: contain;
 `;
 
-export const Title = styled('h4')`
+export const Title = styled('h1')`
   font-weight: 500;
   font-size: 1rem;
   margin: 0;

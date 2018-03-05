@@ -8,7 +8,6 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import { MdHome } from 'react-icons/lib/md';
 import Link from 'next/link';
 
 import config from '../../config';
@@ -16,14 +15,13 @@ import type { Language } from '../../types';
 import { fetchLanguages, fetchLevels } from '../../fetch';
 import { Link as RouteLink } from '../../routes';
 import { getAuthToken } from '../../lib/auth/token';
-import Menu, { MenuItem } from '../Menuu';
+import Menu, { MenuItem } from '../Menu';
 import CreativeCommonsLogo from './cc-logo.svg';
 import LanguageMenu from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 
 type Props = {
   onClose(): void,
-  id: string,
   language: Language
 };
 
@@ -124,7 +122,13 @@ class GlobalMenu extends React.Component<Props, State> {
             onClose={this.toggleShowCategoriesMenu}
           />
         )}
-        <Menu heading={<Trans>Menu</Trans>} onClose={onClose}>
+        <Menu
+          heading={<Trans>Menu</Trans>}
+          onClose={onClose}
+          hasOpenNestedMenu={
+            this.state.showCategoriesMenu || this.state.showLanguageMenu
+          }
+        >
           <MenuItem
             showKeyLine
             hasNestedMenu

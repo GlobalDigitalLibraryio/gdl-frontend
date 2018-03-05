@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 
 import type { Language } from '../../types';
 import { Link } from '../../routes';
-import Menu, { MenuItem } from '../Menuu';
+import Menu, { MenuItem } from '../Menu';
 
 type Props = {
   levels: Array<string>,

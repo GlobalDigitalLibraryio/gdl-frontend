@@ -36,7 +36,6 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
           aria-label="Menu"
           onClick={onMenuClick}
           aria-expanded={menuIsExpanded}
-          aria-controls="sidenav"
         >
           <MdMenu aria-hidden />
           <span>

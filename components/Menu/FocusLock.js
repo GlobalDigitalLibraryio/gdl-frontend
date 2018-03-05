@@ -58,7 +58,6 @@ export default class FocusLock extends React.Component<Props> {
   }
 
   focusFirst() {
-    // Don't do the tiresome nested looping: https://gomakethings.com/how-to-get-the-first-and-last-focusable-elements-in-the-dom/
     const focusable = tabbable(this.boundary);
     focusable[0] && focusable[0].focus();
   }
@@ -72,10 +71,10 @@ export default class FocusLock extends React.Component<Props> {
     if (key !== 'Tab') return;
 
     const els = tabbable(this.boundary);
-    const first = els[0];
     const last = els[els.length - 1];
 
     if (target === last && !shiftKey) {
+      const first = els[0];
       event.preventDefault();
       first.focus();
     }

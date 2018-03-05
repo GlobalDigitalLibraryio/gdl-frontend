@@ -1,13 +1,10 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
 
-import Menu from './Menu';
-import MenuItem from './MenuItem';
-import IconButton from './IconButton';
-
-export { Menu, MenuItem, IconButton };
+export { default } from './Menu';
+export { default as MenuItem } from './MenuItem';

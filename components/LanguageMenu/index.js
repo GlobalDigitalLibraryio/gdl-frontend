@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 
 import type { Language } from '../../types';
 import { Link } from '../../routes';
-import Menu, { MenuItem } from '../Menuu';
+import Menu, { MenuItem } from '../Menu';
 
 type Props = {
   selectedLanguage: Language,
@@ -29,6 +29,12 @@ export default class LanguageMenu extends React.Component<Props> {
 
   render() {
     const { selectedLanguage, languages, onClose, isNestedMenu } = this.props;
+
+    // We don't want to display the seelected language in the list
+    const filteredLanguages = languages.filter(
+      l => l.code !== selectedLanguage.code
+    );
+
     return (
       <Menu
         heading={<Trans>Choose language</Trans>}
@@ -38,7 +44,7 @@ export default class LanguageMenu extends React.Component<Props> {
         <MenuItem showKeyLine isSelected>
           {selectedLanguage.name}
         </MenuItem>
-        {languages.map(language => (
+        {filteredLanguages.map(language => (
           <Link
             key={language.code}
             route="books"

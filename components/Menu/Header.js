@@ -1,41 +1,59 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
-
-import * as React from 'react';
-import styled from 'react-emotion';
+import React, { type Element } from 'react';
+import { MdClose, MdArrowBack } from 'react-icons/lib/md';
 import { Trans } from '@lingui/react';
-import { MdClose } from 'react-icons/lib/md';
-import Flex from '../Flex';
-import SrOnly from '../SrOnly';
-import IconButton from './IconButton';
-import theme from '../../style/theme';
 
-const Div = styled(Flex)`
-  border-bottom: 1px solid ${theme.colors.grayLight};
-  font-size: 16px;
-  font-weight: 500;
-`;
+import { Header, Title, Button } from './styled/Content';
+import SrOnly from '../SrOnly';
 
 type Props = {
-  onClose: (event: SyntheticEvent<HTMLButtonElement>) => void,
-  children: React.Node
+  /** The menu title; rendered in the header. */
+  heading: string | Element<'Trans'>,
+  /** Will display a 'back' button instead of a close button in the header */
+  isNestedMenu?: boolean,
+  /**
+    Function that will be called to initiate the exit transition.
+  */
+  onClose: (
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>
+  ) => void
 };
 
-const Header = ({ children, onClose, ...props }: Props) => (
-  <Div justifyContent="space-between" alignItems="center" px={15} {...props}>
-    {children}
-    <IconButton type="button" onClick={onClose}>
-      <MdClose />
-      <SrOnly>
-        <Trans>Close menu</Trans>
-      </SrOnly>
-    </IconButton>
-  </Div>
+// Tiny trick to align title with button. Used to "push" element
+const JustifyShim = () => <span aria-hidden style={{ width: '24px' }} />;
+
+const ModalHeader = ({ heading, isNestedMenu, onClose }: Props) => (
+  <Header>
+    {isNestedMenu ? (
+      <Button type="button" onClick={onClose}>
+        <MdArrowBack aria-hidden />
+        <SrOnly>
+          <Trans>Close menu</Trans>
+        </SrOnly>
+      </Button>
+    ) : (
+      <JustifyShim />
+    )}
+
+    <Title>{heading}</Title>
+
+    {!isNestedMenu ? (
+      <Button type="button" onClick={onClose}>
+        <MdClose aria-hidden />
+        <SrOnly>
+          <Trans>Close menu</Trans>
+        </SrOnly>
+      </Button>
+    ) : (
+      <JustifyShim />
+    )}
+  </Header>
 );
 
-export default Header;
+export default ModalHeader;

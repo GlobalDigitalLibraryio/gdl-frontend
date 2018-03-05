@@ -15,7 +15,6 @@ import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import { navContainerFragment } from './Container';
 import Box from './Box';
-import Sidemenu from './Sidemenu';
 import GlobalMenu from './GlobalMenu';
 import theme from '../style/theme';
 
