@@ -11,6 +11,7 @@ import type {
   RemoteData,
   Language,
   Book,
+  BookDetails,
   FeaturedContent,
   Translation
 } from './types';
@@ -130,7 +131,7 @@ export function fetchFeaturedContent(
 export function fetchBook(
   id: string | number,
   language: string
-): (accessToken: ?string) => Promise<RemoteData<Book>> {
+): (accessToken: ?string) => Promise<RemoteData<BookDetails>> {
   return accessToken =>
     fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(accessToken);
 }

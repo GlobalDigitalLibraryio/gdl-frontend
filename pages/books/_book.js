@@ -13,7 +13,7 @@ import { MdTranslate } from 'react-icons/lib/md';
 import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { Book, BookDetails, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link } from '../../routes';
 import Box from '../../components/Box';
@@ -36,7 +36,7 @@ import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 
 type Props = {
-  book: RemoteData<Book>,
+  book: RemoteData<BookDetails>,
   similar: RemoteData<{
     results: Array<Book>
   }>,

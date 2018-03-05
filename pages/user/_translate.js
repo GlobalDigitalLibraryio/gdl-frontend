@@ -17,7 +17,7 @@ import {
   sendToTranslation
 } from '../../fetch';
 import type {
-  Book,
+  BookDetails,
   RemoteData,
   Language,
   Translation,
@@ -41,7 +41,7 @@ import MenuHeader from '../../components/Menu/Header';
 import BookCover from '../../components/BookCover';
 
 type Props = {
-  book: RemoteData<Book>,
+  book: RemoteData<BookDetails>,
   supportedLanguages: RemoteData<Array<Language>>,
   i18n: I18n
 };
