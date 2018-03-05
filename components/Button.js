@@ -98,7 +98,7 @@ export default function({
     className
   );
 
-  return props.href == null ? (
+  return href == null ? (
     <button className={style} type="button" {...props} />
   ) : (
     // eslint-disable-next-line jsx-a11y/anchor-has-content
