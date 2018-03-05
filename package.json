@@ -34,7 +34,9 @@
     "i18n:add-locale": "lingui add-locale",
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
-    "flow": "flow"
+    "flow": "flow",
+    "check":
+      "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.2",
