@@ -11,12 +11,14 @@ const BORDER_COLOR = '#e3e3e3';
 
 /**
  * Wrapper around the entire modal content (header, body)
+ * The min-height: 0 on the wrapper fixes overflow in Firefox: See https://moduscreate.com/blog/how-to-fix-overflow-issues-in-css-flex-layouts/
  */
 export const Wrapper = styled('div')`
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   height: 100vh;
+  min-height: 0;
 `;
 
 export const Body = styled('div')`
