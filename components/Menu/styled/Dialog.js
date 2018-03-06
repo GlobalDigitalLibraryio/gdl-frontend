@@ -23,6 +23,7 @@ export const FillScreen = styled('div')`
 export const Positioner = styled('div')`
   position: relative;
   z-index: 510;
+  pointer-events: none;
   ${media.tablet`
     max-width: ${theme.containers.large};
     margin-left: auto;
@@ -36,6 +37,7 @@ export const Dialog = styled('div')`
   flex-direction: column;
   outline: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: initial;
   ${media.tablet`
     margin-left: auto;
     max-width: 375px;
