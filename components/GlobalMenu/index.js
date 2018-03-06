@@ -166,7 +166,10 @@ class GlobalMenu extends React.Component<Props, State> {
           )}
 
           <MenuItem>
-            <CreativeCommonsLogo style={{ width: '25%' }} />
+            <CreativeCommonsLogo
+              aria-label="Creative Commons"
+              style={{ width: '25%' }}
+            />
           </MenuItem>
         </Menu>
       </Fragment>

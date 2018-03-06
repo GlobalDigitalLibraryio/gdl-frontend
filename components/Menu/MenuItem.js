@@ -17,7 +17,9 @@ type Props = {
   isSelected?: boolean,
   showKeyLine?: boolean,
   href?: string,
-  onClick?: (event: SyntheticMouseEvent<any>) => void,
+  onClick?: (
+    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>
+  ) => void,
   onCustomClick?: (event: SyntheticMouseEvent<any>) => void,
   hasNestedMenu?: boolean,
   children: Node
@@ -37,9 +39,8 @@ class MenuItem extends React.Component<Props> {
   };
 
   handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
-    if (this.props.onClick && event.key === 'Enter') {
-      console.log(event);
-      this.props.onClick(event);
+    if (event.key === 'Enter') {
+      this.props.onClick && this.props.onClick(event);
     }
   };
 

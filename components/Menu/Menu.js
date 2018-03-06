@@ -39,7 +39,7 @@ type Props = {
   shouldCloseOnOverlayClick: boolean
 };
 
-export default class Modal extends React.Component<Props> {
+export default class Menu extends React.Component<Props> {
   static defaultProps = {
     autoFocus: true,
     isNestedMenu: false,
@@ -50,13 +50,15 @@ export default class Modal extends React.Component<Props> {
 
   componentDidMount() {
     if (!this.props.isNestedMenu) {
-      document.body.classList.add(bodyCss);
+      // The condition satifies Flow
+      document.body && document.body.classList.add(bodyCss);
     }
   }
 
   componentWillUnmount() {
     if (!this.props.isNestedMenu) {
-      document.body.classList.remove(bodyCss);
+      // The condition satifies Flow
+      document.body && document.body.classList.remove(bodyCss);
     }
   }
 
