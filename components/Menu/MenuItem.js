@@ -61,12 +61,11 @@ class MenuItem extends React.Component<Props> {
         onClick={this.handleClick}
         onKeyDown={this.handleKeyDown}
         href={href}
-        isSelected={isSelected}
         showKeyLine={showKeyLine}
         tabIndex={href ? null : onClick ? '0' : null}
       >
         {isSelected && (
-          <ItemIcon>
+          <ItemIcon isSelected={isSelected}>
             <MdCheck aria-hidden />
             <SrOnly>
               <Trans>Selected:</Trans>

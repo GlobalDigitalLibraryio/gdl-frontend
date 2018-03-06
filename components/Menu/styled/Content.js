@@ -61,7 +61,6 @@ export const Item = styled('div')`
   font-weight: 500;
   position: relative;
   ${p => p.showKeyLine && `border-bottom: 1px solid ${BORDER_COLOR};`};
-  ${p => p.isSelected && 'color: #00BA6E;'};
 `;
 
 export const itemActionStyle = css`
@@ -76,4 +75,5 @@ export const ItemIcon = styled('span')`
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
+  ${p => p.isSelected && 'color: #00BA6E;'};
 `;
