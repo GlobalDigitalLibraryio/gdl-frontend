@@ -107,7 +107,7 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchResult: results });
   };
 
-  handeLoadMore = async () => {
+  handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     // Fixes flow warnings
     if (!this.state.searchResult) return;
@@ -202,7 +202,7 @@ class SearchPage extends React.Component<Props, State> {
                     disabled={
                       searchResult.results.length >= searchResult.totalCount
                     }
-                    onClick={this.handeLoadMore}
+                    onClick={this.handleLoadMore}
                     isLoading={this.state.isLoadingMore}
                   >
                     <Trans>See more</Trans>

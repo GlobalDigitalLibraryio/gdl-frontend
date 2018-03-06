@@ -28,7 +28,7 @@ const svgStyle = css`
 const Placeholder = () => (
   <Box textAlign="center">
     <Search className={svgStyle} aria-hidden />
-    <Trans>Type any word in the search field above to start your search.</Trans>
+    <Trans>Search for books.</Trans>
   </Box>
 );
 
