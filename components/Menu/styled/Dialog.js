@@ -16,13 +16,13 @@ export const FillScreen = styled('div')`
   overflow-y: auto;
   position: absolute;
   width: 100%;
-  z-index: 100;
+  z-index: 510;
   -webkit-overflow-scrolling: touch;
 `;
 
 export const Positioner = styled('div')`
   position: relative;
-  z-index: 100;
+  z-index: 510;
   ${media.tablet`
     max-width: ${theme.containers.large};
     margin-left: auto;
@@ -36,10 +36,9 @@ export const Dialog = styled('div')`
   flex-direction: column;
   outline: 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 100;
   ${media.tablet`
-    max-width: 375px;
     margin-left: auto;
+    max-width: 375px;
     height: 400px;
   `};
 `;
@@ -58,8 +57,3 @@ export const bodyCss = css`
 export const htmlCss = css`
   height: 100%;
 `;
-
-/* margin: 60px auto; */
-/* fit-content is not supported in Edge */
-/* width: fit-content; */
-/* max-width: 600px; */

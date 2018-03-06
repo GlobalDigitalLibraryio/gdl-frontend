@@ -22,6 +22,7 @@ const StyledBackdrop = styled('div')`
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 500;
 `;
 
 const Backdrop = (props: Props) => <StyledBackdrop {...props} />;
