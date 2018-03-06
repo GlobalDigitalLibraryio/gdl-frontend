@@ -85,7 +85,11 @@ export default class Menu extends React.Component<Props> {
         <FillScreen aria-hidden={hasOpenNestedMenu}>
           <Backdrop onClick={this.handleOverlayClick} />
           <Positioner>
-            <FocusLock autoFocus={autoFocus}>
+            <FocusLock
+              autoFocus={autoFocus}
+              isNestedMenu={isNestedMenu}
+              hasOpenNestedMenu={hasOpenNestedMenu}
+            >
               <Dialog
                 role="dialog"
                 tabIndex="-1"

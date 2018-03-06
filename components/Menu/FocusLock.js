@@ -11,17 +11,23 @@ import { findDOMNode } from 'react-dom';
 
 type Props = {
   autoFocus?: boolean,
+  hasOpenNestedMenu?: boolean,
+  isNestedMenu?: boolean,
   children?: Node
 };
 
 const getAppContainerElement = () => document.getElementById('__next');
 
 export default class FocusLock extends React.Component<Props> {
+  // Keep the previously active element, so we can restore focus when we unmount
   lastActiveElement: HTMLElement | null;
   boundary: HTMLElement | null = null;
 
   static defaultProps = {
-    autoFocus: false
+    autoFocus: false,
+    hasOpenNestedMenu: false,
+    isNestedMenu: false,
+    disabled: false
   };
 
   componentDidMount() {
@@ -29,8 +35,10 @@ export default class FocusLock extends React.Component<Props> {
     document.addEventListener('keydown', this.handleKeyDown);
     this.lastActiveElement = document && document.activeElement;
 
-    const appContainer = getAppContainerElement();
-    appContainer && appContainer.setAttribute('aria-hidden', '');
+    if (!this.props.isNestedMenu) {
+      const appContainer = getAppContainerElement();
+      appContainer && appContainer.setAttribute('aria-hidden', '');
+    }
 
     const boundary = findDOMNode(this);
 
@@ -46,8 +54,10 @@ export default class FocusLock extends React.Component<Props> {
     document.removeEventListener('focusin', this.handleFocusIn);
     document.removeEventListener('keydown', this.handleKeyDown);
 
-    const appContainer = getAppContainerElement();
-    appContainer && appContainer.removeAttribute('aria-hidden');
+    if (!this.props.isNestedMenu) {
+      const appContainer = getAppContainerElement();
+      appContainer && appContainer.removeAttribute('aria-hidden');
+    }
 
     // Restore focus when we unmount. Do this as a callback to make sure stuff gets unmounted.
     setTimeout(() => {
@@ -66,9 +76,10 @@ export default class FocusLock extends React.Component<Props> {
     this.focusFirst();
   }
 
+  // Loop back to the first tabbable element from the last
   handleKeyDown = (event: KeyboardEvent) => {
     const { key, target, shiftKey } = event;
-    if (key !== 'Tab') return;
+    if (key !== 'Tab' || this.props.hasOpenNestedMenu) return;
 
     const els = tabbable(this.boundary);
     const last = els[els.length - 1];
@@ -83,7 +94,9 @@ export default class FocusLock extends React.Component<Props> {
   // Catch the focus if the target is outside of locked element
   handleFocusIn = (event: FocusEvent) => {
     const { target } = event;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof HTMLElement) || this.props.hasOpenNestedMenu) {
+      return;
+    }
 
     const shouldFocus =
       this.boundary &&
