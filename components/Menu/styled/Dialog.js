@@ -47,10 +47,16 @@ export const Dialog = styled('div')`
 export const bodyCss = css`
   overflow: hidden;
   height: 100%;
+  position: relative;
   #__next {
     overflow: hidden;
     height: 100%;
+    position: relative;
   }
+`;
+
+export const htmlCss = css`
+  height: 100%;
 `;
 
 /* margin: 60px auto; */

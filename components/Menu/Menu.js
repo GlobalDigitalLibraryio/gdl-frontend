@@ -8,7 +8,13 @@
 import React, { type Node, type Element } from 'react';
 import { Portal } from 'react-portal';
 
-import { Dialog, FillScreen, Positioner, bodyCss } from './styled/Dialog';
+import {
+  Dialog,
+  FillScreen,
+  Positioner,
+  bodyCss,
+  htmlCss
+} from './styled/Dialog';
 import FocusLock from './FocusLock';
 import Content from './Content';
 import Backdrop from './Backdrop';
@@ -52,6 +58,8 @@ export default class Menu extends React.Component<Props> {
     if (!this.props.isNestedMenu) {
       // The condition satifies Flow
       document.body && document.body.classList.add(bodyCss);
+      document.documentElement &&
+        document.documentElement.classList.add(htmlCss);
     }
   }
 
@@ -59,6 +67,8 @@ export default class Menu extends React.Component<Props> {
     if (!this.props.isNestedMenu) {
       // The condition satifies Flow
       document.body && document.body.classList.remove(bodyCss);
+      document.documentElement &&
+        document.documentElement.classList.remove(htmlCss);
     }
   }
 
