@@ -96,6 +96,7 @@ export default class Menu extends React.Component<Props> {
                 onClick={this.handleDialogClick}
               >
                 <Content
+                  hasOpenNestedMenu={hasOpenNestedMenu}
                   isNestedMenu={isNestedMenu}
                   heading={heading}
                   onClose={onClose}

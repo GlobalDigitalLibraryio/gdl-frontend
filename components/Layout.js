@@ -62,7 +62,7 @@ type Props = {
 
 const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
   <PageWrapper>
-    <PortalWithState closeOnEsc>
+    <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
         <React.Fragment>
           <Navbar

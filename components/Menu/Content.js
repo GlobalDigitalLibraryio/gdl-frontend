@@ -16,6 +16,8 @@ type Props = {
   heading: string | Element<'Trans'>,
   /** Will display a 'back' button instead of a close button in the header */
   isNestedMenu?: boolean,
+  /** For accessibility reasons */
+  hasOpenNestedMenu?: boolean,
   /** Content of the menu */
   children?: Node,
   /**
@@ -35,6 +37,7 @@ export default class Content extends React.Component<Props> {
     const {
       children,
       isNestedMenu,
+      hasOpenNestedMenu,
       heading,
       onClose,
       shouldCloseOnEscapePress
@@ -42,7 +45,11 @@ export default class Content extends React.Component<Props> {
     return (
       <Wrapper>
         {shouldCloseOnEscapePress && (
-          <KeyDown when="Escape" then={event => onClose(event)} />
+          <KeyDown
+            disabled={hasOpenNestedMenu}
+            when="Escape"
+            then={event => onClose(event)}
+          />
         )}
         <Header
           heading={heading}

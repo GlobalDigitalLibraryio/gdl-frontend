@@ -41,6 +41,7 @@ class MenuItem extends React.Component<Props> {
   handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
     if (event.key === 'Enter') {
       this.props.onClick && this.props.onClick(event);
+      this.props.onCustomClick && this.props.onCustomClick(event);
     }
   };
 
