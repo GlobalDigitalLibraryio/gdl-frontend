@@ -110,6 +110,8 @@ const moreStyle = css`
   height: 40px;
 `;
 
+const FeaturedTitle = H1.withComponent('h2');
+
 class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
   static async getInitialProps({ query, accessToken }: Context) {
     const language: ?string = query.lang;
@@ -188,7 +190,7 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           </HeroCovertitle>
           <HeroCardTablet>
             <Box textAlign="center">
-              <H1>{featured.title}</H1>
+              <FeaturedTitle>{featured.title}</FeaturedTitle>
               <P fontSize={[14, 16]} lineHeight={[22, 26]}>
                 {featured.description}
               </P>
@@ -198,7 +200,7 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         </HeroCover>
         <HeroCardMobile>
           <Box textAlign="center">
-            <H1>{featured.title}</H1>
+            <FeaturedTitle>{featured.title}</FeaturedTitle>
             <P fontSize={[14, 16]} lineHeight={[22, 26]}>
               {featured.description}
             </P>
