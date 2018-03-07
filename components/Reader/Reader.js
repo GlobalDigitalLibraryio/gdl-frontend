@@ -105,11 +105,16 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
               currentChapter={chapterNumber}
               totalChapters={numOfChapters}
             />
-            <Box px={[40, 120]} pb={20} flex="1 0 auto">
+            <Box
+              px={[40, 120]}
+              pb={20}
+              flex="1 0 auto"
+              lang={book.language.code}
+            >
               {chapter && (
                 <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
               )}
-              <BookMeta title={book.title} />
+              <BookMeta book={book} />
             </Box>
           </Card>
           <ButtonOverlay

@@ -7,6 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
+import type { BookDetails } from '../../types';
 import media from '../../style/media';
 
 const Div = styled.div`
@@ -20,9 +21,9 @@ const Div = styled.div`
 `;
 
 type Props = {
-  title?: string
+  book: BookDetails
 };
 
-const BookMeta = (props: Props) => <Div>{props.title}</Div>;
+const BookMeta = ({ book }: Props) => <Div>{book.title}</Div>;
 
 export default BookMeta;
