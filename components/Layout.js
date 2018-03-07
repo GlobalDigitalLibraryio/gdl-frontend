@@ -37,7 +37,7 @@ const Container = styled('div')`
   ${navContainerFragment};
 `;
 
-const ContentWrapper = styled('div')`
+const ContentWrapper = styled('main')`
   box-shadow: ${theme.boxShadows.large};
   background: ${theme.colors.grayLighter};
   flex: 1;
