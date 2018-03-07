@@ -65,7 +65,7 @@ const HeroCover = styled('div')`
   `};
 `;
 
-const HeroCovertitle = styled('h3')`
+const HeroCovertitle = styled('h1')`
   position: absolute;
   top: 0;
   left: 0;
@@ -183,6 +183,9 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           pb={['42px', '54px']}
           src={featured.imageUrl}
         >
+          <HeroCovertitle>
+            <Trans>Featured</Trans>
+          </HeroCovertitle>
           <HeroCardTablet>
             <Box textAlign="center">
               <H1>{featured.title}</H1>
@@ -192,9 +195,6 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
               <Button href={featured.link}>More</Button>
             </Box>
           </HeroCardTablet>
-          <HeroCovertitle>
-            <Trans>Featured</Trans>
-          </HeroCovertitle>
         </HeroCover>
         <HeroCardMobile>
           <Box textAlign="center">
