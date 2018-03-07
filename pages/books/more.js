@@ -137,16 +137,11 @@ class BookPage extends React.Component<Props, State> {
           </Box>
           <Box pt={6} pb={30} textAlign="center">
             <Button
-              aria-live="polite"
               disabled={!canLoadMore}
               onClick={this.handleLoadMore}
               isLoading={this.state.isLoadingMore}
             >
-              {this.state.isLoadingMore ? (
-                <Trans>Loading books</Trans>
-              ) : (
-                <Trans>Load more books</Trans>
-              )}
+              <Trans>See more books</Trans>
             </Button>
           </Box>
         </Container>
