@@ -164,7 +164,7 @@ class BookPage extends React.Component<Props> {
                 </Button>
               </Link>
               <Box mt={[15, 20]}>
-                <A isBold isUnderlined href={book.downloads.epub}>
+                <A isBold isUnderlined download href={book.downloads.epub}>
                   <Trans>Download book</Trans>
                 </A>
               </Box>
