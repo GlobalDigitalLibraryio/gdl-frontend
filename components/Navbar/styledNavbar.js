@@ -13,7 +13,7 @@ import theme from '../../style/theme';
 import media from '../../style/media';
 import { navContainerFragment } from '../Container';
 
-export const Nav = styled('nav')`
+export const Bar = styled('div')`
   position: relative;
   background: ${theme.colors.blues.dark};
 `;

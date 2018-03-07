@@ -14,7 +14,7 @@ import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './GDL-logo.svg';
 import {
-  Nav,
+  Bar,
   Container,
   NavItem,
   HamburgerButton,
@@ -28,7 +28,7 @@ type Props = {
 };
 
 const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
-  <Nav>
+  <Bar>
     <Container>
       <NavItem order={[0, 2]}>
         <HamburgerButton
@@ -62,7 +62,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
         </Link>
       </NavItem>
     </Container>
-  </Nav>
+  </Bar>
 );
 
 Navbar.defaultProps = {
