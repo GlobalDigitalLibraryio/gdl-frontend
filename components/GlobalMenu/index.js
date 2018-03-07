@@ -7,6 +7,7 @@
  */
 
 import React, { Fragment } from 'react';
+import { withRouter } from 'next/router';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
 
@@ -22,7 +23,8 @@ import CategoriesMenu from './CategoriesMenu';
 
 type Props = {
   onClose(): void,
-  language: Language
+  language: Language,
+  router: any
 };
 
 type State = {
@@ -74,6 +76,12 @@ class GlobalMenu extends React.Component<Props, State> {
     }
     // Remember the last language we mounted with in the cache
     stateCache.language = this.props.language;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.router !== nextProps.router) {
+      nextProps.onClose();
+    }
   }
 
   /**
@@ -176,5 +184,4 @@ class GlobalMenu extends React.Component<Props, State> {
     );
   }
 }
-
-export default GlobalMenu;
+export default withRouter(GlobalMenu);
