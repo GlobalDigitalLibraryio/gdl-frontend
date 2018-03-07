@@ -91,12 +91,13 @@ export type BookDetails = $ReadOnly<{|
   }
 |}>;
 
-export type FeaturedContent = {|
-  +title: string,
-  +description: string,
-  +link: string,
-  +imageUrl: string
-|};
+export type FeaturedContent = $ReadOnly<{|
+  title: string,
+  description: string,
+  link: string,
+  imageUrl: string,
+  language: Language
+|}>;
 
 export type Context = {
   pathname: string,

@@ -190,8 +190,14 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           </HeroCovertitle>
           <HeroCardTablet>
             <Box textAlign="center">
-              <FeaturedTitle>{featured.title}</FeaturedTitle>
-              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+              <FeaturedTitle lang={featured.language.code}>
+                {featured.title}
+              </FeaturedTitle>
+              <P
+                fontSize={[14, 16]}
+                lineHeight={[22, 26]}
+                lang={featured.language.code}
+              >
                 {featured.description}
               </P>
               <Button href={featured.link}>More</Button>
@@ -200,8 +206,14 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         </HeroCover>
         <HeroCardMobile>
           <Box textAlign="center">
-            <FeaturedTitle>{featured.title}</FeaturedTitle>
-            <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+            <FeaturedTitle lang={featured.language.code}>
+              {featured.title}
+            </FeaturedTitle>
+            <P
+              fontSize={[14, 16]}
+              lineHeight={[22, 26]}
+              lang={featured.language.code}
+            >
               {featured.description}
             </P>
             <Button href={featured.link}>More</Button>
