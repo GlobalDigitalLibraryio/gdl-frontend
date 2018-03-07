@@ -10,7 +10,7 @@ import * as React from 'react';
 
 type Props = {
   when: string,
-  then(): void,
+  then(event: KeyboardEvent): void,
   disabled?: boolean
 };
 
@@ -25,7 +25,7 @@ export default class KeyDown extends React.Component<Props> {
 
   onKeyDown = (event: KeyboardEvent) => {
     if (!this.props.disabled && event.key === this.props.when) {
-      this.props.then();
+      this.props.then(event);
     }
   };
 

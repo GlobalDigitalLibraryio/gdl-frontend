@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
-import Downshift from 'downshift';
 import { MdArrowDownward } from 'react-icons/lib/md';
 import {
   fetchBook,
@@ -36,9 +35,8 @@ import Card from '../../components/Card';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import theme from '../../style/theme';
-import { Menu, MenuItem } from '../../components/Menu';
-import MenuHeader from '../../components/Menu/Header';
 import BookCover from '../../components/BookCover';
+import TranslationLanguage from '../../components/TranslationLanguageMenu';
 
 type Props = {
   book: RemoteData<BookDetails>,
@@ -49,7 +47,8 @@ type Props = {
 type State = {
   selectedLanguage: ?Language,
   preparingTranslation: boolean,
-  translation?: Translation
+  translation?: Translation,
+  showLanguageMenu: boolean
 };
 
 const LinkLike = styled('button')`
@@ -57,10 +56,6 @@ const LinkLike = styled('button')`
   color: ${theme.colors.link};
   border: none;
   font-size: inherit;
-  &[disabled] {
-    cursor: not-allowed;
-    color: ${theme.colors.gray};
-  }
   ${p => p.isUppercased && 'text-transform: uppercase;'};
 `;
 
@@ -85,8 +80,14 @@ class TranslatePage extends React.Component<Props, State> {
 
   state = {
     selectedLanguage: null,
-    preparingTranslation: false
+    preparingTranslation: false,
+    showLanguageMenu: false
   };
+
+  toggleLanguageMenu = () =>
+    this.setState(state => ({
+      showLanguageMenu: !this.state.showLanguageMenu
+    }));
 
   handlePrepareTranslation = async () => {
     this.setState({ preparingTranslation: true });
@@ -101,10 +102,11 @@ class TranslatePage extends React.Component<Props, State> {
   };
 
   handleChangeLanguage = (lang: Language) =>
-    this.setState({ selectedLanguage: lang });
+    this.setState({ selectedLanguage: lang, showLanguageMenu: false });
 
   render() {
     const { book, supportedLanguages, i18n } = this.props;
+    const { selectedLanguage } = this.state;
 
     return (
       <Layout
@@ -158,47 +160,26 @@ class TranslatePage extends React.Component<Props, State> {
             <P color={theme.colors.grayDark}>
               <Trans>Translate to</Trans>
             </P>
-            <Downshift
-              onChange={this.handleChangeLanguage}
-              itemToString={(lang: Language) => lang.name}
-              id="translationLangMenu"
-              render={({
-                isOpen,
-                getButtonProps,
-                getItemProps,
-                selectedItem,
-                closeMenu
-              }) => (
-                <div>
-                  {selectedItem ? (
-                    <div>
-                      <strong>{selectedItem.name}</strong>
-                      <LinkLike {...getButtonProps()} isUppercased>
-                        Change
-                      </LinkLike>
-                    </div>
-                  ) : (
-                    <LinkLike {...getButtonProps()}>Choose language</LinkLike>
-                  )}
-                  {isOpen && (
-                    <Menu onCloseRequested={closeMenu}>
-                      <MenuHeader h={48} onClose={closeMenu}>
-                        <Trans>Choose language</Trans>
-                      </MenuHeader>
-                      {supportedLanguages.map(lang => (
-                        <MenuItem
-                          key={lang.code}
-                          {...getItemProps({ item: lang })}
-                          thinBorder
-                        >
-                          {lang.name}
-                        </MenuItem>
-                      ))}
-                    </Menu>
-                  )}
-                </div>
+            {this.state.showLanguageMenu && (
+              <TranslationLanguage
+                languages={supportedLanguages}
+                selectedLanguage={selectedLanguage}
+                onSelectLanguage={this.handleChangeLanguage}
+                onClose={this.toggleLanguageMenu}
+              />
+            )}
+            {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
+            <LinkLike
+              isUppercased={Boolean(selectedLanguage)}
+              onClick={this.toggleLanguageMenu}
+              aria-expanded={this.state.showLanguageMenu}
+            >
+              {selectedLanguage ? (
+                <Trans>Change</Trans>
+              ) : (
+                <Trans>Choose language</Trans>
               )}
-            />
+            </LinkLike>
           </Box>
           {this.state.translation ? (
             <React.Fragment>

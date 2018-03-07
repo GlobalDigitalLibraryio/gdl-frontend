@@ -16,10 +16,16 @@
   "lingui": {
     "fallbackLocale": "en",
     "sourceLocale": "en",
-    "srcPathIgnorePatterns": ["/node_modules/", "/.next", "/flow-typed"]
+    "srcPathIgnorePatterns": [
+      "/node_modules/",
+      "/.next",
+      "/flow-typed"
+    ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -35,8 +41,7 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check":
-      "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.2",
@@ -44,7 +49,6 @@
     "compression": "1.7.2",
     "cookie-parser": "1.4.3",
     "domurl": "2.1.7",
-    "downshift": "1.28.0",
     "emotion": "9.0.1",
     "emotion-server": "9.0.1",
     "emotion-theming": "9.0.0",
@@ -67,7 +71,8 @@
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",
     "styled-map": "^2.0.1",
-    "styled-system": "2.1.0"
+    "styled-system": "2.1.0",
+    "tabbable": "^1.1.2"
   },
   "devDependencies": {
     "@lingui/babel-preset-react": "2.0.2",

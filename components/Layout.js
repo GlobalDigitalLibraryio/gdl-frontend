@@ -15,7 +15,7 @@ import Navbar from './Navbar';
 import Breadcrumb from './Breadcrumb';
 import { navContainerFragment } from './Container';
 import Box from './Box';
-import Sidemenu from './Sidemenu';
+import GlobalMenu from './GlobalMenu';
 import theme from '../style/theme';
 
 const Toolbar = styled('div')`
@@ -62,7 +62,7 @@ type Props = {
 
 const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
   <PageWrapper>
-    <PortalWithState closeOnEsc>
+    <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
         <React.Fragment>
           <Navbar
@@ -80,13 +80,7 @@ const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
               {toolbarEnd}
             </Container>
           </Toolbar>
-          {portal(
-            <Sidemenu
-              id="sidenav"
-              onCloseRequested={closePortal}
-              language={language}
-            />
-          )}
+          {portal(<GlobalMenu onClose={closePortal} language={language} />)}
         </React.Fragment>
       )}
     </PortalWithState>
