@@ -13,7 +13,7 @@ import { MdTranslate } from 'react-icons/lib/md';
 import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { Book, BookDetails, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link } from '../../routes';
 import Box from '../../components/Box';
@@ -36,7 +36,7 @@ import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 
 type Props = {
-  book: RemoteData<Book>,
+  book: RemoteData<BookDetails>,
   similar: RemoteData<{
     results: Array<Book>
   }>,
@@ -55,11 +55,7 @@ const CoverWrap = styled('div')`
     z-index: 10;
     left: 50%;
     transform: translateX(-50%);
-    width: 150px;
-  `} height: 190px;
-
-  ${media.tablet`
-    height: 365px;
+  `} ${media.tablet`
     flex: 0 0 260px;
     margin-right: 20px;
   `};
@@ -141,7 +137,11 @@ class BookPage extends React.Component<Props> {
         <Container pt={[15, 20]}>
           <Flex mt={[120, 0]} style={{ position: 'relative' }}>
             <CoverWrap>
-              <BookCover coverPhoto={book.coverPhoto} width={[150, 260]} />
+              <BookCover
+                coverPhoto={book.coverPhoto}
+                w={[130, 260]}
+                h={[175, 365]}
+              />
             </CoverWrap>
             <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
               <H1 fontSize={[28, 38]}>{book.title}</H1>

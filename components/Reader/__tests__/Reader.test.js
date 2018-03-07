@@ -10,7 +10,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import nock from 'nock';
 import Router from 'next/router';
-import type { Book } from '../../../types';
+import type { BookDetails } from '../../../types';
 import Reader from '../Reader';
 
 // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
@@ -20,7 +20,7 @@ const mockedRouter = {
 };
 Router.router = mockedRouter;
 
-const book: Book = {
+const book: BookDetails = {
   id: 1,
   title: 'A Life in the Fair Jungle',
   description:

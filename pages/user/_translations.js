@@ -55,7 +55,7 @@ class TranslationCard extends React.Component<
     return (
       <Card key={translation.id} p={[15, 20]} mt={20}>
         <Flex>
-          <Box w={[75, 120]} h={[100, 150]} mr={[10, 20]}>
+          <Box mr={[10, 20]}>
             <Link
               route="book"
               params={{
@@ -65,7 +65,8 @@ class TranslationCard extends React.Component<
             >
               <a>
                 <BookCover
-                  width={[75, 120]}
+                  w={[75, 120]}
+                  h={[100, 150]}
                   coverPhoto={translation.coverPhoto}
                 />
               </a>

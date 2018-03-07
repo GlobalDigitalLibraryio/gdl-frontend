@@ -8,13 +8,13 @@
 
 import * as React from 'react';
 import { fetchBook } from '../../fetch';
-import type { Book, RemoteData, Context } from '../../types';
+import type { BookDetails, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Head from '../../components/Head';
 import Reader from '../../components/Reader';
 
 type Props = {
-  book: RemoteData<Book>,
+  book: RemoteData<BookDetails>,
   url: {
     query: {
       chapter?: string

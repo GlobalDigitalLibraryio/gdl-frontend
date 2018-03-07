@@ -64,26 +64,32 @@ export type Translation = {
   coverPhoto?: CoverPhoto
 };
 
-export type Book = {|
-  +id: number,
-  +title: string,
-  +description: string,
-  +datePublished?: string, // Optional
-  +publisher: Publisher,
-  +license: License,
-  +readingLevel: string,
-  +supportsTranslation: boolean,
-  +categories: Array<Category>,
-  +contributors: Array<Contributor>,
-  +language: Language,
-  +availableLanguages: Array<Language>,
-  +chapters: Array<ChapterSummary>,
-  +downloads: {
+export type Book = $ReadOnly<{|
+  id: number,
+  title: string,
+  description: string,
+  highlightTitle?: string,
+  highlightDescription?: string,
+  readingLevel: string,
+  language: Language,
+  coverPhoto?: CoverPhoto
+|}>;
+
+export type BookDetails = $ReadOnly<{|
+  ...Book,
+  datePublished?: string,
+  publisher: Publisher,
+  license: License,
+  supportsTranslation: boolean,
+  categories: Array<Category>,
+  contributors: Array<Contributor>,
+  availableLanguages: Array<Language>,
+  chapters: Array<ChapterSummary>,
+  downloads: {
     epub: string,
     pdf: string
-  },
-  +coverPhoto?: CoverPhoto
-|};
+  }
+|}>;
 
 export type FeaturedContent = {|
   +title: string,

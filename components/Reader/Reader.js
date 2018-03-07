@@ -10,7 +10,7 @@ import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
 import fetchWithToken from '../../fetch';
 import Box from '../Box';
-import type { Book, Chapter } from '../../types';
+import type { BookDetails, Chapter } from '../../types';
 import Backdrop from './Backdrop';
 import Page from './Page';
 import Toolbar from './Toolbar';
@@ -34,7 +34,7 @@ const Card = styled.div`
 `;
 
 type ReaderProps = {
-  book: Book,
+  book: BookDetails,
   onRequestClose(): void,
   chapter: ?Chapter,
   chapterNumber: number,
@@ -142,7 +142,7 @@ type ReaderContainerState = {
 };
 
 type ReaderContainerProps = {
-  book: Book,
+  book: BookDetails,
   initialChapter: ?string
 };
 

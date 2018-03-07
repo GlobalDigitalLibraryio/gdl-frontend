@@ -11,6 +11,7 @@ import type {
   RemoteData,
   Language,
   Book,
+  BookDetails,
   FeaturedContent,
   Translation
 } from './types';
@@ -130,7 +131,7 @@ export function fetchFeaturedContent(
 export function fetchBook(
   id: string | number,
   language: string
-): (accessToken: ?string) => Promise<RemoteData<Book>> {
+): (accessToken: ?string) => Promise<RemoteData<BookDetails>> {
   return accessToken =>
     fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(accessToken);
 }
@@ -192,4 +193,23 @@ export function sendToTranslation(
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   })();
+}
+
+export function search(
+  query: string,
+  language?: string,
+  options: Options = {}
+): (
+  acccessToken: ?string
+) => Promise<
+  RemoteData<{ page: number, totalCount: number, results: Array<Book> }>
+> {
+  return accessToken =>
+    fetchWithToken(
+      encodeURI(
+        `${bookApiUrl}/search/${language ||
+          ''}?query=${query}&page-size=${options.pageSize ||
+          PAGE_SIZE}&page=${options.page || 1}`
+      )
+    )(accessToken);
 }
