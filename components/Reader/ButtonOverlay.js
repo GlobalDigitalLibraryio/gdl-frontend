@@ -53,9 +53,9 @@ const TouchOverlay = (props: Props) => [
     disabled={props.disablePrev}
   >
     <SrOnly>
-      <Trans>Previous chapter</Trans>
+      <Trans>Previous</Trans>
     </SrOnly>
-    <MdKeyboardArrowLeft size={50} />
+    <MdKeyboardArrowLeft aria-hidden size={50} />
   </Button>,
   <Button
     key="right"
@@ -65,9 +65,9 @@ const TouchOverlay = (props: Props) => [
     disabled={props.disableNext}
   >
     <SrOnly>
-      <Trans>Next chapter</Trans>
+      <Trans>Next</Trans>
     </SrOnly>
-    <MdKeyboardArrowRight size={50} />
+    <MdKeyboardArrowRight aria-hidden size={50} />
   </Button>
 ];
 

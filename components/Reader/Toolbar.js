@@ -57,7 +57,7 @@ const Toolbar = (props: Props) => (
   <Div>
     <div>{`${props.currentChapter} / ${props.totalChapters}`}</div>
     <Button onClick={props.onRequestClose} type="button">
-      <MdClose />{' '}
+      <MdClose aria-hidden />{' '}
       <SrOnly>
         <Trans>Close book</Trans>
       </SrOnly>
@@ -65,4 +65,4 @@ const Toolbar = (props: Props) => (
   </Div>
 );
 
-export { Toolbar as default, Button };
+export default Toolbar;
