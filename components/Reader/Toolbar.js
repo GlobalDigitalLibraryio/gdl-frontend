@@ -52,11 +52,10 @@ type Props = {
   totalChapters: number
 };
 
+// Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line
 const Toolbar = (props: Props) => (
   <Div>
-    <div>
-      {props.currentChapter} / {props.totalChapters}
-    </div>
+    <div>{`${props.currentChapter} / ${props.totalChapters}`}</div>
     <Button onClick={props.onRequestClose} type="button">
       <MdClose />{' '}
       <SrOnly>
