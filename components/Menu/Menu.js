@@ -37,7 +37,9 @@ type Props = {
     Function that will be called to initiate the exit transition.
   */
   onClose: (
-    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>
+    event: | SyntheticMouseEvent<any>
+    | SyntheticKeyboardEvent<any>
+    | KeyboardEvent
   ) => void,
   /** Boolean indicating if pressing the `esc` key should close the modal. */
   shouldCloseOnEscapePress: boolean,

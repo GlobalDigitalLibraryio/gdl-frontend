@@ -17,7 +17,9 @@ type Props = {
   onSelectLanguage: Language => void,
   languages: Array<Language>,
   onClose: (
-    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>
+    event: | SyntheticMouseEvent<any>
+    | SyntheticKeyboardEvent<any>
+    | KeyboardEvent
   ) => void
 };
 

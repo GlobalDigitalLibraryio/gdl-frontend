@@ -17,7 +17,9 @@ type Props = {
   levels: Array<string>,
   language: Language,
   onClose: (
-    event: SyntheticMouseEvent<any> | SyntheticKeyboardEvent<any>
+    event: | SyntheticMouseEvent<any>
+    | SyntheticKeyboardEvent<any>
+    | KeyboardEvent
   ) => void
 };
 

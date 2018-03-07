@@ -40,8 +40,9 @@ class MenuItem extends React.Component<Props> {
 
   handleKeyDown = (event: SyntheticKeyboardEvent<any>) => {
     if (event.key === 'Enter') {
+      // If we don't preventDefault here. It bubbles up as both a keyboard event and a mousevent, causing handlers to be called twice.... ?
+      event.preventDefault();
       this.props.onClick && this.props.onClick(event);
-      this.props.onCustomClick && this.props.onCustomClick(event);
     }
   };
 
@@ -60,7 +61,7 @@ class MenuItem extends React.Component<Props> {
       <ItemComponent
         className={cx({ [itemActionStyle]: href || onClick })}
         onClick={this.handleClick}
-        onKeyDown={this.handleKeyDown}
+        onKeyDown={!href && onClick ? this.handleKeyDown : null}
         href={href}
         showKeyLine={showKeyLine}
         tabIndex={href ? null : onClick ? '0' : null}
