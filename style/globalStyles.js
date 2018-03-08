@@ -38,10 +38,6 @@ export default css`
       text-decoration: none;
     }
 
-    a[type='button'] {
-      -webkit-appearance: none;
-    }
-
     strong {
       font-weight: bold;
     }
