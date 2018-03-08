@@ -15,7 +15,7 @@ import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './GDL-logo.svg';
 import {
   Bar,
-  Container,
+  DisplayContainer,
   NavItem,
   HamburgerButton,
   BrandLink
@@ -27,43 +27,59 @@ type Props = {
   onMenuClick(): void
 };
 
-const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => (
-  <Bar>
-    <Container>
-      <NavItem order={[0, 2]}>
-        <HamburgerButton
-          type="button"
-          aria-label="Menu"
-          onClick={onMenuClick}
-          aria-expanded={menuIsExpanded}
-        >
-          <MdMenu aria-hidden />
-          <span>
-            <Trans>Menu</Trans>
-          </span>
-        </HamburgerButton>
-      </NavItem>
-      <NavItem order={[0, 0]}>
-        <Link route="books" passHref params={{ lang }}>
-          <BrandLink>
-            <GlobalDigitalLibraryLogo aria-hidden />
-            <SrOnly>Global Digital Library</SrOnly>
-          </BrandLink>
-        </Link>
-      </NavItem>
-      <NavItem order={[0, 1]}>
-        <Link route="search" params={{ lang }}>
-          <a>
-            <MdSearch aria-hidden />
-            <span>
-              <Trans>Search</Trans>
-            </span>
-          </a>
-        </Link>
-      </NavItem>
-    </Container>
-  </Bar>
-);
+// We need to hide/show "different" navbars here based on viewport size. Reordering the items via flex ordering isn't enough because of accessibility/tab order
+const Navbar = ({ onMenuClick, menuIsExpanded, lang }: Props) => {
+  const menuButton = (
+    <HamburgerButton
+      type="button"
+      aria-label="Menu"
+      onClick={onMenuClick}
+      aria-expanded={menuIsExpanded}
+    >
+      <MdMenu aria-hidden />
+      <span>
+        <Trans>Menu</Trans>
+      </span>
+    </HamburgerButton>
+  );
+
+  const searchLink = (
+    <Link route="search" params={{ lang }}>
+      <a>
+        <MdSearch aria-hidden />
+        <span>
+          <Trans>Search</Trans>
+        </span>
+      </a>
+    </Link>
+  );
+
+  const brandLink = (
+    <Link route="books" passHref params={{ lang }}>
+      <BrandLink>
+        <GlobalDigitalLibraryLogo aria-hidden />
+        <SrOnly>Global Digital Library</SrOnly>
+      </BrandLink>
+    </Link>
+  );
+
+  return (
+    <Bar>
+      <DisplayContainer display={['flex', 'none']}>
+        <NavItem>{menuButton}</NavItem>
+        <NavItem>{brandLink}</NavItem>
+        <NavItem>{searchLink}</NavItem>
+      </DisplayContainer>
+      <DisplayContainer display={['none', 'flex']}>
+        <NavItem>{brandLink}</NavItem>
+        <NavItem style={{ marginLeft: 'auto', marginRight: '1rem' }}>
+          {searchLink}
+        </NavItem>
+        <NavItem>{menuButton}</NavItem>
+      </DisplayContainer>
+    </Bar>
+  );
+};
 
 Navbar.defaultProps = {
   menuIsExpanded: false,
