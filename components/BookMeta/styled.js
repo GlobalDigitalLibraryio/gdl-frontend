@@ -1,25 +1,21 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
 
 import styled from 'react-emotion';
-import media from '../style/media';
+import media from '../../style/media';
 
-const H6 = styled.h6`
+export const Heading = styled('div')`
   margin-top: 0;
   margin-bottom: 0;
   text-transform: uppercase;
   font-weight: bold;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 0.8rem;
   ${media.tablet`
-    font-size: 14px;
-    line-height: 18px;
+    font-size: 0.9rem;
   `};
 `;
-
-export default H6;

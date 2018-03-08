@@ -20,7 +20,7 @@ const Div = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  color: ${theme.colors.grayDark};
+  color: ${theme.colors.grayDarker};
   border-bottom: 1px solid ${theme.colors.grayLight};
   background: ${theme.colors.white};
   ${flexCenter};
@@ -52,13 +52,12 @@ type Props = {
   totalChapters: number
 };
 
+// Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line
 const Toolbar = (props: Props) => (
   <Div>
-    <div>
-      {props.currentChapter} / {props.totalChapters}
-    </div>
+    <div>{`${props.currentChapter} / ${props.totalChapters}`}</div>
     <Button onClick={props.onRequestClose} type="button">
-      <MdClose />{' '}
+      <MdClose aria-hidden />{' '}
       <SrOnly>
         <Trans>Close book</Trans>
       </SrOnly>
@@ -66,4 +65,4 @@ const Toolbar = (props: Props) => (
   </Div>
 );
 
-export { Toolbar as default, Button };
+export default Toolbar;

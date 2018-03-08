@@ -20,6 +20,7 @@ const COVER_WIDTHS = [130, 260];
 // Mobile size: 80 x 108
 
 type Props = {
+  ariaHidden: boolean,
   src: ?string,
   w: Array<string | number>,
   h: Array<string | number>
@@ -38,16 +39,23 @@ function srcSet(url: string, width: number) {
  * Add query parameters to book cover images so they fit our wanted ratio
  * This also means we don't download the full image, just the part we want
  */
-const CoverImage = ({ src, ...props }: Props) => {
+const CoverImage = ({ src, ariaHidden, ...props }: Props) => {
   const srcOrPlaceholder =
     (src && srcUrl(src, COVER_WIDTHS[1])) || NO_COVER_PLACEHOLDER_URL;
 
   if (src == null) {
-    return <Image src={NO_COVER_PLACEHOLDER_URL} {...props} />;
+    return (
+      <Image
+        ariaHidden={ariaHidden}
+        src={NO_COVER_PLACEHOLDER_URL}
+        {...props}
+      />
+    );
   }
 
   return (
     <Image
+      ariaHidden={ariaHidden}
       srcSet={srcSet(src, COVER_WIDTHS[0])}
       src={srcOrPlaceholder}
       {...props}

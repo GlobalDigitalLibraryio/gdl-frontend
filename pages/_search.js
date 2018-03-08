@@ -121,16 +121,28 @@ class SearchPage extends React.Component<Props, State> {
       }
     )();
 
-    this.setState(state => ({
-      isLoadingMore: false,
-      searchResult: {
-        // Set the newly fetched results
-        ...searchResult,
-        // But append the array to the books we already have
-        // $FlowFixMe Should be okay, but doesn't type check
-        results: state.searchResult.results.concat(searchResult.results)
+    // Focus the first book of the extra books we're loading
+    const toFocus = searchResult.results[0];
+
+    this.setState(
+      state => ({
+        isLoadingMore: false,
+        searchResult: {
+          // Set the newly fetched results
+          ...searchResult,
+          // But append the array to the books we already have
+          // $FlowFixMe Should be okay, but doesn't type check
+          results: state.searchResult.results.concat(searchResult.results)
+        }
+      }),
+      () => {
+        // Focus the second anchor found, the first is an anchor with an image that is hidden from screen readers
+        const bookAnchor = document.querySelectorAll(
+          `[href='/${toFocus.language.code}/books/${toFocus.id}']`
+        )[1];
+        bookAnchor && bookAnchor.focus();
       }
-    }));
+    );
   };
   handleQueryChange = event =>
     this.setState({ searchQuery: event.target.value });

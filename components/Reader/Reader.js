@@ -99,6 +99,24 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
           onSwipedRight={this.props.onRequestPrevious}
           onTap={this.onTap}
         >
+          <Card>
+            <Toolbar
+              onRequestClose={this.props.onRequestClose}
+              currentChapter={chapterNumber}
+              totalChapters={numOfChapters}
+            />
+            <Box
+              px={[40, 120]}
+              pb={20}
+              flex="1 0 auto"
+              lang={book.language.code}
+            >
+              {chapter && (
+                <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
+              )}
+              <BookMeta book={book} />
+            </Box>
+          </Card>
           <ButtonOverlay
             showOnMobile={this.state.showOverlay}
             onRequestNext={this.props.onRequestNext}
@@ -106,19 +124,6 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
             disableNext={disableNext}
             disablePrev={disablePrev}
           />
-          <Card>
-            <Toolbar
-              onRequestClose={this.props.onRequestClose}
-              currentChapter={chapterNumber}
-              totalChapters={numOfChapters}
-            />
-            <Box px={[40, 120]} pb={20} flex="1 0 auto">
-              {chapter && (
-                <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
-              )}
-              <BookMeta title={book.title} />
-            </Box>
-          </Card>
         </Swipeable>
         <KeyDown
           when="ArrowRight"

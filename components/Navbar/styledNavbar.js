@@ -7,19 +7,18 @@
  */
 
 import styled from 'react-emotion';
-import { order } from 'styled-system';
+import { display } from 'styled-system';
 
 import theme from '../../style/theme';
 import media from '../../style/media';
 import { navContainerFragment } from '../Container';
 
-export const Nav = styled('nav')`
+export const Bar = styled('div')`
   position: relative;
   background: ${theme.colors.blues.dark};
 `;
 
 export const NavItem = styled('div')`
-  ${order};
   color: ${theme.colors.white};
   font-weight: 500;
   font-size: 1.1rem;
@@ -56,9 +55,8 @@ export const BrandLink = styled('a')`
   }
 `;
 
-// FIXME: The hack here to align logo correctly on desktop
-export const Container = styled('div')`
-  display: flex;
+export const DisplayContainer = styled('div')`
+  ${display};
   align-items: center;
   ${navContainerFragment};
   justify-content: space-between;
@@ -66,8 +64,5 @@ export const Container = styled('div')`
   ${media.tablet`
     justify-content: flex-end;
     min-height: 80px;
-    div:nth-child(2) {
-      margin-right: auto;
-    }
   `};
 `;

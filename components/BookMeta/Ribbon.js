@@ -10,8 +10,8 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { triangle } from 'polished';
 import { Trans } from '@lingui/react';
-import media from '../style/media';
-import theme from '../style/theme';
+import media from '../../style/media';
+import theme from '../../style/theme';
 
 const HEIGHT = '30px';
 

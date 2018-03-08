@@ -7,12 +7,14 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
+import type { BookDetails } from '../../types';
 import media from '../../style/media';
+import theme from '../../style/theme';
 
 const Div = styled.div`
   margin-top: 30px;
   font-size: 14px;
-  color: #adadad;
+  color: ${theme.colors.grayDarker};
   text-align: center;
   ${media.tablet`
     margin-top: 40px;
@@ -20,9 +22,9 @@ const Div = styled.div`
 `;
 
 type Props = {
-  title?: string
+  book: BookDetails
 };
 
-const BookMeta = (props: Props) => <Div>{props.title}</Div>;
+const BookMeta = ({ book }: Props) => <Div>{book.title}</Div>;
 
 export default BookMeta;

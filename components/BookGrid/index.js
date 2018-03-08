@@ -9,8 +9,7 @@
 import * as React from 'react';
 import GridContainer from './styledGridContainer';
 import type { Book } from '../../types';
-import BookCardCover from './../BookCardCover';
-import { Link } from '../../routes';
+import BookLink from './../BookLink';
 
 type Props = {
   books: Array<Book>,
@@ -19,13 +18,7 @@ type Props = {
 
 const BookGrid = ({ books, route }: Props) => (
   <GridContainer>
-    {books.map(book => (
-      <Link route={route(book)} key={book.id}>
-        <a>
-          <BookCardCover book={book} />
-        </a>
-      </Link>
-    ))}
+    {books.map(book => <BookLink key={book.id} book={book} route={route} />)}
   </GridContainer>
 );
 

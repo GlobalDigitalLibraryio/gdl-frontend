@@ -33,7 +33,6 @@ import Head from '../components/Head';
 import BookList from '../components/BookList';
 import Button from '../components/Button';
 import P from '../components/P';
-import H3 from '../components/H3';
 import H1 from '../components/H1';
 import A from '../components/A';
 import theme from '../style/theme';
@@ -65,7 +64,7 @@ const HeroCover = styled('div')`
   `};
 `;
 
-const HeroCovertitle = styled('h3')`
+const HeroCovertitle = styled('h1')`
   position: absolute;
   top: 0;
   left: 0;
@@ -109,6 +108,8 @@ const moreStyle = css`
   `};
   height: 40px;
 `;
+
+const FeaturedTitle = H1.withComponent('h2');
 
 class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
   static async getInitialProps({ query, accessToken }: Context) {
@@ -183,23 +184,35 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           pb={['42px', '54px']}
           src={featured.imageUrl}
         >
+          <HeroCovertitle>
+            <Trans>Featured</Trans>
+          </HeroCovertitle>
           <HeroCardTablet>
             <Box textAlign="center">
-              <H1>{featured.title}</H1>
-              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+              <FeaturedTitle lang={featured.language.code}>
+                {featured.title}
+              </FeaturedTitle>
+              <P
+                fontSize={[14, 16]}
+                lineHeight={[22, 26]}
+                lang={featured.language.code}
+              >
                 {featured.description}
               </P>
               <Button href={featured.link}>More</Button>
             </Box>
           </HeroCardTablet>
-          <HeroCovertitle>
-            <Trans>Featured</Trans>
-          </HeroCovertitle>
         </HeroCover>
         <HeroCardMobile>
           <Box textAlign="center">
-            <H1>{featured.title}</H1>
-            <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+            <FeaturedTitle lang={featured.language.code}>
+              {featured.title}
+            </FeaturedTitle>
+            <P
+              fontSize={[14, 16]}
+              lineHeight={[22, 26]}
+              lang={featured.language.code}
+            >
               {featured.description}
             </P>
             <Button href={featured.link}>More</Button>
@@ -209,20 +222,18 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         {levels.map((level, index) => (
           <Hero py={[15, 22]} key={level}>
             <Container>
-              <H3>
-                <Trans>Level {level}</Trans>{' '}
-                <Link
-                  route="level"
-                  params={{ lang: justArrived.language.code, level }}
-                  passHref
-                >
-                  <A isUppercased className={moreStyle}>
-                    <Trans>More</Trans>
-                  </A>
-                </Link>
-              </H3>
+              <Link
+                route="level"
+                params={{ lang: justArrived.language.code, level }}
+                passHref
+              >
+                <A isUppercased className={moreStyle}>
+                  <Trans>More</Trans>
+                </A>
+              </Link>
               <BookList
                 books={booksByLevel[index].results}
+                heading={<Trans>Level {level}</Trans>}
                 route={(book: Book) =>
                   `/${book.language.code}/books/level${level}/${book.id}`
                 }
@@ -233,19 +244,17 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         ))}
         <Hero py={[15, 22]}>
           <Container>
-            <H3>
-              <Trans>New arrivals</Trans>{' '}
-              <Link
-                route="new"
-                params={{ lang: justArrived.language.code }}
-                passHref
-              >
-                <A isUppercased className={moreStyle}>
-                  <Trans>More</Trans>
-                </A>
-              </Link>
-            </H3>
+            <Link
+              route="new"
+              params={{ lang: justArrived.language.code }}
+              passHref
+            >
+              <A isUppercased className={moreStyle}>
+                <Trans>More</Trans>
+              </A>
+            </Link>
             <BookList
+              heading={<Trans>New arrivals</Trans>}
               books={justArrived.results}
               mt={20}
               route={(book: Book) =>

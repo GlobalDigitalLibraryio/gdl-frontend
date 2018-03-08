@@ -37,7 +37,7 @@ const Container = styled('div')`
   ${navContainerFragment};
 `;
 
-const ContentWrapper = styled('div')`
+const ContentWrapper = styled('main')`
   box-shadow: ${theme.boxShadows.large};
   background: ${theme.colors.grayLighter};
   flex: 1;
@@ -65,21 +65,23 @@ const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
     <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
         <React.Fragment>
-          <Navbar
-            lang={language.code}
-            onMenuClick={openPortal}
-            menuIsExpanded={isOpen}
-          />
-          <Toolbar>
-            <Container>
-              {crumbs ? (
-                <Breadcrumb language={language.code} crumbs={crumbs} />
-              ) : (
-                <Box mr="auto" />
-              )}
-              {toolbarEnd}
-            </Container>
-          </Toolbar>
+          <nav>
+            <Navbar
+              lang={language.code}
+              onMenuClick={openPortal}
+              menuIsExpanded={isOpen}
+            />
+            <Toolbar>
+              <Container>
+                {crumbs ? (
+                  <Breadcrumb language={language.code} crumbs={crumbs} />
+                ) : (
+                  <Box mr="auto" />
+                )}
+                {toolbarEnd}
+              </Container>
+            </Toolbar>
+          </nav>
           {portal(<GlobalMenu onClose={closePortal} language={language} />)}
         </React.Fragment>
       )}

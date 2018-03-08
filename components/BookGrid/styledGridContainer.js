@@ -14,7 +14,7 @@ import media from '../../style/media';
  */
 
 const GridContainer = styled('div')`
-  a {
+  > div {
     display: inline-block;
     margin: 7.5px;
   }
@@ -29,7 +29,7 @@ const GridContainer = styled('div')`
       grid-gap: 20px;
     `};
 
-    a {
+    > div {
       margin: 0;
     }
   }
