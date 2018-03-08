@@ -20,7 +20,7 @@ const Div = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  color: ${theme.colors.grayDark};
+  color: ${theme.colors.grayDarker};
   border-bottom: 1px solid ${theme.colors.grayLight};
   background: ${theme.colors.white};
   ${flexCenter};
