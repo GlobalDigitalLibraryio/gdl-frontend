@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
+
+import { Link } from '../routes';
 import type { Book } from '../types';
 import Card from './Card';
 import ReadingLevel from './ReadingLevel';
@@ -22,11 +24,13 @@ const Div = styled(Box)`
   background-color: ${theme.colors.white};
 `;
 
-const BookTitle = styled('div')`
+const BookTitle = styled('a')`
+  display: block;
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-bottom: 7px;
   overflow: hidden;
+  color: inherit;
 `;
 
 const hoverImgEffect = css`
@@ -38,17 +42,32 @@ const hoverImgEffect = css`
   }
 `;
 
+const A = styled('a')`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;
+
 // TODO: Figure out why box-shadow is clipped
-export default ({ book }: { book: Book }) => (
+export default ({ book, route }: { book: Book, route(book: Book): string }) => (
   <Box w={[105, 130]}>
     <Card className={hoverImgEffect}>
+      <Link route={route(book)} passHref>
+        <A aria-hidden tabIndex="-1" />
+      </Link>
       <CoverImage
         w={[105, 130]}
         h={[130, 160]}
         src={book.coverPhoto && book.coverPhoto.large}
       />
       <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
-        <BookTitle lang={book.language.code}>{book.title}</BookTitle>
+        <Link route={route(book)} passHref>
+          <BookTitle lang={book.language.code} title={book.title}>
+            {book.title}
+          </BookTitle>
+        </Link>
         <ReadingLevel level={book.readingLevel} />
       </Div>
     </Card>

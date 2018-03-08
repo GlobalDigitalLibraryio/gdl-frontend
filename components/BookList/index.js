@@ -13,21 +13,23 @@ import { Trans } from '@lingui/react';
 import Flex from '../Flex';
 import type { Book } from '../../types';
 import BookCardCover from '../BookCardCover';
-import { Link } from '../../routes';
 import H3 from '../H3';
 
+/**
+ * Wrap an extra div around the book covers to get the nice horizontal scrolling on small screens
+ */
 const scroll = css`
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  a {
+  > div {
     margin-bottom: 2px;
     margin-left: 6px;
     margin-right: 6px;
   }
-  a:first-child {
+  > div:first-child {
     margin-left: 0px;
   }
-  a:last-child {
+  > div:last-child {
     padding-right: 15px;
   }
 `;
@@ -45,11 +47,9 @@ const BookList = ({ books, route, heading, ...props }: Props) => (
     <Heading>{heading}</Heading>
     <Flex mx={[-15, -20]} px={[15, 20]} className={scroll} {...props}>
       {books.map(book => (
-        <Link route={route(book)} key={book.id}>
-          <a>
-            <BookCardCover book={book} />
-          </a>
-        </Link>
+        <div key={book.id}>
+          <BookCardCover book={book} route={route} />
+        </div>
       ))}
     </Flex>
   </React.Fragment>
