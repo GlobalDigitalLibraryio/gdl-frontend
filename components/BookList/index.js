@@ -12,7 +12,7 @@ import { Trans } from '@lingui/react';
 
 import Flex from '../Flex';
 import type { Book } from '../../types';
-import BookCardCover from '../BookCardCover';
+import BookLink from '../BookLink';
 import H3 from '../H3';
 
 /**
@@ -48,7 +48,7 @@ const BookList = ({ books, route, heading, ...props }: Props) => (
     <Flex mx={[-15, -20]} px={[15, 20]} className={scroll} {...props}>
       {books.map(book => (
         <div key={book.id}>
-          <BookCardCover book={book} route={route} />
+          <BookLink book={book} route={route} />
         </div>
       ))}
     </Flex>

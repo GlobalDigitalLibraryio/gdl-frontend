@@ -101,11 +101,11 @@ class BookPage extends React.Component<Props, State> {
       () => {
         // Use a query selector to find the book we want to focus.
         // TODO: Don't both with 'new arrivals' page now. We're cleaning up links soon anyways
-        const bookAnchor = document.querySelector(
+        const bookAnchor = document.querySelectorAll(
           `[href='/${toFocus.language.code}/books/level${
             toFocus.readingLevel
           }/${toFocus.id}']`
-        );
+        )[1];
         bookAnchor && bookAnchor.focus();
       }
     );

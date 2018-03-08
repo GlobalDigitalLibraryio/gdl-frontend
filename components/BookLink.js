@@ -33,16 +33,20 @@ const BookTitle = styled('a')`
   color: inherit;
 `;
 
+/**
+ * Add small brightness effect to book cover when hovered
+ */
 const hoverImgEffect = css`
-  img {
-    transition: 1s opacity linear;
-    &:hover {
+  &:hover {
+    img {
+      transition: 1s opacity linear;
+      pointer-events: none;
       filter: opacity(0.9);
     }
   }
 `;
 
-const A = styled('a')`
+const ClickTarget = styled('a')`
   position: absolute;
   left: 0;
   right: 0;
@@ -50,14 +54,18 @@ const A = styled('a')`
   bottom: 0;
 `;
 
-// TODO: Figure out why box-shadow is clipped
+/**
+ * Adds an absolute anchor above the whole cover, so you can click anywhere.
+ * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
+ */
 export default ({ book, route }: { book: Book, route(book: Book): string }) => (
   <Box w={[105, 130]}>
     <Card className={hoverImgEffect}>
       <Link route={route(book)} passHref>
-        <A aria-hidden tabIndex="-1" />
+        <ClickTarget aria-hidden tabIndex="-1" />
       </Link>
       <CoverImage
+        ariaHidden
         w={[105, 130]}
         h={[130, 160]}
         src={book.coverPhoto && book.coverPhoto.large}
