@@ -59,6 +59,8 @@ class BookPage extends React.Component<Props, State> {
     };
   }
 
+  toFocus: ?HTMLAnchorElement;
+
   state = {
     books: this.props.books,
     isLoadingMore: false
@@ -83,15 +85,30 @@ class BookPage extends React.Component<Props, State> {
       pageSize: PAGE_SIZE
     })();
 
-    this.setState(state => ({
-      isLoadingMore: false,
-      books: {
-        // Set the newly fetched results
-        ...books,
-        // But append the array to the books we already have
-        results: state.books.results.concat(books.results)
+    // Focus the first book of the extra books we're loading
+    const toFocus = books.results[0];
+
+    this.setState(
+      state => ({
+        isLoadingMore: false,
+        books: {
+          // Set the newly fetched results
+          ...books,
+          // But append the array to the books we already have
+          results: state.books.results.concat(books.results)
+        }
+      }),
+      () => {
+        // Use a query selector to find the book we want to focus.
+        // TODO: Don't both with 'new arrivals' page now. We're cleaning up links soon anyways
+        const bookAnchor = document.querySelector(
+          `[href='/${toFocus.language.code}/books/level${
+            toFocus.readingLevel
+          }/${toFocus.id}']`
+        );
+        bookAnchor && bookAnchor.focus();
       }
-    }));
+    );
   };
 
   render() {
