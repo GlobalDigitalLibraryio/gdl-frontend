@@ -74,6 +74,7 @@ const ImageWrapper = styled('div')`
 `;
 
 type Props = {
+  ariaHidden: boolean,
   className?: string,
   src: string,
   srcSet?: string,
@@ -147,9 +148,15 @@ export default class Image extends React.Component<Props, State> {
   }
 
   render() {
-    const { className, h, w } = this.props;
+    const { className, h, w, ariaHidden } = this.props;
     return (
-      <ImageWrapper className={className} h={h} w={w} innerRef={this.handleRef}>
+      <ImageWrapper
+        className={className}
+        h={h}
+        w={w}
+        innerRef={this.handleRef}
+        aria-hidden={ariaHidden}
+      >
         {this.state.isVisible &&
           (this.props.children ? (
             <picture>

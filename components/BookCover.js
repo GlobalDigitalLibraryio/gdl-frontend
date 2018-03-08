@@ -25,6 +25,7 @@ const style = css`
 
 const BookCover = ({ coverPhoto, w, h }: Props) => (
   <CoverImage
+    ariaHidden
     className={style}
     src={coverPhoto && coverPhoto.large}
     h={h}
