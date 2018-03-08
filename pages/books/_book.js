@@ -144,13 +144,19 @@ class BookPage extends React.Component<Props> {
               />
             </CoverWrap>
             <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
-              <H1 fontSize={[28, 38]}>{book.title}</H1>
+              <H1 fontSize={[28, 38]} lang={book.language.code}>
+                {book.title}
+              </H1>
               <P fontSize={14}>
                 <Trans>
                   from <span>{book.publisher.name}</span>
                 </Trans>
               </P>
-              <P fontSize={[14, 16]} lineHeight={[22, 26]}>
+              <P
+                fontSize={[14, 16]}
+                lineHeight={[22, 26]}
+                lang={book.language.code}
+              >
                 {book.description}
               </P>
               <Link

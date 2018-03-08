@@ -39,7 +39,7 @@ export default ({ book }: { book: Book }) => (
         src={book.coverPhoto && book.coverPhoto.large}
       />
       <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
-        <BookTitle>{book.title}</BookTitle>
+        <BookTitle lang={book.language.code}>{book.title}</BookTitle>
         <ReadingLevel level={book.readingLevel} />
       </Div>
     </Card>
