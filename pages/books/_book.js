@@ -21,7 +21,6 @@ import Flex from '../../components/Flex';
 import Layout from '../../components/Layout';
 import Ribbon from '../../components/Ribbon';
 import A from '../../components/A';
-import H3 from '../../components/H3';
 import H1 from '../../components/H1';
 import H6 from '../../components/H6';
 import P from '../../components/P';
@@ -232,10 +231,11 @@ class BookPage extends React.Component<Props> {
             similar.results.length > 0 && (
               <React.Fragment>
                 <Hr />
-                <H3>
-                  <Trans>Similar</Trans>
-                </H3>
-                <BookList books={similar.results} mt={20} />
+                <BookList
+                  books={similar.results}
+                  mt={20}
+                  heading={<Trans>Similar</Trans>}
+                />
               </React.Fragment>
             )}
         </Container>

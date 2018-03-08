@@ -33,7 +33,6 @@ import Head from '../components/Head';
 import BookList from '../components/BookList';
 import Button from '../components/Button';
 import P from '../components/P';
-import H3 from '../components/H3';
 import H1 from '../components/H1';
 import A from '../components/A';
 import theme from '../style/theme';
@@ -223,20 +222,18 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         {levels.map((level, index) => (
           <Hero py={[15, 22]} key={level}>
             <Container>
-              <H3>
-                <Trans>Level {level}</Trans>{' '}
-                <Link
-                  route="level"
-                  params={{ lang: justArrived.language.code, level }}
-                  passHref
-                >
-                  <A isUppercased className={moreStyle}>
-                    <Trans>More</Trans>
-                  </A>
-                </Link>
-              </H3>
+              <Link
+                route="level"
+                params={{ lang: justArrived.language.code, level }}
+                passHref
+              >
+                <A isUppercased className={moreStyle}>
+                  <Trans>More</Trans>
+                </A>
+              </Link>
               <BookList
                 books={booksByLevel[index].results}
+                heading={<Trans>Level {level}</Trans>}
                 route={(book: Book) =>
                   `/${book.language.code}/books/level${level}/${book.id}`
                 }
@@ -247,19 +244,17 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         ))}
         <Hero py={[15, 22]}>
           <Container>
-            <H3>
-              <Trans>New arrivals</Trans>{' '}
-              <Link
-                route="new"
-                params={{ lang: justArrived.language.code }}
-                passHref
-              >
-                <A isUppercased className={moreStyle}>
-                  <Trans>More</Trans>
-                </A>
-              </Link>
-            </H3>
+            <Link
+              route="new"
+              params={{ lang: justArrived.language.code }}
+              passHref
+            >
+              <A isUppercased className={moreStyle}>
+                <Trans>More</Trans>
+              </A>
+            </Link>
             <BookList
+              heading={<Trans>New arrivals</Trans>}
               books={justArrived.results}
               mt={20}
               route={(book: Book) =>
