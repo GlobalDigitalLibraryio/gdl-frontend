@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import type { Book } from '../types';
 import Card from './Card';
 import ReadingLevel from './ReadingLevel';
@@ -22,17 +22,26 @@ const Div = styled(Box)`
   background-color: ${theme.colors.white};
 `;
 
-const BookTitle = styled.div`
+const BookTitle = styled('div')`
   white-space: nowrap;
   text-overflow: ellipsis;
   margin-bottom: 7px;
   overflow: hidden;
 `;
 
+const hoverImgEffect = css`
+  img {
+    transition: 1s opacity linear;
+    &:hover {
+      filter: opacity(0.9);
+    }
+  }
+`;
+
 // TODO: Figure out why box-shadow is clipped
 export default ({ book }: { book: Book }) => (
   <Box w={[105, 130]}>
-    <Card>
+    <Card className={hoverImgEffect}>
       <CoverImage
         w={[105, 130]}
         h={[130, 160]}
