@@ -234,9 +234,6 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
               <BookList
                 books={booksByLevel[index].results}
                 heading={<Trans>Level {level}</Trans>}
-                route={(book: Book) =>
-                  `/${book.language.code}/books/level${level}/${book.id}`
-                }
                 mt={20}
               />
             </Container>
@@ -257,9 +254,6 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
               heading={<Trans>New arrivals</Trans>}
               books={justArrived.results}
               mt={20}
-              route={(book: Book) =>
-                `/${book.language.code}/books/new/${book.id}`
-              }
             />
           </Container>
         </Hero>

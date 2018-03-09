@@ -43,14 +43,8 @@ function renderBookDescription(book) {
   );
 }
 
-const SearchHit = ({
-  book,
-  route
-}: {
-  book: Book,
-  route(book: Book): string
-}) => {
-  const bookRoute = route(book);
+const SearchHit = ({ book }: { book: Book }) => {
+  const bookRoute = `/${book.language.code}/books/details/${book.id}`;
   return (
     <Wrapper>
       <Link route={bookRoute} passHref>
