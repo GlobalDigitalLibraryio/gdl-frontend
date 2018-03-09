@@ -88,7 +88,6 @@ export default (Page: React.ComponentType<any>) => {
           }}
         >
           <Head>
-            <link href={url.toString()} rel="canonical" />
             <link href={url.toString()} hrefLang="x-default" rel="alternate" />
             {languages.map(lang => {
               url.query.hl = lang;
