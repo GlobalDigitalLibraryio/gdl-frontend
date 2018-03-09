@@ -15,6 +15,7 @@ import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
 const Div = styled.div`
+  z-index: 2;
   position: relative;
   position: sticky;
   top: 0;
