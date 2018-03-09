@@ -7,6 +7,8 @@
  */
 
 import * as React from 'react';
+
+import NotFound from '../components/NotFound';
 import type { Context } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import ErrorComp from '../components/Error';
@@ -31,6 +33,9 @@ class Error extends React.Component<Props> {
 
   render() {
     const { statusCode } = this.props;
+    if (statusCode === 404) {
+      return <NotFound />;
+    }
     return <ErrorComp statusCode={statusCode} />;
   }
 }
