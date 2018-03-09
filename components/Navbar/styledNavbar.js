@@ -45,12 +45,15 @@ export const HamburgerButton = styled('button')`
   font-size: inherit;
 `;
 
+// The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
 export const BrandLink = styled('a')`
   svg {
-    height: 35px;
-    width: 75px;
+    margin-top: 2px;
+    padding-right: 2px;
+    height: 36px;
+    width: 100px;
     ${media.tablet`
-      width: 110px;
+      width: auto;
     `};
   }
 `;
