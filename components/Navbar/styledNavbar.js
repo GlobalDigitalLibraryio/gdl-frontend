@@ -48,6 +48,7 @@ export const HamburgerButton = styled('button')`
 // The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
 export const BrandLink = styled('a')`
   svg {
+    margin-top: 2px;
     padding-right: 2px;
     height: 36px;
     width: 100px;
