@@ -38,7 +38,7 @@ const Container = styled('div')`
   margin-left: auto;
   margin-right: auto;
   ${space} max-width: ${p =>
-      p.size === 'small' ? theme.containers.small : theme.containers.large};
+  p.size === 'small' ? theme.containers.small : theme.containers.large};
 `;
 
 Container.defaultProps = {
