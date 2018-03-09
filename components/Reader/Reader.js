@@ -117,14 +117,14 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
               <BookMeta book={book} />
             </Box>
           </Card>
-          <ButtonOverlay
-            showOnMobile={this.state.showOverlay}
-            onRequestNext={this.props.onRequestNext}
-            onRequestPrev={this.props.onRequestPrevious}
-            disableNext={disableNext}
-            disablePrev={disablePrev}
-          />
         </Swipeable>
+        <ButtonOverlay
+          showOnMobile={this.state.showOverlay}
+          onRequestNext={this.props.onRequestNext}
+          onRequestPrev={this.props.onRequestPrevious}
+          disableNext={disableNext}
+          disablePrev={disablePrev}
+        />
         <KeyDown
           when="ArrowRight"
           then={this.props.onRequestNext}
