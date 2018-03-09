@@ -12,7 +12,7 @@ import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
-import GlobalDigitalLibraryLogo from './GDL-logo.svg';
+import GlobalDigitalLibraryLogo from './beta-logo.svg';
 import {
   Bar,
   DisplayContainer,
