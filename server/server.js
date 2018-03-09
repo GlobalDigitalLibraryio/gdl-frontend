@@ -11,7 +11,6 @@ const next = require('next');
 const requestLanguage = require('express-request-language');
 const cookieParser = require('cookie-parser');
 const glob = require('glob');
-const compression = require('compression');
 const routes = require('../routes');
 const { getToken } = require('./lib/auth');
 
@@ -25,9 +24,6 @@ console.log('> Found translations for the following languages: ', languages);
 async function setup() {
   await app.prepare();
   const server = express();
-
-  // Gzip responses
-  server.use(compression());
 
   // 404 all requests for favicons since we don't have one, and it attempts to match with our next routes
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
