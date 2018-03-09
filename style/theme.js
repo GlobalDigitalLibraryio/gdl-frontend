@@ -11,7 +11,7 @@ const TABLET_BREAKPOINT = 768;
 // TODO: Move all colors into the colors object
 const theme = {
   colors: {
-    link: '#026cd2',
+    link: '#006DD6',
     white: '#fff',
     dark: '#444',
     grayDarker: '#666', // Grey steel
@@ -64,8 +64,7 @@ const theme = {
   space: [],
   borderRadius: '0px',
   boxShadows: {
-    small: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    large: '0 4px 20px rgba(0, 0, 0, 0.2)'
+    small: '0 2px 4px rgba(0, 0, 0, 0.1)'
   },
   containers: {
     large: '1024px',

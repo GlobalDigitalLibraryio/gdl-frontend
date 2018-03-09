@@ -20,7 +20,7 @@ import theme from '../style/theme';
 
 const Toolbar = styled('div')`
   background: ${theme.colors.white};
-  box-shadow: ${theme.boxShadows.small};
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   position: relative;
   font-size: 13px;
   height: 28px;
@@ -38,8 +38,8 @@ const Container = styled('div')`
 `;
 
 const ContentWrapper = styled('main')`
-  box-shadow: ${theme.boxShadows.large};
-  background: ${theme.colors.grayLighter};
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
+  background: ${theme.colors.whiteTer};
   flex: 1;
   width: 100%;
   max-width: ${theme.containers.large};
@@ -71,19 +71,18 @@ const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
               onMenuClick={openPortal}
               menuIsExpanded={isOpen}
             />
-            {crumbs ||
-              (toolbarEnd && (
-                <Toolbar>
-                  <Container>
-                    {crumbs ? (
-                      <Breadcrumb language={language.code} crumbs={crumbs} />
-                    ) : (
-                      <Box mr="auto" />
-                    )}
-                    {toolbarEnd}
-                  </Container>
-                </Toolbar>
-              ))}
+            {(crumbs || toolbarEnd) && (
+              <Toolbar>
+                <Container>
+                  {crumbs ? (
+                    <Breadcrumb language={language.code} crumbs={crumbs} />
+                  ) : (
+                    <Box mr="auto" />
+                  )}
+                  {toolbarEnd}
+                </Container>
+              </Toolbar>
+            )}
           </nav>
           {portal(<GlobalMenu onClose={closePortal} language={language} />)}
         </React.Fragment>

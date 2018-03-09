@@ -5,7 +5,7 @@ exports[`Is bold anchor 1`] = `
   font-size: inherit;
   border: none;
   background: transparent;
-  color: #026cd2;
+  color: #006DD6;
   font-weight: 500;
 }
 
@@ -26,7 +26,7 @@ exports[`Is uppercased anchor 1`] = `
   font-size: inherit;
   border: none;
   background: transparent;
-  color: #026cd2;
+  color: #006DD6;
   text-transform: uppercase;
 }
 
