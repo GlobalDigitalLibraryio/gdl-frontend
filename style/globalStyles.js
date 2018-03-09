@@ -30,7 +30,7 @@ export default css`
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    background: ${theme.colors.whiteTer};
+    background: #fff;
     color: ${theme.colors.dark};
 
     a {
