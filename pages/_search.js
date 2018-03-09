@@ -138,7 +138,7 @@ class SearchPage extends React.Component<Props, State> {
       () => {
         // Focus the second anchor found, the first is an anchor with an image that is hidden from screen readers
         const bookAnchor = document.querySelectorAll(
-          `[href='/${toFocus.language.code}/books/${toFocus.id}']`
+          `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
         )[1];
         bookAnchor && bookAnchor.focus();
       }
@@ -202,11 +202,7 @@ class SearchPage extends React.Component<Props, State> {
               <Fragment>
                 <div>
                   {searchResult.results.map(book => (
-                    <SearchHit
-                      key={book.id}
-                      book={book}
-                      route={b => `/${b.language.code}/books/${b.id}`}
-                    />
+                    <SearchHit key={book.id} book={book} />
                   ))}
                 </div>
                 <Box textAlign="center">

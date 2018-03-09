@@ -38,17 +38,16 @@ const Heading = H3.withComponent('h1');
 
 type Props = {
   books: Array<Book>,
-  route: (book: Book) => string,
   heading: React.Element<typeof Trans>
 };
 
-const BookList = ({ books, route, heading, ...props }: Props) => (
+const BookList = ({ books, heading, ...props }: Props) => (
   <React.Fragment>
     <Heading>{heading}</Heading>
     <Flex mx={[-15, -20]} px={[15, 20]} className={scroll} {...props}>
       {books.map(book => (
         <div key={book.id}>
-          <BookLink book={book} route={route} />
+          <BookLink book={book} />
         </div>
       ))}
     </Flex>

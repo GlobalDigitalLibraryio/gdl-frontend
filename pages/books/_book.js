@@ -40,9 +40,8 @@ type Props = {
   }>,
   url: {
     query: {
-      level?: string
-    },
-    asPath: string
+      id: string
+    }
   }
 };
 
@@ -88,29 +87,19 @@ class BookPage extends React.Component<Props> {
   }
 
   getCrumbs() {
-    const { book, url } = this.props;
-    const { level } = url.query;
+    const { book } = this.props;
 
-    const crumbs = [this.props.book.title];
-
-    if (level != null) {
-      crumbs.unshift(
-        <Link route="level" params={{ lang: book.language.code, level }}>
-          <a>
-            <Trans>Level {level}</Trans>
-          </a>
-        </Link>
-      );
-    } else if (url.asPath.includes('/new/')) {
-      crumbs.unshift(
-        <Link route="new" params={{ lang: book.language.code }}>
-          <a>
-            <Trans>New arrivals</Trans>
-          </a>
-        </Link>
-      );
-    }
-    return crumbs;
+    return [
+      <Link
+        route="level"
+        params={{ lang: book.language.code, level: book.readingLevel }}
+      >
+        <a>
+          <Trans>Level {book.readingLevel}</Trans>
+        </a>
+      </Link>,
+      this.props.book.title
+    ];
   }
 
   render() {

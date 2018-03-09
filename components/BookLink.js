@@ -58,10 +58,14 @@ const ClickTarget = styled('a')`
  * Adds an absolute anchor above the whole cover, so you can click anywhere.
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
-export default ({ book, route }: { book: Book, route(book: Book): string }) => (
+export default ({ book }: { book: Book }) => (
   <Box w={[105, 130]}>
     <Card className={hoverImgEffect}>
-      <Link route={route(book)} passHref>
+      <Link
+        route="book"
+        params={{ id: book.id, lang: book.language.code }}
+        passHref
+      >
         <ClickTarget aria-hidden tabIndex="-1" />
       </Link>
       <CoverImage
@@ -71,7 +75,11 @@ export default ({ book, route }: { book: Book, route(book: Book): string }) => (
         src={book.coverPhoto && book.coverPhoto.large}
       />
       <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
-        <Link route={route(book)} passHref>
+        <Link
+          route="book"
+          params={{ id: book.id, lang: book.language.code }}
+          passHref
+        >
           <BookTitle lang={book.language.code} title={book.title}>
             {book.title}
           </BookTitle>

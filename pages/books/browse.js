@@ -47,7 +47,7 @@ type State = {
   isLoadingMore: boolean
 };
 
-class BookPage extends React.Component<Props, State> {
+class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
@@ -100,11 +100,8 @@ class BookPage extends React.Component<Props, State> {
       }),
       () => {
         // Use a query selector to find the book we want to focus.
-        // TODO: Don't both with 'new arrivals' page now. We're cleaning up links soon anyways
         const bookAnchor = document.querySelectorAll(
-          `[href='/${toFocus.language.code}/books/level${
-            toFocus.readingLevel
-          }/${toFocus.id}']`
+          `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
         )[1];
         bookAnchor && bookAnchor.focus();
       }
@@ -115,11 +112,6 @@ class BookPage extends React.Component<Props, State> {
     const { i18n } = this.props;
     const { level } = this.props.url.query;
     const { books } = this.state;
-
-    // The route to book differs based on "where we come from". This is because of breadcrumbs
-    const route = level
-      ? (book: Book) => `/${book.language.code}/books/level${level}/${book.id}`
-      : (book: Book) => `/${book.language.code}/books/new/${book.id}`;
 
     const canLoadMore =
       this.state.books.totalCount > this.state.books.results.length;
@@ -150,7 +142,7 @@ class BookPage extends React.Component<Props, State> {
             )}
           </H1>
           <Box my={30}>
-            <BookGrid books={books.results} route={route} />
+            <BookGrid books={books.results} />
           </Box>
           <Box pt={6} pb={30} textAlign="center">
             <Button
@@ -167,4 +159,4 @@ class BookPage extends React.Component<Props, State> {
   }
 }
 
-export default defaultPage(BookPage);
+export default defaultPage(BrowsePage);

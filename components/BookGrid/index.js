@@ -12,13 +12,12 @@ import type { Book } from '../../types';
 import BookLink from './../BookLink';
 
 type Props = {
-  books: Array<Book>,
-  route(book: Book): string
+  books: Array<Book>
 };
 
-const BookGrid = ({ books, route }: Props) => (
+const BookGrid = ({ books }: Props) => (
   <GridContainer>
-    {books.map(book => <BookLink key={book.id} book={book} route={route} />)}
+    {books.map(book => <BookLink key={book.id} book={book} />)}
   </GridContainer>
 );
 
