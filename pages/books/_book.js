@@ -6,9 +6,13 @@
  * See LICENSE
  */
 
-import * as React from 'react';
+import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import { MdTranslate } from 'react-icons/lib/md';
+import {
+  MdTranslate,
+  MdKeyboardArrowDown,
+  MdKeyboardArrowUp
+} from 'react-icons/lib/md';
 
 import styled from 'react-emotion';
 import config from '../../config';
@@ -32,6 +36,7 @@ import media from '../../style/media';
 import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 import BookMeta from '../../components/BookMeta';
+import DownloadBookMenu from '../../components/DownloadBookMenu';
 
 type Props = {
   book: RemoteData<BookDetails>,
@@ -73,7 +78,10 @@ const HeroCard = styled(Card)`
   ${flexColumnCentered};
 `;
 
-class BookPage extends React.Component<Props> {
+class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
+  state = {
+    showDownloadMenu: false
+  };
   static async getInitialProps({ query, accessToken }: Context) {
     const [book, similar] = await Promise.all([
       fetchBook(query.id, query.lang)(accessToken),
@@ -101,6 +109,9 @@ class BookPage extends React.Component<Props> {
       this.props.book.title
     ];
   }
+
+  handleToggleShowDownloadMenu = () =>
+    this.setState(state => ({ showDownloadMenu: !state.showDownloadMenu }));
 
   render() {
     const { similar, book } = this.props;
@@ -138,21 +149,40 @@ class BookPage extends React.Component<Props> {
               >
                 {book.description}
               </P>
-              <Link
-                route="read"
-                passHref
-                params={{ id: book.id, lang: book.language.code }}
-                prefetch
-              >
-                <Button color="green">
-                  <Trans>Read Book</Trans>
-                </Button>
-              </Link>
-              <Box mt={[15, 20]}>
-                <A isBold isUnderlined download href={book.downloads.epub}>
+              {book.bookFormat === 'HTML' && (
+                <Fragment>
+                  <Link
+                    route="read"
+                    passHref
+                    params={{ id: book.id, lang: book.language.code }}
+                    prefetch
+                  >
+                    <Button color="green">
+                      <Trans>Read Book</Trans>
+                    </Button>
+                  </Link>
+                  <Box mt={[15, 20]}>
+                    <A
+                      aria-expanded={this.state.showDownloadMenu}
+                      isBold
+                      onClick={this.handleToggleShowDownloadMenu}
+                      style={{ color: '#444' }}
+                    >
+                      <Trans>Download book</Trans>
+                      {this.state.showDownloadMenu ? (
+                        <MdKeyboardArrowUp aria-hidden />
+                      ) : (
+                        <MdKeyboardArrowDown aria-hidden />
+                      )}
+                    </A>
+                  </Box>
+                </Fragment>
+              )}
+              {book.bookFormat === 'PDF' && (
+                <Button color="green" href={book.downloads.pdf}>
                   <Trans>Download book</Trans>
-                </A>
-              </Box>
+                </Button>
+              )}
             </HeroCard>
           </Flex>
         </Container>
@@ -161,7 +191,7 @@ class BookPage extends React.Component<Props> {
             <BookMeta book={book} />
             {config.TRANSLATION_PAGES &&
               book.supportsTranslation && (
-                <React.Fragment>
+                <Fragment>
                   <Hr />
                   <Box my={[15, 20]} textAlign="center">
                     <Link
@@ -174,21 +204,27 @@ class BookPage extends React.Component<Props> {
                       </Button>
                     </Link>
                   </Box>
-                </React.Fragment>
+                </Fragment>
               )}
           </Box>
           {similar &&
             similar.results.length > 0 && (
-              <React.Fragment>
+              <Fragment>
                 <Hr />
                 <BookList
                   books={similar.results}
                   mt={20}
                   heading={<Trans>Similar</Trans>}
                 />
-              </React.Fragment>
+              </Fragment>
             )}
         </Container>
+        {this.state.showDownloadMenu && (
+          <DownloadBookMenu
+            book={book}
+            onClose={this.handleToggleShowDownloadMenu}
+          />
+        )}
       </Layout>
     );
   }

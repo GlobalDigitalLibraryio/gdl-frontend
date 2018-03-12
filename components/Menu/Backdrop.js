@@ -13,7 +13,8 @@ import styled from 'react-emotion';
  */
 
 type Props = {
-  onClick: (event: SyntheticMouseEvent<any>) => void
+  onClick: (event: SyntheticMouseEvent<any>) => void,
+  isTinted?: boolean
 };
 
 const StyledBackdrop = styled('div')`
@@ -23,6 +24,8 @@ const StyledBackdrop = styled('div')`
   right: 0;
   top: 0;
   z-index: 500;
+  pointer-events: initial;
+  ${p => p.isTinted && `background-color: rgba(10, 10, 10, 0.3);`};
 `;
 
 const Backdrop = (props: Props) => <StyledBackdrop {...props} />;
