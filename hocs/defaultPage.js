@@ -11,7 +11,6 @@ import Router from 'next/router';
 import { hydrate } from 'react-emotion';
 import withI18n from './withI18n';
 import withTheme from './withTheme';
-import withErrorBoundary from './withErrorBoundary';
 import type { Context } from '../types';
 import {
   getAuthToken,
@@ -99,10 +98,5 @@ const defaultPage = Page =>
     }
   };
 
-export default (
-  Page: React.ComponentType<any>,
-  wrapWithErrorBoundary: boolean = true
-) =>
-  defaultPage(
-    withTheme(withI18n(wrapWithErrorBoundary ? withErrorBoundary(Page) : Page))
-  );
+export default (Page: React.ComponentType<any>) =>
+  defaultPage(withTheme(withI18n(Page)));

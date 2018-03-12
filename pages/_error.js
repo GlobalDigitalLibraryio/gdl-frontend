@@ -11,35 +11,28 @@ import * as React from 'react';
 import NotFound from '../components/NotFound';
 import type { Context } from '../types';
 import defaultPage from '../hocs/defaultPage';
-import ErrorComp from '../components/Error';
+import UnexpectedError from '../components/UnexpectedError';
 
 type Props = {
   statusCode: ?number
 };
 
-class Error extends React.Component<Props> {
-  static async getInitialProps({ res, err }: Context) {
-    let statusCode;
-    if (res && res.statusCode) {
-      statusCode = res.statusCode;
-    } else if (err && err.statusCode) {
-      statusCode = err.statusCode;
-    }
+const NotFoundPage = defaultPage(NotFound);
 
-    return {
-      statusCode
-    };
+class ErrorPage extends React.Component<Props> {
+  static getInitialProps({ res, err }: Context) {
+    // $FlowFixMe Flow apparently doesn't like statusCode on the err object..
+    const statusCode = res ? res.statusCode : err ? err.statusCode : null;
+    return { statusCode };
   }
 
   render() {
     const { statusCode } = this.props;
     if (statusCode === 404) {
-      return <NotFound />;
+      return <NotFoundPage />;
     }
-    return <ErrorComp statusCode={statusCode} />;
+    return <UnexpectedError />;
   }
 }
 
-const ErrorPage = defaultPage(Error, false);
-
-export { Error, ErrorPage as default };
+export default ErrorPage;
