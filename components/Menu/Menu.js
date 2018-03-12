@@ -9,8 +9,10 @@ import React, { type Node, type Element } from 'react';
 import { Portal } from 'react-portal';
 
 import {
+  CenteredDialog,
   Dialog,
   FillScreen,
+  CenteredPositioner,
   Positioner,
   bodyCss,
   htmlCss
@@ -27,12 +29,16 @@ type Props = {
   /** The menu title; rendered in the header. */
   heading: string | Element<'Trans'>,
   hasNestedMenu?: boolean,
+  /** Center the dialog */
+  isCentered?: boolean,
   /** Will display a 'back' button instead of a close button in the header */
   isNestedMenu?: boolean,
   /** For accessibility reasons */
   hasOpenNestedMenu?: boolean,
   /** Content of the menu */
   children?: Node,
+  /** Display shaded overlay above the content behind the dialog */
+  hasTintedBackground?: boolean,
   /**
     Function that will be called to initiate the exit transition.
   */
@@ -52,6 +58,7 @@ export default class Menu extends React.Component<Props> {
     autoFocus: true,
     isNestedMenu: false,
     hasOpenNestedMenu: false,
+    hasTintedBackground: false,
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true
   };
@@ -86,23 +93,31 @@ export default class Menu extends React.Component<Props> {
     const {
       autoFocus,
       children,
+      isCentered,
       isNestedMenu,
       hasOpenNestedMenu,
+      hasTintedBackground,
       heading,
       onClose,
       shouldCloseOnEscapePress
     } = this.props;
+
+    const PositionerType = isCentered ? CenteredPositioner : Positioner;
+    const DialogType = isCentered ? CenteredDialog : Dialog;
     return (
       <Portal>
         <FillScreen aria-hidden={hasOpenNestedMenu}>
-          <Backdrop onClick={this.handleOverlayClick} />
-          <Positioner>
+          <Backdrop
+            isTinted={hasTintedBackground}
+            onClick={this.handleOverlayClick}
+          />
+          <PositionerType>
             <FocusLock
               autoFocus={autoFocus}
               isNestedMenu={isNestedMenu}
               hasOpenNestedMenu={hasOpenNestedMenu}
             >
-              <Dialog
+              <DialogType
                 role="dialog"
                 tabIndex="-1"
                 onClick={this.handleDialogClick}
@@ -116,9 +131,9 @@ export default class Menu extends React.Component<Props> {
                 >
                   {children}
                 </Content>
-              </Dialog>
+              </DialogType>
             </FocusLock>
-          </Positioner>
+          </PositionerType>
         </FillScreen>
       </Portal>
     );

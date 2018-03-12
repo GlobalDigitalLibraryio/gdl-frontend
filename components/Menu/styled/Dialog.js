@@ -9,6 +9,9 @@ import styled, { css } from 'react-emotion';
 import theme from '../../../style/theme';
 import media from '../../../style/media';
 
+// Desktop menu width
+const MENU_WIDTH = '375px';
+
 export const FillScreen = styled('div')`
   height: 100vh;
   left: 0;
@@ -21,13 +24,30 @@ export const FillScreen = styled('div')`
 `;
 
 export const Positioner = styled('div')`
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 510;
   pointer-events: none;
   ${media.tablet`
     max-width: ${theme.containers.large};
-    margin-left: auto;
-    margin-right: auto;
+    margin: auto;
+  `};
+`;
+
+export const CenteredPositioner = styled('div')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 510;
+  ${media.tablet`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
   `};
 `;
 
@@ -36,12 +56,19 @@ export const Dialog = styled('div')`
   display: flex;
   flex-direction: column;
   outline: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.12),
+    0 4px 20px 0 rgba(0, 0, 0, 0.2);
   pointer-events: initial;
   ${media.tablet`
     margin-left: auto;
-    max-width: 375px;
+    width: ${MENU_WIDTH};
     height: 400px;
+  `};
+`;
+
+export const CenteredDialog = styled(Dialog)`
+  ${media.tablet`
+    margin-left: unset;
   `};
 `;
 

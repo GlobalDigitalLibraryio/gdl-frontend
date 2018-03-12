@@ -50,6 +50,7 @@ const book: BookDetails = {
     small:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200'
   },
+  bookFormat: 'HTML',
   chapters: [
     { url: 'http://www.example.no/chapter', seqNo: 1 },
     { url: 'http://www.example.no/chapter', seqNo: 2 },

@@ -85,9 +85,10 @@ export type BookDetails = $ReadOnly<{|
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
   chapters: Array<ChapterSummary>,
+  bookFormat: 'PDF' | 'HTML',
   downloads: {
-    epub: string,
-    pdf: string
+    epub?: string,
+    pdf?: string
   }
 |}>;
 
