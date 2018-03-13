@@ -24,10 +24,6 @@ const BookMeta = ({ book }: Props) => {
     .map(contributor => <span key={contributor.id}>{contributor.name}</span>)
     .map((item, index) => [index > 0 && ', ', item]);
 
-  const categories = book.categories
-    .map(category => <span key={category.id}>{category.name}</span>)
-    .map((item, index) => [index > 0 && ', ', item]);
-
   return (
     <Box p={[15, 20]} fontSize={[14, 16]}>
       <Ribbon level={book.readingLevel} />
@@ -51,14 +47,6 @@ const BookMeta = ({ book }: Props) => {
         </Heading>
         <A href={book.license.url}>{book.license.description}</A>
       </Box>
-      {book.categories.length > 0 && (
-        <Box mb={15}>
-          <Heading>
-            <Trans>categories</Trans>
-          </Heading>,
-          {categories},
-        </Box>
-      )}
     </Box>
   );
 };
