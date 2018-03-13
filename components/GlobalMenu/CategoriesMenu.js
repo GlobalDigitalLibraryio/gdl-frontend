@@ -14,7 +14,7 @@ import { Link } from '../../routes';
 import Menu, { MenuItem } from '../Menu';
 
 type Props = {
-  levels: Array<string>,
+  categories: Array<string>,
   language: Language,
   onClose: (
     event: | SyntheticMouseEvent<any>
@@ -25,22 +25,53 @@ type Props = {
 
 export default class CategoriesMenu extends React.Component<Props> {
   render() {
-    const { levels, onClose, language } = this.props;
+    const { categories, onClose, language } = this.props;
     return (
       <Menu heading={<Trans>Categories</Trans>} onClose={onClose} isNestedMenu>
-        {levels.map(level => (
+        <MenuItem>
+          <Trans>Classroom books</Trans>
+        </MenuItem>
+        {categories.classroom_books.readingLevels.map(level => (
           <Link
             key={level}
-            route="level"
+            route="browse"
             passHref
-            params={{ lang: language.code, level }}
+            params={{ lang: language.code, readingLevel: level }}
           >
             <MenuItem onCustomClick={onClose}>
               <Trans>Reading level {level}</Trans>
             </MenuItem>
           </Link>
         ))}
-        <Link route="new" passHref params={{ lang: language.code }}>
+        <Link
+          route="browse"
+          passHref
+          params={{ lang: language.code, sort: 'arrivalDate' }}
+        >
+          <MenuItem onCustomClick={onClose}>
+            <Trans>New arrivals</Trans>
+          </MenuItem>
+        </Link>
+        <MenuItem>
+          <Trans>Library books</Trans>
+        </MenuItem>
+        {categories.library_books.readingLevels.map(level => (
+          <Link
+            key={level}
+            route="browse"
+            passHref
+            params={{ lang: language.code, readingLevel: level }}
+          >
+            <MenuItem onCustomClick={onClose}>
+              <Trans>Reading level {level}</Trans>
+            </MenuItem>
+          </Link>
+        ))}
+        <Link
+          route="browse"
+          passHref
+          params={{ lang: language.code, sort: 'arrivalDate' }}
+        >
           <MenuItem onCustomClick={onClose}>
             <Trans>New arrivals</Trans>
           </MenuItem>

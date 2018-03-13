@@ -40,10 +40,9 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add('search', '/:lang/search', '_search');
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
-  // Book grid by level (we only allow a single digit for level, so no + in the regex)
-  routes.add('level', '/:lang/books/level:level(\\d)', 'books/browse');
-  // Book grid for new books
-  routes.add('new', '/:lang/books/new', 'books/browse');
+
+  // Browse the books
+  routes.add('browse', '/:lang/books/browse', 'books/browse');
 
   // Book details page
   routes.add('book', '/:lang/books/details/:id(\\d+)', 'books/_book');

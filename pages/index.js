@@ -9,6 +9,8 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
+
+import { Link } from '../routes';
 import {
   fetchFeaturedContent,
   fetchLevels,
@@ -26,7 +28,6 @@ import defaultPage from '../hocs/defaultPage';
 import Layout from '../components/Layout';
 import Box from '../components/Box';
 import Card from '../components/Card';
-import { Link } from '../routes';
 import Container from '../components/Container';
 import Hero from '../components/Hero';
 import Head from '../components/Head';
@@ -223,8 +224,11 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
           <Hero py={[15, 22]} key={level}>
             <Container>
               <Link
-                route="level"
-                params={{ lang: justArrived.language.code, level }}
+                route="browse"
+                params={{
+                  lang: justArrived.language.code,
+                  readingLevel: level
+                }}
                 passHref
               >
                 <A isUppercased className={moreStyle}>
@@ -242,8 +246,8 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         <Hero py={[15, 22]}>
           <Container>
             <Link
-              route="new"
-              params={{ lang: justArrived.language.code }}
+              route="browse"
+              params={{ lang: justArrived.language.code, sort: 'arrivalDate' }}
               passHref
             >
               <A isUppercased className={moreStyle}>

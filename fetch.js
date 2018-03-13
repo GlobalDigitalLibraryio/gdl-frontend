@@ -213,3 +213,16 @@ export function search(
       )
     )(accessToken);
 }
+
+export function fetchCategories(
+  language: ?string
+): (
+  accessToken: ?string
+) => Promise<
+  RemoteData<{
+    results: Array<Book>
+  }>
+> {
+  return accessToken =>
+    fetchWithToken(`${bookApiUrl}/categories/${language || ''}`)(accessToken);
+}

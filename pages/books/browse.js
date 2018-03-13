@@ -30,8 +30,9 @@ type Props = {
   }>,
   url: {
     query: {
-      level?: string,
-      lang: string
+      readingLevel?: string,
+      lang: string,
+      sort?: string
     }
   },
   i18n: I18n
@@ -51,7 +52,7 @@ class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
-      level: query.level
+      level: query.readingLevel
     })(accessToken);
 
     return {
@@ -80,7 +81,7 @@ class BrowsePage extends React.Component<Props, State> {
     const { query } = this.props.url;
 
     const books = await fetchBooks(query.lang, {
-      level: query.level,
+      level: query.readingLevel,
       page: this.state.books.page + 1,
       pageSize: PAGE_SIZE
     })();
@@ -110,7 +111,7 @@ class BrowsePage extends React.Component<Props, State> {
 
   render() {
     const { i18n } = this.props;
-    const { level } = this.props.url.query;
+    const { readingLevel } = this.props.url.query;
     const { books } = this.state;
 
     const canLoadMore =
@@ -119,21 +120,17 @@ class BrowsePage extends React.Component<Props, State> {
     return (
       <Layout
         language={books.language}
-        crumbs={[level ? i18n.t`Level ${level}` : i18n.t`New arrivals`]}
+        crumbs={[
+          readingLevel ? i18n.t`Level ${readingLevel}` : i18n.t`New arrivals`
+        ]}
       >
-        <Head
-          title={
-            level
-              ? i18n.t`Browse level ${level} books`
-              : i18n.t`Browse new arrivals`
-          }
-        />
+        <Head title={i18n.t`Browse books`} />
 
         <Container pt={20}>
           <H1 textAlign="center">
             {books.results.length > 0 ? (
-              level ? (
-                <Trans>Level {level}</Trans>
+              readingLevel ? (
+                <Trans>Level {readingLevel}</Trans>
               ) : (
                 <Trans>New arrivals</Trans>
               )
