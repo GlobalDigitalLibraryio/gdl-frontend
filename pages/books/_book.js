@@ -157,7 +157,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     params={{ id: book.id, lang: book.language.code }}
                     prefetch
                   >
-                    <Button color="green">
+                    <Button>
                       <Trans>Read Book</Trans>
                     </Button>
                   </Link>
@@ -179,7 +179,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 </Fragment>
               )}
               {book.bookFormat === 'PDF' && (
-                <Button color="green" href={book.downloads.pdf}>
+                <Button href={book.downloads.pdf}>
                   <Trans>Download book</Trans>
                 </Button>
               )}
@@ -199,9 +199,9 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       passHref
                       params={{ id: book.id, lang: book.language.code }}
                     >
-                      <Button>
-                        <MdTranslate /> <Trans>Translate book</Trans>
-                      </Button>
+                      <A isBold isUppercased>
+                        <MdTranslate /> <Trans>Translate this book</Trans>
+                      </A>
                     </Link>
                   </Box>
                 </Fragment>
