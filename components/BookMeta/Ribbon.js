@@ -52,7 +52,7 @@ const Ribbon = styled('div')`
       pointingDirection: 'right',
       width: '15px',
       height: HEIGHT,
-      foregroundColor: theme.colors.grayLighter
+      foregroundColor: theme.colors.whiteTer
     })};
   }
 `;
