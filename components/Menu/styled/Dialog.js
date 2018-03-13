@@ -42,6 +42,7 @@ export const CenteredPositioner = styled('div')`
   left: 0;
   right: 0;
   z-index: 510;
+  pointer-events: none;
   ${media.tablet`
     display: flex;
     flex-direction: column;
