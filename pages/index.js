@@ -7,10 +7,8 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
-import styled, { css } from 'react-emotion';
+import ErrorPage from './_error';
 
-import BrowseLink from '../components/BrowseLink';
 import {
   fetchFeaturedContent,
   fetchCategories,
@@ -22,124 +20,60 @@ import type {
   Language,
   RemoteData,
   FeaturedContent,
-  Context
+  Context,
+  CategoryType
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
-import Layout from '../components/Layout';
-import Box from '../components/Box';
-import Card from '../components/Card';
-import Container from '../components/Container';
-import Hero from '../components/Hero';
-import Head from '../components/Head';
-import BookList from '../components/BookList';
-import Button from '../components/Button';
-import P from '../components/P';
-import H1 from '../components/H1';
-import A from '../components/A';
-import theme from '../style/theme';
-import media from '../style/media';
-import { flexCenter } from '../style/flex';
+import HomePage from '../components/HomePage';
 
 type Props = {
   featuredContent: RemoteData<Array<FeaturedContent>>,
-  justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
+  newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+  categoryType: CategoryType
 };
 
-const HeroCover = styled('div')`
-  background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
-  background-size: cover;
-  position: relative;
-  display: flex;
-  padding: 15px;
-  justify-content: center;
-  ${media.mobile`
-    height: 210px;
-  `} ${media.tablet`
-    min-height: 390px;
-    padding: 20px;
-    justify-content: flex-end;
-  `};
-`;
-
-const HeroCovertitle = styled('h1')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: ${theme.colors.white};
-  background: rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
-  margin: 0;
-  padding: 5px 15px;
-  font-weight: 500;
-  font-size: 14px;
-  ${media.tablet`
-    font-size: 18px;
-  `};
-`;
-
-const HeroCardMobile = styled(Card)`
-  ${flexCenter};
-  padding: 15px;
-  margin-top: -50px;
-  margin-left: 15px;
-  margin-right: 15px;
-  ${media.tablet`
-    display: none;
-  `};
-`;
-
-const HeroCardTablet = styled(Card)`
-  ${flexCenter};
-  padding: 20px;
-  max-width: 375px;
-  ${media.mobile`
-    display: none;
-  `};
-`;
-
-const moreStyle = css`
-  float: right;
-  font-size: 12px;
-  ${media.tablet`
-    font-size: 14px;
-  `};
-  height: 40px;
-`;
-
-const FeaturedTitle = H1.withComponent('h2');
-
 class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query, accessToken, asPath }: Context) {
     const language: ?string = query.lang;
 
-    // Fetch these first, cause they don't use the reading level
-    const [
-      featuredContent,
-      categories,
-      languages,
-      justArrived
-    ] = await Promise.all([
+    // Fetch these first, cause they don't use the reading levels or categories
+    const [featuredContent, categories, languages] = await Promise.all([
       fetchFeaturedContent(language)(accessToken),
       fetchCategories(language)(accessToken),
-      fetchLanguages()(accessToken),
-      fetchBooks(language)(accessToken)
+      fetchLanguages()(accessToken)
     ]);
 
-    const levels = categories.library_books.readingLevels.sort();
+    // Default to library_books
+    const categoryType: CategoryType =
+      'library_books' in categories ? 'library_books' : 'classroom_books';
 
-    const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooks(language, { level })(accessToken))
-    );
+    const levels = categories.library_books
+      ? categories.library_books.readingLevels
+      : categories.classroom_books.readingLevels;
+
+    // Levels are just stringified single digits for now, so this is okay. Revisit when we have other levels
+    levels.sort();
+
+    const [newArrivals, ...booksByLevel] = await Promise.all([
+      fetchBooks(language, { category: categoryType })(accessToken),
+      ...levels.map(level =>
+        fetchBooks(language, {
+          level,
+          category: categoryType
+        })(accessToken)
+      )
+    ]);
 
     return {
       featuredContent,
-      justArrived,
+      newArrivals,
       languages,
       levels,
-      booksByLevel
+      booksByLevel,
+      categoryType
     };
   }
 
@@ -149,85 +83,24 @@ class BooksPage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      justArrived
+      newArrivals,
+      categoryType
     } = this.props;
 
-    const featured = featuredContent[0];
+    // If we don't have any levels, we assume it's a 404
+    if (levels.length === 0) {
+      return <ErrorPage statusCode={404} />;
+    }
 
     return (
-      <Layout language={justArrived.language} languages={languages}>
-        <Head imageUrl={featured.imageUrl} />
-        <HeroCover
-          pt={['15px', '40px']}
-          pb={['42px', '54px']}
-          src={featured.imageUrl}
-        >
-          <HeroCovertitle>
-            <Trans>Featured</Trans>
-          </HeroCovertitle>
-          <HeroCardTablet>
-            <Box textAlign="center">
-              <FeaturedTitle lang={featured.language.code}>
-                {featured.title}
-              </FeaturedTitle>
-              <P
-                fontSize={[14, 16]}
-                lineHeight={[22, 26]}
-                lang={featured.language.code}
-              >
-                {featured.description}
-              </P>
-              <Button href={featured.link}>More</Button>
-            </Box>
-          </HeroCardTablet>
-        </HeroCover>
-        <HeroCardMobile>
-          <Box textAlign="center">
-            <FeaturedTitle lang={featured.language.code}>
-              {featured.title}
-            </FeaturedTitle>
-            <P
-              fontSize={[14, 16]}
-              lineHeight={[22, 26]}
-              lang={featured.language.code}
-            >
-              {featured.description}
-            </P>
-            <Button href={featured.link}>More</Button>
-          </Box>
-        </HeroCardMobile>
-
-        {levels.map((level, index) => (
-          <Hero py={[15, 22]} key={level}>
-            <Container>
-              <BrowseLink lang={justArrived.language.code} readingLevel={level}>
-                <A isUppercased className={moreStyle}>
-                  <Trans>More</Trans>
-                </A>
-              </BrowseLink>
-              <BookList
-                books={booksByLevel[index].results}
-                heading={<Trans>Level {level}</Trans>}
-                mt={20}
-              />
-            </Container>
-          </Hero>
-        ))}
-        <Hero py={[15, 22]}>
-          <Container>
-            <BrowseLink lang={justArrived.language.code} sort="-arrivalDate">
-              <A isUppercased className={moreStyle}>
-                <Trans>More</Trans>
-              </A>
-            </BrowseLink>
-            <BookList
-              heading={<Trans>New arrivals</Trans>}
-              books={justArrived.results}
-              mt={20}
-            />
-          </Container>
-        </Hero>
-      </Layout>
+      <HomePage
+        categoryType={categoryType}
+        languages={languages}
+        levels={levels}
+        newArrivals={newArrivals}
+        booksByLevel={booksByLevel}
+        featuredContent={featuredContent}
+      />
     );
   }
 }

@@ -10,6 +10,8 @@ import * as React from 'react';
 import styled, { css, cx } from 'react-emotion';
 import { Trans } from '@lingui/react';
 
+import { type CategoryType } from '../../types';
+import media from '../../style/media';
 import { Link } from '../../routes';
 
 const Div = styled('div')`
@@ -32,18 +34,42 @@ const selectedClass = css`
   border-bottom: 3px solid #0085dd;
 `;
 
-class CategoryNavigation extends React.Component {
+// Because of space limitations, we only show "mobile" on big screens
+const HiddenMobile = styled('span')`
+  ${media.mobile`
+    display: none;
+  `};
+`;
+
+type Props = {
+  categoryType: CategoryType
+};
+
+class CategoryNavigation extends React.Component<Props> {
   render() {
+    const { categoryType } = this.props;
     return (
       <Div>
-        <Link route="books" passHref params={{ lang: 'eng' }}>
-          <A className={selectedClass}>
-            <Trans>Library</Trans>
+        <Link route="library" passHref params={{ lang: 'eng' }}>
+          <A
+            className={cx({
+              [selectedClass]: categoryType === 'library_books'
+            })}
+          >
+            <Trans>
+              Library <HiddenMobile>books</HiddenMobile>
+            </Trans>
           </A>
         </Link>
-        <Link route="books" passHref params={{ lang: 'eng' }}>
-          <A>
-            <Trans>Classroom</Trans>
+        <Link route="classroom" passHref params={{ lang: 'eng' }}>
+          <A
+            className={cx({
+              [selectedClass]: categoryType === 'classroom_books'
+            })}
+          >
+            <Trans>
+              Classroom <HiddenMobile>books</HiddenMobile>
+            </Trans>
           </A>
         </Link>
       </Div>

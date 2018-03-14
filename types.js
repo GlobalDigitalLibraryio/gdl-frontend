@@ -59,8 +59,10 @@ export type Translation = {
   coverPhoto?: CoverPhoto
 };
 
+export type CategoryType = 'library_books' | 'classroom_books';
+
 export type Category = $ReadOnly<{|
-  +name: 'library_books' | 'classroom_books'
+  +name: CategoryType
 |}>;
 
 export type Book = $ReadOnly<{|

@@ -41,7 +41,8 @@ if (config.STATIC_PAGES_ONLY) {
 
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
-  routes.add('category', '/:lang/books/category/:category', 'index');
+  routes.add('classroom', '/:lang/books/category/classroom', 'index');
+  routes.add('library', '/:lang/books/category/library', 'index');
 
   // Browse the books
   routes.add('browse', '/:lang/books/browse', 'books/browse');

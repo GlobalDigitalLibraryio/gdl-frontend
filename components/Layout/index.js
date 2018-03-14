@@ -9,7 +9,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { PortalWithState } from 'react-portal';
-import type { Language } from '../../types';
+import type { Language, CategoryType } from '../../types';
 import Navbar from '../Navbar';
 import SubNavbar from '../SubNavbar';
 import GlobalMenu from '../GlobalMenu';
@@ -36,10 +36,17 @@ type Props = {
   toolbarEnd?: React.Node,
   language: Language,
   languages?: Array<Language>,
-  crumbs?: Array<React.Node | string>
+  crumbs?: Array<React.Node | string>,
+  categoryType: CategoryType
 };
 
-const Layout = ({ children, languages, language, crumbs }: Props) => (
+const Layout = ({
+  children,
+  languages,
+  language,
+  categoryType,
+  crumbs
+}: Props) => (
   <PageWrapper>
     <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
@@ -52,6 +59,7 @@ const Layout = ({ children, languages, language, crumbs }: Props) => (
             />
             {(crumbs || languages) && (
               <SubNavbar
+                categoryType={categoryType}
                 crumbs={crumbs}
                 languages={languages}
                 language={language}

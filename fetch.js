@@ -13,7 +13,8 @@ import type {
   Book,
   BookDetails,
   FeaturedContent,
-  Translation
+  Translation,
+  CategoryType
 } from './types';
 import { bookApiUrl } from './config';
 import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
@@ -104,7 +105,7 @@ const PAGE_SIZE = 5;
 type Options = {
   pageSize?: number,
   level?: string,
-  category?: string,
+  category?: CategoryType,
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
   page?: number
 };
