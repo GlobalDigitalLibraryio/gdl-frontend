@@ -39,7 +39,6 @@ import A from '../components/A';
 import theme from '../style/theme';
 import media from '../style/media';
 import { flexCenter } from '../style/flex';
-import LanguageMenu from '../components/LanguageMenu';
 
 type Props = {
   featuredContent: RemoteData<Array<FeaturedContent>>,
@@ -112,7 +111,7 @@ const moreStyle = css`
 
 const FeaturedTitle = H1.withComponent('h2');
 
-class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
+class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query, accessToken }: Context) {
     const language: ?string = query.lang;
 
@@ -144,15 +143,6 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
     };
   }
 
-  state = {
-    showLanguageMenu: false
-  };
-
-  toggleShowLanguageMenu = event => {
-    event.preventDefault();
-    this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
-  };
-
   render() {
     const {
       featuredContent,
@@ -163,27 +153,9 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
     } = this.props;
 
     const featured = featuredContent[0];
-    const languageFilter = justArrived.language;
 
     return (
-      <Layout
-        language={justArrived.language}
-        toolbarEnd={
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div>
-              {justArrived.language.name}{' '}
-              <A
-                href=""
-                onClick={this.toggleShowLanguageMenu}
-                isUppercased
-                isBold
-              >
-                Change
-              </A>
-            </div>
-          </div>
-        }
-      >
+      <Layout language={justArrived.language} languages={languages}>
         <Head imageUrl={featured.imageUrl} />
         <HeroCover
           pt={['15px', '40px']}
@@ -255,13 +227,6 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
             />
           </Container>
         </Hero>
-        {this.state.showLanguageMenu && (
-          <LanguageMenu
-            selectedLanguage={languageFilter}
-            languages={languages}
-            onClose={this.toggleShowLanguageMenu}
-          />
-        )}
       </Layout>
     );
   }

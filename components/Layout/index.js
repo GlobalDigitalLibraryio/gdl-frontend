@@ -9,33 +9,11 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { PortalWithState } from 'react-portal';
-import type { Language } from '../types';
-import media from '../style/media';
-import Navbar from './Navbar';
-import Breadcrumb from './Breadcrumb';
-import { navContainerFragment } from './Container';
-import Box from './Box';
-import GlobalMenu from './GlobalMenu';
-import theme from '../style/theme';
-
-const Toolbar = styled('div')`
-  background: ${theme.colors.white};
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  position: relative;
-  font-size: 13px;
-  height: 28px;
-  z-index: 10;
-  ${media.tablet`
-    font-size: 16px;
-    height: 38px;
-  `};
-`;
-
-const Container = styled('div')`
-  display: flex;
-  height: 100%;
-  ${navContainerFragment};
-`;
+import type { Language } from '../../types';
+import Navbar from '../Navbar';
+import SubNavbar from '../SubNavbar';
+import GlobalMenu from '../GlobalMenu';
+import theme from '../../style/theme';
 
 const ContentWrapper = styled('main')`
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
@@ -57,10 +35,11 @@ type Props = {
   children: React.Node,
   toolbarEnd?: React.Node,
   language: Language,
+  languages?: Array<Language>,
   crumbs?: Array<React.Node | string>
 };
 
-const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
+const Layout = ({ children, languages, language, crumbs }: Props) => (
   <PageWrapper>
     <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
@@ -71,17 +50,12 @@ const Layout = ({ children, toolbarEnd, language, crumbs }: Props) => (
               onMenuClick={openPortal}
               menuIsExpanded={isOpen}
             />
-            {(crumbs || toolbarEnd) && (
-              <Toolbar>
-                <Container>
-                  {crumbs ? (
-                    <Breadcrumb language={language.code} crumbs={crumbs} />
-                  ) : (
-                    <Box mr="auto" />
-                  )}
-                  {toolbarEnd}
-                </Container>
-              </Toolbar>
+            {(crumbs || languages) && (
+              <SubNavbar
+                crumbs={crumbs}
+                languages={languages}
+                language={language}
+              />
             )}
           </nav>
           {portal(<GlobalMenu onClose={closePortal} language={language} />)}

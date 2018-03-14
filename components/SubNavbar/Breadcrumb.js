@@ -10,11 +10,12 @@ import * as React from 'react';
 import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
 import { withI18n } from '@lingui/react';
 import styled from 'react-emotion';
-import type { I18n } from '../types';
-import { Link } from '../routes';
-import theme from '../style/theme';
 
-const Nav = styled.nav`
+import type { I18n } from '../../types';
+import { Link } from '../../routes';
+import theme from '../../style/theme';
+
+const Div = styled.div`
   display: flex;
   align-items: stretch;
   flex: 1;
@@ -34,12 +35,15 @@ const Ol = styled.ol`
     display: flex;
     align-items: center;
   }
+
   li:last-child {
     font-weight: bold;
   }
+
   li[role='presentation'] {
     color: ${theme.colors.gray};
   }
+
   a:hover {
     color: ${theme.colors.blues.dark};
   }
@@ -58,7 +62,7 @@ const Separator = (
 );
 
 const Breadcrumb = ({ i18n, crumbs, language }: Props) => (
-  <Nav aria-label={i18n.t`Breadcrumb`} role="navigation">
+  <Div aria-label={i18n.t`Breadcrumb`}>
     <Ol>
       <li>
         <Link route="books" params={{ lang: language }}>
@@ -77,7 +81,7 @@ const Breadcrumb = ({ i18n, crumbs, language }: Props) => (
           </React.Fragment>
         ))}
     </Ol>
-  </Nav>
+  </Div>
 );
 
 export default withI18n()(Breadcrumb);
