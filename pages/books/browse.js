@@ -30,8 +30,9 @@ type Props = {
   }>,
   url: {
     query: {
-      readingLevel?: string,
       lang: string,
+      readingLevel?: string,
+      category?: string,
       sort?: string
     }
   },
@@ -52,7 +53,8 @@ class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
-      level: query.readingLevel
+      level: query.readingLevel,
+      category: query.category
     })(accessToken);
 
     return {

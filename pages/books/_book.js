@@ -20,6 +20,7 @@ import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, RemoteData, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import { Link } from '../../routes';
+import BrowseLink from '../../components/BrowseLink';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
 import Layout from '../../components/Layout';
@@ -98,14 +99,19 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     const { book } = this.props;
 
     return [
-      <Link
-        route="level"
-        params={{ lang: book.language.code, level: book.readingLevel }}
+      <BrowseLink
+        lang={book.language.code}
+        readingLevel={book.readingLevel}
+        category={
+          book.categories.find(c => c.name === 'classroom_books')
+            ? 'classroom_books'
+            : 'library_books'
+        }
       >
         <a>
           <Trans>Level {book.readingLevel}</Trans>
         </a>
-      </Link>,
+      </BrowseLink>,
       this.props.book.title
     ];
   }

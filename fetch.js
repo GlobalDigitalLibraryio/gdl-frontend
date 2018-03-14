@@ -104,6 +104,7 @@ const PAGE_SIZE = 5;
 type Options = {
   pageSize?: number,
   level?: string,
+  category?: string,
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
   page?: number
 };
@@ -165,7 +166,7 @@ export function fetchBooks(
         1}&sort=${options.sort ||
         '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${
         options.level ? `&reading-level=${options.level}` : ''
-      }`
+      }${options.category ? `&category=${options.category}` : ''}`
     )(accessToken);
 }
 

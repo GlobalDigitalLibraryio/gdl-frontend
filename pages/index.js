@@ -10,7 +10,7 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 
-import { Link } from '../routes';
+import BrowseLink from '../components/BrowseLink';
 import {
   fetchFeaturedContent,
   fetchLevels,
@@ -223,18 +223,11 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         {levels.map((level, index) => (
           <Hero py={[15, 22]} key={level}>
             <Container>
-              <Link
-                route="browse"
-                params={{
-                  lang: justArrived.language.code,
-                  readingLevel: level
-                }}
-                passHref
-              >
+              <BrowseLink lang={justArrived.language.code} readingLevel={level}>
                 <A isUppercased className={moreStyle}>
                   <Trans>More</Trans>
                 </A>
-              </Link>
+              </BrowseLink>
               <BookList
                 books={booksByLevel[index].results}
                 heading={<Trans>Level {level}</Trans>}
@@ -245,15 +238,11 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
         ))}
         <Hero py={[15, 22]}>
           <Container>
-            <Link
-              route="browse"
-              params={{ lang: justArrived.language.code, sort: 'arrivalDate' }}
-              passHref
-            >
+            <BrowseLink lang={justArrived.language.code} sort="-arrivalDate">
               <A isUppercased className={moreStyle}>
                 <Trans>More</Trans>
               </A>
-            </Link>
+            </BrowseLink>
             <BookList
               heading={<Trans>New arrivals</Trans>}
               books={justArrived.results}

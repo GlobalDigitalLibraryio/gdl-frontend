@@ -38,8 +38,10 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add('login');
   routes.add('logout');
   routes.add('search', '/:lang/search', '_search');
+
   // in other environments we want the books page to be the landing page
   routes.add('books', '/:lang?', 'index');
+  routes.add('category', '/:lang/books/category/:category', 'index');
 
   // Browse the books
   routes.add('browse', '/:lang/books/browse', 'books/browse');

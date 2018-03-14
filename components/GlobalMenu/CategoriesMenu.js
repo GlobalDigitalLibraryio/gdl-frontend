@@ -10,7 +10,7 @@ import React from 'react';
 import { Trans } from '@lingui/react';
 
 import type { Language } from '../../types';
-import { Link } from '../../routes';
+import Link from '../BrowseLink';
 import Menu, { MenuItem } from '../Menu';
 
 type Props = {
@@ -34,9 +34,9 @@ export default class CategoriesMenu extends React.Component<Props> {
         {categories.classroom_books.readingLevels.map(level => (
           <Link
             key={level}
-            route="browse"
-            passHref
-            params={{ lang: language.code, readingLevel: level }}
+            lang={language.code}
+            readingLevel={level}
+            category="classroom_books"
           >
             <MenuItem onCustomClick={onClose}>
               <Trans>Reading level {level}</Trans>
@@ -44,9 +44,9 @@ export default class CategoriesMenu extends React.Component<Props> {
           </Link>
         ))}
         <Link
-          route="browse"
-          passHref
-          params={{ lang: language.code, sort: 'arrivalDate' }}
+          category="classroom_books"
+          lang={language.code}
+          sort="-arrivalDate"
         >
           <MenuItem onCustomClick={onClose}>
             <Trans>New arrivals</Trans>
@@ -58,20 +58,16 @@ export default class CategoriesMenu extends React.Component<Props> {
         {categories.library_books.readingLevels.map(level => (
           <Link
             key={level}
-            route="browse"
-            passHref
-            params={{ lang: language.code, readingLevel: level }}
+            lang={language.code}
+            readingLevel={level}
+            category="library_books"
           >
             <MenuItem onCustomClick={onClose}>
               <Trans>Reading level {level}</Trans>
             </MenuItem>
           </Link>
         ))}
-        <Link
-          route="browse"
-          passHref
-          params={{ lang: language.code, sort: 'arrivalDate' }}
-        >
+        <Link category="library_books" lang={language.code} sort="-arrivalDate">
           <MenuItem onCustomClick={onClose}>
             <Trans>New arrivals</Trans>
           </MenuItem>
