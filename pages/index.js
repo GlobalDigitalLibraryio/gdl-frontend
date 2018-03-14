@@ -13,7 +13,7 @@ import styled, { css } from 'react-emotion';
 import BrowseLink from '../components/BrowseLink';
 import {
   fetchFeaturedContent,
-  fetchLevels,
+  fetchCategories,
   fetchLanguages,
   fetchBooks
 } from '../fetch';
@@ -117,14 +117,19 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading level
-    const [featuredContent, levels, languages, justArrived] = await Promise.all(
-      [
-        fetchFeaturedContent(language)(accessToken),
-        fetchLevels(language)(accessToken),
-        fetchLanguages()(accessToken),
-        fetchBooks(language)(accessToken)
-      ]
-    );
+    const [
+      featuredContent,
+      categories,
+      languages,
+      justArrived
+    ] = await Promise.all([
+      fetchFeaturedContent(language)(accessToken),
+      fetchCategories(language)(accessToken),
+      fetchLanguages()(accessToken),
+      fetchBooks(language)(accessToken)
+    ]);
+
+    const levels = categories.library_books.readingLevels.sort();
 
     const booksByLevel = await Promise.all(
       levels.map(level => fetchBooks(language, { level })(accessToken))

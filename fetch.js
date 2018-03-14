@@ -109,13 +109,6 @@ type Options = {
   page?: number
 };
 
-export function fetchLevels(
-  language: ?string
-): (accessToken: ?string) => Promise<RemoteData<Array<string>>> {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/levels/${language || ''}`)(accessToken);
-}
-
 export function fetchLanguages(): (
   accessToken: ?string
 ) => Promise<RemoteData<Array<Language>>> {
