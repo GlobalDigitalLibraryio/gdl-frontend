@@ -40,7 +40,10 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
           {crumbs ? (
             <Breadcrumb language={language.code} crumbs={crumbs} />
           ) : (
-            <CategoryNavigation categoryType={categoryType} />
+            <CategoryNavigation
+              language={language}
+              categoryType={categoryType}
+            />
           )}
           {languages && (
             <div

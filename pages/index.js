@@ -6,7 +6,8 @@
  * See LICENSE
  */
 
-import * as React from 'react';
+import React, { Fragment } from 'react';
+import Head from 'next/head';
 import ErrorPage from './_error';
 
 import {
@@ -32,11 +33,12 @@ type Props = {
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  categoryType: CategoryType
+  categoryType: CategoryType,
+  locationOrigin: string
 };
 
 class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken, asPath }: Context) {
+  static async getInitialProps({ query, accessToken, asPath, req }: Context) {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading levels or categories
@@ -46,13 +48,21 @@ class BooksPage extends React.Component<Props> {
       fetchLanguages()(accessToken)
     ]);
 
-    // Default to library_books
-    const categoryType: CategoryType =
-      'library_books' in categories ? 'library_books' : 'classroom_books';
+    let categoryType: CategoryType;
 
-    const levels = categories.library_books
-      ? categories.library_books.readingLevels
-      : categories.classroom_books.readingLevels;
+    if (asPath.includes('/classroom')) {
+      categoryType = 'classroom_books';
+    } else if (asPath.includes('/library')) {
+      categoryType = 'library_books';
+    } else {
+      // Default to library_books
+      categoryType =
+        'library_books' in categories ? 'library_books' : 'classroom_books';
+    }
+
+    const levels = categories[categoryType]
+      ? categories[categoryType].readingLevels
+      : [];
 
     // Levels are just stringified single digits for now, so this is okay. Revisit when we have other levels
     levels.sort();
@@ -67,13 +77,19 @@ class BooksPage extends React.Component<Props> {
       )
     ]);
 
+    const locationOrigin =
+      req != null
+        ? `${req.protocol}://${req.headers.host}`
+        : window.location.origin;
+
     return {
       featuredContent,
       newArrivals,
       languages,
       levels,
       booksByLevel,
-      categoryType
+      categoryType,
+      locationOrigin
     };
   }
 
@@ -84,7 +100,8 @@ class BooksPage extends React.Component<Props> {
       levels,
       booksByLevel,
       newArrivals,
-      categoryType
+      categoryType,
+      locationOrigin
     } = this.props;
 
     // If we don't have any levels, we assume it's a 404
@@ -92,15 +109,36 @@ class BooksPage extends React.Component<Props> {
       return <ErrorPage statusCode={404} />;
     }
 
+    const language = newArrivals.language;
+
+    let categoryTypeForUrl;
+    if (categoryType === 'library_books') {
+      categoryTypeForUrl = 'library';
+    } else if (categoryType === 'classroom_books') {
+      categoryTypeForUrl = 'classroom';
+    }
+
     return (
-      <HomePage
-        categoryType={categoryType}
-        languages={languages}
-        levels={levels}
-        newArrivals={newArrivals}
-        booksByLevel={booksByLevel}
-        featuredContent={featuredContent}
-      />
+      <Fragment>
+        {categoryTypeForUrl && (
+          <Head>
+            <link
+              rel="canonical"
+              href={`${locationOrigin}/${
+                language.code
+              }/books/category/${categoryTypeForUrl}`}
+            />
+          </Head>
+        )}
+        <HomePage
+          categoryType={categoryType}
+          languages={languages}
+          levels={levels}
+          newArrivals={newArrivals}
+          booksByLevel={booksByLevel}
+          featuredContent={featuredContent}
+        />
+      </Fragment>
     );
   }
 }

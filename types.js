@@ -65,6 +65,14 @@ export type Category = $ReadOnly<{|
   +name: CategoryType
 |}>;
 
+export type ReadingLevel =
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | 'reading-level'
+  | 'decodable';
+
 export type Book = $ReadOnly<{|
   id: number,
   title: string,
@@ -72,7 +80,7 @@ export type Book = $ReadOnly<{|
   categories: Array<Category>,
   highlightTitle?: string,
   highlightDescription?: string,
-  readingLevel: string,
+  readingLevel: ReadingLevel,
   language: Language,
   coverPhoto?: CoverPhoto
 |}>;
