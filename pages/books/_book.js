@@ -102,11 +102,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
       <BrowseLink
         lang={book.language.code}
         readingLevel={book.readingLevel}
-        category={
-          book.categories.find(c => c.name === 'classroom_books')
-            ? 'classroom_books'
-            : 'library_books'
-        }
+        category={book.category}
       >
         <a>
           <Trans>Level {book.readingLevel}</Trans>
@@ -123,7 +119,11 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     const { similar, book } = this.props;
 
     return (
-      <Layout crumbs={this.getCrumbs()} language={book.language}>
+      <Layout
+        crumbs={this.getCrumbs()}
+        language={book.language}
+        category={book.category}
+      >
         <Head
           title={book.title}
           description={book.description}

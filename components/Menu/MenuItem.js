@@ -13,7 +13,7 @@ import { cx } from 'react-emotion';
 import SrOnly from '../SrOnly';
 import { Item, ItemIcon, itemActionStyle } from './styled/Content';
 
-type Props = {
+type Props = {|
   isSelected?: boolean,
   showKeyLine?: boolean,
   href?: string,
@@ -23,7 +23,7 @@ type Props = {
   onCustomClick?: (event: SyntheticMouseEvent<any>) => void,
   hasNestedMenu?: boolean,
   children: Node
-};
+|};
 
 const ItemLink = Item.withComponent('a');
 

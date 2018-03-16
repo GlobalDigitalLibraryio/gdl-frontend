@@ -7,9 +7,10 @@
  */
 import React, { type Node } from 'react';
 import { Link } from '../routes';
+import type { Category } from '../types';
 
 type Props = {|
-  category: 'classroom_books' | 'library_books',
+  category: Category,
   lang: string,
   readingLevel?: string,
   sort?: '-arrivalDate',

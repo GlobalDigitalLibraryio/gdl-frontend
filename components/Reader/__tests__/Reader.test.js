@@ -35,7 +35,7 @@ const book: BookDetails = {
     code: 'eng',
     name: 'English'
   },
-  categories: [],
+  category: 'library_books',
   contributors: [],
   readingLevel: '3',
   availableLanguages: [],

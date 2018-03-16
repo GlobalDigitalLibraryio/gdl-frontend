@@ -59,11 +59,7 @@ export type Translation = {
   coverPhoto?: CoverPhoto
 };
 
-export type CategoryType = 'library_books' | 'classroom_books';
-
-export type Category = $ReadOnly<{|
-  +name: CategoryType
-|}>;
+export type Category = 'library_books' | 'classroom_books';
 
 export type ReadingLevel =
   | '1'
@@ -77,7 +73,7 @@ export type Book = $ReadOnly<{|
   id: number,
   title: string,
   description: string,
-  categories: Array<Category>,
+  category: Category,
   highlightTitle?: string,
   highlightDescription?: string,
   readingLevel: ReadingLevel,

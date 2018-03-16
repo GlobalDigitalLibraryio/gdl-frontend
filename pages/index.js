@@ -22,7 +22,7 @@ import type {
   RemoteData,
   FeaturedContent,
   Context,
-  CategoryType
+  Category
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import HomePage from '../components/HomePage';
@@ -33,7 +33,7 @@ type Props = {
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  categoryType: CategoryType,
+  categoryType: Category,
   locationOrigin: string
 };
 
@@ -48,31 +48,31 @@ class BooksPage extends React.Component<Props> {
       fetchLanguages()(accessToken)
     ]);
 
-    let categoryType: CategoryType;
+    let category: Category;
 
     if (asPath.includes('/classroom')) {
-      categoryType = 'classroom_books';
+      category = 'classroom_books';
     } else if (asPath.includes('/library')) {
-      categoryType = 'library_books';
+      category = 'library_books';
     } else {
       // Default to library_books
-      categoryType =
+      category =
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
 
-    const levels = categories[categoryType]
-      ? categories[categoryType].readingLevels
+    const levels = categories[category]
+      ? categories[category].readingLevels
       : [];
 
     // Levels are just stringified single digits for now, so this is okay. Revisit when we have other levels
     levels.sort();
 
     const [newArrivals, ...booksByLevel] = await Promise.all([
-      fetchBooks(language, { category: categoryType })(accessToken),
+      fetchBooks(language, { category: category })(accessToken),
       ...levels.map(level =>
         fetchBooks(language, {
           level,
-          category: categoryType
+          category
         })(accessToken)
       )
     ]);
@@ -88,7 +88,6 @@ class BooksPage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      categoryType,
       locationOrigin
     };
   }
@@ -100,7 +99,6 @@ class BooksPage extends React.Component<Props> {
       levels,
       booksByLevel,
       newArrivals,
-      categoryType,
       locationOrigin
     } = this.props;
 
@@ -110,11 +108,12 @@ class BooksPage extends React.Component<Props> {
     }
 
     const language = newArrivals.language;
+    const category = newArrivals.results[0].category;
 
     let categoryTypeForUrl;
-    if (categoryType === 'library_books') {
+    if (category === 'library_books') {
       categoryTypeForUrl = 'library';
-    } else if (categoryType === 'classroom_books') {
+    } else if (category === 'classroom_books') {
       categoryTypeForUrl = 'classroom';
     }
 
@@ -131,7 +130,6 @@ class BooksPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
-          categoryType={categoryType}
           languages={languages}
           levels={levels}
           newArrivals={newArrivals}

@@ -12,7 +12,7 @@ import { Trans } from '@lingui/react';
 import Link from 'next/link';
 
 import config from '../../config';
-import type { Language } from '../../types';
+import type { Language, ReadingLevel } from '../../types';
 import { fetchLanguages, fetchCategories } from '../../fetch';
 import { Link as RouteLink } from '../../routes';
 import { getAuthToken } from '../../lib/auth/token';
@@ -21,28 +21,33 @@ import CreativeCommonsLogo from './cc-logo.svg';
 import LanguageMenu from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 
-type Props = {
+type Props = {|
   onClose(): void,
   language: Language,
   router: any
+|};
+
+export type Categories = {
+  classroom_books?: { readingLevels: Array<ReadingLevel> },
+  library_books?: { readingLevels: Array<ReadingLevel> }
 };
 
 type State = {
   languages: Array<Language>,
-  categories: Array<string>,
+  categories: Categories,
   showLanguageMenu: boolean,
   showCategoriesMenu: boolean
 };
 
-type Cache = {
+type Cache = {|
   languages: Array<Language>,
-  categories: Array<string>,
+  categories: Categories,
   language: ?Language
-};
+|};
 
 const stateCache: Cache = {
   languages: [],
-  categories: [],
+  categories: {},
   language: null
 };
 
@@ -62,7 +67,7 @@ class GlobalMenu extends React.Component<Props, State> {
     } else {
       this.state = {
         languages: [],
-        categories: [],
+        categories: {},
         showLanguageMenu: false,
         showCategoriesMenu: false
       };
@@ -71,7 +76,7 @@ class GlobalMenu extends React.Component<Props, State> {
 
   componentDidMount() {
     // Only fetch if we haven't already set stuff from the cache in the constructor
-    if (this.state.categories.length === 0) {
+    if (this.state.languages.length === 0) {
       this.getMenuData();
     }
     // Remember the last language we mounted with in the cache
@@ -93,10 +98,18 @@ class GlobalMenu extends React.Component<Props, State> {
   }
 
   getMenuData = async () => {
-    const [languages, categories] = await Promise.all([
+    let [languages, categories] = await Promise.all([
       fetchLanguages()(),
       fetchCategories(this.props.language.code)()
     ]);
+
+    // Sort the reading levels
+    categories = Object.entries(categories).reduce((acc, [key, value]) => {
+      // $FlowFixMe
+      value.readingLevels = value.readingLevels.sort();
+      acc[key] = value;
+      return acc;
+    }, {});
 
     this.setState({
       categories,

@@ -11,13 +11,7 @@ import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 
 import BrowseLink from '../../components/BrowseLink';
-import type {
-  Book,
-  Language,
-  RemoteData,
-  FeaturedContent,
-  CategoryType
-} from '../../types';
+import type { Book, Language, RemoteData, FeaturedContent } from '../../types';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Card from '../../components/Card';
@@ -33,14 +27,13 @@ import theme from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
-type Props = {
+type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
   newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  categoryType: CategoryType
-};
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>
+|};
 
 const HeroCover = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
@@ -112,17 +105,17 @@ export default class HomePage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      newArrivals,
-      categoryType
+      newArrivals
     } = this.props;
 
     const featured = featuredContent[0];
+    const category = newArrivals.results[0].category;
 
     return (
       <Layout
         language={newArrivals.language}
         languages={languages}
-        categoryType={categoryType}
+        category={category}
       >
         <Head imageUrl={featured.imageUrl} />
         <HeroCover
@@ -168,7 +161,11 @@ export default class HomePage extends React.Component<Props> {
         {levels.map((level, index) => (
           <Hero py={[15, 22]} key={level}>
             <Container>
-              <BrowseLink lang={newArrivals.language.code} readingLevel={level}>
+              <BrowseLink
+                lang={newArrivals.language.code}
+                readingLevel={level}
+                category={category}
+              >
                 <A isUppercased className={moreStyle}>
                   <Trans>More</Trans>
                 </A>
@@ -183,7 +180,11 @@ export default class HomePage extends React.Component<Props> {
         ))}
         <Hero py={[15, 22]}>
           <Container>
-            <BrowseLink lang={newArrivals.language.code} sort="-arrivalDate">
+            <BrowseLink
+              lang={newArrivals.language.code}
+              sort="-arrivalDate"
+              category={category}
+            >
               <A isUppercased className={moreStyle}>
                 <Trans>More</Trans>
               </A>

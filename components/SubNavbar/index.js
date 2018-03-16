@@ -8,20 +8,19 @@
 
 import * as React from 'react';
 
-import type { Language, CategoryType } from '../../types';
+import type { Language, Category } from '../../types';
 import { Nav, Container } from './styledSubNavbar';
 import CategoryNavigation from './CategoryNavigation';
 import Breadcrumb from './Breadcrumb';
 import LanguageMenu from '../LanguageMenu';
 import A from '../A';
 
-type Props = {
-  toolbarEnd?: React.Node,
+type Props = {|
   language: Language,
   crumbs?: Array<React.Node | string>,
   languages?: Array<Language>,
-  categoryType: CategoryType
-};
+  category?: Category
+|};
 
 class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
   state = {
@@ -33,17 +32,16 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
   };
 
   render() {
-    const { categoryType, languages, language, crumbs } = this.props;
+    const { category, languages, language, crumbs } = this.props;
     return (
       <Nav>
         <Container>
           {crumbs ? (
             <Breadcrumb language={language.code} crumbs={crumbs} />
           ) : (
-            <CategoryNavigation
-              language={language}
-              categoryType={categoryType}
-            />
+            category && (
+              <CategoryNavigation language={language} category={category} />
+            )
           )}
           {languages && (
             <div

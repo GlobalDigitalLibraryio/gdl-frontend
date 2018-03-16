@@ -9,7 +9,14 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { fetchBooks } from '../../fetch';
-import type { Book, RemoteData, Language, Context, I18n } from '../../types';
+import type {
+  Book,
+  RemoteData,
+  Language,
+  Category,
+  Context,
+  I18n
+} from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
@@ -51,10 +58,17 @@ type State = {
 
 class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
+    let category: Category;
+    if (query.category === 'library_books') {
+      category = 'library_books';
+    } else if (query.category === 'classroom_books') {
+      category = 'classroom_books';
+    }
+
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
       level: query.readingLevel,
-      category: query.category
+      category
     })(accessToken);
 
     return {

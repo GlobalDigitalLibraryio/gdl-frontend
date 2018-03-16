@@ -9,7 +9,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { PortalWithState } from 'react-portal';
-import type { Language, CategoryType } from '../../types';
+import type { Language, Category } from '../../types';
 import Navbar from '../Navbar';
 import SubNavbar from '../SubNavbar';
 import GlobalMenu from '../GlobalMenu';
@@ -31,22 +31,15 @@ const PageWrapper = styled('div')`
   flex-direction: column;
 `;
 
-type Props = {
+type Props = {|
   children: React.Node,
-  toolbarEnd?: React.Node,
   language: Language,
   languages?: Array<Language>,
   crumbs?: Array<React.Node | string>,
-  categoryType: CategoryType
-};
+  category?: Category
+|};
 
-const Layout = ({
-  children,
-  languages,
-  language,
-  categoryType,
-  crumbs
-}: Props) => (
+const Layout = ({ children, languages, language, category, crumbs }: Props) => (
   <PageWrapper>
     <PortalWithState>
       {({ portal, closePortal, openPortal, isOpen }) => (
@@ -59,7 +52,7 @@ const Layout = ({
             />
             {(crumbs || languages) && (
               <SubNavbar
-                categoryType={categoryType}
+                category={category}
                 crumbs={crumbs}
                 languages={languages}
                 language={language}
