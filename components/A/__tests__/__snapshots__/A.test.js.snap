@@ -2,42 +2,26 @@
 
 exports[`Is bold anchor 1`] = `
 .emotion-0 {
-  font-size: inherit;
-  border: none;
-  background: transparent;
-  color: #006DD6;
   font-weight: 500;
 }
 
-.emotion-0:hover {
-  color: #004380;
-}
-
-<a
+<Styled(a)
   className="emotion-0"
   href="http://test.com"
 >
   Link
-</a>
+</Styled(a)>
 `;
 
 exports[`Is uppercased anchor 1`] = `
 .emotion-0 {
-  font-size: inherit;
-  border: none;
-  background: transparent;
-  color: #006DD6;
   text-transform: uppercase;
 }
 
-.emotion-0:hover {
-  color: #004380;
-}
-
-<a
+<Styled(a)
   className="emotion-0"
   href="http://test.com"
 >
   Link
-</a>
+</Styled(a)>
 `;

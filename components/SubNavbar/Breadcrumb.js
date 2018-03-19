@@ -9,11 +9,27 @@
 import * as React from 'react';
 import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
 import { withI18n } from '@lingui/react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
+import theming from 'styled-theming';
 
 import type { I18n } from '../../types';
 import { Link } from '../../routes';
 import theme from '../../style/theme';
+
+const color = theming('category', {
+  library: css`
+    color: ${theme.colors.link};
+    &:hover {
+      color: ${theme.colors.blues.dark};
+    }
+  `,
+  classroom: css`
+    color: ${theme.colors.pinks.dark};
+    &:hover {
+      color: ${theme.colors.pinks.pink};
+    }
+  `
+});
 
 const Div = styled.div`
   display: flex;
@@ -44,8 +60,8 @@ const Ol = styled.ol`
     color: ${theme.colors.gray};
   }
 
-  a:hover {
-    color: ${theme.colors.blues.dark};
+  a {
+    ${color};
   }
 `;
 

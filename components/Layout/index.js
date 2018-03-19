@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
+import { ThemeProvider } from 'emotion-theming';
 import { PortalWithState } from 'react-portal';
 import type { Language, Category } from '../../types';
 import Navbar from '../Navbar';
@@ -40,31 +41,37 @@ type Props = {|
 |};
 
 const Layout = ({ children, languages, language, category, crumbs }: Props) => (
-  <PageWrapper>
-    <PortalWithState>
-      {({ portal, closePortal, openPortal, isOpen }) => (
-        <React.Fragment>
-          <nav>
-            <Navbar
-              lang={language.code}
-              onMenuClick={openPortal}
-              menuIsExpanded={isOpen}
-            />
-            {(crumbs || languages) && (
-              <SubNavbar
-                category={category}
-                crumbs={crumbs}
-                languages={languages}
-                language={language}
+  <ThemeProvider
+    theme={{
+      category: category === 'classroom_books' ? 'classroom' : 'library'
+    }}
+  >
+    <PageWrapper>
+      <PortalWithState>
+        {({ portal, closePortal, openPortal, isOpen }) => (
+          <React.Fragment>
+            <nav>
+              <Navbar
+                lang={language.code}
+                onMenuClick={openPortal}
+                menuIsExpanded={isOpen}
               />
-            )}
-          </nav>
-          {portal(<GlobalMenu onClose={closePortal} language={language} />)}
-        </React.Fragment>
-      )}
-    </PortalWithState>
-    <ContentWrapper>{children}</ContentWrapper>
-  </PageWrapper>
+              {(crumbs || languages) && (
+                <SubNavbar
+                  category={category}
+                  crumbs={crumbs}
+                  languages={languages}
+                  language={language}
+                />
+              )}
+            </nav>
+            {portal(<GlobalMenu onClose={closePortal} language={language} />)}
+          </React.Fragment>
+        )}
+      </PortalWithState>
+      <ContentWrapper>{children}</ContentWrapper>
+    </PageWrapper>
+  </ThemeProvider>
 );
 
 Layout.defaultProps = {

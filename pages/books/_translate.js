@@ -187,7 +187,6 @@ class TranslatePage extends React.Component<Props, State> {
                 href={this.state.translation.crowdinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                color="green"
               >
                 <Trans>Start translation</Trans>
               </Button>

@@ -7,9 +7,11 @@
  */
 
 import * as React from 'react';
-import styled, { css, cx } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
+import theming from 'styled-theming';
 
+import theme from '../../style/theme';
 import type { Category, Language } from '../../types';
 import media from '../../style/media';
 import { Link } from '../../routes';
@@ -19,6 +21,11 @@ const Div = styled('div')`
   align-items: center;
 `;
 
+const borderColor = theming('category', {
+  library: '#0085dd',
+  classroom: theme.colors.pinks.pink
+});
+
 const A = styled('a')`
   color: inherit;
   &:not(:last-child) {
@@ -27,11 +34,12 @@ const A = styled('a')`
   &:hover {
     font-weight: 500;
   }
-`;
-
-const selectedClass = css`
-  font-weight: 500;
-  border-bottom: 3px solid #0085dd;
+  ${p =>
+    p.isSelected &&
+    css`
+      font-weight: 500;
+      border-bottom: 3px solid ${borderColor(p)};
+    `};
 `;
 
 // Because of space limitations, we only show "mobile" on big screens
@@ -41,10 +49,10 @@ const HiddenMobile = styled('span')`
   `};
 `;
 
-type Props = {
+type Props = {|
   category: Category,
   language: Language
-};
+|};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
@@ -52,22 +60,14 @@ class CategoryNavigation extends React.Component<Props> {
     return (
       <Div>
         <Link route="library" passHref params={{ lang: language.code }}>
-          <A
-            className={cx({
-              [selectedClass]: category === 'library_books'
-            })}
-          >
+          <A isSelected={category === 'library_books'}>
             <Trans>
               Library <HiddenMobile>books</HiddenMobile>
             </Trans>
           </A>
         </Link>
         <Link route="classroom" passHref params={{ lang: language.code }}>
-          <A
-            className={cx({
-              [selectedClass]: category === 'classroom_books'
-            })}
-          >
+          <A isSelected={category === 'classroom_books'}>
             <Trans>
               Classroom <HiddenMobile>books</HiddenMobile>
             </Trans>
