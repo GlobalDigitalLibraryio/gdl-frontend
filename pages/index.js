@@ -22,7 +22,8 @@ import type {
   RemoteData,
   FeaturedContent,
   Context,
-  Category
+  Category,
+  ReadingLevel
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import HomePage from '../components/HomePage';
@@ -30,7 +31,7 @@ import HomePage from '../components/HomePage';
 type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
   newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
-  levels: RemoteData<Array<string>>,
+  levels: Array<ReadingLevel>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
   categoryType: Category,

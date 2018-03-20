@@ -10,8 +10,15 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import BrowseLink from '../../components/BrowseLink';
-import type { Book, Language, RemoteData, FeaturedContent } from '../../types';
+import type {
+  Book,
+  Language,
+  RemoteData,
+  FeaturedContent,
+  ReadingLevel
+} from '../../types';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Card from '../../components/Card';
@@ -30,7 +37,7 @@ import { flexCenter } from '../../style/flex';
 type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
   newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
-  levels: RemoteData<Array<string>>,
+  levels: RemoteData<Array<ReadingLevel>>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
   showCategoryNavigation: boolean
@@ -175,7 +182,7 @@ export default class HomePage extends React.Component<Props> {
               </BrowseLink>
               <BookList
                 books={booksByLevel[index].results}
-                heading={<Trans>Level {level}</Trans>}
+                heading={<ReadingLevelTrans readingLevel={level} />}
                 mt={20}
               />
             </Container>

@@ -8,7 +8,9 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { Trans } from '@lingui/react';
+
+import type { ReadingLevel } from '../types';
+import ReadingLevelTrans from './ReadingLevelTrans';
 import media from '../style/media';
 import theme from '../style/theme';
 
@@ -27,8 +29,12 @@ const Label = styled('span')`
   `};
 `;
 
-export default ({ level, ...props }: { level: string }) => (
-  <Label {...props}>
-    <Trans>Level {level}</Trans>
+type Props = {|
+  level: ReadingLevel
+|};
+
+export default ({ level }: Props) => (
+  <Label>
+    <ReadingLevelTrans readingLevel={level} />
   </Label>
 );

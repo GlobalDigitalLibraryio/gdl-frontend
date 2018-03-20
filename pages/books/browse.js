@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+
 import { fetchBooks } from '../../fetch';
 import type {
   Book,
@@ -17,6 +18,7 @@ import type {
   Context,
   I18n
 } from '../../types';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
@@ -140,7 +142,11 @@ class BrowsePage extends React.Component<Props, State> {
         category={category}
         language={books.language}
         crumbs={[
-          readingLevel ? i18n.t`Level ${readingLevel}` : i18n.t`New arrivals`
+          readingLevel ? (
+            <ReadingLevelTrans readingLevel={readingLevel} />
+          ) : (
+            <Trans>New arrivals</Trans>
+          )
         ]}
       >
         <Head title={i18n.t`Browse books`} />
@@ -149,7 +155,7 @@ class BrowsePage extends React.Component<Props, State> {
           <H1 textAlign="center">
             {books.results.length > 0 ? (
               readingLevel ? (
-                <Trans>Level {readingLevel}</Trans>
+                <ReadingLevelTrans readingLevel={readingLevel} />
               ) : (
                 <Trans>New arrivals</Trans>
               )

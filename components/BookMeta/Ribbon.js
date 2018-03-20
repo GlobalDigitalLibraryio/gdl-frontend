@@ -9,7 +9,9 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { triangle } from 'polished';
-import { Trans } from '@lingui/react';
+
+import type { ReadingLevel } from '../../types';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 import media from '../../style/media';
 import theme from '../../style/theme';
 
@@ -57,8 +59,12 @@ const Ribbon = styled('div')`
   }
 `;
 
-export default ({ level, ...props }: { level: string }) => (
-  <Ribbon {...props}>
-    <Trans>Level {level}</Trans>
+type Props = {
+  level: ReadingLevel
+};
+
+export default ({ level }: Props) => (
+  <Ribbon>
+    <ReadingLevelTrans readingLevel={level} />
   </Ribbon>
 );

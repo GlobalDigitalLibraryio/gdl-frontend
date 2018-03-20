@@ -38,6 +38,7 @@ import theme from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 import BookMeta from '../../components/BookMeta';
 import DownloadBookMenu from '../../components/DownloadBookMenu';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
 type Props = {
   book: RemoteData<BookDetails>,
@@ -105,7 +106,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
         category={book.category}
       >
         <a>
-          <Trans>Level {book.readingLevel}</Trans>
+          <ReadingLevelTrans readingLevel={book.readingLevel} />
         </a>
       </BrowseLink>,
       this.props.book.title

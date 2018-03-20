@@ -12,6 +12,7 @@ import { Trans } from '@lingui/react';
 import type { Language } from '../../types';
 import type { Categories } from './index';
 import Link from '../BrowseLink';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 import Menu, { MenuItem } from '../Menu';
 
 type Props = {|
@@ -42,7 +43,7 @@ export default class CategoriesMenu extends React.Component<Props> {
                 category="classroom_books"
               >
                 <MenuItem onCustomClick={onClose} isNestedItem>
-                  <Trans>Reading level {level}</Trans>
+                  <ReadingLevelTrans readingLevel={level} />
                 </MenuItem>
               </Link>
             ))}
@@ -75,7 +76,7 @@ export default class CategoriesMenu extends React.Component<Props> {
                 category="library_books"
               >
                 <MenuItem onCustomClick={onClose} isNestedItem>
-                  <Trans>Reading level {level}</Trans>
+                  <ReadingLevelTrans readingLevel={level} />
                 </MenuItem>
               </Link>
             ))}
