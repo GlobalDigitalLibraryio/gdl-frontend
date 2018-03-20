@@ -31,9 +31,6 @@ const A = styled('a')`
   &:not(:last-child) {
     margin-right: 1em;
   }
-  &:hover {
-    font-weight: 500;
-  }
   ${p =>
     p.isSelected &&
     css`
