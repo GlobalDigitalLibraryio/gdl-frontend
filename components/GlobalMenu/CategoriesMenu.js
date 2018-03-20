@@ -41,7 +41,7 @@ export default class CategoriesMenu extends React.Component<Props> {
                 readingLevel={level}
                 category="classroom_books"
               >
-                <MenuItem onCustomClick={onClose}>
+                <MenuItem onCustomClick={onClose} isNestedItem>
                   <Trans>Reading level {level}</Trans>
                 </MenuItem>
               </Link>
@@ -52,6 +52,7 @@ export default class CategoriesMenu extends React.Component<Props> {
               sort="-arrivalDate"
             >
               <MenuItem
+                isNestedItem
                 onCustomClick={onClose}
                 showKeyLine={Boolean(categories.library_books)}
               >
@@ -73,7 +74,7 @@ export default class CategoriesMenu extends React.Component<Props> {
                 readingLevel={level}
                 category="library_books"
               >
-                <MenuItem onCustomClick={onClose}>
+                <MenuItem onCustomClick={onClose} isNestedItem>
                   <Trans>Reading level {level}</Trans>
                 </MenuItem>
               </Link>
@@ -83,7 +84,7 @@ export default class CategoriesMenu extends React.Component<Props> {
               lang={language.code}
               sort="-arrivalDate"
             >
-              <MenuItem onCustomClick={onClose}>
+              <MenuItem onCustomClick={onClose} isNestedItem>
                 <Trans>New arrivals</Trans>
               </MenuItem>
             </Link>
