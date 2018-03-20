@@ -14,11 +14,11 @@ type Props = {|
   readingLevel: ReadingLevel
 |};
 
-export default function ReadingLevelTrans({ readingLevel }: Props) {
-  if (readingLevel === 'decodable') {
+export default function ReadingLevelTrans({ readingLevel: level }: Props) {
+  if (level === 'decodable') {
     return <Trans>Decodable</Trans>;
-  } else if (readingLevel === 'read-aloud') {
+  } else if (level === 'read-aloud') {
     return <Trans>Read aloud</Trans>;
   }
-  return <Trans>Level {readingLevel}</Trans>;
+  return <Trans>Level {level}</Trans>;
 }
