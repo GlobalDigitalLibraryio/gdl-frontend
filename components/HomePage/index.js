@@ -32,7 +32,8 @@ type Props = {|
   newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+  showCategoryNavigation: boolean
 |};
 
 const HeroCover = styled('div')`
@@ -105,7 +106,8 @@ export default class HomePage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      newArrivals
+      newArrivals,
+      showCategoryNavigation
     } = this.props;
 
     const featured = featuredContent[0];
@@ -116,6 +118,7 @@ export default class HomePage extends React.Component<Props> {
         language={newArrivals.language}
         languages={languages}
         category={category}
+        showCategoryNavigation={showCategoryNavigation}
       >
         <Head imageUrl={featured.imageUrl} />
         <HeroCover

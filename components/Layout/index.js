@@ -37,10 +37,18 @@ type Props = {|
   language: Language,
   languages?: Array<Language>,
   crumbs?: Array<React.Node | string>,
-  category?: Category
+  category?: Category,
+  showCategoryNavigation?: boolean
 |};
 
-const Layout = ({ children, languages, language, category, crumbs }: Props) => (
+const Layout = ({
+  children,
+  languages,
+  showCategoryNavigation,
+  language,
+  category,
+  crumbs
+}: Props) => (
   <ThemeProvider
     theme={{
       category: category === 'classroom_books' ? 'classroom' : 'library'
@@ -56,8 +64,9 @@ const Layout = ({ children, languages, language, category, crumbs }: Props) => (
                 onMenuClick={openPortal}
                 menuIsExpanded={isOpen}
               />
-              {(crumbs || languages) && (
+              {(crumbs || languages || showCategoryNavigation) && (
                 <SubNavbar
+                  showCategoryNavigation={showCategoryNavigation}
                   category={category}
                   crumbs={crumbs}
                   languages={languages}

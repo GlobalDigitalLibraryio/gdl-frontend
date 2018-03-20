@@ -27,15 +27,16 @@ import type {
 import defaultPage from '../hocs/defaultPage';
 import HomePage from '../components/HomePage';
 
-type Props = {
+type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
   newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
   levels: RemoteData<Array<string>>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
   categoryType: Category,
-  locationOrigin: string
-};
+  locationOrigin: string,
+  showCategoryNavigation: boolean
+|};
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query, accessToken, asPath, req }: Context) {
@@ -59,6 +60,10 @@ class BooksPage extends React.Component<Props> {
       category =
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
+
+    // We only want to show the category switcher if we have both categories
+    const showCategoryNavigation =
+      'library_books' in categories && 'classroom_books' in categories;
 
     const levels = categories[category]
       ? categories[category].readingLevels
@@ -88,7 +93,8 @@ class BooksPage extends React.Component<Props> {
       languages,
       levels,
       booksByLevel,
-      locationOrigin
+      locationOrigin,
+      showCategoryNavigation
     };
   }
 
@@ -99,7 +105,8 @@ class BooksPage extends React.Component<Props> {
       levels,
       booksByLevel,
       newArrivals,
-      locationOrigin
+      locationOrigin,
+      showCategoryNavigation
     } = this.props;
 
     // If we don't have any levels, we assume it's a 404
@@ -130,6 +137,7 @@ class BooksPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
+          showCategoryNavigation={showCategoryNavigation}
           languages={languages}
           levels={levels}
           newArrivals={newArrivals}

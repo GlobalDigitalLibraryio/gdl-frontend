@@ -19,7 +19,8 @@ type Props = {|
   language: Language,
   crumbs?: Array<React.Node | string>,
   languages?: Array<Language>,
-  category?: Category
+  category?: Category,
+  showCategoryNavigation?: boolean
 |};
 
 class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
@@ -32,13 +33,20 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
   };
 
   render() {
-    const { category, languages, language, crumbs } = this.props;
+    const {
+      category,
+      languages,
+      language,
+      showCategoryNavigation,
+      crumbs
+    } = this.props;
     return (
       <Nav>
         <Container>
           {crumbs ? (
             <Breadcrumb language={language.code} crumbs={crumbs} />
           ) : (
+            showCategoryNavigation &&
             category && (
               <CategoryNavigation language={language} category={category} />
             )
