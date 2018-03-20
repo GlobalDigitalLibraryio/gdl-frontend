@@ -28,8 +28,8 @@ type Props = {|
 |};
 
 export type Categories = {
-  classroom_books?: { readingLevels: Array<ReadingLevel> },
-  library_books?: { readingLevels: Array<ReadingLevel> }
+  classroom_books?: Array<ReadingLevel>,
+  library_books?: Array<ReadingLevel>
 };
 
 type State = {
@@ -98,18 +98,10 @@ class GlobalMenu extends React.Component<Props, State> {
   }
 
   getMenuData = async () => {
-    let [languages, categories] = await Promise.all([
+    const [languages, categories] = await Promise.all([
       fetchLanguages()(),
       fetchCategories(this.props.language.code)()
     ]);
-
-    // Sort the reading levels
-    categories = Object.entries(categories).reduce((acc, [key, value]) => {
-      // $FlowFixMe
-      value.readingLevels = value.readingLevels.sort();
-      acc[key] = value;
-      return acc;
-    }, {});
 
     this.setState({
       categories,

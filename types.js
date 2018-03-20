@@ -61,13 +61,7 @@ export type Translation = {
 
 export type Category = 'library_books' | 'classroom_books';
 
-export type ReadingLevel =
-  | '1'
-  | '2'
-  | '3'
-  | '4'
-  | 'reading-level'
-  | 'decodable';
+export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
 export type Book = $ReadOnly<{|
   id: number,

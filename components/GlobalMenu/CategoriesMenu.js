@@ -34,7 +34,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             <MenuItem showKeyLine>
               <Trans>Classroom books</Trans>
             </MenuItem>
-            {categories.classroom_books.readingLevels.map(level => (
+            {categories.classroom_books.map(level => (
               <Link
                 key={level}
                 lang={language.code}
@@ -67,7 +67,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             <MenuItem showKeyLine>
               <Trans>Library books</Trans>
             </MenuItem>
-            {categories.library_books.readingLevels.map(level => (
+            {categories.library_books.map(level => (
               <Link
                 key={level}
                 lang={language.code}

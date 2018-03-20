@@ -65,12 +65,7 @@ class BooksPage extends React.Component<Props> {
     const showCategoryNavigation =
       'library_books' in categories && 'classroom_books' in categories;
 
-    const levels = categories[category]
-      ? categories[category].readingLevels
-      : [];
-
-    // Levels are just stringified single digits for now, so this is okay. Revisit when we have other levels
-    levels.sort();
+    const levels = categories[category] || [];
 
     const [newArrivals, ...booksByLevel] = await Promise.all([
       fetchBooks(language, { category: category })(accessToken),

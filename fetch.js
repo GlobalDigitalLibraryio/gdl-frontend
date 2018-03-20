@@ -19,6 +19,8 @@ import type {
 } from './types';
 import { bookApiUrl } from './config';
 import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
+import mapValues from './lib/mapValues';
+import sortReadingLevels from './lib/sortReadingLevels';
 
 let getTokenOnServer;
 
@@ -243,10 +245,19 @@ export function fetchCategories(
   accessToken: ?string
 ) => Promise<
   RemoteData<{|
-    classroom_books?: { readingLevels: Array<ReadingLevel> },
-    library_books?: { readingLevels: Array<ReadingLevel> }
+    classroom_books?: Array<ReadingLevel>,
+    library_books?: Array<ReadingLevel>
   |}>
 > {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/categories/${language || ''}`)(accessToken);
+  return async accessToken => {
+    const result = await fetchWithToken(
+      `${bookApiUrl}/categories/${language || ''}`
+    )(accessToken);
+
+    const transformedCategories = mapValues(result, c =>
+      sortReadingLevels(c.readingLevels)
+    );
+
+    return transformedCategories;
+  };
 }
