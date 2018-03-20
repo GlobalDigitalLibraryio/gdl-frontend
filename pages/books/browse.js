@@ -43,6 +43,7 @@ type Props = {
       sort?: string
     }
   },
+  category: Category,
   i18n: I18n
 };
 
@@ -72,7 +73,8 @@ class BrowsePage extends React.Component<Props, State> {
     })(accessToken);
 
     return {
-      books
+      books,
+      category
     };
   }
 
@@ -126,7 +128,7 @@ class BrowsePage extends React.Component<Props, State> {
   };
 
   render() {
-    const { i18n } = this.props;
+    const { i18n, category } = this.props;
     const { readingLevel } = this.props.url.query;
     const { books } = this.state;
 
@@ -135,6 +137,7 @@ class BrowsePage extends React.Component<Props, State> {
 
     return (
       <Layout
+        category={category}
         language={books.language}
         crumbs={[
           readingLevel ? i18n.t`Level ${readingLevel}` : i18n.t`New arrivals`
