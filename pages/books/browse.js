@@ -62,10 +62,10 @@ type State = {
 class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     let category: Category;
-    if (query.category === 'library_books') {
-      category = 'library_books';
-    } else if (query.category === 'classroom_books') {
+    if (query.category === 'classroom_books') {
       category = 'classroom_books';
+    } else {
+      category = 'library_books'; // Default category
     }
 
     const books = await fetchBooks(query.lang, {
@@ -103,7 +103,8 @@ class BrowsePage extends React.Component<Props, State> {
     const books = await fetchBooks(query.lang, {
       level: query.readingLevel,
       page: this.state.books.page + 1,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
+      category: this.props.category
     })();
 
     // Focus the first book of the extra books we're loading
@@ -143,6 +144,7 @@ class BrowsePage extends React.Component<Props, State> {
         language={books.language}
         crumbs={[
           readingLevel ? (
+            // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
             <ReadingLevelTrans readingLevel={readingLevel} />
           ) : (
             <Trans>New arrivals</Trans>
@@ -155,6 +157,7 @@ class BrowsePage extends React.Component<Props, State> {
           <H1 textAlign="center">
             {books.results.length > 0 ? (
               readingLevel ? (
+                // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
                 <ReadingLevelTrans readingLevel={readingLevel} />
               ) : (
                 <Trans>New arrivals</Trans>
