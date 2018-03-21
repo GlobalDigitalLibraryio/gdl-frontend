@@ -25,17 +25,8 @@ function getConfig() {
         domain: 'digitallibrary.eu.auth0.com'
       },
       zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new',
-      serverAuth: {
-        // These aren't visible to the client as they are defined as environment variables on the server
-        clientId: process.browser ? undefined : process.env.GDL_AUTH_CLIENT_ID,
-        clientSecret: process.browser
-          ? undefined
-          : process.env.GDL_AUTH_CLIENT_SECRET,
-        audience: 'gdl_system',
-        authUrl: 'https://digitallibrary.eu.auth0.com/oauth/token'
-      },
       // Fallback to test environment
-      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'N/A'
     },
 
