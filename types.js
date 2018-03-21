@@ -105,10 +105,7 @@ export type Context = {
   query: { [string]: string },
   err?: Error | { statusCode: number },
   res?: $Response,
-  req?: $Request,
-  // The accessToken isn't really part of the context object passed to
-  accessToken: string,
-  isAuthenticated: boolean
+  req?: $Request
 };
 
 export type I18n = {

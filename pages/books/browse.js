@@ -61,7 +61,7 @@ type State = {
 };
 
 class BrowsePage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query }: Context) {
     let category: Category;
     if (query.category === 'classroom_books') {
       category = 'classroom_books';
@@ -73,7 +73,7 @@ class BrowsePage extends React.Component<Props, State> {
       pageSize: PAGE_SIZE,
       level: query.readingLevel,
       category
-    })(accessToken);
+    });
 
     return {
       books,
@@ -106,7 +106,7 @@ class BrowsePage extends React.Component<Props, State> {
       page: this.state.books.page + 1,
       pageSize: PAGE_SIZE,
       category: this.props.category
-    })();
+    });
 
     // Focus the first book of the extra books we're loading
     const toFocus = books.results[0];

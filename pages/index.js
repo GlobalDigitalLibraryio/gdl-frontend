@@ -41,14 +41,14 @@ type Props = {|
 |};
 
 class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, accessToken, asPath, req }: Context) {
+  static async getInitialProps({ query, asPath, req }: Context) {
     const language: ?string = query.lang;
 
     // Fetch these first, cause they don't use the reading levels or categories
     const [featuredContent, categories, languages] = await Promise.all([
-      fetchFeaturedContent(language)(accessToken),
-      fetchCategories(language)(accessToken),
-      fetchLanguages()(accessToken)
+      fetchFeaturedContent(language),
+      fetchCategories(language),
+      fetchLanguages()
     ]);
 
     let category: Category;
@@ -66,12 +66,12 @@ class BooksPage extends React.Component<Props> {
     const levels = categories[category] || [];
 
     const [newArrivals, ...booksByLevel] = await Promise.all([
-      fetchBooks(language, { category: category })(accessToken),
+      fetchBooks(language, { category: category }),
       ...levels.map(level =>
         fetchBooks(language, {
           level,
           category
-        })(accessToken)
+        })
       )
     ]);
 

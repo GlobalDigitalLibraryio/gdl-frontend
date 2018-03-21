@@ -12,7 +12,6 @@ const requestLanguage = require('express-request-language');
 const cookieParser = require('cookie-parser');
 const glob = require('glob');
 const routes = require('../routes');
-const { getToken } = require('./lib/auth');
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -28,19 +27,6 @@ async function setup() {
   // 404 all requests for favicons since we don't have one, and it attempts to match with our next routes
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
   server.get('/favicon.ico', (req, res) => res.sendStatus(404));
-
-  /**
-   * Generate access tokens for anonymous users
-   */
-  // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-  server.get('/get_token', async (req, res) => {
-    try {
-      const token = await getToken();
-      res.json(token);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
 
   // Health check for AWS
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120

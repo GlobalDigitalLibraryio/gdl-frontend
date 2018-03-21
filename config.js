@@ -35,7 +35,7 @@ function getConfig() {
         authUrl: 'https://digitallibrary.eu.auth0.com/oauth/token'
       },
       // Fallback to test environment
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
+      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'N/A'
     },
 

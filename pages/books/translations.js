@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { MdArrowForward } from 'react-icons/lib/md';
-import fetchWithToken, { fetchMyTranslations } from '../../fetch';
+import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, RemoteData, I18n } from '../../types';
 import securePage from '../../hocs/securePage';
@@ -46,7 +46,7 @@ class TranslationCard extends React.Component<
   handleSynchronize = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
-    await fetchWithToken(this.props.translation.synchronizeUrl)();
+    await doFetch(this.props.translation.synchronizeUrl);
     this.setState({ isLoading: false, isSynchronized: true });
   };
 
@@ -116,7 +116,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    const translations = await fetchMyTranslations()();
+    const translations = await fetchMyTranslations();
     this.setState({ translations });
   }
 

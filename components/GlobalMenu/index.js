@@ -99,8 +99,8 @@ class GlobalMenu extends React.Component<Props, State> {
 
   getMenuData = async () => {
     const [languages, categories] = await Promise.all([
-      fetchLanguages()(),
-      fetchCategories(this.props.language.code)()
+      fetchLanguages(),
+      fetchCategories(this.props.language.code)
     ]);
 
     this.setState({
