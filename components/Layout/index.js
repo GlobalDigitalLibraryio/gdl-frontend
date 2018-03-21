@@ -15,6 +15,7 @@ import Navbar from '../Navbar';
 import SubNavbar from '../SubNavbar';
 import GlobalMenu from '../GlobalMenu';
 import theme from '../../style/theme';
+import LanguageCategoryContext from '../LanguageCategoryContext';
 
 const ContentWrapper = styled('main')`
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
@@ -34,60 +35,45 @@ const PageWrapper = styled('div')`
 
 type Props = {|
   children: React.Node,
-  language: Language,
   languages?: Array<Language>,
   crumbs?: Array<React.Node | string>,
-  category?: Category,
-  showCategoryNavigation?: boolean
+  categories?: Array<Category>
 |};
 
-const Layout = ({
-  children,
-  languages,
-  showCategoryNavigation,
-  language,
-  category,
-  crumbs
-}: Props) => (
-  <ThemeProvider
-    theme={{
-      category: category === 'classroom_books' ? 'classroom' : 'library'
-    }}
-  >
-    <PageWrapper>
-      <PortalWithState>
-        {({ portal, closePortal, openPortal, isOpen }) => (
-          <React.Fragment>
-            <nav>
-              <Navbar
-                lang={language.code}
-                onMenuClick={openPortal}
-                menuIsExpanded={isOpen}
-              />
-              {(crumbs || languages || showCategoryNavigation) && (
-                <SubNavbar
-                  showCategoryNavigation={showCategoryNavigation}
-                  category={category}
-                  crumbs={crumbs}
-                  languages={languages}
-                  language={language}
-                />
-              )}
-            </nav>
-            {portal(<GlobalMenu onClose={closePortal} language={language} />)}
-          </React.Fragment>
-        )}
-      </PortalWithState>
-      <ContentWrapper>{children}</ContentWrapper>
-    </PageWrapper>
-  </ThemeProvider>
+const Layout = ({ children, languages, categories, crumbs }: Props) => (
+  <LanguageCategoryContext.Consumer>
+    {({ category, language }) => (
+      <ThemeProvider
+        theme={{
+          category: category === 'classroom_books' ? 'classroom' : 'library'
+        }}
+      >
+        <PageWrapper>
+          <PortalWithState>
+            {({ portal, closePortal, openPortal, isOpen }) => (
+              <React.Fragment>
+                <nav>
+                  <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
+                  {(crumbs || languages || categories) && (
+                    <SubNavbar
+                      language={language}
+                      categories={categories}
+                      crumbs={crumbs}
+                      languages={languages}
+                    />
+                  )}
+                </nav>
+                {portal(
+                  <GlobalMenu onClose={closePortal} language={language} />
+                )}
+              </React.Fragment>
+            )}
+          </PortalWithState>
+          <ContentWrapper>{children}</ContentWrapper>
+        </PageWrapper>
+      </ThemeProvider>
+    )}
+  </LanguageCategoryContext.Consumer>
 );
-
-Layout.defaultProps = {
-  language: {
-    code: 'eng',
-    name: 'English'
-  }
-};
 
 export default Layout;

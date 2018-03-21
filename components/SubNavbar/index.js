@@ -11,6 +11,7 @@ import * as React from 'react';
 import type { Language, Category } from '../../types';
 import { Nav, Container } from './styledSubNavbar';
 import CategoryNavigation from './CategoryNavigation';
+import LanguageCategoryContext from '../LanguageCategoryContext';
 import Breadcrumb from './Breadcrumb';
 import LanguageMenu from '../LanguageMenu';
 import A from '../A';
@@ -19,8 +20,7 @@ type Props = {|
   language: Language,
   crumbs?: Array<React.Node | string>,
   languages?: Array<Language>,
-  category?: Category,
-  showCategoryNavigation?: boolean
+  categories?: Array<Category>
 |};
 
 class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
@@ -33,42 +33,39 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
   };
 
   render() {
-    const {
-      category,
-      languages,
-      language,
-      showCategoryNavigation,
-      crumbs
-    } = this.props;
+    const { languages, language, categories, crumbs } = this.props;
     return (
       <Nav>
         <Container>
           {crumbs ? (
-            <Breadcrumb language={language.code} crumbs={crumbs} />
+            <Breadcrumb crumbs={crumbs} />
           ) : (
-            showCategoryNavigation &&
-            category && (
-              <CategoryNavigation language={language} category={category} />
+            categories && (
+              <CategoryNavigation language={language} categories={categories} />
             )
           )}
           {languages && (
-            <div
-              style={{
-                marginLeft: 'auto',
-                display: 'flex',
-                alignItems: 'center'
-              }}
-            >
-              {language.name}
-              <A
-                onClick={this.toggleShowLanguageMenu}
-                isUppercased
-                isBold
-                style={{ paddingRight: 0 }}
-              >
-                Change
-              </A>
-            </div>
+            <LanguageCategoryContext.Consumer>
+              {({ language }) => (
+                <div
+                  style={{
+                    marginLeft: 'auto',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                >
+                  {language.name}
+                  <A
+                    onClick={this.toggleShowLanguageMenu}
+                    isUppercased
+                    isBold
+                    style={{ paddingRight: 0 }}
+                  >
+                    Change
+                  </A>
+                </div>
+              )}
+            </LanguageCategoryContext.Consumer>
           )}
         </Container>
         {this.state.showLanguageMenu &&

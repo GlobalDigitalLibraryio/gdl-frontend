@@ -47,6 +47,7 @@
     "@lingui/react": "2.0.5",
     "auth0-js": "9.3.2",
     "cookie-parser": "1.4.3",
+    "create-react-context": "^0.2.1",
     "domurl": "2.1.7",
     "emotion": "9.0.2",
     "emotion-server": "9.0.2",

@@ -17,7 +17,8 @@ import type {
   Language,
   RemoteData,
   FeaturedContent,
-  ReadingLevel
+  ReadingLevel,
+  Category
 } from '../../types';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -40,7 +41,7 @@ type Props = {|
   levels: RemoteData<Array<ReadingLevel>>,
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  showCategoryNavigation: boolean
+  categories: Array<Category>
 |};
 
 const HeroCover = styled('div')`
@@ -114,19 +115,14 @@ export default class HomePage extends React.Component<Props> {
       levels,
       booksByLevel,
       newArrivals,
-      showCategoryNavigation
+      categories
     } = this.props;
 
     const featured = featuredContent[0];
     const category = newArrivals.results[0].category;
 
     return (
-      <Layout
-        language={newArrivals.language}
-        languages={languages}
-        category={category}
-        showCategoryNavigation={showCategoryNavigation}
-      >
+      <Layout languages={languages} categories={categories}>
         <Head imageUrl={featured.imageUrl} />
         <HeroCover
           pt={['15px', '40px']}

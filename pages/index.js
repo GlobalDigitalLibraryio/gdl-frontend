@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import ErrorPage from './_error';
 
@@ -27,6 +27,7 @@ import type {
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
 import HomePage from '../components/HomePage';
+import { LanguageCategory } from '../components/LanguageCategoryContext';
 
 type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
@@ -35,8 +36,8 @@ type Props = {|
   languages: RemoteData<Array<Language>>,
   booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
   categoryType: Category,
-  locationOrigin: string,
-  showCategoryNavigation: boolean
+  categories: Array<Category>,
+  locationOrigin: string
 |};
 
 class BooksPage extends React.Component<Props> {
@@ -62,10 +63,6 @@ class BooksPage extends React.Component<Props> {
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
 
-    // We only want to show the category switcher if we have both categories
-    const showCategoryNavigation =
-      'library_books' in categories && 'classroom_books' in categories;
-
     const levels = categories[category] || [];
 
     const [newArrivals, ...booksByLevel] = await Promise.all([
@@ -90,7 +87,7 @@ class BooksPage extends React.Component<Props> {
       levels,
       booksByLevel,
       locationOrigin,
-      showCategoryNavigation
+      categories: Object.keys(categories)
     };
   }
 
@@ -102,7 +99,7 @@ class BooksPage extends React.Component<Props> {
       booksByLevel,
       newArrivals,
       locationOrigin,
-      showCategoryNavigation
+      categories
     } = this.props;
 
     // If we don't have any levels, we assume it's a 404
@@ -121,7 +118,7 @@ class BooksPage extends React.Component<Props> {
     }
 
     return (
-      <Fragment>
+      <LanguageCategory category={category} language={newArrivals.language}>
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -133,14 +130,14 @@ class BooksPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
-          showCategoryNavigation={showCategoryNavigation}
+          categories={categories}
           languages={languages}
           levels={levels}
           newArrivals={newArrivals}
           booksByLevel={booksByLevel}
           featuredContent={featuredContent}
         />
-      </Fragment>
+      </LanguageCategory>
     );
   }
 }

@@ -223,7 +223,12 @@ export function search(
 ): (
   acccessToken: ?string
 ) => Promise<
-  RemoteData<{ page: number, totalCount: number, results: Array<Book> }>
+  RemoteData<{
+    page: number,
+    totalCount: number,
+    results: Array<Book>,
+    language: Language
+  }>
 > {
   return async accessToken => {
     const result = await fetchWithToken(

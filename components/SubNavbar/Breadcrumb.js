@@ -13,6 +13,7 @@ import styled, { css } from 'react-emotion';
 import theming from 'styled-theming';
 
 import type { I18n } from '../../types';
+import LanguageCategoryContext from '../LanguageCategoryContext';
 import { Link } from '../../routes';
 import theme from '../../style/theme';
 
@@ -65,11 +66,10 @@ const Ol = styled.ol`
   }
 `;
 
-type Props = {
+type Props = {|
   i18n: I18n,
-  crumbs: Array<React.Node | string>,
-  language: string
-};
+  crumbs: Array<React.Node | string>
+|};
 
 const Separator = (
   <li aria-hidden role="presentation">
@@ -77,15 +77,30 @@ const Separator = (
   </li>
 );
 
-const Breadcrumb = ({ i18n, crumbs, language }: Props) => (
+const Breadcrumb = ({ i18n, crumbs }: Props) => (
   <Div aria-label={i18n.t`Breadcrumb`}>
     <Ol>
       <li>
-        <Link route="books" params={{ lang: language }}>
-          <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
-            <MdHome />
-          </a>
-        </Link>
+        <LanguageCategoryContext.Consumer>
+          {({ category, language }) => {
+            let route;
+            if (category === 'classroom_books') {
+              route = 'classroom';
+            } else if (category === 'library_books') {
+              route = 'library';
+            } else {
+              route = 'books';
+            }
+
+            return (
+              <Link route={route} params={{ lang: language.code }}>
+                <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
+                  <MdHome />
+                </a>
+              </Link>
+            );
+          }}
+        </LanguageCategoryContext.Consumer>
       </li>
       {crumbs &&
         crumbs.map((crumb, index) => (

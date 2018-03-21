@@ -39,6 +39,7 @@ import { flexColumnCentered } from '../../style/flex';
 import BookMeta from '../../components/BookMeta';
 import DownloadBookMenu from '../../components/DownloadBookMenu';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
   book: RemoteData<BookDetails>,
@@ -120,119 +121,117 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     const { similar, book } = this.props;
 
     return (
-      <Layout
-        crumbs={this.getCrumbs()}
-        language={book.language}
-        category={book.category}
-      >
-        <Head
-          title={book.title}
-          description={book.description}
-          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
-          isBookType
-        />
-        <Container pt={[15, 20]}>
-          <Flex mt={[120, 0]} style={{ position: 'relative' }}>
-            <CoverWrap>
-              <BookCover
-                coverPhoto={book.coverPhoto}
-                w={[130, 260]}
-                h={[175, 365]}
-              />
-            </CoverWrap>
-            <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
-              <H1 fontSize={[28, 38]} lang={book.language.code}>
-                {book.title}
-              </H1>
-              <P fontSize={14}>
-                <Trans>
-                  from <span>{book.publisher.name}</span>
-                </Trans>
-              </P>
-              <P
-                fontSize={[14, 16]}
-                lineHeight={[22, 26]}
-                lang={book.language.code}
-              >
-                {book.description}
-              </P>
-              {book.bookFormat === 'HTML' && (
-                <Fragment>
-                  <Link
-                    route="read"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                    prefetch
-                  >
-                    <Button>
-                      <Trans>Read Book</Trans>
-                    </Button>
-                  </Link>
-                  <Box mt={[15, 20]}>
-                    <A
-                      aria-expanded={this.state.showDownloadMenu}
-                      isBold
-                      onClick={this.handleToggleShowDownloadMenu}
-                      style={{ color: '#444' }}
-                    >
-                      <Trans>Download book</Trans>
-                      {this.state.showDownloadMenu ? (
-                        <MdKeyboardArrowUp aria-hidden />
-                      ) : (
-                        <MdKeyboardArrowDown aria-hidden />
-                      )}
-                    </A>
-                  </Box>
-                </Fragment>
-              )}
-              {book.bookFormat === 'PDF' && (
-                <Button href={book.downloads.pdf}>
-                  <Trans>Download book</Trans>
-                </Button>
-              )}
-            </HeroCard>
-          </Flex>
-        </Container>
-        <Container pb={[15, 20]}>
-          <Box ml={[0, 'auto']} w={['auto', 438]}>
-            <BookMeta book={book} />
-            {config.TRANSLATION_PAGES &&
-              book.supportsTranslation && (
-                <Fragment>
-                  <Hr />
-                  <Box my={[15, 20]} textAlign="center">
+      <LanguageCategory category={book.category} language={book.language}>
+        <Layout crumbs={this.getCrumbs()}>
+          <Head
+            title={book.title}
+            description={book.description}
+            imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
+            isBookType
+          />
+          <Container pt={[15, 20]}>
+            <Flex mt={[120, 0]} style={{ position: 'relative' }}>
+              <CoverWrap>
+                <BookCover
+                  coverPhoto={book.coverPhoto}
+                  w={[130, 260]}
+                  h={[175, 365]}
+                />
+              </CoverWrap>
+              <HeroCard textAlign="center" p={[15, 20]} pt={[80, 20]} flex="1">
+                <H1 fontSize={[28, 38]} lang={book.language.code}>
+                  {book.title}
+                </H1>
+                <P fontSize={14}>
+                  <Trans>
+                    from <span>{book.publisher.name}</span>
+                  </Trans>
+                </P>
+                <P
+                  fontSize={[14, 16]}
+                  lineHeight={[22, 26]}
+                  lang={book.language.code}
+                >
+                  {book.description}
+                </P>
+                {book.bookFormat === 'HTML' && (
+                  <Fragment>
                     <Link
-                      route="translate"
+                      route="read"
                       passHref
                       params={{ id: book.id, lang: book.language.code }}
+                      prefetch
                     >
-                      <A isBold isUppercased>
-                        <MdTranslate /> <Trans>Translate this book</Trans>
-                      </A>
+                      <Button>
+                        <Trans>Read Book</Trans>
+                      </Button>
                     </Link>
-                  </Box>
+                    <Box mt={[15, 20]}>
+                      <A
+                        aria-expanded={this.state.showDownloadMenu}
+                        isBold
+                        onClick={this.handleToggleShowDownloadMenu}
+                        style={{ color: '#444' }}
+                      >
+                        <Trans>Download book</Trans>
+                        {this.state.showDownloadMenu ? (
+                          <MdKeyboardArrowUp aria-hidden />
+                        ) : (
+                          <MdKeyboardArrowDown aria-hidden />
+                        )}
+                      </A>
+                    </Box>
+                  </Fragment>
+                )}
+                {book.bookFormat === 'PDF' && (
+                  <Button href={book.downloads.pdf}>
+                    <Trans>Download book</Trans>
+                  </Button>
+                )}
+              </HeroCard>
+            </Flex>
+          </Container>
+          <Container pb={[15, 20]}>
+            <Box ml={[0, 'auto']} w={['auto', 438]}>
+              <BookMeta book={book} />
+              {config.TRANSLATION_PAGES &&
+                book.supportsTranslation && (
+                  <Fragment>
+                    <Hr />
+                    <Box my={[15, 20]} textAlign="center">
+                      <Link
+                        route="translate"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                      >
+                        <A isBold isUppercased>
+                          <MdTranslate /> <Trans>Translate this book</Trans>
+                        </A>
+                      </Link>
+                    </Box>
+                  </Fragment>
+                )}
+            </Box>
+            {similar &&
+              similar.results.length > 0 && (
+                <Fragment>
+                  <Hr />
+                  <BookList
+                    books={similar.results}
+                    mt={20}
+                    heading={<Trans>Similar</Trans>}
+                  />
                 </Fragment>
               )}
-          </Box>
-          {similar &&
-            similar.results.length > 0 && (
-              <Fragment>
-                <Hr />
-                <BookList
-                  books={similar.results}
-                  mt={20}
-                  heading={<Trans>Similar</Trans>}
-                />
-              </Fragment>
-            )}
-        </Container>
-        {this.state.showDownloadMenu && (
-          <DownloadBookMenu
-            book={book}
-            onClose={this.handleToggleShowDownloadMenu}
-          />
-        )}
-      </Layout>
+          </Container>
+          {this.state.showDownloadMenu && (
+            <DownloadBookMenu
+              book={book}
+              onClose={this.handleToggleShowDownloadMenu}
+            />
+          )}
+        </Layout>
+      </LanguageCategory>
     );
   }
 }

@@ -10,7 +10,8 @@ import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
-import type { Book, RemoteData, Context } from '../types';
+import ErrorPage from './_error';
+import type { Book, RemoteData, Context, Language } from '../types';
 import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
@@ -24,12 +25,14 @@ import Head from '../components/Head';
 import Button from '../components/Button';
 import Container from '../components/Container';
 import Box from '../components/Box';
-import { search } from '../fetch';
+import { search, fetchLanguages } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
+import { LanguageCategory } from '../components/LanguageCategoryContext';
 
 const QUERY_PARAM = 'q';
 
 type Props = {
+  lang: ?Language,
   searchResult: ?RemoteData<{
     results: Array<Book>,
     page: number,
@@ -66,16 +69,27 @@ const ResultsMeta = styled('h1')`
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
     let searchResult;
+    let lang;
+
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
       searchResult = await search(searchQuery, query.lang, {
         pageSize: SEARCH_PAGE_SIZE
       })(accessToken);
+
+      lang = searchResult.language;
+    } else {
+      // Make sure we have a valid language so we can display a 404 if we don't
+      const languages = await fetchLanguages()(accessToken);
+      lang = languages.find(l => l.code === query.lang);
     }
+
     return {
-      searchResult
+      searchResult,
+      lang
     };
   }
+
   state = {
     searchResult: this.props.searchResult,
     searchQuery: this.props.url.query[QUERY_PARAM] || '',
@@ -149,80 +163,90 @@ class SearchPage extends React.Component<Props, State> {
 
   render() {
     const { searchResult, lastSearchQuery } = this.state;
+    const { lang } = this.props;
+
+    if (lang == null) {
+      return <ErrorPage statusCode={404} />;
+    }
+
     return (
-      <Layout crumbs={[<Trans>Search</Trans>]}>
-        <Head title="Search" />
-        <Container pt={[15, 20]}>
-          {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
-          <form onSubmit={this.handleSearch} action=".">
-            <SearchField
-              autoFocus
-              label="Search"
-              id="booksearch"
-              onChange={this.handleQueryChange}
-              value={this.state.searchQuery}
-              placeholder="Search"
-              required
-            />
-          </form>
+      // $FlowFixMe: We already check for null
+      <LanguageCategory category={undefined} language={this.props.lang}>
+        <Layout crumbs={[<Trans>Search</Trans>]}>
+          <Head title="Search" />
+          <Container pt={[15, 20]}>
+            {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
+            <form onSubmit={this.handleSearch} action=".">
+              <SearchField
+                autoFocus
+                label="Search"
+                id="booksearch"
+                onChange={this.handleQueryChange}
+                value={this.state.searchQuery}
+                placeholder="Search"
+                required
+              />
+            </form>
 
-          {searchResult && (
-            <ResultsMeta aria-live="polite">
-              {searchResult.results.length > 0 ? (
-                <Fragment>
-                  <Plural
-                    value={searchResult.totalCount}
-                    one="# result for"
-                    other="# results for"
-                  />{' '}
-                  <strong>&quot;{lastSearchQuery}&quot;</strong>
-                </Fragment>
+            {searchResult && (
+              <ResultsMeta aria-live="polite">
+                {searchResult.results.length > 0 ? (
+                  <Fragment>
+                    <Plural
+                      value={searchResult.totalCount}
+                      one="# result for"
+                      other="# results for"
+                    />{' '}
+                    <strong>&quot;{lastSearchQuery}&quot;</strong>
+                  </Fragment>
+                ) : (
+                  <Trans>
+                    No results for{' '}
+                    <strong>&quot;{lastSearchQuery}&quot;</strong>
+                  </Trans>
+                )}
+              </ResultsMeta>
+            )}
+          </Container>
+
+          <Container
+            mt={[15, 20]}
+            py={[15, 30]}
+            style={{
+              background: '#fff',
+              minHeight: '-webkit-fill-available',
+              boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
+            }}
+          >
+            {searchResult ? (
+              searchResult.results.length === 0 ? (
+                <NoResults />
               ) : (
-                <Trans>
-                  No results for <strong>&quot;{lastSearchQuery}&quot;</strong>
-                </Trans>
-              )}
-            </ResultsMeta>
-          )}
-        </Container>
-
-        <Container
-          mt={[15, 20]}
-          py={[15, 30]}
-          style={{
-            background: '#fff',
-            minHeight: '-webkit-fill-available',
-            boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
-          }}
-        >
-          {searchResult ? (
-            searchResult.results.length === 0 ? (
-              <NoResults />
+                <Fragment>
+                  <div>
+                    {searchResult.results.map(book => (
+                      <SearchHit key={book.id} book={book} />
+                    ))}
+                  </div>
+                  <Box textAlign="center">
+                    <Button
+                      disabled={
+                        searchResult.results.length >= searchResult.totalCount
+                      }
+                      onClick={this.handleLoadMore}
+                      isLoading={this.state.isLoadingMore}
+                    >
+                      <Trans>See more</Trans>
+                    </Button>
+                  </Box>
+                </Fragment>
+              )
             ) : (
-              <Fragment>
-                <div>
-                  {searchResult.results.map(book => (
-                    <SearchHit key={book.id} book={book} />
-                  ))}
-                </div>
-                <Box textAlign="center">
-                  <Button
-                    disabled={
-                      searchResult.results.length >= searchResult.totalCount
-                    }
-                    onClick={this.handleLoadMore}
-                    isLoading={this.state.isLoadingMore}
-                  >
-                    <Trans>See more</Trans>
-                  </Button>
-                </Box>
-              </Fragment>
-            )
-          ) : (
-            <Placeholder />
-          )}
-        </Container>
-      </Layout>
+              <Placeholder />
+            )}
+          </Container>
+        </Layout>
+      </LanguageCategory>
     );
   }
 }

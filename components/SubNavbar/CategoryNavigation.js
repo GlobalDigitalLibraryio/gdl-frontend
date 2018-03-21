@@ -15,6 +15,7 @@ import theme from '../../style/theme';
 import type { Category, Language } from '../../types';
 import media from '../../style/media';
 import { Link } from '../../routes';
+import LanguageCategoryContext from '../LanguageCategoryContext';
 
 const Div = styled('div')`
   display: flex;
@@ -47,30 +48,38 @@ const HiddenMobile = styled('span')`
 `;
 
 type Props = {|
-  category: Category,
+  categories: Array<Category>,
   language: Language
 |};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
-    const { category, language } = this.props;
+    const { language, categories } = this.props;
     return (
-      <Div>
-        <Link route="library" passHref params={{ lang: language.code }}>
-          <A isSelected={category === 'library_books'}>
-            <Trans>
-              Library <HiddenMobile>books</HiddenMobile>
-            </Trans>
-          </A>
-        </Link>
-        <Link route="classroom" passHref params={{ lang: language.code }}>
-          <A isSelected={category === 'classroom_books'}>
-            <Trans>
-              Classroom <HiddenMobile>books</HiddenMobile>
-            </Trans>
-          </A>
-        </Link>
-      </Div>
+      <LanguageCategoryContext.Consumer>
+        {({ category }) => (
+          <Div>
+            {categories.includes('library_books') && (
+              <Link route="library" passHref params={{ lang: language.code }}>
+                <A isSelected={category === 'library_books'}>
+                  <Trans>
+                    Library <HiddenMobile>books</HiddenMobile>
+                  </Trans>
+                </A>
+              </Link>
+            )}
+            {categories.includes('classroom_books') && (
+              <Link route="classroom" passHref params={{ lang: language.code }}>
+                <A isSelected={category === 'classroom_books'}>
+                  <Trans>
+                    Classroom <HiddenMobile>books</HiddenMobile>
+                  </Trans>
+                </A>
+              </Link>
+            )}
+          </Div>
+        )}
+      </LanguageCategoryContext.Consumer>
     );
   }
 }
