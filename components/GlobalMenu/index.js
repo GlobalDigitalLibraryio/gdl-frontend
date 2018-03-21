@@ -177,7 +177,9 @@ class GlobalMenu extends React.Component<Props, State> {
               )}
             </Fragment>
           )}
-
+          <MenuItem href={config.zendeskUrl}>
+            <Trans>Report issues</Trans>
+          </MenuItem>
           <MenuItem>
             <CreativeCommonsLogo
               aria-label="Creative Commons"
