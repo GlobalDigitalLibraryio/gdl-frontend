@@ -67,7 +67,7 @@ const ResultsMeta = styled('h1')`
 `;
 
 class SearchPage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query }: Context) {
     let searchResult;
     let lang;
 
@@ -75,12 +75,12 @@ class SearchPage extends React.Component<Props, State> {
       const searchQuery = query[QUERY_PARAM];
       searchResult = await search(searchQuery, query.lang, {
         pageSize: SEARCH_PAGE_SIZE
-      })(accessToken);
+      });
 
       lang = searchResult.language;
     } else {
       // Make sure we have a valid language so we can display a 404 if we don't
-      const languages = await fetchLanguages()(accessToken);
+      const languages = await fetchLanguages();
       lang = languages.find(l => l.code === query.lang);
     }
 
@@ -116,7 +116,7 @@ class SearchPage extends React.Component<Props, State> {
       {
         pageSize: SEARCH_PAGE_SIZE
       }
-    )();
+    );
 
     this.setState({ searchResult: results });
   };
@@ -133,7 +133,7 @@ class SearchPage extends React.Component<Props, State> {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
       }
-    )();
+    );
 
     // Focus the first book of the extra books we're loading
     const toFocus = searchResult.results[0];

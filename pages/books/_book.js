@@ -86,10 +86,10 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
   state = {
     showDownloadMenu: false
   };
-  static async getInitialProps({ query, accessToken }: Context) {
+  static async getInitialProps({ query }: Context) {
     const [book, similar] = await Promise.all([
-      fetchBook(query.id, query.lang)(accessToken),
-      fetchSimilarBooks(query.id, query.lang)(accessToken)
+      fetchBook(query.id, query.lang),
+      fetchSimilarBooks(query.id, query.lang)
     ]);
 
     return {

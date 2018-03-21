@@ -8,7 +8,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
-import fetchWithToken from '../../fetch';
+import doFetch from '../../fetch';
 import Box from '../Box';
 import type { BookDetails, Chapter } from '../../types';
 import Backdrop from './Backdrop';
@@ -228,9 +228,7 @@ export default class ReaderContainer extends React.Component<
     const maybeChapter = this.state.chapters[chapterNumber];
 
     if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
-      const chapter = await fetchWithToken(
-        this.props.book.chapters[chapterIndex].url
-      )();
+      const chapter = await doFetch(this.props.book.chapters[chapterIndex].url);
 
       this.setState((state: ReaderContainerState) => ({
         chapters: {

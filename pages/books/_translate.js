@@ -20,7 +20,8 @@ import type {
   RemoteData,
   Language,
   Translation,
-  I18n
+  I18n,
+  Context
 } from '../../types';
 import { Link, Router } from '../../routes';
 import securePage from '../../hocs/securePage';
@@ -61,10 +62,10 @@ const LinkLike = styled('button')`
 `;
 
 class TranslatePage extends React.Component<Props, State> {
-  static async getInitialProps({ query, accessToken }) {
+  static async getInitialProps({ query }: Context) {
     const [book, supportedLanguages] = await Promise.all([
-      fetchBook(query.id, query.lang)(accessToken),
-      fetchSupportedLanguages()(accessToken)
+      fetchBook(query.id, query.lang),
+      fetchSupportedLanguages()
     ]);
 
     const bookLanguages = book.availableLanguages.map(lang => lang.code);

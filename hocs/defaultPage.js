@@ -12,14 +12,7 @@ import { hydrate } from 'react-emotion';
 import withI18n from './withI18n';
 import withTheme from './withTheme';
 import type { Context } from '../types';
-import {
-  getAuthToken,
-  getAnonToken,
-  setAnonToken,
-  setAnonTokenOnResponse,
-  LOGOUT_KEY
-} from '../lib/auth/token';
-import { fetchAnonToken } from '../fetch';
+import { LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
 
 logPageView();
@@ -37,49 +30,14 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
-    static async getInitialProps(ctx: Context) {
-      let accessToken = getAuthToken(ctx.req);
-      const isAuthenticated = Boolean(accessToken);
-
-      // If we aren't authenticated proper, check if we have an anonomyous access token
-      if (!isAuthenticated) {
-        accessToken = getAnonToken(ctx.req);
-      }
-
-      let fullToken;
-      // If there is no access token and we're on the server, generate one and set it as a cookie
-      if (!accessToken) {
-        fullToken = await fetchAnonToken();
-        // On the client, this is set in componentDidMount()
-        if (!process.browser && ctx.res) {
-          setAnonTokenOnResponse(ctx.res, fullToken);
-        }
-      }
-
-      // $FlowFixMe
-      ctx.accessToken = accessToken || (fullToken && fullToken.access_token);
-      ctx.isAuthenticated = isAuthenticated;
-
-      // Evaluate the composed component's getInitialProps()
-      let composedInitialProps;
+    static getInitialProps(ctx: Context) {
       // Check if it actually is a next page
-      if (typeof Page.getInitialProps === 'function') {
-        composedInitialProps = await Page.getInitialProps(ctx);
-      }
-
-      return {
-        fullToken,
-        isAuthenticated,
-        ...composedInitialProps
-      };
+      return (
+        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
+      );
     }
 
     componentDidMount() {
-      // cDM only runs on the client, so if we get a token via props, set it in local storage.
-      // We cannot read it from the cookies on the client, because we won't be able to access the expiration date then.
-      if (this.props.fullToken) {
-        setAnonToken(this.props.fullToken);
-      }
       window.addEventListener('storage', this.logout, false);
     }
 

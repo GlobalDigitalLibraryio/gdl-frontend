@@ -18,15 +18,9 @@ import type {
   ReadingLevel
 } from './types';
 import { bookApiUrl } from './config';
-import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-
-let getTokenOnServer;
-
-if (!process.browser) {
-  getTokenOnServer = require('./server/lib/auth').getToken;
-}
+import { getTokenFromLocalCookie } from './lib/auth/token';
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {
@@ -40,79 +34,48 @@ const bookCategoryMapper = book => {
   return book;
 };
 
-/**
- * Get anonymous access token
- */
-export async function fetchAnonToken(): Promise<{
-  access_token: string,
-  expires_in: number
-}> {
-  if (!process.browser) {
-    const token = await getTokenOnServer();
-    return token;
-  }
-  const response = await fetch('/get_token');
-  if (response.ok) {
-    const token = await response.json();
-    return token;
-  }
-  throw new Error('Unable to get access token');
-}
-
 /*
 * Wrap fetch with some error handling and automatic json parsing
-* Also ensures we have a valid access token.
 */
-export default function fetchWithToken(
+async function doFetch(
   url: string,
   options: ?{
     method: 'POST' | 'GET',
     body: ?any
   }
-): (accessToken: ?string) => Promise<RemoteData<any>> {
-  return async (accessToken: ?string) => {
-    if (!process.browser && !accessToken) {
-      throw new Error(
-        'accessToken is a required parameter when calling fetch on the server'
-      );
+): Promise<RemoteData<any>> {
+  const token = process.browser ? getTokenFromLocalCookie() : undefined;
+
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : null
+      },
+      ...options
+    });
+
+    if (response.headers.get('Content-Type').includes('application/json')) {
+      const json = await response.json();
+      // Check if the response is in the 200-299 range
+      if (response.ok) {
+        return json;
+      }
     }
-
-    let token = accessToken || getAccessTokenFromLocalStorage();
-
-    try {
-      // Automatically renew token on the client if it is expired
-      if (process.browser && token == null) {
-        const fullToken = await fetchAnonToken();
-        setAnonToken(fullToken);
-        token = fullToken.access_token;
-      }
-
-      const response = await fetch(url, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : null
-        },
-        ...options
-      });
-
-      if (response.headers.get('Content-Type').includes('application/json')) {
-        const json = await response.json();
-        // Check if the response is in the 200-299 range
-        if (response.ok) {
-          return json;
-        }
-      }
-      const err = new Error('Remote data error');
-      // $FlowFixMe Ignore the flow error here. Should really extend the Error class, but that requires special Babel configuration. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
-      err.statusCode = response.status || 500;
-      throw err;
-    } catch (error) {
-      if (!error.statusCode) {
-        error.statusCode = 500;
-      }
-      throw error;
+    const err = new Error('Remote data error');
+    // $FlowFixMe Ignore the flow error here. Should really extend the Error class, but that requires special Babel configuration. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
+    err.statusCode = response.status || 500;
+    throw err;
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
     }
-  };
+    throw error;
+  }
 }
+
+// DO NOT declare doFetch and export it as default as the same time
+// See https://github.com/babel/babel/issues/3786
+export default doFetch;
 
 // Default page size
 const PAGE_SIZE = 5;
@@ -125,50 +88,39 @@ type Options = {
   page?: number
 };
 
-export function fetchLanguages(): (
-  accessToken: ?string
-) => Promise<RemoteData<Array<Language>>> {
-  return accessToken => fetchWithToken(`${bookApiUrl}/languages`)(accessToken);
+export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
+  return doFetch(`${bookApiUrl}/languages`);
 }
 
 export function fetchFeaturedContent(
   language: ?string
-): (accessToken: ?string) => Promise<RemoteData<Array<FeaturedContent>>> {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/featured/${language || ''}`)(accessToken);
+): Promise<RemoteData<Array<FeaturedContent>>> {
+  return doFetch(`${bookApiUrl}/featured/${language || ''}`);
 }
 
-export function fetchBook(
+export async function fetchBook(
   id: string | number,
   language: string
-): (accessToken: ?string) => Promise<RemoteData<BookDetails>> {
-  return async accessToken => {
-    const book = await fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(
-      accessToken
-    );
-    return bookCategoryMapper(book);
-  };
+): Promise<RemoteData<BookDetails>> {
+  const book = await doFetch(`${bookApiUrl}/books/${language}/${id}`);
+  return bookCategoryMapper(book);
 }
 
-export function fetchSimilarBooks(
+export async function fetchSimilarBooks(
   id: string | number,
   language: string
-): (accessToken: ?string) => Promise<RemoteData<{ results: Array<Book> }>> {
-  return async accessToken => {
-    const books = await fetchWithToken(
-      `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
-    )(accessToken);
-    books.results = books.results.map(bookCategoryMapper);
-    return books;
-  };
+): Promise<RemoteData<{ results: Array<Book> }>> {
+  const books = await doFetch(
+    `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
+  );
+  books.results = books.results.map(bookCategoryMapper);
+  return books;
 }
 
-export function fetchBooks(
+export async function fetchBooks(
   language: ?string,
   options: Options = {}
-): (
-  accessToken: ?string
-) => Promise<
+): Promise<
   RemoteData<{
     results: Array<Book>,
     language: Language,
@@ -176,33 +128,26 @@ export function fetchBooks(
     totalCount: number
   }>
 > {
-  return async accessToken => {
-    const books = await fetchWithToken(
-      `${bookApiUrl}/books/${language || ''}?page=${options.page ||
-        1}&sort=${options.sort ||
-        '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${
-        options.level ? `&reading-level=${options.level}` : ''
-      }${options.category ? `&category=${options.category}` : ''}`
-    )(accessToken);
+  const books = await doFetch(
+    `${bookApiUrl}/books/${language || ''}?page=${options.page ||
+      1}&sort=${options.sort || '-arrivaldate'}&page-size=${options.pageSize ||
+      PAGE_SIZE}${options.level ? `&reading-level=${options.level}` : ''}${
+      options.category ? `&category=${options.category}` : ''
+    }`
+  );
 
-    books.results = books.results.map(bookCategoryMapper);
-    return books;
-  };
+  books.results = books.results.map(bookCategoryMapper);
+  return books;
 }
 
-export function fetchSupportedLanguages(): (
-  acccessToken: ?string
-) => Promise<RemoteData<Array<Language>>> {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/translations/supported-languages`)(
-      accessToken
-    );
+export function fetchSupportedLanguages(): Promise<
+  RemoteData<Array<Language>>
+> {
+  return doFetch(`${bookApiUrl}/translations/supported-languages`);
 }
 
-export function fetchMyTranslations(): (
-  acccessToken: ?string
-) => Promise<RemoteData<Array<Translation>>> {
-  return accessToken => fetchWithToken(`${bookApiUrl}/books/mine`)(accessToken);
+export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
+  return doFetch(`${bookApiUrl}/books/mine`);
 }
 
 export function sendToTranslation(
@@ -210,19 +155,17 @@ export function sendToTranslation(
   fromLanguage: string,
   toLanguage: string
 ): Promise<RemoteData<Translation>> {
-  return fetchWithToken(`${bookApiUrl}/translations`, {
+  return doFetch(`${bookApiUrl}/translations`, {
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
-  })();
+  });
 }
 
-export function search(
+export async function search(
   query: string,
   language?: string,
   options: Options = {}
-): (
-  acccessToken: ?string
-) => Promise<
+): Promise<
   RemoteData<{
     page: number,
     totalCount: number,
@@ -230,39 +173,31 @@ export function search(
     language: Language
   }>
 > {
-  return async accessToken => {
-    const result = await fetchWithToken(
-      encodeURI(
-        `${bookApiUrl}/search/${language ||
-          ''}?query=${query}&page-size=${options.pageSize ||
-          PAGE_SIZE}&page=${options.page || 1}`
-      )
-    )(accessToken);
+  const result = await doFetch(
+    encodeURI(
+      `${bookApiUrl}/search/${language ||
+        ''}?query=${query}&page-size=${options.pageSize ||
+        PAGE_SIZE}&page=${options.page || 1}`
+    )
+  );
 
-    result.results = result.results.map(bookCategoryMapper);
-    return result;
-  };
+  result.results = result.results.map(bookCategoryMapper);
+  return result;
 }
 
-export function fetchCategories(
+export async function fetchCategories(
   language: ?string
-): (
-  accessToken: ?string
-) => Promise<
+): Promise<
   RemoteData<{|
     classroom_books?: Array<ReadingLevel>,
     library_books?: Array<ReadingLevel>
   |}>
 > {
-  return async accessToken => {
-    const result = await fetchWithToken(
-      `${bookApiUrl}/categories/${language || ''}`
-    )(accessToken);
+  const result = await doFetch(`${bookApiUrl}/categories/${language || ''}`);
 
-    const transformedCategories = mapValues(result, c =>
-      sortReadingLevels(c.readingLevels)
-    );
+  const transformedCategories = mapValues(result, c =>
+    sortReadingLevels(c.readingLevels)
+  );
 
-    return transformedCategories;
-  };
+  return transformedCategories;
 }
