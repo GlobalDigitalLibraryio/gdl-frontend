@@ -11,7 +11,8 @@ import { Trans } from '@lingui/react';
 import {
   MdTranslate,
   MdKeyboardArrowDown,
-  MdKeyboardArrowUp
+  MdKeyboardArrowUp,
+  MdWarning
 } from 'react-icons/lib/md';
 
 import styled from 'react-emotion';
@@ -204,13 +205,26 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                         passHref
                         params={{ id: book.id, lang: book.language.code }}
                       >
-                        <A isBold isUppercased>
-                          <MdTranslate /> <Trans>Translate this book</Trans>
+                        <A isBold>
+                          <MdTranslate aria-hidden />{' '}
+                          <Trans>Translate this book</Trans>
                         </A>
                       </Link>
                     </Box>
                   </Fragment>
                 )}
+              <Hr />
+              <Box my={[15, 20]} textAlign="center">
+                <A
+                  isBold
+                  href={config.zendeskUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MdWarning aria-hidden />{' '}
+                  <Trans>Report a problem with this book</Trans>
+                </A>
+              </Box>
             </Box>
             {similar &&
               similar.results.length > 0 && (

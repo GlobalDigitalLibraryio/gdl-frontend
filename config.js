@@ -24,6 +24,7 @@ function getConfig() {
         audience: 'gdl_system',
         domain: 'digitallibrary.eu.auth0.com'
       },
+      zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new',
       serverAuth: {
         // These aren't visible to the client as they are defined as environment variables on the server
         clientId: process.browser ? undefined : process.env.GDL_AUTH_CLIENT_ID,
