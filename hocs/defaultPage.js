@@ -30,17 +30,11 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 
 const defaultPage = Page =>
   class DefaultPage extends React.Component<any> {
-    static async getInitialProps(ctx: Context) {
-      // Evaluate the composed component's getInitialProps()
-      let composedInitialProps;
+    static getInitialProps(ctx: Context) {
       // Check if it actually is a next page
-      if (typeof Page.getInitialProps === 'function') {
-        composedInitialProps = await Page.getInitialProps(ctx);
-      }
-
-      return {
-        ...composedInitialProps
-      };
+      return (
+        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
+      );
     }
 
     componentDidMount() {
