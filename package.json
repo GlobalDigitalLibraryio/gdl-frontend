@@ -47,10 +47,11 @@
     "@lingui/react": "2.0.5",
     "auth0-js": "9.3.2",
     "cookie-parser": "1.4.3",
+    "create-react-context": "^0.2.1",
     "domurl": "2.1.7",
     "emotion": "9.0.2",
     "emotion-server": "9.0.2",
-    "emotion-theming": "9.0.0",
+    "emotion-theming": "^9.0.0",
     "express": "4.16.2",
     "express-request-language": "1.1.12",
     "glob": "7.1.2",
@@ -71,6 +72,7 @@
     "serialize-javascript": "1.4.0",
     "styled-map": "^2.0.1",
     "styled-system": "2.2.1",
+    "styled-theming": "^2.2.0",
     "tabbable": "^1.1.2"
   },
   "devDependencies": {

@@ -6,45 +6,91 @@
  * See LICENSE
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 
 import type { Language } from '../../types';
-import { Link } from '../../routes';
+import type { Categories } from './index';
+import Link from '../BrowseLink';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 import Menu, { MenuItem } from '../Menu';
 
-type Props = {
-  levels: Array<string>,
+type Props = {|
+  categories: Categories,
   language: Language,
   onClose: (
     event: | SyntheticMouseEvent<any>
     | SyntheticKeyboardEvent<any>
     | KeyboardEvent
   ) => void
-};
+|};
 
 export default class CategoriesMenu extends React.Component<Props> {
   render() {
-    const { levels, onClose, language } = this.props;
+    const { categories, onClose, language } = this.props;
     return (
       <Menu heading={<Trans>Categories</Trans>} onClose={onClose} isNestedMenu>
-        {levels.map(level => (
-          <Link
-            key={level}
-            route="level"
-            passHref
-            params={{ lang: language.code, level }}
-          >
-            <MenuItem onCustomClick={onClose}>
-              <Trans>Reading level {level}</Trans>
+        {categories.classroom_books && (
+          <Fragment>
+            <MenuItem showKeyLine>
+              <Trans>Classroom books</Trans>
             </MenuItem>
-          </Link>
-        ))}
-        <Link route="new" passHref params={{ lang: language.code }}>
-          <MenuItem onCustomClick={onClose}>
-            <Trans>New arrivals</Trans>
-          </MenuItem>
-        </Link>
+            {categories.classroom_books.map(level => (
+              <Link
+                key={level}
+                lang={language.code}
+                readingLevel={level}
+                category="classroom_books"
+              >
+                <MenuItem onCustomClick={onClose} isNestedItem>
+                  <ReadingLevelTrans readingLevel={level} />
+                </MenuItem>
+              </Link>
+            ))}
+            <Link
+              category="classroom_books"
+              lang={language.code}
+              sort="-arrivalDate"
+            >
+              <MenuItem
+                isNestedItem
+                onCustomClick={onClose}
+                showKeyLine={Boolean(categories.library_books)}
+              >
+                <Trans>New arrivals</Trans>
+              </MenuItem>
+            </Link>
+          </Fragment>
+        )}
+
+        {categories.library_books && (
+          <Fragment>
+            <MenuItem showKeyLine>
+              <Trans>Library books</Trans>
+            </MenuItem>
+            {categories.library_books.map(level => (
+              <Link
+                key={level}
+                lang={language.code}
+                readingLevel={level}
+                category="library_books"
+              >
+                <MenuItem onCustomClick={onClose} isNestedItem>
+                  <ReadingLevelTrans readingLevel={level} />
+                </MenuItem>
+              </Link>
+            ))}
+            <Link
+              category="library_books"
+              lang={language.code}
+              sort="-arrivalDate"
+            >
+              <MenuItem onCustomClick={onClose} isNestedItem>
+                <Trans>New arrivals</Trans>
+              </MenuItem>
+            </Link>
+          </Fragment>
+        )}
       </Menu>
     );
   }

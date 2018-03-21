@@ -6,12 +6,13 @@
  * See LICENSE
  */
 
-import * as React from 'react';
-import { Trans } from '@lingui/react';
-import styled, { css } from 'react-emotion';
+import React from 'react';
+import Head from 'next/head';
+import ErrorPage from './_error';
+
 import {
   fetchFeaturedContent,
-  fetchLevels,
+  fetchCategories,
   fetchLanguages,
   fetchBooks
 } from '../fetch';
@@ -20,132 +21,75 @@ import type {
   Language,
   RemoteData,
   FeaturedContent,
-  Context
+  Context,
+  Category,
+  ReadingLevel
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
-import Layout from '../components/Layout';
-import Box from '../components/Box';
-import Card from '../components/Card';
-import { Link } from '../routes';
-import Container from '../components/Container';
-import Hero from '../components/Hero';
-import Head from '../components/Head';
-import BookList from '../components/BookList';
-import Button from '../components/Button';
-import P from '../components/P';
-import H1 from '../components/H1';
-import A from '../components/A';
-import theme from '../style/theme';
-import media from '../style/media';
-import { flexCenter } from '../style/flex';
-import LanguageMenu from '../components/LanguageMenu';
+import HomePage from '../components/HomePage';
+import { LanguageCategory } from '../components/LanguageCategoryContext';
 
-type Props = {
+type Props = {|
   featuredContent: RemoteData<Array<FeaturedContent>>,
-  justArrived: RemoteData<{ results: Array<Book>, language: Language }>,
-  levels: RemoteData<Array<string>>,
+  newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
+  levels: Array<ReadingLevel>,
   languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>
-};
+  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
+  categoryType: Category,
+  categories: Array<Category>,
+  locationOrigin: string
+|};
 
-const HeroCover = styled('div')`
-  background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
-  background-size: cover;
-  position: relative;
-  display: flex;
-  padding: 15px;
-  justify-content: center;
-  ${media.mobile`
-    height: 210px;
-  `} ${media.tablet`
-    min-height: 390px;
-    padding: 20px;
-    justify-content: flex-end;
-  `};
-`;
-
-const HeroCovertitle = styled('h1')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: ${theme.colors.white};
-  background: rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
-  margin: 0;
-  padding: 5px 15px;
-  font-weight: 500;
-  font-size: 14px;
-  ${media.tablet`
-    font-size: 18px;
-  `};
-`;
-
-const HeroCardMobile = styled(Card)`
-  ${flexCenter};
-  padding: 15px;
-  margin-top: -50px;
-  margin-left: 15px;
-  margin-right: 15px;
-  ${media.tablet`
-    display: none;
-  `};
-`;
-
-const HeroCardTablet = styled(Card)`
-  ${flexCenter};
-  padding: 20px;
-  max-width: 375px;
-  ${media.mobile`
-    display: none;
-  `};
-`;
-
-const moreStyle = css`
-  float: right;
-  font-size: 12px;
-  ${media.tablet`
-    font-size: 14px;
-  `};
-  height: 40px;
-`;
-
-const FeaturedTitle = H1.withComponent('h2');
-
-class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
-  static async getInitialProps({ query, accessToken }: Context) {
+class BooksPage extends React.Component<Props> {
+  static async getInitialProps({ query, accessToken, asPath, req }: Context) {
     const language: ?string = query.lang;
 
-    // Fetch these first, cause they don't use the reading level
-    const [featuredContent, levels, languages, justArrived] = await Promise.all(
-      [
-        fetchFeaturedContent(language)(accessToken),
-        fetchLevels(language)(accessToken),
-        fetchLanguages()(accessToken),
-        fetchBooks(language)(accessToken)
-      ]
-    );
+    // Fetch these first, cause they don't use the reading levels or categories
+    const [featuredContent, categories, languages] = await Promise.all([
+      fetchFeaturedContent(language)(accessToken),
+      fetchCategories(language)(accessToken),
+      fetchLanguages()(accessToken)
+    ]);
 
-    const booksByLevel = await Promise.all(
-      levels.map(level => fetchBooks(language, { level })(accessToken))
-    );
+    let category: Category;
+
+    if (asPath.includes('/classroom')) {
+      category = 'classroom_books';
+    } else if (asPath.includes('/library')) {
+      category = 'library_books';
+    } else {
+      // Default to library_books
+      category =
+        'library_books' in categories ? 'library_books' : 'classroom_books';
+    }
+
+    const levels = categories[category] || [];
+
+    const [newArrivals, ...booksByLevel] = await Promise.all([
+      fetchBooks(language, { category: category })(accessToken),
+      ...levels.map(level =>
+        fetchBooks(language, {
+          level,
+          category
+        })(accessToken)
+      )
+    ]);
+
+    const locationOrigin =
+      req != null
+        ? `${req.protocol}://${req.headers.host}`
+        : window.location.origin;
 
     return {
       featuredContent,
-      justArrived,
+      newArrivals,
       languages,
       levels,
-      booksByLevel
+      booksByLevel,
+      locationOrigin,
+      categories: Object.keys(categories)
     };
   }
-
-  state = {
-    showLanguageMenu: false
-  };
-
-  toggleShowLanguageMenu = event => {
-    event.preventDefault();
-    this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
-  };
 
   render() {
     const {
@@ -153,118 +97,47 @@ class BooksPage extends React.Component<Props, { showLanguageMenu: boolean }> {
       languages,
       levels,
       booksByLevel,
-      justArrived
+      newArrivals,
+      locationOrigin,
+      categories
     } = this.props;
 
-    const featured = featuredContent[0];
-    const languageFilter = justArrived.language;
+    // If we don't have any levels, we assume it's a 404
+    if (levels.length === 0) {
+      return <ErrorPage statusCode={404} />;
+    }
+
+    const language = newArrivals.language;
+    const category = newArrivals.results[0].category;
+
+    let categoryTypeForUrl;
+    if (category === 'library_books') {
+      categoryTypeForUrl = 'library';
+    } else if (category === 'classroom_books') {
+      categoryTypeForUrl = 'classroom';
+    }
 
     return (
-      <Layout
-        language={justArrived.language}
-        toolbarEnd={
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div>
-              {justArrived.language.name}{' '}
-              <A
-                href=""
-                onClick={this.toggleShowLanguageMenu}
-                isUppercased
-                isBold
-              >
-                Change
-              </A>
-            </div>
-          </div>
-        }
-      >
-        <Head imageUrl={featured.imageUrl} />
-        <HeroCover
-          pt={['15px', '40px']}
-          pb={['42px', '54px']}
-          src={featured.imageUrl}
-        >
-          <HeroCovertitle>
-            <Trans>Featured</Trans>
-          </HeroCovertitle>
-          <HeroCardTablet>
-            <Box textAlign="center">
-              <FeaturedTitle lang={featured.language.code}>
-                {featured.title}
-              </FeaturedTitle>
-              <P
-                fontSize={[14, 16]}
-                lineHeight={[22, 26]}
-                lang={featured.language.code}
-              >
-                {featured.description}
-              </P>
-              <Button href={featured.link}>More</Button>
-            </Box>
-          </HeroCardTablet>
-        </HeroCover>
-        <HeroCardMobile>
-          <Box textAlign="center">
-            <FeaturedTitle lang={featured.language.code}>
-              {featured.title}
-            </FeaturedTitle>
-            <P
-              fontSize={[14, 16]}
-              lineHeight={[22, 26]}
-              lang={featured.language.code}
-            >
-              {featured.description}
-            </P>
-            <Button href={featured.link}>More</Button>
-          </Box>
-        </HeroCardMobile>
-
-        {levels.map((level, index) => (
-          <Hero py={[15, 22]} key={level}>
-            <Container>
-              <Link
-                route="level"
-                params={{ lang: justArrived.language.code, level }}
-                passHref
-              >
-                <A isUppercased className={moreStyle}>
-                  <Trans>More</Trans>
-                </A>
-              </Link>
-              <BookList
-                books={booksByLevel[index].results}
-                heading={<Trans>Level {level}</Trans>}
-                mt={20}
-              />
-            </Container>
-          </Hero>
-        ))}
-        <Hero py={[15, 22]}>
-          <Container>
-            <Link
-              route="new"
-              params={{ lang: justArrived.language.code }}
-              passHref
-            >
-              <A isUppercased className={moreStyle}>
-                <Trans>More</Trans>
-              </A>
-            </Link>
-            <BookList
-              heading={<Trans>New arrivals</Trans>}
-              books={justArrived.results}
-              mt={20}
+      <LanguageCategory category={category} language={newArrivals.language}>
+        {categoryTypeForUrl && (
+          <Head>
+            <link
+              rel="canonical"
+              href={`${locationOrigin}/${
+                language.code
+              }/books/category/${categoryTypeForUrl}`}
             />
-          </Container>
-        </Hero>
-        {this.state.showLanguageMenu && (
-          <LanguageMenu
-            selectedLanguage={languageFilter}
-            languages={languages}
-            onClose={this.toggleShowLanguageMenu}
-          />
+          </Head>
         )}
-      </Layout>
+        <HomePage
+          categories={categories}
+          languages={languages}
+          levels={levels}
+          newArrivals={newArrivals}
+          booksByLevel={booksByLevel}
+          featuredContent={featuredContent}
+        />
+      </LanguageCategory>
     );
   }
 }

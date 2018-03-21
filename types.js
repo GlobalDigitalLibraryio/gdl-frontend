@@ -23,11 +23,6 @@ export type License = {
   +url: string
 };
 
-export type Category = {
-  +id: number,
-  +name: string
-};
-
 export type Language = {
   +code: string,
   +name: string
@@ -64,13 +59,18 @@ export type Translation = {
   coverPhoto?: CoverPhoto
 };
 
+export type Category = 'library_books' | 'classroom_books';
+
+export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
+
 export type Book = $ReadOnly<{|
   id: number,
   title: string,
   description: string,
+  category: Category,
   highlightTitle?: string,
   highlightDescription?: string,
-  readingLevel: string,
+  readingLevel: ReadingLevel,
   language: Language,
   coverPhoto?: CoverPhoto
 |}>;
@@ -81,7 +81,6 @@ export type BookDetails = $ReadOnly<{|
   publisher: Publisher,
   license: License,
   supportsTranslation: boolean,
-  categories: Array<Category>,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
   chapters: Array<ChapterSummary>,

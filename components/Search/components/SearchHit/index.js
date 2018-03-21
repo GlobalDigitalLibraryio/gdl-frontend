@@ -7,9 +7,9 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
 
 import type { Book } from '../../../../types';
+import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { Link } from '../../../../routes';
 import BookCover from '../../../BookCover';
 import A from '../../../A';
@@ -61,7 +61,7 @@ const SearchHit = ({ book }: { book: Book }) => {
           <A>{renderTitle(book)}</A>
         </Link>
         <BookLevel>
-          <Trans>Level {book.readingLevel}</Trans>
+          <ReadingLevelTrans readingLevel={book.readingLevel} />
         </BookLevel>
         {renderBookDescription(book)}
       </Div>

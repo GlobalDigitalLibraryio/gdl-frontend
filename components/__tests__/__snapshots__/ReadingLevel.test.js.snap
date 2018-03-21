@@ -26,15 +26,10 @@ exports[`Renders 1`] = `
     <span
       className="emotion-0 emotion-1"
     >
-      <withI18n
-        id="Level {level}"
-        values={
-          Object {
-            "level": "1",
-          }
-        }
+      <ReadingLevelTrans
+        readingLevel="1"
       >
-        <Trans
+        <withI18n
           id="Level {level}"
           values={
             Object {
@@ -42,13 +37,22 @@ exports[`Renders 1`] = `
             }
           }
         >
-          <Render
-            value="Level {level}"
+          <Trans
+            id="Level {level}"
+            values={
+              Object {
+                "level": "1",
+              }
+            }
           >
-            Level {level}
-          </Render>
-        </Trans>
-      </withI18n>
+            <Render
+              value="Level {level}"
+            >
+              Level {level}
+            </Render>
+          </Trans>
+        </withI18n>
+      </ReadingLevelTrans>
     </span>
   </Styled(span)>
 </Component>

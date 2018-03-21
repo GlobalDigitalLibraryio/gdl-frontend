@@ -12,8 +12,8 @@ import { Trans } from '@lingui/react';
 import Link from 'next/link';
 
 import config from '../../config';
-import type { Language } from '../../types';
-import { fetchLanguages, fetchLevels } from '../../fetch';
+import type { Language, ReadingLevel } from '../../types';
+import { fetchLanguages, fetchCategories } from '../../fetch';
 import { Link as RouteLink } from '../../routes';
 import { getAuthToken } from '../../lib/auth/token';
 import Menu, { MenuItem } from '../Menu';
@@ -21,28 +21,33 @@ import CreativeCommonsLogo from './cc-logo.svg';
 import LanguageMenu from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 
-type Props = {
+type Props = {|
   onClose(): void,
   language: Language,
   router: any
+|};
+
+export type Categories = {
+  classroom_books?: Array<ReadingLevel>,
+  library_books?: Array<ReadingLevel>
 };
 
 type State = {
   languages: Array<Language>,
-  levels: Array<string>,
+  categories: Categories,
   showLanguageMenu: boolean,
   showCategoriesMenu: boolean
 };
 
-type Cache = {
+type Cache = {|
   languages: Array<Language>,
-  levels: Array<string>,
+  categories: Categories,
   language: ?Language
-};
+|};
 
 const stateCache: Cache = {
   languages: [],
-  levels: [],
+  categories: {},
   language: null
 };
 
@@ -55,14 +60,14 @@ class GlobalMenu extends React.Component<Props, State> {
     ) {
       this.state = {
         languages: stateCache.languages,
-        levels: stateCache.levels,
+        categories: stateCache.categories,
         showLanguageMenu: false,
         showCategoriesMenu: false
       };
     } else {
       this.state = {
         languages: [],
-        levels: [],
+        categories: {},
         showLanguageMenu: false,
         showCategoriesMenu: false
       };
@@ -71,7 +76,7 @@ class GlobalMenu extends React.Component<Props, State> {
 
   componentDidMount() {
     // Only fetch if we haven't already set stuff from the cache in the constructor
-    if (this.state.levels.length === 0) {
+    if (this.state.languages.length === 0) {
       this.getMenuData();
     }
     // Remember the last language we mounted with in the cache
@@ -89,17 +94,17 @@ class GlobalMenu extends React.Component<Props, State> {
    */
   componentWillUnmount() {
     stateCache.languages = this.state.languages;
-    stateCache.levels = this.state.levels;
+    stateCache.categories = this.state.categories;
   }
 
   getMenuData = async () => {
-    const [languages, levels] = await Promise.all([
+    const [languages, categories] = await Promise.all([
       fetchLanguages()(),
-      fetchLevels(this.props.language.code)()
+      fetchCategories(this.props.language.code)()
     ]);
 
     this.setState({
-      levels,
+      categories,
       languages
     });
   };
@@ -126,7 +131,7 @@ class GlobalMenu extends React.Component<Props, State> {
         {this.state.showCategoriesMenu && (
           <CategoriesMenu
             language={language}
-            levels={this.state.levels}
+            categories={this.state.categories}
             onClose={this.toggleShowCategoriesMenu}
           />
         )}

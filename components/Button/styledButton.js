@@ -6,29 +6,28 @@
  * See LICENSE
  */
 
-import React from 'react';
-import { cx, css } from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { lighten } from 'polished';
-import rotate360 from '../style/rotate360';
-import media from '../style/media';
-import theme from '../style/theme';
+import theming from 'styled-theming';
+import rotate360 from '../../style/rotate360';
+import media from '../../style/media';
+import theme from '../../style/theme';
 
-type Props = {
-  color?: 'link' | 'green',
-  customColor?: string,
-  href?: string,
-  className?: string,
-  isLoading?: boolean,
-  disabled?: boolean,
-  type?: 'submit' | 'reset' | 'button',
-  onClick?: (
-    event: SyntheticEvent<HTMLButtonElement> | SyntheticEvent<HTMLAnchorElement>
-  ) => any
-};
-
-const buttonStyle = (color: string) => css`
-  color: ${theme.colors.white};
+export const buttonColor = (color: string) => css`
   background: ${color};
+  &:hover:not([disabled]) {
+    background: ${lighten(0.04, color)};
+  }
+`;
+
+const color = theming('category', {
+  library: buttonColor(theme.colors.link),
+  classroom: buttonColor(theme.colors.pinks.pink)
+});
+
+export const Button = styled('button')`
+  color: ${theme.colors.white};
+  ${color};
   border-style: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   font-weight: 500;
@@ -54,11 +53,10 @@ const buttonStyle = (color: string) => css`
   transition: transform 0.15s ease-out, background 0.15s ease-out;
   &:hover:not([disabled]) {
     transform: translateY(-1px);
-    background: ${lighten(0.04, color)};
   }
 `;
 
-const loadingStyle = css`
+export const loadingStyle = css`
   color: transparent;
   text-shadow: none;
   position: relative;
@@ -78,30 +76,3 @@ const loadingStyle = css`
     top: calc(50% - (1em / 2));
   }
 `;
-
-export default function({
-  color,
-  customColor,
-  href,
-  isLoading,
-  className,
-  ...props
-}: Props) {
-  // customColor takes precedence of the color prop
-  const bgColor =
-    customColor ||
-    (color === 'green' ? theme.colors.greens.dark : theme.colors.link);
-
-  const style = cx(
-    buttonStyle(bgColor),
-    { [loadingStyle]: isLoading },
-    className
-  );
-
-  return href == null ? (
-    <button className={style} type="button" {...props} />
-  ) : (
-    // eslint-disable-next-line jsx-a11y/anchor-has-content
-    <a className={style} href={href} {...props} />
-  );
-}

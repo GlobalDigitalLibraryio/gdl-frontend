@@ -11,7 +11,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createSerializer } from 'jest-emotion';
 import * as emotion from 'emotion';
-import A from '../A';
+import A from '../';
 
 expect.addSnapshotSerializer(createSerializer(emotion));
 

@@ -8,8 +8,17 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+
 import { fetchBooks } from '../../fetch';
-import type { Book, RemoteData, Language, Context, I18n } from '../../types';
+import type {
+  Book,
+  RemoteData,
+  Language,
+  Category,
+  Context,
+  I18n
+} from '../../types';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
@@ -18,6 +27,7 @@ import H1 from '../../components/H1';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
+import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 const PAGE_SIZE = 30;
 
@@ -30,10 +40,13 @@ type Props = {
   }>,
   url: {
     query: {
-      level?: string,
-      lang: string
+      lang: string,
+      readingLevel?: string,
+      category?: string,
+      sort?: string
     }
   },
+  category: Category,
   i18n: I18n
 };
 
@@ -49,13 +62,22 @@ type State = {
 
 class BrowsePage extends React.Component<Props, State> {
   static async getInitialProps({ query, accessToken }: Context) {
+    let category: Category;
+    if (query.category === 'classroom_books') {
+      category = 'classroom_books';
+    } else {
+      category = 'library_books'; // Default category
+    }
+
     const books = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
-      level: query.level
+      level: query.readingLevel,
+      category
     })(accessToken);
 
     return {
-      books
+      books,
+      category
     };
   }
 
@@ -80,9 +102,10 @@ class BrowsePage extends React.Component<Props, State> {
     const { query } = this.props.url;
 
     const books = await fetchBooks(query.lang, {
-      level: query.level,
+      level: query.readingLevel,
       page: this.state.books.page + 1,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
+      category: this.props.category
     })();
 
     // Focus the first book of the extra books we're loading
@@ -109,52 +132,55 @@ class BrowsePage extends React.Component<Props, State> {
   };
 
   render() {
-    const { i18n } = this.props;
-    const { level } = this.props.url.query;
+    const { i18n, category } = this.props;
+    const { readingLevel } = this.props.url.query;
     const { books } = this.state;
 
     const canLoadMore =
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <Layout
-        language={books.language}
-        crumbs={[level ? i18n.t`Level ${level}` : i18n.t`New arrivals`]}
-      >
-        <Head
-          title={
-            level
-              ? i18n.t`Browse level ${level} books`
-              : i18n.t`Browse new arrivals`
-          }
-        />
-
-        <Container pt={20}>
-          <H1 textAlign="center">
-            {books.results.length > 0 ? (
-              level ? (
-                <Trans>Level {level}</Trans>
-              ) : (
-                <Trans>New arrivals</Trans>
-              )
+      <LanguageCategory category={category} language={books.language}>
+        <Layout
+          crumbs={[
+            readingLevel ? (
+              // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
+              <ReadingLevelTrans readingLevel={readingLevel} />
             ) : (
-              <Trans>No books found</Trans>
-            )}
-          </H1>
-          <Box my={30}>
-            <BookGrid books={books.results} />
-          </Box>
-          <Box pt={6} pb={30} textAlign="center">
-            <Button
-              disabled={!canLoadMore}
-              onClick={this.handleLoadMore}
-              isLoading={this.state.isLoadingMore}
-            >
-              <Trans>See more books</Trans>
-            </Button>
-          </Box>
-        </Container>
-      </Layout>
+              <Trans>New arrivals</Trans>
+            )
+          ]}
+        >
+          <Head title={i18n.t`Browse books`} />
+
+          <Container pt={20}>
+            <H1 textAlign="center">
+              {books.results.length > 0 ? (
+                readingLevel ? (
+                  // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
+                  <ReadingLevelTrans readingLevel={readingLevel} />
+                ) : (
+                  <Trans>New arrivals</Trans>
+                )
+              ) : (
+                <Trans>No books found</Trans>
+              )}
+            </H1>
+            <Box my={30}>
+              <BookGrid books={books.results} />
+            </Box>
+            <Box pt={6} pb={30} textAlign="center">
+              <Button
+                disabled={!canLoadMore}
+                onClick={this.handleLoadMore}
+                isLoading={this.state.isLoadingMore}
+              >
+                <Trans>See more books</Trans>
+              </Button>
+            </Box>
+          </Container>
+        </Layout>
+      </LanguageCategory>
     );
   }
 }

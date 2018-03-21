@@ -13,16 +13,32 @@ import type {
   Book,
   BookDetails,
   FeaturedContent,
-  Translation
+  Translation,
+  Category,
+  ReadingLevel
 } from './types';
 import { bookApiUrl } from './config';
 import { getAccessTokenFromLocalStorage, setAnonToken } from './lib/auth/token';
+import mapValues from './lib/mapValues';
+import sortReadingLevels from './lib/sortReadingLevels';
 
 let getTokenOnServer;
 
 if (!process.browser) {
   getTokenOnServer = require('./server/lib/auth').getToken;
 }
+
+// Because the backend model and business logic for categories doesn't play nice together
+const bookCategoryMapper = book => {
+  const category: Category = book.categories.find(
+    c => c.name === 'classroom_books'
+  )
+    ? 'classroom_books'
+    : 'library_books';
+
+  book.category = category;
+  return book;
+};
 
 /**
  * Get anonymous access token
@@ -104,16 +120,10 @@ const PAGE_SIZE = 5;
 type Options = {
   pageSize?: number,
   level?: string,
+  category?: Category,
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
   page?: number
 };
-
-export function fetchLevels(
-  language: ?string
-): (accessToken: ?string) => Promise<RemoteData<Array<string>>> {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/levels/${language || ''}`)(accessToken);
-}
 
 export function fetchLanguages(): (
   accessToken: ?string
@@ -132,18 +142,25 @@ export function fetchBook(
   id: string | number,
   language: string
 ): (accessToken: ?string) => Promise<RemoteData<BookDetails>> {
-  return accessToken =>
-    fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(accessToken);
+  return async accessToken => {
+    const book = await fetchWithToken(`${bookApiUrl}/books/${language}/${id}`)(
+      accessToken
+    );
+    return bookCategoryMapper(book);
+  };
 }
 
 export function fetchSimilarBooks(
   id: string | number,
   language: string
 ): (accessToken: ?string) => Promise<RemoteData<{ results: Array<Book> }>> {
-  return accessToken =>
-    fetchWithToken(
+  return async accessToken => {
+    const books = await fetchWithToken(
       `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
     )(accessToken);
+    books.results = books.results.map(bookCategoryMapper);
+    return books;
+  };
 }
 
 export function fetchBooks(
@@ -159,14 +176,18 @@ export function fetchBooks(
     totalCount: number
   }>
 > {
-  return accessToken =>
-    fetchWithToken(
+  return async accessToken => {
+    const books = await fetchWithToken(
       `${bookApiUrl}/books/${language || ''}?page=${options.page ||
         1}&sort=${options.sort ||
         '-arrivaldate'}&page-size=${options.pageSize || PAGE_SIZE}${
         options.level ? `&reading-level=${options.level}` : ''
-      }`
+      }${options.category ? `&category=${options.category}` : ''}`
     )(accessToken);
+
+    books.results = books.results.map(bookCategoryMapper);
+    return books;
+  };
 }
 
 export function fetchSupportedLanguages(): (
@@ -202,14 +223,46 @@ export function search(
 ): (
   acccessToken: ?string
 ) => Promise<
-  RemoteData<{ page: number, totalCount: number, results: Array<Book> }>
+  RemoteData<{
+    page: number,
+    totalCount: number,
+    results: Array<Book>,
+    language: Language
+  }>
 > {
-  return accessToken =>
-    fetchWithToken(
+  return async accessToken => {
+    const result = await fetchWithToken(
       encodeURI(
         `${bookApiUrl}/search/${language ||
           ''}?query=${query}&page-size=${options.pageSize ||
           PAGE_SIZE}&page=${options.page || 1}`
       )
     )(accessToken);
+
+    result.results = result.results.map(bookCategoryMapper);
+    return result;
+  };
+}
+
+export function fetchCategories(
+  language: ?string
+): (
+  accessToken: ?string
+) => Promise<
+  RemoteData<{|
+    classroom_books?: Array<ReadingLevel>,
+    library_books?: Array<ReadingLevel>
+  |}>
+> {
+  return async accessToken => {
+    const result = await fetchWithToken(
+      `${bookApiUrl}/categories/${language || ''}`
+    )(accessToken);
+
+    const transformedCategories = mapValues(result, c =>
+      sortReadingLevels(c.readingLevels)
+    );
+
+    return transformedCategories;
+  };
 }

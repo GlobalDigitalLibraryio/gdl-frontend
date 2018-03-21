@@ -63,6 +63,7 @@ export const Item = styled('div')`
   font-weight: 500;
   position: relative;
   ${p => p.showKeyLine && `border-bottom: 1px solid ${BORDER_COLOR};`};
+  ${p => p.isNestedItem && `padding-left: 70px;`};
 `;
 
 export const itemActionStyle = css`

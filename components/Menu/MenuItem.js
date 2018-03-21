@@ -13,7 +13,7 @@ import { cx } from 'react-emotion';
 import SrOnly from '../SrOnly';
 import { Item, ItemIcon, itemActionStyle } from './styled/Content';
 
-type Props = {
+type Props = {|
   isSelected?: boolean,
   showKeyLine?: boolean,
   href?: string,
@@ -22,8 +22,10 @@ type Props = {
   ) => void,
   onCustomClick?: (event: SyntheticMouseEvent<any>) => void,
   hasNestedMenu?: boolean,
+  // Adds extra indent
+  isNestedItem?: boolean,
   children: Node
-};
+|};
 
 const ItemLink = Item.withComponent('a');
 
@@ -53,6 +55,7 @@ class MenuItem extends React.Component<Props> {
       showKeyLine,
       children,
       onClick,
+      isNestedItem,
       href
     } = this.props;
     const ItemComponent = href ? ItemLink : Item;
@@ -64,6 +67,7 @@ class MenuItem extends React.Component<Props> {
         onKeyDown={!href && onClick ? this.handleKeyDown : null}
         href={href}
         showKeyLine={showKeyLine}
+        isNestedItem={isNestedItem}
         tabIndex={href ? null : onClick ? '0' : null}
       >
         {isSelected && (
