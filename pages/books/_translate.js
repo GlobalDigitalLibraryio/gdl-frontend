@@ -22,7 +22,7 @@ import type {
   Translation,
   I18n
 } from '../../types';
-import { Link } from '../../routes';
+import { Link, Router } from '../../routes';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -101,6 +101,9 @@ class TranslatePage extends React.Component<Props, State> {
       this.setState({ translation });
     }
   };
+
+  // When Crowdin opens in a new tab, we want to redirect the user to "my translations"
+  handleStartTranslation = () => Router.pushRoute('translations');
 
   handleChangeLanguage = (lang: Language) =>
     this.setState({ selectedLanguage: lang, showLanguageMenu: false });
@@ -191,6 +194,7 @@ class TranslatePage extends React.Component<Props, State> {
                   href={this.state.translation.crowdinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={this.handleStartTranslation}
                 >
                   <Trans>Start translation</Trans>
                 </Button>
