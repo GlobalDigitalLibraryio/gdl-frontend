@@ -15,7 +15,7 @@ import config from '../../config';
 import type { Language, ReadingLevel } from '../../types';
 import { fetchLanguages, fetchCategories } from '../../fetch';
 import { Link as RouteLink } from '../../routes';
-import { getAuthToken } from '../../lib/auth/token';
+import { getTokenFromLocalCookie } from '../../lib/auth/token';
 import Menu, { MenuItem } from '../Menu';
 import CreativeCommonsLogo from './cc-logo.svg';
 import LanguageMenu from '../LanguageMenu';
@@ -168,7 +168,7 @@ class GlobalMenu extends React.Component<Props, State> {
                   <Trans>My translations</Trans>
                 </MenuItem>
               </RouteLink>
-              {getAuthToken() != null && (
+              {getTokenFromLocalCookie() != null && (
                 <Link passHref href="/auth/sign-off">
                   <MenuItem>
                     <Trans>Log out</Trans>

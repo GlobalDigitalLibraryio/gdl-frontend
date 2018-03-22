@@ -20,7 +20,7 @@ import type {
 import { bookApiUrl } from './config';
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-import { getAuthToken } from './lib/auth/token';
+import { getTokenFromLocalCookie } from './lib/auth/token';
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {
@@ -44,7 +44,7 @@ async function doFetch(
     body: ?any
   }
 ): Promise<RemoteData<any>> {
-  let token = getAuthToken();
+  const token = process.browser ? getTokenFromLocalCookie() : undefined;
 
   try {
     const response = await fetch(url, {

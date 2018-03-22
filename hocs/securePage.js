@@ -10,6 +10,10 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
 
+import {
+  getTokenFromLocalCookie,
+  getTokenFromServerCookie
+} from '../lib/auth/token';
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
 import Box from '../components/Box';
@@ -22,10 +26,23 @@ import Container from '../components/Container';
  */
 const securePageHoc = Page =>
   class SecurePage extends React.Component<any> {
-    static getInitialProps(ctx: Context) {
-      return (
-        typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
-      );
+    static async getInitialProps(ctx: Context) {
+      const token = ctx.req
+        ? getTokenFromServerCookie(ctx.req)
+        : getTokenFromLocalCookie();
+      const isAuthenticated = Boolean(token);
+
+      // Evaluate the composed component's getInitialProps()
+      let composedInitialProps;
+      // Check if it actually is a next page
+      if (typeof Page.getInitialProps === 'function') {
+        composedInitialProps = await Page.getInitialProps(ctx);
+      }
+
+      return {
+        isAuthenticated,
+        ...composedInitialProps
+      };
     }
 
     /**
