@@ -9,6 +9,9 @@
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 
+// Access the book api directly on the server, not via the gateway/proxy
+const localBookApiUrl = 'http://book-api.gdl-local/book-api/v1';
+
 function getConfig() {
   const globalVarName = '__GDL_ENVIRONMENT__';
 
@@ -31,22 +34,28 @@ function getConfig() {
     },
 
     local: {
-      bookApiUrl: 'http://api-gateway.gdl-local/book-api/v1'
+      bookApiUrl: localBookApiUrl
     },
 
     test: {
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
+      bookApiUrl: process.browser
+        ? 'https://api.test.digitallibrary.io/book-api/v1'
+        : localBookApiUrl,
       googleAnalyticsTrackingID: 'UA-111724798-1'
     },
 
     staging: {
-      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
+      bookApiUrl: process.browser
+        ? 'https://api.staging.digitallibrary.io/book-api/v1'
+        : localBookApiUrl,
       googleAnalyticsTrackingID: 'UA-111796456-1',
       TRANSLATION_PAGES: false
     },
 
     prod: {
-      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
+      bookApiUrl: process.browser
+        ? 'https://api.digitallibrary.io/book-api/v1'
+        : localBookApiUrl,
       googleAnalyticsTrackingID: 'UA-111771573-1',
       STATIC_PAGES_ONLY: true,
       TRANSLATION_PAGES: false,
