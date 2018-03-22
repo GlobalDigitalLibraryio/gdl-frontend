@@ -34,7 +34,7 @@ function getConfig() {
     },
 
     local: {
-      bookApiUrl: localBookApiUrl
+      bookApiUrl: process.browser ? 'http://book-api.gdl-local:40001/book-api/v1' : localBookApiUrl,
     },
 
     test: {
