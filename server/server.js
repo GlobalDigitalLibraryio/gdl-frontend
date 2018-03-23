@@ -24,10 +24,6 @@ async function setup() {
   await app.prepare();
   const server = express();
 
-  // 404 all requests for favicons since we don't have one, and it attempts to match with our next routes
-  // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
-  server.get('/favicon.ico', (req, res) => res.sendStatus(404));
-
   // Health check for AWS
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
   server.get('/health', (req, res) => {
