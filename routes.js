@@ -10,6 +10,9 @@ const config = require('./config');
 
 const routes = nextRoutes();
 
+// For the language parameter, match any combination of alphanumeric and - (Poor man's BCP47 matching!)
+const langParam = `:lang([\\w-]+)`;
+
 // About the global digital library
 routes.add(
   'global-digital-library',
@@ -25,7 +28,7 @@ if (config.STATIC_PAGES_ONLY) {
   if (config.TRANSLATION_PAGES) {
     routes.add(
       'translate',
-      '/:lang/books/translate/:id(\\d+)',
+      `/${langParam}/books/translate/:id(\\d+)`,
       'books/_translate'
     );
     routes.add({
@@ -37,23 +40,23 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add('about');
   routes.add('login');
   routes.add('logout');
-  routes.add('search', '/:lang/search', '_search');
+  routes.add('search', `/${langParam}/search`, '_search');
 
   // in other environments we want the books page to be the landing page
-  routes.add('books', '/:lang?', 'index');
-  routes.add('classroom', '/:lang/books/category/classroom', 'index');
-  routes.add('library', '/:lang/books/category/library', 'index');
+  routes.add('books', `/${langParam}?`, 'index');
+  routes.add('classroom', `/${langParam}/books/category/classroom`, 'index');
+  routes.add('library', `/${langParam}/books/category/library`, 'index');
 
   // Browse the books
-  routes.add('browse', '/:lang/books/browse', 'books/browse');
+  routes.add('browse', `/${langParam}/books/browse`, 'books/browse');
 
   // Book details page
-  routes.add('book', '/:lang/books/details/:id(\\d+)', 'books/_book');
+  routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
   // Read book
   routes.add(
     'read',
-    '/:lang/books/read/:id(\\d+)/:chapter(\\d+)?',
+    `/${langParam}/books/read/:id(\\d+)/:chapter(\\d+)?`,
     'books/read'
   );
 }
