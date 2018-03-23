@@ -55,7 +55,7 @@ export default class GDLDocument extends Document {
           {/* IE automatically looks for  browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
           {config.BLOCK_SEARCH_INDEXING && (
-            <meta name="robots" content="noindex" />
+            <meta name="robots" content="noindex, nofollow" />
           )}
           {/* Adding next-head to the following meta tag ensures it gets deduped properly on the client in our own Head component */}
           <meta

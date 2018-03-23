@@ -27,7 +27,8 @@ test('Has the no robots meta tag', () => {
       .find('meta')
       .filterWhere(
         meta =>
-          meta.prop('name') === 'robots' && meta.prop('content') === 'noindex'
+          meta.prop('name') === 'robots' &&
+          meta.prop('content') === 'noindex, nofollow'
       )
       .exists()
   ).toBeTruthy();
