@@ -10,8 +10,7 @@ import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
-import ErrorPage from './_error';
-import type { Book, RemoteData, Context, Language } from '../types';
+import type { Book, Context } from '../types';
 import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
@@ -25,19 +24,19 @@ import Head from '../components/Head';
 import Button from '../components/Button';
 import Container from '../components/Container';
 import Box from '../components/Box';
-import { search, fetchLanguages } from '../fetch';
+import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
+import errorPage from '../hocs/errorPage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
 
 const QUERY_PARAM = 'q';
 
 type Props = {
-  lang: ?Language,
-  searchResult: ?RemoteData<{
+  searchResult: ?{
     results: Array<Book>,
     page: number,
     totalCount: number
-  }>,
+  },
   url: {
     query: {
       lang: string,
@@ -49,11 +48,11 @@ type Props = {
 };
 
 type State = {
-  searchResult: ?RemoteData<{
+  searchResult: ?{
     results: Array<Book>,
     page: number,
     totalCount: number
-  }>,
+  },
   searchQuery: string,
   lastSearchQuery?: string,
   isLoadingMore: boolean
@@ -69,7 +68,6 @@ const ResultsMeta = styled('h1')`
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query }: Context) {
     let searchResult;
-    let lang;
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
@@ -77,16 +75,16 @@ class SearchPage extends React.Component<Props, State> {
         pageSize: SEARCH_PAGE_SIZE
       });
 
-      lang = searchResult.language;
-    } else {
-      // Make sure we have a valid language so we can display a 404 if we don't
-      const languages = await fetchLanguages();
-      lang = languages.find(l => l.code === query.lang);
+      if (!searchResult.isOk) {
+        return {
+          statusCode: searchResult.statusCode
+        };
+      }
     }
 
     return {
-      searchResult,
-      lang
+      searchResult:
+        searchResult && searchResult.data ? searchResult.data : undefined
     };
   }
 
@@ -110,7 +108,7 @@ class SearchPage extends React.Component<Props, State> {
       { shallow: true }
     );
 
-    const results = await search(
+    const queryRes = await search(
       this.state.searchQuery,
       this.props.url.query.lang,
       {
@@ -118,7 +116,12 @@ class SearchPage extends React.Component<Props, State> {
       }
     );
 
-    this.setState({ searchResult: results });
+    // TODO: Notify user of error
+    if (!queryRes.isOk) {
+      return;
+    }
+
+    this.setState({ searchResult: queryRes.data });
   };
 
   handleLoadMore = async () => {
@@ -126,7 +129,7 @@ class SearchPage extends React.Component<Props, State> {
     // Fixes flow warnings
     if (!this.state.searchResult) return;
 
-    const searchResult = await search(
+    const queryRes = await search(
       this.state.searchQuery,
       this.props.url.query.lang,
       {
@@ -134,6 +137,13 @@ class SearchPage extends React.Component<Props, State> {
         page: this.state.searchResult.page + 1
       }
     );
+
+    // TODO: Notify user of error
+    if (!queryRes.isOk) {
+      return;
+    }
+
+    const searchResult = queryRes.data;
 
     // Focus the first book of the extra books we're loading
     const toFocus = searchResult.results[0];
@@ -158,20 +168,18 @@ class SearchPage extends React.Component<Props, State> {
       }
     );
   };
+
   handleQueryChange = event =>
     this.setState({ searchQuery: event.target.value });
 
   render() {
     const { searchResult, lastSearchQuery } = this.state;
-    const { lang } = this.props;
-
-    if (lang == null) {
-      return <ErrorPage statusCode={404} />;
-    }
 
     return (
-      // $FlowFixMe: We already check for null
-      <LanguageCategory category={undefined} language={this.props.lang}>
+      <LanguageCategory
+        category={undefined}
+        language={{ code: this.props.url.query.lang, name: '' }} // FixMe: It is okay here, because name isn't displayed anywhere. But clean this up when we have language in cookies
+      >
         <Layout crumbs={[<Trans>Search</Trans>]}>
           <Head title="Search" />
           <Container pt={[15, 20]}>
@@ -251,4 +259,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default defaultPage(SearchPage);
+export default defaultPage(errorPage(SearchPage));

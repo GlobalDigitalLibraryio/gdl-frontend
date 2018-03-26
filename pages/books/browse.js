@@ -10,16 +10,10 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 
 import { fetchBooks } from '../../fetch';
-import type {
-  Book,
-  RemoteData,
-  Language,
-  Category,
-  Context,
-  I18n
-} from '../../types';
+import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import defaultPage from '../../hocs/defaultPage';
+import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
 import Box from '../../components/Box';
@@ -32,12 +26,12 @@ import { LanguageCategory } from '../../components/LanguageCategoryContext';
 const PAGE_SIZE = 30;
 
 type Props = {
-  books: RemoteData<{
+  books: {
     results: Array<Book>,
     language: Language,
     page: number,
     totalCount: number
-  }>,
+  },
   url: {
     query: {
       lang: string,
@@ -69,14 +63,20 @@ class BrowsePage extends React.Component<Props, State> {
       category = 'library_books'; // Default category
     }
 
-    const books = await fetchBooks(query.lang, {
+    const booksRes = await fetchBooks(query.lang, {
       pageSize: PAGE_SIZE,
       level: query.readingLevel,
       category
     });
 
+    if (!booksRes.isOk) {
+      return {
+        statusCode: booksRes.statusCode
+      };
+    }
+
     return {
-      books,
+      books: booksRes.data,
       category
     };
   }
@@ -101,12 +101,19 @@ class BrowsePage extends React.Component<Props, State> {
     this.setState({ isLoadingMore: true });
     const { query } = this.props.url;
 
-    const books = await fetchBooks(query.lang, {
+    const booksRes = await fetchBooks(query.lang, {
       level: query.readingLevel,
       page: this.state.books.page + 1,
       pageSize: PAGE_SIZE,
       category: this.props.category
     });
+
+    // TODO: Notify user of error
+    if (!booksRes.isOk) {
+      return;
+    }
+
+    const books = booksRes.data;
 
     // Focus the first book of the extra books we're loading
     const toFocus = books.results[0];
@@ -185,4 +192,4 @@ class BrowsePage extends React.Component<Props, State> {
   }
 }
 
-export default defaultPage(BrowsePage);
+export default defaultPage(errorPage(BrowsePage));

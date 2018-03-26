@@ -8,7 +8,6 @@
 
 import React from 'react';
 import Head from 'next/head';
-import ErrorPage from './_error';
 
 import {
   fetchFeaturedContent,
@@ -19,23 +18,23 @@ import {
 import type {
   Book,
   Language,
-  RemoteData,
   FeaturedContent,
   Context,
   Category,
   ReadingLevel
 } from '../types';
 import defaultPage from '../hocs/defaultPage';
+import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
 
 type Props = {|
-  featuredContent: RemoteData<Array<FeaturedContent>>,
-  newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
+  featuredContent: Array<FeaturedContent>,
+  newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
-  languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  categoryType: Category,
+  languages: Array<Language>,
+  booksByLevel: Array<{ results: Array<Book> }>,
+  category: Category,
   categories: Array<Category>,
   locationOrigin: string
 |};
@@ -44,15 +43,37 @@ class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query, asPath, req }: Context) {
     const language: ?string = query.lang;
 
-    // Fetch these first, cause they don't use the reading levels or categories
-    const [featuredContent, categories, languages] = await Promise.all([
+    // $FlowFixMe: Unsure why flow complains here
+    const results = await Promise.all([
+      fetchLanguages(),
       fetchFeaturedContent(language),
-      fetchCategories(language),
-      fetchLanguages()
+      fetchCategories(language)
     ]);
 
-    let category: Category;
+    // If we have gotten languages successfully AND we have a language parameter AND that language isn't found in the list. Return a 404
+    // This is a special case to get the front page to render 404s. Otherwise almost every page request would be considererd a language, such as /contact-us etc.
+    if (
+      results[0].isOk &&
+      language &&
+      !results[0].data.find(l => l.code === language)
+    ) {
+      return {
+        statusCode: 404
+      };
+    }
 
+    if (!results.every(res => res.isOk)) {
+      return {
+        // $FlowFixMe Come on flow...
+        statusCode: results.find(res => !res.isOk).statusCode
+      };
+    }
+
+    const [languages, featuredContent, categories] = results.map(
+      result => result.data
+    );
+
+    let category: Category;
     if (asPath.includes('/classroom')) {
       category = 'classroom_books';
     } else if (asPath.includes('/library')) {
@@ -65,7 +86,7 @@ class BooksPage extends React.Component<Props> {
 
     const levels = categories[category] || [];
 
-    const [newArrivals, ...booksByLevel] = await Promise.all([
+    const bookListsResults = await Promise.all([
       fetchBooks(language, { category: category }),
       ...levels.map(level =>
         fetchBooks(language, {
@@ -75,12 +96,24 @@ class BooksPage extends React.Component<Props> {
       )
     ]);
 
+    if (!bookListsResults.every(res => res.isOk)) {
+      return {
+        statusCode: bookListsResults.find(res => !res.isOk).statusCode
+      };
+    }
+
+    const [newArrivals, ...booksByLevel] = bookListsResults.map(
+      result => result.data
+    );
+
+    // THe URL is needed so we can create a canonical URL
     const locationOrigin =
       req != null
         ? `${req.protocol}://${req.headers.host}`
         : window.location.origin;
 
     return {
+      category,
       featuredContent,
       newArrivals,
       languages,
@@ -93,6 +126,7 @@ class BooksPage extends React.Component<Props> {
 
   render() {
     const {
+      category,
       featuredContent,
       languages,
       levels,
@@ -102,13 +136,7 @@ class BooksPage extends React.Component<Props> {
       categories
     } = this.props;
 
-    // If we don't have any levels, we assume it's a 404
-    if (levels.length === 0) {
-      return <ErrorPage statusCode={404} />;
-    }
-
     const language = newArrivals.language;
-    const category = newArrivals.results[0].category;
 
     let categoryTypeForUrl;
     if (category === 'library_books') {
@@ -130,6 +158,7 @@ class BooksPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
+          category={category}
           categories={categories}
           languages={languages}
           levels={levels}
@@ -142,4 +171,4 @@ class BooksPage extends React.Component<Props> {
   }
 }
 
-export default defaultPage(BooksPage);
+export default defaultPage(errorPage(BooksPage));

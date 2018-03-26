@@ -228,12 +228,19 @@ export default class ReaderContainer extends React.Component<
     const maybeChapter = this.state.chapters[chapterNumber];
 
     if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
-      const chapter = await doFetch(this.props.book.chapters[chapterIndex].url);
+      const chapterRes = await doFetch(
+        this.props.book.chapters[chapterIndex].url
+      );
+
+      // TODO: Notify user of error
+      if (!chapterRes.isOk) {
+        return;
+      }
 
       this.setState((state: ReaderContainerState) => ({
         chapters: {
           ...state.chapters,
-          [chapterNumber]: chapter
+          [chapterNumber]: chapterRes.data
         }
       }));
     }

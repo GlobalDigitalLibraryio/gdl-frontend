@@ -14,12 +14,13 @@ import {
   MdKeyboardArrowUp,
   MdWarning
 } from 'react-icons/lib/md';
-
 import styled from 'react-emotion';
+
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, BookDetails, RemoteData, Context } from '../../types';
+import type { Book, BookDetails, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
+import errorPage from '../../hocs/errorPage';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
 import Box from '../../components/Box';
@@ -43,10 +44,8 @@ import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
-  book: RemoteData<BookDetails>,
-  similar: RemoteData<{
-    results: Array<Book>
-  }>,
+  book: BookDetails,
+  similarBooks: Array<Book>,
   url: {
     query: {
       id: string
@@ -87,14 +86,21 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     showDownloadMenu: false
   };
   static async getInitialProps({ query }: Context) {
-    const [book, similar] = await Promise.all([
+    const [bookRes, similarRes] = await Promise.all([
       fetchBook(query.id, query.lang),
       fetchSimilarBooks(query.id, query.lang)
     ]);
 
+    if (!bookRes.isOk) {
+      return {
+        statusCode: bookRes.statusCode
+      };
+    }
+
     return {
-      book,
-      similar
+      book: bookRes.data,
+      // Don't let similar books crash the page
+      similarBooks: similarRes.isOk ? similarRes.data : []
     };
   }
 
@@ -111,7 +117,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
           <ReadingLevelTrans readingLevel={book.readingLevel} />
         </a>
       </BrowseLink>,
-      this.props.book.title
+      book.title
     ];
   }
 
@@ -119,7 +125,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     this.setState(state => ({ showDownloadMenu: !state.showDownloadMenu }));
 
   render() {
-    const { similar, book } = this.props;
+    const { similarBooks, book } = this.props;
 
     return (
       <LanguageCategory category={book.category} language={book.language}>
@@ -226,17 +232,16 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 </A>
               </Box>
             </Box>
-            {similar &&
-              similar.results.length > 0 && (
-                <Fragment>
-                  <Hr />
-                  <BookList
-                    books={similar.results}
-                    mt={20}
-                    heading={<Trans>Similar</Trans>}
-                  />
-                </Fragment>
-              )}
+            {similarBooks.length > 0 && (
+              <Fragment>
+                <Hr />
+                <BookList
+                  books={similarBooks}
+                  mt={20}
+                  heading={<Trans>Similar</Trans>}
+                />
+              </Fragment>
+            )}
           </Container>
           {this.state.showDownloadMenu && (
             <DownloadBookMenu
@@ -250,4 +255,4 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
   }
 }
 
-export default defaultPage(BookPage);
+export default defaultPage(errorPage(BookPage));

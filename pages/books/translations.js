@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 import { MdArrowForward } from 'react-icons/lib/md';
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
-import type { Translation, RemoteData, I18n } from '../../types';
+import type { Translation, I18n } from '../../types';
 import securePage from '../../hocs/securePage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
@@ -31,7 +31,7 @@ type Props = {
 };
 
 type State = {
-  translations: RemoteData<Array<Translation>>
+  translations: Array<Translation>
 };
 
 class TranslationCard extends React.Component<
@@ -116,8 +116,11 @@ class MyTranslationsPage extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
-    const translations = await fetchMyTranslations();
-    this.setState({ translations });
+    const translationsRes = await fetchMyTranslations();
+    // TODO: Notify user of error
+    if (translationsRes.isOk) {
+      this.setState({ translations: translationsRes.data });
+    }
   }
 
   render() {
