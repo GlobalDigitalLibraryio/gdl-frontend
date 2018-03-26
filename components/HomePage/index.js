@@ -15,7 +15,6 @@ import BrowseLink from '../../components/BrowseLink';
 import type {
   Book,
   Language,
-  RemoteData,
   FeaturedContent,
   ReadingLevel,
   Category
@@ -36,12 +35,13 @@ import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
 type Props = {|
-  featuredContent: RemoteData<Array<FeaturedContent>>,
-  newArrivals: RemoteData<{ results: Array<Book>, language: Language }>,
-  levels: RemoteData<Array<ReadingLevel>>,
-  languages: RemoteData<Array<Language>>,
-  booksByLevel: Array<RemoteData<{ results: Array<Book> }>>,
-  categories: Array<Category>
+  featuredContent: Array<FeaturedContent>,
+  newArrivals: { results: Array<Book>, language: Language },
+  levels: Array<ReadingLevel>,
+  languages: Array<Language>,
+  booksByLevel: Array<{ results: Array<Book> }>,
+  categories: Array<Category>,
+  category: Category
 |};
 
 const HeroCover = styled('div')`
@@ -110,6 +110,7 @@ const FeaturedTitle = H1.withComponent('h2');
 export default class HomePage extends React.Component<Props> {
   render() {
     const {
+      category,
       featuredContent,
       languages,
       levels,
@@ -119,7 +120,6 @@ export default class HomePage extends React.Component<Props> {
     } = this.props;
 
     const featured = featuredContent[0];
-    const category = newArrivals.results[0].category;
 
     return (
       <Layout languages={languages} categories={categories}>

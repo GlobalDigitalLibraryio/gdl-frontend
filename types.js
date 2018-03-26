@@ -38,8 +38,10 @@ export type ChapterSummary = {
   seqNo: number
 };
 
-// Future proofing. In the future we might want to define success and failure cases using ADTs
-export type RemoteData<T> = T;
+// Disjoint union
+type Success<T> = { isOk: true, data: T, statusCode: number };
+type Failed = { isOk: false, error: any, statusCode: number };
+export type RemoteData<T> = Success<T> | Failed;
 
 export type CoverPhoto = {
   large: string,

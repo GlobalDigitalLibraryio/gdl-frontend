@@ -46,31 +46,42 @@ async function doFetch(
 ): Promise<RemoteData<any>> {
   const token = process.browser ? getTokenFromLocalCookie() : undefined;
 
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : null
-      },
-      ...options
-    });
+  const response = await fetch(url, {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : null
+    },
+    ...options
+  });
 
-    if (response.headers.get('Content-Type').includes('application/json')) {
-      const json = await response.json();
-      // Check if the response is in the 200-299 range
-      if (response.ok) {
-        return json;
-      }
-    }
-    const err = new Error('Remote data error');
-    // $FlowFixMe Ignore the flow error here. Should really extend the Error class, but that requires special Babel configuration. See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error#Custom_Error_Types
-    err.statusCode = response.status || 500;
-    throw err;
-  } catch (error) {
-    if (!error.statusCode) {
-      error.statusCode = 500;
-    }
-    throw error;
+  let result;
+  if (response.headers.get('Content-Type').includes('application/json')) {
+    result = await response.json();
+  } else {
+    result = await response.text();
   }
+
+  if (!process.browser && !response.ok) {
+    console.warn('Request failed', {
+      url,
+      method: options && options.method ? options.method : 'GET',
+      status: response.status,
+      response: result
+    });
+  }
+
+  if (response.ok) {
+    return {
+      data: result,
+      isOk: true,
+      statusCode: response.status
+    };
+  }
+
+  return {
+    error: result,
+    isOk: false,
+    statusCode: response.status
+  };
 }
 
 // DO NOT declare doFetch and export it as default as the same time
@@ -102,19 +113,26 @@ export async function fetchBook(
   id: string | number,
   language: string
 ): Promise<RemoteData<BookDetails>> {
-  const book = await doFetch(`${bookApiUrl}/books/${language}/${id}`);
-  return bookCategoryMapper(book);
+  const result = await doFetch(`${bookApiUrl}/books/${language}/${id}`);
+
+  if (result.isOk) {
+    result.data = bookCategoryMapper(result.data);
+  }
+  return result;
 }
 
 export async function fetchSimilarBooks(
   id: string | number,
   language: string
 ): Promise<RemoteData<{ results: Array<Book> }>> {
-  const books = await doFetch(
+  const result = await doFetch(
     `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
   );
-  books.results = books.results.map(bookCategoryMapper);
-  return books;
+
+  if (result.isOk) {
+    result.data.results = result.data.results.map(bookCategoryMapper);
+  }
+  return result;
 }
 
 export async function fetchBooks(
@@ -128,7 +146,7 @@ export async function fetchBooks(
     totalCount: number
   }>
 > {
-  const books = await doFetch(
+  const result = await doFetch(
     `${bookApiUrl}/books/${language || ''}?page=${options.page ||
       1}&sort=${options.sort || '-arrivaldate'}&page-size=${options.pageSize ||
       PAGE_SIZE}${options.level ? `&reading-level=${options.level}` : ''}${
@@ -136,8 +154,10 @@ export async function fetchBooks(
     }`
   );
 
-  books.results = books.results.map(bookCategoryMapper);
-  return books;
+  if (result.isOk) {
+    result.data.results = result.data.results.map(bookCategoryMapper);
+  }
+  return result;
 }
 
 export function fetchSupportedLanguages(): Promise<
@@ -166,12 +186,12 @@ export async function search(
   language?: string,
   options: Options = {}
 ): Promise<
-  RemoteData<{
+  RemoteData<{|
     page: number,
     totalCount: number,
     results: Array<Book>,
     language: Language
-  }>
+  |}>
 > {
   const result = await doFetch(
     encodeURI(
@@ -181,7 +201,10 @@ export async function search(
     )
   );
 
-  result.results = result.results.map(bookCategoryMapper);
+  if (result.isOk) {
+    result.data.results = result.data.results.map(bookCategoryMapper);
+  }
+
   return result;
 }
 
@@ -195,9 +218,12 @@ export async function fetchCategories(
 > {
   const result = await doFetch(`${bookApiUrl}/categories/${language || ''}`);
 
-  const transformedCategories = mapValues(result, c =>
-    sortReadingLevels(c.readingLevels)
-  );
+  // Sort the reading levels and move the data one level up
+  if (result.isOk) {
+    result.data = mapValues(result.data, c =>
+      sortReadingLevels(c.readingLevels)
+    );
+  }
 
-  return transformedCategories;
+  return result;
 }

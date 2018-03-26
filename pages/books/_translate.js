@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { MdArrowDownward } from 'react-icons/lib/md';
+
 import {
   fetchBook,
   fetchSupportedLanguages,
@@ -17,7 +18,6 @@ import {
 } from '../../fetch';
 import type {
   BookDetails,
-  RemoteData,
   Language,
   Translation,
   I18n,
@@ -25,6 +25,7 @@ import type {
 } from '../../types';
 import { Link, Router } from '../../routes';
 import securePage from '../../hocs/securePage';
+import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -41,8 +42,9 @@ import TranslationLanguage from '../../components/TranslationLanguageMenu';
 import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
-  book: RemoteData<BookDetails>,
-  supportedLanguages: RemoteData<Array<Language>>,
+  book: BookDetails,
+  statusCode?: number,
+  supportedLanguages: Array<Language>,
   i18n: I18n
 };
 
@@ -63,19 +65,29 @@ const LinkLike = styled('button')`
 
 class TranslatePage extends React.Component<Props, State> {
   static async getInitialProps({ query }: Context) {
-    const [book, supportedLanguages] = await Promise.all([
+    const [bookRes, supportedLanguagesRes] = await Promise.all([
       fetchBook(query.id, query.lang),
       fetchSupportedLanguages()
     ]);
 
-    const bookLanguages = book.availableLanguages.map(lang => lang.code);
+    if (!bookRes.isOk || !supportedLanguagesRes.isOk) {
+      return {
+        statusCode: bookRes.isOk
+          ? bookRes.statusCode
+          : supportedLanguagesRes.statusCode
+      };
+    }
 
-    const filteredLanguages = supportedLanguages.filter(
+    const bookLanguages = bookRes.data.availableLanguages.map(
+      lang => lang.code
+    );
+
+    const filteredLanguages = supportedLanguagesRes.data.filter(
       lang => !bookLanguages.includes(lang.code)
     );
 
     return {
-      book,
+      book: bookRes.data,
       supportedLanguages: filteredLanguages
     };
   }
@@ -94,12 +106,15 @@ class TranslatePage extends React.Component<Props, State> {
   handlePrepareTranslation = async () => {
     this.setState({ preparingTranslation: true });
     if (this.state.selectedLanguage) {
-      const translation = await sendToTranslation(
+      const translationRes = await sendToTranslation(
         this.props.book.id,
         this.props.book.language.code,
         this.state.selectedLanguage.code
       );
-      this.setState({ translation });
+      // TODO: Handle error case
+      if (translationRes.isOk) {
+        this.setState({ translation: translationRes.data });
+      }
     }
   };
 
@@ -225,4 +240,4 @@ class TranslatePage extends React.Component<Props, State> {
   }
 }
 
-export default securePage(TranslatePage);
+export default securePage(errorPage(TranslatePage));

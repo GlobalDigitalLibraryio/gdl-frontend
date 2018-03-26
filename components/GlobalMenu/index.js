@@ -98,15 +98,18 @@ class GlobalMenu extends React.Component<Props, State> {
   }
 
   getMenuData = async () => {
-    const [languages, categories] = await Promise.all([
+    const [languagesRes, categoriesRes] = await Promise.all([
       fetchLanguages(),
       fetchCategories(this.props.language.code)
     ]);
 
-    this.setState({
-      categories,
-      languages
-    });
+    // TODO: Handle error case by notifying user?
+    if (languagesRes.isOk && categoriesRes.isOk) {
+      this.setState({
+        categories: categoriesRes.data,
+        languages: languagesRes.data
+      });
+    }
   };
 
   toggleShowLanguageMenu = () =>
