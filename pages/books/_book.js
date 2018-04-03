@@ -36,7 +36,7 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
 import media from '../../style/media';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 import BookMeta from '../../components/BookMeta';
 import DownloadBookMenu from '../../components/DownloadBookMenu';
@@ -68,7 +68,7 @@ const CoverWrap = styled('div')`
 
 const Hr = styled('hr')`
   height: 1px;
-  background-color: ${theme.colors.grayLight};
+  background-color: ${colors.base.grayLight};
   border-style: none;
   margin: 0;
   ${media.mobile`

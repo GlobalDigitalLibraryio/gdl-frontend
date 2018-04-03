@@ -10,11 +10,11 @@ import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import SrOnly from '../SrOnly';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 import media from '../../style/media';
 
 const Button = styled.button`
-  color: ${theme.colors.white};
+  color: ${colors.base.white};
   position: fixed;
   background-color: rgba(68, 68, 68, 0.1);
   height: 100%;

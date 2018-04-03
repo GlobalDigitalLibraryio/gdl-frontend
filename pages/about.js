@@ -21,7 +21,7 @@ import defaultPage from '../hocs/defaultPage';
 import Head from '../components/Head';
 import Footer from '../components/AboutFooter';
 import Hero from '../components/Hero';
-import theme from '../style/theme';
+import { colors } from '../style/theme';
 import media from '../style/media';
 
 const childrenJPG = require('../static/about/children-306607.jpg');
@@ -42,7 +42,7 @@ export const HeroWithIcons = styled(Hero)`
 `;
 
 const Button = styled.button`
-  color: ${theme.colors.white};
+  color: ${colors.base.white};
   border-radius: 4px;
   background: linear-gradient(180deg, #5cbc80 0%, #359258 100%);
   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);

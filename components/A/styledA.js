@@ -6,22 +6,22 @@
  * See LICENSE
  */
 import styled, { css } from 'react-emotion';
-import theming from 'styled-theming';
+import theme from 'styled-theming';
 
 import rotate360 from '../../style/rotate360';
-import theme from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 
-const color = theming('category', {
+const color = theme('category', {
   library: css`
-    color: ${theme.colors.link};
+    color: ${colors.link.default};
     &:hover {
-      color: ${theme.colors.blues.dark};
+      color: ${colors.link.defaultHover};
     }
   `,
   classroom: css`
-    color: ${theme.colors.pinks.dark};
+    color: ${colors.link.alternate};
     &:hover {
-      color: ${theme.colors.pinks.pink};
+      color: ${colors.link.alternateHover};
     }
   `
 });
@@ -33,7 +33,7 @@ export const A = styled('a')`
   background: transparent;
   &[disabled] {
     cursor: not-allowed;
-    color: ${theme.colors.gray};
+    color: ${colors.base.gray};
   }
 `;
 
@@ -42,7 +42,7 @@ export const uppcasedStyle = css`
 `;
 
 export const boldStyle = css`
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
 `;
 
 export const underlineStyle = css`
@@ -56,7 +56,7 @@ export const loadingStyle = css`
   pointer-events: none;
   &:after {
     animation: ${rotate360} 500ms infinite linear;
-    border: 2px solid ${theme.colors.dark};
+    border: 2px solid ${colors.base.black};
     border-radius: 100px;
     border-right-color: transparent;
     border-top-color: transparent;

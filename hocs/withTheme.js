@@ -10,7 +10,9 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import type { Context } from '../types';
-import theme from '../style/theme';
+import { misc } from '../style/theme';
+
+const theme = { space: [], breakpoints: misc.breakpoints };
 
 class Theme extends React.Component<{ children: React.Node }> {
   static childContextTypes = {
@@ -20,7 +22,7 @@ class Theme extends React.Component<{ children: React.Node }> {
   getChildContext() {
     return {
       reactIconBase: {
-        size: 24
+        size: misc.iconSize
       }
     };
   }

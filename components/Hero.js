@@ -8,10 +8,10 @@
 
 import styled from 'react-emotion';
 import Box from './Box';
-import theme from '../style/theme';
+import { colors } from '../style/theme';
 
 const Hero = styled(Box)`
-  border-bottom: solid 1px ${theme.colors.grayLight};
+  border-bottom: solid 1px ${colors.base.grayLight};
 `;
 
 export default Hero;

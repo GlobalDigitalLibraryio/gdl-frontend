@@ -8,9 +8,10 @@
 
 import styled from 'react-emotion';
 import media from '../style/media';
+import { fonts } from '../style/theme';
 
 const H4 = styled.h4`
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   font-size: 16px;
   line-height: 22px;
   ${media.tablet`

@@ -14,15 +14,15 @@ import type { Language, Category } from '../../types';
 import Navbar from '../Navbar';
 import SubNavbar from '../SubNavbar';
 import GlobalMenu from '../GlobalMenu';
-import theme from '../../style/theme';
+import { misc, colors } from '../../style/theme';
 import LanguageCategoryContext from '../LanguageCategoryContext';
 
 const ContentWrapper = styled('main')`
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
-  background: ${theme.colors.whiteTer};
+  background: ${colors.container.background};
   flex: 1;
   width: 100%;
-  max-width: ${theme.containers.large};
+  max-width: ${misc.containers.large};
   margin-left: auto;
   margin-right: auto;
 `;

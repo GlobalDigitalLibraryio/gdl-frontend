@@ -15,19 +15,19 @@ import theming from 'styled-theming';
 import type { I18n } from '../../types';
 import LanguageCategoryContext from '../LanguageCategoryContext';
 import { Link } from '../../routes';
-import theme from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 
 const color = theming('category', {
   library: css`
-    color: ${theme.colors.link};
+    color: ${colors.link.default};
     &:hover {
-      color: ${theme.colors.blues.dark};
+      color: ${colors.link.defaultHover};
     }
   `,
   classroom: css`
-    color: ${theme.colors.pinks.dark};
+    color: ${colors.link.alternate};
     &:hover {
-      color: ${theme.colors.pinks.pink};
+      color: ${colors.link.alternateHover};
     }
   `
 });
@@ -54,11 +54,11 @@ const Ol = styled.ol`
   }
 
   li:last-child {
-    font-weight: bold;
+    font-weight: ${fonts.weight.bold};
   }
 
   li[role='presentation'] {
-    color: ${theme.colors.gray};
+    color: ${colors.base.gray};
   }
 
   a {

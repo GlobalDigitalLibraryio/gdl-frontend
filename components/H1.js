@@ -9,10 +9,11 @@
 import styled from 'react-emotion';
 import { textAlign } from 'styled-system';
 import media from '../style/media';
+import { fonts } from '../style/theme';
 
 const H1 = styled.h1`
   margin: 0;
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   font-size: 26px;
   line-height: 30px;
   ${media.tablet`

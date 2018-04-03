@@ -8,7 +8,7 @@
 
 import { css } from 'react-emotion';
 import { normalize } from 'polished';
-import theme from './theme';
+import { colors, fonts } from './theme';
 
 // Add global styles
 export default css`
@@ -24,22 +24,20 @@ export default css`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-      'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    font-family: ${fonts.family.default};
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     background: #fff;
-    color: ${theme.colors.dark};
+    color: ${colors.text.default};
 
     a {
-      color: ${theme.colors.link};
+      color: ${colors.link.default};
       text-decoration: none;
     }
 
     strong {
-      font-weight: bold;
+      font-weight: ${fonts.weight.bold};
     }
 
     a,

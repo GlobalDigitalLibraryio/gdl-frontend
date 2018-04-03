@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import styled, { css } from 'react-emotion';
-import theme from '../../../style/theme';
+import { misc } from '../../../style/theme';
 import media from '../../../style/media';
 
 // Desktop menu width
@@ -31,7 +31,7 @@ export const Positioner = styled('div')`
   z-index: 510;
   pointer-events: none;
   ${media.tablet`
-    max-width: ${theme.containers.large};
+    max-width: ${misc.containers.large};
     margin: auto;
   `};
 `;

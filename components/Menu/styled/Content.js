@@ -6,8 +6,9 @@
  * See LICENSE
  */
 import styled, { css } from 'react-emotion';
+import { fonts, colors } from '../../../style/theme';
 
-const BORDER_COLOR = '#e3e3e3';
+const BORDER_COLOR = colors.base.grayLight;
 
 /**
  * Wrapper around the entire modal content (header, body)
@@ -28,7 +29,7 @@ export const Body = styled('div')`
 `;
 
 export const Title = styled('h1')`
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   font-size: 1rem;
   margin: 0;
   display: flex;
@@ -60,7 +61,7 @@ export const Item = styled('div')`
   padding-left: 55px;
   padding-top: 0.7rem;
   padding-bottom: 0.7rem;
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   position: relative;
   ${p => p.showKeyLine && `border-bottom: 1px solid ${BORDER_COLOR};`};
   ${p => p.isNestedItem && `padding-left: 70px;`};
@@ -78,5 +79,5 @@ export const ItemIcon = styled('span')`
   left: 20px;
   top: 50%;
   transform: translateY(-50%);
-  ${p => p.isSelected && 'color: #00BA6E;'};
+  ${p => p.isSelected && `color: ${colors.base.green};`};
 `;

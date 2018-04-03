@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import styled from 'react-emotion';
 import { MdArrowDownward } from 'react-icons/lib/md';
 
 import {
@@ -36,9 +35,10 @@ import P from '../../components/P';
 import Card from '../../components/Card';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
-import theme from '../../style/theme';
 import BookCover from '../../components/BookCover';
+import A from '../../components/A';
 import TranslationLanguage from '../../components/TranslationLanguageMenu';
+import { colors } from '../../style/theme';
 import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
@@ -54,14 +54,6 @@ type State = {
   translation?: Translation,
   showLanguageMenu: boolean
 };
-
-const LinkLike = styled('button')`
-  background: transparent;
-  color: ${theme.colors.link};
-  border: none;
-  font-size: inherit;
-  ${p => p.isUppercased && 'text-transform: uppercase;'};
-`;
 
 class TranslatePage extends React.Component<Props, State> {
   static async getInitialProps({ query }: Context) {
@@ -168,19 +160,19 @@ class TranslatePage extends React.Component<Props, State> {
                 </Box>
                 <Box>
                   <H4>{book.title}</H4>
-                  <P color={theme.colors.grayDark}>
+                  <P color={colors.text.subtle}>
                     <Trans>from {book.publisher.name}</Trans>
                   </P>
                 </Box>
               </Flex>
             </Card>
             <Box mb={20}>
-              <P color={theme.colors.grayDark}>
+              <P color={colors.text.subtle}>
                 <Trans>Translate from</Trans>
               </P>
               <div>{book.language.name}</div>
-              <MdArrowDownward color={theme.colors.oranges.orange} size={50} />
-              <P color={theme.colors.grayDark}>
+              <MdArrowDownward color={colors.base.orange} size={50} />
+              <P color={colors.text.subtle}>
                 <Trans>Translate to</Trans>
               </P>
               {this.state.showLanguageMenu && (
@@ -192,7 +184,7 @@ class TranslatePage extends React.Component<Props, State> {
                 />
               )}
               {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
-              <LinkLike
+              <A
                 isUppercased={Boolean(selectedLanguage)}
                 onClick={this.toggleLanguageMenu}
                 aria-expanded={this.state.showLanguageMenu}
@@ -202,7 +194,7 @@ class TranslatePage extends React.Component<Props, State> {
                 ) : (
                   <Trans>Choose language</Trans>
                 )}
-              </LinkLike>
+              </A>
             </Box>
             {this.state.translation ? (
               <React.Fragment>

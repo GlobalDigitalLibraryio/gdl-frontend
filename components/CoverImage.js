@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import Image from './Image';
-import { TABLET_BREAKPOINT } from '../style/theme';
+import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
 const NO_COVER_PLACEHOLDER_URL = require('../static/placeholder-cover.png');
 

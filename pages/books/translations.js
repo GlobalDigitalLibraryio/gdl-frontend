@@ -24,7 +24,7 @@ import A from '../../components/A';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 
 type Props = {
   i18n: I18n
@@ -74,12 +74,12 @@ class TranslationCard extends React.Component<
           </Box>
           <Box flex="1">
             <H4>{translation.title}</H4>
-            <P color={theme.colors.grayDark} style={{ marginTop: 0 }}>
+            <P color={colors.text.subtle} style={{ marginTop: 0 }}>
               <Trans>from {translation.publisher.name}</Trans>
             </P>
             <Box>
               {translation.translatedFrom.name}{' '}
-              <MdArrowForward color={theme.colors.oranges.orange} />{' '}
+              <MdArrowForward color={colors.base.orange} />{' '}
               <strong>{translation.translatedTo.name}</strong>
             </Box>
             <div style={{ float: 'right' }}>

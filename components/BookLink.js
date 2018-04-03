@@ -14,14 +14,14 @@ import type { Book } from '../types';
 import Card from './Card';
 import ReadingLevel from './ReadingLevel';
 import Box from './Box';
-import theme from '../style/theme';
+import { colors } from '../style/theme';
 import CoverImage from './CoverImage';
 
 const Div = styled(Box)`
   text-align: center;
-  color: ${theme.colors.dark};
-  border-top: 1px solid ${theme.colors.grayLight};
-  background-color: ${theme.colors.white};
+  color: ${colors.text.default};
+  border-top: 1px solid ${colors.base.grayLight};
+  background-color: ${colors.base.white};
 `;
 
 const BookTitle = styled('a')`

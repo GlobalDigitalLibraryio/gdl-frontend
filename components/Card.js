@@ -8,14 +8,14 @@
 
 import styled, { css } from 'react-emotion';
 import { space, flex, textAlign } from 'styled-system';
-import theme from '../style/theme';
+import { colors, misc } from '../style/theme';
 
 const cardCss = css`
-  background: ${theme.colors.white};
+  background: ${colors.base.white};
   position: relative;
   max-width: 100%;
-  box-shadow: ${theme.boxShadows.small};
-  color: ${theme.colors.dark};
+  box-shadow: ${misc.boxShadows.small};
+  color: ${colors.text.default};
 `;
 
 const Card = styled('div')(cardCss, space, textAlign, flex);

@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 
 const styles = {
   container: {
@@ -33,7 +33,7 @@ const styles = {
     fontWeight: 'normal'
   },
   a: {
-    color: theme.colors.link,
+    color: colors.link.default,
     textDecoration: 'underline'
   }
 };

@@ -12,13 +12,13 @@ import styled from 'react-emotion';
 import type { ReadingLevel } from '../types';
 import ReadingLevelTrans from './ReadingLevelTrans';
 import media from '../style/media';
-import theme from '../style/theme';
+import { colors, misc } from '../style/theme';
 
 const Label = styled('span')`
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  background-color: ${theme.colors.grayDarker};
-  color: ${theme.colors.white};
+  border-radius: ${misc.radius};
+  background-color: ${colors.base.grayDarkest};
+  color: ${colors.base.white};
   padding-left: 10px;
   padding-right: 10px;
   font-size: 11px;
