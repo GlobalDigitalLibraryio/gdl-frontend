@@ -100,7 +100,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     return {
       book: bookRes.data,
       // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data : []
+      similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
   }
 
