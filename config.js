@@ -17,6 +17,7 @@ function getConfig() {
 
   const config = {
     common: {
+      DEFAULT_LANGUAGE_CODE: 'en',
       GLOBAL_VAR_NAME: globalVarName,
       STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,

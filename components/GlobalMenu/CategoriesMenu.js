@@ -9,7 +9,6 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 
-import type { Language } from '../../types';
 import type { Categories } from './index';
 import Link from '../BrowseLink';
 import ReadingLevelTrans from '../ReadingLevelTrans';
@@ -17,7 +16,7 @@ import Menu, { MenuItem } from '../Menu';
 
 type Props = {|
   categories: Categories,
-  language: Language,
+  languageCode: string,
   onClose: (
     event: | SyntheticMouseEvent<any>
     | SyntheticKeyboardEvent<any>
@@ -27,7 +26,7 @@ type Props = {|
 
 export default class CategoriesMenu extends React.Component<Props> {
   render() {
-    const { categories, onClose, language } = this.props;
+    const { categories, onClose, languageCode } = this.props;
     return (
       <Menu heading={<Trans>Categories</Trans>} onClose={onClose} isNestedMenu>
         {categories.classroom_books && (
@@ -38,7 +37,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             {categories.classroom_books.map(level => (
               <Link
                 key={level}
-                lang={language.code}
+                lang={languageCode}
                 readingLevel={level}
                 category="classroom_books"
               >
@@ -49,7 +48,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             ))}
             <Link
               category="classroom_books"
-              lang={language.code}
+              lang={languageCode}
               sort="-arrivalDate"
             >
               <MenuItem
@@ -71,7 +70,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             {categories.library_books.map(level => (
               <Link
                 key={level}
-                lang={language.code}
+                lang={languageCode}
                 readingLevel={level}
                 category="library_books"
               >
@@ -82,7 +81,7 @@ export default class CategoriesMenu extends React.Component<Props> {
             ))}
             <Link
               category="library_books"
-              lang={language.code}
+              lang={languageCode}
               sort="-arrivalDate"
             >
               <MenuItem onCustomClick={onClose} isNestedItem>

@@ -13,7 +13,6 @@ import styled, { css } from 'react-emotion';
 import theming from 'styled-theming';
 
 import type { I18n } from '../../types';
-import LanguageCategoryContext from '../LanguageCategoryContext';
 import { Link } from '../../routes';
 import { colors, fonts } from '../../style/theme';
 
@@ -81,26 +80,11 @@ const Breadcrumb = ({ i18n, crumbs }: Props) => (
   <Div aria-label={i18n.t`Breadcrumb`}>
     <Ol>
       <li>
-        <LanguageCategoryContext.Consumer>
-          {({ category, language }) => {
-            let route;
-            if (category === 'classroom_books') {
-              route = 'classroom';
-            } else if (category === 'library_books') {
-              route = 'library';
-            } else {
-              route = 'books';
-            }
-
-            return (
-              <Link route={route} params={{ lang: language.code }}>
-                <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
-                  <MdHome />
-                </a>
-              </Link>
-            );
-          }}
-        </LanguageCategoryContext.Consumer>
+        <Link route="books">
+          <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
+            <MdHome />
+          </a>
+        </Link>
       </li>
       {crumbs &&
         crumbs.map((crumb, index) => (

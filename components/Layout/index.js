@@ -42,7 +42,7 @@ type Props = {|
 
 const Layout = ({ children, languages, categories, crumbs }: Props) => (
   <LanguageCategoryContext.Consumer>
-    {({ category, language }) => (
+    {({ category, languageCode }) => (
       <ThemeProvider
         theme={{
           category: category === 'classroom_books' ? 'classroom' : 'library'
@@ -56,7 +56,7 @@ const Layout = ({ children, languages, categories, crumbs }: Props) => (
                   <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
                   {(crumbs || languages || categories) && (
                     <SubNavbar
-                      language={language}
+                      languageCode={languageCode}
                       categories={categories}
                       crumbs={crumbs}
                       languages={languages}
@@ -64,7 +64,10 @@ const Layout = ({ children, languages, categories, crumbs }: Props) => (
                   )}
                 </nav>
                 {portal(
-                  <GlobalMenu onClose={closePortal} language={language} />
+                  <GlobalMenu
+                    onClose={closePortal}
+                    languageCode={languageCode}
+                  />
                 )}
               </React.Fragment>
             )}

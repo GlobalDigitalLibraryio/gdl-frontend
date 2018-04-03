@@ -121,7 +121,10 @@ class TranslatePage extends React.Component<Props, State> {
     const { selectedLanguage } = this.state;
 
     return (
-      <LanguageCategory category={book.category} language={book.language}>
+      <LanguageCategory
+        category={book.category}
+        languageCode={book.language.code}
+      >
         <Layout
           crumbs={[
             <Link

@@ -28,6 +28,8 @@ import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
+import { getBookLanguageFromCookie } from '../lib/cookie';
+import { DEFAULT_LANGUAGE_CODE } from '../config';
 
 const QUERY_PARAM = 'q';
 
@@ -37,9 +39,9 @@ type Props = {
     page: number,
     totalCount: number
   },
+  languageCode: string,
   url: {
     query: {
-      lang: string,
       q?: string
     },
     pathname: string,
@@ -66,12 +68,14 @@ const ResultsMeta = styled('h1')`
 `;
 
 class SearchPage extends React.Component<Props, State> {
-  static async getInitialProps({ query }: Context) {
+  static async getInitialProps({ query, req }: Context) {
+    const languageCode =
+      getBookLanguageFromCookie(req) || DEFAULT_LANGUAGE_CODE;
     let searchResult;
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
-      searchResult = await search(searchQuery, query.lang, {
+      searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
       });
 
@@ -83,6 +87,7 @@ class SearchPage extends React.Component<Props, State> {
     }
 
     return {
+      languageCode,
       searchResult:
         searchResult && searchResult.data ? searchResult.data : undefined
     };
@@ -102,7 +107,6 @@ class SearchPage extends React.Component<Props, State> {
     Router.pushRoute(
       'search',
       {
-        lang: this.props.url.query.lang,
         [QUERY_PARAM]: this.state.searchQuery
       },
       { shallow: true }
@@ -110,7 +114,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.url.query.lang,
+      this.props.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE
       }
@@ -131,7 +135,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.url.query.lang,
+      this.props.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
@@ -174,12 +178,10 @@ class SearchPage extends React.Component<Props, State> {
 
   render() {
     const { searchResult, lastSearchQuery } = this.state;
+    const { languageCode } = this.props;
 
     return (
-      <LanguageCategory
-        category={undefined}
-        language={{ code: this.props.url.query.lang, name: '' }} // FixMe: It is okay here, because name isn't displayed anywhere. But clean this up when we have language in cookies
-      >
+      <LanguageCategory category={undefined} languageCode={languageCode}>
         <Layout crumbs={[<Trans>Search</Trans>]}>
           <Head title="Search" />
           <Container pt={[15, 20]}>
