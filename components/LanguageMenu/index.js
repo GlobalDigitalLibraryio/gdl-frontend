@@ -14,7 +14,7 @@ import { Link } from '../../routes';
 import Menu, { MenuItem } from '../Menu';
 
 type Props = {
-  selectedLanguage: Language,
+  selectedLanguageCode: string,
   isNestedMenu?: boolean,
   languages: Array<Language>,
   onClose: (
@@ -30,12 +30,19 @@ export default class LanguageMenu extends React.Component<Props> {
   };
 
   render() {
-    const { selectedLanguage, languages, onClose, isNestedMenu } = this.props;
+    const {
+      selectedLanguageCode,
+      languages,
+      onClose,
+      isNestedMenu
+    } = this.props;
 
-    // We don't want to display the seelected language in the list
-    const filteredLanguages = languages.filter(
-      l => l.code !== selectedLanguage.code
+    const selectedLanguage = languages.find(
+      l => l.code === selectedLanguageCode
     );
+
+    // We don't want to display the selected language in the list
+    const filteredLanguages = languages.filter(l => l !== selectedLanguage);
 
     return (
       <Menu
@@ -44,7 +51,7 @@ export default class LanguageMenu extends React.Component<Props> {
         isNestedMenu={isNestedMenu}
       >
         <MenuItem showKeyLine isSelected>
-          {selectedLanguage.name}
+          {(selectedLanguage && selectedLanguage.name) || selectedLanguageCode}
         </MenuItem>
         {filteredLanguages.map(language => (
           <Link

@@ -11,7 +11,7 @@ import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import theming from 'styled-theming';
 
-import type { Category, Language } from '../../types';
+import type { Category } from '../../types';
 import media from '../../style/media';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
@@ -49,18 +49,18 @@ const HiddenMobile = styled('span')`
 
 type Props = {|
   categories: Array<Category>,
-  language: Language
+  languageCode: string
 |};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
-    const { language, categories } = this.props;
+    const { languageCode, categories } = this.props;
     return (
       <LanguageCategoryContext.Consumer>
         {({ category }) => (
           <Div>
             {categories.includes('library_books') && (
-              <Link route="library" passHref params={{ lang: language.code }}>
+              <Link route="library" passHref params={{ lang: languageCode }}>
                 <A isSelected={category === 'library_books'}>
                   <Trans>
                     Library <HiddenMobile>books</HiddenMobile>
@@ -69,7 +69,7 @@ class CategoryNavigation extends React.Component<Props> {
               </Link>
             )}
             {categories.includes('classroom_books') && (
-              <Link route="classroom" passHref params={{ lang: language.code }}>
+              <Link route="classroom" passHref params={{ lang: languageCode }}>
                 <A isSelected={category === 'classroom_books'}>
                   <Trans>
                     Classroom <HiddenMobile>books</HiddenMobile>

@@ -23,7 +23,7 @@ import CategoriesMenu from './CategoriesMenu';
 
 type Props = {|
   onClose(): void,
-  language: Language,
+  languageCode: string,
   router: any
 |};
 
@@ -42,22 +42,19 @@ type State = {
 type Cache = {|
   languages: Array<Language>,
   categories: Categories,
-  language: ?Language
+  languageCode: ?string
 |};
 
 const stateCache: Cache = {
   languages: [],
   categories: {},
-  language: null
+  languageCode: null
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    if (
-      stateCache.language &&
-      stateCache.language.code === props.language.code
-    ) {
+    if (stateCache.language && stateCache.languageCode === props.languageCode) {
       this.state = {
         languages: stateCache.languages,
         categories: stateCache.categories,
@@ -80,7 +77,7 @@ class GlobalMenu extends React.Component<Props, State> {
       this.getMenuData();
     }
     // Remember the last language we mounted with in the cache
-    stateCache.language = this.props.language;
+    stateCache.languageCode = this.props.languageCode;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,7 +97,7 @@ class GlobalMenu extends React.Component<Props, State> {
   getMenuData = async () => {
     const [languagesRes, categoriesRes] = await Promise.all([
       fetchLanguages(),
-      fetchCategories(this.props.language.code)
+      fetchCategories(this.props.languageCode)
     ]);
 
     // TODO: Handle error case by notifying user?
@@ -119,21 +116,21 @@ class GlobalMenu extends React.Component<Props, State> {
     this.setState(state => ({ showCategoriesMenu: !state.showCategoriesMenu }));
 
   render() {
-    const { language, onClose } = this.props;
+    const { languageCode, onClose } = this.props;
 
     return (
       <Fragment>
         {this.state.showLanguageMenu && (
           <LanguageMenu
             isNestedMenu
-            selectedLanguage={language}
+            selectedLanguageCode={languageCode}
             languages={this.state.languages}
             onClose={this.toggleShowLanguageMenu}
           />
         )}
         {this.state.showCategoriesMenu && (
           <CategoriesMenu
-            language={language}
+            languageCode={languageCode}
             categories={this.state.categories}
             onClose={this.toggleShowCategoriesMenu}
           />

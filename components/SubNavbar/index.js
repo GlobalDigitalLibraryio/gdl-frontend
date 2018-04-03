@@ -17,7 +17,7 @@ import LanguageMenu from '../LanguageMenu';
 import A from '../A';
 
 type Props = {|
-  language: Language,
+  languageCode: string,
   crumbs?: Array<React.Node | string>,
   languages?: Array<Language>,
   categories?: Array<Category>
@@ -33,7 +33,10 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
   };
 
   render() {
-    const { languages, language, categories, crumbs } = this.props;
+    const { languages, languageCode, categories, crumbs } = this.props;
+    const selectedLanguage =
+      languages && languages.find(l => l.code === languageCode);
+
     return (
       <Nav>
         <Container>
@@ -41,12 +44,15 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
             <Breadcrumb crumbs={crumbs} />
           ) : (
             categories && (
-              <CategoryNavigation language={language} categories={categories} />
+              <CategoryNavigation
+                languageCode={languageCode}
+                categories={categories}
+              />
             )
           )}
           {languages && (
             <LanguageCategoryContext.Consumer>
-              {({ language }) => (
+              {({ languageCode }) => (
                 <div
                   style={{
                     marginLeft: 'auto',
@@ -54,7 +60,7 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
                     alignItems: 'center'
                   }}
                 >
-                  {language.name}
+                  {(selectedLanguage && selectedLanguage.name) || languageCode}
                   <A
                     onClick={this.toggleShowLanguageMenu}
                     isUppercased
@@ -71,7 +77,7 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
         {this.state.showLanguageMenu &&
           languages && (
             <LanguageMenu
-              selectedLanguage={language}
+              selectedLanguageCode={languageCode}
               languages={languages}
               onClose={this.toggleShowLanguageMenu}
             />

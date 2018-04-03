@@ -40,7 +40,7 @@ if (config.STATIC_PAGES_ONLY) {
   routes.add('about');
   routes.add('login');
   routes.add('logout');
-  routes.add('search', `/${langParam}/search`, '_search');
+  routes.add('search');
 
   // in other environments we want the books page to be the landing page
   routes.add('books', `/${langParam}?`, 'index');

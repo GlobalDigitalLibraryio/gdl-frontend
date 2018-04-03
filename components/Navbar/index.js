@@ -10,7 +10,6 @@ import * as React from 'react';
 import { MdMenu, MdSearch } from 'react-icons/lib/md';
 import { Trans } from '@lingui/react';
 
-import LanguageCategoryContext from '../LanguageCategoryContext';
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
@@ -44,41 +43,23 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   );
 
   const searchLink = (
-    <LanguageCategoryContext.Consumer>
-      {({ language }) => (
-        <Link route="search" params={{ lang: language.code }}>
-          <a>
-            <MdSearch aria-hidden />
-            <span>
-              <Trans>Search</Trans>
-            </span>
-          </a>
-        </Link>
-      )}
-    </LanguageCategoryContext.Consumer>
+    <Link route="search">
+      <a>
+        <MdSearch aria-hidden />
+        <span>
+          <Trans>Search</Trans>
+        </span>
+      </a>
+    </Link>
   );
 
   const brandLink = (
-    <LanguageCategoryContext.Consumer>
-      {({ category, language }) => {
-        let route;
-        if (category === 'classroom_books') {
-          route = 'classroom';
-        } else if (category === 'library_books') {
-          route = 'library';
-        } else {
-          route = 'books';
-        }
-        return (
-          <Link route={route} passHref params={{ lang: language.code }}>
-            <BrandLink>
-              <GlobalDigitalLibraryLogo aria-hidden />
-              <SrOnly>Global Digital Library</SrOnly>
-            </BrandLink>
-          </Link>
-        );
-      }}
-    </LanguageCategoryContext.Consumer>
+    <Link route="books" passHref>
+      <BrandLink>
+        <GlobalDigitalLibraryLogo aria-hidden />
+        <SrOnly>Global Digital Library</SrOnly>
+      </BrandLink>
+    </Link>
   );
 
   return (

@@ -149,7 +149,7 @@ class BrowsePage extends React.Component<Props, State> {
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <LanguageCategory category={category} language={books.language}>
+      <LanguageCategory category={category} languageCode={books.language.code}>
         <Layout
           crumbs={[
             readingLevel ? (
