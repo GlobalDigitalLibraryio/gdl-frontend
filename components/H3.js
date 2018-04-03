@@ -8,13 +8,14 @@
 
 import styled from 'react-emotion';
 import media from '../style/media';
+import { fonts } from '../style/theme';
 
 const H3 = styled.h3`
   &:first-child {
     margin-top: 0;
   }
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   font-size: 16px;
   line-height: 22px;
   ${media.tablet`

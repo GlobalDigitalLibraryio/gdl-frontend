@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import styled from 'react-emotion';
+import { fonts } from '../../style/theme';
 
 const Page = styled.div`
   color: #000;
@@ -14,14 +15,13 @@ const Page = styled.div`
   font-size: 18px;
   text-align: center;
   line-height: 1.5;
-  font-family: Palatino, Iowan, 'Times New Roman', Times, serif;
-
+  font-family: ${fonts.family.book};
   br {
     display: none;
   }
 
   b {
-    font-weight: bold;
+    font-weight: ${fonts.weight.bold};
   }
 
   img {

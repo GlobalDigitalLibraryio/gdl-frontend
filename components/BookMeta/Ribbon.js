@@ -13,7 +13,7 @@ import { triangle } from 'polished';
 import type { ReadingLevel } from '../../types';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import media from '../../style/media';
-import theme from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 
 const HEIGHT = '30px';
 
@@ -26,12 +26,12 @@ const Ribbon = styled('div')`
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  background-color: ${theme.colors.white};
-  color: ${theme.colors.dark};
+  background-color: ${colors.base.white};
+  color: ${colors.text.default};
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
   padding-left: 20px;
   padding-right: 10px;
-  font-weight: bold;
+  font-weight: ${fonts.weight.bold};
   font-size: 14px;
   text-transform: uppercase;
   position: relative;
@@ -54,7 +54,7 @@ const Ribbon = styled('div')`
       pointingDirection: 'right',
       width: '15px',
       height: HEIGHT,
-      foregroundColor: theme.colors.whiteTer
+      foregroundColor: colors.container.background
     })};
   }
 `;

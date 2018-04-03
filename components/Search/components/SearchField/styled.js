@@ -1,7 +1,7 @@
 // @flow
 import styled from 'react-emotion';
 import { placeholder, hideVisually } from 'polished';
-import theme from '../../../../style/theme';
+import { colors } from '../../../../style/theme';
 
 export const Container = styled('div')`
   display: flex;
@@ -30,7 +30,7 @@ export const Input = styled('input')`
   font-size: 1rem;
   line-height: 1.5rem;
   transition: all 0.2s ease-in-out;
-  ${placeholder({ color: theme.colors.gray })};
+  ${placeholder({ color: colors.base.gray })};
 
   &:focus {
     ${placeholder({ color: 'rgb(117, 117, 117)' })};
@@ -43,7 +43,7 @@ export const Input = styled('input')`
 
 export const Icon = styled('span')`
   position: absolute;
-  color: ${theme.colors.grayDark};
+  color: ${colors.base.grayDarkest};
   pointer-events: none;
   display: flex;
   align-items: center;

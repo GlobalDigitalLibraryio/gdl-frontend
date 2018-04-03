@@ -11,9 +11,9 @@ import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import theming from 'styled-theming';
 
-import theme from '../../style/theme';
 import type { Category, Language } from '../../types';
 import media from '../../style/media';
+import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
 import LanguageCategoryContext from '../LanguageCategoryContext';
 
@@ -24,7 +24,7 @@ const Div = styled('div')`
 
 const borderColor = theming('category', {
   library: '#0085dd',
-  classroom: theme.colors.pinks.pink
+  classroom: '#b25187'
 });
 
 const A = styled('a')`
@@ -35,7 +35,7 @@ const A = styled('a')`
   ${p =>
     p.isSelected &&
     css`
-      font-weight: 500;
+      font-weight: ${fonts.weight.medium};
       border-bottom: 3px solid ${borderColor(p)};
     `};
 `;

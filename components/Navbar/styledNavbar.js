@@ -10,13 +10,13 @@ import styled from 'react-emotion';
 import { display } from 'styled-system';
 import theming from 'styled-theming';
 
-import theme from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 import media from '../../style/media';
 import { navContainerFragment } from '../Container';
 
 const backgroundColor = theming('category', {
-  library: theme.colors.blues.dark,
-  classroom: theme.colors.pinks.dark
+  library: colors.navbar.defaultBackground,
+  classroom: colors.navbar.alternateBackground
 });
 
 export const Bar = styled('div')`
@@ -25,8 +25,8 @@ export const Bar = styled('div')`
 `;
 
 export const NavItem = styled('div')`
-  color: ${theme.colors.white};
-  font-weight: 500;
+  color: ${colors.navbar.defaultText};
+  font-weight: ${fonts.weight.medium};
   font-size: 1.1rem;
   a {
     color: inherit;

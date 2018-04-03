@@ -30,7 +30,7 @@ import Button from '../../components/Button';
 import P from '../../components/P';
 import H1 from '../../components/H1';
 import A from '../../components/A';
-import theme from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
@@ -64,12 +64,12 @@ const HeroCovertitle = styled('h1')`
   position: absolute;
   top: 0;
   left: 0;
-  color: ${theme.colors.white};
+  color: ${colors.base.white};
   background: rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
   margin: 0;
   padding: 5px 15px;
-  font-weight: 500;
+  font-weight: ${fonts.weight.medium};
   font-size: 14px;
   ${media.tablet`
     font-size: 18px;

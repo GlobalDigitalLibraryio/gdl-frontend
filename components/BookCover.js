@@ -10,7 +10,7 @@ import { css } from 'react-emotion';
 
 import CoverImage from './CoverImage';
 import type { CoverPhoto } from '../types';
-import theme from '../style/theme';
+import { misc } from '../style/theme';
 
 type Props = {
   coverPhoto: ?CoverPhoto,
@@ -20,7 +20,7 @@ type Props = {
 
 const style = css`
   position: relative;
-  box-shadow: ${theme.boxShadows.small};
+  box-shadow: ${misc.boxShadows.small};
 `;
 
 const BookCover = ({ coverPhoto, w, h }: Props) => (

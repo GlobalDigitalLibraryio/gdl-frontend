@@ -10,7 +10,7 @@ import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { MdClose } from 'react-icons/lib/md';
 import SrOnly from '../SrOnly';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
@@ -21,9 +21,9 @@ const Div = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  color: ${theme.colors.grayDarker};
-  border-bottom: 1px solid ${theme.colors.grayLight};
-  background: ${theme.colors.white};
+  color: ${colors.text.subtle};
+  border-bottom: 1px solid ${colors.base.grayLight};
+  background: ${colors.base.white};
   ${flexCenter};
 
   font-size: 14px;
@@ -44,7 +44,7 @@ const Button = styled.button`
   padding: 10px;
   position: absolute;
   right: 0;
-  color: ${theme.colors.dark};
+  color: ${colors.base.black};
 `;
 
 type Props = {

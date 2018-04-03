@@ -8,15 +8,15 @@
 
 import styled from 'react-emotion';
 import styledMap from 'styled-map';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 
 const flagColor = styledMap('appearance', {
-  success: theme.colors.greens.green,
-  error: theme.colors.reds.light,
-  info: theme.colors.blues.blue,
-  warning: theme.colors.oranges.orange,
+  success: colors.flag.success,
+  error: colors.flag.error,
+  info: colors.flag.info,
+  warning: colors.flag.warning,
   // The last value is also the fallback value
-  normal: theme.colors.grayDark
+  normal: colors.flag.normal
 });
 
 export const Container = styled('div')`
@@ -36,7 +36,7 @@ export const Icon = styled('span')`
 export const DismissButton = styled.button`
   background: transparent;
   border: none;
-  color: ${theme.colors.dark};
+  color: ${colors.base.black};
   outline: none;
   border-radius: 290486px;
   width: 32px;

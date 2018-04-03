@@ -19,14 +19,14 @@ import KeyDown from '../KeyDown';
 import BookMeta from './BookMeta';
 import ButtonOverlay from './ButtonOverlay';
 import { Router } from '../../routes';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 
 function createMarkup(chapter: Chapter) {
   return { __html: chapter.content };
 }
 
 const Card = styled.div`
-  background: ${theme.colors.white};
+  background: ${colors.base.white};
   min-height: 100vh;
   width: 100%;
   display: flex;

@@ -9,10 +9,10 @@
 import styled from 'react-emotion';
 import media from '../../style/media';
 import { navContainerFragment } from '../Container';
-import theme from '../../style/theme';
+import { colors } from '../../style/theme';
 
 export const Nav = styled('nav')`
-  background: ${theme.colors.white};
+  background: ${colors.base.white};
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
   position: relative;
   font-size: 14px;
