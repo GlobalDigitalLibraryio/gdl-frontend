@@ -11,6 +11,7 @@ import * as React from 'react';
 import { fetchBook } from '../../fetch';
 import type { BookDetails, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
+import errorPage from '../../hocs/errorPage';
 import Head from '../../components/Head';
 import Reader from '../../components/Reader';
 
@@ -62,4 +63,4 @@ class Read extends React.Component<Props> {
   }
 }
 
-export default defaultPage(Read);
+export default defaultPage(errorPage(Read));
