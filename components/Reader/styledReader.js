@@ -6,9 +6,10 @@
  * See LICENSE
  */
 import styled from 'react-emotion';
-import { fonts } from '../../style/theme';
+import { fonts, colors } from '../../style/theme';
+import media from '../../style/media';
 
-const Page = styled.div`
+export const Page = styled.div`
   color: #000;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -38,4 +39,26 @@ const Page = styled.div`
   overflow-y: auto;
 `;
 
-export default Page;
+// A grey backdrop that's only visible on tablets/desktops
+export const Backdrop = styled.div`
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: fixed;
+  z-index: -2;
+  background-color: rgba(0, 0, 0, 0.7);
+  ${media.mobile`
+    display: none;
+  `};
+`;
+
+export const BookTitle = styled.div`
+  margin-top: 30px;
+  font-size: 14px;
+  color: ${colors.text.subtle};
+  text-align: center;
+  ${media.tablet`
+    margin-top: 40px;
+  `};
+`;
