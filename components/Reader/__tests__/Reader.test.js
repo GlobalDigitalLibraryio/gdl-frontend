@@ -11,7 +11,7 @@ import { shallow } from 'enzyme';
 import nock from 'nock';
 import Router from 'next/router';
 import type { BookDetails } from '../../../types';
-import Reader from '../Reader';
+import Reader from '../';
 
 // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
 const mockedRouter = {
