@@ -91,7 +91,8 @@ class BooksPage extends React.Component<Props> {
       ...levels.map(level =>
         fetchBooks(language, {
           level,
-          category
+          category,
+          sort: 'title'
         })
       )
     ]);
