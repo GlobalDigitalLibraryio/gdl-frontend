@@ -50,8 +50,7 @@ function getConfig() {
       bookApiUrl: process.browser
         ? 'https://api.staging.digitallibrary.io/book-api/v1'
         : localBookApiUrl,
-      googleAnalyticsTrackingID: 'UA-111796456-1',
-      TRANSLATION_PAGES: false
+      googleAnalyticsTrackingID: 'UA-111796456-1'
     },
 
     prod: {
