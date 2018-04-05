@@ -11,7 +11,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { createSerializer } from 'jest-emotion';
 import * as emotion from 'emotion';
-import type { BookDetails } from '../../../types';
+import { ContributorTypes, type BookDetails } from '../../../types';
 import BookJsonLd from '../BookJsonLd';
 
 expect.addSnapshotSerializer(createSerializer(emotion));
@@ -75,9 +75,9 @@ test('With contributors', () => {
   const book = {
     ...bookBase,
     contributors: [
-      { id: 1, type: 'Illustrator', name: 'Mrs. Drawer' },
-      { id: 2, type: 'Illustrator', name: 'Son of Mrs. Drawer' },
-      { id: 3, type: 'Author', name: 'Ms Writer' }
+      { id: 1, type: ContributorTypes.ILLUSTRATOR, name: 'Mrs. Drawer' },
+      { id: 2, type: ContributorTypes.ILLUSTRATOR, name: 'Son of Mrs. Drawer' },
+      { id: 3, type: ContributorTypes.AUTHOR, name: 'Ms Writer' }
     ]
   };
 

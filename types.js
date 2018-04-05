@@ -11,15 +11,19 @@ export type Publisher = {
   +name: string
 };
 
+// Neat little enum type trick https://github.com/facebook/flow/issues/2377#issuecomment-372613462
+export const ContributorTypes = /*::Object.freeze(*/ {
+  AUTHOR: 'Author',
+  ILLUSTRATOR: 'Illustrator',
+  TRANSLATOR: 'Translator',
+  PHOTOGRAPHER: 'Photographer',
+  CONTRIBUTOR: 'Contributor'
+} /*::)*/;
+
 export type Contributor = {
   +id: number,
   +name: string,
-  +type:
-    | 'Author'
-    | 'Illustrator'
-    | 'Translator'
-    | 'Photographer'
-    | 'Contributor'
+  +type: $Values<typeof ContributorTypes>
 };
 
 export type License = {

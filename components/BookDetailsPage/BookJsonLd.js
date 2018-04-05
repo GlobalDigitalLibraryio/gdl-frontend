@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import React from 'react';
-import type { BookDetails } from '../../types';
+import { ContributorTypes, type BookDetails } from '../../types';
 
 type Props = {|
   book: BookDetails
@@ -17,15 +17,24 @@ export default function BookJsonLd({ book }: Props) {
   const cleanedContributors = book.contributors.filter(c => c.name);
 
   const authors = cleanedContributors
-    .filter(c => c.type === 'Author')
+    .filter(c => c.type === ContributorTypes.AUTHOR)
     .map(c => c.name);
 
   const illustrators = cleanedContributors
-    .filter(c => c.type === 'Illustrator')
+    .filter(c => c.type === ContributorTypes.ILLUSTRATOR)
     .map(c => c.name);
 
   const translators = cleanedContributors
-    .filter(c => c.type === 'Translator')
+    .filter(c => c.type === ContributorTypes.TRANSLATOR)
+    .map(c => c.name);
+
+  // Photograpgher isn't part of the schema for books, so lump them together with other contributors
+  const contributors = cleanedContributors
+    .filter(
+      c =>
+        c.type === ContributorTypes.CONTRIBUTOR ||
+        c.type === ContributorTypes.PHOTOGRAPHER
+    )
     .map(c => c.name);
 
   // Use 'undefined' instead of 'null' here, as undefined fields are removed by json stringify
@@ -56,6 +65,10 @@ export default function BookJsonLd({ book }: Props) {
       translator:
         translators.length > 0
           ? translators.length === 1 ? translators[0] : translators
+          : undefined,
+      contributor:
+        contributors.length > 0
+          ? contributors.length === 1 ? contributors[0] : contributors
           : undefined
     }
   };
