@@ -8,3 +8,4 @@
 
 export { default as DownloadBookMenu } from './DownloadBookMenu';
 export { default as BookJsonLd } from './BookJsonLd';
+export { default as Metadata } from './Metadata';

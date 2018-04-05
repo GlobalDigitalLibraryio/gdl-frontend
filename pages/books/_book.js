@@ -38,8 +38,11 @@ import BookList from '../../components/BookList';
 import media from '../../style/media';
 import { colors } from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
-import BookMeta from '../../components/BookMeta';
-import { DownloadBookMenu, BookJsonLd } from '../../components/BookDetailsPage';
+import {
+  DownloadBookMenu,
+  BookJsonLd,
+  Metadata
+} from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
@@ -210,7 +213,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
             </Container>
             <Container pb={[15, 20]}>
               <Box ml={[0, 'auto']} w={['auto', 438]}>
-                <BookMeta book={book} />
+                <Metadata book={book} />
                 {config.TRANSLATION_PAGES &&
                   book.supportsTranslation && (
                     <Fragment>
