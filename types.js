@@ -8,13 +8,22 @@
 import type { $Request, $Response } from 'express';
 
 export type Publisher = {
-  +id: number,
   +name: string
 };
 
+// Neat little enum type trick https://github.com/facebook/flow/issues/2377#issuecomment-372613462
+export const ContributorTypes = /*::Object.freeze(*/ {
+  AUTHOR: 'Author',
+  ILLUSTRATOR: 'Illustrator',
+  TRANSLATOR: 'Translator',
+  PHOTOGRAPHER: 'Photographer',
+  CONTRIBUTOR: 'Contributor'
+} /*::)*/;
+
 export type Contributor = {
   +id: number,
-  +name: string
+  +name: string,
+  +type: $Values<typeof ContributorTypes>
 };
 
 export type License = {
@@ -67,6 +76,7 @@ export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
 export type Book = $ReadOnly<{|
   id: number,
+  uuid: string,
   title: string,
   description: string,
   category: Category,

@@ -21,6 +21,7 @@ const mockedRouter = {
 Router.router = mockedRouter;
 
 const book: BookDetails = {
+  uuid: 'abc123',
   id: 1,
   title: 'A Life in the Fair Jungle',
   description:

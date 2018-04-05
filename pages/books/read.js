@@ -52,9 +52,8 @@ class Read extends React.Component<Props> {
       <React.Fragment>
         <Head
           title={book.title}
-          isBookType
           description={book.description}
-          imageUrl={book.coverPhoto ? book.coverPhoto.large : null}
+          image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
         <Reader book={book} initialChapter={url.query.chapter} />
