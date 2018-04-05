@@ -17,11 +17,11 @@ export default function BookJsonLd({ book }: Props) {
   const cleanedContributors = book.contributors.filter(c => c.name);
 
   const authors = cleanedContributors
-    .filter(c => c.type === 'Author') // Check if we have a name. In the dataset this is blank sometimes
+    .filter(c => c.type === 'Author')
     .map(c => c.name);
 
   const illustrators = cleanedContributors
-    .filter(c => c.type === 'Illustrator') // Check if we have a name. In the dataset this is blank sometimes
+    .filter(c => c.type === 'Illustrator')
     .map(c => c.name);
 
   const translators = cleanedContributors
