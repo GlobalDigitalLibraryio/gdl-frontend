@@ -24,14 +24,7 @@ type Props = {|
   i18n: I18n
 |};
 
-const Head = ({
-  title,
-  description,
-  i18n,
-  image,
-  isBookType,
-  children
-}: Props) => {
+const Head = ({ title, description, i18n, image, children }: Props) => {
   const actualTitle = title ? `${META.TITLE_ABBR} - ${title}` : META.TITLE;
   const actualDescription =
     description ||
