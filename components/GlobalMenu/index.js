@@ -177,6 +177,9 @@ class GlobalMenu extends React.Component<Props, State> {
               )}
             </Fragment>
           )}
+          <MenuItem href="https://blog.digitallibrary.io/cc/">
+            <Trans>Licensing and reuse</Trans>
+          </MenuItem>
           <MenuItem href={config.zendeskUrl}>
             <Trans>Report issues</Trans>
           </MenuItem>
