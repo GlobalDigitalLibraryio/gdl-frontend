@@ -17,15 +17,13 @@
     "fallbackLocale": "en",
     "sourceLocale": "en",
     "srcPathDirs": [
-      "/components/",
-      "/pages/",
-      "/hocs/"
+      "<rootDir>/components/",
+      "<rootDir>/pages/",
+      "<rootDir>/hocs/"
     ]
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ]
+    "setupFiles": ["./jest.setup.js"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -35,13 +33,14 @@
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
-    "i18n:extract": "lingui extract",
+    "i18n:extract": "lingui extract --clean",
     "i18n:compile": "lingui compile",
     "i18n:add-locale": "lingui add-locale",
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check":
+      "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.5",
@@ -76,8 +75,8 @@
     "tabbable": "^1.1.2"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "2.0.5",
-    "@lingui/cli": "2.0.5",
+    "@sector-labs/lingui-babel-preset-react": "2.0.4-sl.6",
+    "@sector-labs/lingui-cli": "2.0.4-sl.6",
     "babel-eslint": "^8.2.2",
     "babel-plugin-emotion": "9.1.0",
     "babel-plugin-inline-react-svg": "0.5.2",

@@ -1,7 +1,7 @@
 {
   "env": {
     "development": {
-      "presets": ["next/babel", "@lingui/babel-preset-react"]
+      "presets": ["next/babel", "@sector-labs/lingui-babel-preset-react"]
     },
     "production": {
       "presets": [
@@ -11,14 +11,14 @@
             "preset-env": { "targets": { "ie": 11 } }
           }
         ],
-        "@lingui/babel-preset-react"
+        "@sector-labs/lingui-babel-preset-react"
       ]
     },
     "test": {
       "presets": [
         ["env", { "modules": "commonjs" }],
         "next/babel",
-        "@lingui/babel-preset-react"
+        "@sector-labs/lingui-babel-preset-react"
       ]
     }
   },

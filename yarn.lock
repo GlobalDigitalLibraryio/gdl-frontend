@@ -130,60 +130,6 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
-"@lingui/babel-plugin-extract-messages@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-2.0.5.tgz#8dc18a5fcdb3b0499e33f06f53d826a27901d9e4"
-  dependencies:
-    "@babel/generator" "^7.0.0-beta.38"
-    "@lingui/conf" "2.0.5"
-
-"@lingui/babel-plugin-transform-js@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.0.5.tgz#f8fc6ca93ab771a6e7bb53dd312ffd0b8be4eaca"
-
-"@lingui/babel-plugin-transform-react@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.0.5.tgz#cad96f278a5993aed32828e5a0cd418387c8b2fa"
-
-"@lingui/babel-preset-react@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.0.5.tgz#8c49c162f3c39d687eb64825599681b1e99e27e4"
-  dependencies:
-    "@lingui/babel-plugin-transform-js" "2.0.5"
-    "@lingui/babel-plugin-transform-react" "2.0.5"
-
-"@lingui/cli@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.0.5.tgz#dc19afa001836dc6fa699096d214148d6efee7c7"
-  dependencies:
-    "@babel/core" "^7.0.0-beta.40"
-    "@babel/generator" "^7.0.0-beta.40"
-    "@babel/plugin-transform-typescript" "7.0.0-beta.40"
-    "@babel/runtime" "^7.0.0-beta.40"
-    "@babel/types" "^7.0.0-beta.40"
-    "@lingui/babel-plugin-extract-messages" "2.0.5"
-    "@lingui/babel-plugin-transform-js" "2.0.5"
-    "@lingui/babel-plugin-transform-react" "2.0.5"
-    "@lingui/conf" "2.0.5"
-    babylon "^6.18.0"
-    chalk "^2.3.0"
-    cli-table "^0.3.1"
-    commander "^2.13.0"
-    glob "^7.1.2"
-    make-plural "^4.1.1"
-    messageformat-parser "^2.0.0"
-    mkdirp "^0.5.1"
-    ramda "^0.25.0"
-
-"@lingui/conf@2.0.5":
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-2.0.5.tgz#9e32b75696e67050ccab94368fec02850ec18962"
-  dependencies:
-    chalk "^2.3.0"
-    jest-regex-util "^22.1.0"
-    jest-validate "^22.1.2"
-    pkg-conf "^2.1.0"
-
 "@lingui/core@2.0.5":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.0.5.tgz#4e6cdd2443fc7071aa4ff7f4363ac07e52da2e1e"
@@ -200,6 +146,60 @@
     "@lingui/core" "2.0.5"
     hash-sum "^1.0.2"
     prop-types "^15.6.0"
+
+"@sector-labs/lingui-babel-plugin-extract-messages@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-babel-plugin-extract-messages/-/lingui-babel-plugin-extract-messages-2.0.4-sl.6.tgz#45663b69595a945a8444339f94547950b12089a5"
+  dependencies:
+    "@babel/generator" "^7.0.0-beta.38"
+    "@sector-labs/lingui-conf" "2.0.4-sl.6"
+
+"@sector-labs/lingui-babel-plugin-transform-js@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-babel-plugin-transform-js/-/lingui-babel-plugin-transform-js-2.0.4-sl.6.tgz#e64ed185e2a085f10436acc0b9f65e552dd73000"
+
+"@sector-labs/lingui-babel-plugin-transform-react@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-babel-plugin-transform-react/-/lingui-babel-plugin-transform-react-2.0.4-sl.6.tgz#9b6f6f020432d2d4926975dcb169dfe0c068e74a"
+
+"@sector-labs/lingui-babel-preset-react@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-babel-preset-react/-/lingui-babel-preset-react-2.0.4-sl.6.tgz#f6ca77aff92f856fefde3b09ea38b9072bc00e2d"
+  dependencies:
+    "@sector-labs/lingui-babel-plugin-transform-js" "2.0.4-sl.6"
+    "@sector-labs/lingui-babel-plugin-transform-react" "2.0.4-sl.6"
+
+"@sector-labs/lingui-cli@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-cli/-/lingui-cli-2.0.4-sl.6.tgz#e4690bdaab29a085375c90c1b9dfe1137aa59754"
+  dependencies:
+    "@babel/core" "^7.0.0-beta.40"
+    "@babel/generator" "^7.0.0-beta.40"
+    "@babel/plugin-transform-typescript" "7.0.0-beta.40"
+    "@babel/runtime" "^7.0.0-beta.40"
+    "@babel/types" "^7.0.0-beta.40"
+    "@sector-labs/lingui-babel-plugin-extract-messages" "2.0.4-sl.6"
+    "@sector-labs/lingui-babel-plugin-transform-js" "2.0.4-sl.6"
+    "@sector-labs/lingui-babel-plugin-transform-react" "2.0.4-sl.6"
+    "@sector-labs/lingui-conf" "2.0.4-sl.6"
+    babylon "^6.18.0"
+    chalk "^2.3.0"
+    cli-table "^0.3.1"
+    commander "^2.13.0"
+    glob "^7.1.2"
+    make-plural "^4.1.1"
+    messageformat-parser "^2.0.0"
+    mkdirp "^0.5.1"
+    ramda "^0.25.0"
+
+"@sector-labs/lingui-conf@2.0.4-sl.6":
+  version "2.0.4-sl.6"
+  resolved "https://registry.yarnpkg.com/@sector-labs/lingui-conf/-/lingui-conf-2.0.4-sl.6.tgz#9d315133c087893f8e3ffacc84173d2e5e490602"
+  dependencies:
+    chalk "^2.3.0"
+    jest-regex-util "^22.1.0"
+    jest-validate "^22.1.2"
+    pkg-conf "^2.1.0"
 
 "@types/node@*":
   version "9.4.6"

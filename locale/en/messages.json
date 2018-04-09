@@ -1,89 +1,99 @@
 {
-  "level": {
-    "translation": "",
-    "defaults": "Level {0}",
+  "Download book": {
+    "translation": "Download book",
     "origin": [
       [
-        "components/BookCardCover.js",
-        72
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        30
+      ],
+      [
+        "pages/books/_book.js",
+        196
+      ],
+      [
+        "pages/books/_book.js",
+        208
       ]
     ]
   },
-  "Breadcrumb": {
-    "translation": "Breadcrumb",
+  "E-book (ePUB)": {
+    "translation": "E-book (ePUB)",
     "origin": [
       [
-        "components/Breadcrumb/Breadcrumb.js",
-        100
-      ],
-      [
-        "components/Breadcrumb.js",
-        61
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        40
       ]
     ]
   },
-  "Home": {
-    "translation": "Home",
+  "Printable book (PDF)": {
+    "translation": "Printable book (PDF)",
     "origin": [
       [
-        "components/Breadcrumb.js",
-        65
-      ],
-      [
-        "components/Breadcrumb.js",
-        65
-      ],
-      [
-        "components/Sidemenu/Sidemenu.js",
-        147
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        45
       ]
     ]
   },
-  "This page could not be found": {
-    "translation": "",
+  "{value, plural, one {Author} other {Authors}}": {
+    "translation": "{value, plural, one {Author} other {Authors}}",
     "origin": [
       [
-        "components/Error.js",
-        32
-      ],
+        "components/BookDetailsPage/Metadata.js",
+        38
+      ]
+    ]
+  },
+  "{value, plural, one {Illustrator} other {Illustrators}}": {
+    "translation": "{value, plural, one {Illustrator} other {Illustrators}}",
+    "origin": [
       [
-        "pages/_error.js",
+        "components/BookDetailsPage/Metadata.js",
+        40
+      ]
+    ]
+  },
+  "{value, plural, one {Translator} other {Translators}}": {
+    "translation": "{value, plural, one {Translator} other {Translators}}",
+    "origin": [
+      [
+        "components/BookDetailsPage/Metadata.js",
         42
       ]
     ]
   },
-  "An unexpected error has occurred": {
-    "translation": "",
+  "{value, plural, one {Photographer} other {Photographers}}": {
+    "translation": "{value, plural, one {Photographer} other {Photographers}}",
     "origin": [
       [
-        "components/Error.js",
-        34
-      ],
-      [
-        "pages/_error.js",
+        "components/BookDetailsPage/Metadata.js",
         44
       ]
     ]
   },
-  "Go back": {
-    "translation": "Go back",
+  "{value, plural, one {Contributor} other {Contributors}}": {
+    "translation": "{value, plural, one {Contributor} other {Contributors}}",
     "origin": [
       [
-        "components/Error.js",
-        57
+        "components/BookDetailsPage/Metadata.js",
+        46
       ]
     ]
   },
-  "Go to start page": {
-    "translation": "",
+  "Published": {
+    "translation": "Published",
     "origin": [
       [
-        "components/Error.js",
-        61
-      ],
+        "components/BookDetailsPage/Metadata.js",
+        76
+      ]
+    ]
+  },
+  "License": {
+    "translation": "License",
+    "origin": [
       [
-        "pages/_error.js",
-        67
+        "components/BookDetailsPage/Metadata.js",
+        87
       ]
     ]
   },
@@ -101,20 +111,20 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        30
+        31
       ],
       [
         "components/GlobalMenu/index.js",
-        152
+        157
       ]
     ]
   },
-  "Reading level {level}": {
-    "translation": "Reading level {level}",
+  "Classroom books": {
+    "translation": "Classroom books",
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        39
+        35
       ]
     ]
   },
@@ -123,27 +133,32 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        45
+        59
       ],
       [
-        "components/Sidemenu/Sidemenu.js",
-        232
+        "components/GlobalMenu/CategoriesMenu.js",
+        88
       ],
       [
-        "pages/books/_book.js",
-        110
+        "components/HomePage/index.js",
+        199
       ],
       [
-        "pages/books/more.js",
-        113
+        "pages/books/browse.js",
+        159
       ],
       [
-        "pages/books/more.js",
-        129
-      ],
+        "pages/books/browse.js",
+        172
+      ]
+    ]
+  },
+  "Library books": {
+    "translation": "Library books",
+    "origin": [
       [
-        "pages/index.js",
-        251
+        "components/GlobalMenu/CategoriesMenu.js",
+        68
       ]
     ]
   },
@@ -152,15 +167,11 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        134
+        139
       ],
       [
         "components/Navbar/index.js",
-        42
-      ],
-      [
-        "components/Sidemenu/Sidemenu.js",
-        152
+        40
       ]
     ]
   },
@@ -169,7 +180,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        145
+        150
       ]
     ]
   },
@@ -178,11 +189,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        156
-      ],
-      [
-        "components/Sidemenu/Sidemenu.js",
-        236
+        161
       ]
     ]
   },
@@ -191,23 +198,19 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        163
+        168
       ],
       [
-        "components/Sidemenu/Sidemenu.js",
-        242
+        "pages/books/translations.js",
+        131
       ],
       [
-        "pages/user/_translations.js",
-        128
-      ],
-      [
-        "pages/user/_translations.js",
-        129
-      ],
-      [
-        "pages/user/_translations.js",
+        "pages/books/translations.js",
         132
+      ],
+      [
+        "pages/books/translations.js",
+        135
       ]
     ]
   },
@@ -216,11 +219,25 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        169
-      ],
+        174
+      ]
+    ]
+  },
+  "Licensing and reuse": {
+    "translation": "Licensing and reuse",
+    "origin": [
       [
-        "components/Sidemenu/Sidemenu.js",
-        248
+        "components/GlobalMenu/index.js",
+        181
+      ]
+    ]
+  },
+  "Report issues": {
+    "translation": "Report issues",
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        184
       ]
     ]
   },
@@ -229,7 +246,29 @@
     "origin": [
       [
         "components/Head.js",
-        45
+        31
+      ]
+    ]
+  },
+  "Featured": {
+    "translation": "Featured",
+    "origin": [
+      [
+        "components/HomePage/index.js",
+        133
+      ]
+    ]
+  },
+  "More": {
+    "translation": "More",
+    "origin": [
+      [
+        "components/HomePage/index.js",
+        176
+      ],
+      [
+        "components/HomePage/index.js",
+        195
       ]
     ]
   },
@@ -238,15 +277,15 @@
     "origin": [
       [
         "components/LanguageMenu/index.js",
-        42
+        49
       ],
       [
         "components/TranslationLanguageMenu/index.js",
         41
       ],
       [
-        "pages/user/_translate.js",
-        180
+        "pages/books/_translate.js",
+        198
       ]
     ]
   },
@@ -260,14 +299,6 @@
       [
         "components/Menu/Header.js",
         50
-      ],
-      [
-        "components/Menuu/Header.js",
-        37
-      ],
-      [
-        "components/Menuu/Header.js",
-        50
       ]
     ]
   },
@@ -276,7 +307,7 @@
     "origin": [
       [
         "components/Menu/MenuItem.js",
-        73
+        77
       ]
     ]
   },
@@ -285,11 +316,38 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        59
+        50
       ],
       [
-        "pages/_search.js",
-        141
+        "pages/search.js",
+        185
+      ]
+    ]
+  },
+  "Oh no!": {
+    "translation": "Oh no!",
+    "origin": [
+      [
+        "components/NotFound/index.js",
+        30
+      ]
+    ]
+  },
+  "The page you were looking for was taken by a 404.": {
+    "translation": "The page you were looking for was taken by a 404.",
+    "origin": [
+      [
+        "components/NotFound/index.js",
+        33
+      ]
+    ]
+  },
+  "Take me home": {
+    "translation": "Take me home",
+    "origin": [
+      [
+        "components/NotFound/index.js",
+        40
       ]
     ]
   },
@@ -316,44 +374,34 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        62
+        63
+      ]
+    ]
+  },
+  "Decodable": {
+    "translation": "Decodable",
+    "origin": [
+      [
+        "components/ReadingLevelTrans.js",
+        19
+      ]
+    ]
+  },
+  "Read aloud": {
+    "translation": "Read aloud",
+    "origin": [
+      [
+        "components/ReadingLevelTrans.js",
+        21
       ]
     ]
   },
   "Level {level}": {
-    "translation": "",
+    "translation": "Level {level}",
     "origin": [
       [
-        "components/ReadingLevel.js",
-        32
-      ],
-      [
-        "components/Ribbon.js",
-        62
-      ],
-      [
-        "components/Sidemenu/Sidemenu.js",
-        226
-      ],
-      [
-        "pages/books/_book.js",
-        102
-      ],
-      [
-        "pages/books/index.js",
-        189
-      ],
-      [
-        "pages/books/more.js",
-        113
-      ],
-      [
-        "pages/books/more.js",
-        127
-      ],
-      [
-        "pages/index.js",
-        227
+        "components/ReadingLevelTrans.js",
+        23
       ]
     ]
   },
@@ -375,34 +423,43 @@
       ]
     ]
   },
-  "Level {0}": {
-    "translation": "Level {0}",
+  "Breadcrumb": {
+    "translation": "Breadcrumb",
     "origin": [
       [
-        "components/Search/components/SearchHit/index.js",
-        70
+        "components/SubNavbar/Breadcrumb.js",
+        80
       ]
     ]
   },
-  "Books in <0>{0}</0>": {
-    "translation": "",
+  "Home": {
+    "translation": "Home",
     "origin": [
       [
-        "components/Sidemenu/Sidemenu.js",
-        170
+        "components/SubNavbar/Breadcrumb.js",
+        84
       ],
       [
-        "pages/books/index.js",
-        104
+        "components/SubNavbar/Breadcrumb.js",
+        84
       ]
     ]
   },
-  "Language": {
-    "translation": "Language",
+  "Library <0>books</0>": {
+    "translation": "Library <0>books</0>",
     "origin": [
       [
-        "components/Sidemenu/Sidemenu.js",
-        195
+        "components/SubNavbar/CategoryNavigation.js",
+        65
+      ]
+    ]
+  },
+  "Classroom <0>books</0>": {
+    "translation": "Classroom <0>books</0>",
+    "origin": [
+      [
+        "components/SubNavbar/CategoryNavigation.js",
+        74
       ]
     ]
   },
@@ -411,34 +468,7 @@
     "origin": [
       [
         "hocs/securePage.js",
-        51
-      ]
-    ]
-  },
-  "{0, plural, one {# result for} other {# results for}}": {
-    "translation": "{0, plural, one {# result for} other {# results for}}",
-    "origin": [
-      [
-        "pages/_search.js",
-        161
-      ]
-    ]
-  },
-  "No results for <0>\"{lastSearchQuery}\"</0>": {
-    "translation": "No results for <0>\"{lastSearchQuery}\"</0>",
-    "origin": [
-      [
-        "pages/_search.js",
-        169
-      ]
-    ]
-  },
-  "See more": {
-    "translation": "See more",
-    "origin": [
-      [
-        "pages/_search.js",
-        208
+        68
       ]
     ]
   },
@@ -501,11 +531,11 @@
     ]
   },
   "from <0>{0}</0>": {
-    "translation": "",
+    "translation": "from <0>{0}</0>",
     "origin": [
       [
         "pages/books/_book.js",
-        151
+        166
       ]
     ]
   },
@@ -514,180 +544,47 @@
     "origin": [
       [
         "pages/books/_book.js",
-        169
+        186
       ]
     ]
   },
-  "Download book": {
-    "translation": "",
+  "Translate this book": {
+    "translation": "Translate this book",
     "origin": [
       [
         "pages/books/_book.js",
-        174
+        229
       ]
     ]
   },
-  "Published": {
-    "translation": "Published",
+  "Report a problem with this book": {
+    "translation": "Report a problem with this book",
     "origin": [
       [
         "pages/books/_book.js",
-        187
-      ]
-    ]
-  },
-  "Authors": {
-    "translation": "Authors",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        194
-      ]
-    ]
-  },
-  "License": {
-    "translation": "License",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        200
-      ]
-    ]
-  },
-  "categories": {
-    "translation": "categories",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        207
-      ]
-    ]
-  },
-  "Translate book": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        224
-      ],
-      [
-        "pages/user/_translate.js",
-        117
-      ],
-      [
-        "pages/user/_translate.js",
-        128
+        244
       ]
     ]
   },
   "Similar": {
-    "translation": "",
+    "translation": "Similar",
     "origin": [
       [
         "pages/books/_book.js",
-        236
+        254
       ]
     ]
   },
-  "Books": {
-    "translation": "",
+  "Translate book": {
+    "translation": "Translate book",
     "origin": [
       [
-        "pages/books/index.js",
-        96
-      ]
-    ]
-  },
-  "Enjoy all the books": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        96
-      ]
-    ]
-  },
-  "Editor’s pick": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        160
-      ]
-    ]
-  },
-  "Just arrived": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/index.js",
-        177
-      ]
-    ]
-  },
-  "More": {
-    "translation": "More",
-    "origin": [
-      [
-        "pages/books/index.js",
-        179
+        "pages/books/_translate.js",
+        136
       ],
       [
-        "pages/books/index.js",
-        191
-      ],
-      [
-        "pages/index.js",
-        234
-      ],
-      [
-        "pages/index.js",
-        258
-      ]
-    ]
-  },
-  "Browse level {level} books": {
-    "translation": "Browse level {level} books",
-    "origin": [
-      [
-        "pages/books/more.js",
-        118
-      ]
-    ]
-  },
-  "Browse new arrivals": {
-    "translation": "Browse new arrivals",
-    "origin": [
-      [
-        "pages/books/more.js",
-        119
-      ]
-    ]
-  },
-  "No books found": {
-    "translation": "No books found",
-    "origin": [
-      [
-        "pages/books/more.js",
-        132
-      ]
-    ]
-  },
-  "See more books": {
-    "translation": "See more books",
-    "origin": [
-      [
-        "pages/books/more.js",
-        144
-      ]
-    ]
-  },
-  "Featured": {
-    "translation": "Featured",
-    "origin": [
-      [
-        "pages/index.js",
-        189
+        "pages/books/_translate.js",
+        146
       ]
     ]
   },
@@ -695,8 +592,8 @@
     "translation": "Translate {0}",
     "origin": [
       [
-        "pages/user/_translate.js",
-        122
+        "pages/books/_translate.js",
+        140
       ]
     ]
   },
@@ -704,11 +601,11 @@
     "translation": "from {0}",
     "origin": [
       [
-        "pages/user/_translate.js",
-        149
+        "pages/books/_translate.js",
+        167
       ],
       [
-        "pages/user/_translations.js",
+        "pages/books/translations.js",
         78
       ]
     ]
@@ -717,8 +614,8 @@
     "translation": "Translate from",
     "origin": [
       [
-        "pages/user/_translate.js",
-        156
+        "pages/books/_translate.js",
+        174
       ]
     ]
   },
@@ -726,8 +623,8 @@
     "translation": "Translate to",
     "origin": [
       [
-        "pages/user/_translate.js",
-        161
+        "pages/books/_translate.js",
+        179
       ]
     ]
   },
@@ -735,8 +632,8 @@
     "translation": "Change",
     "origin": [
       [
-        "pages/user/_translate.js",
-        178
+        "pages/books/_translate.js",
+        196
       ]
     ]
   },
@@ -744,8 +641,8 @@
     "translation": "Start translation",
     "origin": [
       [
-        "pages/user/_translate.js",
-        192
+        "pages/books/_translate.js",
+        210
       ]
     ]
   },
@@ -753,8 +650,8 @@
     "translation": "Opens 3rd party site <0>Crowdin</0> in a new window.",
     "origin": [
       [
-        "pages/user/_translate.js",
-        196
+        "pages/books/_translate.js",
+        214
       ]
     ]
   },
@@ -762,8 +659,35 @@
     "translation": "Prepare translation",
     "origin": [
       [
-        "pages/user/_translate.js",
-        209
+        "pages/books/_translate.js",
+        228
+      ]
+    ]
+  },
+  "Browse books": {
+    "translation": "Browse books",
+    "origin": [
+      [
+        "pages/books/browse.js",
+        163
+      ]
+    ]
+  },
+  "No books found": {
+    "translation": "No books found",
+    "origin": [
+      [
+        "pages/books/browse.js",
+        175
+      ]
+    ]
+  },
+  "See more books": {
+    "translation": "See more books",
+    "origin": [
+      [
+        "pages/books/browse.js",
+        187
       ]
     ]
   },
@@ -771,7 +695,7 @@
     "translation": "Sync",
     "origin": [
       [
-        "pages/user/_translations.js",
+        "pages/books/translations.js",
         93
       ]
     ]
@@ -780,109 +704,36 @@
     "translation": "Edit",
     "origin": [
       [
-        "pages/user/_translations.js",
+        "pages/books/translations.js",
         103
       ]
     ]
   },
-  "Previous chapter": {
-    "translation": "Previous chapter",
+  "{0, plural, one {# result for} other {# results for}}": {
+    "translation": "{0, plural, one {# result for} other {# results for}}",
     "origin": [
       [
-        "components/Reader/ButtonOverlay.js",
-        56
+        "pages/search.js",
+        205
       ]
-    ],
-    "obsolete": true
+    ]
   },
-  "Next chapter": {
-    "translation": "Next chapter",
+  "No results for <0>\"{lastSearchQuery}\"</0>": {
+    "translation": "No results for <0>\"{lastSearchQuery}\"</0>",
     "origin": [
       [
-        "components/Reader/ButtonOverlay.js",
-        68
+        "pages/search.js",
+        213
       ]
-    ],
-    "obsolete": true
+    ]
   },
-  "Log in using": {
-    "translation": "Log in using",
+  "See more": {
+    "translation": "See more",
     "origin": [
       [
-        "pages/auth/sign-in.js",
-        34
+        "pages/search.js",
+        249
       ]
-    ],
-    "obsolete": true
-  },
-  "Loading books": {
-    "translation": "Loading books",
-    "origin": [
-      [
-        "pages/books/more.js",
-        151
-      ]
-    ],
-    "obsolete": true
-  },
-  "Load more books": {
-    "translation": "Load more books",
-    "origin": [
-      [
-        "pages/books/more.js",
-        153
-      ]
-    ],
-    "obsolete": true
-  },
-  "Read": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        197
-      ]
-    ],
-    "obsolete": true
-  },
-  "Book language: {0}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        214
-      ]
-    ],
-    "obsolete": true
-  },
-  "{availableLanguages, plural, =0 {This book is not available in other languages} one {This book is available in another language} other {This book is available in # other languages}}": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        243
-      ]
-    ],
-    "obsolete": true
-  },
-  "Download ePub": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        274
-      ]
-    ],
-    "obsolete": true
-  },
-  "Download PDF": {
-    "translation": "",
-    "origin": [
-      [
-        "pages/books/_book.js",
-        283
-      ]
-    ],
-    "obsolete": true
+    ]
   }
 }
