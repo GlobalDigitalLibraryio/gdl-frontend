@@ -15,6 +15,7 @@ import type {
   FeaturedContent,
   Translation,
   Category,
+  Chapter,
   ReadingLevel
 } from './types';
 import { bookApiUrl } from './config';
@@ -40,7 +41,7 @@ const bookCategoryMapper = book => {
 async function doFetch(
   url: string,
   options: ?{
-    method: 'POST' | 'GET',
+    method: 'POST' | 'GET' | 'PUT',
     body: ?any
   }
 ): Promise<RemoteData<any>> {
@@ -224,6 +225,36 @@ export async function fetchCategories(
       sortReadingLevels(c.readingLevels)
     );
   }
+
+  return result;
+}
+
+export async function saveBook(
+  book: BookDetails
+): Promise<RemoteData<BookDetails>> {
+  const denormalized = { ...book };
+  delete denormalized['category'];
+  const result = await doFetch(
+    `${bookApiUrl}/books/${book.language.code}/${book.id}`,
+    { method: 'PUT', body: JSON.stringify(denormalized) }
+  );
+
+  if (result.isOk) {
+    result.data = bookCategoryMapper(result.data);
+  }
+  return result;
+}
+
+export async function saveChapter(
+  book: BookDetails,
+  chapter: Chapter
+): Promise<RemoteData<Chapter>> {
+  const result = await doFetch(
+    `${bookApiUrl}/books/${book.language.code}/${book.id}/chapters/${
+      chapter.id
+    }`,
+    { method: 'PUT', body: JSON.stringify(chapter) }
+  );
 
   return result;
 }

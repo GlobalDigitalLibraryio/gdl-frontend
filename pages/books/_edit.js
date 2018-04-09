@@ -39,6 +39,10 @@ class EditPage extends React.Component<Props> {
 
     const book = bookRes.data;
 
+    // Make sure the chapters are sorted by the chapter numbers
+    // Cause further down we rely on the array indexes
+    book.chapters.sort((a, b) => a.seqNo - b.seqNo);
+
     let chapter;
     if (query.chapter) {
       const chapterNum = parseInt(query.chapter, 10);
@@ -53,14 +57,6 @@ class EditPage extends React.Component<Props> {
     };
   }
 
-  state = {
-    isClient: false
-  };
-
-  componentDidMount() {
-    this.setState({ isClient: true });
-  }
-
   render() {
     let { book, chapter } = this.props;
 
@@ -70,7 +66,7 @@ class EditPage extends React.Component<Props> {
           title={`Editing ${book.title}`}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
-        {this.state.isClient && <Editor book={book} chapter={chapter} />}
+        <Editor book={book} chapter={chapter} />}
       </React.Fragment>
     );
   }

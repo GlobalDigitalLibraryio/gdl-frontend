@@ -44,6 +44,7 @@ export type Language = {
 };
 
 export type Chapter = {
+  id: number,
   content: string,
   seqNo: number
 };
