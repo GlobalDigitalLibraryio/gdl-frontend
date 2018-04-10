@@ -8,8 +8,9 @@
 
 import * as React from 'react';
 
-import { fetchBook } from '../../fetch';
-import type { BookDetails, Context } from '../../types';
+import { fetchBook, fetchChapter } from '../../fetch';
+import { hasClaim, claims } from '../../lib/auth/token';
+import type { BookDetails, Chapter, Context } from '../../types';
 import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import Head from '../../components/Head';
@@ -17,15 +18,18 @@ import Reader from '../../components/Reader';
 
 type Props = {
   book: BookDetails,
+  chapter: Chapter,
+  userHasEditAccess: boolean,
   url: {
     query: {
-      chapter?: string
+      id: string,
+      chapterId?: string
     }
   }
 };
 
 class Read extends React.Component<Props> {
-  static async getInitialProps({ query }: Context) {
+  static async getInitialProps({ query, req }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
 
     if (!bookRes.isOk) {
@@ -36,17 +40,26 @@ class Read extends React.Component<Props> {
 
     const book = bookRes.data;
 
-    // Make sure the chapters are sorted by the chapter numbers
-    // Cause further down we rely on the array indexes
-    book.chapters.sort((a, b) => a.seqNo - b.seqNo);
+    // If no chapter is specified, we get the first one
+    const chapterId = query.chapterId ? query.chapterId : book.chapters[0].id;
+
+    const chapterRes = await fetchChapter(query.id, chapterId, query.lang);
+
+    if (!chapterRes.isOk) {
+      return {
+        statusCode: chapterRes.statusCode
+      };
+    }
 
     return {
+      userHasEditAccess: hasClaim(claims.writeBook, req),
+      chapter: chapterRes.data,
       book
     };
   }
 
   render() {
-    let { book, url } = this.props;
+    let { book, chapter, userHasEditAccess } = this.props;
 
     return (
       <React.Fragment>
@@ -56,7 +69,11 @@ class Read extends React.Component<Props> {
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
 
-        <Reader book={book} initialChapter={url.query.chapter} />
+        <Reader
+          book={book}
+          chapter={chapter}
+          userHasEditAccess={userHasEditAccess}
+        />
       </React.Fragment>
     );
   }

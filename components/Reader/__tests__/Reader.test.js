@@ -53,10 +53,10 @@ const book: BookDetails = {
   },
   bookFormat: 'HTML',
   chapters: [
-    { url: 'http://www.example.no/chapter', seqNo: 1 },
-    { url: 'http://www.example.no/chapter', seqNo: 2 },
-    { url: 'http://www.example.no/chapter', seqNo: 3 },
-    { url: 'http://www.example.no/chapter', seqNo: 4 }
+    { id: 128, seqNo: 1 },
+    { id: 129, seqNo: 2 },
+    { id: 130, seqNo: 3 },
+    { id: 131, seqNo: 4 }
   ],
   downloads: {
     epub: '',

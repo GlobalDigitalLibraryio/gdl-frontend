@@ -118,7 +118,21 @@ export async function fetchBook(
 
   if (result.isOk) {
     result.data = bookCategoryMapper(result.data);
+    // Make sure the chapters are sorted by the chapter numbers
+    result.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
   }
+  return result;
+}
+
+export async function fetchChapter(
+  bookId: string | number,
+  chapterId: string | number,
+  language: string
+): Promise<RemoteData<Chapter>> {
+  const result = await doFetch(
+    `${bookApiUrl}/books/${language}/${bookId}/chapters/${chapterId}`
+  );
+
   return result;
 }
 

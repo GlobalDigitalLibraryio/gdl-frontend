@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 
-import doFetch, { fetchBook } from '../../fetch';
+import { fetchBook, fetchChapter } from '../../fetch';
 import type { BookDetails, Chapter, Context } from '../../types';
 import { claims } from '../../lib/auth/token';
 import securePage from '../../hocs/securePage';
@@ -23,7 +23,7 @@ type Props = {
     query: {
       id: string,
       lang: string,
-      chapter?: string
+      chapterId?: string
     }
   }
 };
@@ -40,15 +40,13 @@ class EditPage extends React.Component<Props> {
 
     const book = bookRes.data;
 
-    // Make sure the chapters are sorted by the chapter numbers
-    // Cause further down we rely on the array indexes
-    book.chapters.sort((a, b) => a.seqNo - b.seqNo);
-
     let chapter;
-    if (query.chapter) {
-      const chapterNum = parseInt(query.chapter, 10);
-
-      const chapterRes = await doFetch(book.chapters[chapterNum].url);
+    if (query.chapterId) {
+      const chapterRes = await fetchChapter(
+        query.id,
+        query.lang,
+        query.chapterId
+      );
 
       if (!chapterRes.isOk) {
         return {
@@ -74,7 +72,7 @@ class EditPage extends React.Component<Props> {
           title={`Editing ${book.title}`}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
-        <Editor book={book} chapter={chapter} />}
+        <Editor book={book} chapter={chapter} />
       </React.Fragment>
     );
   }

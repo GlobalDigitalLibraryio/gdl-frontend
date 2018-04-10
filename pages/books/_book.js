@@ -12,7 +12,8 @@ import {
   MdTranslate,
   MdKeyboardArrowDown,
   MdKeyboardArrowUp,
-  MdWarning
+  MdWarning,
+  MdEdit
 } from 'react-icons/lib/md';
 import styled from 'react-emotion';
 
@@ -35,6 +36,7 @@ import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
 import Container from '../../components/Container';
 import BookList from '../../components/BookList';
+import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
 import { colors } from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
@@ -49,6 +51,7 @@ import { LanguageCategory } from '../../components/LanguageCategoryContext';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
+  userHasEditAccess: boolean,
   url: {
     query: {
       id: string
@@ -67,6 +70,15 @@ const CoverWrap = styled('div')`
     flex: 0 0 260px;
     margin-right: 20px;
   `};
+`;
+
+const EditButton = styled('a')`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.5);
+  color: ${colors.base.white};
+  padding: 5px;
 `;
 
 const Hr = styled('hr')`
@@ -102,6 +114,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
 
     return {
       book: bookRes.data,
+      userHasEditAccess: hasClaim(claims.writeBook, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
@@ -201,6 +214,18 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                           )}
                         </A>
                       </Box>
+
+                      {this.props.userHasEditAccess && (
+                        <Link
+                          route="edit"
+                          params={{ lang: book.language.code, id: book.id }}
+                          passHref
+                        >
+                          <EditButton title="Edit book">
+                            <MdEdit />
+                          </EditButton>
+                        </Link>
+                      )}
                     </Fragment>
                   )}
                   {book.bookFormat === 'PDF' && (
@@ -211,6 +236,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 </HeroCard>
               </Flex>
             </Container>
+
             <Container pb={[15, 20]}>
               <Box ml={[0, 'auto']} w={['auto', 438]}>
                 <Metadata book={book} />
@@ -245,6 +271,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   </A>
                 </Box>
               </Box>
+
               {similarBooks.length > 0 && (
                 <Fragment>
                   <Hr />
@@ -256,6 +283,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 </Fragment>
               )}
             </Container>
+
             {this.state.showDownloadMenu && (
               <DownloadBookMenu
                 book={book}

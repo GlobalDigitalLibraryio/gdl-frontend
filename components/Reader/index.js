@@ -8,9 +8,9 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
-import doFetch from '../../fetch';
+import { fetchChapter } from '../../fetch';
 import Box from '../Box';
-import type { BookDetails, Chapter } from '../../types';
+import type { BookDetails, Chapter, ChapterSummary } from '../../types';
 import { Backdrop, Page, BookTitle } from './styledReader';
 import Toolbar from './Toolbar';
 import Container from '../Container';
@@ -31,14 +31,15 @@ const Card = styled.div`
   flex-direction: column;
 `;
 
-type ReaderProps = {
+type ReaderProps = {|
   book: BookDetails,
   onRequestClose(): void,
-  chapter: ?Chapter,
-  chapterNumber: number,
+  chapterWithContent: ?Chapter,
+  chapterPointer: ChapterSummary,
   onRequestNext(): void,
-  onRequestPrevious(): void
-};
+  onRequestPrevious(): void,
+  userHasEditAccess?: boolean
+|};
 
 type ReaderState = {
   showOverlay: boolean
@@ -83,11 +84,10 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
   timerId: number;
 
   render() {
-    const { book, chapter, chapterNumber } = this.props;
-    const numOfChapters = book.chapters.length;
+    const { book, chapterWithContent, chapterPointer } = this.props;
 
-    const disableNext = chapterNumber >= numOfChapters;
-    const disablePrev = chapterNumber <= 1;
+    const disableNext = chapterPointer.seqNo >= book.chapters.length;
+    const disablePrev = chapterPointer.seqNo <= 1;
 
     return (
       <Container px={0} size="large">
@@ -99,9 +99,10 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
         >
           <Card>
             <Toolbar
+              book={this.props.book}
+              chapter={chapterPointer}
+              userHasEditAccess={this.props.userHasEditAccess}
               onRequestClose={this.props.onRequestClose}
-              currentChapter={chapterNumber}
-              totalChapters={numOfChapters}
             />
             <Box
               px={[40, 120]}
@@ -109,8 +110,10 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
               flex="1 0 auto"
               lang={book.language.code}
             >
-              {chapter && (
-                <Page dangerouslySetInnerHTML={createMarkup(chapter)} />
+              {chapterWithContent && (
+                <Page
+                  dangerouslySetInnerHTML={createMarkup(chapterWithContent)}
+                />
               )}
               <BookTitle>{book.title}</BookTitle>
             </Box>
@@ -141,67 +144,85 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
 
 type ReaderContainerState = {
   chapters: { [number]: Chapter },
-  chapter: number
+  chapterPointer: ChapterSummary
 };
 
-type ReaderContainerProps = {
+type ReaderContainerProps = {|
   book: BookDetails,
-  initialChapter: ?string
-};
+  chapter: Chapter,
+  userHasEditAccess?: boolean
+|};
 
 export default class ReaderContainer extends React.Component<
   ReaderContainerProps,
   ReaderContainerState
 > {
-  constructor(props: ReaderContainerProps) {
-    super(props);
+  state = {
+    chapters: { [this.props.chapter.id]: this.props.chapter },
+    // $FlowFixMe
+    chapterPointer: this.props.book.chapters.find(
+      c => c.id === this.props.chapter.id
+    )
+  };
 
-    // Convert the chapter in the url to an int and make sure it is in a valid chapter range (or be set to 1)
-    let initialChapter = parseInt(props.initialChapter, 10) || 1;
-    if (initialChapter < 1 || initialChapter > props.book.chapters.length) {
-      initialChapter = 1;
+  // Preload the next and previous chapters, so we are ready when the user navigates
+  componentDidMount() {
+    const next = this.getNextChapterPointer();
+    if (next) {
+      this.loadChapter(next.id);
     }
 
-    this.state = {
-      chapters: {},
-      chapter: initialChapter
-    };
-  }
-
-  componentDidMount() {
-    this.loadChapter(this.state.chapter);
-    // Load the next and previous chapters
-    this.loadChapter(this.state.chapter + 1);
-    this.loadChapter(this.state.chapter - 1);
+    const prev = this.getPreviousChapterPointer();
+    if (prev) {
+      this.loadChapter(prev.id);
+    }
   }
 
   // Go back to the book details when closing the reader
-  onRequestClose = () => {
+  handleRequestCloseBook = () => {
     Router.replaceRoute('book', {
       id: this.props.book.id,
       lang: this.props.book.language.code
     });
   };
 
-  onRequestNext = () => {
-    if (this.state.chapter < this.props.book.chapters.length) {
-      // Start loading the chaper that follows the one we're changing to
-      this.loadChapter(this.state.chapter + 2);
-      this.setState(
-        state => ({ chapter: state.chapter + 1 }),
-        this.changeChapterInUrl
-      );
+  getNextChapterPointer() {
+    const indexOfCurrent = this.props.book.chapters.indexOf(
+      this.state.chapterPointer
+    );
+    return this.props.book.chapters[indexOfCurrent + 1];
+  }
+
+  getPreviousChapterPointer() {
+    const indexOfCurrent = this.props.book.chapters.indexOf(
+      this.state.chapterPointer
+    );
+    return this.props.book.chapters[indexOfCurrent - 1];
+  }
+
+  handleRequestNextChapter = () => {
+    const next = this.getNextChapterPointer();
+    if (next) {
+      this.loadChapter(next.id);
+      this.setState({ chapterPointer: next }, () => {
+        // Change the URL, and start preloading
+        this.changeChapterInUrl();
+        const next = this.getNextChapterPointer();
+        next && this.loadChapter(next.id);
+      });
     }
   };
 
-  onRequestPrevious = () => {
-    if (this.state.chapter > 1) {
-      // Start loading the chaper that precedes the one we're changing to
-      this.loadChapter(this.state.chapter - 2);
-      this.setState(
-        state => ({ chapter: state.chapter - 1 }),
-        this.changeChapterInUrl
-      );
+  handleRequestPreviousChapter = () => {
+    const prev = this.getPreviousChapterPointer();
+    if (prev) {
+      this.loadChapter(prev.id);
+      this.setState({ chapterPointer: prev }, () => {
+        // Change the URL, and start preloading
+        this.changeChapterInUrl();
+        const prev = this.getPreviousChapterPointer();
+        prev && this.loadChapter(prev.id);
+      });
     }
   };
 
@@ -211,23 +232,18 @@ export default class ReaderContainer extends React.Component<
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
-        chapter: this.state.chapter
+        chapterId: this.state.chapterPointer.id
       },
       { shallow: true }
     );
 
-  async loadChapter(chapterNumber: number) {
-    const chapterIndex = chapterNumber - 1;
-    // Bail out if the chapter is out of range
-    if (chapterIndex < 0 || chapterIndex >= this.props.book.chapters.length) {
-      return;
-    }
-
-    const maybeChapter = this.state.chapters[chapterNumber];
-
-    if (!maybeChapter && this.props.book.chapters[chapterIndex]) {
-      const chapterRes = await doFetch(
-        this.props.book.chapters[chapterIndex].url
+  async loadChapter(chapterId: number) {
+    // Make sure we haven't loaded the chapter already
+    if (!this.state.chapters[chapterId]) {
+      const chapterRes = await fetchChapter(
+        this.props.book.id,
+        chapterId,
+        this.props.book.language.code
       );
 
       // TODO: Notify user of error
@@ -235,10 +251,12 @@ export default class ReaderContainer extends React.Component<
         return;
       }
 
+      const chapter = chapterRes.data;
+
       this.setState((state: ReaderContainerState) => ({
         chapters: {
           ...state.chapters,
-          [chapterNumber]: chapterRes.data
+          [chapter.id]: chapter
         }
       }));
     }
@@ -248,11 +266,12 @@ export default class ReaderContainer extends React.Component<
     return (
       <Reader
         book={this.props.book}
-        chapter={this.state.chapters[this.state.chapter]}
-        onRequestNext={this.onRequestNext}
-        onRequestPrevious={this.onRequestPrevious}
-        onRequestClose={this.onRequestClose}
-        chapterNumber={this.state.chapter}
+        chapterWithContent={this.state.chapters[this.state.chapterPointer.id]}
+        chapterPointer={this.state.chapterPointer}
+        onRequestNext={this.handleRequestNextChapter}
+        onRequestPrevious={this.handleRequestPreviousChapter}
+        onRequestClose={this.handleRequestCloseBook}
+        userHasEditAccess={this.props.userHasEditAccess}
       />
     );
   }
