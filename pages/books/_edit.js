@@ -10,6 +10,7 @@ import * as React from 'react';
 
 import doFetch, { fetchBook } from '../../fetch';
 import type { BookDetails, Chapter, Context } from '../../types';
+import { claims } from '../../lib/auth/token';
 import securePage from '../../hocs/securePage';
 import errorPage from '../../hocs/errorPage';
 import Head from '../../components/Head';
@@ -48,6 +49,13 @@ class EditPage extends React.Component<Props> {
       const chapterNum = parseInt(query.chapter, 10);
 
       const chapterRes = await doFetch(book.chapters[chapterNum].url);
+
+      if (!chapterRes.isOk) {
+        return {
+          statusCode: chapterRes.statusCode
+        };
+      }
+
       chapter = chapterRes.data;
     }
 
@@ -72,4 +80,6 @@ class EditPage extends React.Component<Props> {
   }
 }
 
-export default securePage(errorPage(EditPage));
+export default securePage(errorPage(EditPage), {
+  claim: claims.writeBook
+});

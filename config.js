@@ -9,12 +9,21 @@
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 
-// Access the book api directly on the server, not via the gateway/proxy
-const localBookApiUrl = 'http://book-api.gdl-local/book-api/v1';
+const globalVarName = '__GDL_ENVIRONMENT__';
+
+/**
+ * Read the GDL environment from a global variable in the client (see _document.js)
+ * On the server, we use environment variables.
+ * Fallback to 'test' if none is provided.
+ */
+const GDL_ENVIRONMENT = (function() {
+  return (
+    (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
+    'test'
+  );
+})();
 
 function getConfig() {
-  const globalVarName = '__GDL_ENVIRONMENT__';
-
   const config = {
     common: {
       DEFAULT_LANGUAGE_CODE: 'en',
@@ -29,35 +38,25 @@ function getConfig() {
         domain: 'digitallibrary.eu.auth0.com'
       },
       zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new',
-      // Fallback to test environment
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'N/A'
     },
 
     local: {
-      bookApiUrl: process.browser
-        ? 'http://book-api.gdl-local:40001/book-api/v1'
-        : localBookApiUrl
+      bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1'
     },
 
     test: {
-      bookApiUrl: process.browser
-        ? 'https://api.test.digitallibrary.io/book-api/v1'
-        : localBookApiUrl,
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111724798-1'
     },
 
     staging: {
-      bookApiUrl: process.browser
-        ? 'https://api.staging.digitallibrary.io/book-api/v1'
-        : localBookApiUrl,
+      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111796456-1'
     },
 
     prod: {
-      bookApiUrl: process.browser
-        ? 'https://api.digitallibrary.io/book-api/v1'
-        : localBookApiUrl,
+      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111771573-1',
       STATIC_PAGES_ONLY: true,
       TRANSLATION_PAGES: false,
@@ -65,14 +64,20 @@ function getConfig() {
     }
   };
 
-  return {
+  const toRet = {
     ...config.common,
     // Overwrite with environment specific variables
-    ...config[
-      (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
-        'common'
-    ] // Fallback to 'common' So Flow doesn't scream at us
+    ...config[GDL_ENVIRONMENT],
+    // Add the environment itself
+    GDL_ENVIRONMENT
   };
+
+  // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
+  if (!process.browser && process.env.GDL_ENVIRONMENT) {
+    toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
+  }
+
+  return toRet;
 }
 
 module.exports = getConfig();

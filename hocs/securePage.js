@@ -12,7 +12,8 @@ import Router from 'next/router';
 
 import {
   getTokenFromLocalCookie,
-  getTokenFromServerCookie
+  getTokenFromServerCookie,
+  hasClaim
 } from '../lib/auth/token';
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
@@ -24,13 +25,20 @@ import Container from '../components/Container';
 /**
  * A HoC that ensures users are authenticated before displaying content
  */
-const securePageHoc = Page =>
-  class SecurePage extends React.Component<any> {
+const securePageHoc = (Page, options) => {
+  const { claim } = options;
+
+  return class SecurePage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
       const token = ctx.req
         ? getTokenFromServerCookie(ctx.req)
         : getTokenFromLocalCookie();
       const isAuthenticated = Boolean(token);
+      console.log('CLAIM', claim);
+
+      const hasAccess = claim
+        ? isAuthenticated && hasClaim(claim, ctx.req)
+        : true;
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
@@ -41,6 +49,7 @@ const securePageHoc = Page =>
 
       return {
         isAuthenticated,
+        hasAccess,
         ...composedInitialProps
       };
     }
@@ -72,10 +81,15 @@ const securePageHoc = Page =>
             </Container>
           </Layout>
         );
+      } else if (!this.props.hasAccess) {
+        return <div>Hell no</div>;
       }
       return <Page {...this.props} />;
     }
   };
+};
 
-export default (Page: React.ComponentType<any>) =>
-  defaultPage(securePageHoc(Page));
+export default (
+  Page: React.ComponentType<any>,
+  options: { claim?: string } = {}
+) => defaultPage(securePageHoc(Page, options));
