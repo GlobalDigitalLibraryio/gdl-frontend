@@ -19,27 +19,44 @@ import Container from '../Container';
 // ReactJson doesn't work on the server, so make sure we lazy load it
 const ReactJson = dynamic(import('react-json-view'));
 
+// Only allow these fields to be edited
+const EDITABLE_CHAPTER_FIELDS = ['content'];
+const EDITABLE_BOOK_FIELDS = ['title', 'description'];
+
 export default class Editor extends React.Component<
   {
     book: BookDetails,
     chapter?: Chapter
   },
-  { isSaving: boolean, book: BookDetails, chapter: ?Chapter }
+  { isSaving: boolean, book: BookDetails, didSave: boolean, chapter: ?Chapter }
 > {
   state = {
     isSaving: false,
+    didSave: false,
     book: this.props.book,
     chapter: this.props.chapter
   };
 
-  handleEdit = ({ updated_src }: { updated_src: BookDetails | Chapter }) => {
-    if (this.state.chapter) {
-      // $FlowFixMe
-      this.setState({ chapter: updated_src });
-    } else {
-      // $FlowFixMe
-      this.setState({ book: updated_src });
+  handleChapterEdit = (edit: {
+    name: string,
+    new_value: string,
+    updated_src: Chapter
+  }) => {
+    if (!edit.new_value || !EDITABLE_CHAPTER_FIELDS.includes(edit.name)) {
+      return false;
     }
+    this.setState({ chapter: edit.updated_src, didSave: false });
+  };
+
+  handleBookEdit = (edit: {
+    name: string,
+    new_value: string,
+    updated_src: BookDetails
+  }) => {
+    if (!edit.new_value || !EDITABLE_BOOK_FIELDS.includes(edit.name)) {
+      return false;
+    }
+    this.setState({ book: edit.updated_src, didSave: false });
   };
 
   handleSave = async () => {
@@ -49,7 +66,7 @@ export default class Editor extends React.Component<
     } else {
       saveBook(this.state.book);
     }
-    this.setState({ isSaving: false });
+    this.setState({ isSaving: false, didSave: true });
   };
 
   render() {
@@ -69,7 +86,7 @@ export default class Editor extends React.Component<
           </Heading>
           {this.props.chapter && (
             <Heading size={2}>
-              Chapter:{' '}
+              Editing chapter:{' '}
               <Link
                 route="read"
                 params={{
@@ -83,15 +100,36 @@ export default class Editor extends React.Component<
               </Link>
             </Heading>
           )}
-          <button
-            onClick={this.handleSave}
-            disabled={this.state.isSaving}
-            style={{ marginLeft: 'auto', display: 'block' }}
-          >
-            Save changes
-          </button>
+
+          <div style={{ textAlign: 'right' }}>
+            {this.state.didSave && <span>Saved changes!</span>}
+            <Link
+              route={this.props.chapter ? 'read' : 'book'}
+              params={{
+                lang: book.language.code,
+                id: book.id,
+                chapterId: this.props.chapter
+                  ? this.props.chapter.id
+                  : undefined
+              }}
+            >
+              <button
+                disabled={this.state.isSaving}
+                style={{ margin: '0 1rem' }}
+              >
+                Discard changes
+              </button>
+            </Link>
+            <button onClick={this.handleSave} disabled={this.state.isSaving}>
+              Save changes
+            </button>
+          </div>
+
           <ReactJson
-            onEdit={this.handleEdit}
+            onEdit={
+              this.state.chapter ? this.handleChapterEdit : this.handleBookEdit
+            }
+            collapsed={1}
             src={this.state.chapter || this.state.book}
             name={null}
             enableClipboard={false}

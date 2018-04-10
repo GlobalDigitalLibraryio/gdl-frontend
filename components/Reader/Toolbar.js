@@ -8,7 +8,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { MdClose } from 'react-icons/lib/md';
+import { MdClose, MdEdit } from 'react-icons/lib/md';
 
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';
@@ -65,6 +65,7 @@ const Toolbar = ({
   onRequestClose
 }: Props) => (
   <Div>
+    <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     {userHasEditAccess && (
       <Link
         route="edit"
@@ -74,15 +75,11 @@ const Toolbar = ({
           chapterId: chapter.id
         }}
       >
-        <a
-          style={{ paddingLeft: '1rem', position: 'absolute', left: '0' }}
-          title="Edit chapter"
-        >
-          Edit
-        </a>
+        <Button title="Edit book" style={{ right: 50 }}>
+          <MdEdit />
+        </Button>
       </Link>
     )}
-    <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     <Button onClick={onRequestClose} type="button">
       <MdClose aria-hidden />{' '}
       <SrOnly>

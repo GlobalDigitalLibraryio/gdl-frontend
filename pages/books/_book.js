@@ -72,13 +72,17 @@ const CoverWrap = styled('div')`
   `};
 `;
 
-const EditButton = styled('a')`
+const EditBookLink = styled('a')`
+  color: ${colors.base.white};
   position: absolute;
   top: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.5);
-  color: ${colors.base.white};
   padding: 5px;
+  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  &:hover {
+    background: rgba(0, 0, 0, 0.6);
+  }
 `;
 
 const Hr = styled('hr')`
@@ -204,7 +208,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                           aria-expanded={this.state.showDownloadMenu}
                           isBold
                           onClick={this.handleToggleShowDownloadMenu}
-                          style={{ color: '#444' }}
+                          style={{ color: colors.text.default }}
                         >
                           <Trans>Download book</Trans>
                           {this.state.showDownloadMenu ? (
@@ -221,9 +225,9 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                           params={{ lang: book.language.code, id: book.id }}
                           passHref
                         >
-                          <EditButton title="Edit book">
+                          <EditBookLink title="Edit book">
                             <MdEdit />
-                          </EditButton>
+                          </EditBookLink>
                         </Link>
                       )}
                     </Fragment>
