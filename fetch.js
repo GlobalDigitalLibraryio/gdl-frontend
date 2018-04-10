@@ -246,11 +246,9 @@ export async function fetchCategories(
 export async function saveBook(
   book: BookDetails
 ): Promise<RemoteData<BookDetails>> {
-  const denormalized = { ...book };
-  delete denormalized['category'];
   const result = await doFetch(
     `${bookApiUrl}/books/${book.language.code}/${book.id}`,
-    { method: 'PUT', body: JSON.stringify(denormalized) }
+    { method: 'PUT', body: JSON.stringify(book) }
   );
 
   if (result.isOk) {
