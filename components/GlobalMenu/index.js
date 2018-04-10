@@ -156,27 +156,32 @@ class GlobalMenu extends React.Component<Props, State> {
           >
             <Trans>Categories</Trans>
           </MenuItem>
-
-          <MenuItem href="https://home.digitallibrary.io/about/">
-            <Trans>About Global Digital Library</Trans>
-          </MenuItem>
-
           {config.TRANSLATION_PAGES && (
             <Fragment>
-              <RouteLink passHref route="translations">
-                <MenuItem>
-                  <Trans>My translations</Trans>
-                </MenuItem>
-              </RouteLink>
-              {getTokenFromLocalCookie() != null && (
+              {getTokenFromLocalCookie() == null ? (
+                <Link passHref href="/auth/sign-in">
+                  <MenuItem>
+                    <Trans>Log in</Trans>
+                  </MenuItem>
+                </Link>
+              ) : (
                 <Link passHref href="/auth/sign-off">
                   <MenuItem>
                     <Trans>Log out</Trans>
                   </MenuItem>
                 </Link>
               )}
+              <RouteLink passHref route="translations">
+                <MenuItem>
+                  <Trans>My translations</Trans>
+                </MenuItem>
+              </RouteLink>
             </Fragment>
           )}
+
+          <MenuItem href="https://home.digitallibrary.io/about/">
+            <Trans>About Global Digital Library</Trans>
+          </MenuItem>
           <MenuItem href="https://blog.digitallibrary.io/cc/">
             <Trans>Licensing and reuse</Trans>
           </MenuItem>
