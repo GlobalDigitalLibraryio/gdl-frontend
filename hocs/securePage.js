@@ -20,6 +20,7 @@ import type { Context } from '../types';
 import Box from '../components/Box';
 import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
+import NoAccessPage from '../components/NoAccessPage';
 import Container from '../components/Container';
 
 /**
@@ -38,6 +39,11 @@ const securePageHoc = (Page, options) => {
       const hasAccess = claim
         ? isAuthenticated && hasClaim(claim, ctx.req)
         : true;
+
+      // If we're on the server, is authenticated and don't have access, we return 403
+      if (ctx.res != null && isAuthenticated && !hasAccess) {
+        ctx.res.statusCode = 403;
+      }
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
@@ -81,7 +87,7 @@ const securePageHoc = (Page, options) => {
           </Layout>
         );
       } else if (!this.props.hasAccess) {
-        return <div>You ain't got no access here!</div>;
+        return <NoAccessPage />;
       }
       return <Page {...this.props} />;
     }
