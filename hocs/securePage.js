@@ -34,7 +34,6 @@ const securePageHoc = (Page, options) => {
         ? getTokenFromServerCookie(ctx.req)
         : getTokenFromLocalCookie();
       const isAuthenticated = Boolean(token);
-      console.log('CLAIM', claim);
 
       const hasAccess = claim
         ? isAuthenticated && hasClaim(claim, ctx.req)
@@ -82,7 +81,7 @@ const securePageHoc = (Page, options) => {
           </Layout>
         );
       } else if (!this.props.hasAccess) {
-        return <div>Hell no</div>;
+        return <div>You ain't got no access here!</div>;
       }
       return <Page {...this.props} />;
     }

@@ -44,8 +44,8 @@ class EditPage extends React.Component<Props> {
     if (query.chapterId) {
       const chapterRes = await fetchChapter(
         query.id,
-        query.lang,
-        query.chapterId
+        query.chapterId,
+        query.lang
       );
 
       if (!chapterRes.isOk) {

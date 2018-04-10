@@ -10,7 +10,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import nock from 'nock';
 import Router from 'next/router';
-import type { BookDetails } from '../../../types';
+import type { BookDetails, Chapter } from '../../../types';
 import Reader from '../';
 
 // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
@@ -64,6 +64,8 @@ const book: BookDetails = {
   }
 };
 
+const chapter: Chapter = { id: 128, seqNo: 1, content: '</br>' };
+
 beforeAll(() => {
   nock('http://www.example.no')
     .persist()
@@ -72,36 +74,27 @@ beforeAll(() => {
 });
 
 test('Sets the initial chapter', () => {
-  const tree = shallow(<Reader book={book} initialChapter={null} />);
-  expect(tree.state().chapter).toEqual(1);
-});
-
-test('Sets the initial chapter based on prop', () => {
-  const tree = shallow(<Reader book={book} initialChapter="2" />);
-  expect(tree.state().chapter).toEqual(2);
-});
-
-test('Handles initial chapter out of range', () => {
-  const tree = shallow(<Reader book={book} initialChapter="1337" />);
-  expect(tree.state().chapter).toEqual(1);
+  const tree = shallow(<Reader book={book} chapter={chapter} />);
+  expect(tree.state().chapterPointer).toEqual(book.chapters[0]);
 });
 
 test('Loads the following chapter when going forward', () => {
-  const tree = shallow(<Reader book={book} initialChapter={null} />);
+  const tree = shallow(<Reader book={book} chapter={chapter} />);
   const loadChapterMock = jest.fn();
   tree.instance().loadChapter = loadChapterMock;
   tree.update();
 
-  tree.instance().onRequestNext();
-  expect(tree.instance().loadChapter).toBeCalledWith(3);
+  tree.instance().handleRequestNextChapter();
+  expect(tree.instance().loadChapter).toBeCalledWith(130);
 });
 
 test('Loads the preceding chapter when going back', () => {
-  const tree = shallow(<Reader book={book} initialChapter="3" />);
+  const chapter: Chapter = { id: 131, seqNo: 4, content: '</br>' };
+  const tree = shallow(<Reader book={book} chapter={chapter} />);
   const loadChapterMock = jest.fn();
   tree.instance().loadChapter = loadChapterMock;
   tree.update();
 
-  tree.instance().onRequestPrevious();
-  expect(tree.instance().loadChapter).toBeCalledWith(1);
+  tree.instance().handleRequestPreviousChapter();
+  expect(tree.instance().loadChapter).toBeCalledWith(129);
 });

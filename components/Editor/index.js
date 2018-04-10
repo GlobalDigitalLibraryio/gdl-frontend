@@ -83,11 +83,12 @@ export default class Editor extends React.Component<
               </Link>
             </Heading>
           )}
-          <button onClick={this.handleSave} disabled={this.state.isSaving}>
-            Save
-          </button>
-          <button onClick={this.handleSave} disabled={this.state.isSaving}>
-            Save and close
+          <button
+            onClick={this.handleSave}
+            disabled={this.state.isSaving}
+            style={{ marginLeft: 'auto', display: 'block' }}
+          >
+            Save changes
           </button>
           <ReactJson
             onEdit={this.handleEdit}

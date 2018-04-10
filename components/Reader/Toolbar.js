@@ -66,8 +66,20 @@ const Toolbar = ({
 }: Props) => (
   <Div>
     {userHasEditAccess && (
-      <Link route="edit" params={{ lang: book.language.code, id: book.id }}>
-        <a>Edit</a>
+      <Link
+        route="edit"
+        params={{
+          lang: book.language.code,
+          id: book.id,
+          chapterId: chapter.id
+        }}
+      >
+        <a
+          style={{ paddingLeft: '1rem', position: 'absolute', left: '0' }}
+          title="Edit chapter"
+        >
+          Edit
+        </a>
       </Link>
     )}
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>

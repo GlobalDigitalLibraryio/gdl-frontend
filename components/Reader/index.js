@@ -159,10 +159,9 @@ export default class ReaderContainer extends React.Component<
 > {
   state = {
     chapters: { [this.props.chapter.id]: this.props.chapter },
-    // $FlowFixMe
     chapterPointer: this.props.book.chapters.find(
       c => c.id === this.props.chapter.id
-    )
+    ) || { id: this.props.chapter.id, seqNo: this.props.chapter.seqNo }
   };
 
   // Preload the next and previous chapters, so we are ready when the user navigates
