@@ -8,7 +8,10 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { MdClose } from 'react-icons/lib/md';
+import { MdClose, MdEdit } from 'react-icons/lib/md';
+
+import type { BookDetails, ChapterSummary } from '../../types';
+import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
@@ -48,16 +51,36 @@ const Button = styled.button`
 `;
 
 type Props = {
+  book: BookDetails,
   onRequestClose(): void,
-  currentChapter: number,
-  totalChapters: number
+  userHasEditAccess?: boolean,
+  chapter: ChapterSummary
 };
 
 // Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line
-const Toolbar = (props: Props) => (
+const Toolbar = ({
+  book,
+  chapter,
+  userHasEditAccess,
+  onRequestClose
+}: Props) => (
   <Div>
-    <div>{`${props.currentChapter} / ${props.totalChapters}`}</div>
-    <Button onClick={props.onRequestClose} type="button">
+    <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
+    {userHasEditAccess && (
+      <Link
+        route="edit"
+        params={{
+          lang: book.language.code,
+          id: book.id,
+          chapterId: chapter.id
+        }}
+      >
+        <Button title="Edit book" style={{ right: 50 }}>
+          <MdEdit />
+        </Button>
+      </Link>
+    )}
+    <Button onClick={onRequestClose} type="button">
       <MdClose aria-hidden />{' '}
       <SrOnly>
         <Trans>Close book</Trans>

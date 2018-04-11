@@ -23,7 +23,9 @@
     ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -39,8 +41,7 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check":
-      "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.5",
@@ -56,6 +57,7 @@
     "express-request-language": "1.1.12",
     "glob": "7.1.2",
     "isomorphic-unfetch": "2.0.0",
+    "jwt-decode": "^2.2.0",
     "lscache": "1.1.0",
     "next": "5.1.0",
     "next-routes": "1.4.1",
@@ -66,6 +68,7 @@
     "react-emotion": "9.1.0",
     "react-ga": "^2.4.0",
     "react-icons": "2.2.7",
+    "react-json-view": "^1.16.1",
     "react-portal": "^4.1.4",
     "react-swipeable": "4.2.0",
     "serialize-javascript": "1.4.0",

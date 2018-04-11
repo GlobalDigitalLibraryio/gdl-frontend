@@ -43,15 +43,16 @@ export type Language = {
   +name: string
 };
 
-export type Chapter = {
+export type Chapter = {|
+  id: number,
   content: string,
   seqNo: number
-};
+|};
 
-export type ChapterSummary = {
-  url: string,
+export type ChapterSummary = {|
+  id: number,
   seqNo: number
-};
+|};
 
 // Disjoint union
 type Success<T> = { isOk: true, data: T, statusCode: number };

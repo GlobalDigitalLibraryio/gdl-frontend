@@ -53,11 +53,18 @@ if (config.STATIC_PAGES_ONLY) {
   // Book details page
   routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
+  // Edit book/chapter
+  routes.add(
+    'edit',
+    `/${langParam}/books/edit/:id(\\d+)/:chapterId(\\d+)?`,
+    'books/_edit'
+  );
+
   // Read book
   routes.add(
     'read',
-    `/${langParam}/books/read/:id(\\d+)/:chapter(\\d+)?`,
-    'books/read'
+    `/${langParam}/books/read/:id(\\d+)/:chapterId(\\d+)?`,
+    'books/_read'
   );
 }
 

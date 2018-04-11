@@ -12,25 +12,38 @@ import Router from 'next/router';
 
 import {
   getTokenFromLocalCookie,
-  getTokenFromServerCookie
+  getTokenFromServerCookie,
+  hasClaim
 } from '../lib/auth/token';
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
 import Box from '../components/Box';
 import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
+import NoAccessPage from '../components/NoAccessPage';
 import Container from '../components/Container';
 
 /**
  * A HoC that ensures users are authenticated before displaying content
  */
-const securePageHoc = Page =>
-  class SecurePage extends React.Component<any> {
+const securePageHoc = (Page, options) => {
+  const { claim } = options;
+
+  return class SecurePage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
       const token = ctx.req
         ? getTokenFromServerCookie(ctx.req)
         : getTokenFromLocalCookie();
       const isAuthenticated = Boolean(token);
+
+      const hasAccess = claim
+        ? isAuthenticated && hasClaim(claim, ctx.req)
+        : true;
+
+      // If we're on the server, is authenticated and don't have access, we return 403
+      if (ctx.res != null && isAuthenticated && !hasAccess) {
+        ctx.res.statusCode = 403;
+      }
 
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
@@ -41,6 +54,7 @@ const securePageHoc = Page =>
 
       return {
         isAuthenticated,
+        hasAccess,
         ...composedInitialProps
       };
     }
@@ -72,10 +86,15 @@ const securePageHoc = Page =>
             </Container>
           </Layout>
         );
+      } else if (!this.props.hasAccess) {
+        return <NoAccessPage />;
       }
       return <Page {...this.props} />;
     }
   };
+};
 
-export default (Page: React.ComponentType<any>) =>
-  defaultPage(securePageHoc(Page));
+export default (
+  Page: React.ComponentType<any>,
+  options: { claim?: string } = {}
+) => defaultPage(securePageHoc(Page, options));

@@ -70,8 +70,9 @@ export default class GDLDocument extends Document {
 
           <script
             dangerouslySetInnerHTML={{
-              __html: `window.${config.GLOBAL_VAR_NAME} = '${process.env
-                .GDL_ENVIRONMENT || 'test'}';`
+              __html: `window.${config.GLOBAL_VAR_NAME} = '${
+                config.GDL_ENVIRONMENT
+              }';`
             }}
           />
           {/* Polyfill only the minimum number of methods necessary for IE11 */}
