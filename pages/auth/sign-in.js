@@ -51,7 +51,7 @@ const LoginPage = ({ i18n }: Props) => (
             onClick={() => loginSocialMedia('google-oauth2')}
           >
             <span>
-              <FaGoogle /> <Trans>log in using Google</Trans>
+              <FaGoogle /> <Trans>Log in using Google</Trans>
             </span>
           </Button>
           <Button
@@ -59,7 +59,7 @@ const LoginPage = ({ i18n }: Props) => (
             onClick={() => loginSocialMedia('facebook')}
           >
             <span>
-              <FaFacebook /> <Trans>log in using Facebook</Trans>
+              <FaFacebook /> <Trans>Log in using Facebook</Trans>
             </span>
           </Button>
         </EqualWidthButtonsWrapper>

@@ -8,10 +8,9 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import BrowseLink from '../../components/BrowseLink';
 import type {
   Book,
   Language,
@@ -20,17 +19,14 @@ import type {
   Category
 } from '../../types';
 import Layout from '../../components/Layout';
-import Box from '../../components/Box';
 import Card from '../../components/Card';
-import Container from '../../components/Container';
-import Hero from '../../components/Hero';
+import Container from '../../elements/Container';
+import Text from '../../elements/Text';
+import View from '../../elements/View';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
 import Button from '../../components/Button';
-import P from '../../components/P';
-import H1 from '../../components/H1';
-import A from '../../components/A';
-import { colors, fonts } from '../../style/theme';
+import { colors, fonts, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
@@ -44,7 +40,7 @@ type Props = {|
   category: Category
 |};
 
-const HeroCover = styled('div')`
+const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
   position: relative;
@@ -60,25 +56,18 @@ const HeroCover = styled('div')`
   `};
 `;
 
-const HeroCovertitle = styled('h1')`
+const HeroCovertitle = styled('div')`
   position: absolute;
   top: 0;
   left: 0;
-  color: ${colors.base.white};
   background: rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
   margin: 0;
-  padding: 5px 15px;
-  font-weight: ${fonts.weight.medium};
-  font-size: 14px;
-  ${media.tablet`
-    font-size: 18px;
-  `};
+  padding: 3px 12px;
 `;
 
 const HeroCardMobile = styled(Card)`
   ${flexCenter};
-  padding: 15px;
+  padding: ${spacing.small};
   margin-top: -50px;
   margin-left: 15px;
   margin-right: 15px;
@@ -89,23 +78,12 @@ const HeroCardMobile = styled(Card)`
 
 const HeroCardTablet = styled(Card)`
   ${flexCenter};
-  padding: 20px;
+  padding: ${spacing.medium};
   max-width: 375px;
   ${media.mobile`
     display: none;
   `};
 `;
-
-const moreStyle = css`
-  float: right;
-  font-size: 12px;
-  ${media.tablet`
-    font-size: 14px;
-  `};
-  height: 40px;
-`;
-
-const FeaturedTitle = H1.withComponent('h2');
 
 export default class HomePage extends React.Component<Props> {
   render() {
@@ -121,88 +99,81 @@ export default class HomePage extends React.Component<Props> {
 
     const featured = featuredContent[0];
 
+    const cardContent = (
+      <View alignItems="center">
+        <Text
+          accessibilityRole="heading"
+          aria-level="2"
+          lang={featured.language.code}
+          fontSize={['1.7rem', '2.1rem']}
+          fontWeight={fonts.weight.medium}
+        >
+          {featured.title}
+        </Text>
+        <View my={spacing.small}>
+          <Text lang={featured.language.code} textAlign="center">
+            {featured.description}
+          </Text>
+        </View>
+        <Button href={featured.link}>
+          <Trans>More</Trans>
+        </Button>
+      </View>
+    );
+
     return (
       <Layout languages={languages} categories={categories}>
         <Head imageUrl={featured.imageUrl} />
-        <HeroCover
-          pt={['15px', '40px']}
-          pb={['42px', '54px']}
-          src={featured.imageUrl}
-        >
+        <Banner src={featured.imageUrl}>
           <HeroCovertitle>
-            <Trans>Featured</Trans>
-          </HeroCovertitle>
-          <HeroCardTablet>
-            <Box textAlign="center">
-              <FeaturedTitle lang={featured.language.code}>
-                {featured.title}
-              </FeaturedTitle>
-              <P
-                fontSize={[14, 16]}
-                lineHeight={[22, 26]}
-                lang={featured.language.code}
-              >
-                {featured.description}
-              </P>
-              <Button href={featured.link}>More</Button>
-            </Box>
-          </HeroCardTablet>
-        </HeroCover>
-        <HeroCardMobile>
-          <Box textAlign="center">
-            <FeaturedTitle lang={featured.language.code}>
-              {featured.title}
-            </FeaturedTitle>
-            <P
-              fontSize={[14, 16]}
-              lineHeight={[22, 26]}
-              lang={featured.language.code}
+            <Text
+              accessibilityRole="heading"
+              color={colors.base.white}
+              fontSize="1.1rem"
+              fontWeight={fonts.weight.medium}
             >
-              {featured.description}
-            </P>
-            <Button href={featured.link}>More</Button>
-          </Box>
-        </HeroCardMobile>
+              <Trans>Featured</Trans>
+            </Text>
+          </HeroCovertitle>
+          <HeroCardTablet>{cardContent}</HeroCardTablet>
+        </Banner>
+        <HeroCardMobile>{cardContent}</HeroCardMobile>
 
         {levels.map((level, index) => (
-          <Hero py={[15, 22]} key={level}>
-            <Container>
-              <BrowseLink
-                lang={newArrivals.language.code}
-                readingLevel={level}
-                category={category}
-              >
-                <A isUppercased className={moreStyle}>
-                  <Trans>More</Trans>
-                </A>
-              </BrowseLink>
+          <View {...bookListViewStyle} key={level}>
+            <Container width="100%">
               <BookList
-                books={booksByLevel[index].results}
                 heading={<ReadingLevelTrans readingLevel={level} />}
-                mt={20}
+                browseLinkProps={{
+                  lang: newArrivals.language.code,
+                  readingLevel: level,
+                  category: category
+                }}
+                books={booksByLevel[index].results}
               />
             </Container>
-          </Hero>
+          </View>
         ))}
-        <Hero py={[15, 22]}>
-          <Container>
-            <BrowseLink
-              lang={newArrivals.language.code}
-              sort="-arrivalDate"
-              category={category}
-            >
-              <A isUppercased className={moreStyle}>
-                <Trans>More</Trans>
-              </A>
-            </BrowseLink>
+
+        <View {...bookListViewStyle}>
+          <Container width="100%">
             <BookList
               heading={<Trans>New arrivals</Trans>}
+              browseLinkProps={{
+                lang: newArrivals.language.code,
+                sort: '-arrivalDate',
+                category: category
+              }}
               books={newArrivals.results}
-              mt={20}
             />
           </Container>
-        </Hero>
+        </View>
       </Layout>
     );
   }
 }
+
+const bookListViewStyle = {
+  py: spacing.medium,
+  borderBottom: `solid 1px ${colors.base.grayLight}`
+};

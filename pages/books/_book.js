@@ -24,21 +24,19 @@ import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
-import Box from '../../components/Box';
-import Flex from '../../components/Flex';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import A from '../../components/A';
-import H1 from '../../components/H1';
-import P from '../../components/P';
+import A from '../../elements/A';
+import Text from '../../elements/Text';
+import View from '../../elements/View';
+import Container from '../../elements/Container';
 import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import Button from '../../components/Button';
-import Container from '../../components/Container';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
-import { colors } from '../../style/theme';
+import { colors, fonts, spacing } from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
 import {
   DownloadBookMenu,
@@ -85,16 +83,7 @@ const EditBookLink = styled('a')`
   }
 `;
 
-const Hr = styled('hr')`
-  height: 1px;
-  background-color: ${colors.base.grayLight};
-  border-style: none;
-  margin: 0;
-  ${media.mobile`
-    margin-left: -15px;
-    margin-right: -15px;
-  `};
-`;
+const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
 const HeroCard = styled(Card)`
   ${flexColumnCentered};
@@ -161,8 +150,8 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
           languageCode={book.language.code}
         >
           <Layout crumbs={this.getCrumbs()}>
-            <Container pt={[15, 20]}>
-              <Flex mt={[120, 0]} style={{ position: 'relative' }}>
+            <Container>
+              <View flexDirection="row" mt={['135px', spacing.medium]}>
                 <CoverWrap>
                   <BookCover
                     coverPhoto={book.coverPhoto}
@@ -173,24 +162,30 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 <HeroCard
                   textAlign="center"
                   p={[15, 20]}
-                  pt={[80, 20]}
+                  pt={[70, 20]}
                   flex="1"
                 >
-                  <H1 fontSize={[28, 38]} lang={book.language.code}>
-                    {book.title}
-                  </H1>
-                  <P fontSize={14}>
-                    <Trans>
-                      from <span>{book.publisher.name}</span>
-                    </Trans>
-                  </P>
-                  <P
-                    fontSize={[14, 16]}
-                    lineHeight={[22, 26]}
+                  <Text
                     lang={book.language.code}
+                    fontSize={['1.7rem', '2.1rem']}
+                    accessibilityRole="heading"
+                    fontWeight={fonts.weight.medium}
+                  >
+                    {book.title}
+                  </Text>
+
+                  <Text textAlign="center">
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Text>
+
+                  <Text
+                    lang={book.language.code}
+                    textAlign="center"
+                    my={spacing.medium}
                   >
                     {book.description}
-                  </P>
+                  </Text>
+
                   {book.bookFormat === 'HTML' && (
                     <Fragment>
                       <Link
@@ -203,21 +198,19 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                           <Trans>Read Book</Trans>
                         </Button>
                       </Link>
-                      <Box mt={[15, 20]}>
-                        <A
-                          aria-expanded={this.state.showDownloadMenu}
-                          isBold
-                          onClick={this.handleToggleShowDownloadMenu}
-                          style={{ color: colors.text.default }}
-                        >
-                          <Trans>Download book</Trans>
-                          {this.state.showDownloadMenu ? (
-                            <MdKeyboardArrowUp aria-hidden />
-                          ) : (
-                            <MdKeyboardArrowDown aria-hidden />
-                          )}
-                        </A>
-                      </Box>
+                      <Text
+                        aria-expanded={this.state.showDownloadMenu}
+                        fontWeight={fonts.weight.medium}
+                        mt={spacing.medium}
+                        onClick={this.handleToggleShowDownloadMenu}
+                      >
+                        <Trans>Download book</Trans>
+                        {this.state.showDownloadMenu ? (
+                          <MdKeyboardArrowUp aria-hidden />
+                        ) : (
+                          <MdKeyboardArrowDown aria-hidden />
+                        )}
+                      </Text>
 
                       {this.props.userHasEditAccess && (
                         <Link
@@ -238,54 +231,70 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     </Button>
                   )}
                 </HeroCard>
-              </Flex>
+              </View>
             </Container>
 
-            <Container pb={[15, 20]}>
-              <Box ml={[0, 'auto']} w={['auto', 438]}>
+            <Container
+              style={{
+                marginTop: spacing.medium
+              }}
+            >
+              <View ml={[0, 'auto']} w={['auto', 438]}>
                 <Metadata book={book} />
                 {config.TRANSLATION_PAGES &&
                   book.supportsTranslation && (
-                    <Fragment>
-                      <Hr />
-                      <Box my={[15, 20]} textAlign="center">
-                        <Link
-                          route="translate"
-                          passHref
-                          params={{ id: book.id, lang: book.language.code }}
+                    <View borderTop={BORDER_STYLE} mt={spacing.medium}>
+                      <Link
+                        route="translate"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                      >
+                        <A
+                          my={spacing.medium}
+                          textAlign="center"
+                          fontWeight={fonts.weight.medium}
                         >
-                          <A isBold>
-                            <MdTranslate aria-hidden />{' '}
-                            <Trans>Translate this book</Trans>
-                          </A>
-                        </Link>
-                      </Box>
-                    </Fragment>
+                          <MdTranslate aria-hidden />{' '}
+                          <Trans>Translate this book</Trans>
+                        </A>
+                      </Link>
+                    </View>
                   )}
-                <Hr />
-                <Box my={[15, 20]} textAlign="center">
+                <View
+                  borderTop={BORDER_STYLE}
+                  mt={
+                    config.TRANSLATION_PAGES && book.supportsTranslation
+                      ? 0
+                      : spacing.medium
+                  }
+                >
                   <A
-                    isBold
+                    my={spacing.medium}
+                    textAlign="center"
+                    fontWeight={fonts.weight.medium}
                     href={config.zendeskUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    openNewTab
                   >
                     <MdWarning aria-hidden />{' '}
                     <Trans>Report a problem with this book</Trans>
                   </A>
-                </Box>
-              </Box>
+                </View>
+              </View>
+            </Container>
 
-              {similarBooks.length > 0 && (
-                <Fragment>
-                  <Hr />
+            <Container>
+              <View
+                borderTop={BORDER_STYLE}
+                mb={spacing.medium}
+                pt={spacing.medium}
+              >
+                {similarBooks.length > 0 && (
                   <BookList
-                    books={similarBooks}
-                    mt={20}
                     heading={<Trans>Similar</Trans>}
+                    books={similarBooks}
                   />
-                </Fragment>
-              )}
+                )}
+              </View>
             </Container>
 
             {this.state.showDownloadMenu && (
