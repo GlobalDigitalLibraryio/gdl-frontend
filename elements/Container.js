@@ -15,8 +15,10 @@ import { misc, spacing } from '../style/theme';
 /**
  * Center content horizontally
  */
+// FIXME: Currently margin left/right here overwrites any specific margin passed to <View /> :/
 const StyledContainer = styled(View)`
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   max-width: ${p => misc.containers[p.size]};
   padding-left: ${spacing.medium};
   padding-right: ${spacing.medium};

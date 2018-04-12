@@ -234,11 +234,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
               </View>
             </Container>
 
-            <Container
-              style={{
-                marginTop: spacing.medium
-              }}
-            >
+            <Container mt={spacing.medium}>
               <View ml={[0, 'auto']} w={['auto', 438]}>
                 <Metadata book={book} />
                 {config.TRANSLATION_PAGES &&
