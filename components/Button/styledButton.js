@@ -37,7 +37,6 @@ export const Button = styled('button')`
   align-items: center;
   min-width: 210px;
   line-height: 22px;
-  text-transform: uppercase;
   min-height: 38px;
   padding-left: 30px;
   padding-right: 30px;

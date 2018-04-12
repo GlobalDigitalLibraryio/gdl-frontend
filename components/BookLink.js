@@ -14,6 +14,7 @@ import type { Book } from '../types';
 import Card from './Card';
 import ReadingLevel from './ReadingLevel';
 import Box from './Box';
+import Text from '../elements/Text';
 import { colors } from '../style/theme';
 import CoverImage from './CoverImage';
 
@@ -22,15 +23,6 @@ const Div = styled(Box)`
   color: ${colors.text.default};
   border-top: 1px solid ${colors.base.grayLight};
   background-color: ${colors.base.white};
-`;
-
-const BookTitle = styled('a')`
-  display: block;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-bottom: 7px;
-  overflow: hidden;
-  color: inherit;
 `;
 
 /**
@@ -80,12 +72,18 @@ export default ({ book }: { book: Book }) => (
           params={{ id: book.id, lang: book.language.code }}
           passHref
         >
-          <BookTitle lang={book.language.code} title={book.title}>
+          <Text lang={book.language.code} title={book.title} {...titleStyle}>
             {book.title}
-          </BookTitle>
+          </Text>
         </Link>
         <ReadingLevel level={book.readingLevel} />
       </Div>
     </Card>
   </Box>
 );
+
+const titleStyle = {
+  numberOfLines: 1,
+  display: 'block',
+  color: colors.text.default
+};

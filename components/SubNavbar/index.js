@@ -14,7 +14,9 @@ import CategoryNavigation from './CategoryNavigation';
 import LanguageCategoryContext from '../LanguageCategoryContext';
 import Breadcrumb from './Breadcrumb';
 import LanguageMenu from '../LanguageMenu';
-import A from '../A';
+import Text from '../../elements/Text';
+import A from '../../elements/A';
+import { fonts } from '../../style/theme';
 
 type Props = {|
   languageCode: string,
@@ -60,15 +62,16 @@ class SubNavbar extends React.Component<Props, { showLanguageMenu: boolean }> {
                     alignItems: 'center'
                   }}
                 >
-                  {(selectedLanguage && selectedLanguage.name) || languageCode}
-                  <A
-                    onClick={this.toggleShowLanguageMenu}
-                    isUppercased
-                    isBold
-                    style={{ paddingRight: 0 }}
-                  >
-                    Change
-                  </A>
+                  <Text>
+                    {(selectedLanguage && selectedLanguage.name) ||
+                      languageCode}{' '}
+                    <A
+                      onClick={this.toggleShowLanguageMenu}
+                      fontWeight={fonts.weight.medium}
+                    >
+                      Change
+                    </A>
+                  </Text>
                 </div>
               )}
             </LanguageCategoryContext.Consumer>

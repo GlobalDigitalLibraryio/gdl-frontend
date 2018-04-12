@@ -34,7 +34,7 @@ const Taken = () => (
     aria-hidden
     xmlns="http://www.w3.org/2000/svg"
     width="442"
-    height="388"
+    height="100%"
     viewBox="0 0 442 388"
   >
     <defs>

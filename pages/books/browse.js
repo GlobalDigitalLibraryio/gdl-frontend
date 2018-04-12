@@ -16,12 +16,12 @@ import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
-import Box from '../../components/Box';
-import H1 from '../../components/H1';
-import Container from '../../components/Container';
+import Text from '../../elements/Text';
+import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
 import { LanguageCategory } from '../../components/LanguageCategoryContext';
+import { spacing, fonts } from '../../style/theme';
 
 const PAGE_SIZE = 30;
 
@@ -162,8 +162,8 @@ class BrowsePage extends React.Component<Props, State> {
         >
           <Head title={i18n.t`Browse books`} />
 
-          <Container pt={20}>
-            <H1 textAlign="center">
+          <Container>
+            <Text accessibilityRole="heading" {...headerStyle}>
               {books.results.length > 0 ? (
                 readingLevel ? (
                   // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
@@ -174,11 +174,10 @@ class BrowsePage extends React.Component<Props, State> {
               ) : (
                 <Trans>No books found</Trans>
               )}
-            </H1>
-            <Box my={30}>
-              <BookGrid books={books.results} />
-            </Box>
-            <Box pt={6} pb={30} textAlign="center">
+            </Text>
+            <BookGrid books={books.results} />
+            {/* Should really be View instead of Text here.. but */}
+            <Text my={spacing.xlarge} textAlign="center">
               <Button
                 disabled={!canLoadMore}
                 onClick={this.handleLoadMore}
@@ -186,12 +185,18 @@ class BrowsePage extends React.Component<Props, State> {
               >
                 <Trans>See more books</Trans>
               </Button>
-            </Box>
+            </Text>
           </Container>
         </Layout>
       </LanguageCategory>
     );
   }
 }
+
+const headerStyle = {
+  textAlign: 'center',
+  my: spacing.medium,
+  fontWeight: fonts.weight.medium
+};
 
 export default defaultPage(errorPage(BrowsePage));

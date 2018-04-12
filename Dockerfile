@@ -12,6 +12,7 @@ RUN yarn
 
 # Copy necessary source files for server and client build
 COPY components $APP_PATH/components
+COPY elements $APP_PATH/elements
 COPY pages $APP_PATH/pages
 COPY static $APP_PATH/static
 COPY server $APP_PATH/server

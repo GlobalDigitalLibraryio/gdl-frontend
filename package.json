@@ -19,7 +19,8 @@
     "srcPathDirs": [
       "<rootDir>/components/",
       "<rootDir>/pages/",
-      "<rootDir>/hocs/"
+      "<rootDir>/hocs/",
+      "<rootDir>/elements/"
     ]
   },
   "jest": {
@@ -56,6 +57,7 @@
     "express": "4.16.3",
     "express-request-language": "1.1.12",
     "glob": "7.1.2",
+    "invariant": "^2.2.4",
     "isomorphic-unfetch": "2.0.0",
     "jwt-decode": "^2.2.0",
     "lscache": "1.1.0",

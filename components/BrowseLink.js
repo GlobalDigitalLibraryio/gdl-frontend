@@ -9,13 +9,13 @@ import React, { type Node } from 'react';
 import { Link } from '../routes';
 import type { Category } from '../types';
 
-type Props = {|
+export type Props = {
   category: Category,
   lang: string,
   readingLevel?: string,
   sort?: '-arrivalDate',
-  children: Node
-|};
+  children?: Node
+};
 
 // Special link component that routes the browse page. Nice to typecheck the props
 export default ({ children, ...props }: Props) => (

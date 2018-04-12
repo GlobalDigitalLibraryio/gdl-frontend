@@ -11,7 +11,7 @@ import { DateFormat, Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
-import A from '../A';
+import A from '../../elements/A';
 import Box from '../Box';
 import Ribbon from './LevelRibbon';
 import { colors, fonts, spacing } from '../../style/theme';
@@ -68,7 +68,7 @@ function listContributors(contributorType, contributors) {
 
 const BookMeta = ({ book }: Props) => {
   return (
-    <Box p={[15, 20]} color={colors.text.subtle}>
+    <Box color={colors.text.subtle} pl={[0, spacing.medium]}>
       <Ribbon level={book.readingLevel} />
       {book.datePublished && (
         <Fragment>
