@@ -181,7 +181,9 @@ class TranslatePage extends React.Component<Props, State> {
               {this.state.showLanguageMenu && (
                 <TranslationLanguage
                   languages={supportedLanguages}
-                  selectedLanguage={selectedLanguage}
+                  selectedLanguageCode={
+                    selectedLanguage && selectedLanguage.code
+                  }
                   onSelectLanguage={this.handleChangeLanguage}
                   onClose={this.toggleLanguageMenu}
                 />

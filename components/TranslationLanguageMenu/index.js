@@ -13,7 +13,7 @@ import type { Language } from '../../types';
 import Menu, { MenuItem } from '../Menu';
 
 type Props = {
-  selectedLanguage: ?Language,
+  selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
   onClose: (
@@ -27,15 +27,19 @@ type Props = {
 export default class TranslationLanguageMenu extends React.Component<Props> {
   render() {
     const {
-      selectedLanguage,
       languages,
+      selectedLanguageCode,
       onClose,
       onSelectLanguage
     } = this.props;
 
+    const selectedLanguage = languages.find(
+      l => l.code === selectedLanguageCode
+    );
+
     // We don't want to display the seelected language in the list
     const filteredLanguages = selectedLanguage
-      ? languages.filter(l => l.code !== selectedLanguage.code)
+      ? languages.filter(l => l !== selectedLanguage)
       : languages;
 
     return (

@@ -29,7 +29,8 @@ import errorPage from '../hocs/errorPage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
 import { getBookLanguageFromCookie } from '../lib/cookie';
 import { DEFAULT_LANGUAGE_CODE } from '../config';
-import { spacing } from '../style/theme';
+import { spacing, colors } from '../style/theme';
+import LanguageMenu from '../components/TranslationLanguageMenu';
 
 const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
@@ -247,7 +248,7 @@ class SearchPage extends React.Component<Props, State> {
             mt={spacing.medium}
             py={spacing.medium}
             style={{
-              background: '#fff',
+              background: colors.base.white,
               minHeight: '-webkit-fill-available',
               boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
             }}
