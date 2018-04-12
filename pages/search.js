@@ -18,7 +18,7 @@ import {
   Placeholder,
   NoResults
 } from '../components/Search';
-import Layout from '../components/Layout';
+import Layout from '../components/Layout2';
 import Head from '../components/Head';
 import Button from '../components/Button';
 import Container from '../elements/Container';
@@ -200,89 +200,88 @@ class SearchPage extends React.Component<Props, State> {
     const { languageCode } = this.props;
 
     return (
-      <LanguageCategory category={undefined} languageCode={languageCode}>
-        <Layout
-          crumbs={[<Trans>Search</Trans>]}
-          languages={this.props.languages}
-        >
-          <Head title="Search" />
-          <Container my={spacing.medium}>
-            {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
-            <form onSubmit={this.handleSearch} action=".">
-              <SearchField
-                autoFocus
-                label="Search"
-                id="booksearch"
-                onChange={this.handleQueryChange}
-                value={this.state.searchQuery}
-                placeholder="Search"
-              />
-            </form>
+      <Layout
+        /*crumbs={[<Trans>Search</Trans>]}
+          languages={this.props.languages}*/
+        category={undefined}
+        languageCode={languageCode}
+      >
+        <Head title="Search" />
+        <Container my={spacing.medium}>
+          {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
+          <form onSubmit={this.handleSearch} action=".">
+            <SearchField
+              autoFocus
+              label="Search"
+              id="booksearch"
+              onChange={this.handleQueryChange}
+              value={this.state.searchQuery}
+              placeholder="Search"
+            />
+          </form>
 
-            {searchResult && (
-              <Text
-                {...resultsTextStyle}
-                aria-live="polite"
-                accessibilityRole="heading"
-              >
-                {searchResult.results.length > 0 ? (
-                  <Fragment>
-                    <Plural
-                      value={searchResult.totalCount}
-                      one="# result for"
-                      other="# results for"
-                    />{' '}
-                    <strong>&quot;{lastSearchQuery}&quot;</strong>
-                  </Fragment>
-                ) : (
-                  <Trans>
-                    No results for{' '}
-                    <strong>&quot;{lastSearchQuery}&quot;</strong>
-                  </Trans>
-                )}
-              </Text>
-            )}
-          </Container>
-
-          <Container
-            mt={spacing.medium}
-            py={spacing.medium}
-            style={{
-              background: colors.base.white,
-              minHeight: '-webkit-fill-available',
-              boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
-            }}
-          >
-            {searchResult ? (
-              searchResult.results.length === 0 ? (
-                <NoResults />
-              ) : (
+          {searchResult && (
+            <Text
+              {...resultsTextStyle}
+              aria-live="polite"
+              accessibilityRole="heading"
+            >
+              {searchResult.results.length > 0 ? (
                 <Fragment>
-                  <div>
-                    {searchResult.results.map(book => (
-                      <SearchHit key={book.id} book={book} />
-                    ))}
-                  </div>
-                  {/* Should really be View instead of Text here.. but */}
-                  <Text textAlign="center">
-                    <Button
-                      disabled={
-                        searchResult.results.length >= searchResult.totalCount
-                      }
-                      onClick={this.handleLoadMore}
-                      isLoading={this.state.isLoadingMore}
-                    >
-                      <Trans>See more</Trans>
-                    </Button>
-                  </Text>
+                  <Plural
+                    value={searchResult.totalCount}
+                    one="# result for"
+                    other="# results for"
+                  />{' '}
+                  <strong>&quot;{lastSearchQuery}&quot;</strong>
                 </Fragment>
-              )
+              ) : (
+                <Trans>
+                  No results for <strong>&quot;{lastSearchQuery}&quot;</strong>
+                </Trans>
+              )}
+            </Text>
+          )}
+        </Container>
+
+        <Container
+          mt={spacing.medium}
+          py={spacing.medium}
+          style={{
+            background: colors.base.white,
+            minHeight: '-webkit-fill-available',
+            boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
+          }}
+        >
+          {searchResult ? (
+            searchResult.results.length === 0 ? (
+              <NoResults />
             ) : (
-              <Placeholder />
-            )}
-          </Container>
-        </Layout>
-      </LanguageCategory>
+              <Fragment>
+                <div>
+                  {searchResult.results.map(book => (
+                    <SearchHit key={book.id} book={book} />
+                  ))}
+                </div>
+                {/* Should really be View instead of Text here.. but */}
+                <Text textAlign="center">
+                  <Button
+                    disabled={
+                      searchResult.results.length >= searchResult.totalCount
+                    }
+                    onClick={this.handleLoadMore}
+                    isLoading={this.state.isLoadingMore}
+                  >
+                    <Trans>See more</Trans>
+                  </Button>
+                </Text>
+              </Fragment>
+            )
+          ) : (
+            <Placeholder />
+          )}
+        </Container>
+      </Layout>
     );
   }
 }
