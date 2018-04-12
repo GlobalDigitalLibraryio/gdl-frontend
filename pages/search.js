@@ -9,7 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 
-import type { Book, Context } from '../types';
+import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
@@ -23,7 +23,7 @@ import Head from '../components/Head';
 import Button from '../components/Button';
 import Container from '../elements/Container';
 import Text from '../elements/Text';
-import { search } from '../fetch';
+import { search, fetchLanguages } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
@@ -32,6 +32,7 @@ import { DEFAULT_LANGUAGE_CODE } from '../config';
 import { spacing } from '../style/theme';
 
 const QUERY_PARAM = 'q';
+const LANG_PARAM = 'l';
 
 type Props = {
   searchResult: ?{
@@ -39,10 +40,12 @@ type Props = {
     page: number,
     totalCount: number
   },
+  languages: Array<Language>,
   languageCode: string,
   url: {
     query: {
-      q?: string
+      q?: string,
+      l?: string
     },
     pathname: string,
     asPath: string
@@ -64,13 +67,17 @@ const resultsTextStyle = {
   textAlign: 'center',
   fontSize: '1rem',
   fontWeight: 'normal',
-  my: spacing.medium
+  mt: spacing.medium
 };
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
+    // We get the language code either from the query params, or the cookies or the default value
     const languageCode =
-      getBookLanguageFromCookie(req) || DEFAULT_LANGUAGE_CODE;
+      query[LANG_PARAM] ||
+      getBookLanguageFromCookie(req) ||
+      DEFAULT_LANGUAGE_CODE;
+
     let searchResult;
 
     if (query[QUERY_PARAM]) {
@@ -86,8 +93,16 @@ class SearchPage extends React.Component<Props, State> {
       }
     }
 
+    const languagesRes = await fetchLanguages();
+    if (!languagesRes.isOk) {
+      return {
+        statusCode: languagesRes.statusCode
+      };
+    }
+
     return {
       languageCode,
+      languages: languagesRes.data,
       searchResult:
         searchResult && searchResult.data ? searchResult.data : undefined
     };
@@ -109,7 +124,8 @@ class SearchPage extends React.Component<Props, State> {
     Router.pushRoute(
       'search',
       {
-        [QUERY_PARAM]: this.state.searchQuery
+        [QUERY_PARAM]: this.state.searchQuery,
+        [LANG_PARAM]: this.props.languageCode
       },
       { shallow: true }
     );
@@ -184,9 +200,12 @@ class SearchPage extends React.Component<Props, State> {
 
     return (
       <LanguageCategory category={undefined} languageCode={languageCode}>
-        <Layout crumbs={[<Trans>Search</Trans>]}>
+        <Layout
+          crumbs={[<Trans>Search</Trans>]}
+          languages={this.props.languages}
+        >
           <Head title="Search" />
-          <Container pt={[15, 20]}>
+          <Container my={spacing.medium}>
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
             <form onSubmit={this.handleSearch} action=".">
               <SearchField
