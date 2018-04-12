@@ -102,6 +102,8 @@ class SearchPage extends React.Component<Props, State> {
 
   handleSearch = async event => {
     event.preventDefault();
+    if (!this.state.searchQuery || this.state.searchQuery.trim() === '') return;
+
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
 
     Router.pushRoute(
@@ -194,7 +196,6 @@ class SearchPage extends React.Component<Props, State> {
                 onChange={this.handleQueryChange}
                 value={this.state.searchQuery}
                 placeholder="Search"
-                required
               />
             </form>
 
