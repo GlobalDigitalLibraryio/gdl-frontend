@@ -8,7 +8,6 @@
 
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
-import styled from 'react-emotion';
 
 import type { Book, Context } from '../types';
 import { Router } from '../routes';
@@ -22,14 +21,15 @@ import {
 import Layout from '../components/Layout';
 import Head from '../components/Head';
 import Button from '../components/Button';
-import Container from '../components/Container';
-import Box from '../components/Box';
+import Container from '../elements/Container';
+import Text from '../elements/Text';
 import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import { LanguageCategory } from '../components/LanguageCategoryContext';
 import { getBookLanguageFromCookie } from '../lib/cookie';
 import { DEFAULT_LANGUAGE_CODE } from '../config';
+import { spacing } from '../style/theme';
 
 const QUERY_PARAM = 'q';
 
@@ -60,12 +60,12 @@ type State = {
   isLoadingMore: boolean
 };
 
-const ResultsMeta = styled('h1')`
-  text-align: center;
-  margin-top: 15px;
-  font-size: 1rem;
-  font-weight: normal;
-`;
+const resultsTextStyle = {
+  textAlign: 'center',
+  fontSize: '1rem',
+  fontWeight: 'normal',
+  my: spacing.medium
+};
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
@@ -200,7 +200,11 @@ class SearchPage extends React.Component<Props, State> {
             </form>
 
             {searchResult && (
-              <ResultsMeta aria-live="polite">
+              <Text
+                {...resultsTextStyle}
+                aria-live="polite"
+                accessibilityRole="heading"
+              >
                 {searchResult.results.length > 0 ? (
                   <Fragment>
                     <Plural
@@ -216,13 +220,13 @@ class SearchPage extends React.Component<Props, State> {
                     <strong>&quot;{lastSearchQuery}&quot;</strong>
                   </Trans>
                 )}
-              </ResultsMeta>
+              </Text>
             )}
           </Container>
 
           <Container
-            mt={[15, 20]}
-            py={[15, 30]}
+            mt={spacing.medium}
+            py={spacing.medium}
             style={{
               background: '#fff',
               minHeight: '-webkit-fill-available',
@@ -239,7 +243,8 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  <Box textAlign="center">
+                  {/* Should really be View instead of Text here.. but */}
+                  <Text textAlign="center">
                     <Button
                       disabled={
                         searchResult.results.length >= searchResult.totalCount
@@ -249,7 +254,7 @@ class SearchPage extends React.Component<Props, State> {
                     >
                       <Trans>See more</Trans>
                     </Button>
-                  </Box>
+                  </Text>
                 </Fragment>
               )
             ) : (
