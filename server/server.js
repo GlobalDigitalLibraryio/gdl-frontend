@@ -40,17 +40,23 @@ function getCacheKey(req) {
     return `${path}-${bookLanguage}-${bookCategory}`;
   }
 
-  return path;
+  return req.path;
 }
+
+// A list of conditions that will make the request skip the cache
+const skipCacheConditions = [
+  req => isDev, // Don't cache when developing
+  req => req.cookies.jwt != null, // DO NOT CACHE FOR AUTHENTICATED USERS
+  req => req.path.startsWith('/search') && Object.keys(req.query).length !== 0 // Don't bother caching searches.
+];
 
 async function renderAndCache(req, res, pagePath, queryParams) {
   const cacheKey = getCacheKey(req);
 
-  // We don't want touch the cache if the user is authenticated
-  const isAuthenticated = req.cookies.jwt != null;
+  const canUseCache = !skipCacheConditions.some(condition => condition(req));
 
   // If the page is in the cache. Serve it
-  if (!isAuthenticated && ssrCache.has(cacheKey) && !isDev) {
+  if (canUseCache && ssrCache.has(cacheKey)) {
     res.setHeader('x-cache', 'HIT');
     res.send(ssrCache.get(cacheKey));
     return;
@@ -66,8 +72,7 @@ async function renderAndCache(req, res, pagePath, queryParams) {
       return;
     }
 
-    // Do not cache the page for an authenticated user! Risk of private stuff leaking out
-    if (!isAuthenticated && !isDev) {
+    if (canUseCache) {
       // Cache the rendered result
       ssrCache.set(cacheKey, html);
 
