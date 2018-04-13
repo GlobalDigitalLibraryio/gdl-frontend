@@ -7,16 +7,18 @@
  */
 
 import React, { type Node } from 'react';
-import { Nav, Container } from './styledSubNavbar';
+// import { Nav, Container } from './styledSubNavbar';
+import View from '../../elements/View';
+import Container from '../../elements/Container';
 
 type Props = {|
   children: Node
 |};
 
 const NavContextBar = (props: Props) => (
-  <Nav>
-    <Container {...props} />
-  </Nav>
+  <Container size="large" width="100%">
+    <View flexDirection="row" justifyContent="space-between" {...props} />
+  </Container>
 );
 
 export default NavContextBar;
