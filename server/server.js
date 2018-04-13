@@ -33,12 +33,14 @@ const ssrCache = new LRUCache({
  */
 function getCacheKey(req) {
   const { path } = req;
+
   if (path === '/') {
     const bookLanguage = req.cookies.bookLanguage;
     const bookCategory = req.cookies.bookCategory;
     return `${path}-${bookLanguage}-${bookCategory}`;
   }
-  return `${req.path}-`;
+
+  return path;
 }
 
 async function renderAndCache(req, res, pagePath, queryParams) {
