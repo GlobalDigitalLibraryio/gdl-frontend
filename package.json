@@ -60,6 +60,7 @@
     "invariant": "^2.2.4",
     "isomorphic-unfetch": "2.0.0",
     "jwt-decode": "^2.2.0",
+    "lru-cache": "^4.1.2",
     "lscache": "1.1.0",
     "next": "5.1.0",
     "next-routes": "1.4.1",
