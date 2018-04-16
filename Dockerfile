@@ -1,4 +1,4 @@
-FROM node:8.9.4-alpine
+FROM node:8.11.1-alpine
 
 ENV HOME=/home/app
 ENV APP_PATH=$HOME/gdl-frontend
