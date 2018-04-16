@@ -73,11 +73,19 @@ function getConfig() {
   };
 
   // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
-  if (!process.browser && process.env.GDL_ENVIRONMENT) {
-    toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
-  }
+    if (!process.browser && process.env.GDL_ENVIRONMENT) {
+        toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
+        const dns = eval("require('dns')");
+        const { promisify } = require('util');
 
-  return toRet;
+        const resolve4 = promisify(dns.resolve4);
+        resolve4('book-api.gdl-local', { ttl: true }).then(addresses => {
+            console.log(addresses);
+            toRet.bookApiUrl = `http://${addresses[0].address}/book-api/v1`;
+        });
+    }
+
+    return toRet;
 }
 
 module.exports = getConfig();
