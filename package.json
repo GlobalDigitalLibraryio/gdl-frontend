@@ -24,9 +24,7 @@
     ]
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ]
+    "setupFiles": ["./jest.setup.js"]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -42,7 +40,8 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check":
+      "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.5",
@@ -74,7 +73,6 @@
     "react-json-view": "^1.16.1",
     "react-portal": "^4.1.4",
     "react-swipeable": "4.2.0",
-    "serialize-javascript": "1.4.0",
     "styled-map": "^2.0.1",
     "styled-system": "2.2.1",
     "styled-theming": "^2.2.0",
