@@ -75,7 +75,7 @@ function getConfig() {
   // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
   if (!process.browser && process.env.GDL_ENVIRONMENT) {
     Object.defineProperty(toRet, 'bookApiUrl', {
-      get: dnsLookup
+      get: bookApiAdddress
     });
 
     /*toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
@@ -96,24 +96,23 @@ module.exports = getConfig();
 
 const DOCKER_API_URL = 'http://book-api.gdl-local/book-api/v1';
 
-function dnsLookup() {
-  if (this.ip && this.expires > Date.now()) {
-    return this.ip;
+let address;
+let expires;
+function bookApiAdddress() {
+  if (address && expires > Date.now()) {
+    return address;
   }
 
-  const dns = eval("require('dns')");
-  const { promisify } = require('util');
+  const dns = require('dns');
 
-  const resolve4 = promisify(dns.resolve4);
-  resolve4('book-api.gdl-local', { ttl: true }).then(addresses => {
-    const { ttl, address } = addresses[0];
+  dns.resolve4('book-api.gdl-local', { ttl: true }, (err, addresses) => {
+    if (addresses && addresses[0]) {
+      const { ttl, address: ip } = addresses[0];
 
-    this.expires = ttl + Date.now();
-    this.ip = address;
-    console.log(addresses);
-    return `http://${this.ip}/book-api/v1`;
+      expires = ttl * 1000 + Date.now();
+      address = `http://${ip}/book-api/v1`;
+    }
   });
 
-  // const expires =
   return DOCKER_API_URL;
 }
