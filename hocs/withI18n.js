@@ -9,9 +9,10 @@
 import * as React from 'react';
 import { I18nProvider, withI18n } from '@lingui/react';
 import Head from 'next/head';
-import serializeJS from 'serialize-javascript';
 import Url from 'domurl';
 import type { Context } from '../types';
+// Currently we only support English
+import catalog from '../locale/en/messages';
 
 type Props = {
   language: string,
@@ -19,10 +20,9 @@ type Props = {
   href: string
 };
 
-// Currently next.js doesn't support variables with dynamic imports,
-// So for now we have to add each translation specifically
+// For now we have to add each translation here
 const translations = {
-  en: import('../locale/en/messages')
+  en: catalog
 };
 
 /**
@@ -51,10 +51,6 @@ export default (Page: React.ComponentType<any>) => {
         language = 'en';
       }
 
-      // Load the translation
-      // It contains functions, so we use this lib to serialize it
-      const catalog = serializeJS(await translations[language]);
-
       let href;
       if (req != null) {
         // On the server, we build it up based on the request object
@@ -67,24 +63,22 @@ export default (Page: React.ComponentType<any>) => {
       return {
         ...composedInitialProps,
         language,
-        catalog,
         href
       };
     }
 
     render() {
       const languages = Object.keys(translations);
-      const { language, href, catalog, ...props } = this.props;
+      const { language, href, ...props } = this.props;
       const url = new Url(href);
       delete url.query.hl;
       // Wrap our page with the i18n provider and add alternate links to the other supported languages in the head
 
-      // The translation contains serialized functions. So we need to use eval here :/
       return (
         <I18nProvider
           language={language}
           catalogs={{
-            [language]: eval(`(${catalog})`) // eslint-disable-line no-eval
+            [language]: translations[language]
           }}
         >
           <Head>

@@ -8,11 +8,11 @@
       ],
       [
         "pages/books/_book.js",
-        196
+        207
       ],
       [
         "pages/books/_book.js",
-        208
+        230
       ]
     ]
   },
@@ -97,6 +97,19 @@
       ]
     ]
   },
+  "More": {
+    "translation": "More",
+    "origin": [
+      [
+        "components/BookList/index.js",
+        46
+      ],
+      [
+        "components/HomePage/index.js",
+        119
+      ]
+    ]
+  },
   "Dismiss": {
     "translation": "Dismiss",
     "origin": [
@@ -141,7 +154,7 @@
       ],
       [
         "components/HomePage/index.js",
-        199
+        161
       ],
       [
         "pages/books/browse.js",
@@ -184,12 +197,21 @@
       ]
     ]
   },
-  "About Global Digital Library": {
-    "translation": "About Global Digital Library",
+  "Log in": {
+    "translation": "Log in",
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        161
+        164
+      ]
+    ]
+  },
+  "Log out": {
+    "translation": "Log out",
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        170
       ]
     ]
   },
@@ -198,7 +220,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        168
+        176
       ],
       [
         "pages/books/translations.js",
@@ -214,12 +236,12 @@
       ]
     ]
   },
-  "Log out": {
-    "translation": "Log out",
+  "About Global Digital Library": {
+    "translation": "About Global Digital Library",
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        174
+        183
       ]
     ]
   },
@@ -228,7 +250,16 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        181
+        186
+      ]
+    ]
+  },
+  "Cookie policy": {
+    "translation": "Cookie policy",
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        189
       ]
     ]
   },
@@ -237,7 +268,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        184
+        192
       ]
     ]
   },
@@ -255,20 +286,7 @@
     "origin": [
       [
         "components/HomePage/index.js",
-        133
-      ]
-    ]
-  },
-  "More": {
-    "translation": "More",
-    "origin": [
-      [
-        "components/HomePage/index.js",
-        176
-      ],
-      [
-        "components/HomePage/index.js",
-        195
+        135
       ]
     ]
   },
@@ -324,12 +342,34 @@
       ]
     ]
   },
+  "Sorry, you don’t have access to this page": {
+    "translation": "Sorry, you don’t have access to this page",
+    "origin": [
+      [
+        "components/NoAccessPage/index.js",
+        27
+      ]
+    ]
+  },
+  "Take me home": {
+    "translation": "Take me home",
+    "origin": [
+      [
+        "components/NoAccessPage/index.js",
+        34
+      ],
+      [
+        "components/NotFound/index.js",
+        41
+      ]
+    ]
+  },
   "Oh no!": {
     "translation": "Oh no!",
     "origin": [
       [
         "components/NotFound/index.js",
-        30
+        26
       ]
     ]
   },
@@ -338,16 +378,7 @@
     "origin": [
       [
         "components/NotFound/index.js",
-        33
-      ]
-    ]
-  },
-  "Take me home": {
-    "translation": "Take me home",
-    "origin": [
-      [
-        "components/NotFound/index.js",
-        40
+        34
       ]
     ]
   },
@@ -374,7 +405,7 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        63
+        86
       ]
     ]
   },
@@ -468,7 +499,7 @@
     "origin": [
       [
         "hocs/securePage.js",
-        68
+        82
       ]
     ]
   },
@@ -494,8 +525,8 @@
       ]
     ]
   },
-  "log in using Google": {
-    "translation": "log in using Google",
+  "Log in using Google": {
+    "translation": "Log in using Google",
     "origin": [
       [
         "pages/auth/sign-in.js",
@@ -503,8 +534,8 @@
       ]
     ]
   },
-  "log in using Facebook": {
-    "translation": "log in using Facebook",
+  "Log in using Facebook": {
+    "translation": "Log in using Facebook",
     "origin": [
       [
         "pages/auth/sign-in.js",
@@ -530,12 +561,20 @@
       ]
     ]
   },
-  "from <0>{0}</0>": {
-    "translation": "from <0>{0}</0>",
+  "from {0}": {
+    "translation": "from {0}",
     "origin": [
       [
         "pages/books/_book.js",
-        166
+        178
+      ],
+      [
+        "pages/books/_translate.js",
+        167
+      ],
+      [
+        "pages/books/translations.js",
+        78
       ]
     ]
   },
@@ -544,7 +583,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        186
+        198
       ]
     ]
   },
@@ -553,7 +592,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        229
+        258
       ]
     ]
   },
@@ -562,7 +601,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        244
+        279
       ]
     ]
   },
@@ -571,7 +610,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        254
+        293
       ]
     ]
   },
@@ -594,19 +633,6 @@
       [
         "pages/books/_translate.js",
         140
-      ]
-    ]
-  },
-  "from {0}": {
-    "translation": "from {0}",
-    "origin": [
-      [
-        "pages/books/_translate.js",
-        167
-      ],
-      [
-        "pages/books/translations.js",
-        78
       ]
     ]
   },
@@ -687,7 +713,7 @@
     "origin": [
       [
         "pages/books/browse.js",
-        187
+        186
       ]
     ]
   },
