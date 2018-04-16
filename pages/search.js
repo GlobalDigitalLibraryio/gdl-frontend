@@ -18,7 +18,7 @@ import {
   Placeholder,
   NoResults
 } from '../components/Search';
-import Layout, { Main } from '../components/Layout2';
+import Layout, { Main } from '../components/Layout';
 import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
 import Head from '../components/Head';
 import Button from '../components/Button';
@@ -30,7 +30,7 @@ import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import { getBookLanguageFromCookie } from '../lib/cookie';
 import { DEFAULT_LANGUAGE_CODE } from '../config';
-import { spacing, colors } from '../style/theme';
+import { spacing, colors, fonts } from '../style/theme';
 import LanguageMenu from '../components/TranslationLanguageMenu';
 
 const QUERY_PARAM = 'q';
@@ -63,7 +63,8 @@ type State = {
   searchQuery: string,
   lastSearchQuery?: string,
   isLoadingMore: boolean,
-  selectedLanguage: ?Language
+  selectedLanguage: ?Language,
+  showLanguageMenu: boolean
 };
 
 const resultsTextStyle = {
@@ -118,7 +119,8 @@ class SearchPage extends React.Component<Props, State> {
     isLoadingMore: false,
     selectedLanguage: this.props.languages.find(
       l => l.code === this.props.languageCode
-    )
+    ),
+    showLanguageMenu: false
   };
 
   handleSearch = async event => {
@@ -200,6 +202,21 @@ class SearchPage extends React.Component<Props, State> {
   handleQueryChange = event =>
     this.setState({ searchQuery: event.target.value });
 
+  renderLanguageMenu() {
+    if (!this.state.showLanguageMenu) return null;
+
+    return (
+      <LanguageMenu
+        languages={this.props.languages}
+        selectedLanguageCode={
+          this.state.selectedLanguage && this.state.selectedLanguage.code
+        }
+        onSelectLanguage={this.handleChangeLanguage}
+        onClose={() => this.setState({ showLanguageMenu: false })}
+      />
+    );
+  }
+
   render() {
     const { searchResult, lastSearchQuery } = this.state;
     const { languageCode } = this.props;
@@ -211,9 +228,20 @@ class SearchPage extends React.Component<Props, State> {
         <NavContextBar>
           <Breadcrumb crumbs={[<Trans>Search</Trans>]} />
           <Text>
-            {selectedLanguage.name} <A>Change</A>
+            {selectedLanguage.name}{' '}
+            <A
+              fontWeight={fonts.weight.medium}
+              onClick={() =>
+                this.setState({
+                  showLanguageMenu: true
+                })
+              }
+            >
+              Change
+            </A>
           </Text>
         </NavContextBar>
+        {this.renderLanguageMenu()}
         <Main>
           <Container my={spacing.medium}>
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}

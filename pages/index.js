@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 
 import {
@@ -26,7 +26,6 @@ import type {
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
-import { LanguageCategory } from '../components/LanguageCategoryContext';
 import { DEFAULT_LANGUAGE_CODE } from '../config';
 import {
   setBookLanguageAndCategoryCookie,
@@ -172,10 +171,7 @@ class BooksPage extends React.Component<Props> {
     }
 
     return (
-      <LanguageCategory
-        category={category}
-        languageCode={newArrivals.language.code}
-      >
+      <Fragment>
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -201,7 +197,7 @@ class BooksPage extends React.Component<Props> {
           booksByLevel={booksByLevel}
           featuredContent={featuredContent}
         />
-      </LanguageCategory>
+      </Fragment>
     );
   }
 }

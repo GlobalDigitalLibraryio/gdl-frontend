@@ -20,7 +20,6 @@ import Text from '../../elements/Text';
 import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
-import { LanguageCategory } from '../../components/LanguageCategoryContext';
 import { spacing, fonts } from '../../style/theme';
 
 const PAGE_SIZE = 30;
@@ -149,46 +148,46 @@ class BrowsePage extends React.Component<Props, State> {
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <LanguageCategory category={category} languageCode={books.language.code}>
-        <Layout
-          crumbs={[
-            readingLevel ? (
-              // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-              <ReadingLevelTrans readingLevel={readingLevel} />
-            ) : (
-              <Trans>New arrivals</Trans>
-            )
-          ]}
-        >
-          <Head title={i18n.t`Browse books`} />
+      <Layout
+        category={category}
+        languageCode={books.language.code}
+        crumbs={[
+          readingLevel ? (
+            // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
+            <ReadingLevelTrans readingLevel={readingLevel} />
+          ) : (
+            <Trans>New arrivals</Trans>
+          )
+        ]}
+      >
+        <Head title={i18n.t`Browse books`} />
 
-          <Container>
-            <Text accessibilityRole="heading" {...headerStyle}>
-              {books.results.length > 0 ? (
-                readingLevel ? (
-                  // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-                  <ReadingLevelTrans readingLevel={readingLevel} />
-                ) : (
-                  <Trans>New arrivals</Trans>
-                )
+        <Container>
+          <Text accessibilityRole="heading" {...headerStyle}>
+            {books.results.length > 0 ? (
+              readingLevel ? (
+                // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
+                <ReadingLevelTrans readingLevel={readingLevel} />
               ) : (
-                <Trans>No books found</Trans>
-              )}
-            </Text>
-            <BookGrid books={books.results} />
-            {/* Should really be View instead of Text here.. but */}
-            <Text my={spacing.xlarge} textAlign="center">
-              <Button
-                disabled={!canLoadMore}
-                onClick={this.handleLoadMore}
-                isLoading={this.state.isLoadingMore}
-              >
-                <Trans>See more books</Trans>
-              </Button>
-            </Text>
-          </Container>
-        </Layout>
-      </LanguageCategory>
+                <Trans>New arrivals</Trans>
+              )
+            ) : (
+              <Trans>No books found</Trans>
+            )}
+          </Text>
+          <BookGrid books={books.results} />
+          {/* Should really be View instead of Text here.. but */}
+          <Text my={spacing.xlarge} textAlign="center">
+            <Button
+              disabled={!canLoadMore}
+              onClick={this.handleLoadMore}
+              isLoading={this.state.isLoadingMore}
+            >
+              <Trans>See more books</Trans>
+            </Button>
+          </Text>
+        </Container>
+      </Layout>
     );
   }
 }

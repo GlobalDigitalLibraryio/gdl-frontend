@@ -123,7 +123,12 @@ export default class HomePage extends React.Component<Props> {
     );
 
     return (
-      <Layout languages={languages} categories={categories}>
+      <Layout
+        languages={languages}
+        categories={categories}
+        category={category}
+        languageCode={newArrivals.language.code}
+      >
         <Head imageUrl={featured.imageUrl} />
         <Banner src={featured.imageUrl}>
           <HeroCovertitle>
