@@ -15,9 +15,10 @@ import Menu, { MenuItem } from '../Menu';
 type Props = {
   book: BookDetails,
   onClose: (
-    event: | SyntheticMouseEvent<any>
-    | SyntheticKeyboardEvent<any>
-    | KeyboardEvent
+    event:
+      | SyntheticMouseEvent<any>
+      | SyntheticKeyboardEvent<any>
+      | KeyboardEvent
   ) => void
 };
 

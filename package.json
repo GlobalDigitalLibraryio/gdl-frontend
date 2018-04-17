@@ -24,7 +24,9 @@
     ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "browser": {
     "dns": false
@@ -43,19 +45,18 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check":
-      "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.5",
-    "auth0-js": "9.4.1",
+    "auth0-js": "9.4.2",
     "cookie-dough": "^0.1.0",
     "cookie-parser": "1.4.3",
     "create-react-context": "^0.2.1",
     "domurl": "2.1.7",
-    "emotion": "9.1.0",
-    "emotion-server": "9.1.0",
-    "emotion-theming": "^9.0.0",
+    "emotion": "9.1.2",
+    "emotion-server": "9.1.2",
+    "emotion-theming": "^9.1.2",
     "express": "4.16.3",
     "express-request-language": "1.1.12",
     "glob": "7.1.2",
@@ -68,14 +69,14 @@
     "next-routes": "1.4.1",
     "polished": "1.9.2",
     "prop-types": "15.6.1",
-    "react": "16.2.0",
-    "react-dom": "16.2.0",
-    "react-emotion": "9.1.0",
+    "react": "16.3.2",
+    "react-dom": "16.3.2",
+    "react-emotion": "9.1.2",
     "react-ga": "^2.4.0",
     "react-icons": "2.2.7",
     "react-json-view": "^1.16.1",
-    "react-portal": "^4.1.4",
-    "react-swipeable": "4.2.0",
+    "react-portal": "^4.1.5",
+    "react-swipeable": "4.2.1",
     "styled-map": "^2.0.1",
     "styled-system": "2.2.1",
     "styled-theming": "^2.2.0",
@@ -84,8 +85,8 @@
   "devDependencies": {
     "@sector-labs/lingui-babel-preset-react": "2.0.4-sl.6",
     "@sector-labs/lingui-cli": "2.0.4-sl.6",
-    "babel-eslint": "^8.2.2",
-    "babel-plugin-emotion": "9.1.0",
+    "babel-eslint": "^8.2.3",
+    "babel-plugin-emotion": "9.1.2",
     "babel-plugin-inline-react-svg": "0.5.2",
     "babel-plugin-polished": "1.1.0",
     "babel-plugin-transform-assets": "0.2.0",
@@ -95,16 +96,16 @@
     "enzyme-to-json": "3.3.3",
     "eslint": "4.19.1",
     "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "2.46.1",
-    "eslint-plugin-import": "2.9.0",
+    "eslint-plugin-flowtype": "2.46.2",
+    "eslint-plugin-import": "2.11.0",
     "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "7.7.0",
     "flow-bin": "0.67.1",
     "jest": "22.4.3",
-    "jest-emotion": "9.0.0",
-    "nock": "^9.2.3",
-    "prettier": "^1.11.1",
-    "react-test-renderer": "16.2.0"
+    "jest-emotion": "9.1.2",
+    "nock": "^9.2.5",
+    "prettier": "^1.12.1",
+    "react-test-renderer": "16.3.2"
   }
 }
