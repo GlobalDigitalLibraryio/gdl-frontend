@@ -24,7 +24,9 @@
     ]
   },
   "jest": {
-    "setupFiles": ["./jest.setup.js"]
+    "setupFiles": [
+      "./jest.setup.js"
+    ]
   },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
@@ -40,8 +42,7 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "flow": "flow",
-    "check":
-      "npm run lint && npm run format:check && npm run flow && npm run test"
+    "check": "npm run lint && npm run format:check && npm run flow && npm run test"
   },
   "dependencies": {
     "@lingui/react": "2.0.5",
@@ -101,7 +102,7 @@
     "jest": "22.4.3",
     "jest-emotion": "9.0.0",
     "nock": "^9.2.3",
-    "prettier": "^1.11.1",
+    "prettier": "^1.12.1",
     "react-test-renderer": "16.2.0"
   }
 }
