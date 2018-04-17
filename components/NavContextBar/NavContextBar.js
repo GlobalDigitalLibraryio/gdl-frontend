@@ -7,27 +7,41 @@
  */
 
 import React, { type Node } from 'react';
-// import { Nav, Container } from './styledSubNavbar';
-import View from '../../elements/View';
+import { css } from 'react-emotion';
+
 import Container from '../../elements/Container';
-import { Nav } from './styledSubNavbar';
+import media from '../../style/media';
+import { colors } from '../../style/theme';
 
 type Props = {|
   children: Node
 |};
 
 const NavContextBar = (props: Props) => (
-  <Nav>
+  <nav className={barStyle}>
     <Container
       size="large"
       width="100%"
+      stickToEdgeOnLargeScreens
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
       style={{ height: '100%' }}
       {...props}
     />
-  </Nav>
+  </nav>
 );
+
+const barStyle = css`
+  background: ${colors.base.white};
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+  position: relative;
+  font-size: 14px;
+  height: 48px;
+  z-index: 10;
+  ${media.tablet`
+    font-size: 16px;
+  `};
+`;
 
 export default NavContextBar;

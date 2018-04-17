@@ -154,6 +154,10 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchResult: queryRes.data });
   };
 
+  handleChangeLanguage = language => {
+    this.setState({ selectedLanguage: language, showLanguageMenu: false });
+  };
+
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     // Fixes flow warnings
@@ -223,7 +227,7 @@ class SearchPage extends React.Component<Props, State> {
     const { selectedLanguage } = this.state;
 
     return (
-      <Layout category={undefined} languageCode={languageCode}>
+      <Layout languageCode={languageCode} wrapWithMain={false}>
         <Head title="Search" />
         <NavContextBar>
           <Breadcrumb crumbs={[<Trans>Search</Trans>]} />

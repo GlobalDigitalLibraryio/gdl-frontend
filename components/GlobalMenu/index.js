@@ -71,6 +71,10 @@ class GlobalMenu extends React.Component<Props, State> {
     }
   }
 
+  static defaultProps = {
+    languageCode: 'en'
+  };
+
   componentDidMount() {
     // Only fetch if we haven't already set stuff from the cache in the constructor
     if (this.state.languages.length === 0) {
@@ -202,4 +206,5 @@ class GlobalMenu extends React.Component<Props, State> {
     );
   }
 }
+
 export default withRouter(GlobalMenu);

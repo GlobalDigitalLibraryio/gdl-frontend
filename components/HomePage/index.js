@@ -18,13 +18,16 @@ import type {
   ReadingLevel,
   Category
 } from '../../types';
-import Layout from '../../components/Layout';
+import Layout, { Main } from '../../components/Layout';
 import Card from '../../components/Card';
-import Container from '../../elements/Container';
-import Text from '../../elements/Text';
-import View from '../../elements/View';
+import { A, Container, Text, View } from '../../elements';
+import {
+  NavContextBar,
+  CategoryNavigation
+} from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
+import LanguageMenu from '../../components/LanguageMenu';
 import Button from '../../components/Button';
 import { colors, fonts, spacing } from '../../style/theme';
 import media from '../../style/media';
@@ -85,7 +88,14 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-export default class HomePage extends React.Component<Props> {
+export default class HomePage extends React.Component<
+  Props,
+  { showLanguageMenu: boolean }
+> {
+  state = {
+    showLanguageMenu: false
+  };
+
   render() {
     const {
       category,
@@ -122,58 +132,88 @@ export default class HomePage extends React.Component<Props> {
       </View>
     );
 
+    const languageCode = newArrivals.language.code;
+
     return (
       <Layout
-        languages={languages}
-        categories={categories}
         category={category}
-        languageCode={newArrivals.language.code}
+        languageCode={languageCode}
+        wrapWithMain={false}
       >
-        <Head imageUrl={featured.imageUrl} />
-        <Banner src={featured.imageUrl}>
-          <HeroCovertitle>
-            <Text
-              accessibilityRole="heading"
-              color={colors.base.white}
-              fontSize="1.1rem"
+        <Head image={featured.imageUrl} />
+        <NavContextBar>
+          <CategoryNavigation
+            category={category}
+            categories={categories}
+            languageCode={languageCode}
+          />
+          <Text>
+            {newArrivals.language.name}{' '}
+            <A
               fontWeight={fonts.weight.medium}
+              onClick={() =>
+                this.setState({
+                  showLanguageMenu: true
+                })
+              }
             >
-              <Trans>Featured</Trans>
-            </Text>
-          </HeroCovertitle>
-          <HeroCardTablet>{cardContent}</HeroCardTablet>
-        </Banner>
-        <HeroCardMobile>{cardContent}</HeroCardMobile>
+              Change
+            </A>
+          </Text>
+          {this.state.showLanguageMenu && (
+            <LanguageMenu
+              languages={languages}
+              selectedLanguageCode={languageCode}
+              onClose={() => this.setState({ showLanguageMenu: false })}
+            />
+          )}
+        </NavContextBar>
+        <Main>
+          <Banner src={featured.imageUrl}>
+            <HeroCovertitle>
+              <Text
+                accessibilityRole="heading"
+                color={colors.base.white}
+                fontSize="1.1rem"
+                fontWeight={fonts.weight.medium}
+              >
+                <Trans>Featured</Trans>
+              </Text>
+            </HeroCovertitle>
+            <HeroCardTablet>{cardContent}</HeroCardTablet>
+          </Banner>
+          <HeroCardMobile>{cardContent}</HeroCardMobile>
 
-        {levels.map((level, index) => (
-          <View {...bookListViewStyle} key={level}>
+          {levels.map((level, index) => (
+            <View {...bookListViewStyle} key={level}>
+              <Container width="100%">
+                <BookList
+                  heading={<ReadingLevelTrans readingLevel={level} />}
+                  browseLinkProps={{
+                    lang: languageCode,
+                    readingLevel: level,
+                    category: category
+                  }}
+                  books={booksByLevel[index].results}
+                />
+              </Container>
+            </View>
+          ))}
+
+          <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
-                heading={<ReadingLevelTrans readingLevel={level} />}
+                heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
-                  lang: newArrivals.language.code,
-                  readingLevel: level,
+                  lang: languageCode,
+                  sort: '-arrivalDate',
                   category: category
                 }}
-                books={booksByLevel[index].results}
+                books={newArrivals.results}
               />
             </Container>
           </View>
-        ))}
-
-        <View {...bookListViewStyle}>
-          <Container width="100%">
-            <BookList
-              heading={<Trans>New arrivals</Trans>}
-              browseLinkProps={{
-                lang: newArrivals.language.code,
-                sort: '-arrivalDate',
-                category: category
-              }}
-              books={newArrivals.results}
-            />
-          </Container>
-        </View>
+        </Main>
       </Layout>
     );
   }

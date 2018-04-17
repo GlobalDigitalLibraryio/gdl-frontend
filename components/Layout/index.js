@@ -34,13 +34,19 @@ const PageWrapper = styled('div')`
 
 type Props = {|
   children: Node,
+  category?: ?Category,
+  languageCode?: string,
   crumbs?: Array<Node | string>,
-  category: ?Category,
-  languageCode: string,
-  crumbs?: Array<Node | string>
+  wrapWithMain: boolean
 |};
 
-const Layout = ({ children, languageCode, category, crumbs }: Props) => {
+const Layout = ({
+  children,
+  languageCode,
+  category,
+  wrapWithMain,
+  crumbs
+}: Props) => {
   return (
     <ThemeProvider
       theme={{
@@ -63,10 +69,14 @@ const Layout = ({ children, languageCode, category, crumbs }: Props) => {
             <Breadcrumb crumbs={crumbs} />
           </NavContextBar>
         )}
-        <Main>{children}</Main>
+        {wrapWithMain ? <Main>{children}</Main> : children}
       </PageWrapper>
     </ThemeProvider>
   );
+};
+
+Layout.defaultProps = {
+  wrapWithMain: true
 };
 
 export default Layout;
