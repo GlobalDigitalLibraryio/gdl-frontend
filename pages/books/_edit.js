@@ -69,7 +69,7 @@ class EditPage extends React.Component<Props> {
     return (
       <React.Fragment>
         <Head
-          title={`Editing ${book.title}`}
+          title={`Edit: ${book.title}`}
           image={book.coverPhoto ? book.coverPhoto.large : null}
         />
         <Editor book={book} chapter={chapter} />

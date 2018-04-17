@@ -13,6 +13,7 @@ import { extractCritical } from 'emotion-server';
 import type { Context } from '../types';
 import globalStyles from '../style/globalStyles';
 import config from '../config';
+import { DEFAULT_TITLE } from '../components/Head';
 
 injectGlobal`
   ${globalStyles}
@@ -61,6 +62,7 @@ export default class GDLDocument extends Document {
           {config.BLOCK_SEARCH_INDEXING && (
             <meta name="robots" content="noindex, nofollow" />
           )}
+          <title>{DEFAULT_TITLE}</title>
           {/* Twitter */}
           <meta name="twitter:site" content="@GDigitalLibrary" />
           <meta name="twitter:card" content="summary" />

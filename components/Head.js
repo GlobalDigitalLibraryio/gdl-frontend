@@ -11,11 +11,6 @@ import NextHead from 'next/head';
 import { withI18n } from '@lingui/react';
 import type { I18n } from '../types';
 
-const META = {
-  TITLE: 'Global Digital Library',
-  TITLE_ABBR: 'GDL'
-};
-
 type Props = {|
   description?: string,
   title?: string,
@@ -24,8 +19,10 @@ type Props = {|
   i18n: I18n
 |};
 
+export const DEFAULT_TITLE = 'Global Digital Library';
+
 const Head = ({ title, description, i18n, image, children }: Props) => {
-  const actualTitle = title ? `${META.TITLE_ABBR} - ${title}` : META.TITLE;
+  const actualTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
   const actualDescription =
     description ||
     i18n.t`Enjoy free reading resources. Available for everyone. Forever`;
