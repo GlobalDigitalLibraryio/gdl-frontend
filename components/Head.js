@@ -11,6 +11,8 @@ import NextHead from 'next/head';
 import { withI18n } from '@lingui/react';
 import type { I18n } from '../types';
 
+const fallBackImgSrc = require('../static/img/apple-icon-144x144-precomposed.png');
+
 type Props = {|
   description?: string,
   title?: string,
@@ -38,9 +40,8 @@ const Head = ({ title, description, i18n, image, children }: Props) => {
       <meta property="twitter:title" content={actualTitle} />
       <meta property="twitter:description" content={actualDescription} />
 
-      {/* TODO: Add fallback image */}
-      {image && <meta property="og:image" content={image} />}
-      {image && <meta property="twitter:image" content={image} />}
+      <meta property="og:image" content={image || fallBackImgSrc} />
+      <meta property="twitter:image" content={image || fallBackImgSrc} />
       {children}
     </NextHead>
   );

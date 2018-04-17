@@ -15,6 +15,12 @@ import globalStyles from '../style/globalStyles';
 import config from '../config';
 import { DEFAULT_TITLE } from '../components/Head';
 
+const favIcon = require('../static/img/favicon-32x32.png');
+const precomposed57 = require('../static/img/apple-icon-57x57-precomposed.png');
+const precomposed72 = require('../static/img/apple-icon-72x72-precomposed.png');
+const precomposed114 = require('../static/img/apple-icon-114x114-precomposed.png');
+const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png');
+
 injectGlobal`
   ${globalStyles}
 `;
@@ -69,6 +75,28 @@ export default class GDLDocument extends Document {
           {/* Open Graph */}
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="Global Digital Library" />
+
+          <link rel="icon" type="image/png" href={favIcon} />
+          <link
+            rel="apple-touch-icon-precomposed"
+            sizes="57x57"
+            href={precomposed57}
+          />
+          <link
+            rel="apple-touch-icon-precomposed"
+            sizes="72x72"
+            href={precomposed72}
+          />
+          <link
+            rel="apple-touch-icon-precomposed"
+            sizes="114x114"
+            href={precomposed114}
+          />
+          <link
+            rel="apple-touch-icon-precomposed"
+            sizes="144x144"
+            href={precomposed144}
+          />
 
           <script
             dangerouslySetInnerHTML={{
