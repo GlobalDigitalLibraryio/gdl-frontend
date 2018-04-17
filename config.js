@@ -6,6 +6,8 @@
  * See LICENSE
  */
 
+const dnsResolver = require('./lib/customResolver');
+
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 
@@ -74,45 +76,14 @@ function getConfig() {
 
   // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
   if (!process.browser && process.env.GDL_ENVIRONMENT) {
+    // Define a getter method when retrieving the book api url inside Docker.
+    // $FlowFixMe
     Object.defineProperty(toRet, 'bookApiUrl', {
-      get: bookApiAdddress
+      get: dnsResolver('book-api.gdl-local', '/book-api/v1')
     });
-
-    /*toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
-    const dns = eval("require('dns')");
-    const { promisify } = require('util');
-
-    const resolve4 = promisify(dns.resolve4);
-    resolve4('book-api.gdl-local', { ttl: true }).then(addresses => {
-      console.log(addresses);
-      toRet.bookApiUrl = `http://${addresses[0].address}/book-api/v1`;
-    });*/
   }
 
   return toRet;
 }
 
 module.exports = getConfig();
-
-const DOCKER_API_URL = 'http://book-api.gdl-local/book-api/v1';
-
-let address;
-let expires;
-function bookApiAdddress() {
-  if (address && expires > Date.now()) {
-    return address;
-  }
-
-  const dns = require('dns');
-
-  dns.resolve4('book-api.gdl-local', { ttl: true }, (err, addresses) => {
-    if (addresses && addresses[0]) {
-      const { ttl, address: ip } = addresses[0];
-
-      expires = ttl * 1000 + Date.now();
-      address = `http://${ip}/book-api/v1`;
-    }
-  });
-
-  return DOCKER_API_URL;
-}
