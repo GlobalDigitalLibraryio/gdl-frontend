@@ -18,9 +18,10 @@ type Props = {
   isNestedMenu?: boolean,
   languages: Array<Language>,
   onClose: (
-    event: | SyntheticMouseEvent<any>
-    | SyntheticKeyboardEvent<any>
-    | KeyboardEvent
+    event:
+      | SyntheticMouseEvent<any>
+      | SyntheticKeyboardEvent<any>
+      | KeyboardEvent
   ) => void
 };
 
