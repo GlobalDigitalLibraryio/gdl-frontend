@@ -11,7 +11,7 @@ exports[`With contributors 1`] = `
 />
 `;
 
-exports[`With coverphoto 1`] = `
+exports[`With coverImage 1`] = `
 <script
   dangerouslySetInnerHTML={
     Object {
@@ -22,7 +22,7 @@ exports[`With coverphoto 1`] = `
 />
 `;
 
-exports[`Without coverphoto and contributors 1`] = `
+exports[`Without coverImage and contributors 1`] = `
 <script
   dangerouslySetInnerHTML={
     Object {

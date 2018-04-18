@@ -52,7 +52,7 @@ const SearchHit = ({ book }: { book: Book }) => {
           <BookCover
             w={[80, 115]}
             h={[108, 155]}
-            coverPhoto={book.coverPhoto}
+            coverImage={book.coverImage}
           />
         </a>
       </Link>

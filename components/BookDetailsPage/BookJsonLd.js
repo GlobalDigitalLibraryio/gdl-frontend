@@ -52,7 +52,7 @@ export default function BookJsonLd({ book }: Props) {
       description: book.description,
       publisher: book.publisher.name,
       license: book.license.url,
-      image: book.coverPhoto ? book.coverPhoto.large : undefined,
+      image: book.coverImage ? book.coverImage.url : undefined,
       // Nested ternaries here because of Flow sealed objects, and we want to support undefined, single entry and array of entries
       author:
         authors.length > 0

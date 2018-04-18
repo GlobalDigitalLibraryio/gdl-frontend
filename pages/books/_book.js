@@ -141,7 +141,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
         <Head
           title={book.title}
           description={book.description}
-          image={book.coverPhoto ? book.coverPhoto.large : null}
+          image={book.coverImage ? book.coverImage.url : null}
         >
           <BookJsonLd book={book} />
         </Head>
@@ -154,7 +154,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
               <View flexDirection="row" mt={['135px', spacing.medium]}>
                 <CoverWrap>
                   <BookCover
-                    coverPhoto={book.coverPhoto}
+                    coverImage={book.coverImage}
                     w={[130, 260]}
                     h={[175, 365]}
                   />
