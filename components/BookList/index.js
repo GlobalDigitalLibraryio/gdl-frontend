@@ -60,6 +60,8 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
 
 const HorizontalScrollList = styled('div')`
   overflow-x: auto;
+  /* Fixes Safari scrolling all over the place */
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   margin: 0 -${spacing.medium};
   padding: 0 ${spacing.medium};
