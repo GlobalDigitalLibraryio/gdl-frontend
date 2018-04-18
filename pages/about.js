@@ -65,10 +65,7 @@ const Button = styled.button`
 
 const About = () => (
   <div>
-    <Head title="Global Digital Library">
-      <title>Global Digital Library</title>
-      <meta property="og:title" content="Global Digital Library" />
-    </Head>
+    <Head />
     <HeroWithIcons py={64}>
       <Container mw={1075}>
         <H1 style={{ textTransform: 'uppercase' }}>Global digital library</H1>

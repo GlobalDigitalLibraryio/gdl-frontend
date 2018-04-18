@@ -137,7 +137,7 @@ class TranslatePage extends React.Component<Props, State> {
           ]}
         >
           <Head
-            title={i18n.t`Translate ${book.title}`}
+            title={i18n.t`Translate: ${book.title}`}
             description={book.description}
             image={book.coverImage ? book.coverImage.url : null}
           />

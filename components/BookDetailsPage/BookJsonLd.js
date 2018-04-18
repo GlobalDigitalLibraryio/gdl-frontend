@@ -56,19 +56,27 @@ export default function BookJsonLd({ book }: Props) {
       // Nested ternaries here because of Flow sealed objects, and we want to support undefined, single entry and array of entries
       author:
         authors.length > 0
-          ? authors.length === 1 ? authors[0] : authors
+          ? authors.length === 1
+            ? authors[0]
+            : authors
           : undefined,
       illustrator:
         illustrators.length > 0
-          ? illustrators.length === 1 ? illustrators[0] : illustrators
+          ? illustrators.length === 1
+            ? illustrators[0]
+            : illustrators
           : undefined,
       translator:
         translators.length > 0
-          ? translators.length === 1 ? translators[0] : translators
+          ? translators.length === 1
+            ? translators[0]
+            : translators
           : undefined,
       contributor:
         contributors.length > 0
-          ? contributors.length === 1 ? contributors[0] : contributors
+          ? contributors.length === 1
+            ? contributors[0]
+            : contributors
           : undefined
     }
   };

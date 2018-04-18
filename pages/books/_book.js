@@ -139,8 +139,8 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     return (
       <Fragment>
         <Head
-          title={book.title}
           description={book.description}
+          title={book.title}
           image={book.coverImage ? book.coverImage.url : null}
         >
           <BookJsonLd book={book} />

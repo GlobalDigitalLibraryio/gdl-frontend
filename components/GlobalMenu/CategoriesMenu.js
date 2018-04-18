@@ -18,9 +18,10 @@ type Props = {|
   categories: Categories,
   languageCode: string,
   onClose: (
-    event: | SyntheticMouseEvent<any>
-    | SyntheticKeyboardEvent<any>
-    | KeyboardEvent
+    event:
+      | SyntheticMouseEvent<any>
+      | SyntheticKeyboardEvent<any>
+      | KeyboardEvent
   ) => void
 |};
 

@@ -64,7 +64,7 @@ class Read extends React.Component<Props> {
     return (
       <React.Fragment>
         <Head
-          title={book.title}
+          title={`Read: ${book.title}`}
           description={book.description}
           image={book.coverImage ? book.coverImage.url : null}
         />
