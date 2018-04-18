@@ -9,12 +9,7 @@
 import React, { Fragment } from 'react';
 import Head from 'next/head';
 
-import {
-  fetchFeaturedContent,
-  fetchCategories,
-  fetchLanguages,
-  fetchBooks
-} from '../fetch';
+import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
 import type {
   Book,
   Language,
@@ -26,7 +21,6 @@ import type {
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
-import { DEFAULT_LANGUAGE_CODE } from '../config';
 import {
   setBookLanguageAndCategoryCookie,
   getBookLanguageFromCookie,
@@ -37,7 +31,6 @@ type Props = {|
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
-  languages: Array<Language>,
   booksByLevel: Array<{ results: Array<Book> }>,
   category: Category,
   categories: Array<Category>,
@@ -46,42 +39,23 @@ type Props = {|
 
 class BooksPage extends React.Component<Props> {
   static async getInitialProps({ query, asPath, req }: Context) {
-    let languageCode: ?string = query.lang;
+    // Get the language either from the URL or the user's cookies
+    const languageCode = query.lang || getBookLanguageFromCookie(req).code;
 
-    // If the language isn't part of the url, read it from a cookie
-    if (!languageCode) {
-      languageCode = getBookLanguageFromCookie(req);
-    }
+    const categoriesRes = await fetchCategories(languageCode);
 
-    // $FlowFixMe: Unsure why flow complains here
-    const results = await Promise.all([
-      fetchLanguages(),
-      fetchFeaturedContent(languageCode),
-      fetchCategories(languageCode)
-    ]);
+    if (!categoriesRes.isOk) {
+      const statusCode =
+        categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
+          ? 404
+          : categoriesRes.statusCode;
 
-    // If we have gotten languages successfully AND we have a language parameter AND that language isn't found in the list. Return a 404
-    // This is a special case to get the front page to render 404s. Otherwise almost every page request would be considererd a language, such as /contact-us etc.
-    if (
-      results[0].isOk &&
-      languageCode &&
-      !results[0].data.find(l => l.code === languageCode)
-    ) {
       return {
-        statusCode: 404
+        statusCode
       };
     }
 
-    if (!results.every(res => res.isOk)) {
-      return {
-        // $FlowFixMe Come on flow...
-        statusCode: results.find(res => !res.isOk).statusCode
-      };
-    }
-
-    const [languages, featuredContent, categories] = results.map(
-      result => result.data
-    );
+    const categories = categoriesRes.data;
 
     const categoryInCookie = getBookCategoryFromCookie(req);
     let category: Category;
@@ -102,15 +76,10 @@ class BooksPage extends React.Component<Props> {
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
 
-    setBookLanguageAndCategoryCookie(
-      languageCode || DEFAULT_LANGUAGE_CODE,
-      category,
-      req
-    );
-
     const levels = categories[category] || [];
 
-    const bookListsResults = await Promise.all([
+    const results = await Promise.all([
+      fetchFeaturedContent(languageCode),
       fetchBooks(languageCode, { category: category }),
       ...levels.map(level =>
         fetchBooks(languageCode, {
@@ -121,15 +90,17 @@ class BooksPage extends React.Component<Props> {
       )
     ]);
 
-    if (!bookListsResults.every(res => res.isOk)) {
+    if (!results.every(res => res.isOk)) {
       return {
-        statusCode: bookListsResults.find(res => !res.isOk).statusCode
+        statusCode: results.find(res => !res.isOk).statusCode
       };
     }
 
-    const [newArrivals, ...booksByLevel] = bookListsResults.map(
+    const [featuredContent, newArrivals, ...booksByLevel] = results.map(
       result => result.data
     );
+
+    setBookLanguageAndCategoryCookie(newArrivals.language.code, category, req);
 
     // THe URL is needed so we can create a canonical URL
     const locationOrigin =
@@ -141,7 +112,6 @@ class BooksPage extends React.Component<Props> {
       category,
       featuredContent,
       newArrivals,
-      languages,
       levels,
       booksByLevel,
       locationOrigin,
@@ -153,7 +123,6 @@ class BooksPage extends React.Component<Props> {
     const {
       category,
       featuredContent,
-      languages,
       levels,
       booksByLevel,
       newArrivals,
@@ -191,7 +160,6 @@ class BooksPage extends React.Component<Props> {
         <HomePage
           category={category}
           categories={categories}
-          languages={languages}
           levels={levels}
           newArrivals={newArrivals}
           booksByLevel={booksByLevel}

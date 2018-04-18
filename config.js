@@ -26,7 +26,10 @@ const GDL_ENVIRONMENT = (function() {
 function getConfig() {
   const config = {
     common: {
-      DEFAULT_LANGUAGE_CODE: 'en',
+      DEFAULT_LANGUAGE: {
+        code: 'en',
+        name: 'English'
+      },
       GLOBAL_VAR_NAME: globalVarName,
       STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,
