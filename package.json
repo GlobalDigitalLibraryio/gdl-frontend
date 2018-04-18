@@ -75,7 +75,8 @@
     "react-swipeable": "4.2.1",
     "styled-map": "^2.0.1",
     "styled-system": "2.2.1",
-    "styled-theming": "^2.2.0"
+    "styled-theming": "^2.2.0",
+    "universal-cookie": "^2.1.2"
   },
   "devDependencies": {
     "@sector-labs/lingui-babel-preset-react": "2.0.4-sl.6",

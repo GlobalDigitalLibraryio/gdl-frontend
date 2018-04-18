@@ -16,22 +16,22 @@ import {
   SearchField,
   SearchHit,
   Placeholder,
-  NoResults
+  NoResults,
+  SelectLanguage
 } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
 import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
+import {
+  setBookLanguageInCookie,
+  getBookLanguageFromCookie
+} from '../lib/cookie';
 import Head from '../components/Head';
 import Button from '../components/Button';
-import Container from '../elements/Container';
-import Text from '../elements/Text';
-import A from '../elements/A';
-import { search, fetchLanguages } from '../fetch';
+import { Container, Text } from '../elements';
+import { spacing, colors } from '../style/theme';
+import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
-import { getBookLanguageFromCookie } from '../lib/cookie';
-import { DEFAULT_LANGUAGE_CODE } from '../config';
-import { spacing, colors, fonts } from '../style/theme';
-import LanguageMenu from '../components/TranslationLanguageMenu';
 
 const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
@@ -40,7 +40,8 @@ type Props = {
   searchResult: ?{
     results: Array<Book>,
     page: number,
-    totalCount: number
+    totalCount: number,
+    language: Language
   },
   languages: Array<Language>,
   languageCode: string,
@@ -63,8 +64,7 @@ type State = {
   searchQuery: string,
   lastSearchQuery?: string,
   isLoadingMore: boolean,
-  selectedLanguage: ?Language,
-  showLanguageMenu: boolean
+  language: ?Language
 };
 
 const resultsTextStyle = {
@@ -76,16 +76,15 @@ const resultsTextStyle = {
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
-    // We get the language code either from the query params, or the cookies or the default value
-    const languageCode =
-      query[LANG_PARAM] ||
-      getBookLanguageFromCookie(req) ||
-      DEFAULT_LANGUAGE_CODE;
-
     let searchResult;
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
+
+      // We get the language code either from the query params or the cookie
+      const languageCode =
+        query[LANG_PARAM] || getBookLanguageFromCookie(req).code;
+
       searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
       });
@@ -97,16 +96,7 @@ class SearchPage extends React.Component<Props, State> {
       }
     }
 
-    const languagesRes = await fetchLanguages();
-    if (!languagesRes.isOk) {
-      return {
-        statusCode: languagesRes.statusCode
-      };
-    }
-
     return {
-      languageCode,
-      languages: languagesRes.data,
       searchResult:
         searchResult && searchResult.data ? searchResult.data : undefined
     };
@@ -117,11 +107,20 @@ class SearchPage extends React.Component<Props, State> {
     searchQuery: this.props.url.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.url.query[QUERY_PARAM],
     isLoadingMore: false,
-    selectedLanguage: this.props.languages.find(
-      l => l.code === this.props.languageCode
-    ),
-    showLanguageMenu: false
+    language: null // Only set in cDM, because of SSR cache
   };
+
+  /**
+   * We only want to render the language menu on the client side.
+   * So we don't fill the cache with all the search pages with the only change in the HTML being the shown language name
+   */
+  componentDidMount() {
+    const language =
+      (this.props.searchResult && this.props.searchResult.language) ||
+      getBookLanguageFromCookie();
+
+    this.setState({ language });
+  }
 
   handleSearch = async event => {
     event.preventDefault();
@@ -133,14 +132,14 @@ class SearchPage extends React.Component<Props, State> {
       'search',
       {
         [QUERY_PARAM]: this.state.searchQuery,
-        [LANG_PARAM]: this.props.languageCode
+        [LANG_PARAM]: this.state.language.code
       },
       { shallow: true }
     );
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      this.state.language.code,
       {
         pageSize: SEARCH_PAGE_SIZE
       }
@@ -155,7 +154,8 @@ class SearchPage extends React.Component<Props, State> {
   };
 
   handleChangeLanguage = language => {
-    this.setState({ selectedLanguage: language, showLanguageMenu: false });
+    this.setState({ language });
+    setBookLanguageInCookie(language);
   };
 
   handleLoadMore = async () => {
@@ -165,7 +165,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      this.state.language.code,
       {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
@@ -206,46 +206,22 @@ class SearchPage extends React.Component<Props, State> {
   handleQueryChange = event =>
     this.setState({ searchQuery: event.target.value });
 
-  renderLanguageMenu() {
-    if (!this.state.showLanguageMenu) return null;
-
-    return (
-      <LanguageMenu
-        languages={this.props.languages}
-        selectedLanguageCode={
-          this.state.selectedLanguage && this.state.selectedLanguage.code
-        }
-        onSelectLanguage={this.handleChangeLanguage}
-        onClose={() => this.setState({ showLanguageMenu: false })}
-      />
-    );
-  }
-
   render() {
-    const { searchResult, lastSearchQuery } = this.state;
+    const { searchResult, lastSearchQuery, language } = this.state;
     const { languageCode } = this.props;
-    const { selectedLanguage } = this.state;
 
     return (
       <Layout languageCode={languageCode} wrapWithMain={false}>
         <Head title="Search" />
         <NavContextBar>
           <Breadcrumb crumbs={[<Trans>Search</Trans>]} />
-          <Text>
-            {selectedLanguage.name}{' '}
-            <A
-              fontWeight={fonts.weight.medium}
-              onClick={() =>
-                this.setState({
-                  showLanguageMenu: true
-                })
-              }
-            >
-              Change
-            </A>
-          </Text>
+          {language && (
+            <SelectLanguage
+              language={language}
+              onSelectLanguage={this.handleChangeLanguage}
+            />
+          )}
         </NavContextBar>
-        {this.renderLanguageMenu()}
         <Main>
           <Container my={spacing.medium}>
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
