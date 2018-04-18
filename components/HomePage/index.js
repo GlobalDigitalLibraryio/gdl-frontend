@@ -20,14 +20,14 @@ import type {
 } from '../../types';
 import Layout, { Main } from '../../components/Layout';
 import Card from '../../components/Card';
-import { A, Container, Text, View } from '../../elements';
+import { Container, Text, View } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
+import { SelectLanguage } from '../../components/LanguageMenu';
 import BookList from '../../components/BookList';
-import LanguageMenu from '../../components/LanguageMenu';
 import Button from '../../components/Button';
 import { colors, fonts, spacing } from '../../style/theme';
 import media from '../../style/media';
@@ -37,7 +37,6 @@ type Props = {|
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
-  languages: Array<Language>,
   booksByLevel: Array<{ results: Array<Book> }>,
   categories: Array<Category>,
   category: Category
@@ -100,7 +99,6 @@ export default class HomePage extends React.Component<
     const {
       category,
       featuredContent,
-      languages,
       levels,
       booksByLevel,
       newArrivals,
@@ -135,11 +133,7 @@ export default class HomePage extends React.Component<
     const languageCode = newArrivals.language.code;
 
     return (
-      <Layout
-        category={category}
-        languageCode={languageCode}
-        wrapWithMain={false}
-      >
+      <Layout category={category} wrapWithMain={false}>
         <Head image={featured.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
@@ -147,26 +141,13 @@ export default class HomePage extends React.Component<
             categories={categories}
             languageCode={languageCode}
           />
-          <Text>
-            {newArrivals.language.name}{' '}
-            <A
-              fontWeight={fonts.weight.medium}
-              onClick={() =>
-                this.setState({
-                  showLanguageMenu: true
-                })
-              }
-            >
-              Change
-            </A>
-          </Text>
-          {this.state.showLanguageMenu && (
-            <LanguageMenu
-              languages={languages}
-              selectedLanguageCode={languageCode}
-              onClose={() => this.setState({ showLanguageMenu: false })}
-            />
-          )}
+          <SelectLanguage
+            language={newArrivals.language}
+            linkProps={language => ({
+              route: 'books',
+              params: { lang: language.code }
+            })}
+          />
         </NavContextBar>
         <Main>
           <Banner src={featured.imageUrl}>

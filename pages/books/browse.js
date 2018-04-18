@@ -150,7 +150,6 @@ class BrowsePage extends React.Component<Props, State> {
     return (
       <Layout
         category={category}
-        languageCode={books.language.code}
         crumbs={[
           readingLevel ? (
             // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck

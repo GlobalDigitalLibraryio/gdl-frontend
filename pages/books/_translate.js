@@ -37,7 +37,7 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import A from '../../components/A';
-import TranslationLanguage from '../../components/TranslationLanguageMenu';
+import LanguageMenu from '../../components/LanguageMenu';
 import { colors } from '../../style/theme';
 
 type Props = {
@@ -122,7 +122,6 @@ class TranslatePage extends React.Component<Props, State> {
     return (
       <Layout
         category={book.category}
-        languageCode={book.language.code}
         crumbs={[
           <Link route="book" params={{ lang: book.language.code, id: book.id }}>
             <a>{book.title}</a>
@@ -173,7 +172,7 @@ class TranslatePage extends React.Component<Props, State> {
               <Trans>Translate to</Trans>
             </P>
             {this.state.showLanguageMenu && (
-              <TranslationLanguage
+              <LanguageMenu
                 languages={supportedLanguages}
                 selectedLanguageCode={selectedLanguage && selectedLanguage.code}
                 onSelectLanguage={this.handleChangeLanguage}

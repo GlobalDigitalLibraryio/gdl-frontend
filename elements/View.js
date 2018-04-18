@@ -21,11 +21,11 @@ import {
 
 type cssUnit = string | number;
 type ResponsiveProp = cssUnit | [cssUnit, cssUnit];
-type Props = {
+export type Props = {
   children: ?Node,
   className?: string,
   alignItems?: 'center' | 'stretch',
-  justifyContent?: 'space-between',
+  justifyContent?: 'space-between' | 'center',
   flexDirection?: 'row' | 'column',
   width?: ResponsiveProp,
   maxWidth?: ResponsiveProp,

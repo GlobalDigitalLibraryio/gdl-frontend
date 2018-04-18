@@ -16,15 +16,16 @@ import {
   SearchField,
   SearchHit,
   Placeholder,
-  NoResults,
-  SelectLanguage
+  NoResults
 } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
 import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
+import { SelectLanguage } from '../components/LanguageMenu';
 import {
-  setBookLanguageInCookie,
-  getBookLanguageFromCookie
-} from '../lib/cookie';
+  setBookLanguage,
+  getBookLanguageCode,
+  getBookLanguage
+} from '../lib/storage';
 import Head from '../components/Head';
 import Button from '../components/Button';
 import { Container, Text } from '../elements';
@@ -82,8 +83,7 @@ class SearchPage extends React.Component<Props, State> {
       const searchQuery = query[QUERY_PARAM];
 
       // We get the language code either from the query params or the cookie
-      const languageCode =
-        query[LANG_PARAM] || getBookLanguageFromCookie(req).code;
+      const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
       searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
@@ -107,7 +107,7 @@ class SearchPage extends React.Component<Props, State> {
     searchQuery: this.props.url.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.url.query[QUERY_PARAM],
     isLoadingMore: false,
-    language: null // Only set in cDM, because of SSR cache
+    language: this.props.searchResult ? this.props.searchResult.language : null
   };
 
   /**
@@ -117,14 +117,20 @@ class SearchPage extends React.Component<Props, State> {
   componentDidMount() {
     const language =
       (this.props.searchResult && this.props.searchResult.language) ||
-      getBookLanguageFromCookie();
+      getBookLanguage();
 
     this.setState({ language });
   }
 
   handleSearch = async event => {
     event.preventDefault();
-    if (!this.state.searchQuery || this.state.searchQuery.trim() === '') return;
+    if (
+      !this.state.searchQuery ||
+      this.state.searchQuery.trim() === '' ||
+      !this.state.language
+    ) {
+      return;
+    }
 
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
 
@@ -132,6 +138,7 @@ class SearchPage extends React.Component<Props, State> {
       'search',
       {
         [QUERY_PARAM]: this.state.searchQuery,
+        // $FlowFixMe: We're already checking if language is defined
         [LANG_PARAM]: this.state.language.code
       },
       { shallow: true }
@@ -139,6 +146,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
+      // $FlowFixMe: We're already checking if language is defined
       this.state.language.code,
       {
         pageSize: SEARCH_PAGE_SIZE
@@ -155,13 +163,13 @@ class SearchPage extends React.Component<Props, State> {
 
   handleChangeLanguage = language => {
     this.setState({ language });
-    setBookLanguageInCookie(language);
+    setBookLanguage(language);
   };
 
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     // Fixes flow warnings
-    if (!this.state.searchResult) return;
+    if (!this.state.searchResult || !this.state.language) return;
 
     const queryRes = await search(
       this.state.searchQuery,
@@ -208,10 +216,9 @@ class SearchPage extends React.Component<Props, State> {
 
   render() {
     const { searchResult, lastSearchQuery, language } = this.state;
-    const { languageCode } = this.props;
 
     return (
-      <Layout languageCode={languageCode} wrapWithMain={false}>
+      <Layout wrapWithMain={false}>
         <Head title="Search" />
         <NavContextBar>
           <Breadcrumb crumbs={[<Trans>Search</Trans>]} />

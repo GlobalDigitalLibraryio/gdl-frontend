@@ -144,11 +144,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
         >
           <BookJsonLd book={book} />
         </Head>
-        <Layout
-          crumbs={this.getCrumbs()}
-          category={book.category}
-          languageCode={book.language.code}
-        >
+        <Layout crumbs={this.getCrumbs()} category={book.category}>
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>

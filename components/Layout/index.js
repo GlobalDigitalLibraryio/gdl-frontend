@@ -35,18 +35,11 @@ const PageWrapper = styled('div')`
 type Props = {|
   children: Node,
   category?: ?Category,
-  languageCode?: string,
   crumbs?: Array<Node | string>,
   wrapWithMain: boolean
 |};
 
-const Layout = ({
-  children,
-  languageCode,
-  category,
-  wrapWithMain,
-  crumbs
-}: Props) => {
+const Layout = ({ children, category, wrapWithMain, crumbs }: Props) => {
   return (
     <ThemeProvider
       theme={{
@@ -58,9 +51,7 @@ const Layout = ({
           {({ portal, closePortal, openPortal, isOpen }) => (
             <Fragment>
               <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
-              {portal(
-                <GlobalMenu onClose={closePortal} languageCode={languageCode} />
-              )}
+              {portal(<GlobalMenu onClose={closePortal} />)}
             </Fragment>
           )}
         </PortalWithState>

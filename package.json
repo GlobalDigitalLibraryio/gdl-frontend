@@ -47,7 +47,6 @@
   "dependencies": {
     "@lingui/react": "2.0.5",
     "auth0-js": "9.4.2",
-    "cookie-dough": "^0.1.0",
     "cookie-parser": "1.4.3",
     "domurl": "2.1.7",
     "emotion": "9.1.2",

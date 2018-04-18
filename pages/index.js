@@ -22,10 +22,10 @@ import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
 import {
-  setBookLanguageAndCategoryCookie,
-  getBookLanguageFromCookie,
-  getBookCategoryFromCookie
-} from '../lib/cookie';
+  setBookLanguageAndCategory,
+  getBookLanguageCode,
+  getBookCategory
+} from '../lib/storage';
 
 type Props = {|
   featuredContent: Array<FeaturedContent>,
@@ -37,15 +37,18 @@ type Props = {|
   locationOrigin: string
 |};
 
-class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, asPath, req }: Context) {
+class IndexPage extends React.Component<Props> {
+  static async getInitialProps({ query, asPath, req, res }: Context) {
     // Get the language either from the URL or the user's cookies
-    const languageCode = query.lang || getBookLanguageFromCookie(req).code;
+    const languageCode = query.lang || getBookLanguageCode(req);
 
+    // $FlowFixMe: Don't know why flow doesn't like this
     const categoriesRes = await fetchCategories(languageCode);
 
     if (!categoriesRes.isOk) {
       const statusCode =
+        // If the categories endpoint doesn't get a valid language code, it throws with a VALIDATION error.
+        // Because of the way we structure the URLs in the frontend, this means we should render the 404 page
         categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
           ? 404
           : categoriesRes.statusCode;
@@ -57,7 +60,7 @@ class BooksPage extends React.Component<Props> {
 
     const categories = categoriesRes.data;
 
-    const categoryInCookie = getBookCategoryFromCookie(req);
+    const categoryInCookie = getBookCategory(req);
     let category: Category;
     if (asPath.includes('/classroom')) {
       category = 'classroom_books';
@@ -65,21 +68,20 @@ class BooksPage extends React.Component<Props> {
       category = 'library_books';
     } else if (categoryInCookie && categoryInCookie in categories) {
       // Small check to make sure the value in the cookie is something valid
-      if (categoryInCookie === 'classroom_books') {
-        category = 'classroom_books';
-      } else {
-        category = 'library_books';
-      }
+      // $FlowFixMe: We know this is a valid category :/
+      category = categoryInCookie;
     } else {
       // Default to library_books
       category =
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
 
+    // Make sure levels is a valid array for the upcoming `map`
     const levels = categories[category] || [];
 
     const results = await Promise.all([
       fetchFeaturedContent(languageCode),
+      // $FlowFixMe: We know this is a valid category :/
       fetchBooks(languageCode, { category: category }),
       ...levels.map(level =>
         fetchBooks(languageCode, {
@@ -100,7 +102,8 @@ class BooksPage extends React.Component<Props> {
       result => result.data
     );
 
-    setBookLanguageAndCategoryCookie(newArrivals.language.code, category, req);
+    // $FlowFixMe: We know this is a valid category :/
+    setBookLanguageAndCategory(newArrivals.language, category, res);
 
     // THe URL is needed so we can create a canonical URL
     const locationOrigin =
@@ -117,6 +120,14 @@ class BooksPage extends React.Component<Props> {
       locationOrigin,
       categories: Object.keys(categories)
     };
+  }
+
+  // Ensure cookies are set, even if the rendered HTML came from the cache on the server
+  componentDidMount() {
+    setBookLanguageAndCategory(
+      this.props.newArrivals.language,
+      this.props.category
+    );
   }
 
   render() {
@@ -170,4 +181,4 @@ class BooksPage extends React.Component<Props> {
   }
 }
 
-export default defaultPage(errorPage(BooksPage));
+export default defaultPage(errorPage(IndexPage));
