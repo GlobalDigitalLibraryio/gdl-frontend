@@ -24,7 +24,7 @@ type ResponsiveProp = cssUnit | [cssUnit, cssUnit];
 type Props = {
   children: ?Node,
   className?: string,
-  alignItems?: 'center',
+  alignItems?: 'center' | 'stretch',
   justifyContent?: 'space-between',
   flexDirection?: 'row' | 'column',
   width?: ResponsiveProp,
@@ -60,10 +60,15 @@ const View = (props: Props) => {
   return <StyledView {...props} />;
 };
 
+View.defaultProps = {
+  alignItems: 'stretch'
+};
+
 const StyledView = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
+  /* fix flexbox bugs */
   min-height: 0;
   min-width: 0;
   ${maxWidth};
