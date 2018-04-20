@@ -45,11 +45,10 @@ const book: BookDetails = {
     name: 'Pratham Books'
   },
   supportsTranslation: false,
-  coverPhoto: {
-    large:
+  coverImage: {
+    url:
       'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg',
-    small:
-      'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200'
+    alttext: 'Some alt text'
   },
   bookFormat: 'HTML',
   chapters: [

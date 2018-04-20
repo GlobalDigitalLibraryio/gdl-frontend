@@ -59,9 +59,9 @@ type Success<T> = { isOk: true, data: T, statusCode: number };
 type Failed = { isOk: false, error: any, statusCode: number };
 export type RemoteData<T> = Success<T> | Failed;
 
-export type CoverPhoto = {
-  large: string,
-  small: string
+export type CoverImageInfo = {
+  url: string,
+  alttext?: string
 };
 
 export type Translation = {
@@ -74,7 +74,7 @@ export type Translation = {
   publisher: {
     name: string
   },
-  coverPhoto?: CoverPhoto
+  coverImage?: CoverImageInfo
 };
 
 export type Category = 'library_books' | 'classroom_books';
@@ -91,7 +91,7 @@ export type Book = $ReadOnly<{|
   highlightDescription?: string,
   readingLevel: ReadingLevel,
   language: Language,
-  coverPhoto?: CoverPhoto
+  coverImage?: CoverImageInfo
 |}>;
 
 export type BookDetails = $ReadOnly<{|

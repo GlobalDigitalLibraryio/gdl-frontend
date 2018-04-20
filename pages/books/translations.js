@@ -67,7 +67,7 @@ class TranslationCard extends React.Component<
                 <BookCover
                   w={[75, 120]}
                   h={[100, 150]}
-                  coverPhoto={translation.coverPhoto}
+                  coverImage={translation.coverImage}
                 />
               </a>
             </Link>

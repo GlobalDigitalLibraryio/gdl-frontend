@@ -48,21 +48,20 @@ const bookBase: BookDetails = {
   }
 };
 
-test('Without coverphoto and contributors', () => {
+test('Without coverImage and contributors', () => {
   const tree = shallow(<BookJsonLd book={bookBase} />);
 
   expect(toJson(tree)).toMatchSnapshot();
 });
 
-test('With coverphoto', () => {
+test('With coverImage', () => {
   // $FlowFixMe allow assignment
   const book = {
     ...bookBase,
-    coverPhoto: {
-      large:
+    coverImage: {
+      url:
         'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg',
-      small:
-        'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg?width=200'
+      alttext: 'Some alt text'
     }
   };
 
