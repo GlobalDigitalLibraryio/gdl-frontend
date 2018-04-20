@@ -139,7 +139,7 @@ class TranslatePage extends React.Component<Props, State> {
           <Head
             title={i18n.t`Translate: ${book.title}`}
             description={book.description}
-            image={book.coverImage ? book.coverImage.url : null}
+            image={book.coverImage && book.coverImage.url}
           />
           <Container py={[15, 40]} style={{ textAlign: 'center' }}>
             <H1>

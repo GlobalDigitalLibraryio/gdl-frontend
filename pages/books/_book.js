@@ -141,7 +141,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
         <Head
           description={book.description}
           title={book.title}
-          image={book.coverImage ? book.coverImage.url : null}
+          image={book.coverImage && book.coverImage.url}
         >
           <BookJsonLd book={book} />
         </Head>

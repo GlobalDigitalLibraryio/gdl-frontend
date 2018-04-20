@@ -28,7 +28,7 @@ const BookCover = ({ coverImage, w, h }: Props) => (
     ariaHidden
     className={style}
     src={coverImage && coverImage.url}
-    alt={coverImage && coverImage.alttext && coverImage.alttext}
+    alt={coverImage && coverImage.alttext}
     h={h}
     w={w}
   />
