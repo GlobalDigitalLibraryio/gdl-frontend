@@ -42,7 +42,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
   };
 
   handleShowMenu = () => {
-    if (!this.state.languages) {
+    if (!this.state.categories) {
       this.loadCategories();
     }
 
