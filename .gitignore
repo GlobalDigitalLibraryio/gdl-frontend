@@ -10,3 +10,4 @@ yarn-debug.log*
 locale/*/*.js
 locale/_build/
 .idea
+locale/en/messages.json
