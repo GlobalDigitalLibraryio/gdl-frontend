@@ -6,18 +6,17 @@
  * See LICENSE
  */
 
-import * as React from 'react';
+import React, { Fragment, type Node } from 'react';
 import styled from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
 import { PortalWithState } from 'react-portal';
-import type { Language, Category } from '../../types';
+import type { Category } from '../../types';
 import Navbar from '../Navbar';
-import SubNavbar from '../SubNavbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
-import LanguageCategoryContext from '../LanguageCategoryContext';
+import { NavContextBar, Breadcrumb } from '../NavContextBar';
 
-const ContentWrapper = styled('main')`
+const Main = styled('main')`
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
   background: ${colors.container.background};
   flex: 1;
@@ -34,49 +33,42 @@ const PageWrapper = styled('div')`
 `;
 
 type Props = {|
-  children: React.Node,
-  languages?: Array<Language>,
-  crumbs?: Array<React.Node | string>,
-  categories?: Array<Category>
+  children: Node,
+  category?: ?Category,
+  crumbs?: Array<Node | string>,
+  wrapWithMain: boolean
 |};
 
-const Layout = ({ children, languages, categories, crumbs }: Props) => (
-  <LanguageCategoryContext.Consumer>
-    {({ category, languageCode }) => (
-      <ThemeProvider
-        theme={{
-          category: category === 'classroom_books' ? 'classroom' : 'library'
-        }}
-      >
-        <PageWrapper>
-          <PortalWithState>
-            {({ portal, closePortal, openPortal, isOpen }) => (
-              <React.Fragment>
-                <nav>
-                  <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
-                  {(crumbs || languages || categories) && (
-                    <SubNavbar
-                      languageCode={languageCode}
-                      categories={categories}
-                      crumbs={crumbs}
-                      languages={languages}
-                    />
-                  )}
-                </nav>
-                {portal(
-                  <GlobalMenu
-                    onClose={closePortal}
-                    languageCode={languageCode}
-                  />
-                )}
-              </React.Fragment>
-            )}
-          </PortalWithState>
-          <ContentWrapper>{children}</ContentWrapper>
-        </PageWrapper>
-      </ThemeProvider>
-    )}
-  </LanguageCategoryContext.Consumer>
-);
+const Layout = ({ children, category, wrapWithMain, crumbs }: Props) => {
+  return (
+    <ThemeProvider
+      theme={{
+        category: category === 'classroom_books' ? 'classroom' : 'library'
+      }}
+    >
+      <PageWrapper>
+        <PortalWithState>
+          {({ portal, closePortal, openPortal, isOpen }) => (
+            <Fragment>
+              <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
+              {portal(<GlobalMenu onClose={closePortal} />)}
+            </Fragment>
+          )}
+        </PortalWithState>
+        {crumbs && (
+          <NavContextBar>
+            <Breadcrumb crumbs={crumbs} />
+          </NavContextBar>
+        )}
+        {wrapWithMain ? <Main>{children}</Main> : children}
+      </PageWrapper>
+    </ThemeProvider>
+  );
+};
+
+Layout.defaultProps = {
+  wrapWithMain: true
+};
 
 export default Layout;
+export { Main };

@@ -1872,12 +1872,6 @@ convert-source-map@1.5.1, convert-source-map@^1.1.0, convert-source-map@^1.4.0, 
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.5.1.tgz#b8278097b9bc229365de5c62cf5fcaed8b5599e5"
 
-cookie-dough@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/cookie-dough/-/cookie-dough-0.1.0.tgz#37d738c19ef210bb9395e68f380a209849dce06d"
-  dependencies:
-    cookie "^0.1.2"
-
 cookie-parser@1.4.3:
   version "1.4.3"
   resolved "https://registry.yarnpkg.com/cookie-parser/-/cookie-parser-1.4.3.tgz#0fe31fa19d000b95f4aadf1f53fdc2b8a203baa5"
@@ -1889,13 +1883,9 @@ cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/cookie-signature/-/cookie-signature-1.0.6.tgz#e303a882b342cc3ee8ca513a79999734dab3ae2c"
 
-cookie@0.3.1:
+cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
-
-cookie@^0.1.2:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.1.5.tgz#6ab9948a4b1ae21952cd2588530a4722d4044d7c"
 
 cookiejar@^2.1.0:
   version "2.1.1"
@@ -1990,13 +1980,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
-
-create-react-context@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/create-react-context/-/create-react-context-0.2.1.tgz#425a3d96f4b7690c2fbf20aed5aeae2e2007a959"
-  dependencies:
-    fbjs "^0.8.0"
-    gud "^1.0.0"
 
 cross-spawn@5.1.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
@@ -3264,10 +3247,6 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4:
 growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
-
-gud@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/gud/-/gud-1.0.0.tgz#a489581b17e6a70beca9abe3ae57de7a499852c0"
 
 handlebars@^4.0.3:
   version "4.0.11"
@@ -7065,6 +7044,13 @@ unique-string@^1.0.0:
   resolved "https://registry.yarnpkg.com/unique-string/-/unique-string-1.0.0.tgz#9e1057cca851abb93398f8b33ae187b99caec11a"
   dependencies:
     crypto-random-string "^1.0.0"
+
+universal-cookie@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-2.1.2.tgz#7c0824c0e027f572789538932f066315611c2836"
+  dependencies:
+    cookie "^0.3.1"
+    object-assign "^4.1.0"
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"

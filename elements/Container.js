@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import styled from 'react-emotion';
+import styled, { cx, css } from 'react-emotion';
 
 import View from './View';
 import { misc, spacing } from '../style/theme';
@@ -15,21 +15,39 @@ import { misc, spacing } from '../style/theme';
 /**
  * Center content horizontally
  */
+// FIXME: Currently margin left/right here overwrites any specific margin passed to <View /> :/
 const StyledContainer = styled(View)`
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   max-width: ${p => misc.containers[p.size]};
   padding-left: ${spacing.medium};
   padding-right: ${spacing.medium};
 `;
 
 type Props = {
-  size: $Keys<typeof misc.containers>
+  size: $Keys<typeof misc.containers>,
+  stickToEdgeOnLargeScreens: boolean
 };
 
-const Container = (props: Props) => <StyledContainer {...props} />;
+const Container = ({ stickToEdgeOnLargeScreens, ...props }: Props) => (
+  <StyledContainer
+    className={cx({
+      [stickToEdgeOnLargeScreensStyle]: stickToEdgeOnLargeScreens
+    })}
+    {...props}
+  />
+);
 
 Container.defaultProps = {
-  size: 'small'
+  size: 'small',
+  stickToEdgeOnLargeScreens: false
 };
+
+const stickToEdgeOnLargeScreensStyle = css`
+  @media (min-width: ${misc.containers.large}) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+`;
 
 export default Container;

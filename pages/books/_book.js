@@ -44,7 +44,6 @@ import {
   Metadata
 } from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
   book: BookDetails,
@@ -145,166 +144,152 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
         >
           <BookJsonLd book={book} />
         </Head>
-        <LanguageCategory
-          category={book.category}
-          languageCode={book.language.code}
-        >
-          <Layout crumbs={this.getCrumbs()}>
-            <Container>
-              <View flexDirection="row" mt={['135px', spacing.medium]}>
-                <CoverWrap>
-                  <BookCover
-                    coverImage={book.coverImage}
-                    w={[130, 260]}
-                    h={[175, 365]}
-                  />
-                </CoverWrap>
-                <HeroCard
+        <Layout crumbs={this.getCrumbs()} category={book.category}>
+          <Container>
+            <View flexDirection="row" mt={['135px', spacing.medium]}>
+              <CoverWrap>
+                <BookCover
+                  coverImage={book.coverImage}
+                  w={[130, 260]}
+                  h={[175, 365]}
+                />
+              </CoverWrap>
+              <HeroCard textAlign="center" p={[15, 20]} pt={[70, 20]} flex="1">
+                <Text
+                  lang={book.language.code}
+                  fontSize={['1.7rem', '2.1rem']}
+                  accessibilityRole="heading"
+                  fontWeight={fonts.weight.medium}
+                >
+                  {book.title}
+                </Text>
+
+                <Text textAlign="center">
+                  <Trans>from {book.publisher.name}</Trans>
+                </Text>
+
+                <Text
+                  lang={book.language.code}
                   textAlign="center"
-                  p={[15, 20]}
-                  pt={[70, 20]}
-                  flex="1"
+                  my={spacing.medium}
                 >
-                  <Text
-                    lang={book.language.code}
-                    fontSize={['1.7rem', '2.1rem']}
-                    accessibilityRole="heading"
-                    fontWeight={fonts.weight.medium}
-                  >
-                    {book.title}
-                  </Text>
+                  {book.description}
+                </Text>
 
-                  <Text textAlign="center">
-                    <Trans>from {book.publisher.name}</Trans>
-                  </Text>
-
-                  <Text
-                    lang={book.language.code}
-                    textAlign="center"
-                    my={spacing.medium}
-                  >
-                    {book.description}
-                  </Text>
-
-                  {book.bookFormat === 'HTML' && (
-                    <Fragment>
-                      <Link
-                        route="read"
-                        passHref
-                        params={{ id: book.id, lang: book.language.code }}
-                        prefetch
-                      >
-                        <Button>
-                          <Trans>Read Book</Trans>
-                        </Button>
-                      </Link>
-                      <Text
-                        aria-expanded={this.state.showDownloadMenu}
-                        fontWeight={fonts.weight.medium}
-                        mt={spacing.medium}
-                        onClick={this.handleToggleShowDownloadMenu}
-                      >
-                        <Trans>Download book</Trans>
-                        {this.state.showDownloadMenu ? (
-                          <MdKeyboardArrowUp aria-hidden />
-                        ) : (
-                          <MdKeyboardArrowDown aria-hidden />
-                        )}
-                      </Text>
-
-                      {this.props.userHasEditAccess && (
-                        <Link
-                          route="edit"
-                          params={{ lang: book.language.code, id: book.id }}
-                          passHref
-                        >
-                          <EditBookLink title="Edit book">
-                            <MdEdit />
-                          </EditBookLink>
-                        </Link>
-                      )}
-                    </Fragment>
-                  )}
-                  {book.bookFormat === 'PDF' && (
-                    <Button href={book.downloads.pdf}>
+                {book.bookFormat === 'HTML' && (
+                  <Fragment>
+                    <Link
+                      route="read"
+                      passHref
+                      params={{ id: book.id, lang: book.language.code }}
+                      prefetch
+                    >
+                      <Button>
+                        <Trans>Read book</Trans>
+                      </Button>
+                    </Link>
+                    <Text
+                      aria-expanded={this.state.showDownloadMenu}
+                      fontWeight={fonts.weight.medium}
+                      mt={spacing.medium}
+                      onClick={this.handleToggleShowDownloadMenu}
+                    >
                       <Trans>Download book</Trans>
-                    </Button>
-                  )}
-                </HeroCard>
-              </View>
-            </Container>
+                      {this.state.showDownloadMenu ? (
+                        <MdKeyboardArrowUp aria-hidden />
+                      ) : (
+                        <MdKeyboardArrowDown aria-hidden />
+                      )}
+                    </Text>
 
-            <Container
-              style={{
-                marginTop: spacing.medium
-              }}
-            >
-              <View ml={[0, 'auto']} w={['auto', 438]}>
-                <Metadata book={book} />
-                {config.TRANSLATION_PAGES &&
-                  book.supportsTranslation && (
-                    <View borderTop={BORDER_STYLE} mt={spacing.medium}>
+                    {this.props.userHasEditAccess && (
                       <Link
-                        route="translate"
+                        route="edit"
+                        params={{ lang: book.language.code, id: book.id }}
                         passHref
-                        params={{ id: book.id, lang: book.language.code }}
                       >
-                        <A
-                          my={spacing.medium}
-                          textAlign="center"
-                          fontWeight={fonts.weight.medium}
-                        >
-                          <MdTranslate aria-hidden />{' '}
-                          <Trans>Translate this book</Trans>
-                        </A>
+                        <EditBookLink title="Edit book">
+                          <MdEdit />
+                        </EditBookLink>
                       </Link>
-                    </View>
-                  )}
-                <View
-                  borderTop={BORDER_STYLE}
-                  mt={
-                    config.TRANSLATION_PAGES && book.supportsTranslation
-                      ? 0
-                      : spacing.medium
-                  }
-                >
-                  <A
-                    my={spacing.medium}
-                    textAlign="center"
-                    fontWeight={fonts.weight.medium}
-                    href={config.zendeskUrl}
-                    openNewTab
-                  >
-                    <MdWarning aria-hidden />{' '}
-                    <Trans>Report a problem with this book</Trans>
-                  </A>
-                </View>
-              </View>
-            </Container>
+                    )}
+                  </Fragment>
+                )}
+                {book.bookFormat === 'PDF' && (
+                  <Button href={book.downloads.pdf}>
+                    <Trans>Download book</Trans>
+                  </Button>
+                )}
+              </HeroCard>
+            </View>
+          </Container>
 
-            <Container>
+          <Container mt={spacing.medium}>
+            <View ml={[0, 'auto']} w={['auto', 438]}>
+              <Metadata book={book} />
+              {config.TRANSLATION_PAGES &&
+                book.supportsTranslation && (
+                  <View borderTop={BORDER_STYLE} mt={spacing.medium}>
+                    <Link
+                      route="translate"
+                      passHref
+                      params={{ id: book.id, lang: book.language.code }}
+                    >
+                      <A
+                        my={spacing.medium}
+                        textAlign="center"
+                        fontWeight={fonts.weight.medium}
+                      >
+                        <MdTranslate aria-hidden />{' '}
+                        <Trans>Translate this book</Trans>
+                      </A>
+                    </Link>
+                  </View>
+                )}
               <View
                 borderTop={BORDER_STYLE}
-                mb={spacing.medium}
-                pt={spacing.medium}
+                mt={
+                  config.TRANSLATION_PAGES && book.supportsTranslation
+                    ? 0
+                    : spacing.medium
+                }
               >
-                {similarBooks.length > 0 && (
-                  <BookList
-                    heading={<Trans>Similar</Trans>}
-                    books={similarBooks}
-                  />
-                )}
+                <A
+                  my={spacing.medium}
+                  textAlign="center"
+                  fontWeight={fonts.weight.medium}
+                  href={config.zendeskUrl}
+                  openNewTab
+                >
+                  <MdWarning aria-hidden />{' '}
+                  <Trans>Report a problem with this book</Trans>
+                </A>
               </View>
-            </Container>
+            </View>
+          </Container>
 
-            {this.state.showDownloadMenu && (
-              <DownloadBookMenu
-                book={book}
-                onClose={this.handleToggleShowDownloadMenu}
-              />
-            )}
-          </Layout>
-        </LanguageCategory>
+          <Container>
+            <View
+              borderTop={BORDER_STYLE}
+              mb={spacing.medium}
+              pt={spacing.medium}
+            >
+              {similarBooks.length > 0 && (
+                <BookList
+                  heading={<Trans>Similar</Trans>}
+                  books={similarBooks}
+                />
+              )}
+            </View>
+          </Container>
+
+          {this.state.showDownloadMenu && (
+            <DownloadBookMenu
+              book={book}
+              onClose={this.handleToggleShowDownloadMenu}
+            />
+          )}
+        </Layout>
       </Fragment>
     );
   }

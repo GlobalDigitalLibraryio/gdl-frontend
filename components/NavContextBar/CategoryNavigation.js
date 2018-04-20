@@ -15,7 +15,6 @@ import type { Category } from '../../types';
 import media from '../../style/media';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
-import LanguageCategoryContext from '../LanguageCategoryContext';
 
 const Div = styled('div')`
   display: flex;
@@ -49,37 +48,34 @@ const HiddenMobile = styled('span')`
 
 type Props = {|
   categories: Array<Category>,
+  category: Category,
   languageCode: string
 |};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
-    const { languageCode, categories } = this.props;
+    const { languageCode, category, categories } = this.props;
     return (
-      <LanguageCategoryContext.Consumer>
-        {({ category }) => (
-          <Div>
-            {categories.includes('library_books') && (
-              <Link route="library" passHref params={{ lang: languageCode }}>
-                <A isSelected={category === 'library_books'}>
-                  <Trans>
-                    Library <HiddenMobile>books</HiddenMobile>
-                  </Trans>
-                </A>
-              </Link>
-            )}
-            {categories.includes('classroom_books') && (
-              <Link route="classroom" passHref params={{ lang: languageCode }}>
-                <A isSelected={category === 'classroom_books'}>
-                  <Trans>
-                    Classroom <HiddenMobile>books</HiddenMobile>
-                  </Trans>
-                </A>
-              </Link>
-            )}
-          </Div>
+      <Div>
+        {categories.includes('library_books') && (
+          <Link route="library" passHref params={{ lang: languageCode }}>
+            <A isSelected={category === 'library_books'}>
+              <Trans>
+                Library <HiddenMobile>books</HiddenMobile>
+              </Trans>
+            </A>
+          </Link>
         )}
-      </LanguageCategoryContext.Consumer>
+        {categories.includes('classroom_books') && (
+          <Link route="classroom" passHref params={{ lang: languageCode }}>
+            <A isSelected={category === 'classroom_books'}>
+              <Trans>
+                Classroom <HiddenMobile>books</HiddenMobile>
+              </Trans>
+            </A>
+          </Link>
+        )}
+      </Div>
     );
   }
 }
