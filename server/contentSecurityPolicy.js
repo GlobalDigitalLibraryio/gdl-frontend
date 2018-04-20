@@ -6,16 +6,18 @@
  * See LICENSE
  */
 
+const googleAnalytics = 'www.google-analytics.com';
+
 const directives = {
   defaultSrc: ["'self'"],
   scriptSrc: [
     "'self'",
     "'unsafe-inline'",
     'https://cdn.polyfill.io',
-    'https://www.google-analytics.com'
+    googleAnalytics
   ],
   styleSrc: ["'self'", "'unsafe-inline'"],
-  imgSrc: ["'self'", 'https://*.digitallibrary.io'],
+  imgSrc: ["'self'", 'https://*.digitallibrary.io', googleAnalytics],
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
