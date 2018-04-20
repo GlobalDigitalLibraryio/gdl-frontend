@@ -185,7 +185,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       prefetch
                     >
                       <Button>
-                        <Trans>Read Book</Trans>
+                        <Trans>Read book</Trans>
                       </Button>
                     </Link>
                     <Text
