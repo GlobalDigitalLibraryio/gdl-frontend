@@ -107,6 +107,7 @@ export default class HomePage extends React.Component<Props> {
           lang={featured.language.code}
           fontSize={['1.7rem', '2.1rem']}
           fontWeight={fonts.weight.medium}
+          textAlign="center"
         >
           {featured.title}
         </Text>

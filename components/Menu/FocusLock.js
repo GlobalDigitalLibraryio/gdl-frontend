@@ -6,7 +6,6 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import tabbable from 'tabbable';
 import { findDOMNode } from 'react-dom';
 
 type Props = {
@@ -17,6 +16,12 @@ type Props = {
 };
 
 const getAppContainerElement = () => document.getElementById('__next');
+
+// Return a node list of all elements we can tab to
+const tabbable = (el: HTMLElement) =>
+  el.querySelectorAll(
+    'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
 
 export default class FocusLock extends React.Component<Props> {
   // Keep the previously active element, so we can restore focus when we unmount
@@ -68,6 +73,7 @@ export default class FocusLock extends React.Component<Props> {
   }
 
   focusFirst() {
+    // $FlowFixMe
     const focusable = tabbable(this.boundary);
     focusable[0] && focusable[0].focus();
   }
@@ -81,6 +87,7 @@ export default class FocusLock extends React.Component<Props> {
     const { key, target, shiftKey } = event;
     if (key !== 'Tab' || this.props.hasOpenNestedMenu) return;
 
+    // $FlowFixMe
     const els = tabbable(this.boundary);
     const last = els[els.length - 1];
 
