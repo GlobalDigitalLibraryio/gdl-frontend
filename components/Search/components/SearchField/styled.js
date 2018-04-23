@@ -21,9 +21,11 @@ export const Container = styled('div')`
 `;
 
 export const Input = styled('input')`
+  -webkit-appearance: none;
   background-color: #fff;
   width: 100%;
   outline: none;
+  border-radius: 0;
   border: 1px solid #bbbbbb;
   padding: 12px 16px;
   padding-left: 40px;
