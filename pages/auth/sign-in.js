@@ -12,14 +12,14 @@ import { Trans } from '@lingui/react';
 import { FaGoogle, FaFacebook } from 'react-icons/lib/fa';
 
 import type { I18n } from '../../types';
-import Box from '../../components/Box';
+import { Text, A } from '../../elements';
+import Container from '../../elements/Container';
 import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
-import Container from '../../components/Container';
 import Head from '../../components/Head';
-import H1 from '../../components/H1';
 import { loginSocialMedia } from '../../lib/auth';
 import Button from '../../components/Button';
+import { fonts, spacing } from '../../style/theme';
 
 const googleColor = '#db3236';
 const facebookColor = '#3b5998';
@@ -33,18 +33,22 @@ const EqualWidthButtonsWrapper = styled('div')`
   button {
     width: 100%;
     display: flex;
-    margin-top: 30px;
+    margin-top: ${spacing.large};
   }
 `;
 
 const LoginPage = ({ i18n }: Props) => (
   <Layout crumbs={[<Trans>Login</Trans>]}>
     <Head title={i18n.t`Login`} />
-    <Container pt={50}>
-      <Box textAlign="center">
-        <H1>
-          <Trans>Log in to continue</Trans>
-        </H1>
+    <Container alignItems="center">
+      <Text
+        accessibilityRole="heading"
+        fontWeight={fonts.weight.medium}
+        mt={spacing.large}
+      >
+        <Trans>Log in to continue</Trans>
+      </Text>
+      <div>
         <EqualWidthButtonsWrapper>
           <Button
             customColor={googleColor}
@@ -63,7 +67,13 @@ const LoginPage = ({ i18n }: Props) => (
             </span>
           </Button>
         </EqualWidthButtonsWrapper>
-      </Box>
+      </div>
+      <Text textAlign="center" fontSize="0.8rem" mt={spacing.xxlarge}>
+        By logging in to this service I am hereby accepting the principles in
+        the GDL{' '}
+        <A href="https://home.digitallibrary.io/privacy/">privacy policy</A>,
+        and I am giving my consent to GDL’s use of my personal information.
+      </Text>
     </Container>
   </Layout>
 );
