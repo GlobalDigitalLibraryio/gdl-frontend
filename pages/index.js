@@ -6,15 +6,10 @@
  * See LICENSE
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import Head from 'next/head';
 
-import {
-  fetchFeaturedContent,
-  fetchCategories,
-  fetchLanguages,
-  fetchBooks
-} from '../fetch';
+import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
 import type {
   Book,
   Language,
@@ -26,65 +21,46 @@ import type {
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
-import { LanguageCategory } from '../components/LanguageCategoryContext';
-import { DEFAULT_LANGUAGE_CODE } from '../config';
 import {
-  setBookLanguageAndCategoryCookie,
-  getBookLanguageFromCookie,
-  getBookCategoryFromCookie
-} from '../lib/cookie';
+  setBookLanguageAndCategory,
+  getBookLanguageCode,
+  getBookCategory
+} from '../lib/storage';
 
 type Props = {|
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
-  languages: Array<Language>,
   booksByLevel: Array<{ results: Array<Book> }>,
   category: Category,
   categories: Array<Category>,
   locationOrigin: string
 |};
 
-class BooksPage extends React.Component<Props> {
-  static async getInitialProps({ query, asPath, req }: Context) {
-    let languageCode: ?string = query.lang;
+class IndexPage extends React.Component<Props> {
+  static async getInitialProps({ query, asPath, req, res }: Context) {
+    // Get the language either from the URL or the user's cookies
+    const languageCode = query.lang || getBookLanguageCode(req);
 
-    // If the language isn't part of the url, read it from a cookie
-    if (!languageCode) {
-      languageCode = getBookLanguageFromCookie(req);
-    }
+    // $FlowFixMe: Don't know why flow doesn't like this
+    const categoriesRes = await fetchCategories(languageCode);
 
-    // $FlowFixMe: Unsure why flow complains here
-    const results = await Promise.all([
-      fetchLanguages(),
-      fetchFeaturedContent(languageCode),
-      fetchCategories(languageCode)
-    ]);
+    if (!categoriesRes.isOk) {
+      const statusCode =
+        // If the categories endpoint doesn't get a valid language code, it throws with a VALIDATION error.
+        // Because of the way we structure the URLs in the frontend, this means we should render the 404 page
+        categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
+          ? 404
+          : categoriesRes.statusCode;
 
-    // If we have gotten languages successfully AND we have a language parameter AND that language isn't found in the list. Return a 404
-    // This is a special case to get the front page to render 404s. Otherwise almost every page request would be considererd a language, such as /contact-us etc.
-    if (
-      results[0].isOk &&
-      languageCode &&
-      !results[0].data.find(l => l.code === languageCode)
-    ) {
       return {
-        statusCode: 404
+        statusCode
       };
     }
 
-    if (!results.every(res => res.isOk)) {
-      return {
-        // $FlowFixMe Come on flow...
-        statusCode: results.find(res => !res.isOk).statusCode
-      };
-    }
+    const categories = categoriesRes.data;
 
-    const [languages, featuredContent, categories] = results.map(
-      result => result.data
-    );
-
-    const categoryInCookie = getBookCategoryFromCookie(req);
+    const categoryInCookie = getBookCategory(req);
     let category: Category;
     if (asPath.includes('/classroom')) {
       category = 'classroom_books';
@@ -92,26 +68,20 @@ class BooksPage extends React.Component<Props> {
       category = 'library_books';
     } else if (categoryInCookie && categoryInCookie in categories) {
       // Small check to make sure the value in the cookie is something valid
-      if (categoryInCookie === 'classroom_books') {
-        category = 'classroom_books';
-      } else {
-        category = 'library_books';
-      }
+      // $FlowFixMe: We know this is a valid category :/
+      category = categoryInCookie;
     } else {
       // Default to library_books
       category =
         'library_books' in categories ? 'library_books' : 'classroom_books';
     }
 
-    setBookLanguageAndCategoryCookie(
-      languageCode || DEFAULT_LANGUAGE_CODE,
-      category,
-      req
-    );
-
+    // Make sure levels is a valid array for the upcoming `map`
     const levels = categories[category] || [];
 
-    const bookListsResults = await Promise.all([
+    const results = await Promise.all([
+      fetchFeaturedContent(languageCode),
+      // $FlowFixMe: We know this is a valid category :/
       fetchBooks(languageCode, { category: category }),
       ...levels.map(level =>
         fetchBooks(languageCode, {
@@ -122,15 +92,18 @@ class BooksPage extends React.Component<Props> {
       )
     ]);
 
-    if (!bookListsResults.every(res => res.isOk)) {
+    if (!results.every(res => res.isOk)) {
       return {
-        statusCode: bookListsResults.find(res => !res.isOk).statusCode
+        statusCode: results.find(res => !res.isOk).statusCode
       };
     }
 
-    const [newArrivals, ...booksByLevel] = bookListsResults.map(
+    const [featuredContent, newArrivals, ...booksByLevel] = results.map(
       result => result.data
     );
+
+    // $FlowFixMe: We know this is a valid category :/
+    setBookLanguageAndCategory(newArrivals.language, category, res);
 
     // THe URL is needed so we can create a canonical URL
     const locationOrigin =
@@ -142,7 +115,6 @@ class BooksPage extends React.Component<Props> {
       category,
       featuredContent,
       newArrivals,
-      languages,
       levels,
       booksByLevel,
       locationOrigin,
@@ -150,11 +122,18 @@ class BooksPage extends React.Component<Props> {
     };
   }
 
+  // Ensure cookies are set, even if the rendered HTML came from the cache on the server
+  componentDidMount() {
+    setBookLanguageAndCategory(
+      this.props.newArrivals.language,
+      this.props.category
+    );
+  }
+
   render() {
     const {
       category,
       featuredContent,
-      languages,
       levels,
       booksByLevel,
       newArrivals,
@@ -172,10 +151,7 @@ class BooksPage extends React.Component<Props> {
     }
 
     return (
-      <LanguageCategory
-        category={category}
-        languageCode={newArrivals.language.code}
-      >
+      <Fragment>
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -195,15 +171,14 @@ class BooksPage extends React.Component<Props> {
         <HomePage
           category={category}
           categories={categories}
-          languages={languages}
           levels={levels}
           newArrivals={newArrivals}
           booksByLevel={booksByLevel}
           featuredContent={featuredContent}
         />
-      </LanguageCategory>
+      </Fragment>
     );
   }
 }
 
-export default defaultPage(errorPage(BooksPage));
+export default defaultPage(errorPage(IndexPage));

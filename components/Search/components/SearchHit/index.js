@@ -12,7 +12,7 @@ import type { Book } from '../../../../types';
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { Link } from '../../../../routes';
 import BookCover from '../../../BookCover';
-import A from '../../../A';
+import A from '../../../../elements/A';
 import { BookTitle, BookDescription, BookLevel, Wrapper, Div } from './styled';
 
 function renderTitle(book) {
@@ -52,7 +52,7 @@ const SearchHit = ({ book }: { book: Book }) => {
           <BookCover
             w={[80, 115]}
             h={[108, 155]}
-            coverPhoto={book.coverPhoto}
+            coverImage={book.coverImage}
           />
         </a>
       </Link>

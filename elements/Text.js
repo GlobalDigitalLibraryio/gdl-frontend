@@ -32,7 +32,7 @@ export type Props = {
   color?: string,
   display?: displayProperty | [displayProperty, displayProperty],
   fontSize?: string | Array<string>,
-  fontWeight?: number,
+  fontWeight?: cssUnit,
   href?: string, // Will render as anchor tag
   onClick?: () => mixed, // Will render with a role of button and be focusable
   numberOfLines?: 1, // Currently we only support 1, because web

@@ -66,7 +66,7 @@ class Read extends React.Component<Props> {
         <Head
           title={`Read: ${book.title}`}
           description={book.description}
-          image={book.coverPhoto ? book.coverPhoto.large : null}
+          image={book.coverImage && book.coverImage.url}
         />
 
         <Reader

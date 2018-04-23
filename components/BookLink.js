@@ -64,7 +64,7 @@ export default ({ book }: { book: Book }) => (
         ariaHidden
         w={[105, 130]}
         h={[130, 160]}
-        src={book.coverPhoto && book.coverPhoto.large}
+        src={book.coverImage && book.coverImage.url}
       />
       <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
         <Link

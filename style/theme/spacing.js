@@ -6,16 +6,15 @@
  * See LICENSE
  */
 
-import { rem } from 'polished';
-
 const unit = 7;
 
 const spacing = {
-  xsmall: rem(unit),
-  small: rem(unit * 2),
-  medium: rem(unit * 3),
-  large: rem(unit * 4),
-  xlarge: rem(unit * 5)
+  xsmall: `${unit}px`,
+  small: `${unit * 2}px`,
+  medium: `${unit * 3}px`,
+  large: `${unit * 4}px`,
+  xlarge: `${unit * 5}px`,
+  xxlarge: `${unit * 7}px`
 };
 
 export default spacing;

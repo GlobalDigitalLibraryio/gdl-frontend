@@ -37,9 +37,8 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import A from '../../components/A';
-import TranslationLanguage from '../../components/TranslationLanguageMenu';
+import LanguageMenu from '../../components/LanguageMenu';
 import { colors } from '../../style/theme';
-import { LanguageCategory } from '../../components/LanguageCategoryContext';
 
 type Props = {
   book: BookDetails,
@@ -121,116 +120,108 @@ class TranslatePage extends React.Component<Props, State> {
     const { selectedLanguage } = this.state;
 
     return (
-      <LanguageCategory
+      <Layout
         category={book.category}
-        languageCode={book.language.code}
+        crumbs={[
+          <Link route="book" params={{ lang: book.language.code, id: book.id }}>
+            <a>{book.title}</a>
+          </Link>,
+          <Trans>Translate book</Trans>
+        ]}
       >
-        <Layout
-          crumbs={[
-            <Link
-              route="book"
-              params={{ lang: book.language.code, id: book.id }}
-            >
-              <a>{book.title}</a>
-            </Link>,
+        <Head
+          title={i18n.t`Translate: ${book.title}`}
+          description={book.description}
+          image={book.coverImage && book.coverImage.url}
+        />
+        <Container py={[15, 40]} style={{ textAlign: 'center' }}>
+          <H1>
             <Trans>Translate book</Trans>
-          ]}
-        >
-          <Head
-            title={i18n.t`Translate: ${book.title}`}
-            description={book.description}
-            image={book.coverPhoto ? book.coverPhoto.large : null}
-          />
-          <Container py={[15, 40]} style={{ textAlign: 'center' }}>
-            <H1>
-              <Trans>Translate book</Trans>
-            </H1>
-            <Card p={[15, 20]} my={[20, 50]} textAlign="left">
-              <Flex>
-                <Box mr={[10, 20]}>
-                  <Link
-                    route="book"
-                    params={{ lang: book.language.code, id: book.id }}
-                  >
-                    <a>
-                      <BookCover
-                        coverPhoto={book.coverPhoto}
-                        w={[75, 120]}
-                        h={[100, 150]}
-                      />
-                    </a>
-                  </Link>
-                </Box>
-                <Box>
-                  <H4>{book.title}</H4>
-                  <P color={colors.text.subtle}>
-                    <Trans>from {book.publisher.name}</Trans>
-                  </P>
-                </Box>
-              </Flex>
-            </Card>
-            <Box mb={20}>
-              <P color={colors.text.subtle}>
-                <Trans>Translate from</Trans>
-              </P>
-              <div>{book.language.name}</div>
-              <MdArrowDownward color={colors.base.orange} size={50} />
-              <P color={colors.text.subtle}>
-                <Trans>Translate to</Trans>
-              </P>
-              {this.state.showLanguageMenu && (
-                <TranslationLanguage
-                  languages={supportedLanguages}
-                  selectedLanguage={selectedLanguage}
-                  onSelectLanguage={this.handleChangeLanguage}
-                  onClose={this.toggleLanguageMenu}
-                />
-              )}
-              {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
-              <A
-                isUppercased={Boolean(selectedLanguage)}
-                onClick={this.toggleLanguageMenu}
-                aria-expanded={this.state.showLanguageMenu}
-              >
-                {selectedLanguage ? (
-                  <Trans>Change</Trans>
-                ) : (
-                  <Trans>Choose language</Trans>
-                )}
-              </A>
-            </Box>
-            {this.state.translation ? (
-              <React.Fragment>
-                <Button
-                  href={this.state.translation.crowdinUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={this.handleStartTranslation}
+          </H1>
+          <Card p={[15, 20]} my={[20, 50]} textAlign="left">
+            <Flex>
+              <Box mr={[10, 20]}>
+                <Link
+                  route="book"
+                  params={{ lang: book.language.code, id: book.id }}
                 >
-                  <Trans>Start translation</Trans>
-                </Button>
-                <p>
-                  <small>
-                    <Trans>
-                      Opens 3rd party site{' '}
-                      <a href="https://crowdin.com/">Crowdin</a> in a new
-                      window.
-                    </Trans>
-                  </small>
-                </p>
-              </React.Fragment>
-            ) : (
-              <Button
-                disabled={this.state.selectedLanguage == null}
-                isLoading={this.state.preparingTranslation}
-                onClick={this.handlePrepareTranslation}
-              >
-                <Trans>Prepare translation</Trans>
-              </Button>
+                  <a>
+                    <BookCover
+                      coverImage={book.coverImage}
+                      w={[75, 120]}
+                      h={[100, 150]}
+                    />
+                  </a>
+                </Link>
+              </Box>
+              <Box>
+                <H4>{book.title}</H4>
+                <P color={colors.text.subtle}>
+                  <Trans>from {book.publisher.name}</Trans>
+                </P>
+              </Box>
+            </Flex>
+          </Card>
+          <Box mb={20}>
+            <P color={colors.text.subtle}>
+              <Trans>Translate from</Trans>
+            </P>
+            <div>{book.language.name}</div>
+            <MdArrowDownward color={colors.base.orange} size={50} />
+            <P color={colors.text.subtle}>
+              <Trans>Translate to</Trans>
+            </P>
+            {this.state.showLanguageMenu && (
+              <LanguageMenu
+                languages={supportedLanguages}
+                selectedLanguageCode={selectedLanguage && selectedLanguage.code}
+                onSelectLanguage={this.handleChangeLanguage}
+                onClose={this.toggleLanguageMenu}
+              />
             )}
-          </Container>
-        </Layout>
-      </LanguageCategory>
+            {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
+            <A
+              isUppercased={Boolean(selectedLanguage)}
+              onClick={this.toggleLanguageMenu}
+              aria-expanded={this.state.showLanguageMenu}
+            >
+              {selectedLanguage ? (
+                <Trans>Change</Trans>
+              ) : (
+                <Trans>Choose language</Trans>
+              )}
+            </A>
+          </Box>
+          {this.state.translation ? (
+            <React.Fragment>
+              <Button
+                href={this.state.translation.crowdinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={this.handleStartTranslation}
+              >
+                <Trans>Start translation</Trans>
+              </Button>
+              <p>
+                <small>
+                  <Trans>
+                    Opens 3rd party site{' '}
+                    <a href="https://crowdin.com/">Crowdin</a> in a new window.
+                  </Trans>
+                </small>
+              </p>
+            </React.Fragment>
+          ) : (
+            <Button
+              disabled={this.state.selectedLanguage == null}
+              isLoading={this.state.preparingTranslation}
+              onClick={this.handlePrepareTranslation}
+            >
+              <Trans>Prepare translation</Trans>
+            </Button>
+          )}
+        </Container>
+      </Layout>
     );
   }
 }

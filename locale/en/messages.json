@@ -4,15 +4,15 @@
     "origin": [
       [
         "components/BookDetailsPage/DownloadBookMenu.js",
-        30
+        31
       ],
       [
         "pages/books/_book.js",
-        207
+        201
       ],
       [
         "pages/books/_book.js",
-        230
+        224
       ]
     ]
   },
@@ -21,7 +21,7 @@
     "origin": [
       [
         "components/BookDetailsPage/DownloadBookMenu.js",
-        40
+        41
       ]
     ]
   },
@@ -30,7 +30,7 @@
     "origin": [
       [
         "components/BookDetailsPage/DownloadBookMenu.js",
-        45
+        46
       ]
     ]
   },
@@ -106,7 +106,7 @@
       ],
       [
         "components/HomePage/index.js",
-        119
+        128
       ]
     ]
   },
@@ -124,11 +124,11 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        31
+        32
       ],
       [
         "components/GlobalMenu/index.js",
-        157
+        161
       ]
     ]
   },
@@ -137,7 +137,7 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        35
+        36
       ]
     ]
   },
@@ -146,15 +146,15 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        59
+        60
       ],
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        88
+        89
       ],
       [
         "components/HomePage/index.js",
-        161
+        185
       ],
       [
         "pages/books/browse.js",
@@ -171,7 +171,7 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        68
+        69
       ]
     ]
   },
@@ -180,7 +180,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        139
+        143
       ],
       [
         "components/Navbar/index.js",
@@ -193,7 +193,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        150
+        154
       ]
     ]
   },
@@ -202,7 +202,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        164
+        168
       ]
     ]
   },
@@ -211,7 +211,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        170
+        174
       ]
     ]
   },
@@ -220,7 +220,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        176
+        180
       ],
       [
         "pages/books/translations.js",
@@ -241,7 +241,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        183
+        187
       ]
     ]
   },
@@ -250,7 +250,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        186
+        190
       ]
     ]
   },
@@ -259,7 +259,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        189
+        193
       ]
     ]
   },
@@ -268,7 +268,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        192
+        196
       ]
     ]
   },
@@ -277,7 +277,7 @@
     "origin": [
       [
         "components/Head.js",
-        31
+        30
       ]
     ]
   },
@@ -286,7 +286,7 @@
     "origin": [
       [
         "components/HomePage/index.js",
-        135
+        159
       ]
     ]
   },
@@ -295,15 +295,15 @@
     "origin": [
       [
         "components/LanguageMenu/index.js",
-        49
+        50
       ],
       [
         "components/TranslationLanguageMenu/index.js",
-        41
+        46
       ],
       [
         "pages/books/_translate.js",
-        198
+        192
       ]
     ]
   },
@@ -329,6 +329,66 @@
       ]
     ]
   },
+  "Breadcrumb": {
+    "translation": "Breadcrumb",
+    "origin": [
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        80
+      ],
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        80
+      ]
+    ]
+  },
+  "Home": {
+    "translation": "Home",
+    "origin": [
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        84
+      ],
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        84
+      ],
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        84
+      ],
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        84
+      ]
+    ]
+  },
+  "Library <0>books</0>": {
+    "translation": "Library <0>books</0>",
+    "origin": [
+      [
+        "components/NavContextBar/CategoryNavigation.js",
+        63
+      ],
+      [
+        "components/SubNavbar/CategoryNavigation.js",
+        65
+      ]
+    ]
+  },
+  "Classroom <0>books</0>": {
+    "translation": "Classroom <0>books</0>",
+    "origin": [
+      [
+        "components/NavContextBar/CategoryNavigation.js",
+        72
+      ],
+      [
+        "components/SubNavbar/CategoryNavigation.js",
+        74
+      ]
+    ]
+  },
   "Search": {
     "translation": "Search",
     "origin": [
@@ -338,7 +398,7 @@
       ],
       [
         "pages/search.js",
-        185
+        225
       ]
     ]
   },
@@ -454,43 +514,16 @@
       ]
     ]
   },
-  "Breadcrumb": {
-    "translation": "Breadcrumb",
+  "Change": {
+    "translation": "Change",
     "origin": [
       [
-        "components/SubNavbar/Breadcrumb.js",
-        80
-      ]
-    ]
-  },
-  "Home": {
-    "translation": "Home",
-    "origin": [
-      [
-        "components/SubNavbar/Breadcrumb.js",
-        84
+        "components/Search/components/SelectLanguage.js",
+        70
       ],
       [
-        "components/SubNavbar/Breadcrumb.js",
-        84
-      ]
-    ]
-  },
-  "Library <0>books</0>": {
-    "translation": "Library <0>books</0>",
-    "origin": [
-      [
-        "components/SubNavbar/CategoryNavigation.js",
-        65
-      ]
-    ]
-  },
-  "Classroom <0>books</0>": {
-    "translation": "Classroom <0>books</0>",
-    "origin": [
-      [
-        "components/SubNavbar/CategoryNavigation.js",
-        74
+        "pages/books/_translate.js",
+        190
       ]
     ]
   },
@@ -566,11 +599,11 @@
     "origin": [
       [
         "pages/books/_book.js",
-        178
+        172
       ],
       [
         "pages/books/_translate.js",
-        167
+        161
       ],
       [
         "pages/books/translations.js",
@@ -583,7 +616,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        198
+        192
       ]
     ]
   },
@@ -592,7 +625,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        258
+        248
       ]
     ]
   },
@@ -601,7 +634,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        279
+        269
       ]
     ]
   },
@@ -610,7 +643,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        293
+        283
       ]
     ]
   },
@@ -619,20 +652,20 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        136
+        130
       ],
       [
         "pages/books/_translate.js",
-        146
+        140
       ]
     ]
   },
-  "Translate {0}": {
-    "translation": "Translate {0}",
+  "Translate: {0}": {
+    "translation": "Translate: {0}",
     "origin": [
       [
         "pages/books/_translate.js",
-        140
+        134
       ]
     ]
   },
@@ -641,7 +674,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        174
+        168
       ]
     ]
   },
@@ -650,16 +683,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        179
-      ]
-    ]
-  },
-  "Change": {
-    "translation": "Change",
-    "origin": [
-      [
-        "pages/books/_translate.js",
-        196
+        173
       ]
     ]
   },
@@ -668,7 +692,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        210
+        204
       ]
     ]
   },
@@ -677,7 +701,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        214
+        208
       ]
     ]
   },
@@ -686,7 +710,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        228
+        221
       ]
     ]
   },
@@ -740,7 +764,7 @@
     "origin": [
       [
         "pages/search.js",
-        205
+        255
       ]
     ]
   },
@@ -749,7 +773,7 @@
     "origin": [
       [
         "pages/search.js",
-        213
+        263
       ]
     ]
   },
@@ -758,7 +782,7 @@
     "origin": [
       [
         "pages/search.js",
-        249
+        300
       ]
     ]
   }

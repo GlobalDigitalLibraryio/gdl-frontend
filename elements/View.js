@@ -21,11 +21,11 @@ import {
 
 type cssUnit = string | number;
 type ResponsiveProp = cssUnit | [cssUnit, cssUnit];
-type Props = {
+export type Props = {
   children: ?Node,
   className?: string,
-  alignItems?: 'center',
-  justifyContent?: 'space-between',
+  alignItems?: 'center' | 'stretch',
+  justifyContent?: 'space-between' | 'center',
   flexDirection?: 'row' | 'column',
   width?: ResponsiveProp,
   maxWidth?: ResponsiveProp,
@@ -60,10 +60,15 @@ const View = (props: Props) => {
   return <StyledView {...props} />;
 };
 
+View.defaultProps = {
+  alignItems: 'stretch'
+};
+
 const StyledView = styled('div')`
   position: relative;
   display: flex;
   flex-direction: column;
+  /* fix flexbox bugs */
   min-height: 0;
   min-width: 0;
   ${maxWidth};

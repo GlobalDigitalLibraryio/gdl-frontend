@@ -8,9 +8,8 @@
 
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
-import styled from 'react-emotion';
 
-import type { Book, Context } from '../types';
+import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
@@ -19,30 +18,38 @@ import {
   Placeholder,
   NoResults
 } from '../components/Search';
-import Layout from '../components/Layout';
+import Layout, { Main } from '../components/Layout';
+import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
+import { SelectLanguage } from '../components/LanguageMenu';
+import {
+  setBookLanguage,
+  getBookLanguageCode,
+  getBookLanguage
+} from '../lib/storage';
 import Head from '../components/Head';
 import Button from '../components/Button';
-import Container from '../components/Container';
-import Box from '../components/Box';
+import { Container, Text } from '../elements';
+import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
 import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
-import { LanguageCategory } from '../components/LanguageCategoryContext';
-import { getBookLanguageFromCookie } from '../lib/cookie';
-import { DEFAULT_LANGUAGE_CODE } from '../config';
 
 const QUERY_PARAM = 'q';
+const LANG_PARAM = 'l';
 
 type Props = {
   searchResult: ?{
     results: Array<Book>,
     page: number,
-    totalCount: number
+    totalCount: number,
+    language: Language
   },
+  languages: Array<Language>,
   languageCode: string,
   url: {
     query: {
-      q?: string
+      q?: string,
+      l?: string
     },
     pathname: string,
     asPath: string
@@ -57,24 +64,27 @@ type State = {
   },
   searchQuery: string,
   lastSearchQuery?: string,
-  isLoadingMore: boolean
+  isLoadingMore: boolean,
+  language: ?Language
 };
 
-const ResultsMeta = styled('h1')`
-  text-align: center;
-  margin-top: 15px;
-  font-size: 1rem;
-  font-weight: normal;
-`;
+const resultsTextStyle = {
+  textAlign: 'center',
+  fontSize: '1rem',
+  fontWeight: 'normal',
+  mt: spacing.medium
+};
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
-    const languageCode =
-      getBookLanguageFromCookie(req) || DEFAULT_LANGUAGE_CODE;
     let searchResult;
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
+
+      // We get the language code either from the query params or the cookie
+      const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
+
       searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
       });
@@ -87,7 +97,6 @@ class SearchPage extends React.Component<Props, State> {
     }
 
     return {
-      languageCode,
       searchResult:
         searchResult && searchResult.data ? searchResult.data : undefined
     };
@@ -97,24 +106,48 @@ class SearchPage extends React.Component<Props, State> {
     searchResult: this.props.searchResult,
     searchQuery: this.props.url.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.url.query[QUERY_PARAM],
-    isLoadingMore: false
+    isLoadingMore: false,
+    language: this.props.searchResult ? this.props.searchResult.language : null
   };
+
+  /**
+   * We only want to render the language menu on the client side.
+   * So we don't fill the cache with all the search pages with the only change in the HTML being the shown language name
+   */
+  componentDidMount() {
+    const language =
+      (this.props.searchResult && this.props.searchResult.language) ||
+      getBookLanguage();
+
+    this.setState({ language });
+  }
 
   handleSearch = async event => {
     event.preventDefault();
+    if (
+      !this.state.searchQuery ||
+      this.state.searchQuery.trim() === '' ||
+      !this.state.language
+    ) {
+      return;
+    }
+
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
 
     Router.pushRoute(
       'search',
       {
-        [QUERY_PARAM]: this.state.searchQuery
+        [QUERY_PARAM]: this.state.searchQuery,
+        // $FlowFixMe: We're already checking if language is defined
+        [LANG_PARAM]: this.state.language.code
       },
       { shallow: true }
     );
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      // $FlowFixMe: We're already checking if language is defined
+      this.state.language.code,
       {
         pageSize: SEARCH_PAGE_SIZE
       }
@@ -128,14 +161,19 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchResult: queryRes.data });
   };
 
+  handleChangeLanguage = language => {
+    this.setState({ language, searchResult: null });
+    setBookLanguage(language);
+  };
+
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     // Fixes flow warnings
-    if (!this.state.searchResult) return;
+    if (!this.state.searchResult || !this.state.language) return;
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      this.state.language.code,
       {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
@@ -165,9 +203,11 @@ class SearchPage extends React.Component<Props, State> {
       }),
       () => {
         // Focus the second anchor found, the first is an anchor with an image that is hidden from screen readers
-        const bookAnchor = document.querySelectorAll(
-          `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
-        )[1];
+        const bookAnchor =
+          toFocus &&
+          document.querySelectorAll(
+            `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
+          )[1];
         bookAnchor && bookAnchor.focus();
       }
     );
@@ -177,14 +217,22 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchQuery: event.target.value });
 
   render() {
-    const { searchResult, lastSearchQuery } = this.state;
-    const { languageCode } = this.props;
+    const { searchResult, lastSearchQuery, language } = this.state;
 
     return (
-      <LanguageCategory category={undefined} languageCode={languageCode}>
-        <Layout crumbs={[<Trans>Search</Trans>]}>
-          <Head title="Search" />
-          <Container pt={[15, 20]}>
+      <Layout wrapWithMain={false}>
+        <Head title="Search" />
+        <NavContextBar>
+          <Breadcrumb crumbs={[<Trans>Search</Trans>]} />
+          {language && (
+            <SelectLanguage
+              language={language}
+              onSelectLanguage={this.handleChangeLanguage}
+            />
+          )}
+        </NavContextBar>
+        <Main>
+          <Container my={spacing.medium}>
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
             <form onSubmit={this.handleSearch} action=".">
               <SearchField
@@ -194,12 +242,15 @@ class SearchPage extends React.Component<Props, State> {
                 onChange={this.handleQueryChange}
                 value={this.state.searchQuery}
                 placeholder="Search"
-                required
               />
             </form>
 
             {searchResult && (
-              <ResultsMeta aria-live="polite">
+              <Text
+                {...resultsTextStyle}
+                aria-live="polite"
+                accessibilityRole="heading"
+              >
                 {searchResult.results.length > 0 ? (
                   <Fragment>
                     <Plural
@@ -215,15 +266,15 @@ class SearchPage extends React.Component<Props, State> {
                     <strong>&quot;{lastSearchQuery}&quot;</strong>
                   </Trans>
                 )}
-              </ResultsMeta>
+              </Text>
             )}
           </Container>
 
           <Container
-            mt={[15, 20]}
-            py={[15, 30]}
+            mt={spacing.medium}
+            py={spacing.medium}
             style={{
-              background: '#fff',
+              background: colors.base.white,
               minHeight: '-webkit-fill-available',
               boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
             }}
@@ -238,7 +289,8 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  <Box textAlign="center">
+                  {/* Should really be View instead of Text here.. but */}
+                  <Text textAlign="center">
                     <Button
                       disabled={
                         searchResult.results.length >= searchResult.totalCount
@@ -248,15 +300,15 @@ class SearchPage extends React.Component<Props, State> {
                     >
                       <Trans>See more</Trans>
                     </Button>
-                  </Box>
+                  </Text>
                 </Fragment>
               )
             ) : (
               <Placeholder />
             )}
           </Container>
-        </Layout>
-      </LanguageCategory>
+        </Main>
+      </Layout>
     );
   }
 }

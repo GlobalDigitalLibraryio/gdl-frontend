@@ -7,155 +7,73 @@
  */
 
 import React, { Fragment } from 'react';
-import { withRouter } from 'next/router';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
 
 import config from '../../config';
-import type { Language, ReadingLevel } from '../../types';
-import { fetchLanguages, fetchCategories } from '../../fetch';
+import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
 import { getTokenFromLocalCookie } from '../../lib/auth/token';
+import { getBookLanguage } from '../../lib/storage';
 import Menu, { MenuItem } from '../Menu';
 import CreativeCommonsLogo from './cc-logo.svg';
-import LanguageMenu from '../LanguageMenu';
+import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 
 type Props = {|
-  onClose(): void,
-  languageCode: string,
-  router: any
+  onClose(): void
 |};
-
-export type Categories = {
-  classroom_books?: Array<ReadingLevel>,
-  library_books?: Array<ReadingLevel>
-};
 
 type State = {
-  languages: Array<Language>,
-  categories: Categories,
-  showLanguageMenu: boolean,
-  showCategoriesMenu: boolean
-};
-
-type Cache = {|
-  languages: Array<Language>,
-  categories: Categories,
-  languageCode: ?string
-|};
-
-const stateCache: Cache = {
-  languages: [],
-  categories: {},
-  languageCode: null
+  language: Language,
+  hasOpenNestedMenu: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    if (stateCache.language && stateCache.languageCode === props.languageCode) {
-      this.state = {
-        languages: stateCache.languages,
-        categories: stateCache.categories,
-        showLanguageMenu: false,
-        showCategoriesMenu: false
-      };
-    } else {
-      this.state = {
-        languages: [],
-        categories: {},
-        showLanguageMenu: false,
-        showCategoriesMenu: false
-      };
-    }
-  }
-
-  componentDidMount() {
-    // Only fetch if we haven't already set stuff from the cache in the constructor
-    if (this.state.languages.length === 0) {
-      this.getMenuData();
-    }
-    // Remember the last language we mounted with in the cache
-    stateCache.languageCode = this.props.languageCode;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.router !== nextProps.router) {
-      nextProps.onClose();
-    }
-  }
-
-  /**
-   * When unmounting, we keep the langauge and level results so we won't have to refetch it on a different page if the langauge is the same
-   */
-  componentWillUnmount() {
-    stateCache.languages = this.state.languages;
-    stateCache.categories = this.state.categories;
-  }
-
-  getMenuData = async () => {
-    const [languagesRes, categoriesRes] = await Promise.all([
-      fetchLanguages(),
-      fetchCategories(this.props.languageCode)
-    ]);
-
-    // TODO: Handle error case by notifying user?
-    if (languagesRes.isOk && categoriesRes.isOk) {
-      this.setState({
-        categories: categoriesRes.data,
-        languages: languagesRes.data
-      });
-    }
+  state = {
+    language: getBookLanguage(),
+    hasOpenNestedMenu: false
   };
 
-  toggleShowLanguageMenu = () =>
-    this.setState(state => ({ showLanguageMenu: !state.showLanguageMenu }));
-
-  toggleShowCategoriesMenu = () =>
-    this.setState(state => ({ showCategoriesMenu: !state.showCategoriesMenu }));
+  nestedMenuOpenState = (isOpen: boolean) =>
+    this.setState({ hasOpenNestedMenu: isOpen });
 
   render() {
-    const { languageCode, onClose } = this.props;
+    const { onClose } = this.props;
 
     return (
       <Fragment>
-        {this.state.showLanguageMenu && (
-          <LanguageMenu
-            isNestedMenu
-            selectedLanguageCode={languageCode}
-            languages={this.state.languages}
-            onClose={this.toggleShowLanguageMenu}
-          />
-        )}
-        {this.state.showCategoriesMenu && (
-          <CategoriesMenu
-            languageCode={languageCode}
-            categories={this.state.categories}
-            onClose={this.toggleShowCategoriesMenu}
-          />
-        )}
         <Menu
           heading={<Trans>Menu</Trans>}
           onClose={onClose}
-          hasOpenNestedMenu={
-            this.state.showCategoriesMenu || this.state.showLanguageMenu
-          }
+          hasOpenNestedMenu={this.state.hasOpenNestedMenu}
         >
-          <MenuItem
-            showKeyLine
-            hasNestedMenu
-            onClick={this.toggleShowLanguageMenu}
+          <SelectLanguage
+            openStateCallback={this.nestedMenuOpenState}
+            language={this.state.language}
+            onSelectLanguage={onClose}
+            linkProps={language => ({
+              route: 'books',
+              params: { lang: language.code }
+            })}
           >
-            <Trans>Book language</Trans>
-          </MenuItem>
-          <MenuItem
-            showKeyLine
-            hasNestedMenu
-            onClick={this.toggleShowCategoriesMenu}
+            {({ onClick }) => (
+              <MenuItem onClick={onClick} showKeyLine hasNestedMenu>
+                <Trans>Book language</Trans>
+              </MenuItem>
+            )}
+          </SelectLanguage>
+          <CategoriesMenu
+            openStateCallback={this.nestedMenuOpenState}
+            onSelectCategory={onClose}
+            languageCode={this.state.language.code}
           >
-            <Trans>Categories</Trans>
-          </MenuItem>
+            {({ onClick }) => (
+              <MenuItem onClick={onClick} showKeyLine hasNestedMenu>
+                <Trans>Categories</Trans>
+              </MenuItem>
+            )}
+          </CategoriesMenu>
           {config.TRANSLATION_PAGES && (
             <Fragment>
               {getTokenFromLocalCookie() == null ? (
@@ -180,13 +98,16 @@ class GlobalMenu extends React.Component<Props, State> {
           )}
 
           <MenuItem href="https://home.digitallibrary.io/about/">
-            <Trans>About Global Digital Library</Trans>
+            <Trans>About the Global Digital Library</Trans>
           </MenuItem>
           <MenuItem href="https://blog.digitallibrary.io/cc/">
             <Trans>Licensing and reuse</Trans>
           </MenuItem>
           <MenuItem href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
             <Trans>Cookie policy</Trans>
+          </MenuItem>
+          <MenuItem href="https://home.digitallibrary.io/privacy/">
+            <Trans>Privacy policy</Trans>
           </MenuItem>
           <MenuItem href={config.zendeskUrl}>
             <Trans>Report issues</Trans>
@@ -202,4 +123,5 @@ class GlobalMenu extends React.Component<Props, State> {
     );
   }
 }
-export default withRouter(GlobalMenu);
+
+export default GlobalMenu;
