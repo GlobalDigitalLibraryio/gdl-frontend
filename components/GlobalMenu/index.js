@@ -98,13 +98,16 @@ class GlobalMenu extends React.Component<Props, State> {
           )}
 
           <MenuItem href="https://home.digitallibrary.io/about/">
-            <Trans>About Global Digital Library</Trans>
+            <Trans>About the Global Digital Library</Trans>
           </MenuItem>
           <MenuItem href="https://blog.digitallibrary.io/cc/">
             <Trans>Licensing and reuse</Trans>
           </MenuItem>
           <MenuItem href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
             <Trans>Cookie policy</Trans>
+          </MenuItem>
+          <MenuItem href="https://home.digitallibrary.io/privacy/">
+            <Trans>Privacy policy</Trans>
           </MenuItem>
           <MenuItem href={config.zendeskUrl}>
             <Trans>Report issues</Trans>
