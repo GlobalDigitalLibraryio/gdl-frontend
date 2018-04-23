@@ -21,7 +21,8 @@ const directives = {
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
-    'https://digitallibrary.eu.auth0.com'
+    'https://digitallibrary.eu.auth0.com',
+    googleAnalytics
   ],
   reportUri: '/csp-report'
 };
