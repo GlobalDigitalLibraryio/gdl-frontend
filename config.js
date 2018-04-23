@@ -63,8 +63,6 @@ function getConfig() {
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       googleAnalyticsTrackingID: 'UA-111771573-1',
-      STATIC_PAGES_ONLY: true,
-      TRANSLATION_PAGES: false,
       BLOCK_SEARCH_INDEXING: false
     }
   };
