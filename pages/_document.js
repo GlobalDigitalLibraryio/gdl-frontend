@@ -68,6 +68,9 @@ export default class GDLDocument extends Document {
           {config.BLOCK_SEARCH_INDEXING && (
             <meta name="robots" content="noindex, nofollow" />
           )}
+          {config.GDL_ENVIRONMENT == 'prod' && (
+            <meta name="google-site-verification" content="t5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA" />
+          )}
           <title>{DEFAULT_TITLE}</title>
           {/* Twitter */}
           <meta name="twitter:site" content="@GDigitalLibrary" />
