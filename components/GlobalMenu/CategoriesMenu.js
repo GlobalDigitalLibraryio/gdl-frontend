@@ -84,66 +84,68 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                 style={{ marginTop: spacing.large }}
               />
             ) : (
-              (categories.classroom_books && (
-                <Fragment>
-                  <MenuItem showKeyLine>
-                    <Trans>Classroom books</Trans>
-                  </MenuItem>
-                  {categories.classroom_books.map(level => (
+              <Fragment>
+                {categories.classroom_books && (
+                  <Fragment>
+                    <MenuItem showKeyLine>
+                      <Trans>Classroom books</Trans>
+                    </MenuItem>
+                    {categories.classroom_books.map(level => (
+                      <Link
+                        key={level}
+                        lang={languageCode}
+                        readingLevel={level}
+                        category="classroom_books"
+                      >
+                        <MenuItem onCustomClick={onSelectCategory} isNestedItem>
+                          <ReadingLevelTrans readingLevel={level} />
+                        </MenuItem>
+                      </Link>
+                    ))}
                     <Link
-                      key={level}
-                      lang={languageCode}
-                      readingLevel={level}
                       category="classroom_books"
-                    >
-                      <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                        <ReadingLevelTrans readingLevel={level} />
-                      </MenuItem>
-                    </Link>
-                  ))}
-                  <Link
-                    category="classroom_books"
-                    lang={languageCode}
-                    sort="-arrivalDate"
-                  >
-                    <MenuItem
-                      isNestedItem
-                      onCustomClick={onSelectCategory}
-                      showKeyLine={Boolean(categories.library_books)}
-                    >
-                      <Trans>New arrivals</Trans>
-                    </MenuItem>
-                  </Link>
-                </Fragment>
-              ),
-              categories.library_books && (
-                <Fragment>
-                  <MenuItem showKeyLine>
-                    <Trans>Library books</Trans>
-                  </MenuItem>
-                  {categories.library_books.map(level => (
-                    <Link
-                      key={level}
                       lang={languageCode}
-                      readingLevel={level}
-                      category="library_books"
+                      sort="-arrivalDate"
                     >
-                      <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                        <ReadingLevelTrans readingLevel={level} />
+                      <MenuItem
+                        isNestedItem
+                        onCustomClick={onSelectCategory}
+                        showKeyLine={Boolean(categories.library_books)}
+                      >
+                        <Trans>New arrivals</Trans>
                       </MenuItem>
                     </Link>
-                  ))}
-                  <Link
-                    category="library_books"
-                    lang={languageCode}
-                    sort="-arrivalDate"
-                  >
-                    <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                      <Trans>New arrivals</Trans>
+                  </Fragment>
+                )}
+                {categories.library_books && (
+                  <Fragment>
+                    <MenuItem showKeyLine>
+                      <Trans>Library books</Trans>
                     </MenuItem>
-                  </Link>
-                </Fragment>
-              ))
+                    {categories.library_books.map(level => (
+                      <Link
+                        key={level}
+                        lang={languageCode}
+                        readingLevel={level}
+                        category="library_books"
+                      >
+                        <MenuItem onCustomClick={onSelectCategory} isNestedItem>
+                          <ReadingLevelTrans readingLevel={level} />
+                        </MenuItem>
+                      </Link>
+                    ))}
+                    <Link
+                      category="library_books"
+                      lang={languageCode}
+                      sort="-arrivalDate"
+                    >
+                      <MenuItem onCustomClick={onSelectCategory} isNestedItem>
+                        <Trans>New arrivals</Trans>
+                      </MenuItem>
+                    </Link>
+                  </Fragment>
+                )}
+              </Fragment>
             )}
           </Menu>
         )}
