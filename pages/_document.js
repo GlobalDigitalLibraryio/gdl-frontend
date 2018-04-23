@@ -113,7 +113,7 @@ export default class GDLDocument extends Document {
           />
           {/* Polyfill only the minimum number of methods necessary for IE11 */}
           <script
-            src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Object.entries,String.prototype.includes,Array.prototype.find,Array.prototype.includes"
+            src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Object.assign,Object.entries,Object.values,String.prototype.includes,Array.prototype.find,Array.prototype.includes"
             defer
             async
           />
