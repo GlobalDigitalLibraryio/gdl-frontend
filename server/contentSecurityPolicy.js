@@ -17,7 +17,8 @@ const directives = {
     googleAnalytics
   ],
   styleSrc: ["'self'", "'unsafe-inline'"],
-  imgSrc: ["'self'", 'https://*.digitallibrary.io', googleAnalytics],
+  fontSrc: ["'self'", 'data:'],
+  imgSrc: ["'self'", 'data:', 'https://*.digitallibrary.io', googleAnalytics],
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
