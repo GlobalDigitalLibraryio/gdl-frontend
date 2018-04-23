@@ -28,6 +28,9 @@
       "./jest.setup.js"
     ]
   },
+  "browser": {
+    "dns": false
+  },
   "author": "gdl@knowit.no",
   "license": "GPL-3.0",
   "scripts": {

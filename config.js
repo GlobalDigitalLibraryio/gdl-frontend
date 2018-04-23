@@ -6,6 +6,8 @@
  * See LICENSE
  */
 
+const dnsResolver = require('./lib/customResolver');
+
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 
@@ -77,7 +79,11 @@ function getConfig() {
 
   // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
   if (!process.browser && process.env.GDL_ENVIRONMENT) {
-    toRet.bookApiUrl = 'http://book-api.gdl-local/book-api/v1';
+    // Define a getter method when retrieving the book api url inside Docker.
+    // $FlowFixMe
+    Object.defineProperty(toRet, 'bookApiUrl', {
+      get: dnsResolver('book-api.gdl-local', '/book-api/v1')
+    });
   }
 
   return toRet;
