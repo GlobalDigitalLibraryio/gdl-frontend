@@ -162,7 +162,7 @@ class SearchPage extends React.Component<Props, State> {
   };
 
   handleChangeLanguage = language => {
-    this.setState({ language });
+    this.setState({ language, searchResult: null });
     setBookLanguage(language);
   };
 
@@ -203,9 +203,11 @@ class SearchPage extends React.Component<Props, State> {
       }),
       () => {
         // Focus the second anchor found, the first is an anchor with an image that is hidden from screen readers
-        const bookAnchor = document.querySelectorAll(
-          `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
-        )[1];
+        const bookAnchor =
+          toFocus &&
+          document.querySelectorAll(
+            `[href='/${toFocus.language.code}/books/details/${toFocus.id}']`
+          )[1];
         bookAnchor && bookAnchor.focus();
       }
     );
