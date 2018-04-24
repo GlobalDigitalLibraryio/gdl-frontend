@@ -7,7 +7,10 @@
  */
 
 import React, { type Element } from 'react';
-import { MdStar, MdWarning, MdInfo, MdClose } from 'react-icons/lib/md';
+import MdStar from 'react-icons/lib/md/star';
+import MdWarning from 'react-icons/lib/md/warning';
+import MdInfo from 'react-icons/lib/md/info';
+import MdClose from 'react-icons/lib/md/close';
 import { Trans } from '@lingui/react';
 import { Container, DismissButton, Icon, Text } from './styledFlag';
 import SrOnly from '../SrOnly';

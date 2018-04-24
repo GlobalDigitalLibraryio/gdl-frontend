@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { MdArrowDownward } from 'react-icons/lib/md';
+import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
 
 import {
   fetchBook,

@@ -6,7 +6,8 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import { MdCheck, MdKeyboardArrowRight } from 'react-icons/lib/md';
+import MdCheck from 'react-icons/lib/md/check';
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 import { Trans } from '@lingui/react';
 import { cx } from 'react-emotion';
 

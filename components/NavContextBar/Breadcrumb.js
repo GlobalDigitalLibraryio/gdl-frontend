@@ -7,7 +7,8 @@
  */
 
 import * as React from 'react';
-import { MdKeyboardArrowRight, MdHome } from 'react-icons/lib/md';
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+import MdHome from 'react-icons/lib/md/home';
 import { withI18n } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 import theming from 'styled-theming';
