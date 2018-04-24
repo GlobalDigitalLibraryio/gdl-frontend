@@ -8,7 +8,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { MdClose, MdEdit } from 'react-icons/lib/md';
+import MdClose from 'react-icons/lib/md/close';
+import MdEdit from 'react-icons/lib/md/edit';
 
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';

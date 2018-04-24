@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { MdSearch } from 'react-icons/lib/md';
+import MdSearch from 'react-icons/lib/md/search';
 import { Input, Label, Container, Icon } from './styled';
 
 type Props = {

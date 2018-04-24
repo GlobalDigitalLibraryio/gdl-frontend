@@ -6,7 +6,8 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/lib/md';
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import SrOnly from '../SrOnly';

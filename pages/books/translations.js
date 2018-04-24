@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { MdArrowForward } from 'react-icons/lib/md';
+import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, I18n } from '../../types';

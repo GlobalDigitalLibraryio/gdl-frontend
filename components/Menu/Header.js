@@ -6,7 +6,8 @@
  * See LICENSE
  */
 import React, { type Element } from 'react';
-import { MdClose, MdArrowBack } from 'react-icons/lib/md';
+import MdClose from 'react-icons/lib/md/close';
+import MdArrowBack from 'react-icons/lib/md/arrow-back';
 import { Trans } from '@lingui/react';
 
 import { Header, Title, Button } from './styled/Content';

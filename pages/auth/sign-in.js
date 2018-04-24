@@ -9,7 +9,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { FaGoogle, FaFacebook } from 'react-icons/lib/fa';
+import FaFacebook from 'react-icons/lib/fa/facebook';
+import FaGoogle from 'react-icons/lib/fa/google';
 
 import type { I18n } from '../../types';
 import { Text, A } from '../../elements';

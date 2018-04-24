@@ -7,7 +7,8 @@
  */
 
 import * as React from 'react';
-import { MdMenu, MdSearch } from 'react-icons/lib/md';
+import MdSearch from 'react-icons/lib/md/search';
+import MdMenu from 'react-icons/lib/md/menu';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
