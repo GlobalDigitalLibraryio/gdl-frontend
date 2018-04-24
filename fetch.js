@@ -61,15 +61,6 @@ async function doFetch(
     result = await response.text();
   }
 
-  if (!process.browser && !response.ok) {
-    console.warn('Request failed', {
-      url,
-      method: options && options.method ? options.method : 'GET',
-      status: response.status,
-      response: result
-    });
-  }
-
   if (response.ok) {
     return {
       data: result,
