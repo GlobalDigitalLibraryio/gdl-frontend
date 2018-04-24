@@ -48,36 +48,37 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
         </BrowseLink>
       )}
     </View>
-    <HorizontalScrollList>
-      {books.map(book => (
-        <div key={book.id}>
-          <BookLink key={book.id} book={book} />
-        </div>
-      ))}
-    </HorizontalScrollList>
+    <NegativeMarginDiv>
+      <ScrollDiv>
+        {books.map(book => (
+          <CoverDiv key={book.id}>
+            <BookLink key={book.id} book={book} />
+          </CoverDiv>
+        ))}
+      </ScrollDiv>
+    </NegativeMarginDiv>
   </Fragment>
 );
 
-const HorizontalScrollList = styled('div')`
-  overflow-x: auto;
-  /* Fixes Safari scrolling all over the place */
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+const NegativeMarginDiv = styled('div')`
   margin: 0 -${spacing.medium};
-  padding: 0 ${spacing.medium};
-  padding-bottom: 4px; /* because of box-shadow on booklink */
+`;
 
-  & > :last-child  {
-    padding-right: ${spacing.medium};
+const ScrollDiv = styled('div')`
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  ::-webkit-scrollbar {
+    display: none;
   }
+  white-space: nowrap;
+  padding: 0 ${spacing.medium};
+  padding-bottom: 4px;
+`;
 
-  display: flex;
-
-  @supports (display: grid) {
-    display: grid;
-    grid-auto-flow: column;
-    grid-column-gap: 11px;
-    justify-content: start;
+const CoverDiv = styled('div')`
+  display: inline-block;
+  &:not(:last-child) {
+    margin-right: 11px;
   }
 `;
 
