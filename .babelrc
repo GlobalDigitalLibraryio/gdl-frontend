@@ -8,7 +8,11 @@
         [
           "next/babel",
           {
-            "preset-env": { "targets": { "ie": 11 } }
+            "preset-env": {
+              "targets": {
+                "browsers": [">0.25%", "ie 11", "not op_mini all"]
+              }
+            }
           }
         ],
         "@sector-labs/lingui-babel-preset-react"
