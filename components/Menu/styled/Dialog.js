@@ -13,7 +13,7 @@ import media from '../../../style/media';
 const MENU_WIDTH = '375px';
 
 export const FillScreen = styled('div')`
-  height: 100vh;
+  height: 100%;
   left: 0;
   top: 0;
   overflow-y: auto;
@@ -23,6 +23,7 @@ export const FillScreen = styled('div')`
 `;
 
 export const Positioner = styled('div')`
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
@@ -55,6 +56,7 @@ export const Dialog = styled('div')`
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  height: 100%;
   outline: 0;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 0 2px 0 rgba(0, 0, 0, 0.12),
     0 4px 20px 0 rgba(0, 0, 0, 0.2);
