@@ -20,7 +20,6 @@ export const FillScreen = styled('div')`
   position: absolute;
   width: 100%;
   z-index: 510;
-  -webkit-overflow-scrolling: touch;
 `;
 
 export const Positioner = styled('div')`
