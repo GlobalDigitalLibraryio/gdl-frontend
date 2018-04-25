@@ -16,12 +16,12 @@ const globalVarName = '__GDL_ENVIRONMENT__';
 /**
  * Read the GDL environment from a global variable in the client (see _document.js)
  * On the server, we use environment variables.
- * Fallback to 'test' if none is provided.
+ * Fallback to 'dev' if none is provided.
  */
 const GDL_ENVIRONMENT = (function() {
   return (
     (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
-    'test'
+    'dev'
   );
 })();
 
@@ -33,6 +33,9 @@ function getConfig() {
         name: 'English'
       },
       GLOBAL_VAR_NAME: globalVarName,
+      SENTRY_PROJECT_ID: '1195015',
+      SENTRY_PUBLIC_KEY: '7d5b3ec618464d4abceb4b4fc2ee0ed0',
+      REPORT_ERRORS: false,
       STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,
       BLOCK_SEARCH_INDEXING: true,
@@ -46,22 +49,29 @@ function getConfig() {
       googleAnalyticsTrackingID: 'N/A'
     },
 
+    dev: {
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
+    },
+
     local: {
       bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1'
     },
 
     test: {
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
+      REPORT_ERRORS: true,
       googleAnalyticsTrackingID: 'UA-111724798-1'
     },
 
     staging: {
       bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
+      REPORT_ERRORS: true,
       googleAnalyticsTrackingID: 'UA-111796456-1'
     },
 
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
+      REPORT_ERRORS: true,
       googleAnalyticsTrackingID: 'UA-111771573-1',
       BLOCK_SEARCH_INDEXING: false
     }

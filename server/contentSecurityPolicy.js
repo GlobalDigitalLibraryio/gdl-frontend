@@ -5,6 +5,7 @@
  *
  * See LICENSE
  */
+const { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY } = require('../config');
 
 const googleAnalytics = 'www.google-analytics.com';
 
@@ -23,9 +24,10 @@ const directives = {
     "'self'",
     'https://*.digitallibrary.io',
     'https://digitallibrary.eu.auth0.com',
+    `https://sentry.io/api/${SENTRY_PROJECT_ID}/store/`,
     googleAnalytics
   ],
-  reportUri: '/csp-report'
+  reportUri: `https://sentry.io/api/${SENTRY_PROJECT_ID}/csp-report/?sentry_key=${SENTRY_PUBLIC_KEY}`
 };
 
 module.exports = { directives };

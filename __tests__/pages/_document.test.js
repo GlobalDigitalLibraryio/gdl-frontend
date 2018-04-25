@@ -17,7 +17,7 @@ test("Sets global GDL environment variable, defaults to 'test'", () => {
       .find('script')
       .first()
       .html()
-  ).toEqual("<script>window.__GDL_ENVIRONMENT__ = 'test';</script>");
+  ).toEqual("<script>window.__GDL_ENVIRONMENT__ = 'dev';</script>");
 });
 
 test('Has the no robots meta tag', () => {
