@@ -72,7 +72,7 @@ class Read extends React.Component<Props> {
           {!this.props.url.query.chapterId && (
             <link
               rel="canonical"
-              href={`${canonical}/${book.language.code}/books/${book.id}/read/${
+              href={`${canonical}/${book.language.code}/books/read/${book.id}/${
                 chapter.id
               }`}
             />
