@@ -18,7 +18,7 @@ import catalog from '../locale/en/messages';
 type Props = {
   language: string,
   catalog: string,
-  url: {
+  url?: {
     asPath: string
   }
 };
@@ -63,8 +63,11 @@ export default (Page: React.ComponentType<any>) => {
     render() {
       const languages = Object.keys(translations);
       const { language, ...props } = this.props;
-      const url = new Url(`${canonical}/${props.url.asPath}`);
-      delete url.query.hl;
+      // Make sure URL exists here. If there is a 404 it doesn't
+      const url = props.url && new Url(`${canonical}/${props.url.asPath}`);
+      if (url) {
+        delete url.query.hl;
+      }
       // Wrap our page with the i18n provider and add alternate links to the other supported languages in the head
 
       return (
@@ -75,18 +78,26 @@ export default (Page: React.ComponentType<any>) => {
           }}
         >
           <Head>
-            <link href={url.toString()} hrefLang="x-default" rel="alternate" />
-            {languages.map(lang => {
-              url.query.hl = lang;
-              return (
+            {url && (
+              <React.Fragment>
                 <link
-                  key={lang}
                   href={url.toString()}
-                  hrefLang={lang}
+                  hrefLang="x-default"
                   rel="alternate"
                 />
-              );
-            })}
+                {languages.map(lang => {
+                  url.query.hl = lang;
+                  return (
+                    <link
+                      key={lang}
+                      href={url.toString()}
+                      hrefLang={lang}
+                      rel="alternate"
+                    />
+                  );
+                })}
+              </React.Fragment>
+            )}
           </Head>
           <I18nPage {...props} />
         </I18nProvider>
