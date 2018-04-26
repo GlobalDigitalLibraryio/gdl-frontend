@@ -11,13 +11,16 @@ import { I18nProvider, withI18n } from '@lingui/react';
 import Head from 'next/head';
 import Url from 'domurl';
 import type { Context } from '../types';
+import { canonical } from '../config';
 // Currently we only support English
 import catalog from '../locale/en/messages';
 
 type Props = {
   language: string,
   catalog: string,
-  href: string
+  url: {
+    asPath: string
+  }
 };
 
 // For now we have to add each translation here
@@ -51,26 +54,16 @@ export default (Page: React.ComponentType<any>) => {
         language = 'en';
       }
 
-      let href;
-      if (req != null) {
-        // On the server, we build it up based on the request object
-        href = `${req.protocol}://${req.headers.host}${req.originalUrl}`;
-      } else {
-        // In the browser, we simly read the window location
-        href = window.location.href;
-      }
-
       return {
         ...composedInitialProps,
-        language,
-        href
+        language
       };
     }
 
     render() {
       const languages = Object.keys(translations);
-      const { language, href, ...props } = this.props;
-      const url = new Url(href);
+      const { language, ...props } = this.props;
+      const url = new Url(`${canonical}/${props.url.asPath}`);
       delete url.query.hl;
       // Wrap our page with the i18n provider and add alternate links to the other supported languages in the head
 
