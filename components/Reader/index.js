@@ -8,6 +8,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
+import Head from 'next/head';
+
 import { fetchChapter } from '../../fetch';
 import Box from '../Box';
 import type { BookDetails, Chapter, ChapterSummary } from '../../types';
@@ -262,16 +264,35 @@ export default class ReaderContainer extends React.Component<
   }
 
   render() {
+    const next = this.getNextChapterPointer();
+    const prev = this.getPreviousChapterPointer();
+    const { book } = this.props;
     return (
-      <Reader
-        book={this.props.book}
-        chapterWithContent={this.state.chapters[this.state.chapterPointer.id]}
-        chapterPointer={this.state.chapterPointer}
-        onRequestNext={this.handleRequestNextChapter}
-        onRequestPrevious={this.handleRequestPreviousChapter}
-        onRequestClose={this.handleRequestCloseBook}
-        userHasEditAccess={this.props.userHasEditAccess}
-      />
+      <React.Fragment>
+        <Head>
+          {prev && (
+            <link
+              rel="prev"
+              href={`/${book.language.code}/books/read/${book.id}/${prev.id}`}
+            />
+          )}
+          {next && (
+            <link
+              rel="next"
+              href={`/${book.language.code}/books/read/${book.id}/${next.id}`}
+            />
+          )}
+        </Head>
+        <Reader
+          book={this.props.book}
+          chapterWithContent={this.state.chapters[this.state.chapterPointer.id]}
+          chapterPointer={this.state.chapterPointer}
+          onRequestNext={this.handleRequestNextChapter}
+          onRequestPrevious={this.handleRequestPreviousChapter}
+          onRequestClose={this.handleRequestCloseBook}
+          userHasEditAccess={this.props.userHasEditAccess}
+        />
+      </React.Fragment>
     );
   }
 }

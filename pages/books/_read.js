@@ -15,6 +15,7 @@ import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import Head from '../../components/Head';
 import Reader from '../../components/Reader';
+import { canonical } from '../../config';
 
 type Props = {
   book: BookDetails,
@@ -59,7 +60,7 @@ class Read extends React.Component<Props> {
   }
 
   render() {
-    let { book, chapter, userHasEditAccess } = this.props;
+    const { book, chapter, userHasEditAccess } = this.props;
 
     return (
       <React.Fragment>
@@ -67,7 +68,16 @@ class Read extends React.Component<Props> {
           title={`Read: ${book.title}`}
           description={book.description}
           image={book.coverImage && book.coverImage.url}
-        />
+        >
+          {!this.props.url.query.chapterId && (
+            <link
+              rel="canonical"
+              href={`${canonical}/${book.language.code}/books/${book.id}/read/${
+                chapter.id
+              }`}
+            />
+          )}
+        </Head>
 
         <Reader
           book={book}

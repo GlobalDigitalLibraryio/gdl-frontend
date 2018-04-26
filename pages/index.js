@@ -26,6 +26,7 @@ import {
   getBookLanguageCode,
   getBookCategory
 } from '../lib/storage';
+import { canonical } from '../config';
 
 type Props = {|
   featuredContent: Array<FeaturedContent>,
@@ -33,8 +34,7 @@ type Props = {|
   levels: Array<ReadingLevel>,
   booksByLevel: Array<{ results: Array<Book> }>,
   category: Category,
-  categories: Array<Category>,
-  locationOrigin: string
+  categories: Array<Category>
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -105,19 +105,12 @@ class IndexPage extends React.Component<Props> {
     // $FlowFixMe: We know this is a valid category :/
     setBookLanguageAndCategory(newArrivals.language, category, res);
 
-    // THe URL is needed so we can create a canonical URL
-    const locationOrigin =
-      req != null
-        ? `${req.protocol}://${req.headers.host}`
-        : window.location.origin;
-
     return {
       category,
       featuredContent,
       newArrivals,
       levels,
       booksByLevel,
-      locationOrigin,
       categories: Object.keys(categories)
     };
   }
@@ -137,7 +130,6 @@ class IndexPage extends React.Component<Props> {
       levels,
       booksByLevel,
       newArrivals,
-      locationOrigin,
       categories
     } = this.props;
 
@@ -156,13 +148,13 @@ class IndexPage extends React.Component<Props> {
           <Head>
             <link
               rel="canonical"
-              href={`${locationOrigin}/${
+              href={`${canonical}/${
                 language.code
               }/books/category/${categoryTypeForUrl}`}
             />
             <meta
               property="og:url"
-              content={`${locationOrigin}/${
+              content={`${canonical}/${
                 language.code
               }/books/category/${categoryTypeForUrl}`}
             />
