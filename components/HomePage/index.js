@@ -105,7 +105,8 @@ export default class HomePage extends React.Component<
       categories
     } = this.props;
 
-    const featured = featuredContent[0];
+    const featuredForChosenCategory = featuredContent.filter(f => f.category && f.category.name === category);
+    const featured = featuredForChosenCategory.length > 0 ? featuredForChosenCategory[0] : featuredContent[0];
 
     const cardContent = (
       <View alignItems="center">
