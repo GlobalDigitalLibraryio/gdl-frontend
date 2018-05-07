@@ -20,8 +20,8 @@ import Container from '../Container';
 const ReactJson = dynamic(import('react-json-view'));
 
 // Only allow these fields to be edited
-const EDITABLE_CHAPTER_FIELDS = ['content'];
-const EDITABLE_BOOK_FIELDS = ['title', 'description'];
+const EDITABLE_CHAPTER_FIELDS = ['content', 'chapterType'];
+const EDITABLE_BOOK_FIELDS = ['title', 'description', 'pageOrientation'];
 
 export default class Editor extends React.Component<
   {
