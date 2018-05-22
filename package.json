@@ -22,14 +22,14 @@
     "start": "cd packages/gdl-frontend && yarn start"
   },
   "devDependencies": {
-    "@sector-labs/lingui-babel-preset-react": "^2.0.4-sl.6",
-    "@sector-labs/lingui-cli": "^2.0.4-sl.6",
+    "@babel/preset-flow": "^7.0.0-beta.49",
+    "@lingui/babel-preset-react": "^2.0.8",
+    "@lingui/cli": "^2.0.8",
     "babel-eslint": "^8.2.3",
     "babel-plugin-emotion": "^9.1.2",
     "babel-plugin-inline-react-svg": "^0.5.2",
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
@@ -48,7 +48,7 @@
     "react-test-renderer": "^16.4.0"
   },
   "dependencies": {
-    "@lingui/react": "2.0.5",
+    "@lingui/react": "2.0.8",
     "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "^9.5.1",
     "cookie-parser": "^1.4.3",
@@ -65,7 +65,7 @@
     "jwt-decode": "^2.2.0",
     "lru-cache": "^4.1.3",
     "lscache": "^1.1.0",
-    "next": "^5.1.0",
+    "next": "6.0.4-canary.1",
     "next-routes": "^1.4.2",
     "polished": "^1.9.2",
     "prop-types": "^15.6.1",
