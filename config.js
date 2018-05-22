@@ -36,7 +36,6 @@ function getConfig() {
       SENTRY_PROJECT_ID: '1195015',
       SENTRY_PUBLIC_KEY: '7d5b3ec618464d4abceb4b4fc2ee0ed0',
       REPORT_ERRORS: false,
-      STATIC_PAGES_ONLY: false,
       TRANSLATION_PAGES: true,
       BLOCK_SEARCH_INDEXING: true,
       SEARCH_PAGE_SIZE: 10,
