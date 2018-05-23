@@ -51,7 +51,7 @@ const Layout = ({ children, category, wrapWithMain, crumbs }: Props) => {
           {({ portal, closePortal, openPortal, isOpen }) => (
             <Fragment>
               <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
-              {portal(<GlobalMenu onClose={closePortal} />)}
+              <GlobalMenu onClose={closePortal} isOpen={isOpen} />
             </Fragment>
           )}
         </PortalWithState>

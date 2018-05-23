@@ -8,41 +8,28 @@
 
 import * as React from 'react';
 import MdSearch from 'react-icons/lib/md/search';
+import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MdMenu from 'react-icons/lib/md/menu';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
-import {
-  Bar,
-  DisplayContainer,
-  NavItem,
-  HamburgerButton,
-  BrandLink
-} from './styledNavbar';
+import { NavItem, HamburgerButton, BrandLink } from './styledNavbar';
 
 type Props = {
   menuIsExpanded: boolean,
   onMenuClick(): void
 };
 
+const styles = {
+  flex: {
+    flex: 1
+  }
+};
+
 // We need to hide/show "different" navbars here based on viewport size. Reordering the items via flex ordering isn't enough because of accessibility/tab order
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
-  const menuButton = (
-    <HamburgerButton
-      type="button"
-      aria-label="Menu"
-      onClick={onMenuClick}
-      aria-expanded={menuIsExpanded}
-    >
-      <MdMenu aria-hidden />
-      <span>
-        <Trans>Menu</Trans>
-      </span>
-    </HamburgerButton>
-  );
-
   const searchLink = (
     <Link route="search">
       <a>
@@ -64,20 +51,23 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   );
 
   return (
-    <Bar>
-      <DisplayContainer display={['flex', 'none']}>
-        <NavItem>{menuButton}</NavItem>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          onClick={onMenuClick}
+          aria-expanded={menuIsExpanded}
+        >
+          <MdMenu />
+        </IconButton>
         <NavItem>{brandLink}</NavItem>
-        <NavItem>{searchLink}</NavItem>
-      </DisplayContainer>
-      <DisplayContainer display={['none', 'flex']}>
-        <NavItem>{brandLink}</NavItem>
-        <NavItem style={{ marginLeft: 'auto', marginRight: '1rem' }}>
-          {searchLink}
-        </NavItem>
-        <NavItem>{menuButton}</NavItem>
-      </DisplayContainer>
-    </Bar>
+        <Link route="search" passHref>
+          <IconButton color="inherit" component="a">
+            <MdSearch aria-hidden />
+          </IconButton>
+        </Link>
+      </Toolbar>
+    </AppBar>
   );
 };
 

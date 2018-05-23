@@ -9,13 +9,20 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
+import {
+  Drawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
+import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
 
 import config from '../../config';
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
 import { getTokenFromLocalCookie } from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
-import Menu, { MenuItem } from '../Menu';
 import CreativeCommonsLogo from './cc-logo.svg';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
@@ -42,12 +49,8 @@ class GlobalMenu extends React.Component<Props, State> {
     const { onClose } = this.props;
 
     return (
-      <Fragment>
-        <Menu
-          heading={<Trans>Menu</Trans>}
-          onClose={onClose}
-          hasOpenNestedMenu={this.state.hasOpenNestedMenu}
-        >
+      <Drawer open={this.props.isOpen} onClose={onClose}>
+        <List component="nav">
           <SelectLanguage
             openStateCallback={this.nestedMenuOpenState}
             language={this.state.language}
@@ -58,9 +61,12 @@ class GlobalMenu extends React.Component<Props, State> {
             })}
           >
             {({ onClick }) => (
-              <MenuItem onClick={onClick} showKeyLine hasNestedMenu>
-                <Trans>Book language</Trans>
-              </MenuItem>
+              <ListItem button onClick={onClick}>
+                <ListItemText>
+                  <Trans>Book language</Trans>
+                </ListItemText>
+                <MdKeyboardArrowRight />
+              </ListItem>
             )}
           </SelectLanguage>
           <CategoriesMenu
@@ -69,57 +75,92 @@ class GlobalMenu extends React.Component<Props, State> {
             languageCode={this.state.language.code}
           >
             {({ onClick }) => (
-              <MenuItem onClick={onClick} showKeyLine hasNestedMenu>
-                <Trans>Categories</Trans>
-              </MenuItem>
+              <ListItem button onClick={onClick}>
+                <ListItemText>
+                  <Trans>Categories</Trans>
+                </ListItemText>
+                <MdKeyboardArrowRight />
+              </ListItem>
             )}
           </CategoriesMenu>
+          <Divider />
           {config.TRANSLATION_PAGES && (
             <Fragment>
               {getTokenFromLocalCookie() == null ? (
                 <Link passHref href="/auth/sign-in">
-                  <MenuItem>
-                    <Trans>Log in</Trans>
-                  </MenuItem>
+                  <ListItem button component="a">
+                    <ListItemText>
+                      <Trans>Log in</Trans>
+                    </ListItemText>
+                  </ListItem>
                 </Link>
               ) : (
                 <Link passHref href="/auth/sign-off">
-                  <MenuItem>
-                    <Trans>Log out</Trans>
-                  </MenuItem>
+                  <ListItem button component="a">
+                    <ListItemText>
+                      <Trans>Log out</Trans>
+                    </ListItemText>
+                  </ListItem>
                 </Link>
               )}
               <RouteLink passHref route="translations">
-                <MenuItem>
-                  <Trans>My translations</Trans>
-                </MenuItem>
+                <ListItem button component="a">
+                  <ListItemText>
+                    <Trans>My translations</Trans>
+                  </ListItemText>
+                </ListItem>
               </RouteLink>
             </Fragment>
           )}
-
-          <MenuItem href="https://home.digitallibrary.io/about/">
-            <Trans>About the Global Digital Library</Trans>
-          </MenuItem>
-          <MenuItem href="https://blog.digitallibrary.io/cc/">
-            <Trans>Licensing and reuse</Trans>
-          </MenuItem>
-          <MenuItem href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
-            <Trans>Cookie policy</Trans>
-          </MenuItem>
-          <MenuItem href="https://home.digitallibrary.io/privacy/">
-            <Trans>Privacy policy</Trans>
-          </MenuItem>
-          <MenuItem href={config.zendeskUrl}>
-            <Trans>Report issues</Trans>
-          </MenuItem>
-          <MenuItem>
+          <ListItem
+            button
+            component="a"
+            href="https://home.digitallibrary.io/about/"
+          >
+            <ListItemText>
+              <Trans>About the Global Digital Library</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            component="a"
+            href="https://blog.digitallibrary.io/cc/"
+          >
+            <ListItemText>
+              <Trans>Licensing and reuse</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            component="a"
+            href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/"
+          >
+            <ListItemText>
+              <Trans>Cookie policy</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            component="a"
+            href="https://home.digitallibrary.io/privacy/"
+          >
+            <ListItemText>
+              <Trans>Privacy policy</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem button component="a" href={config.zendeskUrl}>
+            <ListItemText>
+              <Trans>Report issues</Trans>
+            </ListItemText>
+          </ListItem>
+          <ListItem>
             <CreativeCommonsLogo
               aria-label="Creative Commons"
               style={{ width: '25%' }}
             />
-          </MenuItem>
-        </Menu>
-      </Fragment>
+          </ListItem>
+        </List>
+      </Drawer>
     );
   }
 }

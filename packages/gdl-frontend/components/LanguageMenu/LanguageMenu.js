@@ -6,14 +6,24 @@
  * See LICENSE
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
+import {
+  Drawer,
+  Divider,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText,
+  ListItemIcon
+} from '@material-ui/core';
+import MdCheck from 'react-icons/lib/md/check';
 
 import { Link } from '../../routes';
-import Menu, { MenuItem } from '../Menu';
+import SrOnly from '../SrOnly';
 import type { Language } from '../../types';
 import { ActivityIndicator } from '../../elements';
-import { spacing } from '../../style/theme';
+import { spacing, colors } from '../../style/theme';
 
 type Props = {
   selectedLanguageCode: ?string,
@@ -39,20 +49,24 @@ export default class LanguageMenu extends React.Component<Props> {
     if (this.props.linkProps) {
       return (
         <Link key={language.code} passHref {...this.props.linkProps(language)}>
-          <MenuItem onCustomClick={() => this.props.onSelectLanguage(language)}>
-            {language.name}
-          </MenuItem>
+          <ListItem
+            button
+            onCustomClick={() => this.props.onSelectLanguage(language)}
+          >
+            <ListItemText inset>{language.name}</ListItemText>
+          </ListItem>
         </Link>
       );
     }
 
     return (
-      <MenuItem
+      <ListItem
         key={language.code}
         onClick={() => this.props.onSelectLanguage(language)}
+        button
       >
-        {language.name}
-      </MenuItem>
+        <ListItemText inset>{language.name}</ListItemText>
+      </ListItem>
     );
   };
 
@@ -74,21 +88,41 @@ export default class LanguageMenu extends React.Component<Props> {
       : languages;
 
     return (
-      <Menu heading={<Trans>Choose language</Trans>} onClose={onClose}>
-        {selectedLanguage && (
-          <MenuItem showKeyLine isSelected>
-            {selectedLanguage.name}
-          </MenuItem>
-        )}
-        {showActivityIndicator ? (
-          <ActivityIndicator
-            size="large"
-            style={{ marginTop: spacing.large }}
-          />
-        ) : (
-          filteredLanguages.map(this.renderMenuItem)
-        )}
-      </Menu>
+      <Drawer open>
+        <List
+          onClose={onClose}
+          subheader={
+            <ListSubheader component="div">
+              <Trans>Choose language</Trans>
+            </ListSubheader>
+          }
+        >
+          {selectedLanguage && (
+            <Fragment>
+              <ListItem>
+                <ListItemIcon aria-hidden>
+                  <MdCheck color={colors.base.green} />
+                </ListItemIcon>
+                <ListItemText inset>
+                  <SrOnly>
+                    <Trans>Selected:</Trans>
+                  </SrOnly>
+                  {selectedLanguage.name}
+                </ListItemText>
+              </ListItem>
+              <Divider />
+            </Fragment>
+          )}
+          {showActivityIndicator ? (
+            <ActivityIndicator
+              size="large"
+              style={{ marginTop: spacing.large }}
+            />
+          ) : (
+            filteredLanguages.map(this.renderMenuItem)
+          )}
+        </List>
+      </Drawer>
     );
   }
 }

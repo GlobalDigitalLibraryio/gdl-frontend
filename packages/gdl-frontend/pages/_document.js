@@ -9,6 +9,9 @@
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getPageContext from '../src/getPageContext';
+
 import type { Context } from '../types';
 import config from '../config';
 import { DEFAULT_TITLE } from '../components/Head';
@@ -28,11 +31,22 @@ const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png
  */
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
-    const page = renderPage();
+    const pageContext = getPageContext();
+
+    const page = renderPage(Component => props => (
+      <JssProvider
+        registry={pageContext.sheetsRegistry}
+        generateClassName={pageContext.generateClassName}
+      >
+        <Component pageContext={pageContext} {...props} />
+      </JssProvider>
+    ));
+
     const styleTags = extractCritical(page.html);
 
     return {
       ...page,
+      pageContext,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
       ...styleTags
@@ -108,6 +122,13 @@ export default class Document extends NextDocument {
             }}
           />
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
+          <style
+            id="jss-server-side"
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: this.props.pageContext.sheetsRegistry.toString()
+            }}
+          />
         </Head>
         <body>
           <Main />
