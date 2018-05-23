@@ -8,14 +8,12 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import {
-  MdTranslate,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdWarning,
-  MdEdit
-} from 'react-icons/lib/md';
+import MdFileDownload from 'react-icons/lib/md/file-download';
+import MdTranslate from 'react-icons/lib/md/translate';
+import MdWarning from 'react-icons/lib/md/warning';
+import MdEdit from 'react-icons/lib/md/edit';
 import styled from 'react-emotion';
+import { Menu, MenuItem } from '@material-ui/core';
 
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -37,11 +35,7 @@ import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
 import { colors, fonts, spacing } from '../../style/theme';
 import { flexColumnCentered } from '../../style/flex';
-import {
-  DownloadBookMenu,
-  BookJsonLd,
-  Metadata
-} from '../../components/BookDetailsPage';
+import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
 type Props = {
@@ -123,8 +117,10 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     ];
   }
 
-  handleToggleShowDownloadMenu = () =>
-    this.setState(state => ({ showDownloadMenu: !state.showDownloadMenu }));
+  handleDownloadClick = event =>
+    this.setState({ anchorEl: event.currentTarget });
+
+  closeDownloadMenu = () => this.setState({ anchorEl: null });
 
   render() {
     const { similarBooks, book } = this.props;
@@ -182,19 +178,43 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                         <Trans>Read book</Trans>
                       </Button>
                     </Link>
+
                     <Text
-                      aria-expanded={this.state.showDownloadMenu}
+                      aria-owns={
+                        this.state.anchorEl ? 'download-book-menu' : null
+                      }
+                      aria-haspopup="true"
                       fontWeight={fonts.weight.medium}
                       mt={spacing.medium}
-                      onClick={this.handleToggleShowDownloadMenu}
+                      onClick={this.handleDownloadClick}
                     >
-                      <Trans>Download book</Trans>
-                      {this.state.showDownloadMenu ? (
-                        <MdKeyboardArrowUp aria-hidden />
-                      ) : (
-                        <MdKeyboardArrowDown aria-hidden />
-                      )}
+                      <MdFileDownload /> <Trans>Download book</Trans>
                     </Text>
+                    <Menu
+                      id="donwload-book-menu"
+                      onClose={this.closeDownloadMenu}
+                      anchorEl={this.state.anchorEl}
+                      open={this.state.anchorEl}
+                    >
+                      {book.downloads.epub && (
+                        <MenuItem
+                          href={book.downloads.epub}
+                          component="a"
+                          onClick={this.closeDownloadMenu}
+                        >
+                          <Trans>E-book (ePUB)</Trans>
+                        </MenuItem>
+                      )}
+                      {book.downloads.pdf && (
+                        <MenuItem
+                          href={book.downloads.pdf}
+                          component="a"
+                          onClick={this.closeDownloadMenu}
+                        >
+                          <Trans>Printable book (PDF)</Trans>
+                        </MenuItem>
+                      )}
+                    </Menu>
 
                     {this.props.userHasEditAccess && (
                       <Link
@@ -276,13 +296,6 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
               )}
             </View>
           </Container>
-
-          {this.state.showDownloadMenu && (
-            <DownloadBookMenu
-              book={book}
-              onClose={this.handleToggleShowDownloadMenu}
-            />
-          )}
         </Layout>
       </Fragment>
     );
