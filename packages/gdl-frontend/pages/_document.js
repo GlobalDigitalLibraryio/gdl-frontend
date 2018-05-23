@@ -113,6 +113,10 @@ export default class Document extends NextDocument {
             sizes="144x144"
             href={precomposed144}
           />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
 
           <script
             dangerouslySetInnerHTML={{
