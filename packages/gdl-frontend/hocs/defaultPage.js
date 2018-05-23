@@ -17,7 +17,6 @@ import * as React from 'react';
 import Router from 'next/router';
 
 import withI18n from './withI18n';
-import withTheme from './withTheme';
 import type { Context } from '../types';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
@@ -58,4 +57,4 @@ const defaultPage = Page =>
   };
 
 export default (Page: React.ComponentType<any>) =>
-  defaultPage(withTheme(withI18n(Page)));
+  defaultPage(withI18n(Page));

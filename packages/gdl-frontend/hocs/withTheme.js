@@ -9,49 +9,39 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
-import type { Context } from '../types';
+
 import { misc } from '../style/theme';
 
 const theme = { space: [], breakpoints: misc.breakpoints };
 
-class Theme extends React.Component<{ children: React.Node }> {
-  static childContextTypes = {
-    reactIconBase: PropTypes.object
-  };
-
-  getChildContext() {
-    return {
-      reactIconBase: {
-        size: misc.iconSize
-      }
-    };
-  }
-
-  render() {
-    return <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>;
-  }
-}
-
 /**
- * HoC that wraps a page with Theme
+ * HoC that wraps an App with our theme
  */
-function withTheme(Page: React.ComponentType<any>) {
-  return class PageWithTheme extends React.Component<any> {
-    static getInitialProps(context: Context) {
-      if (typeof Page.getInitialProps === 'function') {
-        return Page.getInitialProps(context);
-      }
-      return undefined;
+export default (App: React.ComponentType<*>) => {
+  return class Theme extends React.Component<*> {
+    static displayName = 'withTheme(App)';
+
+    static getInitialProps = App.getInitialProps;
+
+    static childContextTypes = {
+      reactIconBase: PropTypes.object
+    };
+
+    // Define icon size
+    getChildContext() {
+      return {
+        reactIconBase: {
+          size: misc.iconSize
+        }
+      };
     }
 
     render() {
       return (
-        <Theme>
-          <Page {...this.props} />
-        </Theme>
+        <ThemeProvider theme={theme}>
+          <App {...this.props} />
+        </ThemeProvider>
       );
     }
   };
 }
-
-export { Theme, withTheme as default };
