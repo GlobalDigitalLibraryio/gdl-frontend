@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
-import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Box from '../../components/Box';
@@ -39,4 +38,4 @@ class Success extends React.Component<*> {
   }
 }
 
-export default defaultPage(Success);
+export default Success;

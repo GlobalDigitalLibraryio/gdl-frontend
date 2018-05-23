@@ -31,7 +31,6 @@ import Button from '../components/Button';
 import { Container, Text } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
-import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 
 const QUERY_PARAM = 'q';
@@ -313,4 +312,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default defaultPage(errorPage(SearchPage));
+export default errorPage(SearchPage);

@@ -18,7 +18,6 @@ import {
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
 import Box from '../components/Box';
-import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';
 import Container from '../components/Container';
@@ -97,4 +96,4 @@ const securePageHoc = (Page, options) => {
 export default (
   Page: React.ComponentType<any>,
   options: { claim?: string } = {}
-) => defaultPage(securePageHoc(Page, options));
+) => securePageHoc(Page, options);

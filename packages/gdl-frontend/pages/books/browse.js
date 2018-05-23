@@ -12,7 +12,6 @@ import { Trans } from '@lingui/react';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
 import Button from '../../components/Button';
@@ -197,4 +196,4 @@ const headerStyle = {
   fontWeight: fonts.weight.medium
 };
 
-export default defaultPage(errorPage(BrowsePage));
+export default errorPage(BrowsePage);

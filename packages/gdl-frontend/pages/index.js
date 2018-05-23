@@ -18,7 +18,6 @@ import type {
   Category,
   ReadingLevel
 } from '../types';
-import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 import HomePage from '../components/HomePage';
 import {
@@ -173,4 +172,4 @@ class IndexPage extends React.Component<Props> {
   }
 }
 
-export default defaultPage(errorPage(IndexPage));
+export default errorPage(IndexPage);

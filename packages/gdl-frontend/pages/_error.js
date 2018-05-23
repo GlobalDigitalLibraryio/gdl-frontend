@@ -8,17 +8,15 @@
 
 import * as React from 'react';
 
-import NotFound from '../components/NotFound';
+import NotFoundPage from '../components/NotFound';
 import type { Context } from '../types';
-import defaultPage from '../hocs/defaultPage';
+
 import UnexpectedError from '../components/UnexpectedError';
 import NoAccessPage from '../components/NoAccessPage';
 
 type Props = {
   statusCode: ?number
 };
-
-const NotFoundPage = defaultPage(NotFound);
 
 class ErrorPage extends React.Component<Props> {
   static getInitialProps({ res, err }: Context) {

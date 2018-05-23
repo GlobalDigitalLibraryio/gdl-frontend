@@ -11,7 +11,6 @@ import * as React from 'react';
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from '../../lib/auth/token';
 import type { BookDetails, Chapter, Context } from '../../types';
-import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import Head from '../../components/Head';
 import Reader from '../../components/Reader';
@@ -89,4 +88,4 @@ class Read extends React.Component<Props> {
   }
 }
 
-export default defaultPage(errorPage(Read));
+export default errorPage(Read);

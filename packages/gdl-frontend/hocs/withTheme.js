@@ -44,4 +44,4 @@ export default (App: React.ComponentType<*>) => {
       );
     }
   };
-}
+};
