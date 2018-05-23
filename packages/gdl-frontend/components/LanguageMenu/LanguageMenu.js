@@ -88,7 +88,7 @@ export default class LanguageMenu extends React.Component<Props> {
       : languages;
 
     return (
-      <Drawer open>
+      <Drawer open onClose={onClose}>
         <List
           onClose={onClose}
           subheader={

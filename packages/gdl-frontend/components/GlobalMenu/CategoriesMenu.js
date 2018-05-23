@@ -13,15 +13,14 @@ import type { ReadingLevel } from '../../types';
 import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
 import ReadingLevelTrans from '../ReadingLevelTrans';
-import { ActivityIndicator } from '../../elements';
-import { spacing } from '../../style/theme';
 import {
   Drawer,
   Divider,
   List,
   ListSubheader,
   ListItem,
-  ListItemText
+  ListItemText,
+  CircularProgress
 } from '@material-ui/core';
 
 type Categories = {
@@ -88,46 +87,25 @@ export default class CategoriesMenu extends React.Component<Props, State> {
             <List
               component="nav"
               subheader={
-                <ListSubheader component="div">Categories</ListSubheader>
+                <ListSubheader component="div">
+                  Categories {!categories && <CircularProgress />}
+                </ListSubheader>
               }
             >
-              {!categories ? (
-                <ActivityIndicator
-                  size="large"
-                  style={{ marginTop: spacing.large }}
-                />
-              ) : (
-                <Fragment>
-                  {categories.classroom_books && (
-                    <Fragment>
-                      <ListItem>
-                        <ListItemText>
-                          <Trans>Classroom books</Trans>
-                        </ListItemText>
-                      </ListItem>
-                      {categories.classroom_books.map(level => (
-                        <Link
-                          key={level}
-                          lang={languageCode}
-                          readingLevel={level}
-                          category="classroom_books"
-                          passHref
-                        >
-                          <ListItem
-                            onCustomClick={onSelectCategory}
-                            button
-                            component="a"
-                          >
-                            <ListItemText inset>
-                              <ReadingLevelTrans readingLevel={level} />
-                            </ListItemText>
-                          </ListItem>
-                        </Link>
-                      ))}
+              {categories &&
+                categories.classroom_books && (
+                  <Fragment>
+                    <ListItem>
+                      <ListItemText>
+                        <Trans>Classroom books</Trans>
+                      </ListItemText>
+                    </ListItem>
+                    {categories.classroom_books.map(level => (
                       <Link
-                        category="classroom_books"
+                        key={level}
                         lang={languageCode}
-                        sort="-arrivalDate"
+                        readingLevel={level}
+                        category="classroom_books"
                         passHref
                       >
                         <ListItem
@@ -136,57 +114,72 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                           component="a"
                         >
                           <ListItemText inset>
-                            <Trans>New arrivals</Trans>
+                            <ReadingLevelTrans readingLevel={level} />
                           </ListItemText>
                         </ListItem>
                       </Link>
-                    </Fragment>
-                  )}
-
-                  {Boolean(categories.library_books) &&
-                    Boolean(categories.classroom_books) && <Divider />}
-
-                  {categories.library_books && (
-                    <Fragment>
-                      <ListItem>
-                        <ListItemText>
-                          <Trans>Library books</Trans>
+                    ))}
+                    <Link
+                      category="classroom_books"
+                      lang={languageCode}
+                      sort="-arrivalDate"
+                      passHref
+                    >
+                      <ListItem
+                        onCustomClick={onSelectCategory}
+                        button
+                        component="a"
+                      >
+                        <ListItemText inset>
+                          <Trans>New arrivals</Trans>
                         </ListItemText>
                       </ListItem>
-                      {categories.library_books.map(level => (
-                        <Link
-                          key={level}
-                          lang={languageCode}
-                          readingLevel={level}
-                          category="library_books"
-                        >
-                          <ListItem
-                            onCustomClick={onSelectCategory}
-                            button
-                            component="a"
-                            inset
-                          >
-                            <ListItemText inset>
-                              <ReadingLevelTrans readingLevel={level} />
-                            </ListItemText>
-                          </ListItem>
-                        </Link>
-                      ))}
+                    </Link>
+                  </Fragment>
+                )}
+              {categories &&
+                Boolean(categories.library_books) &&
+                Boolean(categories.classroom_books) && <Divider />}
+              {categories &&
+                categories.library_books && (
+                  <Fragment>
+                    <ListItem>
+                      <ListItemText>
+                        <Trans>Library books</Trans>
+                      </ListItemText>
+                    </ListItem>
+                    {categories.library_books.map(level => (
                       <Link
-                        category="library_books"
+                        key={level}
                         lang={languageCode}
-                        sort="-arrivalDate"
+                        readingLevel={level}
+                        category="library_books"
                       >
-                        <ListItem button onCustomClick={onSelectCategory}>
+                        <ListItem
+                          onCustomClick={onSelectCategory}
+                          button
+                          component="a"
+                          inset
+                        >
                           <ListItemText inset>
-                            <Trans>New arrivals</Trans>
+                            <ReadingLevelTrans readingLevel={level} />
                           </ListItemText>
                         </ListItem>
                       </Link>
-                    </Fragment>
-                  )}
-                </Fragment>
-              )}
+                    ))}
+                    <Link
+                      category="library_books"
+                      lang={languageCode}
+                      sort="-arrivalDate"
+                    >
+                      <ListItem button onCustomClick={onSelectCategory}>
+                        <ListItemText inset>
+                          <Trans>New arrivals</Trans>
+                        </ListItemText>
+                      </ListItem>
+                    </Link>
+                  </Fragment>
+                )}
             </List>
           </Drawer>
         )}
