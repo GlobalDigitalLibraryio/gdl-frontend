@@ -17,8 +17,18 @@ const directives = {
     'https://cdn.polyfill.io',
     googleAnalytics
   ],
-  styleSrc: ["'self'", "'unsafe-inline'"],
-  fontSrc: ["'self'", 'data:'],
+  styleSrc: [
+    "'self'",
+    "'unsafe-inline'",
+    'https://fonts.googleapis.com',
+    'https://fonts.gstatic.com'
+  ],
+  fontSrc: [
+    "'self'",
+    'data:',
+    'https://fonts.googleapis.com',
+    'https://fonts.gstatic.com'
+  ],
   imgSrc: ["'self'", 'data:', 'https://*.digitallibrary.io', googleAnalytics],
   connectSrc: [
     "'self'",
