@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
+import { Button } from '@material-ui/core';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
@@ -28,7 +29,6 @@ import {
 import Head from '../../components/Head';
 import { SelectLanguage } from '../../components/LanguageMenu';
 import BookList from '../../components/BookList';
-import Button from '../../components/Button';
 import { colors, fonts, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -130,7 +130,12 @@ export default class HomePage extends React.Component<
             {featured.description}
           </Text>
         </View>
-        <Button href={featured.link}>
+        <Button
+          href={featured.link}
+          variant="raised"
+          color="primary"
+          size="large"
+        >
           <Trans>More</Trans>
         </Button>
       </View>

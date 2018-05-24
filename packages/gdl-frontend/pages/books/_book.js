@@ -13,7 +13,7 @@ import MdTranslate from 'react-icons/lib/md/translate';
 import MdWarning from 'react-icons/lib/md/warning';
 import MdEdit from 'react-icons/lib/md/edit';
 import styled from 'react-emotion';
-import { Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem, Button } from '@material-ui/core';
 
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -29,7 +29,6 @@ import View from '../../elements/View';
 import Container from '../../elements/Container';
 import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
-import Button from '../../components/Button';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
@@ -174,7 +173,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       params={{ id: book.id, lang: book.language.code }}
                       prefetch
                     >
-                      <Button>
+                      <Button variant="raised" color="primary" size="large">
                         <Trans>Read book</Trans>
                       </Button>
                     </Link>

@@ -10,37 +10,20 @@ import * as React from 'react';
 import MdSearch from 'react-icons/lib/md/search';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MdMenu from 'react-icons/lib/md/menu';
+import { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
-import { NavItem, HamburgerButton, BrandLink } from './styledNavbar';
+import { NavItem, BrandLink } from './styledNavbar';
 
 type Props = {
   menuIsExpanded: boolean,
   onMenuClick(): void
 };
 
-const styles = {
-  flex: {
-    flex: 1
-  }
-};
-
-// We need to hide/show "different" navbars here based on viewport size. Reordering the items via flex ordering isn't enough because of accessibility/tab order
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
-  const searchLink = (
-    <Link route="search">
-      <a>
-        <MdSearch aria-hidden />
-        <span>
-          <Trans>Search</Trans>
-        </span>
-      </a>
-    </Link>
-  );
-
   const brandLink = (
     <Link route="books" passHref>
       <BrandLink>
@@ -57,18 +40,32 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           color="inherit"
           onClick={onMenuClick}
           aria-expanded={menuIsExpanded}
+          css={{ marginRight: 20 }}
         >
           <MdMenu />
         </IconButton>
         <NavItem>{brandLink}</NavItem>
         <Link route="search" passHref>
-          <IconButton color="inherit" component="a">
+          <IconButton
+            color="inherit"
+            component="a"
+            className={styles.searchIcon}
+          >
             <MdSearch aria-hidden />
+            <SrOnly>
+              <Trans>Search</Trans>
+            </SrOnly>
           </IconButton>
         </Link>
       </Toolbar>
     </AppBar>
   );
+};
+
+const styles = {
+  searchIcon: css`
+    margin-left: auto;
+  `
 };
 
 Navbar.defaultProps = {
