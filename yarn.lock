@@ -236,20 +236,20 @@
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.3.tgz#65682e68a82701c70eefb38d7f941a2c0bfa90de"
 
-"@lingui/core@2.0.8":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.0.8.tgz#4b42771057f0190633d9c62abfd0005b2e7ff9a3"
+"@lingui/core@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.0.5.tgz#4e6cdd2443fc7071aa4ff7f4363ac07e52da2e1e"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.38"
     make-plural "^4.1.1"
     messageformat-parser "^2.0.0"
 
-"@lingui/react@^2.0.8":
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-2.0.8.tgz#aaace07a3914bb7349eb553eeb2ed54d6167349e"
+"@lingui/react@2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-2.0.5.tgz#5c0fb0a0f75139359390259c9bfe7b3bf3e15b70"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.38"
-    "@lingui/core" "2.0.8"
+    "@lingui/core" "2.0.5"
     hash-sum "^1.0.2"
     prop-types "^15.6.0"
 

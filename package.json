@@ -8,13 +8,14 @@
   "repository": "https://github.com/GlobalDigitalLibraryio/gdl-frontend.git",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "bolt workspace gdl-frontend run build",
-    "build:frontend": "bolt workspace gdl-frontend run build",
+    "build": "cd packages/gdl-frontend && yarn build",
+    "build:frontend": "cd packages/gdl-frontend && yarn build",
     "check": "flow",
     "test": "jest",
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
-    "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore"
+    "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
+    "start": "cd packages/gdl-frontend && yarn start"
   },
   "devDependencies": {
     "@sector-labs/lingui-babel-preset-react": "^2.0.4-sl.6",
@@ -43,7 +44,7 @@
     "react-test-renderer": "^16.4.0"
   },
   "dependencies": {
-    "@lingui/react": "^2.0.8",
+    "@lingui/react": "2.0.5",
     "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "^9.5.1",
     "cookie-parser": "^1.4.3",

@@ -23,14 +23,14 @@
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
-    "i18n:extract": "lingui extract --clean",
-    "i18n:compile": "lingui compile",
-    "i18n:add-locale": "lingui add-locale",
-    "check":
-      "npm run lint && npm run format:check && npm run flow && npm run test"
+    "i18n:extract":
+      "node_modules/@sector-labs/lingui-cli/lingui.js extract --clean",
+    "i18n:compile": "node_modules/@sector-labs/lingui-cli/lingui.js compile",
+    "i18n:add-locale":
+      "node_modules/@sector-labs/lingui-cli/lingui.js add-locale"
   },
   "dependencies": {
-    "@lingui/react": "^2.0.8",
+    "@lingui/react": "2.0.5",
     "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "^9.5.1",
     "cookie-parser": "^1.4.3",
