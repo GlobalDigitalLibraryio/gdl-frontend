@@ -1,0 +1,22 @@
+{
+  "Breadcrumb": {
+    "origin": [
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        81
+      ]
+    ]
+  },
+  "Home": {
+    "origin": [
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        85
+      ],
+      [
+        "components/NavContextBar/Breadcrumb.js",
+        85
+      ]
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Breadcrumb": {
+    "origin": [
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        80
+      ]
+    ]
+  },
+  "Home": {
+    "origin": [
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        84
+      ],
+      [
+        "components/SubNavbar/Breadcrumb.js",
+        84
+      ]
+    ]
+  }
+}

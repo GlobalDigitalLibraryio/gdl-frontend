@@ -1,0 +1,26 @@
+{
+  "Decodable": {
+    "origin": [
+      [
+        "components/ReadingLevelTrans.js",
+        19
+      ]
+    ]
+  },
+  "Read aloud": {
+    "origin": [
+      [
+        "components/ReadingLevelTrans.js",
+        21
+      ]
+    ]
+  },
+  "Level {level}": {
+    "origin": [
+      [
+        "components/ReadingLevelTrans.js",
+        23
+      ]
+    ]
+  }
+}

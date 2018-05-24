@@ -1,0 +1,18 @@
+{
+  "Library <0>books</0>": {
+    "origin": [
+      [
+        "components/NavContextBar/CategoryNavigation.js",
+        63
+      ]
+    ]
+  },
+  "Classroom <0>books</0>": {
+    "origin": [
+      [
+        "components/NavContextBar/CategoryNavigation.js",
+        72
+      ]
+    ]
+  }
+}

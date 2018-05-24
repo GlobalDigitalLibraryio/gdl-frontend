@@ -1,0 +1,82 @@
+{
+  "Book language": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        66
+      ]
+    ]
+  },
+  "Categories": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        80
+      ]
+    ]
+  },
+  "Log in": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        93
+      ]
+    ]
+  },
+  "Log out": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        101
+      ]
+    ]
+  },
+  "My translations": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        109
+      ]
+    ]
+  },
+  "About the Global Digital Library": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        121
+      ]
+    ]
+  },
+  "Licensing and reuse": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        130
+      ]
+    ]
+  },
+  "Cookie policy": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        139
+      ]
+    ]
+  },
+  "Privacy policy": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        148
+      ]
+    ]
+  },
+  "Report issues": {
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        153
+      ]
+    ]
+  }
+}

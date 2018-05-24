@@ -1,0 +1,42 @@
+{
+  "from {0}": {
+    "origin": [
+      [
+        "pages/books/translations.js",
+        78
+      ]
+    ]
+  },
+  "Sync": {
+    "origin": [
+      [
+        "pages/books/translations.js",
+        93
+      ]
+    ]
+  },
+  "Edit": {
+    "origin": [
+      [
+        "pages/books/translations.js",
+        103
+      ]
+    ]
+  },
+  "My translations": {
+    "origin": [
+      [
+        "pages/books/translations.js",
+        131
+      ],
+      [
+        "pages/books/translations.js",
+        132
+      ],
+      [
+        "pages/books/translations.js",
+        135
+      ]
+    ]
+  }
+}

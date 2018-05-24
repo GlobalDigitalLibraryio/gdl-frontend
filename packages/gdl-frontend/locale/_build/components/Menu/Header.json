@@ -1,0 +1,14 @@
+{
+  "Close menu": {
+    "origin": [
+      [
+        "components/Menu/Header.js",
+        38
+      ],
+      [
+        "components/Menu/Header.js",
+        51
+      ]
+    ]
+  }
+}

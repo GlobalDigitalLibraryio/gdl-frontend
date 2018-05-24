@@ -1,0 +1,18 @@
+{
+  "Choose language": {
+    "origin": [
+      [
+        "components/LanguageMenu/LanguageMenu.js",
+        96
+      ]
+    ]
+  },
+  "Selected:": {
+    "origin": [
+      [
+        "components/LanguageMenu/LanguageMenu.js",
+        108
+      ]
+    ]
+  }
+}

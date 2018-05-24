@@ -1,0 +1,18 @@
+{
+  "Library <0>books</0>": {
+    "origin": [
+      [
+        "components/SubNavbar/CategoryNavigation.js",
+        65
+      ]
+    ]
+  },
+  "Classroom <0>books</0>": {
+    "origin": [
+      [
+        "components/SubNavbar/CategoryNavigation.js",
+        74
+      ]
+    ]
+  }
+}

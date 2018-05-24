@@ -1,0 +1,38 @@
+{
+  "Login": {
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        42
+      ],
+      [
+        "pages/auth/sign-in.js",
+        43
+      ]
+    ]
+  },
+  "Log in to continue": {
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        50
+      ]
+    ]
+  },
+  "Log in using Google": {
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        59
+      ]
+    ]
+  },
+  "Log in using Facebook": {
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        67
+      ]
+    ]
+  }
+}

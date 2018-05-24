@@ -1,0 +1,26 @@
+{
+  "Download book": {
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        31
+      ]
+    ]
+  },
+  "E-book (ePUB)": {
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        41
+      ]
+    ]
+  },
+  "Printable book (PDF)": {
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        46
+      ]
+    ]
+  }
+}

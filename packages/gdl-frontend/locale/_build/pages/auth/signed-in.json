@@ -1,0 +1,18 @@
+{
+  "Redirecting...": {
+    "origin": [
+      [
+        "pages/auth/signed-in.js",
+        31
+      ]
+    ]
+  },
+  "Logged in, please wait while we redirect you!": {
+    "origin": [
+      [
+        "pages/auth/signed-in.js",
+        34
+      ]
+    ]
+  }
+}
