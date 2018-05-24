@@ -2451,10 +2451,6 @@ domhandler@^2.3.0:
   dependencies:
     domelementtype "1"
 
-domurl@^2.1.8:
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/domurl/-/domurl-2.1.8.tgz#3337693ddfc5414f3e3ab89cf4bfd112b6cb0d8c"
-
 domutils@1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/domutils/-/domutils-1.5.1.tgz#dcd8488a26f563d61079e48c9f7b7e32373682cf"
