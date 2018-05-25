@@ -5,7 +5,7 @@ script:
 - yarn run lint
 - yarn run format:check
 - yarn test
-- yarn run flow
+- yarn run typecheck
 - yarn build
 cache: yarn
 notifications:
