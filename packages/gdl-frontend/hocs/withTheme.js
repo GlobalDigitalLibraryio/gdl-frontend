@@ -12,7 +12,7 @@ import { ThemeProvider } from 'emotion-theming';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import getPageContext from '../src/getPageContext';
+import getPageContext from '../getPageContext';
 import type { Context } from '../types';
 import { misc } from '../style/theme';
 

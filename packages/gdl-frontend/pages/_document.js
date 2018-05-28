@@ -10,7 +10,7 @@ import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import JssProvider from 'react-jss/lib/JssProvider';
-import getPageContext from '../src/getPageContext';
+import getPageContext from '../getPageContext';
 
 import type { Context } from '../types';
 import config from '../config';
