@@ -18,8 +18,6 @@ export default injectGlobal`
 
   body {
     font-family: ${fonts.family.default};
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     color: ${colors.text.default};
 
