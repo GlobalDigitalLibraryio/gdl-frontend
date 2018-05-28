@@ -1,34 +1,26 @@
 # GDL front-end
+
 [![Build Status](https://travis-ci.org/GlobalDigitalLibraryio/gdl-frontend.svg?branch=master)](https://travis-ci.org/GlobalDigitalLibraryio/gdl-frontend)
 
 This is the front-end for http://digitallibrary.io/
 
-### Technologies
+# Installation
 
-This application is built with [Next.js](https://github.com/zeit/next.js/) and [React](https://facebook.github.io/react/). It uses [Flow](https://flow.org/en/) for static type checking.
+#### Before you start
 
-### Start development server
+* [node](https://nodejs.org/) version should be 8 or above (to check `node -v`) or use [nvm](https://github.com/creationix/nvm).
+* [yarn](https://yarnpkg.com/) should be installed globally.
 
-Start node server with hot reloading middleware listening on port 3000.
+#### Install
+
+Each module lives in it's own package under the `packages` directory. We are using [bolt](https://github.com/boltpkg/bolt) to manage our monorepo, so you are going to need bolt installed globally as well.
 
 ```
-$ yarn run dev
+yarn global add bolt
 ```
 
-### Translations
-For i18n we use [lingui](https://github.com/lingui/js-lingui).
+Next, to install packages, we use bolt, just calling it:
 
-#### Updating translations
-
-Whenever new that are to be translated using lingui are added, run the following command to update the existing translation files:
 ```
-$ yarn run i18n:extract
+bolt
 ```
-at minimum you should update the English translation file.
-
-#### Adding new translations
-To add a new translation, for instance, for Norwegian bokmål, run the following command:
-```
-$ yarn run i18n:add-locale -- nb
-```
-and send the newly created `messages.json` file to a translator for translation.
