@@ -9,11 +9,10 @@
 import React, { Fragment, type Element } from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
+import { Typography } from '@material-ui/core';
 
 import View from '../../elements/View';
-import Text from '../../elements/Text';
-import A from '../../elements/A';
-import { spacing, fonts } from '../../style/theme/';
+import { spacing } from '../../style/theme/';
 import type { Book } from '../../types';
 import BookLink from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
@@ -33,18 +32,14 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       justifyContent="space-between"
       mb={spacing.small}
     >
-      <Text
-        accessibilityRole="heading"
-        fontSize="1.3rem"
-        fontWeight={fonts.weight.medium}
-      >
+      <Typography component="h1" variant="title">
         {heading}
-      </Text>
+      </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          <A fontWeight={fonts.weight.medium}>
+          <Typography component="a" variant="subtitle">
             <Trans>More</Trans>
-          </A>
+          </Typography>
         </BrowseLink>
       )}
     </View>

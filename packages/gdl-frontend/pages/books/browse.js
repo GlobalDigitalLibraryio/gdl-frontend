@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { withRouter } from 'next/router';
+import { Button, Typography } from '@material-ui/core';
 
 import withI18n from '../../hocs/withI18n';
 import { fetchBooks } from '../../fetch';
@@ -16,12 +17,10 @@ import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
-import Button from '../../components/Button';
-import Text from '../../elements/Text';
 import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
-import { spacing, fonts } from '../../style/theme';
+import { spacing } from '../../style/theme';
 
 const PAGE_SIZE = 30;
 
@@ -163,7 +162,7 @@ class BrowsePage extends React.Component<Props, State> {
         <Head title={i18n.t`Browse books`} />
 
         <Container>
-          <Text accessibilityRole="heading" {...headerStyle}>
+          <Typography variant="display2" gutterBottom align="center">
             {books.results.length > 0 ? (
               readingLevel ? (
                 // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
@@ -174,28 +173,21 @@ class BrowsePage extends React.Component<Props, State> {
             ) : (
               <Trans>No books found</Trans>
             )}
-          </Text>
+          </Typography>
           <BookGrid books={books.results} />
           {/* Should really be View instead of Text here.. but */}
-          <Text my={spacing.xlarge} textAlign="center">
-            <Button
-              disabled={!canLoadMore}
-              onClick={this.handleLoadMore}
-              isLoading={this.state.isLoadingMore}
-            >
-              <Trans>See more books</Trans>
-            </Button>
-          </Text>
+          <Button
+            disabled={!canLoadMore}
+            onClick={this.handleLoadMore}
+            isLoading={this.state.isLoadingMore}
+            css={{ marginTop: spacing.medium, marginBottom: spacing.medium }}
+          >
+            <Trans>See more books</Trans>
+          </Button>
         </Container>
       </Layout>
     );
   }
 }
-
-const headerStyle = {
-  textAlign: 'center',
-  my: spacing.medium,
-  fontWeight: fonts.weight.medium
-};
 
 export default errorPage(withRouter(withI18n(BrowsePage)));
