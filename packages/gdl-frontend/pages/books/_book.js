@@ -8,12 +8,12 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import MdFileDownload from 'react-icons/lib/md/file-download';
-import MdTranslate from 'react-icons/lib/md/translate';
-import MdWarning from 'react-icons/lib/md/warning';
-import MdEdit from 'react-icons/lib/md/edit';
 import styled from 'react-emotion';
 import { Menu, MenuItem, Button } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import FileDownloadIcon from '@material-ui/icons/FileDownload';
+import TranslateIcon from '@material-ui/icons/Translate';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -188,7 +188,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       color="primary"
                       onClick={this.handleDownloadClick}
                     >
-                      <MdFileDownload /> <Trans>Download book</Trans>
+                      <FileDownloadIcon /> <Trans>Download book</Trans>
                     </Button>
                     <Menu
                       id="donwload-book-menu"
@@ -223,7 +223,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                         passHref
                       >
                         <EditBookLink title="Edit book">
-                          <MdEdit />
+                          <EditIcon />
                         </EditBookLink>
                       </Link>
                     )}
@@ -254,8 +254,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                         textAlign="center"
                         fontWeight={fonts.weight.medium}
                       >
-                        <MdTranslate aria-hidden />{' '}
-                        <Trans>Translate this book</Trans>
+                        <TranslateIcon /> <Trans>Translate this book</Trans>
                       </A>
                     </Link>
                   </View>
@@ -275,8 +274,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   href={config.zendeskUrl}
                   openNewTab
                 >
-                  <MdWarning aria-hidden />{' '}
-                  <Trans>Report a problem with this book</Trans>
+                  <WarningIcon /> <Trans>Report a problem with this book</Trans>
                 </A>
               </View>
             </View>
