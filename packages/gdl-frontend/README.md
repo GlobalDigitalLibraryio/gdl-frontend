@@ -16,7 +16,7 @@ For i18n we use [lingui](https://github.com/lingui/js-lingui).
 
 #### Updating translations
 
-Whenever new that are to be translated using lingui are added, run the following command to update the existing translation files:
+Whenever new texts that are to be translated using lingui are added, run the following command to update the existing translation files:
 
 ```
 $ yarn run i18n:extract

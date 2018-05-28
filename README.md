@@ -13,7 +13,7 @@ This is the front-end for http://digitallibrary.io/
 
 #### Install
 
-Each module lives in it's own package under the `packages` directory. We are using [bolt](https://github.com/boltpkg/bolt) to manage our monorepo, so you are going to need bolt installed globally as well.
+Each module lives in its own package under the `packages` directory. We are using [bolt](https://github.com/boltpkg/bolt) to manage our monorepo, so you are going to need bolt installed globally as well.
 
 ```
 yarn global add bolt
