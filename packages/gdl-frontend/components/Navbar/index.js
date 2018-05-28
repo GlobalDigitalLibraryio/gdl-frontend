@@ -7,9 +7,9 @@
  */
 
 import * as React from 'react';
-import MdSearch from 'react-icons/lib/md/search';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
-import MdMenu from 'react-icons/lib/md/menu';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
@@ -41,7 +41,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           aria-expanded={menuIsExpanded}
           css={{ marginRight: 20 }}
         >
-          <MdMenu />
+          <MenuIcon />
         </IconButton>
         <NavItem>{brandLink}</NavItem>
         <Link route="search" passHref>
@@ -50,7 +50,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
             component="a"
             css={{ marginLeft: 'auto' }}
           >
-            <MdSearch aria-hidden />
+            <SearchIcon />
             <SrOnly>
               <Trans>Search</Trans>
             </SrOnly>
