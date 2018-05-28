@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
@@ -21,7 +21,7 @@ import type {
 } from '../../types';
 import Layout, { Main } from '../../components/Layout';
 import Card from '../../components/Card';
-import { Container, Text, View } from '../../elements';
+import { Container, View } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
@@ -29,7 +29,7 @@ import {
 import Head from '../../components/Head';
 import { SelectLanguage } from '../../components/LanguageMenu';
 import BookList from '../../components/BookList';
-import { colors, fonts, spacing } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
@@ -115,21 +115,18 @@ export default class HomePage extends React.Component<
 
     const cardContent = (
       <View alignItems="center">
-        <Text
-          accessibilityRole="heading"
-          aria-level="2"
+        <Typography
           lang={featured.language.code}
-          fontSize={['1.7rem', '2.1rem']}
-          fontWeight={fonts.weight.medium}
-          textAlign="center"
+          align="center"
+          variant="heading"
+          component="h2"
+          gutterBottom
         >
           {featured.title}
-        </Text>
-        <View my={spacing.small}>
-          <Text lang={featured.language.code} textAlign="center">
-            {featured.description}
-          </Text>
-        </View>
+        </Typography>
+        <Typography lang={featured.language.code} align="center" paragraph>
+          {featured.description}
+        </Typography>
         <Button
           href={featured.link}
           variant="raised"
@@ -163,14 +160,13 @@ export default class HomePage extends React.Component<
         <Main>
           <Banner src={featured.imageUrl}>
             <HeroCovertitle>
-              <Text
-                accessibilityRole="heading"
-                color={colors.base.white}
-                fontSize="1.1rem"
-                fontWeight={fonts.weight.medium}
+              <Typography
+                component="h1"
+                variant="title"
+                css={{ color: colors.base.white }}
               >
                 <Trans>Featured</Trans>
-              </Text>
+              </Typography>
             </HeroCovertitle>
             <HeroCardTablet>{cardContent}</HeroCardTablet>
           </Banner>
