@@ -6,8 +6,6 @@ yarn-debug.log*
 .DS_STORE
 .next
 *.iml
-# Ignore the compiled translation files
-locale/*/*.js
-locale/_build/
 .idea
-locale/en/messages.json
+# Currently we only have one language, so we ignore the locale folder for now
+packages/gdl-frontend/locale/

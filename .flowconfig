@@ -1,11 +1,10 @@
 [ignore]
-# We don't have direct dependencies on these libraries, so we ignore the Flow errors
-.*/node_modules/config-chain/test/.*
-.*/node_modules/npmconf/test/.*
 
 [include]
 
 [libs]
-types/
 
 [options]
+
+[lints]
+all=warn
