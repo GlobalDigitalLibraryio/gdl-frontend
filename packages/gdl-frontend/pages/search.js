@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
+import { Button } from '@material-ui/core';
 
 import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
@@ -28,7 +29,6 @@ import {
   getBookLanguage
 } from '../lib/storage';
 import Head from '../components/Head';
-import Button from '../components/Button';
 import { Container, Text } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
@@ -290,17 +290,15 @@ class SearchPage extends React.Component<Props, State> {
                     ))}
                   </div>
                   {/* Should really be View instead of Text here.. but */}
-                  <Text textAlign="center">
-                    <Button
-                      disabled={
-                        searchResult.results.length >= searchResult.totalCount
-                      }
-                      onClick={this.handleLoadMore}
-                      isLoading={this.state.isLoadingMore}
-                    >
-                      <Trans>See more</Trans>
-                    </Button>
-                  </Text>
+                  <Button
+                    disabled={
+                      searchResult.results.length >= searchResult.totalCount
+                    }
+                    onClick={this.handleLoadMore}
+                    isLoading={this.state.isLoadingMore}
+                  >
+                    <Trans>See more</Trans>
+                  </Button>
                 </Fragment>
               )
             ) : (
