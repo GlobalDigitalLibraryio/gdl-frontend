@@ -10,7 +10,6 @@ import * as React from 'react';
 import MdSearch from 'react-icons/lib/md/search';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MdMenu from 'react-icons/lib/md/menu';
-import { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
@@ -49,7 +48,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           <IconButton
             color="inherit"
             component="a"
-            className={styles.searchIcon}
+            css={{ marginLeft: 'auto' }}
           >
             <MdSearch aria-hidden />
             <SrOnly>
@@ -60,12 +59,6 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
       </Toolbar>
     </AppBar>
   );
-};
-
-const styles = {
-  searchIcon: css`
-    margin-left: auto;
-  `
 };
 
 Navbar.defaultProps = {

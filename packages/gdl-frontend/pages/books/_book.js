@@ -178,17 +178,18 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       </Button>
                     </Link>
 
-                    <Text
+                    <Button
                       aria-owns={
                         this.state.anchorEl ? 'download-book-menu' : null
                       }
                       aria-haspopup="true"
-                      fontWeight={fonts.weight.medium}
-                      mt={spacing.medium}
+                      css={{ marginTop: spacing.medium }}
+                      size="small"
+                      color="primary"
                       onClick={this.handleDownloadClick}
                     >
                       <MdFileDownload /> <Trans>Download book</Trans>
-                    </Text>
+                    </Button>
                     <Menu
                       id="donwload-book-menu"
                       onClose={this.closeDownloadMenu}

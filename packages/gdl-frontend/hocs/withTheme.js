@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import JssProvider from 'react-jss/lib/JssProvider';
 
 import getPageContext from '../getPageContext';
 import type { Context } from '../types';
@@ -35,6 +36,8 @@ class Theme extends React.Component<{ children: React.Node }> {
     return <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>;
   }
 }
+
+//const jss = create(jssPreset());
 
 /**
  * HoC that wraps a page with Theme
@@ -64,10 +67,16 @@ function withTheme(Page: React.ComponentType<any>) {
     render() {
       return (
         <Theme>
-          <MuiThemeProvider sheetsManager={this.pageContext.sheetsManager}>
-            <CssBaseline />
-            <Page {...this.props} />
-          </MuiThemeProvider>
+          <JssProvider
+            jss={this.pageContext.jss}
+            registry={this.pageContext.sheetsRegistry}
+            generateClassName={this.pageContext.generateClassName}
+          >
+            <MuiThemeProvider sheetsManager={this.pageContext.sheetsManager}>
+              <CssBaseline />
+              <Page {...this.props} />
+            </MuiThemeProvider>
+          </JssProvider>
         </Theme>
       );
     }

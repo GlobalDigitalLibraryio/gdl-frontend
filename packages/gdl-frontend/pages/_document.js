@@ -9,7 +9,6 @@
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
-import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from '../getPageContext';
 
 import type { Context } from '../types';
@@ -26,20 +25,12 @@ const precomposed72 = require('../static/img/apple-icon-72x72-precomposed.png');
 const precomposed114 = require('../static/img/apple-icon-114x114-precomposed.png');
 const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png');
 
-/**
- * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
- */
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
     const pageContext = getPageContext();
 
     const page = renderPage(Component => props => (
-      <JssProvider
-        registry={pageContext.sheetsRegistry}
-        generateClassName={pageContext.generateClassName}
-      >
-        <Component pageContext={pageContext} {...props} />
-      </JssProvider>
+      <Component pageContext={pageContext} {...props} />
     ));
 
     const styleTags = extractCritical(page.html);
@@ -125,7 +116,6 @@ export default class Document extends NextDocument {
               }';`
             }}
           />
-          <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
           <style
             id="jss-server-side"
             // eslint-disable-next-line react/no-danger
@@ -133,6 +123,9 @@ export default class Document extends NextDocument {
               __html: this.props.pageContext.sheetsRegistry.toString()
             }}
           />
+          {/* Custom JSS insertion point, so our Emotion styles takes precedence */}
+          <noscript id="jss-insertion-point" />
+          <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>
           <Main />

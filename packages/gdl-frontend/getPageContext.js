@@ -6,10 +6,11 @@
  * See LICENSE
  */
 
-import { SheetsRegistry } from 'jss';
+import { SheetsRegistry, create } from 'jss';
 import {
   createMuiTheme,
-  createGenerateClassName
+  createGenerateClassName,
+  jssPreset
 } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
@@ -32,6 +33,10 @@ const theme = createMuiTheme({
 });
 
 function createPageContext() {
+  const jss = create(jssPreset());
+  if (process.browser) {
+    jss.options.insertionPoint = document.getElementById('jss-insertion-point');
+  }
   return {
     // theme,
     // This is needed in order to deduplicate the injection of CSS in the page.
@@ -39,7 +44,8 @@ function createPageContext() {
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
     // The standard class name generator.
-    generateClassName: createGenerateClassName()
+    generateClassName: createGenerateClassName(),
+    jss
   };
 }
 
