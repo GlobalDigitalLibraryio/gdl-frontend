@@ -7,15 +7,10 @@
  */
 
 import { injectGlobal } from 'react-emotion';
-import { normalize } from 'polished';
 import { colors, fonts } from './theme';
 
 // Add global styles
 export default injectGlobal`
-  html {
-    font-size: 16px;
-  }
-
   body {
     font-family: ${fonts.family.default};
     text-rendering: optimizeLegibility;
