@@ -18,14 +18,13 @@ import {
 } from '@material-ui/core';
 import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons';
 
-import config from '../../config';
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
 import { getTokenFromLocalCookie } from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
-import CreativeCommonsLogo from './cc-logo.svg';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
+import config from '../../config';
 
 type Props = {|
   onClose(): void
@@ -121,43 +120,10 @@ class GlobalMenu extends React.Component<Props, State> {
               <Trans>About the Global Digital Library</Trans>
             </ListItemText>
           </ListItem>
-          <ListItem
-            button
-            component="a"
-            href="https://blog.digitallibrary.io/cc/"
-          >
-            <ListItemText>
-              <Trans>Licensing and reuse</Trans>
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            button
-            component="a"
-            href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/"
-          >
-            <ListItemText>
-              <Trans>Cookie policy</Trans>
-            </ListItemText>
-          </ListItem>
-          <ListItem
-            button
-            component="a"
-            href="https://home.digitallibrary.io/privacy/"
-          >
-            <ListItemText>
-              <Trans>Privacy policy</Trans>
-            </ListItemText>
-          </ListItem>
           <ListItem button component="a" href={config.zendeskUrl}>
             <ListItemText>
               <Trans>Report issues</Trans>
             </ListItemText>
-          </ListItem>
-          <ListItem>
-            <CreativeCommonsLogo
-              aria-label="Creative Commons"
-              style={{ width: '25%' }}
-            />
           </ListItem>
         </List>
       </Drawer>

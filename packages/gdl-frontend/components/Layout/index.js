@@ -9,14 +9,16 @@
 import React, { type Node } from 'react';
 import styled from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
+import { Paper } from '@material-ui/core';
+
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
 import { NavContextBar, Breadcrumb } from '../NavContextBar';
+import Footer from './Footer';
 
-const Main = styled('main')`
-  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
+const Main = styled(Paper)`
   background: ${colors.container.background};
   flex: 1;
   width: 100%;
@@ -69,7 +71,8 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
               <Breadcrumb crumbs={crumbs} />
             </NavContextBar>
           )}
-          {wrapWithMain ? <Main>{children}</Main> : children}
+          {wrapWithMain ? <Main component="main">{children}</Main> : children}
+          <Footer />
         </PageWrapper>
       </ThemeProvider>
     );
