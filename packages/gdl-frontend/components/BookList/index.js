@@ -9,7 +9,7 @@
 import React, { Fragment, type Element } from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
 import { spacing } from '../../style/theme/';
@@ -32,14 +32,14 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       justifyContent="space-between"
       mb={spacing.small}
     >
-      <Typography component="h1" variant="title">
+      <Typography component="h1" variant="headline">
         {heading}
       </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          <Typography component="a" variant="subheading">
+          <Button color="primary">
             <Trans>More</Trans>
-          </Typography>
+          </Button>
         </BrowseLink>
       )}
     </View>

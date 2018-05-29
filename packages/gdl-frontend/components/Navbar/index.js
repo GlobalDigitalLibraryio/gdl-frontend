@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import styled from 'react-emotion';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
@@ -15,12 +16,25 @@ import { Trans } from '@lingui/react';
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
-import { NavItem, BrandLink } from './styledNavbar';
+import media from '../../style/media';
 
 type Props = {
   menuIsExpanded: boolean,
   onMenuClick(): void
 };
+
+// The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
+const BrandLink = styled('a')`
+  svg {
+    margin-top: 2px;
+    padding-right: 2px;
+    height: 36px;
+    width: 100px;
+    ${media.tablet`
+      width: auto;
+    `};
+  }
+`;
 
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   const brandLink = (
@@ -39,11 +53,11 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           color="inherit"
           onClick={onMenuClick}
           aria-expanded={menuIsExpanded}
-          css={{ marginRight: 20 }}
+          css={{ marginRight: 18 }}
         >
           <MenuIcon />
         </IconButton>
-        <NavItem>{brandLink}</NavItem>
+        {brandLink}
         <Link route="search" passHref>
           <IconButton
             color="inherit"

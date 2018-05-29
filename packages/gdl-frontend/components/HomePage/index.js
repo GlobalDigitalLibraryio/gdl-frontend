@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
-import { Button, Typography } from '@material-ui/core';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
@@ -20,7 +20,6 @@ import type {
   Category
 } from '../../types';
 import Layout, { Main } from '../../components/Layout';
-import Card from '../../components/Card';
 import { Container, View } from '../../elements';
 import {
   NavContextBar,
@@ -69,7 +68,7 @@ const HeroCovertitle = styled('div')`
 
 const HeroCardMobile = styled(Card)`
   ${flexCenter};
-  padding: ${spacing.small};
+  position: relative;
   margin-top: -50px;
   margin-left: 15px;
   margin-right: 15px;
@@ -80,7 +79,6 @@ const HeroCardMobile = styled(Card)`
 
 const HeroCardTablet = styled(Card)`
   ${flexCenter};
-  padding: ${spacing.medium};
   max-width: 375px;
   ${media.mobile`
     display: none;
@@ -168,9 +166,13 @@ export default class HomePage extends React.Component<
                 <Trans>Featured</Trans>
               </Typography>
             </HeroCovertitle>
-            <HeroCardTablet>{cardContent}</HeroCardTablet>
+            <HeroCardTablet>
+              <CardContent>{cardContent}</CardContent>
+            </HeroCardTablet>
           </Banner>
-          <HeroCardMobile>{cardContent}</HeroCardMobile>
+          <HeroCardMobile>
+            <CardContent>{cardContent}</CardContent>
+          </HeroCardMobile>
 
           {levels.map((level, index) => (
             <View {...bookListViewStyle} key={level}>
