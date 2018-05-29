@@ -37,7 +37,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          <Typography component="a" variant="subtitle">
+          <Typography component="a" variant="subheading">
             <Trans>More</Trans>
           </Typography>
         </BrowseLink>
@@ -67,7 +67,6 @@ const ScrollDiv = styled('div')`
   }
   white-space: nowrap;
   padding: 0 ${spacing.medium};
-  padding-bottom: 4px;
 `;
 
 const CoverDiv = styled('div')`

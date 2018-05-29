@@ -8,22 +8,13 @@
 
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
+import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Link } from '../routes';
 import type { Book } from '../types';
-import Card from './Card';
 import ReadingLevel from './ReadingLevel';
 import Box from './Box';
-import Text from '../elements/Text';
-import { colors } from '../style/theme';
 import CoverImage from './CoverImage';
-
-const Div = styled(Box)`
-  text-align: center;
-  color: ${colors.text.default};
-  border-top: 1px solid ${colors.base.grayLight};
-  background-color: ${colors.base.white};
-`;
 
 /**
  * Add small brightness effect to book cover when hovered
@@ -52,7 +43,7 @@ const ClickTarget = styled('a')`
  */
 export default ({ book }: { book: Book }) => (
   <Box w={[105, 130]}>
-    <Card className={hoverImgEffect}>
+    <Card className={hoverImgEffect} css={{ position: 'relative' }}>
       <Link
         route="book"
         params={{ id: book.id, lang: book.language.code }}
@@ -66,24 +57,25 @@ export default ({ book }: { book: Book }) => (
         h={[130, 160]}
         src={book.coverImage && book.coverImage.url}
       />
-      <Div h={[45, 50]} fontSize={[11, 14]} pt="4px" px="2px">
+      <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>
         <Link
           route="book"
           params={{ id: book.id, lang: book.language.code }}
           passHref
         >
-          <Text lang={book.language.code} title={book.title} {...titleStyle}>
+          <Typography
+            lang={book.language.code}
+            title={book.title}
+            noWrap
+            gutterBottom
+            component="a"
+            align="center"
+          >
             {book.title}
-          </Text>
+          </Typography>
         </Link>
         <ReadingLevel level={book.readingLevel} />
-      </Div>
+      </CardContent>
     </Card>
   </Box>
 );
-
-const titleStyle = {
-  numberOfLines: 1,
-  display: 'block',
-  color: colors.text.default
-};
