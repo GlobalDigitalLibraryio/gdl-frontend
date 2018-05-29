@@ -6,8 +6,10 @@
  * See LICENSE
  */
 import * as React from 'react';
-import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
-import MdKeyboardArrowLeft from 'react-icons/lib/md/keyboard-arrow-left';
+import {
+  KeyboardArrowLeft as KeyboardArrowLeftIcon,
+  KeyboardArrowRight as KeyboardArrowRightIcon
+} from '@material-ui/icons';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import SrOnly from '../SrOnly';
@@ -56,7 +58,7 @@ const TouchOverlay = (props: Props) => [
     <SrOnly>
       <Trans>Previous</Trans>
     </SrOnly>
-    <MdKeyboardArrowLeft aria-hidden size={50} />
+    <KeyboardArrowLeftIcon size={50} />
   </Button>,
   <Button
     key="right"
@@ -68,7 +70,7 @@ const TouchOverlay = (props: Props) => [
     <SrOnly>
       <Trans>Next</Trans>
     </SrOnly>
-    <MdKeyboardArrowRight aria-hidden size={50} />
+    <KeyboardArrowRightIcon size={50} />
   </Button>
 ];
 

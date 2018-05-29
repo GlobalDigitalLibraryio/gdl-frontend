@@ -149,7 +149,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   h={[175, 365]}
                 />
               </CoverWrap>
-              <HeroCard p={[15, 20]} pt={[70, 20]} flex="1">
+              <HeroCard flex="1">
                 <CardContent>
                   <Typography lang={book.language.code} variant="headline">
                     {book.title}

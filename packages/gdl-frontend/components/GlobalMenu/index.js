@@ -16,7 +16,7 @@ import {
   ListItem,
   ListItemText
 } from '@material-ui/core';
-import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
+import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons';
 
 import config from '../../config';
 import type { Language } from '../../types';
@@ -65,7 +65,7 @@ class GlobalMenu extends React.Component<Props, State> {
                 <ListItemText>
                   <Trans>Book language</Trans>
                 </ListItemText>
-                <MdKeyboardArrowRight />
+                <KeyboardArrowRightIcon />
               </ListItem>
             )}
           </SelectLanguage>
@@ -79,7 +79,7 @@ class GlobalMenu extends React.Component<Props, State> {
                 <ListItemText>
                   <Trans>Categories</Trans>
                 </ListItemText>
-                <MdKeyboardArrowRight />
+                <KeyboardArrowRightIcon />
               </ListItem>
             )}
           </CategoriesMenu>

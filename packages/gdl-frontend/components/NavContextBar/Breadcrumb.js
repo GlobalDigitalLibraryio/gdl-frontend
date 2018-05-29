@@ -7,8 +7,10 @@
  */
 
 import * as React from 'react';
-import MdKeyboardArrowRight from 'react-icons/lib/md/keyboard-arrow-right';
-import MdHome from 'react-icons/lib/md/home';
+import {
+  KeyboardArrowRight as KeyboardArrowRightIcon,
+  Home as HomeIcon
+} from '@material-ui/icons';
 import { withI18n } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 import theming from 'styled-theming';
@@ -73,7 +75,7 @@ type Props = {|
 
 const Separator = (
   <li aria-hidden role="presentation">
-    <MdKeyboardArrowRight />
+    <KeyboardArrowRightIcon />
   </li>
 );
 
@@ -83,7 +85,7 @@ const Breadcrumb = ({ i18n, crumbs }: Props) => (
       <li>
         <Link route="books">
           <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
-            <MdHome />
+            <HomeIcon />
           </a>
         </Link>
       </li>

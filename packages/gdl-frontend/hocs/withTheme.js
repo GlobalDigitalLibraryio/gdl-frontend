@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,18 +19,6 @@ import { misc } from '../style/theme';
 const theme = { space: [], breakpoints: misc.breakpoints };
 
 class Theme extends React.Component<{ children: React.Node }> {
-  static childContextTypes = {
-    reactIconBase: PropTypes.object
-  };
-
-  getChildContext() {
-    return {
-      reactIconBase: {
-        size: misc.iconSize
-      }
-    };
-  }
-
   render() {
     return <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>;
   }
@@ -72,7 +59,10 @@ function withTheme(Page: React.ComponentType<any>) {
             registry={this.pageContext.sheetsRegistry}
             generateClassName={this.pageContext.generateClassName}
           >
-            <MuiThemeProvider sheetsManager={this.pageContext.sheetsManager}>
+            <MuiThemeProvider
+              theme={this.pageContext.theme}
+              sheetsManager={this.pageContext.sheetsManager}
+            >
               <CssBaseline />
               <Page {...this.props} />
             </MuiThemeProvider>

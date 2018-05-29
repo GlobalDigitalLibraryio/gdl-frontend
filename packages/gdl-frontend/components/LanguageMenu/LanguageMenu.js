@@ -17,7 +17,7 @@ import {
   ListItemText,
   ListItemIcon
 } from '@material-ui/core';
-import MdCheck from 'react-icons/lib/md/check';
+import { Check as CheckIcon } from '@material-ui/icons';
 
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
@@ -101,7 +101,7 @@ export default class LanguageMenu extends React.Component<Props> {
             <Fragment>
               <ListItem>
                 <ListItemIcon aria-hidden>
-                  <MdCheck color={colors.base.green} />
+                  <CheckIcon css={{ color: colors.base.green }} />
                 </ListItemIcon>
                 <ListItemText inset>
                   <SrOnly>

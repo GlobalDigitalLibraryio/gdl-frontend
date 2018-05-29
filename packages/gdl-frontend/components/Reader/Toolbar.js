@@ -8,8 +8,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import MdClose from 'react-icons/lib/md/close';
-import MdEdit from 'react-icons/lib/md/edit';
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';
@@ -77,12 +76,12 @@ const Toolbar = ({
         }}
       >
         <Button title="Edit book" style={{ right: 50 }}>
-          <MdEdit />
+          <EditIcon />
         </Button>
       </Link>
     )}
     <Button onClick={onRequestClose} type="button">
-      <MdClose aria-hidden />{' '}
+      <CloseIcon />{' '}
       <SrOnly>
         <Trans>Close book</Trans>
       </SrOnly>

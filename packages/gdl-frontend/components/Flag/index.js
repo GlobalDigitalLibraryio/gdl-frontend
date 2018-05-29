@@ -7,11 +7,14 @@
  */
 
 import React, { type Element } from 'react';
-import MdStar from 'react-icons/lib/md/star';
-import MdWarning from 'react-icons/lib/md/warning';
-import MdInfo from 'react-icons/lib/md/info';
-import MdClose from 'react-icons/lib/md/close';
+import {
+  Star as StarIcon,
+  Warning as WarningIcon,
+  Info as InfoIcon,
+  Close as CloseIcon
+} from '@material-ui/icons';
 import { Trans } from '@lingui/react';
+
 import { Container, DismissButton, Icon, Text } from './styledFlag';
 import SrOnly from '../SrOnly';
 
@@ -44,11 +47,11 @@ export default class Flag extends React.Component<Props> {
   renderIcon() {
     switch (this.props.appearance) {
       case 'error':
-        return <MdWarning />;
+        return <WarningIcon />;
       case 'success':
-        return <MdStar />;
+        return <StarIcon />;
       default:
-        return <MdInfo />;
+        return <InfoIcon />;
     }
   }
 
@@ -73,7 +76,7 @@ export default class Flag extends React.Component<Props> {
 
         {isDismissAllowed && (
           <DismissButton type="button" onClick={onDismissed}>
-            <MdClose aria-hidden />
+            <CloseIcon />
             <SrOnly>
               <Trans>Dismiss</Trans>
             </SrOnly>
