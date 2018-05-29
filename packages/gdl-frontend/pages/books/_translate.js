@@ -8,7 +8,8 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
+import { ArrowDownward as ArrowDownwardIcon } from '@material-ui/icons';
+import { Card, CardContent, Typography, Button } from '@material-ui/core';
 
 import {
   fetchBook,
@@ -27,11 +28,7 @@ import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
-import H1 from '../../components/H1';
-import Button from '../../components/Button';
-import H4 from '../../components/H4';
 import P from '../../components/P';
-import Card from '../../components/Card';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
@@ -134,39 +131,41 @@ class TranslatePage extends React.Component<Props, State> {
           image={book.coverImage && book.coverImage.url}
         />
         <Container py={[15, 40]} style={{ textAlign: 'center' }}>
-          <H1>
+          <Typography variant="display2" component="h1">
             <Trans>Translate book</Trans>
-          </H1>
-          <Card p={[15, 20]} my={[20, 50]} textAlign="left">
-            <Flex>
-              <Box mr={[10, 20]}>
-                <Link
-                  route="book"
-                  params={{ lang: book.language.code, id: book.id }}
-                >
-                  <a>
-                    <BookCover
-                      coverImage={book.coverImage}
-                      w={[75, 120]}
-                      h={[100, 150]}
-                    />
-                  </a>
-                </Link>
-              </Box>
-              <Box>
-                <H4>{book.title}</H4>
-                <P color={colors.text.subtle}>
-                  <Trans>from {book.publisher.name}</Trans>
-                </P>
-              </Box>
-            </Flex>
+          </Typography>
+          <Card textAlign="left">
+            <CardContent>
+              <Flex>
+                <Box mr={[10, 20]}>
+                  <Link
+                    route="book"
+                    params={{ lang: book.language.code, id: book.id }}
+                  >
+                    <a>
+                      <BookCover
+                        coverImage={book.coverImage}
+                        w={[75, 120]}
+                        h={[100, 150]}
+                      />
+                    </a>
+                  </Link>
+                </Box>
+                <Box>
+                  <Typography>{book.title}</Typography>
+                  <Typography color={colors.text.subtle}>
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
+                </Box>
+              </Flex>
+            </CardContent>
           </Card>
           <Box mb={20}>
             <P color={colors.text.subtle}>
               <Trans>Translate from</Trans>
             </P>
             <div>{book.language.name}</div>
-            <MdArrowDownward color={colors.base.orange} size={50} />
+            <ArrowDownwardIcon color={colors.base.orange} size={50} />
             <P color={colors.text.subtle}>
               <Trans>Translate to</Trans>
             </P>

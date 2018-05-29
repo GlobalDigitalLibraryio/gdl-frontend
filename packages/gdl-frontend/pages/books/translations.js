@@ -8,23 +8,25 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import MdArrowForward from 'react-icons/lib/md/arrow-forward';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Typography
+} from '@material-ui/core';
+import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
+
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, I18n } from '../../types';
 import { securePage, withI18n } from '../../hocs';
 import Layout from '../../components/Layout';
-import Box from '../../components/Box';
-import Flex from '../../components/Flex';
-import H1 from '../../components/H1';
-import H4 from '../../components/H4';
-import P from '../../components/P';
-import Card from '../../components/Card';
-import A from '../../components/A';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
-import { colors } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 
 type Props = {
   i18n: I18n
@@ -53,58 +55,52 @@ class TranslationCard extends React.Component<
   render() {
     const { translation } = this.props;
     return (
-      <Card key={translation.id} p={[15, 20]} mt={20}>
-        <Flex>
-          <Box mr={[10, 20]}>
-            <Link
-              route="book"
-              params={{
-                lang: translation.translatedTo.code,
-                id: translation.id
-              }}
+      <Card
+        key={translation.id}
+        css={{ display: 'flex', marginBottom: spacing.large }}
+      >
+        <Link
+          route="book"
+          params={{
+            lang: translation.translatedTo.code,
+            id: translation.id
+          }}
+        >
+          <a>
+            <BookCover
+              w={[75, 120]}
+              h={[100, 150]}
+              coverImage={translation.coverImage}
+            />
+          </a>
+        </Link>
+        <CardContent>
+          <Typography variant="headline">{translation.title}</Typography>
+          <Typography variant="subheading">
+            <Trans>from {translation.publisher.name}</Trans>
+          </Typography>
+          {translation.translatedFrom.name}{' '}
+          <ArrowForwardIcon css={{ color: colors.base.orange }} />{' '}
+          <strong>{translation.translatedTo.name}</strong>
+          <CardActions>
+            <Button
+              color="primary"
+              onClick={this.handleSynchronize}
+              isLoading={this.state.isLoading}
+              disabled={this.state.isSynchronized}
             >
-              <a>
-                <BookCover
-                  w={[75, 120]}
-                  h={[100, 150]}
-                  coverImage={translation.coverImage}
-                />
-              </a>
-            </Link>
-          </Box>
-          <Box flex="1">
-            <H4>{translation.title}</H4>
-            <P color={colors.text.subtle} style={{ marginTop: 0 }}>
-              <Trans>from {translation.publisher.name}</Trans>
-            </P>
-            <Box>
-              {translation.translatedFrom.name}{' '}
-              <MdArrowForward color={colors.base.orange} />{' '}
-              <strong>{translation.translatedTo.name}</strong>
-            </Box>
-            <div style={{ float: 'right' }}>
-              <A
-                isUppercased
-                isBold
-                onClick={this.handleSynchronize}
-                isLoading={this.state.isLoading}
-                disabled={this.state.isSynchronized}
-              >
-                <Trans>Sync</Trans>
-              </A>
-              <A
-                isUppercased
-                isBold
-                style={{ marginLeft: '30px' }}
-                href={translation.crowdinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Trans>Edit</Trans>
-              </A>
-            </div>
-          </Box>
-        </Flex>
+              <Trans>Sync</Trans>
+            </Button>
+            <Button
+              color="primary"
+              href={translation.crowdinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Trans>Edit</Trans>
+            </Button>
+          </CardActions>
+        </CardContent>
       </Card>
     );
   }
@@ -131,9 +127,9 @@ class MyTranslationsPage extends React.Component<Props, State> {
       <Layout crumbs={[<Trans>My translations</Trans>]}>
         <Head title={i18n.t`My translations`} />
         <Container py={[15, 40]}>
-          <H1 textAlign="center">
+          <Typography variant="display2" align="center" paragraph>
             <Trans>My translations</Trans>
-          </H1>
+          </Typography>
           {translations.map(translation => (
             <TranslationCard key={translation.id} translation={translation} />
           ))}
