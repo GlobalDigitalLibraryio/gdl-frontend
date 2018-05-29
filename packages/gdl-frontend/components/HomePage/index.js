@@ -118,7 +118,7 @@ export default class HomePage extends React.Component<
         <Typography
           lang={featured.language.code}
           align="center"
-          variant="heading"
+          variant="headline"
           component="h2"
           gutterBottom
         >

@@ -9,7 +9,15 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
-import { Menu, MenuItem, Button } from '@material-ui/core';
+import {
+  Menu,
+  MenuItem,
+  Button,
+  Card,
+  CardContent,
+  CardActions,
+  Typography
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FileDownloadIcon from '@material-ui/icons/FileDownload';
 import TranslateIcon from '@material-ui/icons/Translate';
@@ -24,10 +32,8 @@ import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import A from '../../elements/A';
-import Text from '../../elements/Text';
 import View from '../../elements/View';
 import Container from '../../elements/Container';
-import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
@@ -143,97 +149,90 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   h={[175, 365]}
                 />
               </CoverWrap>
-              <HeroCard textAlign="center" p={[15, 20]} pt={[70, 20]} flex="1">
-                <Text
-                  lang={book.language.code}
-                  fontSize={['1.7rem', '2.1rem']}
-                  accessibilityRole="heading"
-                  fontWeight={fonts.weight.medium}
-                >
-                  {book.title}
-                </Text>
+              <HeroCard p={[15, 20]} pt={[70, 20]} flex="1">
+                <CardContent>
+                  <Typography lang={book.language.code} variant="headline">
+                    {book.title}
+                  </Typography>
 
-                <Text textAlign="center">
-                  <Trans>from {book.publisher.name}</Trans>
-                </Text>
+                  <Typography paragraph variant="subheading">
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
 
-                <Text
-                  lang={book.language.code}
-                  textAlign="center"
-                  my={spacing.medium}
-                >
-                  {book.description}
-                </Text>
+                  <Typography lang={book.language.code} paragraph>
+                    {book.description}
+                  </Typography>
 
-                {book.bookFormat === 'HTML' && (
-                  <Fragment>
-                    <Link
-                      route="read"
-                      passHref
-                      params={{ id: book.id, lang: book.language.code }}
-                      prefetch
-                    >
-                      <Button variant="raised" color="primary" size="large">
-                        <Trans>Read book</Trans>
-                      </Button>
-                    </Link>
-
-                    <Button
-                      aria-owns={
-                        this.state.anchorEl ? 'download-book-menu' : null
-                      }
-                      aria-haspopup="true"
-                      css={{ marginTop: spacing.medium }}
-                      size="small"
-                      color="primary"
-                      onClick={this.handleDownloadClick}
-                    >
-                      <FileDownloadIcon /> <Trans>Download book</Trans>
-                    </Button>
-                    <Menu
-                      id="donwload-book-menu"
-                      onClose={this.closeDownloadMenu}
-                      anchorEl={this.state.anchorEl}
-                      open={this.state.anchorEl}
-                    >
-                      {book.downloads.epub && (
-                        <MenuItem
-                          href={book.downloads.epub}
-                          component="a"
-                          onClick={this.closeDownloadMenu}
+                  <CardActions>
+                    {book.bookFormat === 'HTML' && (
+                      <Fragment>
+                        <Link
+                          route="read"
+                          passHref
+                          params={{ id: book.id, lang: book.language.code }}
+                          prefetch
                         >
-                          <Trans>E-book (ePUB)</Trans>
-                        </MenuItem>
-                      )}
-                      {book.downloads.pdf && (
-                        <MenuItem
-                          href={book.downloads.pdf}
-                          component="a"
-                          onClick={this.closeDownloadMenu}
-                        >
-                          <Trans>Printable book (PDF)</Trans>
-                        </MenuItem>
-                      )}
-                    </Menu>
+                          <Button variant="raised" color="primary" size="large">
+                            <Trans>Read book</Trans>
+                          </Button>
+                        </Link>
 
-                    {this.props.userHasEditAccess && (
-                      <Link
-                        route="edit"
-                        params={{ lang: book.language.code, id: book.id }}
-                        passHref
-                      >
-                        <EditBookLink title="Edit book">
-                          <EditIcon />
-                        </EditBookLink>
-                      </Link>
+                        <Button
+                          aria-owns={
+                            this.state.anchorEl ? 'download-book-menu' : null
+                          }
+                          aria-haspopup="true"
+                          color="primary"
+                          onClick={this.handleDownloadClick}
+                        >
+                          <FileDownloadIcon /> <Trans>Download book</Trans>
+                        </Button>
+                        <Menu
+                          id="donwload-book-menu"
+                          onClose={this.closeDownloadMenu}
+                          anchorEl={this.state.anchorEl}
+                          open={this.state.anchorEl}
+                        >
+                          {book.downloads.epub && (
+                            <MenuItem
+                              href={book.downloads.epub}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>E-book (ePUB)</Trans>
+                            </MenuItem>
+                          )}
+                          {book.downloads.pdf && (
+                            <MenuItem
+                              href={book.downloads.pdf}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>Printable book (PDF)</Trans>
+                            </MenuItem>
+                          )}
+                        </Menu>
+
+                        {this.props.userHasEditAccess && (
+                          <Link
+                            route="edit"
+                            params={{ lang: book.language.code, id: book.id }}
+                            passHref
+                          >
+                            <EditBookLink title="Edit book">
+                              <EditIcon />
+                            </EditBookLink>
+                          </Link>
+                        )}
+                      </Fragment>
                     )}
-                  </Fragment>
-                )}
-                {book.bookFormat === 'PDF' && (
-                  <Button href={book.downloads.pdf}>
-                    <Trans>Download book</Trans>
-                  </Button>
-                )}
+                    {book.bookFormat === 'PDF' && (
+                      <Button href={book.downloads.pdf}>
+                        <Trans>Download book</Trans>
+                      </Button>
+                    )}
+                  </CardActions>
+                </CardContent>
               </HeroCard>
             </View>
           </Container>
