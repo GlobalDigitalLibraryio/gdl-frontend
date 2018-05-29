@@ -27,22 +27,18 @@ import CategoriesMenu from './CategoriesMenu';
 import config from '../../config';
 
 type Props = {|
-  onClose(): void
+  onClose(): void,
+  isOpen: boolean
 |};
 
 type State = {
-  language: Language,
-  hasOpenNestedMenu: boolean
+  language: Language
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    language: getBookLanguage(),
-    hasOpenNestedMenu: false
+    language: getBookLanguage()
   };
-
-  nestedMenuOpenState = (isOpen: boolean) =>
-    this.setState({ hasOpenNestedMenu: isOpen });
 
   render() {
     const { onClose } = this.props;
@@ -51,7 +47,6 @@ class GlobalMenu extends React.Component<Props, State> {
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List component="nav">
           <SelectLanguage
-            openStateCallback={this.nestedMenuOpenState}
             language={this.state.language}
             onSelectLanguage={onClose}
             linkProps={language => ({
@@ -69,7 +64,6 @@ class GlobalMenu extends React.Component<Props, State> {
             )}
           </SelectLanguage>
           <CategoriesMenu
-            openStateCallback={this.nestedMenuOpenState}
             onSelectCategory={onClose}
             languageCode={this.state.language.code}
           >
@@ -118,11 +112,6 @@ class GlobalMenu extends React.Component<Props, State> {
           >
             <ListItemText>
               <Trans>About the Global Digital Library</Trans>
-            </ListItemText>
-          </ListItem>
-          <ListItem button component="a" href={config.zendeskUrl}>
-            <ListItemText>
-              <Trans>Report issues</Trans>
             </ListItemText>
           </ListItem>
         </List>

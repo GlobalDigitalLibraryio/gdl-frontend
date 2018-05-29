@@ -56,6 +56,9 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           css={{ marginRight: 18 }}
         >
           <MenuIcon />
+          <SrOnly>
+            <Trans>Menu</Trans>
+          </SrOnly>
         </IconButton>
         {brandLink}
         <Link route="search" passHref>

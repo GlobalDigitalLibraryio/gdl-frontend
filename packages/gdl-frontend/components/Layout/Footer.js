@@ -8,12 +8,12 @@
 
 import React from 'react';
 import { Trans } from '@lingui/react';
-import styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
 import { Paper } from '@material-ui/core';
 
 import config from '../../config';
 import { Container } from '../../elements';
-import { misc, colors, spacing } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 import CreativeCommonsLogo from './cc-logo.svg';
 
 const Footer = () => (

@@ -32,8 +32,7 @@ type Props = {|
   languageCode: string,
   // Render prop
   children: (data: { onClick: () => void }) => Node,
-  onSelectCategory: () => void,
-  openStateCallback: boolean => void
+  onSelectCategory: () => void
 |};
 
 type State = {
@@ -52,12 +51,10 @@ export default class CategoriesMenu extends React.Component<Props, State> {
       this.loadCategories();
     }
 
-    this.props.openStateCallback(true);
     this.setState({ showMenu: true });
   };
 
   handleCloseMenu = () => {
-    this.props.openStateCallback(false);
     this.setState({ showMenu: false });
   };
 
@@ -80,22 +77,13 @@ export default class CategoriesMenu extends React.Component<Props, State> {
         {children({ onClick: this.handleShowMenu })}
         {this.state.showMenu && (
           <Drawer open onClose={this.handleCloseMenu}>
-            <List
-              component="nav"
-              subheader={
-                <ListSubheader component="div">
-                  Categories {!categories && <CircularProgress />}
-                </ListSubheader>
-              }
-            >
+            <List component="nav">
               {categories &&
                 categories.classroom_books && (
                   <Fragment>
-                    <ListItem>
-                      <ListItemText>
-                        <Trans>Classroom books</Trans>
-                      </ListItemText>
-                    </ListItem>
+                    <ListSubheader component="div">
+                      <Trans>Classroom books</Trans>
+                    </ListSubheader>
                     {categories.classroom_books.map(level => (
                       <Link
                         key={level}
@@ -139,11 +127,9 @@ export default class CategoriesMenu extends React.Component<Props, State> {
               {categories &&
                 categories.library_books && (
                   <Fragment>
-                    <ListItem>
-                      <ListItemText>
-                        <Trans>Library books</Trans>
-                      </ListItemText>
-                    </ListItem>
+                    <ListSubheader component="div">
+                      <Trans>Library books</Trans>
+                    </ListSubheader>
                     {categories.library_books.map(level => (
                       <Link
                         key={level}
@@ -155,7 +141,6 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                           onCustomClick={onSelectCategory}
                           button
                           component="a"
-                          inset
                         >
                           <ListItemText inset>
                             <ReadingLevelTrans readingLevel={level} />

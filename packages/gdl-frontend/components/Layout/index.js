@@ -58,10 +58,7 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
         }}
       >
         <PageWrapper>
-          <Navbar
-            onMenuClick={() => this.setState({ drawerIsOpen: true })}
-            menuIsExpanded={this.state.drawerIsOpen}
-          />
+          <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
           <GlobalMenu
             onClose={() => this.setState({ drawerIsOpen: false })}
             isOpen={this.state.drawerIsOpen}
