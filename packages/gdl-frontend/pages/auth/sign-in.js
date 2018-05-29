@@ -46,20 +46,22 @@ const LoginPage = ({ i18n }: Props) => (
       <div>
         <EqualWidthButtonsWrapper>
           <Button
-            css={{ color: googleColor }}
+            variant="raised"
             onClick={() => loginSocialMedia('google-oauth2')}
+            css={{ color: googleColor }}
           >
             <Trans>Log in using Google</Trans>
           </Button>
           <Button
-            css={{ color: facebookColor }}
+            variant="raised"
             onClick={() => loginSocialMedia('facebook')}
+            css={{ color: facebookColor }}
           >
             <Trans>Log in using Facebook</Trans>
           </Button>
         </EqualWidthButtonsWrapper>
       </div>
-      <Typography align="center" mt={spacing.xxlarge}>
+      <Typography align="center" mt={spacing.xxlarge} paragraph>
         By logging in to this service I am hereby accepting the principles in
         the GDL{' '}
         <A href="https://home.digitallibrary.io/privacy/">privacy policy</A>,

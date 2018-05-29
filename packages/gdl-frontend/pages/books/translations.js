@@ -13,7 +13,6 @@ import {
   Card,
   CardContent,
   CardActions,
-  CardMedia,
   Typography
 } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';

@@ -18,14 +18,6 @@ import { misc } from '../style/theme';
 
 const theme = { space: [], breakpoints: misc.breakpoints };
 
-class Theme extends React.Component<{ children: React.Node }> {
-  render() {
-    return <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>;
-  }
-}
-
-//const jss = create(jssPreset());
-
 /**
  * HoC that wraps a page with Theme
  */
@@ -38,7 +30,7 @@ function withTheme(Page: React.ComponentType<any>) {
       return undefined;
     }
 
-    constructor(props, context) {
+    constructor(props, context: Context) {
       super(props, context);
       this.pageContext = this.props.pageContext || getPageContext();
     }
@@ -53,7 +45,7 @@ function withTheme(Page: React.ComponentType<any>) {
 
     render() {
       return (
-        <Theme>
+        <ThemeProvider theme={theme}>
           <JssProvider
             jss={this.pageContext.jss}
             registry={this.pageContext.sheetsRegistry}
@@ -67,10 +59,10 @@ function withTheme(Page: React.ComponentType<any>) {
               <Page {...this.props} />
             </MuiThemeProvider>
           </JssProvider>
-        </Theme>
+        </ThemeProvider>
       );
     }
   };
 }
 
-export { Theme, withTheme as default };
+export default withTheme;
