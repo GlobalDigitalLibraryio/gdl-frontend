@@ -39,7 +39,6 @@ import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
 import { colors, fonts, spacing } from '../../style/theme';
-import { flexColumnCentered } from '../../style/flex';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
@@ -76,10 +75,6 @@ const EditBookLink = styled('a')`
 `;
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
-
-const HeroCard = styled(Card)`
-  ${flexColumnCentered};
-`;
 
 class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
   state = {
@@ -149,7 +144,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   h={[175, 365]}
                 />
               </CoverWrap>
-              <HeroCard flex="1">
+              <Card>
                 <CardContent>
                   <Typography lang={book.language.code} variant="headline">
                     {book.title}
@@ -172,7 +167,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                           params={{ id: book.id, lang: book.language.code }}
                           prefetch
                         >
-                          <Button variant="raised" color="primary" size="large">
+                          <Button variant="raised" color="secondary">
                             <Trans>Read book</Trans>
                           </Button>
                         </Link>
@@ -233,7 +228,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     )}
                   </CardActions>
                 </CardContent>
-              </HeroCard>
+              </Card>
             </View>
           </Container>
 

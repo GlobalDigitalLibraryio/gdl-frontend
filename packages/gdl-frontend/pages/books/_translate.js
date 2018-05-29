@@ -28,11 +28,10 @@ import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
-import P from '../../components/P';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
-import A from '../../components/A';
+import A from '../../elements/A';
 import LanguageMenu from '../../components/LanguageMenu';
 import { colors } from '../../style/theme';
 
@@ -161,14 +160,14 @@ class TranslatePage extends React.Component<Props, State> {
             </CardContent>
           </Card>
           <Box mb={20}>
-            <P color={colors.text.subtle}>
+            <Typography color={colors.text.subtle}>
               <Trans>Translate from</Trans>
-            </P>
+            </Typography>
             <div>{book.language.name}</div>
             <ArrowDownwardIcon color={colors.base.orange} size={50} />
-            <P color={colors.text.subtle}>
+            <Typography color={colors.text.subtle}>
               <Trans>Translate to</Trans>
-            </P>
+            </Typography>
             {this.state.showLanguageMenu && (
               <LanguageMenu
                 languages={supportedLanguages}
