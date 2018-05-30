@@ -13,12 +13,13 @@ import 'core-js/modules/es6.string.includes';
 import 'core-js/modules/es7.object.entries';
 import 'core-js/modules/es7.object.values';
 import 'core-js/modules/es7.array.includes';
-import NextApp from 'next/app';
+import React from 'react';
+import NextApp, { Container } from 'next/app';
 import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 
 import Raven from '../lib/raven';
-import withTheme from '../hocs/withTheme';
+import GdlThemeProvider from '../components/GdlThemeProvider';
 import withI18n from '../hocs/withI18n';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
@@ -33,10 +34,18 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 }
 
 class App extends NextApp {
-  // Capture errors and report them to Sentry
+  static async getInitialProps({ Component, router, ctx }) {
+    let pageProps = {};
+
+    if (Component.getInitialProps) {
+      pageProps = await Component.getInitialProps(ctx);
+    }
+
+    return { pageProps };
+  }
+
   componentDidCatch(error, errorInfo) {
     Raven.captureException(error);
-
     // This is needed to render errors correctly in development / production
     super.componentDidCatch(error, errorInfo);
   }
@@ -61,7 +70,18 @@ class App extends NextApp {
       Router.push(`/?logout=${event.newValue}`);
     }
   };
+
+  render() {
+    const { Component, pageProps } = this.props;
+    return (
+      <Container>
+        <GdlThemeProvider>
+          <Component {...pageProps} />
+        </GdlThemeProvider>
+      </Container>
+    );
+  }
 }
 
-// Wrap the app with a themeprovider
-export default withTheme(withI18n(App));
+// Wrap the app with a lanugage layer
+export default withI18n(App);
