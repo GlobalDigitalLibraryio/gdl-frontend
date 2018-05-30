@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import Document, { Head, Main, NextScript } from 'next/document';
+import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { injectGlobal } from 'emotion';
 import { extractCritical } from 'emotion-server';
 import type { Context } from '../types';
@@ -28,7 +28,7 @@ injectGlobal`
 /**
  * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
  */
-export default class GDLDocument extends Document {
+export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
     const page = renderPage();
     const styleTags = extractCritical(page.html);
@@ -37,9 +37,7 @@ export default class GDLDocument extends Document {
       ...page,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
-      ...styleTags,
-      // $FlowFixMe This is only rendered on the server, so req shouldn't be undefined
-      url: `${req.protocol}://${req.headers.host}${req.originalUrl}`
+      ...styleTags
     };
   }
 
