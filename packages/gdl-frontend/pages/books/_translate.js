@@ -23,8 +23,7 @@ import type {
   Context
 } from '../../types';
 import { Link, Router } from '../../routes';
-import securePage from '../../hocs/securePage';
-import errorPage from '../../hocs/errorPage';
+import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -226,4 +225,4 @@ class TranslatePage extends React.Component<Props, State> {
   }
 }
 
-export default securePage(errorPage(TranslatePage));
+export default securePage(errorPage(withI18n(TranslatePage)));

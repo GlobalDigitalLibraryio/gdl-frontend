@@ -6,12 +6,12 @@
  * See LICENSE
  */
 
-import { css } from 'react-emotion';
+import { injectGlobal } from 'react-emotion';
 import { normalize } from 'polished';
 import { colors, fonts } from './theme';
 
 // Add global styles
-export default css`
+export default injectGlobal`
   ${normalize(true)} *, *:before, *:after {
     box-sizing: inherit;
   }

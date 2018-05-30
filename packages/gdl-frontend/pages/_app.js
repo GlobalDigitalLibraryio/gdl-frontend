@@ -19,8 +19,9 @@ import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 
 import Raven from '../lib/raven';
+import type { Context } from '../types';
 import GdlThemeProvider from '../components/GdlThemeProvider';
-import withI18n from '../hocs/withI18n';
+import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import logPageView from '../lib/analytics';
 
@@ -34,7 +35,13 @@ if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
 }
 
 class App extends NextApp {
-  static async getInitialProps({ Component, router, ctx }) {
+  static async getInitialProps({
+    Component,
+    ctx
+  }: {
+    Component: any,
+    ctx: Context
+  }) {
     let pageProps = {};
 
     if (Component.getInitialProps) {
@@ -44,7 +51,7 @@ class App extends NextApp {
     return { pageProps };
   }
 
-  componentDidCatch(error, errorInfo) {
+  componentDidCatch(error: *, errorInfo: *) {
     Raven.captureException(error);
     // This is needed to render errors correctly in development / production
     super.componentDidCatch(error, errorInfo);
@@ -76,12 +83,13 @@ class App extends NextApp {
     return (
       <Container>
         <GdlThemeProvider>
-          <Component {...pageProps} />
+          <GdlI18nProvider>
+            <Component {...pageProps} />
+          </GdlI18nProvider>
         </GdlThemeProvider>
       </Container>
     );
   }
 }
 
-// Wrap the app with a lanugage layer
-export default withI18n(App);
+export default App;

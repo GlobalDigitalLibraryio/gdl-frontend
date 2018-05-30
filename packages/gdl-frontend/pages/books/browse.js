@@ -10,6 +10,7 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { withRouter } from 'next/router';
 
+import withI18n from '../../hocs/withI18n';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
@@ -197,4 +198,4 @@ const headerStyle = {
   fontWeight: fonts.weight.medium
 };
 
-export default errorPage(withRouter(BrowsePage));
+export default errorPage(withRouter(withI18n(BrowsePage)));

@@ -8,22 +8,18 @@
 
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
-import { injectGlobal } from 'emotion';
 import { extractCritical } from 'emotion-server';
 import type { Context } from '../types';
-import globalStyles from '../style/globalStyles';
 import config from '../config';
 import { DEFAULT_TITLE } from '../components/Head';
+
+import injectGlobalStyles from '../style/globalStyles';
 
 const favIcon = require('../static/img/favicon-32x32.png');
 const precomposed57 = require('../static/img/apple-icon-57x57-precomposed.png');
 const precomposed72 = require('../static/img/apple-icon-72x72-precomposed.png');
 const precomposed114 = require('../static/img/apple-icon-114x114-precomposed.png');
 const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png');
-
-injectGlobal`
-  ${globalStyles}
-`;
 
 /**
  * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
