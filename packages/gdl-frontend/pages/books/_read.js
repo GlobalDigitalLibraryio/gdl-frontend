@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import { withRouter } from 'next/router';
 
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from '../../lib/auth/token';
@@ -20,9 +21,8 @@ type Props = {
   book: BookDetails,
   chapter: Chapter,
   userHasEditAccess: boolean,
-  url: {
+  router: {
     query: {
-      id: string,
       chapterId?: string
     }
   }
@@ -68,7 +68,7 @@ class Read extends React.Component<Props> {
           description={book.description}
           image={book.coverImage && book.coverImage.url}
         >
-          {!this.props.url.query.chapterId && (
+          {!this.props.router.query.chapterId && (
             <link
               rel="canonical"
               href={`${canonical}/${book.language.code}/books/read/${book.id}/${
@@ -88,4 +88,4 @@ class Read extends React.Component<Props> {
   }
 }
 
-export default errorPage(Read);
+export default errorPage(withRouter(Read));

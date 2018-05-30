@@ -18,14 +18,7 @@ import Editor from '../../components/Editor';
 
 type Props = {
   book: BookDetails,
-  chapter?: Chapter,
-  url: {
-    query: {
-      id: string,
-      lang: string,
-      chapterId?: string
-    }
-  }
+  chapter?: Chapter
 };
 
 class EditPage extends React.Component<Props> {

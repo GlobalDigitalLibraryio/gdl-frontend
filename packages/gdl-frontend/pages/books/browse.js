@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+import { withRouter } from 'next/router';
 
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context, I18n } from '../../types';
@@ -30,7 +31,7 @@ type Props = {
     page: number,
     totalCount: number
   },
-  url: {
+  router: {
     query: {
       lang: string,
       readingLevel?: string,
@@ -98,7 +99,7 @@ class BrowsePage extends React.Component<Props, State> {
    */
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
-    const { query } = this.props.url;
+    const { query } = this.props.router;
 
     const booksRes = await fetchBooks(query.lang, {
       level: query.readingLevel,
@@ -140,7 +141,7 @@ class BrowsePage extends React.Component<Props, State> {
 
   render() {
     const { i18n, category } = this.props;
-    const { readingLevel } = this.props.url.query;
+    const { readingLevel } = this.props.router.query;
     const { books } = this.state;
 
     const canLoadMore =
@@ -196,4 +197,4 @@ const headerStyle = {
   fontWeight: fonts.weight.medium
 };
 
-export default errorPage(BrowsePage);
+export default errorPage(withRouter(BrowsePage));

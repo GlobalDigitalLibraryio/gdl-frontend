@@ -47,12 +47,7 @@ import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean,
-  url: {
-    query: {
-      id: string
-    }
-  }
+  userHasEditAccess: boolean
 };
 
 const CoverWrap = styled('div')`
