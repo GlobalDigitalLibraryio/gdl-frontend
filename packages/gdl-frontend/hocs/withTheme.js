@@ -9,6 +9,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { ThemeProvider } from 'emotion-theming';
+import type { Context } from '../types';
 
 import { misc } from '../style/theme';
 
@@ -21,7 +22,12 @@ export default (App: React.ComponentType<*>) => {
   return class Theme extends React.Component<*> {
     static displayName = 'withTheme(App)';
 
-    static getInitialProps = App.getInitialProps;
+    static getInitialProps(ctx: Context) {
+      // Check if it actually is a next page
+      return (
+        typeof App.getInitialProps === 'function' && App.getInitialProps(ctx)
+      );
+    }
 
     static childContextTypes = {
       reactIconBase: PropTypes.object

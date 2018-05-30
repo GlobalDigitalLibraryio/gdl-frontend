@@ -11,6 +11,7 @@ import { I18nProvider, withI18n } from '@lingui/react';
 
 // Currently we only support English
 import catalog from '../locale/en/messages';
+import type { Context } from '../types';
 
 type Props = {
   language: string
@@ -30,7 +31,12 @@ export default (App: React.ComponentType<any>) => {
   return class I18n extends React.Component<Props> {
     static displayName = 'withI18n(App)';
 
-    static getInitialProps = App.getInitialProps;
+    static getInitialProps(ctx: Context) {
+      // Check if it actually is a next page
+      return (
+        typeof App.getInitialProps === 'function' && App.getInitialProps(ctx)
+      );
+    }
 
     render() {
       // Wrap our page with the i18n provider and add alternate links to the other supported languages in the head
