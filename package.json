@@ -13,7 +13,7 @@
     "delete": "yarn run delete:modules",
     "delete:modules": "rm -rf node_modules **/node_modules",
     "ci":
-      "yarn run format:check && yarn test && yarn run typecheck && yarn build",
+      "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
     "typecheck": "flow check",
     "test": "jest",
     "format": "prettier --write \"**/*.js\"",
