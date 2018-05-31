@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { ArrowDownward as ArrowDownwardIcon } from '@material-ui/icons';
-import { Card, CardContent, Typography, Button } from '@material-ui/core';
+import { Card, CardContent, Typography, Grid, Button } from '@material-ui/core';
 
 import {
   fetchBook,
@@ -27,7 +27,6 @@ import { Link, Router } from '../../routes';
 import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
-import Flex from '../../components/Flex';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
@@ -135,7 +134,7 @@ class TranslatePage extends React.Component<Props, State> {
           </Typography>
           <Card textAlign="left">
             <CardContent>
-              <Flex>
+              <Grid container>
                 <Box mr={[10, 20]}>
                   <Link
                     route="book"
@@ -156,7 +155,7 @@ class TranslatePage extends React.Component<Props, State> {
                     <Trans>from {book.publisher.name}</Trans>
                   </Typography>
                 </Box>
-              </Flex>
+              </Grid>
             </CardContent>
           </Card>
           <Box mb={20}>

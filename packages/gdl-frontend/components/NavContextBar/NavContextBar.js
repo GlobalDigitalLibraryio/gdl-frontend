@@ -7,18 +7,16 @@
  */
 
 import React, { type Node } from 'react';
-import { css } from 'react-emotion';
+import { Paper } from '@material-ui/core';
 
 import Container from '../../elements/Container';
-import media from '../../style/media';
-import { colors } from '../../style/theme';
 
 type Props = {|
   children: Node
 |};
 
 const NavContextBar = (props: Props) => (
-  <nav className={barStyle}>
+  <Paper css={{ zIndex: 10 }}>
     <Container
       size="large"
       width="100%"
@@ -26,22 +24,10 @@ const NavContextBar = (props: Props) => (
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      style={{ height: '100%' }}
+      style={{ height: '48px' }}
       {...props}
     />
-  </nav>
+  </Paper>
 );
-
-const barStyle = css`
-  background: ${colors.base.white};
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.12);
-  position: relative;
-  font-size: 14px;
-  height: 48px;
-  z-index: 10;
-  ${media.tablet`
-    font-size: 16px;
-  `};
-`;
 
 export default NavContextBar;

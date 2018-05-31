@@ -8,11 +8,11 @@
 
 import React, { Fragment, type Node } from 'react';
 import { Trans } from '@lingui/react';
+import { Button } from '@material-ui/core';
 
 import type { Language } from '../../types';
-import { A, Text } from '../../elements';
+import { Text } from '../../elements';
 import { fetchLanguages } from '../../fetch';
-import { fonts } from '../../style/theme';
 import LanguageMenu from './LanguageMenu';
 
 type Props = {
@@ -74,9 +74,9 @@ export default class SelectLanguage extends React.Component<Props, State> {
         ) : (
           <Text>
             {language.name}{' '}
-            <A onClick={this.handleShowMenu} fontWeight={fonts.weight.medium}>
+            <Button onClick={this.handleShowMenu} color="primary" size="small">
               <Trans>Change</Trans>
-            </A>
+            </Button>
           </Text>
         )}
         {showMenu && (
