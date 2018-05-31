@@ -15,7 +15,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardActions,
   Typography
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
@@ -158,75 +157,78 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     {book.description}
                   </Typography>
 
-                  <CardActions>
-                    {book.bookFormat === 'HTML' && (
-                      <Fragment>
-                        <Link
-                          route="read"
-                          passHref
-                          params={{ id: book.id, lang: book.language.code }}
-                          prefetch
-                        >
-                          <Button variant="raised" color="secondary">
-                            <Trans>Read book</Trans>
-                          </Button>
-                        </Link>
-
-                        <Button
-                          aria-owns={
-                            this.state.anchorEl ? 'download-book-menu' : null
-                          }
-                          aria-haspopup="true"
-                          color="primary"
-                          onClick={this.handleDownloadClick}
-                        >
-                          <FileDownloadIcon /> <Trans>Download book</Trans>
+                  {book.bookFormat === 'HTML' && (
+                    <Fragment>
+                      <Link
+                        route="read"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                        prefetch
+                      >
+                        <Button variant="raised" color="secondary" size="large">
+                          <Trans>Read book</Trans>
                         </Button>
-                        <Menu
-                          id="donwload-book-menu"
-                          onClose={this.closeDownloadMenu}
-                          anchorEl={this.state.anchorEl}
-                          open={this.state.anchorEl}
-                        >
-                          {book.downloads.epub && (
-                            <MenuItem
-                              href={book.downloads.epub}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>E-book (ePUB)</Trans>
-                            </MenuItem>
-                          )}
-                          {book.downloads.pdf && (
-                            <MenuItem
-                              href={book.downloads.pdf}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>Printable book (PDF)</Trans>
-                            </MenuItem>
-                          )}
-                        </Menu>
+                      </Link>
 
-                        {this.props.userHasEditAccess && (
-                          <Link
-                            route="edit"
-                            params={{ lang: book.language.code, id: book.id }}
-                            passHref
-                          >
-                            <EditBookLink title="Edit book">
-                              <EditIcon />
-                            </EditBookLink>
-                          </Link>
-                        )}
-                      </Fragment>
-                    )}
-                    {book.bookFormat === 'PDF' && (
-                      <Button href={book.downloads.pdf}>
-                        <Trans>Download book</Trans>
+                      <Button
+                        aria-owns={
+                          this.state.anchorEl ? 'download-book-menu' : null
+                        }
+                        aria-haspopup="true"
+                        color="primary"
+                        onClick={this.handleDownloadClick}
+                      >
+                        <FileDownloadIcon /> <Trans>Download book</Trans>
                       </Button>
-                    )}
-                  </CardActions>
+                      <Menu
+                        id="donwload-book-menu"
+                        onClose={this.closeDownloadMenu}
+                        anchorEl={this.state.anchorEl}
+                        open={Boolean(this.state.anchorEl)}
+                      >
+                        {book.downloads.epub && (
+                          <MenuItem
+                            href={book.downloads.epub}
+                            component="a"
+                            onClick={this.closeDownloadMenu}
+                          >
+                            <Trans>E-book (ePUB)</Trans>
+                          </MenuItem>
+                        )}
+                        {book.downloads.pdf && (
+                          <MenuItem
+                            href={book.downloads.pdf}
+                            component="a"
+                            onClick={this.closeDownloadMenu}
+                          >
+                            <Trans>Printable book (PDF)</Trans>
+                          </MenuItem>
+                        )}
+                      </Menu>
+
+                      {this.props.userHasEditAccess && (
+                        <Link
+                          route="edit"
+                          params={{ lang: book.language.code, id: book.id }}
+                          passHref
+                        >
+                          <EditBookLink title="Edit book">
+                            <EditIcon />
+                          </EditBookLink>
+                        </Link>
+                      )}
+                    </Fragment>
+                  )}
+                  {book.bookFormat === 'PDF' && (
+                    <Button
+                      href={book.downloads.pdf}
+                      color="primary"
+                      variant="raised"
+                      size="large"
+                    >
+                      <Trans>Download book</Trans>
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </View>
