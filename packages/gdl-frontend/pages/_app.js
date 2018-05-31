@@ -51,6 +51,7 @@ class App extends NextApp {
     return { pageProps };
   }
 
+  // componentDidCatch works only in the client, not on the server
   componentDidCatch(error: *, errorInfo: *) {
     Raven.captureException(error);
     // This is needed to render errors correctly in development / production
