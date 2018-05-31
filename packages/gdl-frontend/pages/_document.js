@@ -13,6 +13,8 @@ import type { Context } from '../types';
 import config from '../config';
 import { DEFAULT_TITLE } from '../components/Head';
 
+// This is an import with a sideeffect :/
+// eslint-disable-next-line no-unused-vars
 import injectGlobalStyles from '../style/globalStyles';
 
 const favIcon = require('../static/img/favicon-32x32.png');
