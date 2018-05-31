@@ -1,0 +1,4 @@
+# Make sure node_modules, build and test folders are excluded from the context
+**/node_modules
+**/.next
+**/__tests__

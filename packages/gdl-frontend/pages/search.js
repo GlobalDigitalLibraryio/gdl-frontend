@@ -8,6 +8,7 @@
 
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
+import { withRouter } from 'next/router';
 
 import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
@@ -31,7 +32,6 @@ import Button from '../components/Button';
 import { Container, Text } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
-import defaultPage from '../hocs/defaultPage';
 import errorPage from '../hocs/errorPage';
 
 const QUERY_PARAM = 'q';
@@ -46,7 +46,7 @@ type Props = {
   },
   languages: Array<Language>,
   languageCode: string,
-  url: {
+  router: {
     query: {
       q?: string,
       l?: string
@@ -104,8 +104,8 @@ class SearchPage extends React.Component<Props, State> {
 
   state = {
     searchResult: this.props.searchResult,
-    searchQuery: this.props.url.query[QUERY_PARAM] || '',
-    lastSearchQuery: this.props.url.query[QUERY_PARAM],
+    searchQuery: this.props.router.query[QUERY_PARAM] || '',
+    lastSearchQuery: this.props.router.query[QUERY_PARAM],
     isLoadingMore: false,
     language: this.props.searchResult ? this.props.searchResult.language : null
   };
@@ -313,4 +313,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default defaultPage(errorPage(SearchPage));
+export default errorPage(withRouter(SearchPage));

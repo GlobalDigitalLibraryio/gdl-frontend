@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import Router from 'next/router';
+import Router, { withRouter } from 'next/router';
 
 import {
   getTokenFromLocalCookie,
@@ -18,7 +18,6 @@ import {
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
 import Box from '../components/Box';
-import defaultPage from './defaultPage';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';
 import Container from '../components/Container';
@@ -65,9 +64,9 @@ const securePageHoc = (Page, options) => {
     componentDidMount() {
       if (!this.props.isAuthenticated) {
         setRedirectUrl({
-          pathname: this.props.url.pathname,
-          asPath: this.props.url.asPath,
-          query: this.props.url.query
+          pathname: this.props.router.pathname,
+          asPath: this.props.router.asPath,
+          query: this.props.router.query
         });
         Router.replace('/auth/sign-in');
       }
@@ -97,4 +96,4 @@ const securePageHoc = (Page, options) => {
 export default (
   Page: React.ComponentType<any>,
   options: { claim?: string } = {}
-) => defaultPage(securePageHoc(Page, options));
+) => withRouter(securePageHoc(Page, options));

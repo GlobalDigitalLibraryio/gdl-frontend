@@ -1,7 +1,7 @@
 {
   "env": {
     "development": {
-      "presets": ["next/babel", "@sector-labs/lingui-babel-preset-react"]
+      "presets": ["next/babel", "@babel/preset-flow", "@lingui/babel-preset-react"]
     },
     "production": {
       "presets": [
@@ -15,14 +15,22 @@
             }
           }
         ],
-        "@sector-labs/lingui-babel-preset-react"
+        "@babel/preset-flow",
+        "@lingui/babel-preset-react"
       ]
     },
     "test": {
       "presets": [
-        ["env", { "modules": "commonjs" }],
-        "next/babel",
-        "@sector-labs/lingui-babel-preset-react"
+        [
+          "next/babel",
+          {
+            "preset-env": {
+              "modules": "commonjs"
+            }
+          }
+        ],
+        "@babel/preset-flow",
+        "@lingui/babel-preset-react"
       ]
     }
   },
@@ -36,7 +44,6 @@
       }
     ],
     "polished",
-    "transform-flow-strip-types",
     "inline-react-svg",
     "emotion"
   ]

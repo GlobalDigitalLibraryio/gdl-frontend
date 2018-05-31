@@ -20,7 +20,6 @@ import styled from 'react-emotion';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
-import defaultPage from '../../hocs/defaultPage';
 import errorPage from '../../hocs/errorPage';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
@@ -48,12 +47,7 @@ import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean,
-  url: {
-    query: {
-      id: string
-    }
-  }
+  userHasEditAccess: boolean
 };
 
 const CoverWrap = styled('div')`
@@ -295,4 +289,4 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
   }
 }
 
-export default defaultPage(errorPage(BookPage));
+export default errorPage(BookPage);

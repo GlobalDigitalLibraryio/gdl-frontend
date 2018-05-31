@@ -12,10 +12,10 @@ import { Trans } from '@lingui/react';
 import FaFacebook from 'react-icons/lib/fa/facebook';
 import FaGoogle from 'react-icons/lib/fa/google';
 
+import { withI18n } from '../../hocs';
 import type { I18n } from '../../types';
 import { Text, A } from '../../elements';
 import Container from '../../elements/Container';
-import defaultPage from '../../hocs/defaultPage';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import { loginSocialMedia } from '../../lib/auth';
@@ -79,4 +79,4 @@ const LoginPage = ({ i18n }: Props) => (
   </Layout>
 );
 
-export default defaultPage(LoginPage);
+export default withI18n(LoginPage);

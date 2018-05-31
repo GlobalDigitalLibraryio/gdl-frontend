@@ -7,7 +7,6 @@
  */
 
 import * as React from 'react';
-import defaultPage from '../../hocs/defaultPage';
 import { logout } from '../../lib/auth/';
 import { unsetToken } from '../../lib/auth/token';
 
@@ -22,4 +21,4 @@ class SignOff extends React.Component<*> {
   }
 }
 
-export default defaultPage(SignOff);
+export default SignOff;

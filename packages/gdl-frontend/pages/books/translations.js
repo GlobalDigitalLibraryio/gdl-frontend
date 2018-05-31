@@ -12,7 +12,7 @@ import MdArrowForward from 'react-icons/lib/md/arrow-forward';
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, I18n } from '../../types';
-import securePage from '../../hocs/securePage';
+import { securePage, withI18n } from '../../hocs';
 import Layout from '../../components/Layout';
 import Box from '../../components/Box';
 import Flex from '../../components/Flex';
@@ -143,4 +143,4 @@ class MyTranslationsPage extends React.Component<Props, State> {
   }
 }
 
-export default securePage(MyTranslationsPage);
+export default securePage(withI18n(MyTranslationsPage));

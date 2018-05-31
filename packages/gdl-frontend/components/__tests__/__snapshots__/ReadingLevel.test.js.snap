@@ -19,7 +19,7 @@ exports[`Renders 1`] = `
   }
 }
 
-<Component
+<_default
   level="1"
 >
   <Styled(span)>
@@ -55,5 +55,5 @@ exports[`Renders 1`] = `
       </ReadingLevelTrans>
     </span>
   </Styled(span)>
-</Component>
+</_default>
 `;
