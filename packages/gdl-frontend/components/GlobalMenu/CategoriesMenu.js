@@ -93,7 +93,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                         passHref
                       >
                         <ListItem
-                          onCustomClick={onSelectCategory}
+                          onClick={onSelectCategory}
                           button
                           component="a"
                         >
@@ -109,11 +109,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                       sort="-arrivalDate"
                       passHref
                     >
-                      <ListItem
-                        onCustomClick={onSelectCategory}
-                        button
-                        component="a"
-                      >
+                      <ListItem onClick={onSelectCategory} button component="a">
                         <ListItemText inset>
                           <Trans>New arrivals</Trans>
                         </ListItemText>
@@ -138,7 +134,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                         category="library_books"
                       >
                         <ListItem
-                          onCustomClick={onSelectCategory}
+                          onClick={onSelectCategory}
                           button
                           component="a"
                         >
@@ -153,7 +149,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                       lang={languageCode}
                       sort="-arrivalDate"
                     >
-                      <ListItem button onCustomClick={onSelectCategory}>
+                      <ListItem button onClick={onSelectCategory}>
                         <ListItemText inset>
                           <Trans>New arrivals</Trans>
                         </ListItemText>

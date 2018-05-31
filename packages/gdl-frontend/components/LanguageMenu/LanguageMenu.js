@@ -51,7 +51,8 @@ export default class LanguageMenu extends React.Component<Props> {
         <Link key={language.code} passHref {...this.props.linkProps(language)}>
           <ListItem
             button
-            onCustomClick={() => this.props.onSelectLanguage(language)}
+            component="a"
+            onClick={() => this.props.onSelectLanguage(language)}
           >
             <ListItemText inset>{language.name}</ListItemText>
           </ListItem>
