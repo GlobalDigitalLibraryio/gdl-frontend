@@ -3,13 +3,8 @@
 set -e
 
 VERSION="$1"
-source ./build.properties
-PROJECT="$GDLOrganization/$GDLComponentName"
+MODULE="$2"
+PROJECT="gdl/$MODULE"
 
-if [ -z $VERSION ]
-then
-    VERSION="SNAPSHOT"
-fi
-
-docker build -t $PROJECT:$VERSION .
+docker build -t $PROJECT:$VERSION --build-arg MODULE=$MODULE .
 echo "BUILT $PROJECT:$VERSION"
