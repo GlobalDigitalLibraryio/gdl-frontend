@@ -2,18 +2,20 @@
   "name": "gdl",
   "private": true,
   "bolt": {
-    "workspaces": ["packages/*"]
+    "workspaces": [
+      "packages/*"
+    ]
   },
   "author": "gdl@knowit.no",
   "repository": "https://github.com/GlobalDigitalLibraryio/gdl-frontend.git",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "cd packages/gdl-frontend && yarn build",
+    "build": "run-p build:frontend build:admin",
     "build:frontend": "cd packages/gdl-frontend && yarn build",
+    "build:admin": "cd packages/admin-frontend && yarn build",
     "delete": "yarn run delete:modules",
     "delete:modules": "rm -rf node_modules **/node_modules",
-    "ci":
-      "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
+    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
     "typecheck": "flow check",
     "test": "jest",
     "format": "prettier --write \"**/*.js\"",
@@ -51,6 +53,7 @@
     "jest": "^23.0.1",
     "jest-emotion": "^9.1.3",
     "nock": "^9.2.6",
+    "npm-run-all": "^4.1.3",
     "prettier": "^1.12.1",
     "react-test-renderer": "^16.4.0"
   },
