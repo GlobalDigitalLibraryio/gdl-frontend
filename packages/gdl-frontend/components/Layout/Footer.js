@@ -42,7 +42,7 @@ const Footer = () => (
 
 const styles = {
   footer: css`
-    background-color: #555;
+    background-color: #1d2e4c;
   `,
   container: css`
     padding: 80px 0;
