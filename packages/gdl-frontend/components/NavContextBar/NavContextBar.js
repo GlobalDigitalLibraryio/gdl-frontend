@@ -16,7 +16,7 @@ type Props = {|
 |};
 
 const NavContextBar = (props: Props) => (
-  <Paper css={{ zIndex: 10 }}>
+  <Paper square css={{ zIndex: 10 }}>
     <Container
       size="large"
       width="100%"

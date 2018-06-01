@@ -68,8 +68,14 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
               <Breadcrumb crumbs={crumbs} />
             </NavContextBar>
           )}
-          {wrapWithMain ? <Main component="main">{children}</Main> : children}
-          <Footer />
+          {wrapWithMain ? (
+            <>
+              <Main component="main">{children}</Main>
+              <Footer />
+            </>
+          ) : (
+            children
+          )}
         </PageWrapper>
       </ThemeProvider>
     );
