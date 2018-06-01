@@ -6,7 +6,6 @@
  * See LICENSE
  */
 
-
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 

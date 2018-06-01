@@ -2,9 +2,6 @@
   "name": "admin-frontend",
   "private": true,
   "version": "0.0.1",
-  "jest": {
-    "setupFiles": ["./jest.setup.js"]
-  },
   "scripts": {
     "dev": "node server",
     "build": "next build",

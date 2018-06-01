@@ -8,17 +8,9 @@
 
 import React from 'react';
 
-
 class IndexPage extends React.Component<{}> {
- 
-
   render() {
-
-
-    return (
-      <h1>GDL – Admin</h1>
-
-    );
+    return <h1>GDL – Admin</h1>;
   }
 }
 
