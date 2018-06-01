@@ -8,7 +8,10 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { ArrowDownward as ArrowDownwardIcon } from '@material-ui/icons';
+import {
+  ArrowDropDown as ArrowDropDownIcon,
+  ArrowForward as ArrowForwardIcon
+} from '@material-ui/icons';
 import { Card, CardContent, Typography, Grid, Button } from '@material-ui/core';
 
 import {
@@ -26,13 +29,10 @@ import type {
 import { Link, Router } from '../../routes';
 import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
-import Box from '../../components/Box';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
-import A from '../../elements/A';
 import LanguageMenu from '../../components/LanguageMenu';
-import { colors } from '../../style/theme';
 
 type Props = {
   book: BookDetails,
@@ -114,28 +114,38 @@ class TranslatePage extends React.Component<Props, State> {
     const { selectedLanguage } = this.state;
 
     return (
-      <Layout
-        category={book.category}
-        crumbs={[
-          <Link route="book" params={{ lang: book.language.code, id: book.id }}>
-            <a>{book.title}</a>
-          </Link>,
-          <Trans>Translate book</Trans>
-        ]}
-      >
+      <Layout wrapWithMain={false} category={book.category}>
         <Head
           title={i18n.t`Translate: ${book.title}`}
           description={book.description}
           image={book.coverImage && book.coverImage.url}
         />
-        <Container py={[15, 40]} style={{ textAlign: 'center' }}>
-          <Typography variant="display2" component="h1">
+        <Container py={[15, 40]}>
+          <Typography variant="display2" component="h1" align="center">
             <Trans>Translate book</Trans>
           </Typography>
-          <Card textAlign="left">
+          <Grid container>
+            <Grid item xs>
+              <Typography variant="button">{book.language.name}</Typography>
+            </Grid>
+            <Grid item xs>
+              <ArrowForwardIcon />
+            </Grid>
+            <Grid item xs>
+              <Button variant="outlined" onClick={this.toggleLanguageMenu}>
+                {selectedLanguage ? (
+                  selectedLanguage.name
+                ) : (
+                  <Trans>Select language</Trans>
+                )}
+                <ArrowDropDownIcon />
+              </Button>
+            </Grid>
+          </Grid>
+          <Card>
             <CardContent>
               <Grid container>
-                <Box mr={[10, 20]}>
+                <Grid item>
                   <Link
                     route="book"
                     params={{ lang: book.language.code, id: book.id }}
@@ -148,46 +158,31 @@ class TranslatePage extends React.Component<Props, State> {
                       />
                     </a>
                   </Link>
-                </Box>
-                <Box>
-                  <Typography>{book.title}</Typography>
-                  <Typography color={colors.text.subtle}>
+                </Grid>
+                <Grid item xs>
+                  <Typography lang={book.language.code} variant="headline">
+                    {book.title}
+                  </Typography>
+
+                  <Typography paragraph variant="subheading">
                     <Trans>from {book.publisher.name}</Trans>
                   </Typography>
-                </Box>
+
+                  <Typography lang={book.language.code} paragraph>
+                    {book.description}
+                  </Typography>
+                </Grid>
               </Grid>
             </CardContent>
           </Card>
-          <Box mb={20}>
-            <Typography color={colors.text.subtle}>
-              <Trans>Translate from</Trans>
-            </Typography>
-            <div>{book.language.name}</div>
-            <ArrowDownwardIcon color={colors.base.orange} size={50} />
-            <Typography color={colors.text.subtle}>
-              <Trans>Translate to</Trans>
-            </Typography>
-            {this.state.showLanguageMenu && (
-              <LanguageMenu
-                languages={supportedLanguages}
-                selectedLanguageCode={selectedLanguage && selectedLanguage.code}
-                onSelectLanguage={this.handleChangeLanguage}
-                onClose={this.toggleLanguageMenu}
-              />
-            )}
-            {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
-            <A
-              isUppercased={Boolean(selectedLanguage)}
-              onClick={this.toggleLanguageMenu}
-              aria-expanded={this.state.showLanguageMenu}
-            >
-              {selectedLanguage ? (
-                <Trans>Change</Trans>
-              ) : (
-                <Trans>Choose language</Trans>
-              )}
-            </A>
-          </Box>
+          {this.state.showLanguageMenu && (
+            <LanguageMenu
+              languages={supportedLanguages}
+              selectedLanguageCode={selectedLanguage && selectedLanguage.code}
+              onSelectLanguage={this.handleChangeLanguage}
+              onClose={this.toggleLanguageMenu}
+            />
+          )}
           {this.state.translation ? (
             <React.Fragment>
               <Button
