@@ -8,10 +8,9 @@
 
 import React, { Fragment, type Node } from 'react';
 import { Trans } from '@lingui/react';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 
 import type { Language } from '../../types';
-import { Text } from '../../elements';
 import { fetchLanguages } from '../../fetch';
 import LanguageMenu from './LanguageMenu';
 
@@ -72,12 +71,12 @@ export default class SelectLanguage extends React.Component<Props, State> {
         {children ? (
           children({ onClick: this.handleShowMenu })
         ) : (
-          <Text>
+          <Typography component="div" variant="body">
             {language.name}{' '}
             <Button onClick={this.handleShowMenu} color="primary" size="small">
               <Trans>Change</Trans>
             </Button>
-          </Text>
+          </Typography>
         )}
         {showMenu && (
           <LanguageMenu
