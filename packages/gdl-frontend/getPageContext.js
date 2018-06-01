@@ -13,14 +13,16 @@ import {
   jssPreset
 } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import pink from '@material-ui/core/colors/pink';
+import amber from '@material-ui/core/colors/amber';
 
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: pink
+    primary: {
+      main: blue[900]
+    },
+    secondary: amber
   }
 });
 

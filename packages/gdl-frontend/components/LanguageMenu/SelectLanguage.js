@@ -71,7 +71,7 @@ export default class SelectLanguage extends React.Component<Props, State> {
         {children ? (
           children({ onClick: this.handleShowMenu })
         ) : (
-          <Typography component="div" variant="body">
+          <Typography component="div" variant="body2">
             {language.name}{' '}
             <Button onClick={this.handleShowMenu} color="primary" size="small">
               <Trans>Change</Trans>

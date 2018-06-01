@@ -13,10 +13,8 @@ const colors = {
     gray: '#bbb',
     grayDarkest: '#666',
     grayLight: '#e3e3e3',
-    orange: '#ffa200',
     blue: '#1466b5',
-    green: '#00ba6e',
-    red: '#cd3744'
+    green: '#00ba6e'
   },
   container: {
     background: '#f8f8f8'
@@ -24,13 +22,6 @@ const colors = {
   text: {
     default: '#444',
     subtle: '#666'
-  },
-  flag: {
-    success: '#00ba6e',
-    error: '#cd3744',
-    info: '#1466b5',
-    warning: '#ffa200',
-    normal: '#666'
   },
   link: {
     default: '#006DD6',
@@ -41,11 +32,6 @@ const colors = {
   button: {
     defaultBackground: '#006DD6',
     alternateBackground: '#b25187'
-  },
-  navbar: {
-    defaultBackground: '#004380',
-    defaultText: '#fff',
-    alternateBackground: '#842e5c'
   }
 };
 

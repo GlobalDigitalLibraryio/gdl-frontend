@@ -9,7 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
-import { Button } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 
 import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
@@ -29,7 +29,7 @@ import {
   getBookLanguage
 } from '../lib/storage';
 import Head from '../components/Head';
-import { Container, Text } from '../elements';
+import { Container } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
 import errorPage from '../hocs/errorPage';
@@ -66,13 +66,6 @@ type State = {
   lastSearchQuery?: string,
   isLoadingMore: boolean,
   language: ?Language
-};
-
-const resultsTextStyle = {
-  textAlign: 'center',
-  fontSize: '1rem',
-  fontWeight: 'normal',
-  mt: spacing.medium
 };
 
 class SearchPage extends React.Component<Props, State> {
@@ -246,10 +239,12 @@ class SearchPage extends React.Component<Props, State> {
             </form>
 
             {searchResult && (
-              <Text
-                {...resultsTextStyle}
+              <Typography
+                component="h1"
+                align="center"
+                variant="subheading"
                 aria-live="polite"
-                accessibilityRole="heading"
+                css={{ marginTop: spacing.medium }}
               >
                 {searchResult.results.length > 0 ? (
                   <Fragment>
@@ -266,7 +261,7 @@ class SearchPage extends React.Component<Props, State> {
                     <strong>&quot;{lastSearchQuery}&quot;</strong>
                   </Trans>
                 )}
-              </Text>
+              </Typography>
             )}
           </Container>
 
@@ -289,7 +284,6 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  {/* Should really be View instead of Text here.. but */}
                   <Button
                     disabled={
                       searchResult.results.length >= searchResult.totalCount

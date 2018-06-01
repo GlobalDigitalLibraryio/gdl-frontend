@@ -11,6 +11,7 @@ import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
   Home as HomeIcon
 } from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
 import { withI18n } from '@lingui/react';
 import styled, { css } from 'react-emotion';
 import theming from 'styled-theming';
@@ -55,10 +56,6 @@ const Ol = styled.ol`
     align-items: center;
   }
 
-  li:last-child {
-    font-weight: ${fonts.weight.bold};
-  }
-
   li[role='presentation'] {
     color: ${colors.base.gray};
   }
@@ -93,9 +90,13 @@ const Breadcrumb = ({ i18n, crumbs }: Props) => (
         crumbs.map((crumb, index) => (
           <React.Fragment key={index}>
             {Separator}
-            <li aria-current={index + 1 === crumbs.length ? 'page' : null}>
+            <Typography
+              variant="body2"
+              component="li"
+              aria-current={index + 1 === crumbs.length ? 'page' : null}
+            >
               {crumb}
-            </li>
+            </Typography>
           </React.Fragment>
         ))}
     </Ol>

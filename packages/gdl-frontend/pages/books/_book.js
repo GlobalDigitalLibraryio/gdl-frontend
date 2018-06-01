@@ -15,7 +15,9 @@ import {
   Button,
   Card,
   CardContent,
-  Typography
+  Typography,
+  Grid,
+  Divider
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FileDownloadIcon from '@material-ui/icons/FileDownload';
@@ -30,14 +32,13 @@ import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import A from '../../elements/A';
 import View from '../../elements/View';
 import Container from '../../elements/Container';
 import BookCover from '../../components/BookCover';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
-import { colors, fonts, spacing } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
@@ -144,91 +145,100 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                 />
               </CoverWrap>
               <Card>
-                <CardContent>
-                  <Typography lang={book.language.code} variant="headline">
-                    {book.title}
-                  </Typography>
+                <CardContent css={media.mobile({ paddingTop: '70px' })}>
+                  <Grid direction="column" container>
+                    <Typography lang={book.language.code} variant="headline">
+                      {book.title}
+                    </Typography>
 
-                  <Typography paragraph variant="subheading">
-                    <Trans>from {book.publisher.name}</Trans>
-                  </Typography>
+                    <Typography paragraph variant="subheading">
+                      <Trans>from {book.publisher.name}</Trans>
+                    </Typography>
 
-                  <Typography lang={book.language.code} paragraph>
-                    {book.description}
-                  </Typography>
+                    <Typography lang={book.language.code} paragraph>
+                      {book.description}
+                    </Typography>
 
-                  {book.bookFormat === 'HTML' && (
-                    <Fragment>
-                      <Link
-                        route="read"
-                        passHref
-                        params={{ id: book.id, lang: book.language.code }}
-                        prefetch
-                      >
-                        <Button variant="raised" color="secondary" size="large">
-                          <Trans>Read book</Trans>
-                        </Button>
-                      </Link>
-
-                      <Button
-                        aria-owns={
-                          this.state.anchorEl ? 'download-book-menu' : null
-                        }
-                        aria-haspopup="true"
-                        color="primary"
-                        onClick={this.handleDownloadClick}
-                      >
-                        <FileDownloadIcon /> <Trans>Download book</Trans>
-                      </Button>
-                      <Menu
-                        id="donwload-book-menu"
-                        onClose={this.closeDownloadMenu}
-                        anchorEl={this.state.anchorEl}
-                        open={Boolean(this.state.anchorEl)}
-                      >
-                        {book.downloads.epub && (
-                          <MenuItem
-                            href={book.downloads.epub}
-                            component="a"
-                            onClick={this.closeDownloadMenu}
-                          >
-                            <Trans>E-book (ePUB)</Trans>
-                          </MenuItem>
-                        )}
-                        {book.downloads.pdf && (
-                          <MenuItem
-                            href={book.downloads.pdf}
-                            component="a"
-                            onClick={this.closeDownloadMenu}
-                          >
-                            <Trans>Printable book (PDF)</Trans>
-                          </MenuItem>
-                        )}
-                      </Menu>
-
-                      {this.props.userHasEditAccess && (
+                    {book.bookFormat === 'HTML' && (
+                      <Fragment>
                         <Link
-                          route="edit"
-                          params={{ lang: book.language.code, id: book.id }}
+                          route="read"
                           passHref
+                          params={{ id: book.id, lang: book.language.code }}
+                          prefetch
                         >
-                          <EditBookLink title="Edit book">
-                            <EditIcon />
-                          </EditBookLink>
+                          <Button
+                            css={{ alignSelf: 'center' }}
+                            variant="raised"
+                            color="secondary"
+                            size="large"
+                          >
+                            <Trans>Read book</Trans>
+                          </Button>
                         </Link>
-                      )}
-                    </Fragment>
-                  )}
-                  {book.bookFormat === 'PDF' && (
-                    <Button
-                      href={book.downloads.pdf}
-                      color="primary"
-                      variant="raised"
-                      size="large"
-                    >
-                      <Trans>Download book</Trans>
-                    </Button>
-                  )}
+
+                        <Button
+                          aria-owns={
+                            this.state.anchorEl ? 'download-book-menu' : null
+                          }
+                          aria-haspopup="true"
+                          color="primary"
+                          css={{ alignSelf: 'center' }}
+                          onClick={this.handleDownloadClick}
+                        >
+                          <FileDownloadIcon /> <Trans>Download book</Trans>
+                        </Button>
+                        <Menu
+                          id="donwload-book-menu"
+                          onClose={this.closeDownloadMenu}
+                          anchorEl={this.state.anchorEl}
+                          open={Boolean(this.state.anchorEl)}
+                        >
+                          {book.downloads.epub && (
+                            <MenuItem
+                              href={book.downloads.epub}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>E-book (ePUB)</Trans>
+                            </MenuItem>
+                          )}
+                          {book.downloads.pdf && (
+                            <MenuItem
+                              href={book.downloads.pdf}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>Printable book (PDF)</Trans>
+                            </MenuItem>
+                          )}
+                        </Menu>
+
+                        {this.props.userHasEditAccess && (
+                          <Link
+                            route="edit"
+                            params={{ lang: book.language.code, id: book.id }}
+                            passHref
+                          >
+                            <EditBookLink title="Edit book">
+                              <EditIcon />
+                            </EditBookLink>
+                          </Link>
+                        )}
+                      </Fragment>
+                    )}
+                    {book.bookFormat === 'PDF' && (
+                      <Button
+                        href={book.downloads.pdf}
+                        color="primary"
+                        css={{ alignSelf: 'center' }}
+                        variant="raised"
+                        size="large"
+                      >
+                        <Trans>Download book</Trans>
+                      </Button>
+                    )}
+                  </Grid>
                 </CardContent>
               </Card>
             </View>
@@ -245,13 +255,9 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       passHref
                       params={{ id: book.id, lang: book.language.code }}
                     >
-                      <A
-                        my={spacing.medium}
-                        textAlign="center"
-                        fontWeight={fonts.weight.medium}
-                      >
+                      <Button color="primary" my={spacing.medium}>
                         <TranslateIcon /> <Trans>Translate this book</Trans>
-                      </A>
+                      </Button>
                     </Link>
                   </View>
                 )}
@@ -263,25 +269,21 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     : spacing.medium
                 }
               >
-                <A
+                <Button
+                  color="primary"
                   my={spacing.medium}
-                  textAlign="center"
-                  fontWeight={fonts.weight.medium}
                   href={config.zendeskUrl}
                   openNewTab
                 >
                   <WarningIcon /> <Trans>Report a problem with this book</Trans>
-                </A>
+                </Button>
               </View>
             </View>
           </Container>
 
           <Container>
-            <View
-              borderTop={BORDER_STYLE}
-              mb={spacing.medium}
-              pt={spacing.medium}
-            >
+            <Divider />
+            <View mb={spacing.medium} pt={spacing.medium}>
               {similarBooks.length > 0 && (
                 <BookList
                   heading={<Trans>Similar</Trans>}
