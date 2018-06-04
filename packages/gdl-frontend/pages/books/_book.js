@@ -145,15 +145,27 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
               </CoverWrap>
               <Card>
                 <CardContent css={media.mobile({ paddingTop: '70px' })}>
-                  <Typography lang={book.language.code} variant="headline">
+                  <Typography
+                    lang={book.language.code}
+                    variant="headline"
+                    css={media.mobile`text-align: center`}
+                  >
                     {book.title}
                   </Typography>
 
-                  <Typography paragraph variant="subheading">
+                  <Typography
+                    paragraph
+                    variant="subheading"
+                    css={media.mobile`text-align: center`}
+                  >
                     <Trans>from {book.publisher.name}</Trans>
                   </Typography>
 
-                  <Typography lang={book.language.code} paragraph>
+                  <Typography
+                    lang={book.language.code}
+                    paragraph
+                    css={media.mobile`text-align: center`}
+                  >
                     {book.description}
                   </Typography>
 
