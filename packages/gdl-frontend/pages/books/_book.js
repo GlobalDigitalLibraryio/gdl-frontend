@@ -16,7 +16,8 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider
+  Divider,
+  Grid
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import FileDownloadIcon from '@material-ui/icons/FileDownload';
@@ -169,36 +170,42 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     {book.description}
                   </Typography>
 
-                  <div>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    spacing={16}
+                  >
                     {book.bookFormat === 'HTML' && (
                       <Fragment>
-                        <Link
-                          route="read"
-                          passHref
-                          params={{ id: book.id, lang: book.language.code }}
-                          prefetch
-                        >
-                          <Button
-                            css={{ alignSelf: 'center' }}
-                            variant="raised"
-                            color="secondary"
-                            size="large"
+                        <Grid item>
+                          <Link
+                            route="read"
+                            passHref
+                            params={{ id: book.id, lang: book.language.code }}
+                            prefetch
                           >
-                            <Trans>Read book</Trans>
+                            <Button
+                              variant="raised"
+                              color="secondary"
+                              size="large"
+                            >
+                              <Trans>Read book</Trans>
+                            </Button>
+                          </Link>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            aria-owns={
+                              this.state.anchorEl ? 'download-book-menu' : null
+                            }
+                            aria-haspopup="true"
+                            color="primary"
+                            onClick={this.handleDownloadClick}
+                          >
+                            <FileDownloadIcon /> <Trans>Download book</Trans>
                           </Button>
-                        </Link>
-
-                        <Button
-                          aria-owns={
-                            this.state.anchorEl ? 'download-book-menu' : null
-                          }
-                          aria-haspopup="true"
-                          color="primary"
-                          css={{ alignSelf: 'center' }}
-                          onClick={this.handleDownloadClick}
-                        >
-                          <FileDownloadIcon /> <Trans>Download book</Trans>
-                        </Button>
+                        </Grid>
                         <Menu
                           id="donwload-book-menu"
                           onClose={this.closeDownloadMenu}
@@ -239,17 +246,18 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                       </Fragment>
                     )}
                     {book.bookFormat === 'PDF' && (
-                      <Button
-                        href={book.downloads.pdf}
-                        color="primary"
-                        css={{ alignSelf: 'center' }}
-                        variant="raised"
-                        size="large"
-                      >
-                        <Trans>Download book</Trans>
-                      </Button>
+                      <Grid item>
+                        <Button
+                          href={book.downloads.pdf}
+                          color="primary"
+                          variant="raised"
+                          size="large"
+                        >
+                          <Trans>Download book</Trans>
+                        </Button>
+                      </Grid>
                     )}
-                  </div>
+                  </Grid>
                 </CardContent>
               </Card>
             </View>
