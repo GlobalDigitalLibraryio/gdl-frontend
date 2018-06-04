@@ -17,8 +17,6 @@ import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import errorPage from '../../hocs/errorPage';
 import Layout from '../../components/Layout';
-import Main from '../../components/Layout/Main';
-import Footer from '../../components/Layout/Footer';
 import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
@@ -151,7 +149,6 @@ class BrowsePage extends React.Component<Props, State> {
 
     return (
       <Layout
-        wrapWithMain={false}
         category={category}
         crumbs={[
           readingLevel ? (
@@ -163,34 +160,36 @@ class BrowsePage extends React.Component<Props, State> {
         ]}
       >
         <Head title={i18n.t`Browse books`} />
-        <Main css={{ marginTop: spacing.large, marginBottom: spacing.xxlarge }}>
-          <Container>
-            <Typography variant="display2" gutterBottom align="center">
-              {books.results.length > 0 ? (
-                readingLevel ? (
-                  // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-                  <ReadingLevelTrans readingLevel={readingLevel} />
-                ) : (
-                  <Trans>New arrivals</Trans>
-                )
+        <Container>
+          <Typography
+            variant="display2"
+            align="center"
+            css={{ marginBottom: spacing.large, marginTop: spacing.large }}
+          >
+            {books.results.length > 0 ? (
+              readingLevel ? (
+                // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
+                <ReadingLevelTrans readingLevel={readingLevel} />
               ) : (
-                <Trans>No books found</Trans>
-              )}
-            </Typography>
-            <BookGrid books={books.results} />
-            <LoadingButton
-              disabled={!canLoadMore}
-              onClick={this.handleLoadMore}
-              size="large"
-              isLoading={this.state.isLoadingMore}
-              isLoading={true}
-              css={{ marginTop: spacing.xlarge, marginBottom: spacing.medium }}
-            >
-              <Trans>See more books</Trans>
-            </LoadingButton>
-          </Container>
-        </Main>
-        <Footer />
+                <Trans>New arrivals</Trans>
+              )
+            ) : (
+              <Trans>No books found</Trans>
+            )}
+          </Typography>
+          <BookGrid books={books.results} />
+          <LoadingButton
+            disabled={!canLoadMore}
+            onClick={this.handleLoadMore}
+            size="large"
+            isLoading={this.state.isLoadingMore}
+            color="primary"
+            fullWidth
+            css={{ marginTop: spacing.xlarge, marginBottom: spacing.medium }}
+          >
+            <Trans>See more books</Trans>
+          </LoadingButton>
+        </Container>
       </Layout>
     );
   }

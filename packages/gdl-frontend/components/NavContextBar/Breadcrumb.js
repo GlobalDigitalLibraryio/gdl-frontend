@@ -18,7 +18,7 @@ import theming from 'styled-theming';
 
 import type { I18n } from '../../types';
 import { Link } from '../../routes';
-import { colors, fonts } from '../../style/theme';
+import { colors } from '../../style/theme';
 
 const color = theming('category', {
   library: css`

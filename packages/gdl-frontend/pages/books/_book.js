@@ -146,19 +146,19 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
               </CoverWrap>
               <Card>
                 <CardContent css={media.mobile({ paddingTop: '70px' })}>
-                  <Grid direction="column" container>
-                    <Typography lang={book.language.code} variant="headline">
-                      {book.title}
-                    </Typography>
+                  <Typography lang={book.language.code} variant="headline">
+                    {book.title}
+                  </Typography>
 
-                    <Typography paragraph variant="subheading">
-                      <Trans>from {book.publisher.name}</Trans>
-                    </Typography>
+                  <Typography paragraph variant="subheading">
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
 
-                    <Typography lang={book.language.code} paragraph>
-                      {book.description}
-                    </Typography>
+                  <Typography lang={book.language.code} paragraph>
+                    {book.description}
+                  </Typography>
 
+                  <div>
                     {book.bookFormat === 'HTML' && (
                       <Fragment>
                         <Link
@@ -238,7 +238,7 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                         <Trans>Download book</Trans>
                       </Button>
                     )}
-                  </Grid>
+                  </div>
                 </CardContent>
               </Card>
             </View>

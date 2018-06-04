@@ -24,8 +24,6 @@ import { Link } from '../../routes';
 import type { Translation, I18n } from '../../types';
 import { securePage, withI18n } from '../../hocs';
 import Layout from '../../components/Layout';
-import Main from '../../components/Layout/Main';
-import Footer from '../../components/Layout/Footer';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
@@ -143,24 +141,21 @@ class MyTranslationsPage extends React.Component<Props, State> {
     const { translations } = this.state;
 
     return (
-      <Layout wrapWithMain={false}>
+      <Layout>
         <Head title={i18n.t`My translations`} />
-        <Main>
-          <Container css={{ marginTop: spacing.large }}>
-            <Typography
-              variant="display2"
-              align="center"
-              paragraph
-              css={{ marginTop: spacing.large }}
-            >
-              <Trans>My translations</Trans>
-            </Typography>
-            {translations.map(translation => (
-              <TranslationCard key={translation.id} translation={translation} />
-            ))}
-          </Container>
-        </Main>
-        <Footer />
+        <Container css={{ marginTop: spacing.large }}>
+          <Typography
+            variant="display2"
+            align="center"
+            paragraph
+            css={{ marginTop: spacing.large }}
+          >
+            <Trans>My translations</Trans>
+          </Typography>
+          {translations.map(translation => (
+            <TranslationCard key={translation.id} translation={translation} />
+          ))}
+        </Container>
       </Layout>
     );
   }

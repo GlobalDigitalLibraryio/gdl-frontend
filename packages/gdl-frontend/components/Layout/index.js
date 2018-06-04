@@ -16,7 +16,6 @@ import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
 import { NavContextBar, Breadcrumb } from '../NavContextBar';
-import Footer from './Footer';
 
 const Main = styled(Paper)`
   background: ${colors.container.background};
@@ -68,14 +67,7 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
               <Breadcrumb crumbs={crumbs} />
             </NavContextBar>
           )}
-          {wrapWithMain ? (
-            <>
-              <Main component="main">{children}</Main>
-              <Footer />
-            </>
-          ) : (
-            children
-          )}
+          {wrapWithMain ? <Main component="main">{children}</Main> : children}
         </PageWrapper>
       </ThemeProvider>
     );

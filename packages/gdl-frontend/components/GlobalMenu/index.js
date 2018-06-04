@@ -25,6 +25,7 @@ import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 import config from '../../config';
+import CCLogo from './cc-logo.svg';
 
 type Props = {|
   onClose(): void,
@@ -105,19 +106,38 @@ class GlobalMenu extends React.Component<Props, State> {
               </RouteLink>
             </Fragment>
           )}
+          <ListItemA href="https://home.digitallibrary.io/about/">
+            <Trans>About the Global Digital Library</Trans>
+          </ListItemA>
+          <ListItemA href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
+            <Trans>Cookie policy</Trans>
+          </ListItemA>
+          <ListItemA href="https://home.digitallibrary.io/privacy/">
+            <Trans>Privacy policy</Trans>
+          </ListItemA>
+          <ListItemA href={config.zendeskUrl}>
+            <Trans>Report issues</Trans>
+          </ListItemA>
+          <ListItemA href="https://blog.digitallibrary.io/cc/">
+            <Trans>Licensing and reuse</Trans>
+          </ListItemA>
           <ListItem
-            button
+            href="https://creativecommons.org/"
             component="a"
-            href="https://home.digitallibrary.io/about/"
+            aria-label="Creative Commons"
           >
-            <ListItemText>
-              <Trans>About the Global Digital Library</Trans>
-            </ListItemText>
+            <CCLogo css={{ width: '100px' }} />
           </ListItem>
         </List>
       </Drawer>
     );
   }
 }
+
+const ListItemA = ({ href, ...props }) => (
+  <ListItem component="a" href={href} button>
+    <ListItemText {...props} />
+  </ListItem>
+);
 
 export default GlobalMenu;
