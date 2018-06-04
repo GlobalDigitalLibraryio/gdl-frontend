@@ -88,7 +88,6 @@
     "react-ga": "^2.5.2",
     "react-json-view": "^1.16.6",
     "react-swipeable": "^4.3.0",
-    "styled-map": "^2.0.1",
     "styled-system": "^2.2.5",
     "styled-theming": "^2.2.0",
     "universal-cookie": "^2.1.5"
