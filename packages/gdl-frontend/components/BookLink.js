@@ -13,13 +13,14 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 import { Link } from '../routes';
 import type { Book } from '../types';
 import ReadingLevel from './ReadingLevel';
-import Box from './Box';
 import CoverImage from './CoverImage';
+import media from '../style/media';
 
 /**
  * Add small brightness effect to book cover when hovered
  */
-const hoverImgEffect = css`
+const cardCss = css`
+  position: relative;
   &:hover {
     img {
       transition: 1s opacity linear;
@@ -27,6 +28,10 @@ const hoverImgEffect = css`
       filter: opacity(0.9);
     }
   }
+  width: 105px;
+  ${media.tablet`
+   width: 130px;
+  `};
 `;
 
 const ClickTarget = styled('a')`
@@ -42,40 +47,38 @@ const ClickTarget = styled('a')`
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
 export default ({ book }: { book: Book }) => (
-  <Box w={[105, 130]}>
-    <Card className={hoverImgEffect} css={{ position: 'relative' }}>
+  <Card className={cardCss}>
+    <Link
+      route="book"
+      params={{ id: book.id, lang: book.language.code }}
+      passHref
+    >
+      <ClickTarget aria-hidden tabIndex="-1" />
+    </Link>
+    <CoverImage
+      ariaHidden
+      w={[105, 130]}
+      h={[130, 160]}
+      src={book.coverImage && book.coverImage.url}
+    />
+    <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>
       <Link
         route="book"
         params={{ id: book.id, lang: book.language.code }}
         passHref
       >
-        <ClickTarget aria-hidden tabIndex="-1" />
-      </Link>
-      <CoverImage
-        ariaHidden
-        w={[105, 130]}
-        h={[130, 160]}
-        src={book.coverImage && book.coverImage.url}
-      />
-      <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>
-        <Link
-          route="book"
-          params={{ id: book.id, lang: book.language.code }}
-          passHref
+        <Typography
+          lang={book.language.code}
+          title={book.title}
+          noWrap
+          gutterBottom
+          component="a"
+          align="center"
         >
-          <Typography
-            lang={book.language.code}
-            title={book.title}
-            noWrap
-            gutterBottom
-            component="a"
-            align="center"
-          >
-            {book.title}
-          </Typography>
-        </Link>
-        <ReadingLevel level={book.readingLevel} />
-      </CardContent>
-    </Card>
-  </Box>
+          {book.title}
+        </Typography>
+      </Link>
+      <ReadingLevel level={book.readingLevel} />
+    </CardContent>
+  </Card>
 );

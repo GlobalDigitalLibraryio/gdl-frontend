@@ -17,7 +17,6 @@ import {
 } from '../lib/auth/token';
 import { setRedirectUrl } from '../lib/auth';
 import type { Context } from '../types';
-import Box from '../components/Box';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';
 import Container from '../components/Container';
@@ -77,11 +76,11 @@ const securePageHoc = (Page, options) => {
         return (
           <Layout>
             <Container pt={50}>
-              <Box textAlign="center">
+              <div css={{ textAlign: 'center' }}>
                 <Trans>
                   Login required. Please wait while we redirect you.
                 </Trans>
-              </Box>
+              </div>
             </Container>
           </Layout>
         );
