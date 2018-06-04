@@ -22,7 +22,9 @@ const theme = { space: [], breakpoints: misc.breakpoints };
  *  Setup the theme of our application
  */
 export default class GdlThemeProvider extends React.Component<*> {
-  constructor(props, context: Context) {
+  pageContext: *;
+
+  constructor(props: *, context: Context) {
     super(props, context);
     this.pageContext = this.props.pageContext || getPageContext();
   }

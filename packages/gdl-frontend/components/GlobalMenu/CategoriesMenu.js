@@ -19,8 +19,7 @@ import {
   List,
   ListSubheader,
   ListItem,
-  ListItemText,
-  CircularProgress
+  ListItemText
 } from '@material-ui/core';
 
 type Categories = {

@@ -6,6 +6,7 @@
  * See LICENSE
  */
 
+// $FlowFixMe: Ignore flow errors from lib import
 import { SheetsRegistry, create } from 'jss';
 import {
   createMuiTheme,

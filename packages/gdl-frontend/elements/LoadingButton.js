@@ -7,10 +7,11 @@
  */
 
 import React from 'react';
-import { Button, CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, type ButtonProps } from '@material-ui/core';
 import { css } from 'react-emotion';
 
 type Props = {
+  ...ButtonProps,
   isLoading: boolean
 };
 
