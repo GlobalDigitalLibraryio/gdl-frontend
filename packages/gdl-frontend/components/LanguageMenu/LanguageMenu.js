@@ -15,14 +15,14 @@ import {
   ListSubheader,
   ListItem,
   ListItemText,
-  ListItemIcon
+  ListItemIcon,
+  CircularProgress
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
 
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import type { Language } from '../../types';
-import { ActivityIndicator } from '../../elements';
 import { spacing, colors } from '../../style/theme';
 
 type Props = {
@@ -115,10 +115,7 @@ export default class LanguageMenu extends React.Component<Props> {
             </Fragment>
           )}
           {showActivityIndicator ? (
-            <ActivityIndicator
-              size="large"
-              style={{ marginTop: spacing.large }}
-            />
+            <CircularProgress css={{ marginTop: spacing.large }} />
           ) : (
             filteredLanguages.map(this.renderMenuItem)
           )}
