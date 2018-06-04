@@ -16,7 +16,6 @@ import {
   Card,
   CardContent,
   Typography,
-  Grid,
   Divider
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
@@ -76,9 +75,9 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
+class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   state = {
-    showDownloadMenu: false
+    anchorEl: null
   };
   static async getInitialProps({ query, req }: Context) {
     const [bookRes, similarRes] = await Promise.all([

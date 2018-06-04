@@ -36,6 +36,7 @@ function createPageContext() {
   return {
     theme,
     // This is needed in order to deduplicate the injection of CSS in the page.
+    // $FlowFixMe: This is used internally by JSS, so we don't care if Flow complaims about lack of types here
     sheetsManager: new Map(),
     // This is needed in order to inject the critical CSS.
     sheetsRegistry: new SheetsRegistry(),
