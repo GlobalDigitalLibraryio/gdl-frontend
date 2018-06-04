@@ -16,13 +16,12 @@ export default injectGlobal`
     text-rendering: optimizeLegibility;
     color: ${colors.text.default};
 
-    a {
-      color: ${colors.link.default};
-      text-decoration: none;
-    }
-
     strong {
       font-weight: ${fonts.weight.bold};
+    }
+
+    a {
+      text-decoration: none;
     }
 
     a,

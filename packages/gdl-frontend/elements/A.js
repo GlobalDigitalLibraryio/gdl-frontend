@@ -8,13 +8,13 @@
 
 import React from 'react';
 import theme from 'styled-theming';
+import { Typography, type TypographyProps } from '@material-ui/core';
 import styled, { css } from 'react-emotion';
 
 import { colors } from '../style/theme';
-import Text, { type Props as TextProps } from './Text';
 
 type Props = {
-  ...TextProps,
+  ...TypographyProps,
   openNewTab?: boolean
 };
 
@@ -26,7 +26,7 @@ const A = ({ openNewTab, ...restProps }: Props) => {
     props.target = '_blank';
     props.rel = 'noopener noreferrer';
   }
-  return <StyledA {...props} />;
+  return <StyledA component="a" {...props} />;
 };
 
 // Different colored links based on book category
@@ -45,8 +45,11 @@ const categoryColor = theme('category', {
   `
 });
 
-const StyledA = styled(Text)`
+const StyledA = styled(Typography)`
   ${categoryColor};
+  &:hover {
+    text-decoration: underline;
+  }
 }`;
 
 export default A;
