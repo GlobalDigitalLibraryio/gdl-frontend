@@ -27,7 +27,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
-import errorPage from '../../hocs/errorPage';
+import { errorPage, withMuiRoot } from '../../hocs';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
@@ -317,4 +317,4 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   }
 }
 
-export default errorPage(BookPage);
+export default withMuiRoot(errorPage(BookPage));

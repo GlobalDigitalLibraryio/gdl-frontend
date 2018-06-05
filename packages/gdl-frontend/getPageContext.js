@@ -28,6 +28,9 @@ const theme = createMuiTheme({
 });
 
 function createPageContext() {
+  // We need to define our own custom JSS preset to specify an insertion point for the client
+  // This is because CSS-in-JS libs always want to insert styles at the bottom of the <head />, but we want Emotion's styles
+  // To have take precedence. See _document.js as well.
   const jss = create(jssPreset());
 
   if (process.browser) {

@@ -11,7 +11,7 @@ import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
 
-import { withI18n } from '../../hocs';
+import { withI18n, withMuiRoot } from '../../hocs';
 import type { I18n } from '../../types';
 import { A } from '../../elements';
 import Container from '../../elements/Container';
@@ -71,4 +71,4 @@ const LoginPage = ({ i18n }: Props) => (
   </Layout>
 );
 
-export default withI18n(LoginPage);
+export default withMuiRoot(withI18n(LoginPage));

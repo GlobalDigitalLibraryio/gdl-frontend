@@ -9,6 +9,7 @@
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
+import JssProvider from 'react-jss/lib/JssProvider';
 import getPageContext from '../getPageContext';
 
 import type { Context } from '../types';
@@ -29,18 +30,25 @@ export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
     const pageContext = getPageContext();
 
+    // Needed to SSR MUI's styles
     const page = renderPage(Component => props => (
-      <Component pageContext={pageContext} {...props} />
+      <JssProvider
+        registry={pageContext.sheetsRegistry}
+        generateClassName={pageContext.generateClassName}
+      >
+        <Component pageContext={pageContext} {...props} />
+      </JssProvider>
     ));
 
-    const styleTags = extractCritical(page.html);
+    // Extract Emotion's styles for SSR
+    const emotionStyles = extractCritical(page.html);
 
     return {
       ...page,
       pageContext,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
-      ...styleTags
+      ...emotionStyles
     };
   }
 
@@ -53,8 +61,6 @@ export default class Document extends NextDocument {
   }
 
   render() {
-    /* eslint-disable react/no-danger */
-
     return (
       <html lang={this.props.language}>
         <Head>
@@ -109,6 +115,7 @@ export default class Document extends NextDocument {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
 
+          {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script
             dangerouslySetInnerHTML={{
               __html: `window.${config.GLOBAL_VAR_NAME} = '${
@@ -116,15 +123,19 @@ export default class Document extends NextDocument {
               }';`
             }}
           />
+
+          {/* The JSS styles (for MUI) hare injected here */}
           <style
             id="jss-server-side"
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: this.props.pageContext.sheetsRegistry.toString()
             }}
           />
-          {/* Custom JSS insertion point, so our Emotion styles takes precedence */}
+
+          {/* Custom JSS insertion point, so our Emotion styles takes precedence. This is used on the client. See withMuiRoot */}
           <noscript id="jss-insertion-point" />
+
+          {/* Emotion's styles are injected here. We want them below the JSS styles, so we can overwrite MUI css with Emotion */}
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

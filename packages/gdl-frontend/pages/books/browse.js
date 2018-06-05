@@ -15,7 +15,7 @@ import withI18n from '../../hocs/withI18n';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context, I18n } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import errorPage from '../../hocs/errorPage';
+import { errorPage, withMuiRoot } from '../../hocs';
 import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
@@ -195,4 +195,4 @@ class BrowsePage extends React.Component<Props, State> {
   }
 }
 
-export default errorPage(withRouter(withI18n(BrowsePage)));
+export default withMuiRoot(errorPage(withRouter(withI18n(BrowsePage))));

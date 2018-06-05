@@ -35,7 +35,7 @@ import type {
   Context
 } from '../../types';
 import { Link, Router } from '../../routes';
-import { securePage, errorPage, withI18n } from '../../hocs/';
+import { securePage, errorPage, withI18n, withMuiRoot } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import { A } from '../../elements';
@@ -249,4 +249,4 @@ class TranslatePage extends React.Component<Props, State> {
   }
 }
 
-export default securePage(errorPage(withI18n(TranslatePage)));
+export default withMuiRoot(securePage(errorPage(withI18n(TranslatePage))));

@@ -18,7 +18,7 @@ import type {
   Category,
   ReadingLevel
 } from '../types';
-import errorPage from '../hocs/errorPage';
+import { withMuiRoot, errorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
   setBookLanguageAndCategory,
@@ -172,4 +172,4 @@ class IndexPage extends React.Component<Props> {
   }
 }
 
-export default errorPage(IndexPage);
+export default withMuiRoot(errorPage(IndexPage));
