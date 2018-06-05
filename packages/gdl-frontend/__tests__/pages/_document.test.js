@@ -9,9 +9,10 @@
 import { shallow } from 'enzyme';
 import * as React from 'react';
 import Document from '../../pages/_document';
+import getPageContext from '../../getPageContext';
 
 test("Sets global GDL environment variable, defaults to 'test'", () => {
-  const tree = shallow(<Document />);
+  const tree = shallow(<Document pageContext={getPageContext()} />);
   expect(
     tree
       .find('script')
@@ -20,8 +21,8 @@ test("Sets global GDL environment variable, defaults to 'test'", () => {
   ).toEqual("<script>window.__GDL_ENVIRONMENT__ = 'dev';</script>");
 });
 
-test('Has the no robots meta tag', () => {
-  const tree = shallow(<Document />);
+test('Has the no robots meta tag', async () => {
+  const tree = shallow(<Document pageContext={getPageContext()} />);
   expect(
     tree
       .find('meta')
