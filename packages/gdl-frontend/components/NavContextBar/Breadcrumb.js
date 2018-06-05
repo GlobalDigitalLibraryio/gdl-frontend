@@ -13,27 +13,12 @@ import {
 } from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import { withI18n } from '@lingui/react';
-import styled, { css } from 'react-emotion';
-import theming from 'styled-theming';
+import styled from 'react-emotion';
+import { withTheme } from '@material-ui/core/styles';
 
 import type { I18n } from '../../types';
 import { Link } from '../../routes';
 import { colors } from '../../style/theme';
-
-const color = theming('category', {
-  library: css`
-    color: ${colors.link.default};
-    &:hover {
-      color: ${colors.link.defaultHover};
-    }
-  `,
-  classroom: css`
-    color: ${colors.link.alternate};
-    &:hover {
-      color: ${colors.link.alternateHover};
-    }
-  `
-});
 
 const Div = styled.div`
   display: flex;
@@ -61,13 +46,17 @@ const Ol = styled.ol`
   }
 
   a {
-    ${color};
+    color: ${p => p.palette.primary.main};
+    &:hover {
+      color: ${p => p.palette.primary.dark};
+    }
   }
 `;
 
 type Props = {|
   i18n: I18n,
-  crumbs: Array<React.Node | string>
+  crumbs: Array<React.Node | string>,
+  theme: { palette: {} }
 |};
 
 const Separator = (
@@ -76,9 +65,9 @@ const Separator = (
   </li>
 );
 
-const Breadcrumb = ({ i18n, crumbs }: Props) => (
+const Breadcrumb = ({ i18n, crumbs, theme }: Props) => (
   <Div aria-label={i18n.t`Breadcrumb`}>
-    <Ol>
+    <Ol palette={theme.palette}>
       <li>
         <Link route="books">
           <a title={i18n.t`Home`} aria-label={i18n.t`Home`}>
@@ -103,4 +92,4 @@ const Breadcrumb = ({ i18n, crumbs }: Props) => (
   </Div>
 );
 
-export default withI18n()(Breadcrumb);
+export default withTheme()(withI18n()(Breadcrumb));
