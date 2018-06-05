@@ -72,6 +72,12 @@ function getConfig() {
       canonical: 'https://staging.digitallibrary.io'
     },
 
+    demo: {
+      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1',
+      REPORT_ERRORS: true,
+      canonical: 'https://demo.digitallibrary.io'
+    },
+
     prod: {
       bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
       REPORT_ERRORS: true,
