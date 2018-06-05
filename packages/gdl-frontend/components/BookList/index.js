@@ -37,7 +37,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          <Button color="secondary">
+          <Button color="primary">
             <Trans>More</Trans>
           </Button>
         </BrowseLink>
