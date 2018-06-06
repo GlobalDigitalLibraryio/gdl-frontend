@@ -13,8 +13,7 @@ import { Button, Typography } from '@material-ui/core';
 
 import { withI18n, withMuiRoot } from '../../hocs';
 import type { I18n } from '../../types';
-import { A } from '../../elements';
-import Container from '../../elements/Container';
+import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import { loginSocialMedia } from '../../lib/auth';
@@ -37,35 +36,40 @@ const EqualWidthButtonsWrapper = styled('div')`
 `;
 
 const LoginPage = ({ i18n }: Props) => (
-  <Layout crumbs={[<Trans>Login</Trans>]}>
-    <Head title={i18n.t`Login`} />
+  <Layout>
+    <Head title={i18n.t`Signin`} />
     <Container alignItems="center">
-      <Typography variant="headline" mt={spacing.large}>
-        <Trans>Log in to continue</Trans>
+      <Typography variant="headline" css={{ marginTop: spacing.large }}>
+        <Trans>Sign in to continue</Trans>
       </Typography>
       <div>
         <EqualWidthButtonsWrapper>
           <Button
-            variant="raised"
+            variant="outlined"
             onClick={() => loginSocialMedia('google-oauth2')}
             css={{ color: googleColor }}
           >
-            <Trans>Log in using Google</Trans>
+            <Trans>Sign in using Google</Trans>
           </Button>
           <Button
-            variant="raised"
+            variant="outlined"
             onClick={() => loginSocialMedia('facebook')}
             css={{ color: facebookColor }}
           >
-            <Trans>Log in using Facebook</Trans>
+            <Trans>Sign in using Facebook</Trans>
           </Button>
         </EqualWidthButtonsWrapper>
       </div>
-      <Typography align="center" mt={spacing.xxlarge} paragraph>
-        By logging in to this service I am hereby accepting the principles in
+      <Typography align="center" css={{ marginTop: spacing.xxlarge }} paragraph>
+        By signing in to this service I am hereby accepting the principles in
         the GDL{' '}
-        <A href="https://home.digitallibrary.io/privacy/">privacy policy</A>,
-        and I am giving my consent to GDL’s use of my personal information.
+        <A
+          href="https://home.digitallibrary.io/privacy/"
+          css={{ display: 'inline' }}
+        >
+          privacy policy
+        </A>, and I am giving my consent to GDL’s use of my personal
+        information.
       </Typography>
     </Container>
   </Layout>
