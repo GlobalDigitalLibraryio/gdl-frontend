@@ -37,7 +37,7 @@ const EqualWidthButtonsWrapper = styled('div')`
 
 const LoginPage = ({ i18n }: Props) => (
   <Layout>
-    <Head title={i18n.t`Signin`} />
+    <Head title={i18n.t`Sign in`} />
     <Container alignItems="center">
       <Typography variant="headline" css={{ marginTop: spacing.large }}>
         <Trans>Sign in to continue</Trans>
