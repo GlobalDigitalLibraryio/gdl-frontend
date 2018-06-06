@@ -8,7 +8,7 @@
 
 import React, { type Node } from 'react';
 import styled from 'react-emotion';
-import { ThemeProvider } from 'emotion-theming';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 
 import type { Category } from '../../types';
@@ -16,6 +16,7 @@ import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
 import { NavContextBar, Breadcrumb } from '../NavContextBar';
+import { classRoomTheme } from '../../getPageContext';
 
 const Main = styled(Paper)`
   background: ${colors.container.background};
@@ -48,28 +49,29 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
     drawerIsOpen: false
   };
 
+  wrapWithCategoryTheme(node: Node) {
+    if (this.props.category === 'classroom_books') {
+      return <MuiThemeProvider theme={classRoomTheme}>{node}</MuiThemeProvider>;
+    }
+    return node;
+  }
+
   render() {
-    const { children, category, wrapWithMain, crumbs } = this.props;
-    return (
-      <ThemeProvider
-        theme={{
-          category: category === 'classroom_books' ? 'classroom' : 'library'
-        }}
-      >
-        <PageWrapper>
-          <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
-          <GlobalMenu
-            onClose={() => this.setState({ drawerIsOpen: false })}
-            isOpen={this.state.drawerIsOpen}
-          />
-          {crumbs && (
-            <NavContextBar>
-              <Breadcrumb crumbs={crumbs} />
-            </NavContextBar>
-          )}
-          {wrapWithMain ? <Main component="main">{children}</Main> : children}
-        </PageWrapper>
-      </ThemeProvider>
+    const { children, wrapWithMain, crumbs } = this.props;
+    return this.wrapWithCategoryTheme(
+      <PageWrapper>
+        <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
+        <GlobalMenu
+          onClose={() => this.setState({ drawerIsOpen: false })}
+          isOpen={this.state.drawerIsOpen}
+        />
+        {crumbs && (
+          <NavContextBar>
+            <Breadcrumb crumbs={crumbs} />
+          </NavContextBar>
+        )}
+        {wrapWithMain ? <Main component="main">{children}</Main> : children}
+      </PageWrapper>
     );
   }
 }

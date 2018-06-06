@@ -187,7 +187,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           >
                             <Button
                               variant="raised"
-                              color="secondary"
+                              color="primary"
                               size="large"
                             >
                               <Trans>Read book</Trans>
