@@ -61,6 +61,8 @@ const NegativeMarginDiv = styled('div')`
 
 const ScrollDiv = styled('div')`
   overflow-x: auto;
+  /* Fixes problem with scrolling in Safari all over the place */
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   ::-webkit-scrollbar {
     display: none;
