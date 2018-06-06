@@ -45,17 +45,20 @@ export default class CategoriesMenu extends React.Component<Props, State> {
     showMenu: false
   };
 
-  handleShowMenu = () => {
-    if (!this.state.categories) {
+  // We only hit the network to get the categories if we really need to
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      !prevState.showMenu &&
+      this.state.showMenu &&
+      this.state.categories == null
+    ) {
       this.loadCategories();
     }
+  }
 
-    this.setState({ showMenu: true });
-  };
+  handleShowMenu = () => this.setState({ showMenu: true });
 
-  handleCloseMenu = () => {
-    this.setState({ showMenu: false });
-  };
+  handleCloseMenu = () => this.setState({ showMenu: false });
 
   async loadCategories() {
     const categoriesRes = await fetchCategories(this.props.languageCode);
