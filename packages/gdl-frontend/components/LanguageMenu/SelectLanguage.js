@@ -19,8 +19,7 @@ type Props = {
   children?: (data: { onClick: () => void }) => Node,
   language: Language,
   linkProps?: (language: Language) => {},
-  onSelectLanguage?: Language => void,
-  openStateCallback?: boolean => void
+  onSelectLanguage?: Language => void
 };
 
 type State = {
@@ -36,23 +35,25 @@ export default class SelectLanguage extends React.Component<Props, State> {
     languages: cache
   };
 
+  // We only hit the network to get the languages if we really need to
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      !prevState.showMenu &&
+      this.state.showMenu &&
+      this.state.languages == null
+    ) {
+      this.loadLanguages();
+    }
+  }
+
   handleSelectLanguage = (language: Language) => {
     this.handleCloseMenu();
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
   };
 
-  handleShowMenu = () => {
-    if (!this.state.languages) {
-      this.loadLanguages();
-    }
-    this.props.openStateCallback && this.props.openStateCallback(true);
-    this.setState({ showMenu: true });
-  };
+  handleShowMenu = () => this.setState({ showMenu: true });
 
-  handleCloseMenu = () => {
-    this.props.openStateCallback && this.props.openStateCallback(false);
-    this.setState({ showMenu: false });
-  };
+  handleCloseMenu = () => this.setState({ showMenu: false });
 
   async loadLanguages() {
     const result = await fetchLanguages();
