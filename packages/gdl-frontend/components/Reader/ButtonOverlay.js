@@ -58,7 +58,7 @@ const TouchOverlay = (props: Props) => [
     <SrOnly>
       <Trans>Previous</Trans>
     </SrOnly>
-    <KeyboardArrowLeftIcon size={50} />
+    <KeyboardArrowLeftIcon style={{ fontSize: 50 }} />
   </Button>,
   <Button
     key="right"
@@ -70,7 +70,7 @@ const TouchOverlay = (props: Props) => [
     <SrOnly>
       <Trans>Next</Trans>
     </SrOnly>
-    <KeyboardArrowRightIcon size={50} />
+    <KeyboardArrowRightIcon style={{ fontSize: 50 }} />
   </Button>
 ];
 
