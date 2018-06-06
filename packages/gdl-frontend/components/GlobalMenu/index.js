@@ -41,6 +41,16 @@ class GlobalMenu extends React.Component<Props, State> {
     language: getBookLanguage()
   };
 
+  // Makes sure we always show the correct language as selected when the menu is opened
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (!prevProps.isOpen && this.props.isOpen) {
+      const language = getBookLanguage();
+      if (language !== prevState.language) {
+        this.setState({ language });
+      }
+    }
+  }
+
   render() {
     const { onClose } = this.props;
 

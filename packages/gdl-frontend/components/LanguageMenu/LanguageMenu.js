@@ -41,7 +41,6 @@ type Props = {
 
 export default class LanguageMenu extends React.Component<Props> {
   static defaultProps = {
-    linkToLandingPage: false,
     showActivityIndicator: false
   };
 
@@ -101,7 +100,7 @@ export default class LanguageMenu extends React.Component<Props> {
           {selectedLanguage && (
             <Fragment>
               <ListItem>
-                <ListItemIcon aria-hidden>
+                <ListItemIcon>
                   <CheckIcon css={{ color: colors.base.green }} />
                 </ListItemIcon>
                 <ListItemText inset>
