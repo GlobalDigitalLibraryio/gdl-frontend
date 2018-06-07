@@ -9,7 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
-import { Button, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
@@ -29,7 +29,7 @@ import {
   getBookLanguage
 } from '../lib/storage';
 import Head from '../components/Head';
-import { Container } from '../elements';
+import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
 import { errorPage, withMuiRoot } from '../hocs';
@@ -284,7 +284,9 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  <Button
+                  <LoadingButton
+                    fullWidth
+                    color="primary"
                     disabled={
                       searchResult.results.length >= searchResult.totalCount
                     }
@@ -292,7 +294,7 @@ class SearchPage extends React.Component<Props, State> {
                     isLoading={this.state.isLoadingMore}
                   >
                     <Trans>See more</Trans>
-                  </Button>
+                  </LoadingButton>
                 </Fragment>
               )
             ) : (

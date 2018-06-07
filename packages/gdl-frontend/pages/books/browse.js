@@ -185,7 +185,10 @@ class BrowsePage extends React.Component<Props, State> {
             isLoading={this.state.isLoadingMore}
             color="primary"
             fullWidth
-            css={{ marginTop: spacing.xlarge, marginBottom: spacing.medium }}
+            css={{
+              marginTop: spacing.xlarge,
+              marginBottom: spacing.medium
+            }}
           >
             <Trans>See more books</Trans>
           </LoadingButton>

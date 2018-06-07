@@ -9,29 +9,35 @@
 import React from 'react';
 import { Button, CircularProgress, type ButtonProps } from '@material-ui/core';
 import { css } from 'react-emotion';
+import DelayedLoading from './DelayedLoading';
 
 type Props = {
   ...ButtonProps,
   isLoading: boolean
 };
 
-const LoadingButton = ({ isLoading, disabled, ...props }: Props) => {
+const LoadingButton = ({ children, isLoading, disabled, ...props }: Props) => {
   return (
-    <div className={styles.wrapper}>
-      <Button disabled={disabled || isLoading} {...props} />
-      {isLoading && <CircularProgress size={24} className={styles.progress} />}
-    </div>
+    <DelayedLoading loading={isLoading}>
+      {({ loading }) => (
+        <Button disabled={disabled || isLoading} {...props}>
+          {children}
+          {loading && (
+            <CircularProgress size={24} className={styles.progress} />
+          )}
+        </Button>
+      )}
+    </DelayedLoading>
   );
 };
 
 const styles = {
-  wrapper: css`
-    position: relative;
-  `,
   progress: css`
     position: absolute;
     top: 50%;
     left: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
   `
 };
 
