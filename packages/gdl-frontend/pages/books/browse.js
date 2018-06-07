@@ -162,7 +162,7 @@ class BrowsePage extends React.Component<Props, State> {
         <Head title={i18n.t`Browse books`} />
         <Container>
           <Typography
-            variant="display2"
+            variant="display1"
             align="center"
             css={{ marginBottom: spacing.large, marginTop: spacing.large }}
           >

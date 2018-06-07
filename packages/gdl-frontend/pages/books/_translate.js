@@ -140,7 +140,7 @@ class TranslatePage extends React.Component<Props, State> {
         />
         <Container>
           <Typography
-            variant="display2"
+            variant="display1"
             component="h1"
             align="center"
             css={{ marginBottom: spacing.large, marginTop: spacing.large }}

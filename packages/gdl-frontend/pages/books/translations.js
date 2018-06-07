@@ -145,7 +145,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
         <Head title={i18n.t`My translations`} />
         <Container css={{ marginTop: spacing.large }}>
           <Typography
-            variant="display2"
+            variant="display1"
             align="center"
             paragraph
             css={{ marginTop: spacing.large }}
