@@ -17,6 +17,8 @@ async function setup() {
   await app.prepare();
   const server = express();
 
+  app.setAssetPrefix('/admin');
+
   // Health check for AWS
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
   server.get('/health', (req, res) => {
