@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import {
-  ArrowDropDown as ArrowDropDownIcon,
   ArrowForward as ArrowForwardIcon,
   ArrowDownward as ArrowDownwardIcon
 } from '@material-ui/icons';
@@ -231,7 +230,6 @@ class TranslatePage extends React.Component<Props, State> {
                 ) : (
                   <Trans>Select language</Trans>
                 )}
-                <ArrowDropDownIcon />
               </Button>
             </Grid>
           </Grid>
