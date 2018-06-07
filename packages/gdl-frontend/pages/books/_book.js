@@ -276,7 +276,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                       passHref
                       params={{ id: book.id, lang: book.language.code }}
                     >
-                      <Button color="primary" my={spacing.medium}>
+                      <Button
+                        color="primary"
+                        css={{ margin: `${spacing.medium} 0` }}
+                      >
                         <TranslateIcon /> <Trans>Translate this book</Trans>
                       </Button>
                     </Link>
@@ -292,7 +295,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
               >
                 <Button
                   color="primary"
-                  my={spacing.medium}
+                  css={{ margin: `${spacing.medium} 0` }}
                   href={config.zendeskUrl}
                   openNewTab
                 >
