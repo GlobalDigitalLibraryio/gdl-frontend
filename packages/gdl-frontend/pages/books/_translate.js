@@ -175,22 +175,48 @@ class TranslatePage extends React.Component<Props, State> {
           <Grid
             container
             alignItems="center"
-            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+            css={{
+              textAlign: 'center',
+              marginTop: spacing.xxlarge,
+              marginBottom: spacing.xxlarge
+            }}
           >
             <Grid item md={4} xs={12}>
-              <Typography color="inherit" variant="button">
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
+                <Trans gutterBottom>Translate from</Trans>
+              </Typography>
+              <Typography
+                color="inherit"
+                variant="button"
+                css={{ paddingTop: '8px' }}
+              >
                 {book.language.name}
               </Typography>
             </Grid>
-            <Grid item md={4} xs={12} css={{ textAlign: 'center' }}>
-              <Hidden mdUp implementation="css">
+            <Grid item md={4} xs={12}>
+              <Hidden
+                mdUp
+                implementation="css"
+                css={{ margin: `${spacing.large} 0` }}
+              >
                 <ArrowDownwardIcon />
               </Hidden>
               <Hidden mdDown implementation="css">
                 <ArrowForwardIcon />
               </Hidden>
             </Grid>
-            <Grid item md={4} xs={12} css={{ textAlign: 'right' }}>
+            <Grid item md={4} xs={12}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
+                <Trans>Translate to</Trans>
+              </Typography>
               <Button color="primary" onClick={this.toggleLanguageMenu}>
                 {selectedLanguage ? (
                   selectedLanguage.name
