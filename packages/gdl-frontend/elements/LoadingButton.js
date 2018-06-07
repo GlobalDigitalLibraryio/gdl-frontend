@@ -6,14 +6,15 @@
  * See LICENSE
  */
 
-import React from 'react';
-import { Button, CircularProgress, type ButtonProps } from '@material-ui/core';
+import * as React from 'react';
+import { Button, CircularProgress } from '@material-ui/core';
 import { css } from 'react-emotion';
 import DelayedLoading from './DelayedLoading';
 
 type Props = {
-  ...ButtonProps,
-  isLoading: boolean
+  isLoading?: boolean,
+  children?: React.Node,
+  disabled?: boolean
 };
 
 const LoadingButton = ({ children, isLoading, disabled, ...props }: Props) => {

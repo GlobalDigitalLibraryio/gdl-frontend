@@ -19,10 +19,12 @@ import {
   Divider,
   Grid
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import FileDownloadIcon from '@material-ui/icons/FileDownload';
-import TranslateIcon from '@material-ui/icons/Translate';
-import WarningIcon from '@material-ui/icons/Warning';
+import {
+  Edit as EditIcon,
+  FileDownload as FileDownloadIcon,
+  Translate as TranslateIcon,
+  Warning as WarningIcon
+} from '@material-ui/icons';
 
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';

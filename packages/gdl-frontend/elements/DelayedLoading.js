@@ -10,7 +10,7 @@ import React, { type Node } from 'react';
 
 type Props = {
   children: (data: { loading: boolean }) => Node,
-  loading: boolean,
+  loading?: boolean,
   timeout: number
 };
 

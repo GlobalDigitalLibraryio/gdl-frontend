@@ -7,11 +7,11 @@
  */
 
 import React from 'react';
-import { Typography, type TypographyProps } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { css, cx } from 'react-emotion';
 
 type Props = {
-  ...TypographyProps,
+  className?: string,
   openNewTab?: boolean
 };
 
