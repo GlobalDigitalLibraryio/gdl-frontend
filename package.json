@@ -14,7 +14,7 @@
     "build:frontend": "cd packages/gdl-frontend && yarn build",
     "build:admin": "cd packages/admin-frontend && yarn build",
     "delete": "yarn run delete:modules",
-    "delete:modules": "rm -rf node_modules **/node_modules",
+    "delete:modules": "find . -type d -name node_modules -maxdepth 3 -exec rm -rf '{}' +",
     "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
     "typecheck": "flow check",
     "test": "jest",
