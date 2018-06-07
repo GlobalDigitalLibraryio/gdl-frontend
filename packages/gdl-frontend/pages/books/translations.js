@@ -141,7 +141,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
     const { translations } = this.state;
 
     return (
-      <Layout>
+      <Layout crumbs={[<Trans>My translations</Trans>]}>
         <Head title={i18n.t`My translations`} />
         <Container css={{ marginTop: spacing.large }}>
           <Typography
