@@ -7,7 +7,7 @@
  */
 
 import React, { Fragment } from 'react';
-import { DateFormat, Trans, Plural } from '@lingui/react';
+import { Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
@@ -70,14 +70,6 @@ const BookMeta = ({ book }: Props) => {
   return (
     <Box color={colors.text.subtle} pl={[0, spacing.medium]}>
       <Ribbon level={book.readingLevel} />
-      {book.datePublished && (
-        <Fragment>
-          <Heading>
-            <Trans>Published</Trans>
-          </Heading>
-          <DateFormat value={new Date(book.datePublished)} />
-        </Fragment>
-      )}
 
       {Object.values(ContributorTypes).map(type =>
         listContributors(type, book.contributors)
