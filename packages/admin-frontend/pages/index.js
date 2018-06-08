@@ -7,10 +7,14 @@
  */
 
 import React from 'react';
+import Crop from './crop';
 
 class IndexPage extends React.Component<{}> {
   render() {
-    return <h1>GDL – Admin</h1>;
+    return <div>
+      <Crop />
+      <a id="image-api-url">Link to image-api</a>
+      </div>;
   }
 }
 

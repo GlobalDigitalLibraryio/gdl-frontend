@@ -9,6 +9,7 @@
 const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
+const path = require('path');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDev });
@@ -17,7 +18,9 @@ async function setup() {
   await app.prepare();
   const server = express();
 
-  app.setAssetPrefix('/admin');
+  if (!isDev) {
+    app.setAssetPrefix('/admin');
+  }
 
   // Health check for AWS
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
