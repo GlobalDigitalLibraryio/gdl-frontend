@@ -13,7 +13,7 @@ import Head from 'next/head';
 import { fetchChapter } from '../../fetch';
 import Box from '../Box';
 import type { BookDetails, Chapter, ChapterSummary } from '../../types';
-import { Backdrop, Page, BookTitle } from './styledReader';
+import { Backdrop, Page } from './styledReader';
 import Toolbar from './Toolbar';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
@@ -117,7 +117,6 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
                   dangerouslySetInnerHTML={createMarkup(chapterWithContent)}
                 />
               )}
-              <BookTitle>{book.title}</BookTitle>
             </Box>
           </Card>
           <ButtonOverlay
