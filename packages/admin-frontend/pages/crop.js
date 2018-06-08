@@ -6,7 +6,7 @@ import 'cropperjs/dist/cropper.css';
 import Link from 'next/link';
 
 class Crop extends Component {
-  state = { ratio: 2.63 };
+  state = { ratio: 0.81 };
 
   toPercentages = c => {
     var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
@@ -92,7 +92,7 @@ class Crop extends Component {
           className="preview"
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
-        <a id="image-api-url">Link to image-api</a>
+        <a id="image-api-url">(Link to image-api will be here)</a>
       </div>
     );
   }
