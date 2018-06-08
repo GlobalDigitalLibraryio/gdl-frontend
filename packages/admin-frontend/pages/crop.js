@@ -4,9 +4,13 @@ import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import Link from 'next/link';
+import fetch from 'isomorphic-fetch';
+import {getTokenFromLocalCookie} from '../lib/fetch';
 
 class Crop extends Component {
-  state = { ratio: 0.81 };
+
+  
+  state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
   toPercentages = c => {
     var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
@@ -35,9 +39,15 @@ class Crop extends Component {
     };
   };
 
+  // TODO Ha med revision her
   toImageApiBody = pcnt => {
+    const existingParametersForCurrentRatio = this.state.existingParameters !== null && this.state.existingParameters.find(p => p.forRatio === String(this.state.ratio));
+    const revision = existingParametersForCurrentRatio !== null ? existingParametersForCurrentRatio.revision : 1;
+    console.log('Using revision=' + revision);
+
     return {
       forRatio: String(this.state.ratio),
+      revision: revision,
       imageUrl: this.props.imageUrl.substr(
         this.props.imageUrl.lastIndexOf('/')
       ),
@@ -56,10 +66,36 @@ class Crop extends Component {
       pcnt.cropEndX
     }&cropStartY=${pcnt.cropStartY}&cropEndY=${pcnt.cropEndY}`;
 
-    var anchor = document.getElementById('image-api-url');
-    anchor.href = url;
-    anchor.text = url;
     console.log(JSON.stringify(this.toImageApiBody(pcnt), undefined, 2));
+    this.setState({imageApiBody: this.toImageApiBody(pcnt)});
+  }
+
+  postToImageApi = async _ => {
+    if (this.state.imageApiBody !== null) {
+      console.log('Posting');
+      // TODO Hent URL fra config istedet
+      await fetch('https://api.test.digitallibrary.io/image-api/v2/images/stored-parameters', {
+        method: 'POST',
+        // TODO Ikke ta med dette
+        headers: {
+          'Authorization': 'Bearer ' + getTokenFromLocalCookie(),
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(this.state.imageApiBody)
+      });
+      await this.getExistingParameters();
+    } else {
+      console.log('Not posting');
+    }
+  }
+
+  getExistingParameters = async () => {
+    const imageUrl = this.props.  imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
+    const url = 'https://api.test.digitallibrary.io/image-api/v2/images/stored-parameters' + imageUrl;
+    // fetch(url).thresults => {console.log(results)})// this.setState({existingParameters: results.json()})});
+    const response = await fetch(url);
+    this.setState({existingParameters: await response.json()});
+
   }
 
   toggleRatio = e => {
@@ -71,12 +107,17 @@ class Crop extends Component {
     }
   };
 
+  componentDidMount() {
+    this.getExistingParameters();
+  }
+
   render() {
     return (
       <div>
         <p>
           <button onClick={this.toggleRatio}>Toggle ratio</button>
         </p>
+        <p>Existing stuff: {JSON.stringify(this.state.existingParameters)}</p>
         <Cropper
           ref="cropper"
           src={this.props.imageUrl}
@@ -92,25 +133,33 @@ class Crop extends Component {
           className="preview"
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
-        <a id="image-api-url">(Link to image-api will be here)</a>
+        <button onClick={this.postToImageApi}>Save this crop config for ratio={this.state.ratio}</button>
       </div>
     );
   }
 }
 
-export default ({
-  url: {
-    query: { imageUrl }
-  }
-}) => (
+
+const CropPage = ({imageUrl}) => (
   <div>
-    <h1>Crop</h1>
-    {imageUrl === undefined ? (
-      <p>
-        You need to specify <tt>imageUrl</tt> in the URL
-      </p>
-    ) : (
-      <Crop imageUrl={imageUrl} />
-    )}
-  </div>
+  <h1>Crop</h1>
+  {imageUrl == null ? (
+    <p>
+      You need to specify <tt>imageUrl</tt> in the URL
+    </p>
+  ) : (
+    <Crop imageUrl={imageUrl} />
+  )}
+</div>
+
 );
+
+CropPage.getInitialProps = (context) => {
+  const imageUrl = context.query.imageUrl;
+
+  return {
+    imageUrl
+  };
+}
+
+export default CropPage;

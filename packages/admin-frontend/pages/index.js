@@ -14,7 +14,7 @@ class IndexPage extends React.Component<{}> {
     return (
       <div>
         <h1>GDL Admin</h1>
-        <Link href="/crop">
+        <Link prefetch href="/crop">
           <a>Crop images</a>
         </Link>
       </div>
