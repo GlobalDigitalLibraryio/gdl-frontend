@@ -33,7 +33,7 @@ const styles = {
     fontWeight: 'normal'
   },
   a: {
-    color: colors.link.default,
+    color: colors.default,
     textDecoration: 'underline'
   }
 };

@@ -13,7 +13,6 @@ const colors = {
     gray: '#bbb',
     grayDarkest: '#666',
     grayLight: '#e3e3e3',
-    blue: '#1466b5',
     green: '#00ba6e'
   },
   container: {
@@ -23,16 +22,8 @@ const colors = {
     default: '#444',
     subtle: '#666'
   },
-  link: {
-    default: '#006DD6',
-    defaultHover: '#004380',
-    alternate: '#842e5c',
-    alternateHover: '#b25187'
-  },
-  button: {
-    defaultBackground: '#006DD6',
-    alternateBackground: '#b25187'
-  }
+  default: '#004380', // new suggested color: #0277bd
+  alternate: '#842e5c' // new suggested color: #407a4f, or #d32f2f
 };
 
 export default colors;

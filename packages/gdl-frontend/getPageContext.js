@@ -13,15 +13,14 @@ import {
   createGenerateClassName,
   jssPreset
 } from '@material-ui/core/styles';
+import { colors } from './style/theme';
 
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0277bd' // blue
-      //main: '#d32f2f' // red
-      //main: '#407a4f' // green
+      main: colors.default
     }
   }
 });
@@ -29,7 +28,7 @@ const theme = createMuiTheme({
 const classRoomTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#407a4f' // green
+      main: colors.alternate
     }
   }
 });
