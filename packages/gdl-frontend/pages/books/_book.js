@@ -146,8 +146,14 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                   h={[175, 365]}
                 />
               </CoverWrap>
-              <Card>
-                <CardContent css={media.mobile({ paddingTop: '70px' })}>
+              {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
+              <Card css={media.tablet({ display: 'flex' })}>
+                <CardContent
+                  css={[
+                    media.mobile({ paddingTop: '70px' }),
+                    media.tablet({ display: 'flex', flexDirection: 'column' })
+                  ]}
+                >
                   <Typography
                     lang={book.language.code}
                     variant="headline"
@@ -167,7 +173,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                   <Typography
                     lang={book.language.code}
                     paragraph
-                    css={media.mobile`text-align: center`}
+                    css={[
+                      media.mobile`text-align: center`,
+                      media.tablet({ flex: 1 })
+                    ]}
                   >
                     {book.description}
                   </Typography>
