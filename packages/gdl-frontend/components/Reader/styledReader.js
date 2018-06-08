@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import styled from 'react-emotion';
-import { fonts, colors } from '../../style/theme';
+import { fonts } from '../../style/theme';
 import media from '../../style/media';
 
 export const Page = styled.div`
@@ -50,15 +50,5 @@ export const Backdrop = styled.div`
   background-color: rgba(0, 0, 0, 0.7);
   ${media.mobile`
     display: none;
-  `};
-`;
-
-export const BookTitle = styled.div`
-  margin-top: 30px;
-  font-size: 14px;
-  color: ${colors.text.subtle};
-  text-align: center;
-  ${media.tablet`
-    margin-top: 40px;
   `};
 `;
