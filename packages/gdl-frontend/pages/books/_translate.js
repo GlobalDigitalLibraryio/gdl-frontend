@@ -137,12 +137,14 @@ class TranslatePage extends React.Component<Props, State> {
           description={book.description}
           image={book.coverImage && book.coverImage.url}
         />
-        <Container>
+        <Container
+          css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+        >
           <Typography
             variant="display1"
             component="h1"
             align="center"
-            css={{ marginBottom: spacing.large, marginTop: spacing.large }}
+            css={{ marginBottom: spacing.large }}
           >
             <Trans>Translate book</Trans>
           </Typography>

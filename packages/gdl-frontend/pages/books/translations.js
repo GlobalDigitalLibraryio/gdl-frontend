@@ -75,7 +75,7 @@ class TranslationCard extends React.Component<
               </a>
             </Link>
           </Grid>
-          <Grid item>
+          <Grid item xs>
             <CardContent>
               <Typography variant="headline">{translation.title}</Typography>
               <Typography variant="subheading">
@@ -84,7 +84,6 @@ class TranslationCard extends React.Component<
             </CardContent>
           </Grid>
         </Grid>
-        <Divider />
         <CardContent>
           <Grid container alignItems="center">
             <Grid item xs={4}>
@@ -143,7 +142,9 @@ class MyTranslationsPage extends React.Component<Props, State> {
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>
         <Head title={i18n.t`My translations`} />
-        <Container css={{ marginTop: spacing.large }}>
+        <Container
+          css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+        >
           <Typography
             variant="display1"
             align="center"
