@@ -306,7 +306,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                   color="primary"
                   css={{ margin: `${spacing.medium} 0` }}
                   href={config.zendeskUrl}
-                  openNewTab
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <WarningIcon /> <Trans>Report a problem with this book</Trans>
                 </Button>
