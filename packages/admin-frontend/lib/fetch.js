@@ -14,9 +14,6 @@ const JWT_KEY = 'jwt';
 
 const Cookie = () => new UniversalCookie();
 
-
-
-
 export function getTokenFromLocalCookie() {
   return Cookie().get(JWT_KEY);
 }

@@ -1,3 +1,4 @@
+// @flow
 import { render } from 'react-dom';
 
 import React, { Component } from 'react';
@@ -5,13 +6,22 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
-import {imageApiUrl} from '../config';
-import {getTokenFromLocalCookie} from '../lib/fetch';
+import { imageApiUrl } from '../config';
+import { getTokenFromLocalCookie } from '../lib/fetch';
 
-class Crop extends Component {
+type Props = {
+  imageUrl?: string
+};
 
-  
-  state = { ratio: 0.81, imageApiBody: null, existingParameters: null, postResult: null };
+type State = {
+  ratio: number,
+  imageApiBody?: any,
+  existingParameters?: any,
+  postResult?: string
+};
+
+class Crop extends Component<Props, State> {
+  state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
   toPercentages = c => {
     var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
@@ -41,15 +51,20 @@ class Crop extends Component {
   };
 
   toImageApiBody = pcnt => {
-    const existingParametersForCurrentRatio = this.state.existingParameters !== null && this.state.existingParameters.find(p => p.forRatio === String(this.state.ratio));
-    const revision = existingParametersForCurrentRatio !== null ? existingParametersForCurrentRatio.revision : 1;
+    const existingParametersForCurrentRatio =
+      this.state.existingParameters &&
+      this.state.existingParameters.find(
+        p => p.forRatio === String(this.state.ratio)
+      );
+    const revision =
+      (existingParametersForCurrentRatio &&
+        existingParametersForCurrentRatio.revision) ||
+      1;
 
     return {
       forRatio: String(this.state.ratio),
       revision: revision,
-      imageUrl: this.props.imageUrl.substr(
-        this.props.imageUrl.lastIndexOf('/')
-      ),
+      imageUrl: this.props.imageUrl && this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/')),
       rawImageQueryParameters: {
         cropStartX: pcnt.cropStartX,
         cropEndX: pcnt.cropEndX,
@@ -61,21 +76,25 @@ class Crop extends Component {
 
   _crop() {
     var pcnt = this.toPercentages(this.refs.cropper);
-    var url = `${this.props.imageUrl}?cropStartX=${pcnt.cropStartX}&cropEndX=${
-      pcnt.cropEndX
-    }&cropStartY=${pcnt.cropStartY}&cropEndY=${pcnt.cropEndY}`;
+    var url =
+      this.props.imageUrl &&
+      `${this.props.imageUrl.toString()}?cropStartX=${
+        pcnt.cropStartX
+      }&cropEndX=${pcnt.cropEndX}&cropStartY=${pcnt.cropStartY}&cropEndY=${
+        pcnt.cropEndY
+      }`;
 
-    this.setState({imageApiBody: this.toImageApiBody(pcnt)});
+    this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   }
 
   postToImageApi = async _ => {
     if (this.state.imageApiBody !== null) {
-      this.setState({postResult: 'Posting…'});
+      this.setState({ postResult: 'Posting…' });
       const response = await fetch(`${imageApiUrl}/images/stored-parameters`, {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer ' + getTokenFromLocalCookie(),
-          'Accept': 'application/json'
+          Authorization: 'Bearer ' + getTokenFromLocalCookie(),
+          Accept: 'application/json'
         },
         body: JSON.stringify(this.state.imageApiBody)
       });
@@ -91,15 +110,18 @@ class Crop extends Component {
       }
       await this.getExistingParameters();
     }
-  }
+  };
 
   getExistingParameters = async () => {
-    const imageUrl = this.props.  imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
-    const url = `${imageApiUrl}/images/stored-parameters${imageUrl}`;
+    const imageUrl =
+      this.props.imageUrl &&
+      this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
+    const url =
+      imageUrl &&
+      `${imageApiUrl}/images/stored-parameters${imageUrl.toString()}`;
     const response = await fetch(url);
-    this.setState({existingParameters: await response.json()});
-
-  }
+    this.setState({ existingParameters: await response.json() });
+  };
 
   toggleRatio = e => {
     e.preventDefault();
@@ -116,9 +138,9 @@ class Crop extends Component {
 
   displayPostResult() {
     if (this.state.postResult !== null) {
-      return (<p>{this.state.postResult}</p>);
+      return <p>{this.state.postResult}</p>;
     } else {
-      return (null);
+      return null;
     }
   }
 
@@ -143,34 +165,34 @@ class Crop extends Component {
           className="preview"
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
-        <button onClick={this.postToImageApi}>Save this crop config for ratio={this.state.ratio}</button>
+        <button onClick={this.postToImageApi}>
+          Save this crop config for ratio={this.state.ratio}
+        </button>
         {this.displayPostResult()}
       </div>
     );
   }
 }
 
-
-const CropPage = ({imageUrl}) => (
+const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
   <div>
-  <h1>Crop</h1>
-  {imageUrl == null ? (
-    <p>
-      You need to specify <tt>imageUrl</tt> in the URL
-    </p>
-  ) : (
-    <Crop imageUrl={imageUrl} />
-  )}
-</div>
-
+    <h1>Crop</h1>
+    {imageUrl == null ? (
+      <p>
+        You need to specify <tt>imageUrl</tt> in the URL
+      </p>
+    ) : (
+      <Crop imageUrl={imageUrl} />
+    )}
+  </div>
 );
 
-CropPage.getInitialProps = (context) => {
+CropPage.getInitialProps = context => {
   const imageUrl = context.query.imageUrl;
 
   return {
     imageUrl
   };
-}
+};
 
 export default CropPage;

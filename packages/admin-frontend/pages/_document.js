@@ -1,7 +1,7 @@
 import Document, { Head, Main, NextScript } from 'next/document';
 
 const isDev = process.env.NODE_ENV !== 'production';
-const cssPath = (isDev ? "/" : "/admin/") + "_next/static/style.css";
+const cssPath = (isDev ? '/' : '/admin/') + '_next/static/style.css';
 
 export default class MyDocument extends Document {
   render() {

@@ -25,14 +25,13 @@ const GDL_ENVIRONMENT = (function() {
 
 function getConfig() {
   const config = {
-
     dev: {
-    // TODO Make it work for local
+      // TODO Make it work for local
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
     },
 
     local: {
-    // TODO Make it work for local
+      // TODO Make it work for local
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
     },
 
@@ -59,7 +58,6 @@ function getConfig() {
     // Add the environment itself
     GDL_ENVIRONMENT
   };
-
 }
 
 module.exports = getConfig();
