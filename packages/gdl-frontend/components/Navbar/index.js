@@ -7,53 +7,36 @@
  */
 
 import * as React from 'react';
-import MdSearch from 'react-icons/lib/md/search';
-import MdMenu from 'react-icons/lib/md/menu';
+import styled from 'react-emotion';
+import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
-import {
-  Bar,
-  DisplayContainer,
-  NavItem,
-  HamburgerButton,
-  BrandLink
-} from './styledNavbar';
+import media from '../../style/media';
 
 type Props = {
   menuIsExpanded: boolean,
   onMenuClick(): void
 };
 
-// We need to hide/show "different" navbars here based on viewport size. Reordering the items via flex ordering isn't enough because of accessibility/tab order
+// The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
+const BrandLink = styled('a')`
+  svg {
+    margin-top: 2px;
+    padding-right: 2px;
+    height: 36px;
+    width: 100px;
+    ${media.tablet`
+      width: auto;
+    `};
+  }
+`;
+
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
-  const menuButton = (
-    <HamburgerButton
-      type="button"
-      aria-label="Menu"
-      onClick={onMenuClick}
-      aria-expanded={menuIsExpanded}
-    >
-      <MdMenu aria-hidden />
-      <span>
-        <Trans>Menu</Trans>
-      </span>
-    </HamburgerButton>
-  );
-
-  const searchLink = (
-    <Link route="search">
-      <a>
-        <MdSearch aria-hidden />
-        <span>
-          <Trans>Search</Trans>
-        </span>
-      </a>
-    </Link>
-  );
-
   const brandLink = (
     <Link route="books" passHref>
       <BrandLink>
@@ -64,20 +47,34 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   );
 
   return (
-    <Bar>
-      <DisplayContainer display={['flex', 'none']}>
-        <NavItem>{menuButton}</NavItem>
-        <NavItem>{brandLink}</NavItem>
-        <NavItem>{searchLink}</NavItem>
-      </DisplayContainer>
-      <DisplayContainer display={['none', 'flex']}>
-        <NavItem>{brandLink}</NavItem>
-        <NavItem style={{ marginLeft: 'auto', marginRight: '1rem' }}>
-          {searchLink}
-        </NavItem>
-        <NavItem>{menuButton}</NavItem>
-      </DisplayContainer>
-    </Bar>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          onClick={onMenuClick}
+          aria-expanded={menuIsExpanded}
+          css={{ marginRight: 18 }}
+        >
+          <MenuIcon />
+          <SrOnly>
+            <Trans>Menu</Trans>
+          </SrOnly>
+        </IconButton>
+        {brandLink}
+        <Link route="search" passHref>
+          <IconButton
+            color="inherit"
+            component="a"
+            css={{ marginLeft: 'auto' }}
+          >
+            <SearchIcon />
+            <SrOnly>
+              <Trans>Search</Trans>
+            </SrOnly>
+          </IconButton>
+        </Link>
+      </Toolbar>
+    </AppBar>
   );
 };
 

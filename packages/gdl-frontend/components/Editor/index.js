@@ -10,7 +10,7 @@ import React, { Fragment } from 'react';
 import dynamic from 'next/dynamic';
 
 import type { BookDetails, Chapter } from '../../types';
-import A from '../A';
+import A from '../../elements/A';
 import { Link } from '../../routes';
 import Heading from '../Heading';
 import { saveBook, saveChapter } from '../../fetch';

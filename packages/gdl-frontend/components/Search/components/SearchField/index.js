@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import MdSearch from 'react-icons/lib/md/search';
+import { Search as SearchIcon } from '@material-ui/icons';
 import { Input, Label, Container, Icon } from './styled';
 
 type Props = {
@@ -23,7 +23,7 @@ const SearchField = ({ id, label, ...props }: Props) => (
   <Container>
     <Label htmlFor={id}>{label}</Label>
     <Icon>
-      <MdSearch aria-hidden />
+      <SearchIcon />
     </Icon>
     <Input id={id} type="search" {...props} />
   </Container>

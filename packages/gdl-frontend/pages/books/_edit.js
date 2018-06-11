@@ -11,8 +11,7 @@ import * as React from 'react';
 import { fetchBook, fetchChapter } from '../../fetch';
 import type { BookDetails, Chapter, Context } from '../../types';
 import { claims } from '../../lib/auth/token';
-import securePage from '../../hocs/securePage';
-import errorPage from '../../hocs/errorPage';
+import { securePage, errorPage, withMuiRoot } from '../../hocs';
 import Head from '../../components/Head';
 import Editor from '../../components/Editor';
 
@@ -71,6 +70,8 @@ class EditPage extends React.Component<Props> {
   }
 }
 
-export default securePage(errorPage(EditPage), {
-  claim: claims.writeBook
-});
+export default withMuiRoot(
+  securePage(errorPage(EditPage), {
+    claim: claims.writeBook
+  })
+);

@@ -12,9 +12,9 @@ import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
 import A from '../../elements/A';
-import Box from '../Box';
 import Ribbon from './LevelRibbon';
 import { colors, fonts, spacing } from '../../style/theme';
+import media from '../../style/media';
 
 type Props = {
   book: BookDetails
@@ -68,7 +68,7 @@ function listContributors(contributorType, contributors) {
 
 const BookMeta = ({ book }: Props) => {
   return (
-    <Box color={colors.text.subtle} pl={[0, spacing.medium]}>
+    <Div>
       <Ribbon level={book.readingLevel} />
 
       {Object.values(ContributorTypes).map(type =>
@@ -79,8 +79,15 @@ const BookMeta = ({ book }: Props) => {
         <Trans>License</Trans>
       </Heading>
       <A href={book.license.url}>{book.license.description}</A>
-    </Box>
+    </Div>
   );
 };
+
+const Div = styled('div')`
+  color: ${colors.text.subtle};
+  ${media.tablet`
+    padding-left: ${spacing.medium};
+  `};
+`;
 
 export default BookMeta;

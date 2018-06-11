@@ -9,7 +9,7 @@
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
-import theming from 'styled-theming';
+import { withTheme } from '@material-ui/core/styles';
 
 import type { Category } from '../../types';
 import media from '../../style/media';
@@ -21,11 +21,6 @@ const Div = styled('div')`
   align-items: center;
 `;
 
-const borderColor = theming('category', {
-  library: '#0085dd',
-  classroom: '#b25187'
-});
-
 const A = styled('a')`
   color: inherit;
   &:not(:last-child) {
@@ -35,7 +30,7 @@ const A = styled('a')`
     p.isSelected &&
     css`
       font-weight: ${fonts.weight.medium};
-      border-bottom: 3px solid ${borderColor(p)};
+      border-bottom: 3px solid ${p.hightLightColor};
     `};
 `;
 
@@ -49,17 +44,23 @@ const HiddenMobile = styled('span')`
 type Props = {|
   categories: Array<Category>,
   category: Category,
-  languageCode: string
+  languageCode: string,
+  theme: {
+    palette: { primary: { main: string } }
+  }
 |};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
-    const { languageCode, category, categories } = this.props;
+    const { languageCode, category, categories, theme } = this.props;
     return (
       <Div>
         {categories.includes('library_books') && (
           <Link route="library" passHref params={{ lang: languageCode }}>
-            <A isSelected={category === 'library_books'}>
+            <A
+              isSelected={category === 'library_books'}
+              hightLightColor={theme.palette.primary.main}
+            >
               <Trans>
                 Library <HiddenMobile>books</HiddenMobile>
               </Trans>
@@ -68,7 +69,10 @@ class CategoryNavigation extends React.Component<Props> {
         )}
         {categories.includes('classroom_books') && (
           <Link route="classroom" passHref params={{ lang: languageCode }}>
-            <A isSelected={category === 'classroom_books'}>
+            <A
+              isSelected={category === 'classroom_books'}
+              hightLightColor={theme.palette.primary.main}
+            >
               <Trans>
                 Classroom <HiddenMobile>books</HiddenMobile>
               </Trans>
@@ -80,4 +84,4 @@ class CategoryNavigation extends React.Component<Props> {
   }
 }
 
-export default CategoryNavigation;
+export default withTheme()(CategoryNavigation);

@@ -8,11 +8,11 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+import { Typography } from '@material-ui/core';
 
 import Safe from './undraw_safe.svg';
 import Container from '../Container';
-import H1 from '../H1';
-import A from '../A';
+import A from '../../elements/A';
 import Head from '../Head';
 import Layout from '../Layout';
 
@@ -23,14 +23,14 @@ const NotFound = () => (
     <Head title="No access" />
     <Container>
       <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <H1>
+        <Typography variant="headline">
           <Trans>Sorry, you don’t have access to this page</Trans>
-        </H1>
+        </Typography>
         <div style={{ margin: '2rem 0' }}>
           <Safe style={{ maxWidth: '100%', height: 'auto' }} />
         </div>
         <Link href="/" passHref>
-          <A isBold>
+          <A>
             <Trans>Take me home</Trans>
           </A>
         </Link>

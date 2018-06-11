@@ -10,7 +10,6 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { css } from 'react-emotion';
 
-import Box from '../../Box';
 import media from '../../../style/media';
 import Search from '../illustrations/Search.svg';
 
@@ -26,10 +25,10 @@ const svgStyle = css`
 `;
 
 const Placeholder = () => (
-  <Box textAlign="center">
+  <div css={{ textAlign: 'center' }}>
     <Search className={svgStyle} aria-hidden />
     <Trans>Search for books.</Trans>
-  </Box>
+  </div>
 );
 
 export default Placeholder;

@@ -10,7 +10,6 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { css } from 'react-emotion';
 
-import Box from '../../Box';
 import media from '../../../style/media';
 import PlayfulCat from '../illustrations/cat-in-bag.svg';
 
@@ -26,14 +25,14 @@ const svgStyle = css`
 `;
 
 const NoResults = () => (
-  <Box textAlign="center" aria-hidden>
+  <div css={{ textAlign: 'center' }} aria-hidden>
     <PlayfulCat className={svgStyle} />
     <span>
       <Trans>
         <strong>Oh no!</strong> Please try searching for something else.
       </Trans>
     </span>
-  </Box>
+  </div>
 );
 
 export default NoResults;

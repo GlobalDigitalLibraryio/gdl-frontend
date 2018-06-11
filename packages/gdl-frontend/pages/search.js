@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
+import { Typography } from '@material-ui/core';
 
 import type { Book, Context, Language } from '../types';
 import { Router } from '../routes';
@@ -28,11 +29,10 @@ import {
   getBookLanguage
 } from '../lib/storage';
 import Head from '../components/Head';
-import Button from '../components/Button';
-import { Container, Text } from '../elements';
+import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
-import errorPage from '../hocs/errorPage';
+import { errorPage, withMuiRoot } from '../hocs';
 
 const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
@@ -66,13 +66,6 @@ type State = {
   lastSearchQuery?: string,
   isLoadingMore: boolean,
   language: ?Language
-};
-
-const resultsTextStyle = {
-  textAlign: 'center',
-  fontSize: '1rem',
-  fontWeight: 'normal',
-  mt: spacing.medium
 };
 
 class SearchPage extends React.Component<Props, State> {
@@ -246,10 +239,12 @@ class SearchPage extends React.Component<Props, State> {
             </form>
 
             {searchResult && (
-              <Text
-                {...resultsTextStyle}
+              <Typography
+                component="h1"
+                align="center"
+                variant="subheading"
                 aria-live="polite"
-                accessibilityRole="heading"
+                css={{ marginTop: spacing.medium }}
               >
                 {searchResult.results.length > 0 ? (
                   <Fragment>
@@ -266,7 +261,7 @@ class SearchPage extends React.Component<Props, State> {
                     <strong>&quot;{lastSearchQuery}&quot;</strong>
                   </Trans>
                 )}
-              </Text>
+              </Typography>
             )}
           </Container>
 
@@ -289,18 +284,17 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  {/* Should really be View instead of Text here.. but */}
-                  <Text textAlign="center">
-                    <Button
-                      disabled={
-                        searchResult.results.length >= searchResult.totalCount
-                      }
-                      onClick={this.handleLoadMore}
-                      isLoading={this.state.isLoadingMore}
-                    >
-                      <Trans>See more</Trans>
-                    </Button>
-                  </Text>
+                  <LoadingButton
+                    fullWidth
+                    color="primary"
+                    disabled={
+                      searchResult.results.length >= searchResult.totalCount
+                    }
+                    onClick={this.handleLoadMore}
+                    isLoading={this.state.isLoadingMore}
+                  >
+                    <Trans>See more</Trans>
+                  </LoadingButton>
                 </Fragment>
               )
             ) : (
@@ -313,4 +307,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default errorPage(withRouter(SearchPage));
+export default withMuiRoot(errorPage(withRouter(SearchPage)));

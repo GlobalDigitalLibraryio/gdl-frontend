@@ -9,6 +9,9 @@
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getPageContext from '../getPageContext';
+
 import type { Context } from '../types';
 import config from '../config';
 import { DEFAULT_TITLE } from '../components/Head';
@@ -23,19 +26,29 @@ const precomposed72 = require('../static/img/apple-icon-72x72-precomposed.png');
 const precomposed114 = require('../static/img/apple-icon-114x114-precomposed.png');
 const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png');
 
-/**
- * We cheat a bit and add next-head to a couple of the tags, so we can ovveride them later if needed
- */
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
-    const page = renderPage();
-    const styleTags = extractCritical(page.html);
+    const pageContext = getPageContext();
+
+    // Needed to SSR MUI's styles
+    const page = renderPage(Component => props => (
+      <JssProvider
+        registry={pageContext.sheetsRegistry}
+        generateClassName={pageContext.generateClassName}
+      >
+        <Component pageContext={pageContext} {...props} />
+      </JssProvider>
+    ));
+
+    // Extract Emotion's styles for SSR
+    const emotionStyles = extractCritical(page.html);
 
     return {
       ...page,
+      pageContext,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
       language: req.language,
-      ...styleTags
+      ...emotionStyles
     };
   }
 
@@ -48,8 +61,6 @@ export default class Document extends NextDocument {
   }
 
   render() {
-    /* eslint-disable react/no-danger */
-
     return (
       <html lang={this.props.language}>
         <Head>
@@ -99,7 +110,12 @@ export default class Document extends NextDocument {
             sizes="144x144"
             href={precomposed144}
           />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+          />
 
+          {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script
             dangerouslySetInnerHTML={{
               __html: `window.${config.GLOBAL_VAR_NAME} = '${
@@ -107,6 +123,19 @@ export default class Document extends NextDocument {
               }';`
             }}
           />
+
+          {/* The JSS styles (for MUI) hare injected here */}
+          <style
+            id="jss-server-side"
+            dangerouslySetInnerHTML={{
+              __html: this.props.pageContext.sheetsRegistry.toString()
+            }}
+          />
+
+          {/* Custom JSS insertion point, so our Emotion styles takes precedence. This is used on the client. See withMuiRoot */}
+          <noscript id="jss-insertion-point" />
+
+          {/* Emotion's styles are injected here. We want them below the JSS styles, so we can overwrite MUI css with Emotion */}
           <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>

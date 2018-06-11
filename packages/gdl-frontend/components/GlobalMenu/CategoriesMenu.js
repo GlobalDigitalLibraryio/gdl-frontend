@@ -13,9 +13,14 @@ import type { ReadingLevel } from '../../types';
 import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
 import ReadingLevelTrans from '../ReadingLevelTrans';
-import Menu, { MenuItem } from '../Menu';
-import { ActivityIndicator } from '../../elements';
-import { spacing } from '../../style/theme';
+import {
+  Drawer,
+  Divider,
+  List,
+  ListSubheader,
+  ListItem,
+  ListItemText
+} from '@material-ui/core';
 
 type Categories = {
   classroom_books?: Array<ReadingLevel>,
@@ -26,8 +31,7 @@ type Props = {|
   languageCode: string,
   // Render prop
   children: (data: { onClick: () => void }) => Node,
-  onSelectCategory: () => void,
-  openStateCallback: boolean => void
+  onSelectCategory: () => void
 |};
 
 type State = {
@@ -41,19 +45,20 @@ export default class CategoriesMenu extends React.Component<Props, State> {
     showMenu: false
   };
 
-  handleShowMenu = () => {
-    if (!this.state.categories) {
+  // We only hit the network to get the categories if we really need to
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (
+      !prevState.showMenu &&
+      this.state.showMenu &&
+      this.state.categories == null
+    ) {
       this.loadCategories();
     }
+  }
 
-    this.props.openStateCallback(true);
-    this.setState({ showMenu: true });
-  };
+  handleShowMenu = () => this.setState({ showMenu: true });
 
-  handleCloseMenu = () => {
-    this.props.openStateCallback(false);
-    this.setState({ showMenu: false });
-  };
+  handleCloseMenu = () => this.setState({ showMenu: false });
 
   async loadCategories() {
     const categoriesRes = await fetchCategories(this.props.languageCode);
@@ -73,55 +78,56 @@ export default class CategoriesMenu extends React.Component<Props, State> {
       <Fragment>
         {children({ onClick: this.handleShowMenu })}
         {this.state.showMenu && (
-          <Menu
-            heading={<Trans>Categories</Trans>}
-            onClose={this.handleCloseMenu}
-            isNestedMenu
-          >
-            {!categories ? (
-              <ActivityIndicator
-                size="large"
-                style={{ marginTop: spacing.large }}
-              />
-            ) : (
-              <Fragment>
-                {categories.classroom_books && (
+          <Drawer open onClose={this.handleCloseMenu}>
+            <List component="nav">
+              {categories &&
+                categories.classroom_books && (
                   <Fragment>
-                    <MenuItem showKeyLine>
+                    <ListSubheader component="div">
                       <Trans>Classroom books</Trans>
-                    </MenuItem>
+                    </ListSubheader>
                     {categories.classroom_books.map(level => (
                       <Link
                         key={level}
                         lang={languageCode}
                         readingLevel={level}
                         category="classroom_books"
+                        passHref
                       >
-                        <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                          <ReadingLevelTrans readingLevel={level} />
-                        </MenuItem>
+                        <ListItem
+                          onClick={onSelectCategory}
+                          button
+                          component="a"
+                        >
+                          <ListItemText inset>
+                            <ReadingLevelTrans readingLevel={level} />
+                          </ListItemText>
+                        </ListItem>
                       </Link>
                     ))}
                     <Link
                       category="classroom_books"
                       lang={languageCode}
                       sort="-arrivalDate"
+                      passHref
                     >
-                      <MenuItem
-                        isNestedItem
-                        onCustomClick={onSelectCategory}
-                        showKeyLine={Boolean(categories.library_books)}
-                      >
-                        <Trans>New arrivals</Trans>
-                      </MenuItem>
+                      <ListItem onClick={onSelectCategory} button component="a">
+                        <ListItemText inset>
+                          <Trans>New arrivals</Trans>
+                        </ListItemText>
+                      </ListItem>
                     </Link>
                   </Fragment>
                 )}
-                {categories.library_books && (
+              {categories &&
+                Boolean(categories.library_books) &&
+                Boolean(categories.classroom_books) && <Divider />}
+              {categories &&
+                categories.library_books && (
                   <Fragment>
-                    <MenuItem showKeyLine>
+                    <ListSubheader component="div">
                       <Trans>Library books</Trans>
-                    </MenuItem>
+                    </ListSubheader>
                     {categories.library_books.map(level => (
                       <Link
                         key={level}
@@ -129,9 +135,15 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                         readingLevel={level}
                         category="library_books"
                       >
-                        <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                          <ReadingLevelTrans readingLevel={level} />
-                        </MenuItem>
+                        <ListItem
+                          onClick={onSelectCategory}
+                          button
+                          component="a"
+                        >
+                          <ListItemText inset>
+                            <ReadingLevelTrans readingLevel={level} />
+                          </ListItemText>
+                        </ListItem>
                       </Link>
                     ))}
                     <Link
@@ -139,15 +151,16 @@ export default class CategoriesMenu extends React.Component<Props, State> {
                       lang={languageCode}
                       sort="-arrivalDate"
                     >
-                      <MenuItem onCustomClick={onSelectCategory} isNestedItem>
-                        <Trans>New arrivals</Trans>
-                      </MenuItem>
+                      <ListItem button onClick={onSelectCategory}>
+                        <ListItemText inset>
+                          <Trans>New arrivals</Trans>
+                        </ListItemText>
+                      </ListItem>
                     </Link>
                   </Fragment>
                 )}
-              </Fragment>
-            )}
-          </Menu>
+            </List>
+          </Drawer>
         )}
       </Fragment>
     );

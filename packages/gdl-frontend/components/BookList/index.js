@@ -9,11 +9,10 @@
 import React, { Fragment, type Element } from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
+import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
-import Text from '../../elements/Text';
-import A from '../../elements/A';
-import { spacing, fonts } from '../../style/theme/';
+import { spacing } from '../../style/theme/';
 import type { Book } from '../../types';
 import BookLink from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
@@ -33,18 +32,15 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       justifyContent="space-between"
       mb={spacing.small}
     >
-      <Text
-        accessibilityRole="heading"
-        fontSize="1.3rem"
-        fontWeight={fonts.weight.medium}
-      >
+      <Typography component="h1" variant="headline">
         {heading}
-      </Text>
+      </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          <A fontWeight={fonts.weight.medium}>
+          {/* Negative margin to align the link against the edge of the container */}
+          <Button color="primary" css={{ marginRight: '-16px' }}>
             <Trans>More</Trans>
-          </A>
+          </Button>
         </BrowseLink>
       )}
     </View>
@@ -66,13 +62,14 @@ const NegativeMarginDiv = styled('div')`
 
 const ScrollDiv = styled('div')`
   overflow-x: auto;
+  /* Fixes problem with scrolling in Safari all over the place */
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   ::-webkit-scrollbar {
     display: none;
   }
   white-space: nowrap;
   padding: 0 ${spacing.medium};
-  padding-bottom: 4px;
 `;
 
 const CoverDiv = styled('div')`

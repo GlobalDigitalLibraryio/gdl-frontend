@@ -8,7 +8,18 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import MdArrowDownward from 'react-icons/lib/md/arrow-downward';
+import {
+  ArrowForward as ArrowForwardIcon,
+  ArrowDownward as ArrowDownwardIcon
+} from '@material-ui/icons';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Hidden,
+  Grid,
+  Button
+} from '@material-ui/core';
 
 import {
   fetchBook,
@@ -23,21 +34,14 @@ import type {
   Context
 } from '../../types';
 import { Link, Router } from '../../routes';
-import { securePage, errorPage, withI18n } from '../../hocs/';
+import { securePage, errorPage, withI18n, withMuiRoot } from '../../hocs/';
 import Layout from '../../components/Layout';
-import Box from '../../components/Box';
-import Flex from '../../components/Flex';
-import H1 from '../../components/H1';
-import Button from '../../components/Button';
-import H4 from '../../components/H4';
-import P from '../../components/P';
-import Card from '../../components/Card';
 import Container from '../../components/Container';
+import { A } from '../../elements';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
-import A from '../../components/A';
 import LanguageMenu from '../../components/LanguageMenu';
-import { colors } from '../../style/theme';
+import { spacing } from '../../style/theme';
 
 type Props = {
   book: BookDetails,
@@ -133,96 +137,150 @@ class TranslatePage extends React.Component<Props, State> {
           description={book.description}
           image={book.coverImage && book.coverImage.url}
         />
-        <Container py={[15, 40]} style={{ textAlign: 'center' }}>
-          <H1>
+        <Container
+          css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+        >
+          <Typography
+            variant="display1"
+            component="h1"
+            align="center"
+            css={{ marginBottom: spacing.large }}
+          >
             <Trans>Translate book</Trans>
-          </H1>
-          <Card p={[15, 20]} my={[20, 50]} textAlign="left">
-            <Flex>
-              <Box mr={[10, 20]}>
-                <Link
-                  route="book"
-                  params={{ lang: book.language.code, id: book.id }}
-                >
-                  <a>
-                    <BookCover
-                      coverImage={book.coverImage}
-                      w={[75, 120]}
-                      h={[100, 150]}
-                    />
-                  </a>
-                </Link>
-              </Box>
-              <Box>
-                <H4>{book.title}</H4>
-                <P color={colors.text.subtle}>
-                  <Trans>from {book.publisher.name}</Trans>
-                </P>
-              </Box>
-            </Flex>
+          </Typography>
+          <Card>
+            <CardContent>
+              <Grid container spacing={16}>
+                <Grid item>
+                  <Link
+                    route="book"
+                    params={{ lang: book.language.code, id: book.id }}
+                  >
+                    <a>
+                      <BookCover
+                        coverImage={book.coverImage}
+                        w={[75, 120]}
+                        h={[100, 150]}
+                      />
+                    </a>
+                  </Link>
+                </Grid>
+                <Grid item xs>
+                  <Typography lang={book.language.code} variant="headline">
+                    {book.title}
+                  </Typography>
+
+                  <Typography paragraph variant="subheading">
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
+
+                  <Typography lang={book.language.code} paragraph>
+                    {book.description}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
           </Card>
-          <Box mb={20}>
-            <P color={colors.text.subtle}>
-              <Trans>Translate from</Trans>
-            </P>
-            <div>{book.language.name}</div>
-            <MdArrowDownward color={colors.base.orange} size={50} />
-            <P color={colors.text.subtle}>
-              <Trans>Translate to</Trans>
-            </P>
-            {this.state.showLanguageMenu && (
-              <LanguageMenu
-                languages={supportedLanguages}
-                selectedLanguageCode={selectedLanguage && selectedLanguage.code}
-                onSelectLanguage={this.handleChangeLanguage}
-                onClose={this.toggleLanguageMenu}
-              />
-            )}
-            {selectedLanguage && <strong>{selectedLanguage.name}</strong>}
-            <A
-              isUppercased={Boolean(selectedLanguage)}
-              onClick={this.toggleLanguageMenu}
-              aria-expanded={this.state.showLanguageMenu}
-            >
-              {selectedLanguage ? (
-                <Trans>Change</Trans>
-              ) : (
-                <Trans>Choose language</Trans>
-              )}
-            </A>
-          </Box>
-          {this.state.translation ? (
-            <React.Fragment>
-              <Button
-                href={this.state.translation.crowdinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={this.handleStartTranslation}
+          <Grid
+            container
+            alignItems="center"
+            css={{
+              textAlign: 'center',
+              marginTop: spacing.xxlarge,
+              marginBottom: spacing.xxlarge
+            }}
+          >
+            <Grid item md={4} xs={12}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
               >
-                <Trans>Start translation</Trans>
+                <Trans gutterBottom>Translate from</Trans>
+              </Typography>
+              <Typography
+                color="inherit"
+                variant="button"
+                css={{ paddingTop: '8px' }}
+              >
+                {book.language.name}
+              </Typography>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Hidden
+                mdUp
+                implementation="css"
+                css={{ margin: `${spacing.large} 0` }}
+              >
+                <ArrowDownwardIcon />
+              </Hidden>
+              <Hidden mdDown implementation="css">
+                <ArrowForwardIcon />
+              </Hidden>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
+                <Trans>Translate to</Trans>
+              </Typography>
+              <Button color="primary" onClick={this.toggleLanguageMenu}>
+                {selectedLanguage ? (
+                  selectedLanguage.name
+                ) : (
+                  <Trans>Select language</Trans>
+                )}
               </Button>
-              <p>
-                <small>
+            </Grid>
+          </Grid>
+          {this.state.showLanguageMenu && (
+            <LanguageMenu
+              languages={supportedLanguages}
+              selectedLanguageCode={selectedLanguage && selectedLanguage.code}
+              onSelectLanguage={this.handleChangeLanguage}
+              onClose={this.toggleLanguageMenu}
+            />
+          )}
+          <div css={{ textAlign: 'center' }}>
+            {this.state.translation ? (
+              <React.Fragment>
+                <Button
+                  href={this.state.translation.crowdinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={this.handleStartTranslation}
+                  variant="outlined"
+                >
+                  <Trans>Start translation</Trans>
+                </Button>
+                <Typography css={{ marginTop: spacing.medium }}>
                   <Trans>
                     Opens 3rd party site{' '}
-                    <a href="https://crowdin.com/">Crowdin</a> in a new window.
+                    <A href="https://crowdin.com/" css={{ display: 'inline' }}>
+                      Crowdin
+                    </A>{' '}
+                    in a new window.
                   </Trans>
-                </small>
-              </p>
-            </React.Fragment>
-          ) : (
-            <Button
-              disabled={this.state.selectedLanguage == null}
-              isLoading={this.state.preparingTranslation}
-              onClick={this.handlePrepareTranslation}
-            >
-              <Trans>Prepare translation</Trans>
-            </Button>
-          )}
+                </Typography>
+              </React.Fragment>
+            ) : (
+              <Button
+                disabled={this.state.selectedLanguage == null}
+                isLoading={this.state.preparingTranslation}
+                onClick={this.handlePrepareTranslation}
+                size="large"
+                variant="outlined"
+              >
+                <Trans>Prepare translation</Trans>
+              </Button>
+            )}
+          </div>
         </Container>
       </Layout>
     );
   }
 }
 
-export default securePage(errorPage(withI18n(TranslatePage)));
+export default withMuiRoot(securePage(errorPage(withI18n(TranslatePage))));
