@@ -1,4 +1,5 @@
 import Document, { Head, Main, NextScript } from 'next/document';
+import React from 'react';
 
 const isDev = process.env.NODE_ENV !== 'production';
 const cssPath = (isDev ? '/' : '/admin/') + '_next/static/style.css';

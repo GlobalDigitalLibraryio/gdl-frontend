@@ -64,7 +64,9 @@ class Crop extends Component<Props, State> {
     return {
       forRatio: String(this.state.ratio),
       revision: revision,
-      imageUrl: this.props.imageUrl && this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/')),
+      imageUrl:
+        this.props.imageUrl &&
+        this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/')),
       rawImageQueryParameters: {
         cropStartX: pcnt.cropStartX,
         cropEndX: pcnt.cropEndX,
