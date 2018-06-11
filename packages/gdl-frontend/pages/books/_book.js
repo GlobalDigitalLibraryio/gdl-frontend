@@ -147,11 +147,17 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                 />
               </CoverWrap>
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
-              <Card css={media.tablet({ display: 'flex' })}>
+              <Card
+                css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
+              >
                 <CardContent
                   css={[
                     media.mobile({ paddingTop: '70px' }),
-                    media.tablet({ display: 'flex', flexDirection: 'column' })
+                    media.tablet({
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flex: '1'
+                    })
                   ]}
                 >
                   <Typography
