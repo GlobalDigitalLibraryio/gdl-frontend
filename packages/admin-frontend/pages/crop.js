@@ -5,6 +5,7 @@ import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
+import {imageApiUrl} from '../config';
 import {getTokenFromLocalCookie} from '../lib/fetch';
 
 class Crop extends Component {
@@ -73,10 +74,8 @@ class Crop extends Component {
   postToImageApi = async _ => {
     if (this.state.imageApiBody !== null) {
       console.log('Posting');
-      // TODO Hent URL fra config istedet
-      await fetch('https://api.test.digitallibrary.io/image-api/v2/images/stored-parameters', {
+      await fetch(`${imageApiUrl}/images/stored-parameters`, {
         method: 'POST',
-        // TODO Ikke ta med dette
         headers: {
           'Authorization': 'Bearer ' + getTokenFromLocalCookie(),
           'Accept': 'application/json'
@@ -91,8 +90,7 @@ class Crop extends Component {
 
   getExistingParameters = async () => {
     const imageUrl = this.props.  imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
-    const url = 'https://api.test.digitallibrary.io/image-api/v2/images/stored-parameters' + imageUrl;
-    // fetch(url).thresults => {console.log(results)})// this.setState({existingParameters: results.json()})});
+    const url = `${imageApiUrl}/images/stored-parameters${imageUrl}`;
     const response = await fetch(url);
     this.setState({existingParameters: await response.json()});
 
@@ -117,7 +115,6 @@ class Crop extends Component {
         <p>
           <button onClick={this.toggleRatio}>Toggle ratio</button>
         </p>
-        <p>Existing stuff: {JSON.stringify(this.state.existingParameters)}</p>
         <Cropper
           ref="cropper"
           src={this.props.imageUrl}
