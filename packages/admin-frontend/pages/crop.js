@@ -11,7 +11,7 @@ import {getTokenFromLocalCookie} from '../lib/fetch';
 class Crop extends Component {
 
   
-  state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
+  state = { ratio: 0.81, imageApiBody: null, existingParameters: null, postResult: null };
 
   toPercentages = c => {
     var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
@@ -40,11 +40,9 @@ class Crop extends Component {
     };
   };
 
-  // TODO Ha med revision her
   toImageApiBody = pcnt => {
     const existingParametersForCurrentRatio = this.state.existingParameters !== null && this.state.existingParameters.find(p => p.forRatio === String(this.state.ratio));
     const revision = existingParametersForCurrentRatio !== null ? existingParametersForCurrentRatio.revision : 1;
-    console.log('Using revision=' + revision);
 
     return {
       forRatio: String(this.state.ratio),
@@ -67,14 +65,13 @@ class Crop extends Component {
       pcnt.cropEndX
     }&cropStartY=${pcnt.cropStartY}&cropEndY=${pcnt.cropEndY}`;
 
-    console.log(JSON.stringify(this.toImageApiBody(pcnt), undefined, 2));
     this.setState({imageApiBody: this.toImageApiBody(pcnt)});
   }
 
   postToImageApi = async _ => {
     if (this.state.imageApiBody !== null) {
-      console.log('Posting');
-      await fetch(`${imageApiUrl}/images/stored-parameters`, {
+      this.setState({postResult: 'Posting…'});
+      const response = await fetch(`${imageApiUrl}/images/stored-parameters`, {
         method: 'POST',
         headers: {
           'Authorization': 'Bearer ' + getTokenFromLocalCookie(),
@@ -82,9 +79,17 @@ class Crop extends Component {
         },
         body: JSON.stringify(this.state.imageApiBody)
       });
+
+      let result = await response.json();
+
+      if (response.ok) {
+        this.setState({ postResult: 'Ok!' });
+      } else if (response.status === 401) {
+        this.setState({ postResult: 'Unauthorized, please login' });
+      } else {
+        this.setState({ postResult: `Unknown error: ${response.status}` });
+      }
       await this.getExistingParameters();
-    } else {
-      console.log('Not posting');
     }
   }
 
@@ -109,6 +114,14 @@ class Crop extends Component {
     this.getExistingParameters();
   }
 
+  displayPostResult() {
+    if (this.state.postResult !== null) {
+      return (<p>{this.state.postResult}</p>);
+    } else {
+      return (null);
+    }
+  }
+
   render() {
     return (
       <div>
@@ -131,6 +144,7 @@ class Crop extends Component {
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
         <button onClick={this.postToImageApi}>Save this crop config for ratio={this.state.ratio}</button>
+        {this.displayPostResult()}
       </div>
     );
   }
