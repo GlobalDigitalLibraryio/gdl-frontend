@@ -1,10 +1,8 @@
 // @flow
-import { render } from 'react-dom';
 
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import Link from 'next/link';
 import fetch from 'isomorphic-fetch';
 import { imageApiUrl } from '../config';
 import { getTokenFromLocalCookie } from '../lib/fetch';
@@ -78,14 +76,6 @@ class Crop extends Component<Props, State> {
 
   _crop() {
     var pcnt = this.toPercentages(this.refs.cropper);
-    var url =
-      this.props.imageUrl &&
-      `${this.props.imageUrl.toString()}?cropStartX=${
-        pcnt.cropStartX
-      }&cropEndX=${pcnt.cropEndX}&cropStartY=${pcnt.cropStartY}&cropEndY=${
-        pcnt.cropEndY
-      }`;
-
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   }
 
@@ -100,8 +90,6 @@ class Crop extends Component<Props, State> {
         },
         body: JSON.stringify(this.state.imageApiBody)
       });
-
-      let result = await response.json();
 
       if (response.ok) {
         this.setState({ postResult: 'Ok!' });

@@ -1,14 +1,12 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
 
 import UniversalCookie from 'universal-cookie';
-import jwtDecode from 'jwt-decode';
-import fetch from 'isomorphic-fetch';
 
 const JWT_KEY = 'jwt';
 

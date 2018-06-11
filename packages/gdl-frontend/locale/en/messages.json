@@ -1,4 +1,49 @@
 {
+  "Sign in": {
+    "translation": "Sign in",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        40
+      ]
+    ]
+  },
+  "Sign in to continue": {
+    "translation": "Sign in to continue",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        43
+      ]
+    ]
+  },
+  "Sign in using Google": {
+    "translation": "Sign in using Google",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        52
+      ]
+    ]
+  },
+  "Sign in using Facebook": {
+    "translation": "Sign in using Facebook",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        59
+      ]
+    ]
+  },
+  "Select language": {
+    "translation": "Select language",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        233
+      ]
+    ]
+  },
   "Download book": {
     "translation": "Download book",
     "origin": [
@@ -8,11 +53,11 @@
       ],
       [
         "pages/books/_book.js",
-        191
+        223
       ],
       [
         "pages/books/_book.js",
-        214
+        273
       ]
     ]
   },
@@ -22,6 +67,10 @@
       [
         "components/BookDetailsPage/DownloadBookMenu.js",
         41
+      ],
+      [
+        "pages/books/_book.js",
+        238
       ]
     ]
   },
@@ -31,6 +80,10 @@
       [
         "components/BookDetailsPage/DownloadBookMenu.js",
         46
+      ],
+      [
+        "pages/books/_book.js",
+        247
       ]
     ]
   },
@@ -79,21 +132,12 @@
       ]
     ]
   },
-  "Published": {
-    "translation": "Published",
-    "origin": [
-      [
-        "components/BookDetailsPage/Metadata.js",
-        76
-      ]
-    ]
-  },
   "License": {
     "translation": "License",
     "origin": [
       [
         "components/BookDetailsPage/Metadata.js",
-        87
+        79
       ]
     ]
   },
@@ -102,7 +146,7 @@
     "origin": [
       [
         "components/BookList/index.js",
-        46
+        42
       ],
       [
         "components/HomePage/index.js",
@@ -119,25 +163,12 @@
       ]
     ]
   },
-  "Categories": {
-    "translation": "Categories",
-    "origin": [
-      [
-        "components/GlobalMenu/CategoriesMenu.js",
-        77
-      ],
-      [
-        "components/GlobalMenu/index.js",
-        73
-      ]
-    ]
-  },
   "Classroom books": {
     "translation": "Classroom books",
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        91
+        87
       ]
     ]
   },
@@ -146,23 +177,23 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        115
+        116
       ],
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        143
+        156
       ],
       [
         "components/HomePage/index.js",
-        193
+        196
       ],
       [
         "pages/books/browse.js",
-        159
+        158
       ],
       [
         "pages/books/browse.js",
-        172
+        174
       ]
     ]
   },
@@ -171,20 +202,7 @@
     "origin": [
       [
         "components/GlobalMenu/CategoriesMenu.js",
-        123
-      ]
-    ]
-  },
-  "Menu": {
-    "translation": "Menu",
-    "origin": [
-      [
-        "components/GlobalMenu/index.js",
-        47
-      ],
-      [
-        "components/Navbar/index.js",
-        41
+        129
       ]
     ]
   },
@@ -193,7 +211,16 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        62
+        71
+      ]
+    ]
+  },
+  "Categories": {
+    "translation": "Categories",
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        84
       ]
     ]
   },
@@ -202,7 +229,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        82
+        97
       ]
     ]
   },
@@ -211,7 +238,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        88
+        105
       ]
     ]
   },
@@ -220,19 +247,19 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        94
+        113
       ],
       [
         "pages/books/translations.js",
-        131
+        143
       ],
       [
         "pages/books/translations.js",
-        132
+        144
       ],
       [
         "pages/books/translations.js",
-        135
+        154
       ]
     ]
   },
@@ -241,16 +268,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        101
-      ]
-    ]
-  },
-  "Licensing and reuse": {
-    "translation": "Licensing and reuse",
-    "origin": [
-      [
-        "components/GlobalMenu/index.js",
-        104
+        120
       ]
     ]
   },
@@ -259,7 +277,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        107
+        123
       ]
     ]
   },
@@ -268,7 +286,7 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        110
+        126
       ]
     ]
   },
@@ -277,7 +295,16 @@
     "origin": [
       [
         "components/GlobalMenu/index.js",
-        113
+        129
+      ]
+    ]
+  },
+  "Licensing and reuse": {
+    "translation": "Licensing and reuse",
+    "origin": [
+      [
+        "components/GlobalMenu/index.js",
+        132
       ]
     ]
   },
@@ -295,7 +322,7 @@
     "origin": [
       [
         "components/HomePage/index.js",
-        167
+        166
       ]
     ]
   },
@@ -304,11 +331,20 @@
     "origin": [
       [
         "components/LanguageMenu/LanguageMenu.js",
-        77
+        96
+      ]
+    ]
+  },
+  "Selected:": {
+    "translation": "Selected:",
+    "origin": [
+      [
+        "components/LanguageMenu/LanguageMenu.js",
+        108
       ],
       [
-        "pages/books/_translate.js",
-        190
+        "components/Menu/MenuItem.js",
+        78
       ]
     ]
   },
@@ -318,10 +354,6 @@
       [
         "components/LanguageMenu/SelectLanguage.js",
         78
-      ],
-      [
-        "pages/books/_translate.js",
-        188
       ]
     ]
   },
@@ -338,21 +370,12 @@
       ]
     ]
   },
-  "Selected:": {
-    "translation": "Selected:",
-    "origin": [
-      [
-        "components/Menu/MenuItem.js",
-        78
-      ]
-    ]
-  },
   "Breadcrumb": {
     "translation": "Breadcrumb",
     "origin": [
       [
         "components/NavContextBar/Breadcrumb.js",
-        81
+        69
       ]
     ]
   },
@@ -361,11 +384,11 @@
     "origin": [
       [
         "components/NavContextBar/Breadcrumb.js",
-        85
+        73
       ],
       [
         "components/NavContextBar/Breadcrumb.js",
-        85
+        73
       ]
     ]
   },
@@ -374,7 +397,7 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        63
+        64
       ]
     ]
   },
@@ -383,7 +406,16 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        72
+        76
+      ]
+    ]
+  },
+  "Menu": {
+    "translation": "Menu",
+    "origin": [
+      [
+        "components/Navbar/index.js",
+        60
       ]
     ]
   },
@@ -392,11 +424,11 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        51
+        72
       ],
       [
         "pages/search.js",
-        226
+        219
       ]
     ]
   },
@@ -418,7 +450,7 @@
       ],
       [
         "components/NotFound/index.js",
-        41
+        47
       ]
     ]
   },
@@ -445,7 +477,7 @@
     "origin": [
       [
         "components/Reader/ButtonOverlay.js",
-        57
+        59
       ]
     ]
   },
@@ -454,7 +486,7 @@
     "origin": [
       [
         "components/Reader/ButtonOverlay.js",
-        69
+        71
       ]
     ]
   },
@@ -463,7 +495,7 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        87
+        84
       ]
     ]
   },
@@ -499,7 +531,7 @@
     "origin": [
       [
         "components/Search/components/NoResults.js",
-        32
+        31
       ]
     ]
   },
@@ -508,7 +540,7 @@
     "origin": [
       [
         "components/Search/components/Placeholder.js",
-        31
+        30
       ]
     ]
   },
@@ -517,47 +549,7 @@
     "origin": [
       [
         "hocs/securePage.js",
-        81
-      ]
-    ]
-  },
-  "Login": {
-    "translation": "Login",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        42
-      ],
-      [
-        "pages/auth/sign-in.js",
-        43
-      ]
-    ]
-  },
-  "Log in to continue": {
-    "translation": "Log in to continue",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        50
-      ]
-    ]
-  },
-  "Log in using Google": {
-    "translation": "Log in using Google",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        59
-      ]
-    ]
-  },
-  "Log in using Facebook": {
-    "translation": "Log in using Facebook",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        67
+        80
       ]
     ]
   },
@@ -566,7 +558,7 @@
     "origin": [
       [
         "pages/auth/signed-in.js",
-        30
+        31
       ]
     ]
   },
@@ -575,7 +567,7 @@
     "origin": [
       [
         "pages/auth/signed-in.js",
-        33
+        34
       ]
     ]
   },
@@ -584,15 +576,15 @@
     "origin": [
       [
         "pages/books/_book.js",
-        162
+        176
       ],
       [
         "pages/books/_translate.js",
-        159
+        174
       ],
       [
         "pages/books/translations.js",
-        78
+        82
       ]
     ]
   },
@@ -601,7 +593,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        182
+        210
       ]
     ]
   },
@@ -610,7 +602,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        238
+        298
       ]
     ]
   },
@@ -619,7 +611,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        259
+        318
       ]
     ]
   },
@@ -628,7 +620,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        273
+        329
       ]
     ]
   },
@@ -637,11 +629,11 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        128
+        132
       ],
       [
         "pages/books/_translate.js",
-        138
+        149
       ]
     ]
   },
@@ -650,7 +642,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        132
+        136
       ]
     ]
   },
@@ -659,7 +651,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        166
+        199
       ]
     ]
   },
@@ -668,7 +660,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        171
+        227
       ]
     ]
   },
@@ -677,7 +669,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        202
+        256
       ]
     ]
   },
@@ -686,7 +678,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        206
+        259
       ]
     ]
   },
@@ -695,7 +687,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        219
+        276
       ]
     ]
   },
@@ -704,7 +696,7 @@
     "origin": [
       [
         "pages/books/browse.js",
-        163
+        162
       ]
     ]
   },
@@ -713,7 +705,7 @@
     "origin": [
       [
         "pages/books/browse.js",
-        175
+        177
       ]
     ]
   },
@@ -722,7 +714,7 @@
     "origin": [
       [
         "pages/books/browse.js",
-        186
+        193
       ]
     ]
   },
@@ -731,7 +723,7 @@
     "origin": [
       [
         "pages/books/translations.js",
-        93
+        109
       ]
     ]
   },
@@ -740,7 +732,7 @@
     "origin": [
       [
         "pages/books/translations.js",
-        103
+        117
       ]
     ]
   },
@@ -749,7 +741,7 @@
     "origin": [
       [
         "pages/search.js",
-        256
+        251
       ]
     ]
   },
@@ -758,7 +750,7 @@
     "origin": [
       [
         "pages/search.js",
-        264
+        259
       ]
     ]
   },
@@ -767,7 +759,7 @@
     "origin": [
       [
         "pages/search.js",
-        301
+        296
       ]
     ]
   }

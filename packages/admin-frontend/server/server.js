@@ -9,7 +9,6 @@
 const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDev });
