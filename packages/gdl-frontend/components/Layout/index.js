@@ -6,18 +6,19 @@
  * See LICENSE
  */
 
-import React, { Fragment, type Node } from 'react';
+import React, { type Node } from 'react';
 import styled from 'react-emotion';
-import { ThemeProvider } from 'emotion-theming';
-import { PortalWithState } from 'react-portal';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
+
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
 import { NavContextBar, Breadcrumb } from '../NavContextBar';
+import { classRoomTheme } from '../../getPageContext';
 
-const Main = styled('main')`
-  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.2);
+const Main = styled(Paper)`
   background: ${colors.container.background};
   flex: 1;
   width: 100%;
@@ -39,36 +40,41 @@ type Props = {|
   wrapWithMain: boolean
 |};
 
-const Layout = ({ children, category, wrapWithMain, crumbs }: Props) => {
-  return (
-    <ThemeProvider
-      theme={{
-        category: category === 'classroom_books' ? 'classroom' : 'library'
-      }}
-    >
+class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
+  static defaultProps = {
+    wrapWithMain: true
+  };
+
+  state = {
+    drawerIsOpen: false
+  };
+
+  wrapWithCategoryTheme(node: Node) {
+    if (this.props.category === 'classroom_books') {
+      return <MuiThemeProvider theme={classRoomTheme}>{node}</MuiThemeProvider>;
+    }
+    return node;
+  }
+
+  render() {
+    const { children, wrapWithMain, crumbs } = this.props;
+    return this.wrapWithCategoryTheme(
       <PageWrapper>
-        <PortalWithState>
-          {({ portal, closePortal, openPortal, isOpen }) => (
-            <Fragment>
-              <Navbar onMenuClick={openPortal} menuIsExpanded={isOpen} />
-              {portal(<GlobalMenu onClose={closePortal} />)}
-            </Fragment>
-          )}
-        </PortalWithState>
+        <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
+        <GlobalMenu
+          onClose={() => this.setState({ drawerIsOpen: false })}
+          isOpen={this.state.drawerIsOpen}
+        />
         {crumbs && (
           <NavContextBar>
             <Breadcrumb crumbs={crumbs} />
           </NavContextBar>
         )}
-        {wrapWithMain ? <Main>{children}</Main> : children}
+        {wrapWithMain ? <Main component="main">{children}</Main> : children}
       </PageWrapper>
-    </ThemeProvider>
-  );
-};
-
-Layout.defaultProps = {
-  wrapWithMain: true
-};
+    );
+  }
+}
 
 export default Layout;
 export { Main };

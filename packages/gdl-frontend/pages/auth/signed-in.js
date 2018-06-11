@@ -9,9 +9,10 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
+
+import { withMuiRoot } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import Box from '../../components/Box';
 import { setToken } from '../../lib/auth/token';
 import { parseHash, getRedirectUrl } from '../../lib/auth';
 
@@ -29,13 +30,13 @@ class Success extends React.Component<*> {
     return (
       <Layout crumbs={[<Trans>Redirecting...</Trans>]}>
         <Container pt={50}>
-          <Box textAlign="center">
+          <div css={{ textAlign: 'center' }}>
             <Trans>Logged in, please wait while we redirect you!</Trans>
-          </Box>
+          </div>
         </Container>
       </Layout>
     );
   }
 }
 
-export default Success;
+export default withMuiRoot(Success);

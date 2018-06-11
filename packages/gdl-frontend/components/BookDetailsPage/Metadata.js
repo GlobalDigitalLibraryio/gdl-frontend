@@ -7,14 +7,14 @@
  */
 
 import React, { Fragment } from 'react';
-import { DateFormat, Trans, Plural } from '@lingui/react';
+import { Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
 import A from '../../elements/A';
-import Box from '../Box';
 import Ribbon from './LevelRibbon';
 import { colors, fonts, spacing } from '../../style/theme';
+import media from '../../style/media';
 
 type Props = {
   book: BookDetails
@@ -68,16 +68,8 @@ function listContributors(contributorType, contributors) {
 
 const BookMeta = ({ book }: Props) => {
   return (
-    <Box color={colors.text.subtle} pl={[0, spacing.medium]}>
+    <Div>
       <Ribbon level={book.readingLevel} />
-      {book.datePublished && (
-        <Fragment>
-          <Heading>
-            <Trans>Published</Trans>
-          </Heading>
-          <DateFormat value={new Date(book.datePublished)} />
-        </Fragment>
-      )}
 
       {Object.values(ContributorTypes).map(type =>
         listContributors(type, book.contributors)
@@ -87,8 +79,15 @@ const BookMeta = ({ book }: Props) => {
         <Trans>License</Trans>
       </Heading>
       <A href={book.license.url}>{book.license.description}</A>
-    </Box>
+    </Div>
   );
 };
+
+const Div = styled('div')`
+  color: ${colors.text.subtle};
+  ${media.tablet`
+    padding-left: ${spacing.medium};
+  `};
+`;
 
 export default BookMeta;

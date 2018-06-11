@@ -34,7 +34,9 @@ type Props = {|
 |};
 
 export default ({ level }: Props) => (
-  <Label>
-    <ReadingLevelTrans readingLevel={level} />
-  </Label>
+  <div css={{ textAlign: 'center' }}>
+    <Label>
+      <ReadingLevelTrans readingLevel={level} />
+    </Label>
+  </div>
 );

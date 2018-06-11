@@ -13,10 +13,7 @@ const colors = {
     gray: '#bbb',
     grayDarkest: '#666',
     grayLight: '#e3e3e3',
-    orange: '#ffa200',
-    blue: '#1466b5',
-    green: '#00ba6e',
-    red: '#cd3744'
+    green: '#00ba6e'
   },
   container: {
     background: '#f8f8f8'
@@ -25,28 +22,8 @@ const colors = {
     default: '#444',
     subtle: '#666'
   },
-  flag: {
-    success: '#00ba6e',
-    error: '#cd3744',
-    info: '#1466b5',
-    warning: '#ffa200',
-    normal: '#666'
-  },
-  link: {
-    default: '#006DD6',
-    defaultHover: '#004380',
-    alternate: '#842e5c',
-    alternateHover: '#b25187'
-  },
-  button: {
-    defaultBackground: '#006DD6',
-    alternateBackground: '#b25187'
-  },
-  navbar: {
-    defaultBackground: '#004380',
-    defaultText: '#fff',
-    alternateBackground: '#842e5c'
-  }
+  default: '#004380', // new suggested color: #0277bd
+  alternate: '#842e5c' // new suggested color: #407a4f, or #d32f2f
 };
 
 export default colors;

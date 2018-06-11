@@ -6,9 +6,4 @@ const flexCenter = css`
   align-items: center;
 `;
 
-const flexColumnCentered = css`
-  ${flexCenter};
-  flex-direction: column;
-`;
-
-export { flexCenter, flexColumnCentered };
+export { flexCenter };

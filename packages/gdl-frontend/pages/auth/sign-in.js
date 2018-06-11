@@ -9,18 +9,15 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import FaFacebook from 'react-icons/lib/fa/facebook';
-import FaGoogle from 'react-icons/lib/fa/google';
+import { Button, Typography } from '@material-ui/core';
 
-import { withI18n } from '../../hocs';
+import { withI18n, withMuiRoot } from '../../hocs';
 import type { I18n } from '../../types';
-import { Text, A } from '../../elements';
-import Container from '../../elements/Container';
+import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import { loginSocialMedia } from '../../lib/auth';
-import Button from '../../components/Button';
-import { fonts, spacing } from '../../style/theme';
+import { spacing } from '../../style/theme';
 
 const googleColor = '#db3236';
 const facebookColor = '#3b5998';
@@ -39,44 +36,43 @@ const EqualWidthButtonsWrapper = styled('div')`
 `;
 
 const LoginPage = ({ i18n }: Props) => (
-  <Layout crumbs={[<Trans>Login</Trans>]}>
-    <Head title={i18n.t`Login`} />
+  <Layout>
+    <Head title={i18n.t`Sign in`} />
     <Container alignItems="center">
-      <Text
-        accessibilityRole="heading"
-        fontWeight={fonts.weight.medium}
-        mt={spacing.large}
-      >
-        <Trans>Log in to continue</Trans>
-      </Text>
+      <Typography variant="headline" css={{ marginTop: spacing.large }}>
+        <Trans>Sign in to continue</Trans>
+      </Typography>
       <div>
         <EqualWidthButtonsWrapper>
           <Button
-            customColor={googleColor}
+            variant="outlined"
             onClick={() => loginSocialMedia('google-oauth2')}
+            css={{ color: googleColor }}
           >
-            <span>
-              <FaGoogle /> <Trans>Log in using Google</Trans>
-            </span>
+            <Trans>Sign in using Google</Trans>
           </Button>
           <Button
-            customColor={facebookColor}
+            variant="outlined"
             onClick={() => loginSocialMedia('facebook')}
+            css={{ color: facebookColor }}
           >
-            <span>
-              <FaFacebook /> <Trans>Log in using Facebook</Trans>
-            </span>
+            <Trans>Sign in using Facebook</Trans>
           </Button>
         </EqualWidthButtonsWrapper>
       </div>
-      <Text textAlign="center" fontSize="0.8rem" mt={spacing.xxlarge}>
-        By logging in to this service I am hereby accepting the principles in
+      <Typography align="center" css={{ marginTop: spacing.xxlarge }} paragraph>
+        By signing in to this service I am hereby accepting the principles in
         the GDL{' '}
-        <A href="https://home.digitallibrary.io/privacy/">privacy policy</A>,
-        and I am giving my consent to GDL’s use of my personal information.
-      </Text>
+        <A
+          href="https://home.digitallibrary.io/privacy/"
+          css={{ display: 'inline' }}
+        >
+          privacy policy
+        </A>, and I am giving my consent to GDL’s use of my personal
+        information.
+      </Typography>
     </Container>
   </Layout>
 );
 
-export default withI18n(LoginPage);
+export default withMuiRoot(withI18n(LoginPage));

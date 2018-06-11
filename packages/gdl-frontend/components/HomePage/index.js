@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
@@ -19,8 +20,7 @@ import type {
   Category
 } from '../../types';
 import Layout, { Main } from '../../components/Layout';
-import Card from '../../components/Card';
-import { Container, Text, View } from '../../elements';
+import { Container, View } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
@@ -28,8 +28,7 @@ import {
 import Head from '../../components/Head';
 import { SelectLanguage } from '../../components/LanguageMenu';
 import BookList from '../../components/BookList';
-import Button from '../../components/Button';
-import { colors, fonts, spacing } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
@@ -69,7 +68,7 @@ const HeroCovertitle = styled('div')`
 
 const HeroCardMobile = styled(Card)`
   ${flexCenter};
-  padding: ${spacing.small};
+  position: relative;
   margin-top: -50px;
   margin-left: 15px;
   margin-right: 15px;
@@ -80,7 +79,6 @@ const HeroCardMobile = styled(Card)`
 
 const HeroCardTablet = styled(Card)`
   ${flexCenter};
-  padding: ${spacing.medium};
   max-width: 375px;
   ${media.mobile`
     display: none;
@@ -115,22 +113,24 @@ export default class HomePage extends React.Component<
 
     const cardContent = (
       <View alignItems="center">
-        <Text
-          accessibilityRole="heading"
-          aria-level="2"
+        <Typography
           lang={featured.language.code}
-          fontSize={['1.7rem', '2.1rem']}
-          fontWeight={fonts.weight.medium}
-          textAlign="center"
+          align="center"
+          variant="headline"
+          component="h2"
+          gutterBottom
         >
           {featured.title}
-        </Text>
-        <View my={spacing.small}>
-          <Text lang={featured.language.code} textAlign="center">
-            {featured.description}
-          </Text>
-        </View>
-        <Button href={featured.link}>
+        </Typography>
+        <Typography lang={featured.language.code} align="center" paragraph>
+          {featured.description}
+        </Typography>
+        <Button
+          href={featured.link}
+          variant="raised"
+          color="primary"
+          size="large"
+        >
           <Trans>More</Trans>
         </Button>
       </View>
@@ -158,18 +158,21 @@ export default class HomePage extends React.Component<
         <Main>
           <Banner src={featured.imageUrl}>
             <HeroCovertitle>
-              <Text
-                accessibilityRole="heading"
-                color={colors.base.white}
-                fontSize="1.1rem"
-                fontWeight={fonts.weight.medium}
+              <Typography
+                component="h1"
+                variant="title"
+                css={{ color: colors.base.white }}
               >
                 <Trans>Featured</Trans>
-              </Text>
+              </Typography>
             </HeroCovertitle>
-            <HeroCardTablet>{cardContent}</HeroCardTablet>
+            <HeroCardTablet>
+              <CardContent>{cardContent}</CardContent>
+            </HeroCardTablet>
           </Banner>
-          <HeroCardMobile>{cardContent}</HeroCardMobile>
+          <HeroCardMobile>
+            <CardContent>{cardContent}</CardContent>
+          </HeroCardMobile>
 
           {levels.map((level, index) => (
             <View {...bookListViewStyle} key={level}>

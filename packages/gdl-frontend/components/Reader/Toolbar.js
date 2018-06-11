@@ -8,8 +8,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import MdClose from 'react-icons/lib/md/close';
-import MdEdit from 'react-icons/lib/md/edit';
+import { IconButton } from '@material-ui/core';
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';
@@ -42,15 +42,6 @@ const Div = styled.div`
   `};
 `;
 
-const Button = styled.button`
-  background: transparent;
-  border: none;
-  padding: 10px;
-  position: absolute;
-  right: 0;
-  color: ${colors.base.black};
-`;
-
 type Props = {
   book: BookDetails,
   onRequestClose(): void,
@@ -76,17 +67,23 @@ const Toolbar = ({
           chapterId: chapter.id
         }}
       >
-        <Button title="Edit book" style={{ right: 50 }}>
-          <MdEdit />
-        </Button>
+        <IconButton
+          title="Edit book"
+          css={{ position: 'absolute', right: '50px' }}
+        >
+          <EditIcon />
+        </IconButton>
       </Link>
     )}
-    <Button onClick={onRequestClose} type="button">
-      <MdClose aria-hidden />{' '}
+    <IconButton
+      onClick={onRequestClose}
+      css={{ position: 'absolute', right: '0' }}
+    >
+      <CloseIcon />
       <SrOnly>
         <Trans>Close book</Trans>
       </SrOnly>
-    </Button>
+    </IconButton>
   </Div>
 );
 

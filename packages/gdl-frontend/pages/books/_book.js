@@ -8,40 +8,40 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import {
-  MdTranslate,
-  MdKeyboardArrowDown,
-  MdKeyboardArrowUp,
-  MdWarning,
-  MdEdit
-} from 'react-icons/lib/md';
 import styled from 'react-emotion';
+import {
+  Menu,
+  MenuItem,
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Grid
+} from '@material-ui/core';
+import {
+  Edit as EditIcon,
+  FileDownload as FileDownloadIcon,
+  Translate as TranslateIcon,
+  Warning as WarningIcon
+} from '@material-ui/icons';
 
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
-import errorPage from '../../hocs/errorPage';
+import { errorPage, withMuiRoot } from '../../hocs';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import A from '../../elements/A';
-import Text from '../../elements/Text';
 import View from '../../elements/View';
 import Container from '../../elements/Container';
-import Card from '../../components/Card';
 import BookCover from '../../components/BookCover';
-import Button from '../../components/Button';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
-import { colors, fonts, spacing } from '../../style/theme';
-import { flexColumnCentered } from '../../style/flex';
-import {
-  DownloadBookMenu,
-  BookJsonLd,
-  Metadata
-} from '../../components/BookDetailsPage';
+import { colors, spacing } from '../../style/theme';
+import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
 type Props = {
@@ -78,13 +78,9 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-const HeroCard = styled(Card)`
-  ${flexColumnCentered};
-`;
-
-class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
+class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   state = {
-    showDownloadMenu: false
+    anchorEl: null
   };
   static async getInitialProps({ query, req }: Context) {
     const [bookRes, similarRes] = await Promise.all([
@@ -123,8 +119,10 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
     ];
   }
 
-  handleToggleShowDownloadMenu = () =>
-    this.setState(state => ({ showDownloadMenu: !state.showDownloadMenu }));
+  handleDownloadClick = event =>
+    this.setState({ anchorEl: event.currentTarget });
+
+  closeDownloadMenu = () => this.setState({ anchorEl: null });
 
   render() {
     const { similarBooks, book } = this.props;
@@ -148,73 +146,137 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                   h={[175, 365]}
                 />
               </CoverWrap>
-              <HeroCard textAlign="center" p={[15, 20]} pt={[70, 20]} flex="1">
-                <Text
-                  lang={book.language.code}
-                  fontSize={['1.7rem', '2.1rem']}
-                  accessibilityRole="heading"
-                  fontWeight={fonts.weight.medium}
+              {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
+              <Card
+                css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
+              >
+                <CardContent
+                  css={[
+                    media.mobile({ paddingTop: '70px' }),
+                    media.tablet({
+                      display: 'flex',
+                      flexDirection: 'column',
+                      flex: '1'
+                    })
+                  ]}
                 >
-                  {book.title}
-                </Text>
+                  <Typography
+                    lang={book.language.code}
+                    variant="headline"
+                    css={media.mobile`text-align: center`}
+                  >
+                    {book.title}
+                  </Typography>
 
-                <Text textAlign="center">
-                  <Trans>from {book.publisher.name}</Trans>
-                </Text>
+                  <Typography
+                    paragraph
+                    variant="subheading"
+                    css={media.mobile`text-align: center`}
+                  >
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
 
-                <Text
-                  lang={book.language.code}
-                  textAlign="center"
-                  my={spacing.medium}
-                >
-                  {book.description}
-                </Text>
+                  <Typography
+                    lang={book.language.code}
+                    paragraph
+                    css={[
+                      media.mobile`text-align: center`,
+                      media.tablet({ flex: 1 })
+                    ]}
+                  >
+                    {book.description}
+                  </Typography>
 
-                {book.bookFormat === 'HTML' && (
-                  <Fragment>
-                    <Link
-                      route="read"
-                      passHref
-                      params={{ id: book.id, lang: book.language.code }}
-                      prefetch
-                    >
-                      <Button>
-                        <Trans>Read book</Trans>
-                      </Button>
-                    </Link>
-                    <Text
-                      aria-expanded={this.state.showDownloadMenu}
-                      fontWeight={fonts.weight.medium}
-                      mt={spacing.medium}
-                      onClick={this.handleToggleShowDownloadMenu}
-                    >
-                      <Trans>Download book</Trans>
-                      {this.state.showDownloadMenu ? (
-                        <MdKeyboardArrowUp aria-hidden />
-                      ) : (
-                        <MdKeyboardArrowDown aria-hidden />
-                      )}
-                    </Text>
+                  <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                    spacing={16}
+                  >
+                    {book.bookFormat === 'HTML' && (
+                      <Fragment>
+                        <Grid item>
+                          <Link
+                            route="read"
+                            passHref
+                            params={{ id: book.id, lang: book.language.code }}
+                            prefetch
+                          >
+                            <Button
+                              variant="raised"
+                              color="primary"
+                              size="large"
+                            >
+                              <Trans>Read book</Trans>
+                            </Button>
+                          </Link>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            aria-owns={
+                              this.state.anchorEl ? 'download-book-menu' : null
+                            }
+                            aria-haspopup="true"
+                            color="primary"
+                            onClick={this.handleDownloadClick}
+                          >
+                            <FileDownloadIcon /> <Trans>Download book</Trans>
+                          </Button>
+                        </Grid>
+                        <Menu
+                          id="donwload-book-menu"
+                          onClose={this.closeDownloadMenu}
+                          anchorEl={this.state.anchorEl}
+                          open={Boolean(this.state.anchorEl)}
+                        >
+                          {book.downloads.epub && (
+                            <MenuItem
+                              href={book.downloads.epub}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>E-book (ePUB)</Trans>
+                            </MenuItem>
+                          )}
+                          {book.downloads.pdf && (
+                            <MenuItem
+                              href={book.downloads.pdf}
+                              component="a"
+                              onClick={this.closeDownloadMenu}
+                            >
+                              <Trans>Printable book (PDF)</Trans>
+                            </MenuItem>
+                          )}
+                        </Menu>
 
-                    {this.props.userHasEditAccess && (
-                      <Link
-                        route="edit"
-                        params={{ lang: book.language.code, id: book.id }}
-                        passHref
-                      >
-                        <EditBookLink title="Edit book">
-                          <MdEdit />
-                        </EditBookLink>
-                      </Link>
+                        {this.props.userHasEditAccess && (
+                          <Link
+                            route="edit"
+                            params={{ lang: book.language.code, id: book.id }}
+                            passHref
+                          >
+                            <EditBookLink title="Edit book">
+                              <EditIcon />
+                            </EditBookLink>
+                          </Link>
+                        )}
+                      </Fragment>
                     )}
-                  </Fragment>
-                )}
-                {book.bookFormat === 'PDF' && (
-                  <Button href={book.downloads.pdf}>
-                    <Trans>Download book</Trans>
-                  </Button>
-                )}
-              </HeroCard>
+                    {book.bookFormat === 'PDF' && (
+                      <Grid item>
+                        <Button
+                          href={book.downloads.pdf}
+                          color="primary"
+                          variant="raised"
+                          size="large"
+                        >
+                          <Trans>Download book</Trans>
+                        </Button>
+                      </Grid>
+                    )}
+                  </Grid>
+                </CardContent>
+              </Card>
             </View>
           </Container>
 
@@ -229,14 +291,12 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                       passHref
                       params={{ id: book.id, lang: book.language.code }}
                     >
-                      <A
-                        my={spacing.medium}
-                        textAlign="center"
-                        fontWeight={fonts.weight.medium}
+                      <Button
+                        color="primary"
+                        css={{ margin: `${spacing.medium} 0` }}
                       >
-                        <MdTranslate aria-hidden />{' '}
-                        <Trans>Translate this book</Trans>
-                      </A>
+                        <TranslateIcon /> <Trans>Translate this book</Trans>
+                      </Button>
                     </Link>
                   </View>
                 )}
@@ -248,26 +308,22 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
                     : spacing.medium
                 }
               >
-                <A
-                  my={spacing.medium}
-                  textAlign="center"
-                  fontWeight={fonts.weight.medium}
+                <Button
+                  color="primary"
+                  css={{ margin: `${spacing.medium} 0` }}
                   href={config.zendeskUrl}
-                  openNewTab
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <MdWarning aria-hidden />{' '}
-                  <Trans>Report a problem with this book</Trans>
-                </A>
+                  <WarningIcon /> <Trans>Report a problem with this book</Trans>
+                </Button>
               </View>
             </View>
           </Container>
 
           <Container>
-            <View
-              borderTop={BORDER_STYLE}
-              mb={spacing.medium}
-              pt={spacing.medium}
-            >
+            <Divider />
+            <View mb={spacing.medium} pt={spacing.medium}>
               {similarBooks.length > 0 && (
                 <BookList
                   heading={<Trans>Similar</Trans>}
@@ -276,17 +332,10 @@ class BookPage extends React.Component<Props, { showDownloadMenu: boolean }> {
               )}
             </View>
           </Container>
-
-          {this.state.showDownloadMenu && (
-            <DownloadBookMenu
-              book={book}
-              onClose={this.handleToggleShowDownloadMenu}
-            />
-          )}
         </Layout>
       </Fragment>
     );
   }
 }
 
-export default errorPage(BookPage);
+export default withMuiRoot(errorPage(BookPage));

@@ -14,7 +14,7 @@ import 'core-js/modules/es7.object.entries';
 import 'core-js/modules/es7.object.values';
 import 'core-js/modules/es7.array.includes';
 import React from 'react';
-import NextApp, { Container } from 'next/app';
+import NextApp, { Container as NextContainer } from 'next/app';
 import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 
@@ -82,13 +82,13 @@ class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props;
     return (
-      <Container>
+      <NextContainer>
         <GdlThemeProvider>
           <GdlI18nProvider>
             <Component {...pageProps} />
           </GdlI18nProvider>
         </GdlThemeProvider>
-      </Container>
+      </NextContainer>
     );
   }
 }

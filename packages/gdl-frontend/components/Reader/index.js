@@ -11,15 +11,15 @@ import Swipeable from 'react-swipeable';
 import Head from 'next/head';
 
 import { fetchChapter } from '../../fetch';
-import Box from '../Box';
 import type { BookDetails, Chapter, ChapterSummary } from '../../types';
-import { Backdrop, Page, BookTitle } from './styledReader';
+import { Backdrop, Page } from './styledReader';
 import Toolbar from './Toolbar';
 import Container from '../Container';
 import KeyDown from '../KeyDown';
 import ButtonOverlay from './ButtonOverlay';
 import { Router } from '../../routes';
 import { colors } from '../../style/theme';
+import media from '../../style/media';
 
 function createMarkup(chapter: Chapter) {
   return { __html: chapter.content };
@@ -31,6 +31,17 @@ const Card = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const Div = styled('div')`
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 20px;
+  flex: 1 auto;
+  ${media.tablet`
+    padding-left: 120px;
+    padding-right: 120px;
+  `};
 `;
 
 type ReaderProps = {|
@@ -106,19 +117,13 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
               userHasEditAccess={this.props.userHasEditAccess}
               onRequestClose={this.props.onRequestClose}
             />
-            <Box
-              px={[40, 120]}
-              pb={20}
-              flex="1 0 auto"
-              lang={book.language.code}
-            >
+            <Div lang={book.language.code}>
               {chapterWithContent && (
                 <Page
                   dangerouslySetInnerHTML={createMarkup(chapterWithContent)}
                 />
               )}
-              <BookTitle>{book.title}</BookTitle>
-            </Box>
+            </Div>
           </Card>
           <ButtonOverlay
             showOnMobile={this.state.showOverlay}
