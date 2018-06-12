@@ -6,9 +6,10 @@
  * See LICENSE
  */
 
-import auth0 from 'auth0-js';
 import lscache from 'lscache';
 import { clientAuth } from '../../config';
+// Dynamic import to reduce bundle size
+const auth0 = import('auth0-js');
 
 export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
   lscache.set('REDIRECT_AFTER_LOGIN', path, 5);
@@ -45,10 +46,12 @@ export function parseHash(
   });
 }
 
-export function loginSocialMedia(type: 'facebook' | 'google-oauth2') {
-  getAuth().authorize({
+export async function loginSocialMedia(type: 'facebook' | 'google-oauth2') {
+  (await getAuth()).authorize({
     connection: type
   });
 }
 
-export const logout = () => getAuth().logout({ returnTo: getBaseUrl() });
+export const logout = async () => {
+  (await getAuth()).logout({ returnTo: getBaseUrl() });
+};
