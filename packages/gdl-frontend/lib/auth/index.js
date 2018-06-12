@@ -8,7 +8,8 @@
 
 import lscache from 'lscache';
 import { clientAuth } from '../../config';
-// Dynamic import to reduce bundle size
+
+// Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
 const auth0 = import('auth0-js');
 
 export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
@@ -16,10 +17,10 @@ export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
 
 export const getRedirectUrl = () => lscache.get('REDIRECT_AFTER_LOGIN');
 
-const getBaseUrl = () => `${window.location.protocol}//${window.location.host}`;
+const getAuth = async options => {
+  const auth = await auth0;
 
-const getAuth = options =>
-  new auth0.WebAuth({
+  return new auth.WebAuth({
     clientID: clientAuth.clientId,
     audience: clientAuth.audience,
     domain: clientAuth.domain,
@@ -28,15 +29,18 @@ const getAuth = options =>
     redirectUri: `${getBaseUrl()}/auth/signed-in`,
     options
   });
+};
 
 /**
  * If hash not provided, window.location.hash will be used by default
  */
-export function parseHash(
+export async function parseHash(
   hash: ?string
 ): Promise<{ accessToken: string, idToken: string, expiresIn: number }> {
+  const auth0 = await getAuth();
+
   return new Promise((resolve, reject) => {
-    getAuth().parseHash({ hash }, (err, authResult) => {
+    auth0.parseHash({ hash }, (err, authResult) => {
       if (!err) {
         resolve(authResult);
       } else {
@@ -46,12 +50,23 @@ export function parseHash(
   });
 }
 
+/**
+ * Login using one of the social providers
+ */
 export async function loginSocialMedia(type: 'facebook' | 'google-oauth2') {
   (await getAuth()).authorize({
     connection: type
   });
 }
 
+/**
+ * Returns the index/home URL
+ */
+const getBaseUrl = () => `${window.location.protocol}//${window.location.host}`;
+
+/**
+ * Logs out and redirects to the index/home page
+ */
 export const logout = async () => {
   (await getAuth()).logout({ returnTo: getBaseUrl() });
 };
