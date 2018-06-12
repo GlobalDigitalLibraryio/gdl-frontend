@@ -7,10 +7,18 @@
  */
 
 import React from 'react';
+import Link from 'next/link';
 
 class IndexPage extends React.Component<{}> {
   render() {
-    return <h1>GDL – Admin</h1>;
+    return (
+      <div>
+        <h1>GDL Admin</h1>
+        <Link prefetch href="/admin/crop">
+          <a>Crop images</a>
+        </Link>
+      </div>
+    );
   }
 }
 

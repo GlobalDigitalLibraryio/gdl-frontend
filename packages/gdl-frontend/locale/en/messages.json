@@ -1,4 +1,26 @@
 {
+  "Dismiss": {
+    "translation": "Dismiss",
+    "origin": [
+      [
+        "components/Flag/index.js",
+        78
+      ]
+    ]
+  },
+  "Close menu": {
+    "translation": "Close menu",
+    "origin": [
+      [
+        "components/Menu/Header.js",
+        38
+      ],
+      [
+        "components/Menu/Header.js",
+        51
+      ]
+    ]
+  },
   "{value, plural, one {Author} other {Authors}}": {
     "translation": "{value, plural, one {Author} other {Authors}}",
     "origin": [
@@ -234,7 +256,7 @@
     "origin": [
       [
         "components/LanguageMenu/LanguageMenu.js",
-        96
+        100
       ]
     ]
   },
@@ -243,7 +265,11 @@
     "origin": [
       [
         "components/LanguageMenu/LanguageMenu.js",
-        108
+        112
+      ],
+      [
+        "components/Menu/MenuItem.js",
+        78
       ]
     ]
   },
@@ -523,6 +549,10 @@
     "translation": "Download book",
     "origin": [
       [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        31
+      ],
+      [
         "pages/books/_book.js",
         223
       ],
@@ -536,6 +566,10 @@
     "translation": "E-book (ePUB)",
     "origin": [
       [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        41
+      ],
+      [
         "pages/books/_book.js",
         238
       ]
@@ -544,6 +578,10 @@
   "Printable book (PDF)": {
     "translation": "Printable book (PDF)",
     "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        46
+      ],
       [
         "pages/books/_book.js",
         247
