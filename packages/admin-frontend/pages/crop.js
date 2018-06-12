@@ -119,6 +119,7 @@ class Crop extends Component<Props, State> {
     } else {
       this.setState({ ratio: 0.81 });
     }
+    // TODO Set existing crop data here, not only on page load (via onReady)
   };
 
   componentDidMount() {
@@ -132,6 +133,31 @@ class Crop extends Component<Props, State> {
       return null;
     }
   }
+
+  existingParametersToCropData = ps => {
+    const p = ps.find(x => x.forRatio === String(this.state.ratio));
+    const imageWidth = this.refs.cropper.getImageData().naturalWidth;
+    const imageHeight = this.refs.cropper.getImageData().naturalHeight;
+    if (p !== null) {
+      const r = p.rawImageQueryParameters;
+      return {
+        x: imageWidth * (r.cropStartX / 100),
+        y: imageHeight * (r.cropStartY / 100),
+        width: imageWidth * ((r.cropEndX - r.cropStartX) / 100),
+        height: imageHeight * ((r.cropEndY - r.cropStartY) / 100)
+      };
+    }
+  };
+
+  onReady = () => {
+    this.getExistingParameters();
+    const data = this.existingParametersToCropData(
+      this.state.existingParameters
+    );
+    if (data !== null) {
+      this.refs.cropper.setData(data);
+    }
+  };
 
   render() {
     return (
@@ -149,6 +175,7 @@ class Crop extends Component<Props, State> {
           dragMode={'move'}
           preview={'.preview'}
           crop={this.crop}
+          ready={this.onReady}
         />
         <p
           className="preview"
