@@ -1,89 +1,23 @@
 {
-  "Sign in": {
-    "translation": "Sign in",
+  "Dismiss": {
+    "translation": "Dismiss",
     "origin": [
       [
-        "pages/auth/sign-in.js",
-        40
+        "components/Flag/index.js",
+        78
       ]
     ]
   },
-  "Sign in to continue": {
-    "translation": "Sign in to continue",
+  "Close menu": {
+    "translation": "Close menu",
     "origin": [
       [
-        "pages/auth/sign-in.js",
-        43
-      ]
-    ]
-  },
-  "Sign in using Google": {
-    "translation": "Sign in using Google",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        52
-      ]
-    ]
-  },
-  "Sign in using Facebook": {
-    "translation": "Sign in using Facebook",
-    "origin": [
-      [
-        "pages/auth/sign-in.js",
-        59
-      ]
-    ]
-  },
-  "Select language": {
-    "translation": "Select language",
-    "origin": [
-      [
-        "pages/books/_translate.js",
-        233
-      ]
-    ]
-  },
-  "Download book": {
-    "translation": "Download book",
-    "origin": [
-      [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        31
+        "components/Menu/Header.js",
+        38
       ],
       [
-        "pages/books/_book.js",
-        223
-      ],
-      [
-        "pages/books/_book.js",
-        273
-      ]
-    ]
-  },
-  "E-book (ePUB)": {
-    "translation": "E-book (ePUB)",
-    "origin": [
-      [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        41
-      ],
-      [
-        "pages/books/_book.js",
-        238
-      ]
-    ]
-  },
-  "Printable book (PDF)": {
-    "translation": "Printable book (PDF)",
-    "origin": [
-      [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        46
-      ],
-      [
-        "pages/books/_book.js",
-        247
+        "components/Menu/Header.js",
+        51
       ]
     ]
   },
@@ -151,15 +85,6 @@
       [
         "components/HomePage/index.js",
         134
-      ]
-    ]
-  },
-  "Dismiss": {
-    "translation": "Dismiss",
-    "origin": [
-      [
-        "components/Flag/index.js",
-        78
       ]
     ]
   },
@@ -331,7 +256,7 @@
     "origin": [
       [
         "components/LanguageMenu/LanguageMenu.js",
-        96
+        100
       ]
     ]
   },
@@ -340,7 +265,7 @@
     "origin": [
       [
         "components/LanguageMenu/LanguageMenu.js",
-        108
+        112
       ],
       [
         "components/Menu/MenuItem.js",
@@ -354,19 +279,6 @@
       [
         "components/LanguageMenu/SelectLanguage.js",
         78
-      ]
-    ]
-  },
-  "Close menu": {
-    "translation": "Close menu",
-    "origin": [
-      [
-        "components/Menu/Header.js",
-        38
-      ],
-      [
-        "components/Menu/Header.js",
-        51
       ]
     ]
   },
@@ -553,6 +465,42 @@
       ]
     ]
   },
+  "Sign in": {
+    "translation": "Sign in",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        40
+      ]
+    ]
+  },
+  "Sign in to continue": {
+    "translation": "Sign in to continue",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        43
+      ]
+    ]
+  },
+  "Sign in using Google": {
+    "translation": "Sign in using Google",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        52
+      ]
+    ]
+  },
+  "Sign in using Facebook": {
+    "translation": "Sign in using Facebook",
+    "origin": [
+      [
+        "pages/auth/sign-in.js",
+        59
+      ]
+    ]
+  },
   "Redirecting...": {
     "translation": "Redirecting...",
     "origin": [
@@ -594,6 +542,49 @@
       [
         "pages/books/_book.js",
         210
+      ]
+    ]
+  },
+  "Download book": {
+    "translation": "Download book",
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        31
+      ],
+      [
+        "pages/books/_book.js",
+        223
+      ],
+      [
+        "pages/books/_book.js",
+        273
+      ]
+    ]
+  },
+  "E-book (ePUB)": {
+    "translation": "E-book (ePUB)",
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        41
+      ],
+      [
+        "pages/books/_book.js",
+        238
+      ]
+    ]
+  },
+  "Printable book (PDF)": {
+    "translation": "Printable book (PDF)",
+    "origin": [
+      [
+        "components/BookDetailsPage/DownloadBookMenu.js",
+        46
+      ],
+      [
+        "pages/books/_book.js",
+        247
       ]
     ]
   },
@@ -661,6 +652,15 @@
       [
         "pages/books/_translate.js",
         227
+      ]
+    ]
+  },
+  "Select language": {
+    "translation": "Select language",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        233
       ]
     ]
   },

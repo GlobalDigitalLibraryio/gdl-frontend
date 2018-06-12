@@ -107,8 +107,7 @@ class Crop extends Component<Props, State> {
       this.props.imageUrl &&
       this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
     const url =
-      imageUrl &&
-      `${imageApiUrl}/images/stored-parameters${imageUrl}`;
+      imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
     const response = await fetch(url);
     this.setState({ existingParameters: await response.json() });
   };
