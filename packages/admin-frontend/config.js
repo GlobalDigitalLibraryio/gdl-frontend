@@ -30,7 +30,6 @@ function getConfig() {
     },
 
     local: {
-      // TODO Make it work for local
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
     },
 
