@@ -74,7 +74,7 @@ class Crop extends Component<Props, State> {
     };
   };
 
-  _crop() {
+  crop = () => {
     var pcnt = this.toPercentages(this.refs.cropper);
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   }
@@ -149,7 +149,7 @@ class Crop extends Component<Props, State> {
           zoomable={false}
           dragMode={'move'}
           preview={'.preview'}
-          crop={this._crop.bind(this)}
+          crop={this.crop}
         />
         <p
           className="preview"
