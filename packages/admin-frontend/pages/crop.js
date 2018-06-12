@@ -22,28 +22,28 @@ class Crop extends Component<Props, State> {
   state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
   toPercentages = c => {
-    var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
-    var cropEndPxX = cropStartPxX + c.getCropBoxData().width;
-    var cropStartPxY = c.getCropBoxData().top - c.getCanvasData().top;
-    var cropEndPxY = cropStartPxY + c.getCropBoxData().height;
-
+    var data = c.getData();
     return {
       cropStartX: Math.max(
         0,
-        Math.round((cropStartPxX / c.getImageData().naturalWidth) * 100)
+        Math.round((data.x / c.getImageData().naturalWidth) * 100)
       ),
       cropEndX: Math.min(
         100,
-        Math.round((cropEndPxX / c.getImageData().naturalWidth) * 100)
+        Math.round(
+          ((data.x + data.width) / c.getImageData().naturalWidth) * 100
+        )
       ),
       cropStartY: Math.max(
         0,
-        Math.round((cropStartPxY / c.getImageData().naturalHeight) * 100)
+        Math.round((data.y / c.getImageData().naturalHeight) * 100)
       ),
 
       cropEndY: Math.min(
         100,
-        Math.round((cropEndPxY / c.getImageData().naturalHeight) * 100)
+        Math.round(
+          ((data.y + data.height) / c.getImageData().naturalHeight) * 100
+        )
       )
     };
   };
