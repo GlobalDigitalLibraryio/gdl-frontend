@@ -79,7 +79,7 @@ class Crop extends Component<Props, State> {
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   };
 
-  postToImageApi = async _ => {
+  postToImageApi = async () => {
     if (this.state.imageApiBody !== null) {
       this.setState({ postResult: 'Posting…' });
       const response = await fetch(`${imageApiUrl}/images/stored-parameters`, {
