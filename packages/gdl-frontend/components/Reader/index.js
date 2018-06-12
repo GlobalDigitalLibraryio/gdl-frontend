@@ -105,18 +105,23 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     return (
       <Container px={0} size="large">
         <Backdrop />
-        <Swipeable
-          onSwipedLeft={this.props.onRequestNext}
-          onSwipedRight={this.props.onRequestPrevious}
-          onTap={this.onTap}
-        >
-          <Card>
-            <Toolbar
-              book={this.props.book}
-              chapter={chapterPointer}
-              userHasEditAccess={this.props.userHasEditAccess}
-              onRequestClose={this.props.onRequestClose}
-            />
+        <Card>
+          <Toolbar
+            book={this.props.book}
+            chapter={chapterPointer}
+            userHasEditAccess={this.props.userHasEditAccess}
+            onRequestClose={this.props.onRequestClose}
+          />
+          {/*
+            We don't want the swiping/touch presses to trigger on the toolbar. So we wrap with Swipable here instead of around the entire Card.
+            It is important that Swipable includes the Buttons, so we can start swiping all the way from edge of the screens
+          */}
+          <Swipeable
+            onSwipedLeft={this.props.onRequestNext}
+            onSwipedRight={this.props.onRequestPrevious}
+            onTap={this.onTap}
+            css={{ flex: 1, paddingTop: '20px' }}
+          >
             <Div lang={book.language.code}>
               {chapterWithContent && (
                 <Page
@@ -124,15 +129,15 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
                 />
               )}
             </Div>
-          </Card>
-          <ButtonOverlay
-            showOnMobile={this.state.showOverlay}
-            onRequestNext={this.props.onRequestNext}
-            onRequestPrev={this.props.onRequestPrevious}
-            disableNext={disableNext}
-            disablePrev={disablePrev}
-          />
-        </Swipeable>
+            <ButtonOverlay
+              showOnMobile={this.state.showOverlay}
+              onRequestNext={this.props.onRequestNext}
+              onRequestPrev={this.props.onRequestPrevious}
+              disableNext={disableNext}
+              disablePrev={disablePrev}
+            />
+          </Swipeable>
+        </Card>
         <KeyDown
           when="ArrowRight"
           then={this.props.onRequestNext}
