@@ -27,7 +27,7 @@ type Props = {
 };
 
 const srcUrl = (src, width) =>
-  `${src}?storedRatio=0.81&focalX=50&focalY=50&ratio=0.81&width=${width}`;
+  `${src}?focalX=50&focalY=50&ratio=0.81&width=${width}`;
 
 /** Generate srcset value for two different pixels densities */
 function srcSet(url: string, width: number) {
