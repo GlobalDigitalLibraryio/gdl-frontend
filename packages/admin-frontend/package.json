@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@zeit/next-css": "^0.2.0",
-    "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "^9.5.1",
     "cookie-parser": "^1.4.3",
     "emotion": "^9.1.3",
