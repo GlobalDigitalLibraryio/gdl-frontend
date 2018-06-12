@@ -77,7 +77,7 @@ class Crop extends Component<Props, State> {
   crop = () => {
     var pcnt = this.toPercentages(this.refs.cropper);
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
-  }
+  };
 
   postToImageApi = async _ => {
     if (this.state.imageApiBody !== null) {
@@ -108,7 +108,7 @@ class Crop extends Component<Props, State> {
       this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
     const url =
       imageUrl &&
-      `${imageApiUrl}/images/stored-parameters${imageUrl.toString()}`;
+      `${imageApiUrl}/images/stored-parameters${imageUrl}`;
     const response = await fetch(url);
     this.setState({ existingParameters: await response.json() });
   };
