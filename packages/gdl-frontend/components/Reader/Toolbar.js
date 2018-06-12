@@ -32,7 +32,6 @@ const Div = styled.div`
 
   font-size: 14px;
   min-height: 48px;
-  margin-bottom: 20px;
   span {
     margin-left: auto;
     margin-right: auto;
