@@ -26,8 +26,7 @@ const GDL_ENVIRONMENT = (function() {
 function getConfig() {
   const config = {
     dev: {
-      // TODO Make it work for local
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'http://localhost/image-api/v2'
     },
 
     local: {
