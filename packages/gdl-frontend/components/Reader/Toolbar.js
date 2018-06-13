@@ -59,11 +59,13 @@ const Toolbar = ({
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     {userHasEditAccess && (
       <Link
-        route="edit"
-        params={{
-          lang: book.language.code,
-          id: book.id,
-          chapterId: chapter.id
+        href={{
+          pathname: '/admin/edit',
+          query: {
+            id: book.id,
+            lang: book.language.code,
+            chapterId: chapter.id
+          }
         }}
       >
         <IconButton
