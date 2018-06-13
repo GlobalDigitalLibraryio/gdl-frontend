@@ -82,7 +82,7 @@ export default class Editor extends React.Component<
             Editing chapter:{' '}
             <Link
               href={`/${book.language.code}/books/read/${book.id}/${
-                chapter.id
+                chapter ? chapter.id : ''
               }`}
             >
               <a>{this.props.chapter.seqNo}</a>
