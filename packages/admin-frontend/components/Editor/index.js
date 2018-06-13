@@ -57,14 +57,13 @@ export default class Editor extends React.Component<
   };
 
   handleSave = async () => {
-    /*  this.setState({ isSaving: true });
+    this.setState({ isSaving: true });
     if (this.state.chapter) {
       saveChapter(this.props.book, this.state.chapter);
     } else {
       saveBook(this.state.book);
     }
     this.setState({ isSaving: false, didSave: true });
-    */
   };
 
   render() {
@@ -100,14 +99,7 @@ export default class Editor extends React.Component<
 
         <div style={{ textAlign: 'right' }}>
           {this.state.didSave && <span>Saved changes!</span>}
-          <Link
-            route={this.props.chapter ? 'read' : 'book'}
-            params={{
-              lang: book.language.code,
-              id: book.id,
-              chapterId: this.props.chapter ? this.props.chapter.id : undefined
-            }}
-          >
+          <Link href={`/${book.language.code}/books/details/${book.id}`}>
             <button disabled={this.state.isSaving} style={{ margin: '0 1rem' }}>
               Discard changes
             </button>
