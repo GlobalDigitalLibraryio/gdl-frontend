@@ -238,31 +238,36 @@ class SearchPage extends React.Component<Props, State> {
               />
             </form>
 
-            {searchResult && (
-              <Typography
-                component="h1"
-                align="center"
-                variant="subheading"
-                aria-live="polite"
-                css={{ marginTop: spacing.medium }}
-              >
-                {searchResult.results.length > 0 ? (
-                  <Fragment>
-                    <Plural
-                      value={searchResult.totalCount}
-                      one="# result for"
-                      other="# results for"
-                    />{' '}
-                    <strong>&quot;{lastSearchQuery}&quot;</strong>
-                  </Fragment>
-                ) : (
-                  <Trans>
-                    No results for{' '}
-                    <strong>&quot;{lastSearchQuery}&quot;</strong>
-                  </Trans>
-                )}
-              </Typography>
-            )}
+            {/* 
+              Important that the div with the aria-live is present when the search page first loads
+              cause screen readers doesn't recognize that content has been added
+            */}
+            <div aria-live="polite">
+              {searchResult && (
+                <Typography
+                  component="h1"
+                  align="center"
+                  variant="subheading"
+                  css={{ marginTop: spacing.medium }}
+                >
+                  {searchResult.results.length > 0 ? (
+                    <Fragment>
+                      <Plural
+                        value={searchResult.totalCount}
+                        one="# result for"
+                        other="# results for"
+                      />{' '}
+                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                    </Fragment>
+                  ) : (
+                    <Trans>
+                      No results for{' '}
+                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                    </Trans>
+                  )}
+                </Typography>
+              )}
+            </div>
           </Container>
 
           <Container
