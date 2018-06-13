@@ -9,7 +9,7 @@
 import * as React from 'react';
 
 import type { BookDetails, Chapter, Context } from '../types';
-import { fetchBook } from '../lib/fetch';
+import { fetchBook, fetchChapter } from '../lib/fetch';
 import Editor from '../components/Editor';
 
 type Props = {
@@ -20,19 +20,35 @@ type Props = {
 export default class EditPage extends React.Component<Props> {
   static async getInitialProps({ query }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
-
     if (!bookRes.isOk) {
       return {
         statusCode: bookRes.statusCode
       };
     }
+    const book = bookRes.data;
 
-    return { book: bookRes.data };
+    let chapter;
+    if (query.chapterId) {
+      const chapterRes = await fetchChapter(
+        query.id,
+        query.chapterId,
+        query.lang
+      );
+
+      if (!chapterRes.isOk) {
+        return {
+          statusCode: chapterRes.statusCode
+        };
+      }
+      chapter = chapterRes.data;
+    }
+
+    return { book, chapter };
   }
 
   render() {
-    const { book } = this.props;
+    const { book, chapter } = this.props;
 
-    return <Editor book={book} />;
+    return <Editor book={book} chapter={chapter} />;
   }
 }
