@@ -12,6 +12,7 @@ import { Trans } from '@lingui/react';
 import { withTheme } from '@material-ui/core/styles';
 
 import type { Category } from '../../types';
+import SrOnly from '../../components/SrOnly';
 import media from '../../style/media';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
@@ -44,44 +45,56 @@ const HiddenMobile = styled('span')`
 type Props = {|
   categories: Array<Category>,
   category: Category,
-  languageCode: string,
-  theme: {
-    palette: { primary: { main: string } }
-  }
+  languageCode: string
 |};
 
 class CategoryNavigation extends React.Component<Props> {
   render() {
-    const { languageCode, category, categories, theme } = this.props;
+    const { languageCode, category, categories } = this.props;
     return (
       <Div>
         {categories.includes('library_books') && (
-          <Link route="library" passHref params={{ lang: languageCode }}>
-            <A
-              isSelected={category === 'library_books'}
-              hightLightColor={theme.palette.primary.main}
-            >
-              <Trans>
-                Library <HiddenMobile>books</HiddenMobile>
-              </Trans>
-            </A>
-          </Link>
+          <Tab
+            isSelected={category === 'library_books'}
+            linkProps={{ route: 'library', params: { lang: languageCode } }}
+          >
+            <Trans>
+              Library <HiddenMobile>books</HiddenMobile>
+            </Trans>
+          </Tab>
         )}
         {categories.includes('classroom_books') && (
-          <Link route="classroom" passHref params={{ lang: languageCode }}>
-            <A
-              isSelected={category === 'classroom_books'}
-              hightLightColor={theme.palette.primary.main}
-            >
-              <Trans>
-                Classroom <HiddenMobile>books</HiddenMobile>
-              </Trans>
-            </A>
-          </Link>
+          <Tab
+            isSelected={category === 'classroom_books'}
+            linkProps={{ route: 'classroom', params: { lang: languageCode } }}
+          >
+            <Trans>
+              Classroom <HiddenMobile>books</HiddenMobile>
+            </Trans>
+          </Tab>
         )}
       </Div>
     );
   }
 }
 
-export default withTheme()(CategoryNavigation);
+const Tab = withTheme()(
+  ({ isSelected, theme, children, linkProps, ...props }) => (
+    <Link passHref {...linkProps}>
+      <A
+        isSelected={isSelected}
+        hightLightColor={theme.palette.primary.main}
+        {...props}
+      >
+        {isSelected && (
+          <SrOnly>
+            <Trans>Selected: </Trans>
+          </SrOnly>
+        )}
+        {children}
+      </A>
+    </Link>
+  )
+);
+
+export default CategoryNavigation;
