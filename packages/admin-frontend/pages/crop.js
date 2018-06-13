@@ -22,7 +22,7 @@ class Crop extends Component<Props, State> {
   state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
   toPercentages = c => {
-    var data = c.getData();
+    const data = c.getData();
     return {
       cropStartX: Math.max(
         0,
@@ -75,7 +75,7 @@ class Crop extends Component<Props, State> {
   };
 
   crop = () => {
-    var pcnt = this.toPercentages(this.refs.cropper);
+    const pcnt = this.toPercentages(this.refs.cropper);
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   };
 
