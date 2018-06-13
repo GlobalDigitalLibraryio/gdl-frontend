@@ -67,30 +67,23 @@ export default class Editor extends React.Component<
   };
 
   render() {
-    const { book } = this.props;
+    const { book, chapter } = this.props;
+
     return (
       <Fragment>
         <h1>
           Editing book:{' '}
-          <Link
-            route="book"
-            params={{ lang: book.language.code, id: book.id }}
-            passHref
-          >
+          <Link href={`/${book.language.code}/books/details/${book.id}`}>
             <a>{book.title}</a>
           </Link>
         </h1>
         {this.props.chapter && (
-          <h2 size={2}>
+          <h2>
             Editing chapter:{' '}
             <Link
-              route="read"
-              params={{
-                lang: book.language.code,
-                id: book.id,
-                chapterId: this.props.chapter.id
-              }}
-              passHref
+              href={`/${book.language.code}/books/read/${book.id}/${
+                chapter.id
+              }`}
             >
               <a>{this.props.chapter.seqNo}</a>
             </Link>
