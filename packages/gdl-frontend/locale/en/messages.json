@@ -1,26 +1,4 @@
 {
-  "Dismiss": {
-    "translation": "Dismiss",
-    "origin": [
-      [
-        "components/Flag/index.js",
-        78
-      ]
-    ]
-  },
-  "Close menu": {
-    "translation": "Close menu",
-    "origin": [
-      [
-        "components/Menu/Header.js",
-        38
-      ],
-      [
-        "components/Menu/Header.js",
-        51
-      ]
-    ]
-  },
   "{value, plural, one {Author} other {Authors}}": {
     "translation": "{value, plural, one {Author} other {Authors}}",
     "origin": [
@@ -268,8 +246,8 @@
         112
       ],
       [
-        "components/Menu/MenuItem.js",
-        78
+        "components/NavContextBar/CategoryNavigation.js",
+        91
       ]
     ]
   },
@@ -309,7 +287,7 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        64
+        61
       ]
     ]
   },
@@ -318,7 +296,7 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        76
+        71
       ]
     ]
   },
@@ -327,7 +305,7 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        60
+        59
       ]
     ]
   },
@@ -336,7 +314,7 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        72
+        71
       ],
       [
         "pages/search.js",
@@ -407,7 +385,7 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        84
+        83
       ]
     ]
   },
@@ -549,10 +527,6 @@
     "translation": "Download book",
     "origin": [
       [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        31
-      ],
-      [
         "pages/books/_book.js",
         223
       ],
@@ -566,10 +540,6 @@
     "translation": "E-book (ePUB)",
     "origin": [
       [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        41
-      ],
-      [
         "pages/books/_book.js",
         238
       ]
@@ -578,10 +548,6 @@
   "Printable book (PDF)": {
     "translation": "Printable book (PDF)",
     "origin": [
-      [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        46
-      ],
       [
         "pages/books/_book.js",
         247
@@ -709,12 +675,16 @@
       ]
     ]
   },
-  "See more books": {
-    "translation": "See more books",
+  "More books": {
+    "translation": "More books",
     "origin": [
       [
         "pages/books/browse.js",
         193
+      ],
+      [
+        "pages/search.js",
+        301
       ]
     ]
   },
@@ -741,7 +711,7 @@
     "origin": [
       [
         "pages/search.js",
-        251
+        255
       ]
     ]
   },
@@ -750,16 +720,7 @@
     "origin": [
       [
         "pages/search.js",
-        259
-      ]
-    ]
-  },
-  "See more": {
-    "translation": "See more",
-    "origin": [
-      [
-        "pages/search.js",
-        296
+        263
       ]
     ]
   }
