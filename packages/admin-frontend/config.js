@@ -26,27 +26,33 @@ const GDL_ENVIRONMENT = (function() {
 function getConfig() {
   const config = {
     dev: {
-      imageApiUrl: 'http://localhost/image-api/v2'
+      imageApiUrl: 'http://localhost/image-api/v2',
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
     },
 
     local: {
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
+      bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1'
     },
 
     test: {
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
     },
 
     staging: {
-      imageApiUrl: 'https://api.staging.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'https://api.staging.digitallibrary.io/image-api/v2',
+      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1'
     },
 
     demo: {
-      imageApiUrl: 'https://api.demo.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'https://api.demo.digitallibrary.io/image-api/v2',
+      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1'
     },
 
     prod: {
-      imageApiUrl: 'https://api.digitallibrary.io/image-api/v2'
+      imageApiUrl: 'https://api.digitallibrary.io/image-api/v2',
+      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1'
     }
   };
 
