@@ -109,7 +109,11 @@ class Crop extends Component<Props, State> {
     const url =
       imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
     const response = await fetch(url);
-    this.setState({ existingParameters: await response.json() });
+    if (response.status === 200) {
+      this.setState({ existingParameters: await response.json() });
+    } else {
+      this.setState({ existingParameters: null });
+    }
   };
 
   toggleRatio = e => {
