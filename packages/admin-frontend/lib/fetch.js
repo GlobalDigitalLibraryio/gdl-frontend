@@ -9,9 +9,9 @@
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
 import type { BookDetails, Category, RemoteData, Chapter } from '../types';
+import { bookApiUrl } from '../config';
 
 const JWT_KEY = 'jwt';
-const bookApiUrl = 'https://api.digitallibrary.io/book-api/v1';
 const Cookie = () => new UniversalCookie();
 
 export function getTokenFromLocalCookie() {
@@ -77,8 +77,6 @@ async function doFetch(
     statusCode: response.status
   };
 }
-
-//todo: savebook
 
 export async function saveBook(
   book: BookDetails
