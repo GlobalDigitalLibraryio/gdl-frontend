@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+import { css } from 'react-emotion';
 import {
   ArrowForward as ArrowForwardIcon,
   ArrowDownward as ArrowDownwardIcon
@@ -20,6 +21,7 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
+import green from '@material-ui/core/colors/green';
 
 import {
   fetchBook,
@@ -37,7 +39,7 @@ import { Link, Router } from '../../routes';
 import { securePage, errorPage, withI18n, withMuiRoot } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import { A } from '../../elements';
+import { A, LoadingButton } from '../../elements';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import LanguageMenu from '../../components/LanguageMenu';
@@ -50,9 +52,17 @@ type Props = {
   i18n: I18n
 };
 
+const translationStates = {
+  SELECT: 'SELECT',
+  PREPARING: 'PREPARING',
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR'
+};
+
 type State = {
+  // Duplicating the values here because Flow doesn't like $Values<phases>
+  translationState: 'SELECT' | 'PREPARING' | 'SUCCESS' | 'ERROR',
   selectedLanguage: ?Language,
-  preparingTranslation: boolean,
   translation?: Translation,
   showLanguageMenu: boolean
 };
@@ -88,7 +98,7 @@ class TranslatePage extends React.Component<Props, State> {
 
   state = {
     selectedLanguage: null,
-    preparingTranslation: false,
+    translationState: translationStates.SELECT,
     showLanguageMenu: false
   };
 
@@ -98,16 +108,26 @@ class TranslatePage extends React.Component<Props, State> {
     }));
 
   handlePrepareTranslation = async () => {
-    this.setState({ preparingTranslation: true });
+    // This only makes sense if we have selected a lanugage
     if (this.state.selectedLanguage) {
+      // Set the preparing phase, to show loading indicators etc.
+      this.setState({ translationState: translationStates.PREPARING });
+
       const translationRes = await sendToTranslation(
         this.props.book.id,
         this.props.book.language.code,
+        // $FlowFixMe: We are already checking for this in the enclosing if
         this.state.selectedLanguage.code
       );
-      // TODO: Handle error case
+
+      // Based on the result of the ajax call, we either go to the success or error phase
       if (translationRes.isOk) {
-        this.setState({ translation: translationRes.data });
+        this.setState({
+          translation: translationRes.data,
+          translationState: translationStates.SUCCESS
+        });
+      } else {
+        this.setState({ translationState: translationStates.ERROR });
       }
     }
   };
@@ -116,11 +136,17 @@ class TranslatePage extends React.Component<Props, State> {
   handleStartTranslation = () => Router.pushRoute('translations');
 
   handleChangeLanguage = (lang: Language) =>
-    this.setState({ selectedLanguage: lang, showLanguageMenu: false });
+    this.setState({
+      selectedLanguage: lang,
+      showLanguageMenu: false,
+      // Make sure we clear out any previous 'success' result if change the translation language
+      translationState: translationStates.SELECT,
+      translation: undefined
+    });
 
   render() {
     const { book, supportedLanguages, i18n } = this.props;
-    const { selectedLanguage } = this.state;
+    const { selectedLanguage, translationState } = this.state;
 
     return (
       <Layout
@@ -181,6 +207,7 @@ class TranslatePage extends React.Component<Props, State> {
               </Grid>
             </CardContent>
           </Card>
+
           <Grid
             container
             alignItems="center"
@@ -235,6 +262,7 @@ class TranslatePage extends React.Component<Props, State> {
               </Button>
             </Grid>
           </Grid>
+
           {this.state.showLanguageMenu && (
             <LanguageMenu
               languages={supportedLanguages}
@@ -243,15 +271,21 @@ class TranslatePage extends React.Component<Props, State> {
               onClose={this.toggleLanguageMenu}
             />
           )}
+
           <div css={{ textAlign: 'center' }}>
-            {this.state.translation ? (
-              <React.Fragment>
+            {translationState === translationStates.SUCCESS ? (
+              <>
                 <Button
-                  href={this.state.translation.crowdinUrl}
+                  href={
+                    this.state.translation && this.state.translation.crowdinUrl
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={this.handleStartTranslation}
-                  variant="outlined"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={styles.buttonSucccess}
                 >
                   <Trans>Start translation</Trans>
                 </Button>
@@ -264,17 +298,36 @@ class TranslatePage extends React.Component<Props, State> {
                     in a new window.
                   </Trans>
                 </Typography>
-              </React.Fragment>
+              </>
             ) : (
-              <Button
-                disabled={this.state.selectedLanguage == null}
-                isLoading={this.state.preparingTranslation}
-                onClick={this.handlePrepareTranslation}
-                size="large"
-                variant="outlined"
-              >
-                <Trans>Prepare translation</Trans>
-              </Button>
+              <>
+                <LoadingButton
+                  isLoading={translationState === translationStates.PREPARING}
+                  disabled={this.state.selectedLanguage == null}
+                  onClick={this.handlePrepareTranslation}
+                  color="primary"
+                  size="large"
+                  variant="outlined"
+                >
+                  <Trans>Prepare translation</Trans>
+                </LoadingButton>
+                {translationState === translationStates.PREPARING && (
+                  <Typography css={{ marginTop: spacing.medium }}>
+                    <Trans>
+                      Please wait while we're preparing the book for
+                      translation. This could take some time.
+                    </Trans>
+                  </Typography>
+                )}
+              </>
+            )}
+            {translationState === translationStates.ERROR && (
+              <Typography color="error" css={{ marginTop: spacing.medium }}>
+                <Trans>
+                  Something went wrong while preparing the translation. Please
+                  try again.
+                </Trans>
+              </Typography>
             )}
           </div>
         </Container>
@@ -282,5 +335,14 @@ class TranslatePage extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = {
+  buttonSucccess: css`
+    background-color: ${green[800]};
+    &:hover {
+      background-color: ${green[900]};
+    }
+  `
+};
 
 export default withMuiRoot(securePage(errorPage(withI18n(TranslatePage))));
