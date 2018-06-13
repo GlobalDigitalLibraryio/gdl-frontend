@@ -8,8 +8,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import Swipeable from 'react-swipeable';
-import Head from 'next/head';
 
+import Head from '../Head';
 import { fetchChapter } from '../../fetch';
 import type { BookDetails, Chapter, ChapterSummary } from '../../types';
 import { Backdrop, Page } from './styledReader';
@@ -279,7 +279,13 @@ export default class ReaderContainer extends React.Component<
     const { book } = this.props;
     return (
       <React.Fragment>
-        <Head>
+        <Head
+          title={`Read: ${book.title} (${this.state.chapterPointer.seqNo}/${
+            this.props.book.chapters.length
+          })`}
+          description={book.description}
+          image={book.coverImage && book.coverImage.url}
+        >
           {prev && (
             <link
               rel="prev"
