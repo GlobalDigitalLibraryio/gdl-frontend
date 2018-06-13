@@ -119,7 +119,8 @@ class Crop extends Component<Props, State> {
     } else {
       this.setState({ ratio: 0.81 });
     }
-    // TODO Set existing crop data here, not only on page load (via onReady)
+    this.getExistingParameters();
+    this.refs.cropper.replace(this.props.imageUrl);
   };
 
   componentDidMount() {
@@ -135,10 +136,10 @@ class Crop extends Component<Props, State> {
   }
 
   existingParametersToCropData = ps => {
-    const p = ps.find(x => x.forRatio === String(this.state.ratio));
+    const p = ps && ps.find(x => x.forRatio === String(this.state.ratio));
     const imageWidth = this.refs.cropper.getImageData().naturalWidth;
     const imageHeight = this.refs.cropper.getImageData().naturalHeight;
-    if (p !== null) {
+    if (p && p.rawImageQueryParameters) {
       const r = p.rawImageQueryParameters;
       return {
         x: imageWidth * (r.cropStartX / 100),
@@ -150,7 +151,6 @@ class Crop extends Component<Props, State> {
   };
 
   onReady = () => {
-    this.getExistingParameters();
     const data = this.existingParametersToCropData(
       this.state.existingParameters
     );
