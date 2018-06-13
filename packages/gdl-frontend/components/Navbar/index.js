@@ -39,9 +39,8 @@ const BrandLink = styled('a')`
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   const brandLink = (
     <Link route="books" passHref>
-      <BrandLink>
+      <BrandLink aria-label="Global Digital Library">
         <GlobalDigitalLibraryLogo aria-hidden />
-        <SrOnly>Global Digital Library</SrOnly>
       </BrandLink>
     </Link>
   );
