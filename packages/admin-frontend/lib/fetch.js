@@ -92,6 +92,19 @@ export async function saveBook(
   return result;
 }
 
+export async function fetchChapter(
+    bookId: string | number,
+    chapterId: string | number,
+    language: string
+): Promise<RemoteData<Chapter>> {
+    const result = await doFetch(
+        `${bookApiUrl}/books/${language}/${bookId}/chapters/${chapterId}`
+    );
+
+    return result;
+}
+
+
 export async function saveChapter(
   book: BookDetails,
   chapter: Chapter
