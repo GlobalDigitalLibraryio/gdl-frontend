@@ -17,6 +17,10 @@ class IndexPage extends React.Component<{}> {
         <Link prefetch href="/admin/crop">
           <a>Crop images</a>
         </Link>
+        <br />
+        <Link href={'/export'}>
+          <a>Export books from language and provider</a>
+        </Link>
       </div>
     );
   }
