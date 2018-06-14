@@ -21,6 +21,10 @@ type State = {
 class Crop extends Component<Props, State> {
   state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
+  componentDidMount() {
+    this.getExistingParameters();
+  }
+
   toPercentages = c => {
     const data = c.getData();
     return {
@@ -126,10 +130,6 @@ class Crop extends Component<Props, State> {
     this.getExistingParameters();
     this.refs.cropper.replace(this.props.imageUrl);
   };
-
-  componentDidMount() {
-    this.getExistingParameters();
-  }
 
   displayPostResult() {
     if (this.state.postResult !== null) {
