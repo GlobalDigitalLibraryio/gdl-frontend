@@ -15,10 +15,10 @@ type State = {
     selectedProvider: string,
     languages: Array<{ code: string, name: string }>,
     providers: Array<{ code: string, name: string }>,
-    inputCompleted: boolean
 };
 
-class Export extends React.Component<State> {
+
+class Export extends React.Component<{}, State> {
     state = {
         selectedLanguage: '',
         selectedProvider: '',
@@ -31,10 +31,10 @@ class Export extends React.Component<State> {
             {code: "storyweaver", name: "Storyweaver"},
             {code: "taf", name: "Taf"},
             {code: "usaid", name: "Usaid"}
-        ]
+        ],
     };
 
-    handleLanguageChange = (event: Event) => {
+    handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
         this.setState({
             selectedLanguage: event.target.value,
         });
