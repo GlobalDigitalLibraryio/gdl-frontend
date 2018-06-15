@@ -24,13 +24,13 @@ class Export extends React.Component<{}, State> {
     languages: [],
     providers: [
       { code: 'all', name: 'All' },
-      { code: 'african_storybook', name: 'African Storybook' },
+      { code: 'african_storybook', name: 'African Storybook Project' },
       { code: 'bookdash', name: 'Bookdash' },
       { code: 'ew', name: 'EW' },
       { code: 'storyweaver', name: 'Storyweaver' },
       { code: 'taf', name: 'Taf' },
-      { code: 'usaid', name: 'Usaid' }
-    ]
+      { code: 'usaid', name: 'USAID' }
+    ].sort((a, b) => a.name.localeCompare(b.name))
   };
 
   componentDidMount() {
