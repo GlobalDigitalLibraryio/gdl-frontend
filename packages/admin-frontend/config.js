@@ -19,7 +19,7 @@ const globalVarName = '__GDL_ENVIRONMENT__';
 const GDL_ENVIRONMENT = (function() {
   return (
     (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
-    'test'
+    'dev'
   );
 })();
 
