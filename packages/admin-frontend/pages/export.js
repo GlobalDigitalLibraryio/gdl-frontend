@@ -7,14 +7,15 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import fetch from 'isomorphic-fetch';
-import { allLanguagesWithContentUrl } from '../config';
+import { bookApiUrl } from '../config';
 import { getTokenFromLocalCookie } from '../lib/fetch';
 
 type State = {
   selectedLanguage: string,
   selectedProvider: string,
   languages: Array<{ code: string, name: string }>,
-  providers: Array<{ code: string, name: string }>
+  providers: Array<{ code: string, name: string }>,
+  exportResult: string
 };
 
 class Export extends React.Component<{}, State> {
@@ -30,7 +31,8 @@ class Export extends React.Component<{}, State> {
       { code: 'storyweaver', name: 'Storyweaver' },
       { code: 'taf', name: 'Taf' },
       { code: 'usaid', name: 'USAID' }
-    ].sort((a, b) => a.name.localeCompare(b.name))
+    ].sort((a, b) => a.name.localeCompare(b.name)),
+    exportResult: ''
   };
 
   componentDidMount() {
@@ -50,7 +52,7 @@ class Export extends React.Component<{}, State> {
   };
 
   getLanguages = async () => {
-    const result = await fetch(allLanguagesWithContentUrl);
+    const result = await fetch(bookApiUrl + 'languages/');
     const languages = await result.json();
 
     this.setState({ languages });
@@ -70,7 +72,6 @@ class Export extends React.Component<{}, State> {
 
     // Build the url to fetch the books
     const url = `https://api.test.digitallibrary.io/book-api/v1/export/${language}/${provider}`;
-
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -78,6 +79,16 @@ class Export extends React.Component<{}, State> {
         Accept: 'application/json'
       }
     });
+
+    if (response.ok) {
+      this.setState({ exportResult: 'Ok!' });
+    } else if (response.status === 403) {
+      this.setState({ exportResult: 'Unauthorized please login!' });
+      return;
+    } else {
+      this.setState({ exportResult: 'Unknown error' });
+      return;
+    }
 
     // Download the CSV file
     const data = await response.text();
@@ -127,6 +138,8 @@ class Export extends React.Component<{}, State> {
           <Button color="primary" onClick={this.handleExportButtonClick}>
             Export data
           </Button>
+
+          <p>{this.state.exportResult}</p>
         </form>
       </div>
     );
