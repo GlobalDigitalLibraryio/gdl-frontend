@@ -31,38 +31,32 @@ function getConfig() {
 
     dev: {
       imageApiUrl: 'http://localhost/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.test.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
     },
 
     local: {
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.test.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
     },
 
     test: {
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.test.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
     },
 
     staging: {
       imageApiUrl: 'https://api.staging.digitallibrary.io/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.staging.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1/'
     },
 
     demo: {
       imageApiUrl: 'https://api.demo.digitallibrary.io/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.demo.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1/'
     },
 
     prod: {
       imageApiUrl: 'https://api.digitallibrary.io/image-api/v2',
-      allLanguagesWithContentUrl:
-        'https://api.digitallibrary.io/book-api/v1/languages/'
+      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1/'
     }
   };
 
