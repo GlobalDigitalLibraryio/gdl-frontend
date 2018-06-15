@@ -33,6 +33,10 @@ class Export extends React.Component<{}, State> {
     ]
   };
 
+  componentDidMount() {
+    this.getLanguages();
+  }
+
   handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({
       selectedLanguage: event.target.value
@@ -45,10 +49,6 @@ class Export extends React.Component<{}, State> {
     });
   };
 
-  componentDidMount() {
-    this.getLanguages();
-  }
-
   getLanguages = async () => {
     const result = await fetch(allLanguagesWithContentUrl);
     const languages = await result.json();
@@ -56,7 +56,7 @@ class Export extends React.Component<{}, State> {
     this.setState({ languages });
   };
 
-  exportBooks = async () => {
+  handleExportButtonClick = async () => {
     const language = this.state.selectedLanguage;
     const provider = this.state.selectedProvider;
 
@@ -92,7 +92,7 @@ class Export extends React.Component<{}, State> {
         <h1>Export books from language and provider</h1>
 
         <form>
-          <FormControl css={{ minWidth: 120 }}>
+          <FormControl>
             <InputLabel htmlFor="language-select">Language</InputLabel>
             <Select
               inputProps={{ id: 'language-select' }}
@@ -109,7 +109,7 @@ class Export extends React.Component<{}, State> {
             </Select>
           </FormControl>
 
-          <FormControl css={{ minWidth: 120 }}>
+          <FormControl>
             <InputLabel htmlFor="provider-select">Provider</InputLabel>
 
             <Select
@@ -124,7 +124,7 @@ class Export extends React.Component<{}, State> {
               ))};
             </Select>
           </FormControl>
-          <Button color="primary" onClick={this.exportBooks}>
+          <Button color="primary" onClick={this.handleExportButtonClick}>
             Export data
           </Button>
         </form>
