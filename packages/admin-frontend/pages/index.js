@@ -18,7 +18,7 @@ class IndexPage extends React.Component<{}> {
           <a>Crop images</a>
         </Link>
         <br />
-        <Link prefetch href="edit">
+        <Link prefetch href="/admin/edit">
           <a>Edit book</a>
         </Link>
       </div>
