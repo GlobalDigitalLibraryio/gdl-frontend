@@ -158,6 +158,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           imageUrl: book.coverImage && book.coverImage.url
                         }
                       }}
+                      passHref
                     >
                       <EditBookLink title="Edit book image">
                         <EditIcon />
