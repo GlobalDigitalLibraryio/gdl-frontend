@@ -18,7 +18,7 @@ class IndexPage extends React.Component<{}> {
           <a>Crop images</a>
         </Link>
         <br />
-        <Link href={'/export'}>
+        <Link href='/admin/export'>
           <a>Export books from language and provider</a>
         </Link>
       </div>
