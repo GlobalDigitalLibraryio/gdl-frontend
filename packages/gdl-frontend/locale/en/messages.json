@@ -244,6 +244,10 @@
       [
         "components/LanguageMenu/LanguageMenu.js",
         112
+      ],
+      [
+        "components/NavContextBar/CategoryNavigation.js",
+        91
       ]
     ]
   },
@@ -283,7 +287,7 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        64
+        61
       ]
     ]
   },
@@ -292,7 +296,7 @@
     "origin": [
       [
         "components/NavContextBar/CategoryNavigation.js",
-        76
+        71
       ]
     ]
   },
@@ -301,7 +305,7 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        60
+        59
       ]
     ]
   },
@@ -310,7 +314,7 @@
     "origin": [
       [
         "components/Navbar/index.js",
-        72
+        71
       ],
       [
         "pages/search.js",
@@ -671,12 +675,16 @@
       ]
     ]
   },
-  "See more books": {
-    "translation": "See more books",
+  "More books": {
+    "translation": "More books",
     "origin": [
       [
         "pages/books/browse.js",
         193
+      ],
+      [
+        "pages/search.js",
+        301
       ]
     ]
   },
@@ -703,7 +711,7 @@
     "origin": [
       [
         "pages/search.js",
-        251
+        255
       ]
     ]
   },
@@ -712,16 +720,7 @@
     "origin": [
       [
         "pages/search.js",
-        259
-      ]
-    ]
-  },
-  "See more": {
-    "translation": "See more",
-    "origin": [
-      [
-        "pages/search.js",
-        296
+        263
       ]
     ]
   }

@@ -190,7 +190,7 @@ class BrowsePage extends React.Component<Props, State> {
               marginBottom: spacing.medium
             }}
           >
-            <Trans>See more books</Trans>
+            <Trans>More books</Trans>
           </LoadingButton>
         </Container>
       </Layout>

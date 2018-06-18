@@ -7,13 +7,13 @@
  */
 
 import * as React from 'react';
+import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from '../../lib/auth/token';
 import type { BookDetails, Chapter, Context } from '../../types';
 import { errorPage, withMuiRoot } from '../../hocs';
-import Head from '../../components/Head';
 import Reader from '../../components/Reader';
 import { canonical } from '../../config';
 
@@ -63,11 +63,7 @@ class Read extends React.Component<Props> {
 
     return (
       <React.Fragment>
-        <Head
-          title={`Read: ${book.title}`}
-          description={book.description}
-          image={book.coverImage && book.coverImage.url}
-        >
+        <Head>
           {!this.props.router.query.chapterId && (
             <link
               rel="canonical"

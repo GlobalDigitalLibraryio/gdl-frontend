@@ -25,6 +25,10 @@ const GDL_ENVIRONMENT = (function() {
 
 function getConfig() {
   const config = {
+    common: {
+      GLOBAL_VAR_NAME: globalVarName
+    },
+
     dev: {
       imageApiUrl: 'http://localhost/image-api/v2',
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
@@ -57,6 +61,7 @@ function getConfig() {
   };
 
   return {
+    ...config.common,
     // Overwrite with environment specific variables
     ...config[GDL_ENVIRONMENT],
     // Add the environment itself
