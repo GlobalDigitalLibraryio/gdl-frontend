@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
+import NextLink from 'next/link';
 import {
   Menu,
   MenuItem,
@@ -98,6 +99,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     return {
       book: bookRes.data,
       userHasEditAccess: hasClaim(claims.writeBook, req),
+      userHasEditImageAccess: hasClaim(claims.editImage, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
@@ -147,9 +149,20 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     w={[130, 260]}
                     h={[175, 365]}
                   />
-                  <EditBookLink title="Edit book image">
-                    <EditIcon />
-                  </EditBookLink>
+                  {this.props.userHasEditImageAccess && (
+                    <NextLink
+                      href={{
+                        pathname: '/admin/crop',
+                        query: {
+                          imageUrl: book.coverImage && book.coverImage.url
+                        }
+                      }}
+                    >
+                      <EditBookLink title="Edit book image">
+                        <EditIcon />
+                      </EditBookLink>
+                    </NextLink>
+                  )}
                 </View>
               </CoverWrap>
 
