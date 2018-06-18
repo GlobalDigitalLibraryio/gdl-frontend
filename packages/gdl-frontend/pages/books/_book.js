@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
+import NextLink from 'next/link';
 import {
   Menu,
   MenuItem,
@@ -47,7 +48,8 @@ import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean
+  userHasEditAccess: boolean,
+  userHasEditImageAccess: boolean
 };
 
 const CoverWrap = styled('div')`
@@ -82,6 +84,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   state = {
     anchorEl: null
   };
+
   static async getInitialProps({ query, req }: Context) {
     const [bookRes, similarRes] = await Promise.all([
       fetchBook(query.id, query.lang),
@@ -97,6 +100,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     return {
       book: bookRes.data,
       userHasEditAccess: hasClaim(claims.writeBook, req),
+      userHasEditImageAccess: hasClaim(claims.writeImage, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
@@ -140,12 +144,30 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>
-                <BookCover
-                  coverImage={book.coverImage}
-                  w={[130, 260]}
-                  h={[175, 365]}
-                />
+                <View>
+                  <BookCover
+                    coverImage={book.coverImage}
+                    w={[130, 260]}
+                    h={[175, 365]}
+                  />
+                  {this.props.userHasEditImageAccess && (
+                    <NextLink
+                      href={{
+                        pathname: '/admin/crop',
+                        query: {
+                          imageUrl: book.coverImage && book.coverImage.url
+                        }
+                      }}
+                      passHref
+                    >
+                      <EditBookLink title="Edit book image">
+                        <EditIcon />
+                      </EditBookLink>
+                    </NextLink>
+                  )}
+                </View>
               </CoverWrap>
+
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
               <Card
                 css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
@@ -224,7 +246,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           </Button>
                         </Grid>
                         <Menu
-                          id="donwload-book-menu"
+                          id="download-book-menu"
                           onClose={this.closeDownloadMenu}
                           anchorEl={this.state.anchorEl}
                           open={Boolean(this.state.anchorEl)}
