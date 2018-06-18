@@ -60,7 +60,7 @@ const translationStates = {
 };
 
 type State = {
-  // Duplicating the values here because Flow doesn't like $Values<phases>
+  // Duplicating the values here because Flow doesn't like $Values<translationStates>
   translationState: 'SELECT' | 'PREPARING' | 'SUCCESS' | 'ERROR',
   selectedLanguage: ?Language,
   translation?: Translation,
@@ -108,7 +108,7 @@ class TranslatePage extends React.Component<Props, State> {
     }));
 
   handlePrepareTranslation = async () => {
-    // This only makes sense if we have selected a lanugage
+    // This only makes sense if we have selected a language
     if (this.state.selectedLanguage) {
       // Set the preparing phase, to show loading indicators etc.
       this.setState({ translationState: translationStates.PREPARING });
