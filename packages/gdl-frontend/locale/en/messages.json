@@ -1,26 +1,4 @@
 {
-  "Dismiss": {
-    "translation": "Dismiss",
-    "origin": [
-      [
-        "components/Flag/index.js",
-        78
-      ]
-    ]
-  },
-  "Close menu": {
-    "translation": "Close menu",
-    "origin": [
-      [
-        "components/Menu/Header.js",
-        38
-      ],
-      [
-        "components/Menu/Header.js",
-        51
-      ]
-    ]
-  },
   "{value, plural, one {Author} other {Authors}}": {
     "translation": "{value, plural, one {Author} other {Authors}}",
     "origin": [
@@ -266,10 +244,6 @@
       [
         "components/LanguageMenu/LanguageMenu.js",
         112
-      ],
-      [
-        "components/Menu/MenuItem.js",
-        78
       ]
     ]
   },
@@ -407,7 +381,7 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        84
+        85
       ]
     ]
   },
@@ -524,7 +498,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        176
+        177
       ],
       [
         "pages/books/_translate.js",
@@ -541,7 +515,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        210
+        211
       ]
     ]
   },
@@ -549,16 +523,12 @@
     "translation": "Download book",
     "origin": [
       [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        31
+        "pages/books/_book.js",
+        224
       ],
       [
         "pages/books/_book.js",
-        223
-      ],
-      [
-        "pages/books/_book.js",
-        273
+        276
       ]
     ]
   },
@@ -566,12 +536,8 @@
     "translation": "E-book (ePUB)",
     "origin": [
       [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        41
-      ],
-      [
         "pages/books/_book.js",
-        238
+        239
       ]
     ]
   },
@@ -579,12 +545,8 @@
     "translation": "Printable book (PDF)",
     "origin": [
       [
-        "components/BookDetailsPage/DownloadBookMenu.js",
-        46
-      ],
-      [
         "pages/books/_book.js",
-        247
+        248
       ]
     ]
   },
@@ -593,7 +555,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        298
+        301
       ]
     ]
   },
@@ -602,7 +564,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        318
+        321
       ]
     ]
   },
@@ -611,7 +573,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        329
+        332
       ]
     ]
   },
