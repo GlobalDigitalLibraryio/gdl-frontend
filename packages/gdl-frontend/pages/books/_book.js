@@ -48,7 +48,8 @@ import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean
+  userHasEditAccess: boolean,
+  userHasEditImageAccess: boolean
 };
 
 const CoverWrap = styled('div')`
@@ -99,7 +100,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     return {
       book: bookRes.data,
       userHasEditAccess: hasClaim(claims.writeBook, req),
-      userHasEditImageAccess: hasClaim(claims.editImage, req),
+      userHasEditImageAccess: hasClaim(claims.writeImage, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
