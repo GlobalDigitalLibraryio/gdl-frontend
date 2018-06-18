@@ -256,6 +256,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                               pathname: '/admin/edit',
                               query: { id: book.id, lang: book.language.code }
                             }}
+                            passHref
                           >
                             <EditBookLink title="Edit book">
                               <EditIcon />
