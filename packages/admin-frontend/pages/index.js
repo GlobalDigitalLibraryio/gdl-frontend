@@ -14,13 +14,17 @@ class IndexPage extends React.Component<{}> {
     return (
       <div>
         <h1>GDL Admin</h1>
-        <Link prefetch href="/admin/crop">
-          <a>Crop images</a>
-        </Link>
-        <br />
-        <Link prefetch href="/admin/edit">
-          <a>Edit book</a>
-        </Link>
+
+        <div>
+          <Link prefetch href="/admin/crop">
+            <a>Crop images</a>
+          </Link>
+        </div>
+        <div>
+          <Link prefetch href="/admin/edit">
+            <a>Edit book</a>
+          </Link>
+        </div>
       </div>
     );
   }
