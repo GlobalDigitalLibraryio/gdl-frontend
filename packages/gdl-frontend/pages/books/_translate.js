@@ -314,7 +314,7 @@ class TranslatePage extends React.Component<Props, State> {
                 {translationState === translationStates.PREPARING && (
                   <Typography css={{ marginTop: spacing.medium }}>
                     <Trans>
-                      Please wait while we're preparing the book for
+                      Please wait while we’re preparing the book for
                       translation. This could take some time.
                     </Trans>
                   </Typography>
