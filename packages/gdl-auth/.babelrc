@@ -1,0 +1,67 @@
+{
+  env: {
+    development: {
+      presets: [
+        'next/babel',
+        '@babel/preset-flow',
+        '@lingui/babel-preset-react'
+      ]
+    },
+    production: {
+      presets: [
+        [
+          'next/babel',
+          {
+            'preset-env': {
+              targets: {
+                browsers: ['>0.25%', 'ie 11', 'not op_mini all']
+              }
+            }
+          }
+        ],
+        '@babel/preset-flow',
+        '@lingui/babel-preset-react'
+      ]
+    },
+    test: {
+      presets: [
+        [
+          'next/babel',
+          {
+            'preset-env': {
+              modules: 'commonjs'
+            }
+          }
+        ],
+        '@babel/preset-flow',
+        '@lingui/babel-preset-react'
+      ]
+    }
+  },
+  plugins: [
+    [
+      'transform-assets',
+      {
+        extensions: ['png', 'jpg'],
+        regExp: '.*/static/(.+)',
+        name: '/static/[1]?[sha512:hash:base64:7]'
+      }
+    ],
+    [
+      'transform-imports',
+      {
+        '@material-ui/core': {
+          transform: '@material-ui/core/${member}',
+          preventFullImport: true
+        },
+        '@material-ui/icons': {
+          transform: '@material-ui/icons/${member}',
+          preventFullImport: true
+        }
+      }
+    ],
+    'polished',
+    'inline-react-svg',
+    'emotion'
+  ]
+}

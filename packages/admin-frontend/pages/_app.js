@@ -6,8 +6,9 @@
  * See LICENSE
  */
 
-import React from 'react';
+import * as React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
+import { checkClaim } from '../../gdl-auth';
 
 class App extends NextApp {
   static async getInitialProps({ Component, ctx }) {
@@ -20,6 +21,7 @@ class App extends NextApp {
     return { pageProps };
   }
   render() {
+    console.log('hello from render!');
     const { Component, pageProps } = this.props;
     return (
       <NextContainer>
