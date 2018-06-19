@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
 import fetch from 'isomorphic-fetch';
+import 'cropperjs/dist/cropper.css';
+
 import { imageApiUrl } from '../config';
 import { getTokenFromLocalCookie } from '../lib/fetch';
 

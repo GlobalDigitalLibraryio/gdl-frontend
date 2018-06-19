@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import { GDL_ENVIRONMENT } from 'gdl-config';
+const { GDL_ENVIRONMENT } = require('gdl-config');
 
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
