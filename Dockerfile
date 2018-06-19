@@ -10,18 +10,22 @@ RUN yarn global add bolt
 
 # Copy necessary files for installing dependencies
 COPY yarn.lock package.json $APP_PATH/
-COPY packages/$MODULE/package.json $APP_PATH/packages/$MODULE/
+
+# Since we use a monorepo, copy every package over, so Bolt can symlink them for us
+COPY packages $APP_PATH/packages
 
 # Run bolt before src copy to enable better layer caching
 WORKDIR $APP_PATH
 RUN bolt
 
 # Copy necessary source files for server and client build
-COPY .babelrc packages/$MODULE $APP_PATH/
-COPY packages/$MODULE $APP_PATH/packages/$MODULE/
+COPY .babelrc $APP_PATH/
 
 # Build client code
 WORKDIR $APP_PATH
 RUN bolt run build
+
+# Make sure we start the correct frontend
+WORKDIR $APP_PATH/packages/$MODULE
 
 CMD ["yarn", "run", "start"]
