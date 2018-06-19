@@ -1,3 +1,7 @@
-// next.config.js
+// @flow
 const withCSS = require('@zeit/next-css');
-module.exports = withCSS();
+const withTM = require('@weco/next-plugin-transpile-modules');
+
+module.exports = withCSS(
+  withTM({ transpileModules: ['gdl-auth', 'gdl-config'] })
+);
