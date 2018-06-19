@@ -5,8 +5,11 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "auth0-js": "^9.5.1",
+    "gdl-config": "^0.0.0",
     "jwt-decode": "^2.2.0",
     "universal-cookie": "^2.1.5"
+  },
+  "devDependencies": {
+    "jsonwebtoken": "^8.3.0"
   }
 }
