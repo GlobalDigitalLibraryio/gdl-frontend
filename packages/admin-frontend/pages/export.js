@@ -7,8 +7,18 @@ import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import fetch from 'isomorphic-fetch';
-import { bookApiUrl } from '../config';
-import { getTokenFromLocalCookie } from '../lib/fetch';
+
+import { getTokenFromLocalCookie, fetchLanguages } from '../lib/fetch';
+
+const providers = [
+  { code: 'all', name: 'All' },
+  { code: 'african_storybook', name: 'African Storybook Project' },
+  { code: 'bookdash', name: 'Bookdash' },
+  { code: 'ew', name: 'EW' },
+  { code: 'storyweaver', name: 'Storyweaver' },
+  { code: 'taf', name: 'Taf' },
+  { code: 'usaid', name: 'USAID' }
+];
 
 type State = {
   selectedLanguage: string,
@@ -23,15 +33,7 @@ class Export extends React.Component<{}, State> {
     selectedLanguage: '',
     selectedProvider: '',
     languages: [],
-    providers: [
-      { code: 'all', name: 'All' },
-      { code: 'african_storybook', name: 'African Storybook Project' },
-      { code: 'bookdash', name: 'Bookdash' },
-      { code: 'ew', name: 'EW' },
-      { code: 'storyweaver', name: 'Storyweaver' },
-      { code: 'taf', name: 'Taf' },
-      { code: 'usaid', name: 'USAID' }
-    ].sort((a, b) => a.name.localeCompare(b.name)),
+    providers,
     exportResult: ''
   };
 
@@ -52,10 +54,11 @@ class Export extends React.Component<{}, State> {
   };
 
   getLanguages = async () => {
-    const result = await fetch(bookApiUrl + 'languages/');
-    const languages = await result.json();
+    const languages = await fetchLanguages();
 
-    this.setState({ languages });
+    if (languages.isOk) {
+      this.setState({ languages: languages.data });
+    }
   };
 
   handleExportButtonClick = async () => {
@@ -135,7 +138,13 @@ class Export extends React.Component<{}, State> {
               ))};
             </Select>
           </FormControl>
-          <Button color="primary" onClick={this.handleExportButtonClick}>
+          <Button
+            color="primary"
+            disabled={Boolean(
+              !this.state.selectedProvider || !this.state.selectedLanguage
+            )}
+            onClick={this.handleExportButtonClick}
+          >
             Export data
           </Button>
 

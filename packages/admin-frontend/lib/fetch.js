@@ -8,7 +8,13 @@
 
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
-import type { BookDetails, Category, RemoteData, Chapter } from '../types';
+import type {
+  BookDetails,
+  Category,
+  RemoteData,
+  Chapter,
+  Language
+} from '../types';
 import { bookApiUrl } from '../config';
 
 const JWT_KEY = 'jwt';
@@ -116,4 +122,8 @@ export async function saveChapter(
   );
 
   return result;
+}
+
+export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
+  return doFetch(`${bookApiUrl}/languages`);
 }
