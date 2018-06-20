@@ -25,6 +25,11 @@ class IndexPage extends React.Component<{}> {
             <a>Edit book</a>
           </Link>
         </div>
+        <div>
+          <Link prefetch href="/admin/flagged">
+            <a>Flagged books</a>
+          </Link>
+        </div>
       </div>
     );
   }
