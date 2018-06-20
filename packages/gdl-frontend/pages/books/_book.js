@@ -10,7 +10,6 @@ import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import styled from 'react-emotion';
-import NextLink from 'next/link';
 import {
   Menu,
   MenuItem,
