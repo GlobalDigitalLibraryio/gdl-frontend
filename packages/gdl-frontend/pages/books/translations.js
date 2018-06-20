@@ -162,7 +162,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
 
     return this.state.translations.map(translation => (
       <TranslationCard
-        key={translation.id + '-' + translation.translatedTo.code}
+        key={`${translation.id}-${translation.translatedTo.code}`}
         translation={translation}
       />
     ));
