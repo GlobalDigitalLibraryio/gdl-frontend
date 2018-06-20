@@ -22,6 +22,9 @@ type State = {
 class Crop extends Component<Props, State> {
   state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
+  // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
+  cropper: any;
+
   componentDidMount() {
     this.getExistingParameters();
   }
@@ -80,7 +83,7 @@ class Crop extends Component<Props, State> {
   };
 
   crop = () => {
-    const pcnt = this.toPercentages(this.refs.cropper);
+    const pcnt = this.toPercentages(this.cropper);
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   };
 
@@ -129,7 +132,7 @@ class Crop extends Component<Props, State> {
       this.setState({ ratio: 0.81 });
     }
     this.getExistingParameters();
-    this.refs.cropper.replace(this.props.imageUrl);
+    this.cropper.replace(this.props.imageUrl);
   };
 
   displayPostResult() {
@@ -142,8 +145,8 @@ class Crop extends Component<Props, State> {
 
   existingParametersToCropData = ps => {
     const p = ps && ps.find(x => x.forRatio === String(this.state.ratio));
-    const imageWidth = this.refs.cropper.getImageData().naturalWidth;
-    const imageHeight = this.refs.cropper.getImageData().naturalHeight;
+    const imageWidth = this.cropper.getImageData().naturalWidth;
+    const imageHeight = this.cropper.getImageData().naturalHeight;
     if (p && p.rawImageQueryParameters) {
       const r = p.rawImageQueryParameters;
       return {
@@ -160,7 +163,7 @@ class Crop extends Component<Props, State> {
       this.state.existingParameters
     );
     if (data !== null) {
-      this.refs.cropper.setData(data);
+      this.cropper.setData(data);
     }
   };
 
@@ -171,7 +174,9 @@ class Crop extends Component<Props, State> {
           <button onClick={this.toggleRatio}>Toggle ratio</button>
         </p>
         <Cropper
-          ref="cropper"
+          ref={c => {
+            this.cropper = c;
+          }}
           src={this.props.imageUrl}
           aspectRatio={this.state.ratio}
           guides={false}
