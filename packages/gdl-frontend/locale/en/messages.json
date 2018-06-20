@@ -385,7 +385,7 @@
     "origin": [
       [
         "components/Reader/Toolbar.js",
-        83
+        85
       ]
     ]
   },
@@ -502,7 +502,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        176
+        197
       ],
       [
         "pages/books/_translate.js",
@@ -519,7 +519,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        210
+        231
       ]
     ]
   },
@@ -528,11 +528,11 @@
     "origin": [
       [
         "pages/books/_book.js",
-        223
+        244
       ],
       [
         "pages/books/_book.js",
-        273
+        294
       ]
     ]
   },
@@ -541,7 +541,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        238
+        259
       ]
     ]
   },
@@ -550,7 +550,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        247
+        268
       ]
     ]
   },
@@ -559,7 +559,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        298
+        319
       ]
     ]
   },
@@ -568,7 +568,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        318
+        339
       ]
     ]
   },
@@ -577,7 +577,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        329
+        350
       ]
     ]
   },

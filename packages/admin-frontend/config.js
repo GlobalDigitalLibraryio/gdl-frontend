@@ -5,67 +5,49 @@
  *
  * See LICENSE
  */
+const { GDL_ENVIRONMENT } = require('gdl-config');
 
 // Immutable, multi environment config
 // See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
 
-const globalVarName = '__GDL_ENVIRONMENT__';
-
-/**
- * Read the GDL environment from a global variable in the client (see _document.js)
- * On the server, we use environment variables.
- * Fallback to 'dev' if none is provided.
- */
-const GDL_ENVIRONMENT = (function() {
-  return (
-    (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
-    'dev'
-  );
-})();
-
 function getConfig() {
   const config = {
-    common: {
-      GLOBAL_VAR_NAME: globalVarName
-    },
-
+    common: {},
     dev: {
       imageApiUrl: 'http://localhost/image-api/v2',
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
     },
 
     local: {
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1'
     },
 
     test: {
       imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
     },
 
     staging: {
       imageApiUrl: 'https://api.staging.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1'
     },
 
     demo: {
       imageApiUrl: 'https://api.demo.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1'
     },
 
     prod: {
       imageApiUrl: 'https://api.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1/'
+      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1'
     }
   };
 
   return {
     ...config.common,
     // Overwrite with environment specific variables
-    ...config[GDL_ENVIRONMENT],
-    // Add the environment itself
-    GDL_ENVIRONMENT
+    ...config[GDL_ENVIRONMENT]
   };
 }
 

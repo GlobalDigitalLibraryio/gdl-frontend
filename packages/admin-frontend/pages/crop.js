@@ -2,8 +2,9 @@
 
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
-import 'cropperjs/dist/cropper.css';
 import fetch from 'isomorphic-fetch';
+import 'cropperjs/dist/cropper.css';
+
 import { imageApiUrl } from '../config';
 import { getTokenFromLocalCookie } from '../lib/fetch';
 
@@ -21,29 +22,33 @@ type State = {
 class Crop extends Component<Props, State> {
   state = { ratio: 0.81, imageApiBody: null, existingParameters: null };
 
-  toPercentages = c => {
-    var cropStartPxX = c.getCropBoxData().left - c.getCanvasData().left;
-    var cropEndPxX = cropStartPxX + c.getCropBoxData().width;
-    var cropStartPxY = c.getCropBoxData().top - c.getCanvasData().top;
-    var cropEndPxY = cropStartPxY + c.getCropBoxData().height;
+  componentDidMount() {
+    this.getExistingParameters();
+  }
 
+  toPercentages = c => {
+    const data = c.getData();
     return {
       cropStartX: Math.max(
         0,
-        Math.round((cropStartPxX / c.getImageData().naturalWidth) * 100)
+        Math.round((data.x / c.getImageData().naturalWidth) * 100)
       ),
       cropEndX: Math.min(
         100,
-        Math.round((cropEndPxX / c.getImageData().naturalWidth) * 100)
+        Math.round(
+          ((data.x + data.width) / c.getImageData().naturalWidth) * 100
+        )
       ),
       cropStartY: Math.max(
         0,
-        Math.round((cropStartPxY / c.getImageData().naturalHeight) * 100)
+        Math.round((data.y / c.getImageData().naturalHeight) * 100)
       ),
 
       cropEndY: Math.min(
         100,
-        Math.round((cropEndPxY / c.getImageData().naturalHeight) * 100)
+        Math.round(
+          ((data.y + data.height) / c.getImageData().naturalHeight) * 100
+        )
       )
     };
   };
@@ -75,7 +80,7 @@ class Crop extends Component<Props, State> {
   };
 
   crop = () => {
-    var pcnt = this.toPercentages(this.refs.cropper);
+    const pcnt = this.toPercentages(this.refs.cropper);
     this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
   };
 
@@ -109,7 +114,11 @@ class Crop extends Component<Props, State> {
     const url =
       imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
     const response = await fetch(url);
-    this.setState({ existingParameters: await response.json() });
+    if (response.status === 200) {
+      this.setState({ existingParameters: await response.json() });
+    } else {
+      this.setState({ existingParameters: null });
+    }
   };
 
   toggleRatio = e => {
@@ -119,11 +128,9 @@ class Crop extends Component<Props, State> {
     } else {
       this.setState({ ratio: 0.81 });
     }
-  };
-
-  componentDidMount() {
     this.getExistingParameters();
-  }
+    this.refs.cropper.replace(this.props.imageUrl);
+  };
 
   displayPostResult() {
     if (this.state.postResult !== null) {
@@ -132,6 +139,30 @@ class Crop extends Component<Props, State> {
       return null;
     }
   }
+
+  existingParametersToCropData = ps => {
+    const p = ps && ps.find(x => x.forRatio === String(this.state.ratio));
+    const imageWidth = this.refs.cropper.getImageData().naturalWidth;
+    const imageHeight = this.refs.cropper.getImageData().naturalHeight;
+    if (p && p.rawImageQueryParameters) {
+      const r = p.rawImageQueryParameters;
+      return {
+        x: imageWidth * (r.cropStartX / 100),
+        y: imageHeight * (r.cropStartY / 100),
+        width: imageWidth * ((r.cropEndX - r.cropStartX) / 100),
+        height: imageHeight * ((r.cropEndY - r.cropStartY) / 100)
+      };
+    }
+  };
+
+  onReady = () => {
+    const data = this.existingParametersToCropData(
+      this.state.existingParameters
+    );
+    if (data !== null) {
+      this.refs.cropper.setData(data);
+    }
+  };
 
   render() {
     return (
@@ -149,6 +180,7 @@ class Crop extends Component<Props, State> {
           dragMode={'move'}
           preview={'.preview'}
           crop={this.crop}
+          ready={this.onReady}
         />
         <p
           className="preview"

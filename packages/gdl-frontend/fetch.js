@@ -233,31 +233,3 @@ export async function fetchCategories(
 
   return result;
 }
-
-export async function saveBook(
-  book: BookDetails
-): Promise<RemoteData<BookDetails>> {
-  const result = await doFetch(
-    `${bookApiUrl}/books/${book.language.code}/${book.id}`,
-    { method: 'PUT', body: JSON.stringify(book) }
-  );
-
-  if (result.isOk) {
-    result.data = bookCategoryMapper(result.data);
-  }
-  return result;
-}
-
-export async function saveChapter(
-  book: BookDetails,
-  chapter: Chapter
-): Promise<RemoteData<Chapter>> {
-  const result = await doFetch(
-    `${bookApiUrl}/books/${book.language.code}/${book.id}/chapters/${
-      chapter.id
-    }`,
-    { method: 'PUT', body: JSON.stringify(chapter) }
-  );
-
-  return result;
-}
