@@ -15,7 +15,8 @@ import {
   CardActions,
   Typography,
   Grid,
-  Divider
+  Divider,
+  CircularProgress
 } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
@@ -28,14 +29,6 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import { spacing } from '../../style/theme';
-
-type Props = {
-  i18n: I18n
-};
-
-type State = {
-  translations: Array<Translation>
-};
 
 class TranslationCard extends React.Component<
   { translation: Translation },
@@ -122,22 +115,57 @@ class TranslationCard extends React.Component<
   }
 }
 
+type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
+
+type Props = {
+  i18n: I18n
+};
+
+type State = {
+  translations: Array<Translation>,
+  loadingState: LoadingState
+};
+
 class MyTranslationsPage extends React.Component<Props, State> {
   state = {
-    translations: []
+    translations: [],
+    loadingState: 'LOADING'
   };
 
   async componentDidMount() {
     const translationsRes = await fetchMyTranslations();
-    // TODO: Notify user of error
     if (translationsRes.isOk) {
-      this.setState({ translations: translationsRes.data });
+      this.setState({
+        translations: translationsRes.data,
+        loadingState: 'SUCCESS'
+      });
+    } else {
+      this.setState({
+        loadingState: 'ERROR'
+      });
     }
   }
 
+  renderTranslations = () => {
+    if (this.state.translations.length === 0) {
+      return (
+        <Typography
+          align="center"
+          paragraph
+          css={{ marginTop: spacing.medium }}
+        >
+          <Trans>You have not translated any books yet.</Trans>
+        </Typography>
+      );
+    }
+    return this.state.translations.map(translation => (
+      <TranslationCard key={translation.id} translation={translation} />
+    ));
+  };
+
   render() {
     const { i18n } = this.props;
-    const { translations } = this.state;
+    const { loadingState } = this.state;
 
     return (
       <Layout crumbs={[<Trans>My translations</Trans>]}>
@@ -153,9 +181,23 @@ class MyTranslationsPage extends React.Component<Props, State> {
           >
             <Trans>My translations</Trans>
           </Typography>
-          {translations.map(translation => (
-            <TranslationCard key={translation.id} translation={translation} />
-          ))}
+
+          {loadingState === 'LOADING' && (
+            <CircularProgress
+              css={{
+                marginTop: spacing.large,
+                display: 'block',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }}
+            />
+          )}
+          {loadingState === 'SUCCESS' && this.renderTranslations()}
+          {loadingState === 'ERROR' && (
+            <Typography align="center" color="error">
+              <Trans>An error has occurred. Please try again.</Trans>
+            </Typography>
+          )}
         </Container>
       </Layout>
     );

@@ -502,7 +502,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        177
+        197
       ],
       [
         "pages/books/_translate.js",
@@ -519,7 +519,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        211
+        231
       ]
     ]
   },
@@ -528,11 +528,11 @@
     "origin": [
       [
         "pages/books/_book.js",
-        224
+        244
       ],
       [
         "pages/books/_book.js",
-        276
+        294
       ]
     ]
   },
@@ -541,7 +541,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        239
+        259
       ]
     ]
   },
@@ -550,7 +550,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        248
+        268
       ]
     ]
   },
@@ -559,7 +559,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        301
+        319
       ]
     ]
   },
@@ -568,7 +568,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        321
+        339
       ]
     ]
   },
@@ -577,7 +577,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        332
+        350
       ]
     ]
   },
