@@ -8,8 +8,8 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
-import styled from 'react-emotion';
 import NextLink from 'next/link';
+import styled from 'react-emotion';
 import {
   Menu,
   MenuItem,
@@ -272,15 +272,17 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                         </Menu>
 
                         {this.props.userHasEditAccess && (
-                          <Link
-                            route="edit"
-                            params={{ lang: book.language.code, id: book.id }}
+                          <NextLink
+                            href={{
+                              pathname: '/admin/edit',
+                              query: { id: book.id, lang: book.language.code }
+                            }}
                             passHref
                           >
                             <EditBookLink title="Edit book">
                               <EditIcon />
                             </EditBookLink>
-                          </Link>
+                          </NextLink>
                         )}
                       </Fragment>
                     )}
