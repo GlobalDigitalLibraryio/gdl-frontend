@@ -9,10 +9,10 @@ import {
   TableHead,
   TableFooter,
   TablePagination,
-  Button,
   CircularProgress
 } from '@material-ui/core';
 import { spacing } from '../../gdl-frontend/style/theme';
+import NextLink from 'next/link';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
@@ -59,11 +59,18 @@ class Flagged extends React.Component<Props, State> {
   renderTableRow = (id, title, language) => {
     return (
       <TableRow key={`${id}-${language.code}`}>
-        <TableCell>{title}</TableCell>
-        <TableCell>{language.name}</TableCell>
         <TableCell>
-          <Button variant="contained">Unflag this book</Button>
+          <NextLink
+            href={{
+              pathname: '/admin/edit',
+              query: { id: id, lang: language.code }
+            }}
+            passHref
+          >
+            <a>{title}</a>
+          </NextLink>
         </TableCell>
+        <TableCell>{language.name}</TableCell>
       </TableRow>
     );
   };
@@ -80,7 +87,6 @@ class Flagged extends React.Component<Props, State> {
           <TableRow>
             <TableCell>Title</TableCell>
             <TableCell>Language</TableCell>
-            <TableCell>Unflag book</TableCell>
           </TableRow>
         </TableHead>
 
