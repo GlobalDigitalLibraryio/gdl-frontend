@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <link rel="stylesheet" href={cssPath} />
+          <title>Admin | Global Digital Library</title>
 
           {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script
@@ -18,6 +19,8 @@ export default class MyDocument extends Document {
               __html: `window.${globalVarName} = '${GDL_ENVIRONMENT}';`
             }}
           />
+          {/* Custom JSS insertion point, so our Emotion styles takes precedence. This is used on the client. See withMuiRoot */}
+          <noscript id="jss-insertion-point" />
         </Head>
         <body>
           <Main />
