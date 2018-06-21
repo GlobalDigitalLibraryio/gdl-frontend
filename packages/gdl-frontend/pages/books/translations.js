@@ -48,6 +48,7 @@ class TranslationCard extends React.Component<
 
   render() {
     const { translation } = this.props;
+
     return (
       <Card key={translation.id} css={{ marginBottom: spacing.large }}>
         <Grid container>
@@ -158,8 +159,12 @@ class MyTranslationsPage extends React.Component<Props, State> {
         </Typography>
       );
     }
+
     return this.state.translations.map(translation => (
-      <TranslationCard key={translation.id} translation={translation} />
+      <TranslationCard
+        key={`${translation.id}-${translation.translatedTo.code}`}
+        translation={translation}
+      />
     ));
   };
 

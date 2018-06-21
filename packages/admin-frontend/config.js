@@ -14,7 +14,7 @@ function getConfig() {
   const config = {
     common: {},
     dev: {
-      imageApiUrl: 'http://localhost/image-api/v2',
+      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
       bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
     },
 
