@@ -28,8 +28,7 @@ const providers = [
 type State = {
   selectedLanguage: string,
   selectedProvider: string,
-  providers: Array<{ code: string, name: string }>,
-  exportResult: string
+  providers: Array<{ code: string, name: string }>
 };
 
 class Export extends React.Component<{ languages: Array<Language> }, State> {
@@ -44,8 +43,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
   state = {
     selectedLanguage: '',
     selectedProvider: 'all', // Default value
-    providers,
-    exportResult: ''
+    providers
   };
 
   handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
@@ -79,35 +77,40 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
       }
     });
 
-    if (response.ok) {
-      this.setState({ exportResult: 'Ok!' });
-    } else {
-      this.setState({ exportResult: 'Unknown error' });
-      return;
-    }
-
-    // Small trick to download the CSV file
     const data = await response.text();
-    const MIME_TYPE = 'text/csv';
-    const blob = new Blob([data], { type: MIME_TYPE });
-    window.location.href = window.URL.createObjectURL(blob);
+
+    // Create a hidden a tag
+    const a: Object = document.createElement('a');
+    const body = document.body;
+    // Required by flow
+    if (body) {
+      body.appendChild(a);
+    }
+    a.style = 'display: none';
+
+    // Small trick to download the CSV file with a custom filename
+    const blob = new Blob([data], { type: 'text/csv' });
+    const blobUrl = window.URL.createObjectURL(blob);
+    a.href = blobUrl;
+    a.download = `${language}-${provider}-${new Date().toLocaleString()}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(blobUrl);
   };
 
   render() {
     return (
       <Container>
         <Typography variant="headline" component="h1" gutterBottom>
-          Export
-        </Typography>
-        <Typography variant="subheading" component="h2" gutterBottom>
-          Export data as CSV file
+          Export books as CSV
         </Typography>
 
         <form>
           <Grid container alignItems="center">
             <Grid item xs>
               <FormControl>
-                <InputLabel htmlFor="language-select">Language</InputLabel>
+                <InputLabel htmlFor="language-select">
+                  Select language
+                </InputLabel>
                 <Select
                   native
                   inputProps={{ id: 'language-select' }}
@@ -128,7 +131,9 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
 
             <Grid item xs>
               <FormControl>
-                <InputLabel htmlFor="provider-select">Provider</InputLabel>
+                <InputLabel htmlFor="provider-select">
+                  Select provider
+                </InputLabel>
 
                 <Select
                   inputProps={{ id: 'provider-select' }}
@@ -152,12 +157,10 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 )}
                 onClick={this.handleExportButtonClick}
               >
-                Export data
+                Export books
               </Button>
             </Grid>
           </Grid>
-
-          <p>{this.state.exportResult}</p>
         </form>
       </Container>
     );
