@@ -3,13 +3,18 @@
 import * as React from 'react';
 import Select from '@material-ui/core/Select/Select';
 import Button from '@material-ui/core/Button/Button';
-import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import fetch from 'isomorphic-fetch';
 
+import type { Language } from '../types';
 import { getTokenFromLocalCookie, fetchLanguages } from '../lib/fetch';
+import withMuiRoot from '../withMuiRoot';
+import Container from '../components/Container';
 
+// Current book providers. Currently there's no endpoint to get these, so hardcode here for now
 const providers = [
   { code: 'all', name: 'All' },
   { code: 'african_storybook', name: 'African Storybook Project' },
@@ -23,23 +28,25 @@ const providers = [
 type State = {
   selectedLanguage: string,
   selectedProvider: string,
-  languages: Array<{ code: string, name: string }>,
   providers: Array<{ code: string, name: string }>,
   exportResult: string
 };
 
-class Export extends React.Component<{}, State> {
+class Export extends React.Component<{ languages: Array<Language> }, State> {
+  static async getInitialProps() {
+    const languagesRes = await fetchLanguages();
+
+    return {
+      languages: languagesRes.isOk ? languagesRes.data : []
+    };
+  }
+
   state = {
     selectedLanguage: '',
-    selectedProvider: '',
-    languages: [],
+    selectedProvider: 'all', // Default value
     providers,
     exportResult: ''
   };
-
-  componentDidMount() {
-    this.getLanguages();
-  }
 
   handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({
@@ -53,23 +60,12 @@ class Export extends React.Component<{}, State> {
     });
   };
 
-  getLanguages = async () => {
-    const languages = await fetchLanguages();
-
-    if (languages.isOk) {
-      this.setState({ languages: languages.data });
-    }
-  };
-
   handleExportButtonClick = async () => {
     const language = this.state.selectedLanguage;
     const provider = this.state.selectedProvider;
 
     // Do not proceed with fetching of books if some of the selects is not filled in
-    if (
-      this.state.selectedLanguage === '' ||
-      this.state.selectedProvider === ''
-    ) {
+    if (!language || !provider) {
       return;
     }
 
@@ -85,15 +81,12 @@ class Export extends React.Component<{}, State> {
 
     if (response.ok) {
       this.setState({ exportResult: 'Ok!' });
-    } else if (response.status === 403) {
-      this.setState({ exportResult: 'Unauthorized please login!' });
-      return;
     } else {
       this.setState({ exportResult: 'Unknown error' });
       return;
     }
 
-    // Download the CSV file
+    // Small trick to download the CSV file
     const data = await response.text();
     const MIME_TYPE = 'text/csv';
     const blob = new Blob([data], { type: MIME_TYPE });
@@ -102,57 +95,73 @@ class Export extends React.Component<{}, State> {
 
   render() {
     return (
-      <div>
-        <h1>Export books from language and provider</h1>
+      <Container>
+        <Typography variant="headline" component="h1" gutterBottom>
+          Export
+        </Typography>
+        <Typography variant="subheading" component="h2" gutterBottom>
+          Export data as CSV file
+        </Typography>
 
         <form>
-          <FormControl>
-            <InputLabel htmlFor="language-select">Language</InputLabel>
-            <Select
-              inputProps={{ id: 'language-select' }}
-              value={this.state.selectedLanguage}
-              onChange={this.handleLanguageChange}
-            >
-              {this.state.languages.map(language => {
-                return (
-                  <MenuItem key={language.code} value={language.code}>
-                    {language.name}
-                  </MenuItem>
-                );
-              })};
-            </Select>
-          </FormControl>
+          <Grid container alignItems="center">
+            <Grid item xs>
+              <FormControl>
+                <InputLabel htmlFor="language-select">Language</InputLabel>
+                <Select
+                  native
+                  inputProps={{ id: 'language-select' }}
+                  value={this.state.selectedLanguage}
+                  onChange={this.handleLanguageChange}
+                >
+                  <option value="" />
+                  {this.props.languages.map(language => {
+                    return (
+                      <option key={language.code} value={language.code}>
+                        {language.name} ({language.code})
+                      </option>
+                    );
+                  })};
+                </Select>
+              </FormControl>
+            </Grid>
 
-          <FormControl>
-            <InputLabel htmlFor="provider-select">Provider</InputLabel>
+            <Grid item xs>
+              <FormControl>
+                <InputLabel htmlFor="provider-select">Provider</InputLabel>
 
-            <Select
-              inputProps={{ id: 'provider-select' }}
-              value={this.state.selectedProvider}
-              onChange={this.handleProviderChange}
-            >
-              {this.state.providers.map(provider => (
-                <MenuItem key={provider.code} value={provider.code}>
-                  {provider.name}
-                </MenuItem>
-              ))};
-            </Select>
-          </FormControl>
-          <Button
-            color="primary"
-            disabled={Boolean(
-              !this.state.selectedProvider || !this.state.selectedLanguage
-            )}
-            onClick={this.handleExportButtonClick}
-          >
-            Export data
-          </Button>
+                <Select
+                  inputProps={{ id: 'provider-select' }}
+                  value={this.state.selectedProvider}
+                  onChange={this.handleProviderChange}
+                  native
+                >
+                  {this.state.providers.map(provider => (
+                    <option key={provider.code} value={provider.code}>
+                      {provider.name}
+                    </option>
+                  ))};
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs>
+              <Button
+                color="primary"
+                disabled={Boolean(
+                  !this.state.selectedProvider || !this.state.selectedLanguage
+                )}
+                onClick={this.handleExportButtonClick}
+              >
+                Export data
+              </Button>
+            </Grid>
+          </Grid>
 
           <p>{this.state.exportResult}</p>
         </form>
-      </div>
+      </Container>
     );
   }
 }
 
-export default Export;
+export default withMuiRoot(Export);
