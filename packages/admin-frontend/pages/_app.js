@@ -18,6 +18,9 @@ type Context = {
   res?: $Response
 };
 
+/**
+ * Since we don't really care about SSR in the admin app, we do a small trick here to just render when we're on the client
+ */
 class App extends NextApp {
   /**
    * Make sure the user actually has admin access
@@ -45,11 +48,21 @@ class App extends NextApp {
     return { pageProps, userHasAdminPrivileges };
   }
 
+  state = {
+    isClient: false
+  };
+
+  componentDidMount() {
+    this.setState({ isClient: true });
+  }
+
   render() {
     const { Component, userHasAdminPrivileges, pageProps } = this.props;
 
     const Page = userHasAdminPrivileges ? (
-      <Component {...pageProps} />
+      this.state.isClient ? (
+        <Component {...pageProps} />
+      ) : null
     ) : (
       <Error statusCode={403} {...pageProps} />
     );
