@@ -29,6 +29,11 @@ class IndexPage extends React.Component<{}> {
             <a>Edit book</a>
           </Link>
         </div>
+        <div>
+          <Link href="/admin/edit_featured_content">
+            <a>Edit featured content</a>
+          </Link>
+        </div>
       </main>
     );
   }
