@@ -32,10 +32,10 @@ export async function fetchBook(
   return await doFetch(`${bookApiUrl}/books/${language}/${id}`);
 }
 
-export async function fetchBooks(
+export async function exportBooks(
   language: string,
   provider: string
-): Promise<RemoteData<Array<Book>>> {
+): Promise<RemoteData<Blob>> {
   return await doFetch(`${bookApiUrl}/export/${language}/${provider}`);
 }
 

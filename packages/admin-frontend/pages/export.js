@@ -13,7 +13,7 @@ import type { Language } from '../types';
 import {
   getTokenFromLocalCookie,
   fetchLanguages,
-  fetchBooks
+  exportBooks
 } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
@@ -71,7 +71,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
       return;
     }
 
-    const booksRes = await fetchBooks(language, provider);
+    const booksRes = await exportBooks(language, provider);
     const data = booksRes.isOk ? booksRes.data : [];
 
     // Create a hidden a tag
@@ -90,6 +90,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
     a.download = `${language}-${provider}-${new Date().toLocaleString()}.csv`;
     a.click();
     window.URL.revokeObjectURL(blobUrl);
+    a.remove();
   };
 
   render() {
