@@ -16,6 +16,7 @@ import type {
   Language
 } from '../types';
 import { bookApiUrl } from '../config';
+import type { FeaturedContent } from '../../gdl-frontend/types';
 
 const JWT_KEY = 'jwt';
 const Cookie = () => new UniversalCookie();
@@ -133,4 +134,20 @@ export async function saveChapter(
 
 export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
   return doFetch(`${bookApiUrl}/languages`);
+}
+
+export function fetchFeaturedContent(
+  language: ?string
+): Promise<RemoteData<Array<FeaturedContent>>> {
+  return doFetch(`${bookApiUrl}/featured/${language || ''}`);
+}
+
+export function updateFeaturedContent(
+  featuredContent: Object
+  // todo: what here
+): Promise<RemoteData<any>> {
+  return doFetch(`${bookApiUrl}/featured`, {
+    method: 'PUT',
+    body: JSON.stringify(featuredContent)
+  });
 }
