@@ -8,7 +8,13 @@
 
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
-import type { BookDetails, Category, RemoteData, Chapter } from '../types';
+import type {
+  BookDetails,
+  Category,
+  RemoteData,
+  Chapter,
+  Language
+} from '../types';
 import { bookApiUrl } from '../config';
 
 const JWT_KEY = 'jwt';
@@ -23,6 +29,13 @@ export async function fetchBook(
   language: string
 ): Promise<RemoteData<BookDetails>> {
   return await doFetch(`${bookApiUrl}/books/${language}/${id}`);
+}
+
+export async function exportBooks(
+  language: string,
+  source: string
+): Promise<RemoteData<Blob>> {
+  return await doFetch(`${bookApiUrl}/export/${language}/${source}`);
 }
 
 // Because the backend model and business logic for categories doesn't play nice together
@@ -116,4 +129,8 @@ export async function saveChapter(
   );
 
   return result;
+}
+
+export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
+  return doFetch(`${bookApiUrl}/languages`);
 }

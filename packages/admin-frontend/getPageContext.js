@@ -1,0 +1,55 @@
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2018 GDL
+ *
+ * See LICENSE
+ */
+
+// $FlowFixMe: Ignore flow errors from lib import
+import { SheetsRegistry, create } from 'jss';
+import {
+  createMuiTheme,
+  createGenerateClassName,
+  jssPreset
+} from '@material-ui/core/styles';
+
+const theme = createMuiTheme();
+
+function createPageContext() {
+  // We need to define our own custom JSS preset to specify an insertion point for the client
+  // This is because CSS-in-JS libs always want to insert styles at the bottom of the <head />, but we want Emotion's styles
+  // To have take precedence. See _document.js as well.
+  const jss = create(jssPreset());
+
+  if (process.browser) {
+    jss.options.insertionPoint = document.getElementById('jss-insertion-point');
+  }
+
+  return {
+    theme,
+    // This is needed in order to deduplicate the injection of CSS in the page.
+    // $FlowFixMe: This is used internally by JSS, so we don't care if Flow complaims about lack of types here
+    sheetsManager: new Map(),
+    // This is needed in order to inject the critical CSS.
+    sheetsRegistry: new SheetsRegistry(),
+    // The standard class name generator.
+    generateClassName: createGenerateClassName(),
+    jss
+  };
+}
+
+export default function getPageContext() {
+  // Make sure to create a new context for every server-side request so that data
+  // isn't shared between connections (which would be bad).
+  if (!process.browser) {
+    return createPageContext();
+  }
+
+  // Reuse context on the client-side.
+  if (!global.__INIT_MATERIAL_UI__) {
+    global.__INIT_MATERIAL_UI__ = createPageContext();
+  }
+
+  return global.__INIT_MATERIAL_UI__;
+}
