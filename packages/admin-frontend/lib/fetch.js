@@ -13,8 +13,7 @@ import type {
   Category,
   RemoteData,
   Chapter,
-  Language,
-  Book
+  Language
 } from '../types';
 import { bookApiUrl } from '../config';
 

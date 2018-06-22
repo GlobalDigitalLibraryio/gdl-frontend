@@ -7,14 +7,9 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import fetch from 'isomorphic-fetch';
 
 import type { Language } from '../types';
-import {
-  getTokenFromLocalCookie,
-  fetchLanguages,
-  exportBooks
-} from '../lib/fetch';
+import { fetchLanguages, exportBooks } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
