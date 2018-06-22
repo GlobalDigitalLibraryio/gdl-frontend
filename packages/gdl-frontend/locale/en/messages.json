@@ -1,40 +1,4 @@
 {
-  "Please wait while we’re preparing the book for translation. This could take some time.": {
-    "translation": "Please wait while we’re preparing the book for translation. This could take some time.",
-    "origin": [
-      [
-        "pages/books/_translate.js",
-        316
-      ]
-    ]
-  },
-  "Something went wrong while preparing the translation. Please try again.": {
-    "translation": "Something went wrong while preparing the translation. Please try again.",
-    "origin": [
-      [
-        "pages/books/_translate.js",
-        326
-      ]
-    ]
-  },
-  "You have not translated any books yet.": {
-    "translation": "You have not translated any books yet.",
-    "origin": [
-      [
-        "pages/books/translations.js",
-        158
-      ]
-    ]
-  },
-  "An error has occurred. Please try again.": {
-    "translation": "An error has occurred. Please try again.",
-    "origin": [
-      [
-        "pages/books/translations.js",
-        203
-      ]
-    ]
-  },
   "{value, plural, one {Author} other {Authors}}": {
     "translation": "{value, plural, one {Author} other {Authors}}",
     "origin": [
@@ -693,6 +657,24 @@
       ]
     ]
   },
+  "Please wait while we’re preparing the book for translation. This could take some time.": {
+    "translation": "Please wait while we’re preparing the book for translation. This could take some time.",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        316
+      ]
+    ]
+  },
+  "Something went wrong while preparing the translation. Please try again.": {
+    "translation": "Something went wrong while preparing the translation. Please try again.",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        326
+      ]
+    ]
+  },
   "Browse books": {
     "translation": "Browse books",
     "origin": [
@@ -739,6 +721,24 @@
       [
         "pages/books/translations.js",
         111
+      ]
+    ]
+  },
+  "You have not translated any books yet.": {
+    "translation": "You have not translated any books yet.",
+    "origin": [
+      [
+        "pages/books/translations.js",
+        158
+      ]
+    ]
+  },
+  "An error has occurred. Please try again.": {
+    "translation": "An error has occurred. Please try again.",
+    "origin": [
+      [
+        "pages/books/translations.js",
+        203
       ]
     ]
   },

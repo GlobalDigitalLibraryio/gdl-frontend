@@ -33,9 +33,9 @@ export async function fetchBook(
 
 export async function exportBooks(
   language: string,
-  provider: string
+  source: string
 ): Promise<RemoteData<Blob>> {
-  return await doFetch(`${bookApiUrl}/export/${language}/${provider}`);
+  return await doFetch(`${bookApiUrl}/export/${language}/${source}`);
 }
 
 // Because the backend model and business logic for categories doesn't play nice together

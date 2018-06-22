@@ -13,8 +13,8 @@ import { fetchLanguages, exportBooks } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
-// Current book providers. Currently there's no endpoint to get these, so hardcode here for now
-const providers = [
+// Current book sources. Currently there's no endpoint to get these, so hardcode here for now
+const sources = [
   { code: 'all', name: 'All' },
   { code: 'african_storybook', name: 'African Storybook Project' },
   { code: 'bookdash', name: 'Bookdash' },
@@ -26,8 +26,8 @@ const providers = [
 
 type State = {
   selectedLanguage: string,
-  selectedProvider: string,
-  providers: Array<{ code: string, name: string }>
+  selectedSource: string,
+  sources: Array<{ code: string, name: string }>
 };
 
 class Export extends React.Component<{ languages: Array<Language> }, State> {
@@ -41,8 +41,8 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
 
   state = {
     selectedLanguage: '',
-    selectedProvider: 'all', // Default value
-    providers
+    selectedSource: 'all', // Default value
+    sources: sources
   };
 
   handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
@@ -51,22 +51,22 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
     });
   };
 
-  handleProviderChange = (event: SyntheticInputEvent<EventTarget>) => {
+  handleSourceChange = (event: SyntheticInputEvent<EventTarget>) => {
     this.setState({
-      selectedProvider: event.target.value
+      selectedSource: event.target.value
     });
   };
 
   handleExportButtonClick = async () => {
     const language = this.state.selectedLanguage;
-    const provider = this.state.selectedProvider;
+    const source = this.state.selectedSource;
 
     // Do not proceed with fetching of books if some of the selects is not filled in
-    if (!language || !provider) {
+    if (!language || !source) {
       return;
     }
 
-    const booksRes = await exportBooks(language, provider);
+    const booksRes = await exportBooks(language, source);
     const data = booksRes.isOk ? booksRes.data : [];
 
     // Create a hidden a tag
@@ -82,7 +82,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
     const blob = new Blob([data], { type: 'text/csv' });
     const blobUrl = window.URL.createObjectURL(blob);
     a.href = blobUrl;
-    a.download = `${language}-${provider}-${new Date().toLocaleString()}.csv`;
+    a.download = `${language}-${source}-${new Date().toLocaleString()}.csv`;
     a.click();
     window.URL.revokeObjectURL(blobUrl);
     a.remove();
@@ -122,19 +122,17 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
 
             <Grid item xs>
               <FormControl>
-                <InputLabel htmlFor="provider-select">
-                  Select provider
-                </InputLabel>
+                <InputLabel htmlFor="source-select">Select source</InputLabel>
 
                 <Select
-                  inputProps={{ id: 'provider-select' }}
-                  value={this.state.selectedProvider}
-                  onChange={this.handleProviderChange}
+                  inputProps={{ id: 'source-select' }}
+                  value={this.state.selectedSource}
+                  onChange={this.handleSourceChange}
                   native
                 >
-                  {this.state.providers.map(provider => (
-                    <option key={provider.code} value={provider.code}>
-                      {provider.name}
+                  {this.state.sources.map(source => (
+                    <option key={source.code} value={source.code}>
+                      {source.name}
                     </option>
                   ))};
                 </Select>
@@ -144,7 +142,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
               <Button
                 color="primary"
                 disabled={Boolean(
-                  !this.state.selectedProvider || !this.state.selectedLanguage
+                  !this.state.selectedSource || !this.state.selectedLanguage
                 )}
                 onClick={this.handleExportButtonClick}
               >
