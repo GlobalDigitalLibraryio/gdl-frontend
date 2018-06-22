@@ -21,7 +21,7 @@ class IndexPage extends React.Component<{}> {
         </div>
         <div>
           <Link href="/admin/export">
-            <a>Export books from language and provider</a>
+            <a>Export books from language and source</a>
           </Link>
         </div>
         <div>
