@@ -10,7 +10,11 @@ import Typography from '@material-ui/core/Typography';
 import fetch from 'isomorphic-fetch';
 
 import type { Language } from '../types';
-import { getTokenFromLocalCookie, fetchLanguages } from '../lib/fetch';
+import {
+  getTokenFromLocalCookie,
+  fetchLanguages,
+  fetchBooks
+} from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
@@ -67,17 +71,8 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
       return;
     }
 
-    // Build the url to fetch the books
-    const url = `https://api.test.digitallibrary.io/book-api/v1/export/${language}/${provider}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: 'Bearer ' + getTokenFromLocalCookie(),
-        Accept: 'application/json'
-      }
-    });
-
-    const data = await response.text();
+    const booksRes = await fetchBooks(language, provider);
+    const data = booksRes.isOk ? booksRes.data : [];
 
     // Create a hidden a tag
     const a: Object = document.createElement('a');
