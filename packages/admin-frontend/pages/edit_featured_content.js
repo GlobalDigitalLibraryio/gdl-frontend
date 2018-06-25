@@ -131,6 +131,7 @@ class EditFeaturedContent extends React.Component<
                     name="title"
                     render={({ input }) => (
                       <TextField
+                        fullWidth
                         required
                         disabled={this.state.selectedLanguage === ''}
                         label="Title"
@@ -145,6 +146,7 @@ class EditFeaturedContent extends React.Component<
                     name="description"
                     render={({ input }) => (
                       <TextField
+                        fullWidth
                         required
                         disabled={this.state.selectedLanguage === ''}
                         label="Description"
@@ -160,6 +162,7 @@ class EditFeaturedContent extends React.Component<
                     name="link"
                     render={({ input }) => (
                       <TextField
+                        fullWidth
                         type="url"
                         required
                         disabled={this.state.selectedLanguage === ''}
@@ -178,6 +181,7 @@ class EditFeaturedContent extends React.Component<
                     render={({ input }) => (
                       <TextField
                         required
+                        fullWidth
                         type="url"
                         disabled={this.state.selectedLanguage === ''}
                         label="Image Url"
