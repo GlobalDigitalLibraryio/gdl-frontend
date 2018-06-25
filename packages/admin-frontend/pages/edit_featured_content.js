@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl/FormControl';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 
 import {
   fetchLanguages,
@@ -26,12 +26,15 @@ import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
 type State = {
-  featuredContent: any,
+  featuredContent: {},
   selectedLanguage: string,
   isNewFeaturedContent: boolean
 };
 
-class EditFeaturedContent extends React.Component<{}, State> {
+class EditFeaturedContent extends React.Component<
+  { languages: Array<any> },
+  State
+> {
   static async getInitialProps() {
     const languagesRes = await fetchLanguages();
 
@@ -41,24 +44,24 @@ class EditFeaturedContent extends React.Component<{}, State> {
   }
 
   state = {
-    featuredContent: null,
+    featuredContent: {},
     selectedLanguage: '',
     isNewFeaturedContent: false
   };
 
-  getFeaturedContent = async (language: string) => {
-    const featuredContentRes = await fetchFeaturedContent(language);
-    var featuredContent = featuredContentRes.isOk
+  getFeaturedContent = async (languageCode: string) => {
+    const featuredContentRes = await fetchFeaturedContent(languageCode);
+    const featuredContent = featuredContentRes.isOk
       ? featuredContentRes.data[0]
       : {};
 
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
-    if (featuredContent.language.code !== language) {
+    if (featuredContent.language.code !== languageCode) {
       this.setState({
         isNewFeaturedContent: true,
         featuredContent: {
           description: '',
-          language: language,
+          language: languageCode,
           link: '',
           title: '',
           imageUrl: ''
@@ -78,8 +81,6 @@ class EditFeaturedContent extends React.Component<{}, State> {
   };
 
   handleSaveButtonClick = content => {
-    console.log(content);
-
     this.state.isNewFeaturedContent
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
@@ -124,7 +125,7 @@ class EditFeaturedContent extends React.Component<{}, State> {
           validate={validate}
           render={({ handleSubmit, pristine, invalid }) => (
             <form>
-              <Grid container alignItems="center">
+              <Grid container spacing={24} direction="column">
                 <Grid item xs>
                   <Field
                     name="title"
@@ -156,25 +157,10 @@ class EditFeaturedContent extends React.Component<{}, State> {
 
                 <Grid item xs>
                   <Field
-                    name="imageUrl"
-                    render={({ input }) => (
-                      <TextField
-                        required
-                        disabled={this.state.selectedLanguage === ''}
-                        label="Image Url"
-                        {...input}
-                      />
-                    )}
-                  >
-                    />
-                  </Field>
-                </Grid>
-
-                <Grid item xs>
-                  <Field
                     name="link"
                     render={({ input }) => (
                       <TextField
+                        type="url"
                         required
                         disabled={this.state.selectedLanguage === ''}
                         label="Link"
@@ -185,6 +171,32 @@ class EditFeaturedContent extends React.Component<{}, State> {
                     />
                   </Field>
                 </Grid>
+
+                <Grid item xs>
+                  <Field
+                    name="imageUrl"
+                    render={({ input }) => (
+                      <TextField
+                        required
+                        type="url"
+                        disabled={this.state.selectedLanguage === ''}
+                        label="Image Url"
+                        {...input}
+                      />
+                    )}
+                  >
+                    />
+                  </Field>
+                </Grid>
+
+                <FormSpy
+                  render={({ values }) =>
+                    //$FlowFixMe
+                    values.imageUrl ? (
+                      <img alt="Featured content" src={values.imageUrl} />
+                    ) : null
+                  }
+                />
 
                 <Grid item xs>
                   <Button
