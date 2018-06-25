@@ -231,6 +231,14 @@ function validate(values) {
     errors.description = 'Required';
   }
 
+  if (values.link === '') {
+    errors.link = 'Required';
+  }
+
+  if (values.imageUrl === '') {
+    errors.imageUrl = 'Required';
+  }
+
   return errors;
 }
 
