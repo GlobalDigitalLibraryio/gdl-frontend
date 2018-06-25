@@ -22,6 +22,7 @@ import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
+import { markAsFavorite, isFavorite } from '../../lib/favorites';
 
 const Div = styled.div`
   z-index: 2;
@@ -81,21 +82,7 @@ const Toolbar = ({
         </IconButton>
       </Link>
     )}
-    <IconButton
-      onClick={onRequestClose}
-      css={`
-        position: absolute;
-        right: 50px;
-        &:hover {
-          color: red;
-        }
-      `}
-    >
-      <FavoriteOutlineIcon />
-      <SrOnly>
-        <Trans>Mark book as favorite</Trans>
-      </SrOnly>
-    </IconButton>
+    <FavButton book={book} />
     <IconButton
       onClick={onRequestClose}
       css={{ position: 'absolute', right: '0' }}
@@ -107,5 +94,36 @@ const Toolbar = ({
     </IconButton>
   </Div>
 );
+
+class FavButton extends React.Component {
+  state = {
+    client: false
+  };
+
+  componentDidMount() {
+    this.setState({ client: true });
+  }
+
+  render() {
+    const { book } = this.props;
+    if (!this.state.client) return null;
+    const isFav = isFavorite(book);
+    return (
+      <IconButton
+        onClick={() => markAsFavorite(book)}
+        css={`
+          position: absolute;
+          right: 50px;
+        `}
+        style={isFav ? { color: 'red' } : null}
+      >
+        {isFav ? <FavoriteIcon /> : <FavoriteOutlineIcon />}
+        <SrOnly>
+          <Trans>Mark book as favorite</Trans>
+        </SrOnly>
+      </IconButton>
+    );
+  }
+}
 
 export default Toolbar;

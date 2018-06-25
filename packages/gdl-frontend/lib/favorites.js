@@ -9,20 +9,28 @@ import lscache from 'lscache';
 import type { Book } from '../types';
 
 const FAVORITES_KEY = 'favorites';
+type Fav = { id: number, lang: string };
 
-export function markFavorite(book: Book) {
+export function markAsFavorite(book: Book) {
   const favs = [...getFavorites(), { id: book.id, lang: book.language.code }];
   setFavorites(favs);
 }
 
-export function removeFavorite(book: Book) {
+export function removeAsFavorite(book: Book) {
   const favs = getFavorites().filter(
-    fav => fav.id === book.id && fav.lang === book.language.code
+    fav => !(fav.id === book.id && fav.lang === book.language.code)
   );
   setFavorites(favs);
 }
 
-export function getFavorites(): Array<string> {
+export function isFavorite(book: Book) {
+  const favs = getFavorites();
+  return Boolean(
+    favs.find(f => f.id === book.id && f.lang === book.language.code)
+  );
+}
+
+export function getFavorites(): Array<Fav> {
   return lscache.get(FAVORITES_KEY) || [];
 }
 
