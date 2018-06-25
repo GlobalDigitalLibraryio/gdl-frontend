@@ -13,7 +13,8 @@ import type {
   Category,
   RemoteData,
   Chapter,
-  Book
+  Book,
+  Language
 } from '../types';
 import { bookApiUrl } from '../config';
 
@@ -29,6 +30,13 @@ export async function fetchBook(
   language: string
 ): Promise<RemoteData<BookDetails>> {
   return await doFetch(`${bookApiUrl}/books/${language}/${id}`);
+}
+
+export async function exportBooks(
+  language: string,
+  source: string
+): Promise<RemoteData<Blob>> {
+  return await doFetch(`${bookApiUrl}/export/${language}/${source}`);
 }
 
 // Because the backend model and business logic for categories doesn't play nice together
@@ -139,4 +147,8 @@ export async function fetchFlaggedBooks(
   );
 
   return result;
+}
+
+export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
+  return doFetch(`${bookApiUrl}/languages`);
 }

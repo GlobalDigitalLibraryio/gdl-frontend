@@ -11,12 +11,7 @@ const googleAnalytics = 'www.google-analytics.com';
 
 const directives = {
   defaultSrc: ["'self'"],
-  scriptSrc: [
-    "'self'",
-    "'unsafe-inline'",
-    'https://cdn.polyfill.io',
-    googleAnalytics
-  ],
+  scriptSrc: ["'self'", "'unsafe-inline'", googleAnalytics],
   styleSrc: [
     "'self'",
     "'unsafe-inline'",

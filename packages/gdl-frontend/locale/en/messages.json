@@ -154,15 +154,15 @@
       ],
       [
         "pages/books/translations.js",
-        143
+        176
       ],
       [
         "pages/books/translations.js",
-        144
+        177
       ],
       [
         "pages/books/translations.js",
-        154
+        187
       ]
     ]
   },
@@ -502,15 +502,15 @@
     "origin": [
       [
         "pages/books/_book.js",
-        197
+        198
       ],
       [
         "pages/books/_translate.js",
-        174
+        200
       ],
       [
         "pages/books/translations.js",
-        82
+        76
       ]
     ]
   },
@@ -519,7 +519,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        231
+        232
       ]
     ]
   },
@@ -528,11 +528,11 @@
     "origin": [
       [
         "pages/books/_book.js",
-        244
+        245
       ],
       [
         "pages/books/_book.js",
-        294
+        297
       ]
     ]
   },
@@ -541,7 +541,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        259
+        260
       ]
     ]
   },
@@ -550,7 +550,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        268
+        269
       ]
     ]
   },
@@ -559,7 +559,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        319
+        322
       ]
     ]
   },
@@ -568,7 +568,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        339
+        342
       ]
     ]
   },
@@ -577,7 +577,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        350
+        353
       ]
     ]
   },
@@ -586,11 +586,11 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        132
+        158
       ],
       [
         "pages/books/_translate.js",
-        149
+        175
       ]
     ]
   },
@@ -599,7 +599,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        136
+        162
       ]
     ]
   },
@@ -608,7 +608,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        199
+        226
       ]
     ]
   },
@@ -617,7 +617,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        227
+        254
       ]
     ]
   },
@@ -626,7 +626,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        233
+        260
       ]
     ]
   },
@@ -635,7 +635,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        256
+        290
       ]
     ]
   },
@@ -644,7 +644,7 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        259
+        293
       ]
     ]
   },
@@ -653,7 +653,25 @@
     "origin": [
       [
         "pages/books/_translate.js",
-        276
+        312
+      ]
+    ]
+  },
+  "Please wait while we’re preparing the book for translation. This could take some time.": {
+    "translation": "Please wait while we’re preparing the book for translation. This could take some time.",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        316
+      ]
+    ]
+  },
+  "Something went wrong while preparing the translation. Please try again.": {
+    "translation": "Something went wrong while preparing the translation. Please try again.",
+    "origin": [
+      [
+        "pages/books/_translate.js",
+        326
       ]
     ]
   },
@@ -693,7 +711,7 @@
     "origin": [
       [
         "pages/books/translations.js",
-        109
+        103
       ]
     ]
   },
@@ -702,7 +720,25 @@
     "origin": [
       [
         "pages/books/translations.js",
-        117
+        111
+      ]
+    ]
+  },
+  "You have not translated any books yet.": {
+    "translation": "You have not translated any books yet.",
+    "origin": [
+      [
+        "pages/books/translations.js",
+        158
+      ]
+    ]
+  },
+  "An error has occurred. Please try again.": {
+    "translation": "An error has occurred. Please try again.",
+    "origin": [
+      [
+        "pages/books/translations.js",
+        203
       ]
     ]
   },
