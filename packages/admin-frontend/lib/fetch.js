@@ -8,9 +8,14 @@
 
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
-import type { BookDetails, Category, RemoteData, Chapter } from '../types';
+import type {
+  BookDetails,
+  Category,
+  RemoteData,
+  Chapter,
+  Book
+} from '../types';
 import { bookApiUrl } from '../config';
-import type { Book } from '../../gdl-frontend/types';
 
 const JWT_KEY = 'jwt';
 const Cookie = () => new UniversalCookie();
@@ -119,7 +124,9 @@ export async function saveChapter(
   return result;
 }
 
-export async function fetchFlaggedBooks(): Promise<
+export async function fetchFlaggedBooks(
+  page: number
+): Promise<
   RemoteData<{
     results: Array<Book>,
     totalCount: number,
@@ -127,7 +134,9 @@ export async function fetchFlaggedBooks(): Promise<
     pageSize: number
   }>
 > {
-  const result = await doFetch(`${bookApiUrl}/books/flagged/?`);
+  const result = await doFetch(
+    `${bookApiUrl}/books/flagged/?page-size=30&page=${page}`
+  );
 
   return result;
 }

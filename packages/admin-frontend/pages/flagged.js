@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Fragment } from 'react';
 import { fetchFlaggedBooks } from '../lib/fetch';
 import type { Book } from '../types';
 import {
@@ -8,52 +9,67 @@ import {
   TableRow,
   TableHead,
   TableFooter,
-  TablePagination,
-  CircularProgress
+  TablePagination
 } from '@material-ui/core';
-import { spacing } from '../../gdl-frontend/style/theme';
 import NextLink from 'next/link';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
 type State = {
-  flaggedBooks: Array<Book>,
-  loadingState: LoadingState,
+  loadingState: { [number]: LoadingState },
   page: number,
   pageSize: number,
-  totalCount: number
+  totalCount: number,
+  pages: { [number]: Array<Book> }
 };
 
 class Flagged extends React.Component<Props, State> {
   state = {
-    flaggedBooks: [],
-    loadingState: 'LOADING',
+    loadingState: {},
     page: 0,
-    pageSize: 0,
-    totalCount: 0
+    pageSize: 30,
+    totalCount: 0,
+    pages: {}
   };
 
-  handleChangeRowsPerPage = event => {
-    this.setState({ pageSize: event.target.value });
-  };
-
-  handleChangePage = (event, page) => {
+  handleChangePage = async (event, page) => {
     this.setState({ page });
+    const loadingState = this.state.loadingState[page];
+    if (!loadingState) {
+      this.loadPage(page);
+    }
+  };
+
+  loadPage = async page => {
+    this.setState(state => ({
+      loadingState: { ...state.loadingState, [page]: 'LOADING' }
+    }));
+
+    const flaggedBooksRes = await fetchFlaggedBooks(page + 1);
+
+    if (!flaggedBooksRes.isOk) {
+      this.setState(state => ({
+        ...state.loadingState,
+        [flaggedBooksRes.data.page - 1]: 'ERROR'
+      }));
+    } else {
+      this.setState(state => ({
+        loadingState: {
+          ...state.loadingState,
+          [flaggedBooksRes.data.page - 1]: 'SUCCESS'
+        },
+        pageSize: flaggedBooksRes.data.pageSize,
+        totalCount: flaggedBooksRes.data.totalCount,
+        pages: {
+          ...state.pages,
+          [flaggedBooksRes.data.page - 1]: flaggedBooksRes.data.results
+        }
+      }));
+    }
   };
 
   async componentDidMount() {
-    const flaggedBooksRes = await fetchFlaggedBooks();
-    if (!flaggedBooksRes.isOk) {
-      this.setState({ loadingState: 'ERROR' });
-    } else {
-      this.setState({
-        loadingState: 'SUCCESS',
-        flaggedBooks: flaggedBooksRes.data.results,
-        page: flaggedBooksRes.data.page - 1,
-        pageSize: flaggedBooksRes.data.pageSize,
-        totalCount: flaggedBooksRes.data.totalCount
-      });
-    }
+    this.loadPage(this.state.page);
   }
 
   renderTableRow = (id, title, language) => {
@@ -76,11 +92,11 @@ class Flagged extends React.Component<Props, State> {
   };
 
   renderFlaggedBooks = () => {
-    const { page, pageSize, totalCount, flaggedBooks } = this.state;
+    const { page, totalCount, pages, pageSize } = this.state;
     if (totalCount === 0) {
       return <div>There are no flagged books.</div>;
     }
-
+    const flaggedBooks = pages[page] || [];
     return (
       <Table>
         <TableHead>
@@ -91,11 +107,9 @@ class Flagged extends React.Component<Props, State> {
         </TableHead>
 
         <TableBody>
-          {flaggedBooks
-            .slice(page * pageSize, page * pageSize + pageSize)
-            .map(book =>
-              this.renderTableRow(book.id, book.title, book.language)
-            )}
+          {flaggedBooks.map(book =>
+            this.renderTableRow(book.id, book.title, book.language)
+          )}
         </TableBody>
 
         <TableFooter>
@@ -104,8 +118,8 @@ class Flagged extends React.Component<Props, State> {
               count={totalCount}
               page={page}
               rowsPerPage={pageSize}
+              rowsPerPageOptions={[]}
               onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
           </TableRow>
         </TableFooter>
@@ -114,23 +128,12 @@ class Flagged extends React.Component<Props, State> {
   };
 
   render() {
-    const { loadingState } = this.state;
+    const { loadingState, page } = this.state;
     return (
-      <div>
-        {loadingState === 'LOADING' && (
-          <div>
-            <CircularProgress
-              css={{
-                marginTop: spacing.large,
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}
-            />
-          </div>
-        )}
-        {loadingState === 'SUCCESS' && this.renderFlaggedBooks()}
-      </div>
+      <Fragment>
+        <h1>Flagged books</h1>
+        {loadingState[page] === 'SUCCESS' && this.renderFlaggedBooks()}
+      </Fragment>
     );
   }
 }
