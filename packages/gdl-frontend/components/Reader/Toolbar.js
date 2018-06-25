@@ -9,7 +9,12 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { IconButton } from '@material-ui/core';
-import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
+import {
+  Close as CloseIcon,
+  Edit as EditIcon,
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteOutlineIcon
+} from '@material-ui/icons';
 
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';
@@ -76,6 +81,21 @@ const Toolbar = ({
         </IconButton>
       </Link>
     )}
+    <IconButton
+      onClick={onRequestClose}
+      css={`
+        position: absolute;
+        right: 50px;
+        &:hover {
+          color: red;
+        }
+      `}
+    >
+      <FavoriteOutlineIcon />
+      <SrOnly>
+        <Trans>Mark book as favorite</Trans>
+      </SrOnly>
+    </IconButton>
     <IconButton
       onClick={onRequestClose}
       css={{ position: 'absolute', right: '0' }}
