@@ -19,18 +19,19 @@ import { Form, Field } from 'react-final-form';
 import {
   fetchLanguages,
   fetchFeaturedContent,
-  updateFeaturedContent
+  updateFeaturedContent,
+  saveFeaturedContent
 } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
 type State = {
   featuredContent: any,
-  selectedLanguage: string
+  selectedLanguage: string,
+  isNewFeaturedContent: boolean
 };
 
 class EditFeaturedContent extends React.Component<{}, State> {
-  // do this in oncomponentmount?
   static async getInitialProps() {
     const languagesRes = await fetchLanguages();
 
@@ -41,26 +42,47 @@ class EditFeaturedContent extends React.Component<{}, State> {
 
   state = {
     featuredContent: null,
-    selectedLanguage: ''
+    selectedLanguage: '',
+    isNewFeaturedContent: false
   };
 
   getFeaturedContent = async (language: string) => {
     const featuredContentRes = await fetchFeaturedContent(language);
-    const featuredContent = featuredContentRes.isOk
+    var featuredContent = featuredContentRes.isOk
       ? featuredContentRes.data[0]
       : {};
 
-    this.setState({
-      featuredContent: featuredContent
-    });
+    // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
+    if (featuredContent.language.code !== language) {
+      this.setState({
+        isNewFeaturedContent: true,
+        featuredContent: {
+          description: '',
+          language: language,
+          link: '',
+          title: '',
+          imageUrl: ''
+        }
+      });
+    } else {
+      this.setState({ featuredContent: featuredContent });
+    }
   };
 
-  putFeaturedContent = async () => {
-    await updateFeaturedContent(this.state.featuredContent);
+  putFeaturedContent = async content => {
+    await updateFeaturedContent(content);
   };
 
-  handleSaveButtonClick = () => {
-    this.putFeaturedContent();
+  postFeaturedContent = async content => {
+    await saveFeaturedContent(content);
+  };
+
+  handleSaveButtonClick = content => {
+    console.log(content);
+
+    this.state.isNewFeaturedContent
+      ? this.postFeaturedContent(content)
+      : this.putFeaturedContent(content);
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
@@ -99,34 +121,77 @@ class EditFeaturedContent extends React.Component<{}, State> {
         <Form
           initialValues={this.state.featuredContent}
           onSubmit={this.handleSaveButtonClick}
-          render={({}) => (
+          validate={validate}
+          render={({ handleSubmit, pristine, invalid }) => (
             <form>
-              <Grid container spacing={24} alignContent="align-center">
-                <Grid item>
+              <Grid container alignItems="center">
+                <Grid item xs>
                   <Field
                     name="title"
                     render={({ input }) => (
-                      <TextField label="Title" {...input} />
-                    )}
-                  />
-                </Grid>
-
-                <Grid item>
-                  <Field
-                    name="description"
-                    render={({ input }) => (
-                      <TextField label="Description" {...input} multiline />
+                      <TextField
+                        required
+                        disabled={this.state.selectedLanguage === ''}
+                        label="Title"
+                        {...input}
+                      />
                     )}
                   />
                 </Grid>
 
                 <Grid item xs>
+                  <Field
+                    name="description"
+                    render={({ input }) => (
+                      <TextField
+                        required
+                        disabled={this.state.selectedLanguage === ''}
+                        label="Description"
+                        {...input}
+                        multiline
+                      />
+                    )}
+                  />
+                </Grid>
+
+                <Grid item xs>
+                  <Field
+                    name="imageUrl"
+                    render={({ input }) => (
+                      <TextField
+                        required
+                        disabled={this.state.selectedLanguage === ''}
+                        label="Image Url"
+                        {...input}
+                      />
+                    )}
+                  >
+                    />
+                  </Field>
+                </Grid>
+
+                <Grid item xs>
+                  <Field
+                    name="link"
+                    render={({ input }) => (
+                      <TextField
+                        required
+                        disabled={this.state.selectedLanguage === ''}
+                        label="Link"
+                        {...input}
+                      />
+                    )}
+                  >
+                    />
+                  </Field>
+                </Grid>
+
+                <Grid item xs>
                   <Button
                     color="primary"
-                    disabled={
-                      this.state.title === '' || this.state.description === ''
-                    }
-                    onClick={this.handleSaveButtonClick}
+                    disabled={pristine || invalid}
+                    type="submit"
+                    onClick={handleSubmit}
                   >
                     Save changes
                   </Button>
@@ -138,6 +203,19 @@ class EditFeaturedContent extends React.Component<{}, State> {
       </Container>
     );
   }
+}
+
+function validate(values) {
+  const errors = {};
+  if (values.title === '') {
+    errors.title = 'Required';
+  }
+
+  if (values.description === '') {
+    errors.description = 'Required';
+  }
+
+  return errors;
 }
 
 export default withMuiRoot(EditFeaturedContent);
