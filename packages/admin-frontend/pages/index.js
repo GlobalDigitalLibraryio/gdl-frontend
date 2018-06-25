@@ -32,6 +32,7 @@ class IndexPage extends React.Component<{}> {
         <div>
           <Link prefetch href="/admin/featured">
             <a>Edit featured content</a>
+          </Link>
         </div>
         <div>
           <Link prefetch href="/admin/flagged">

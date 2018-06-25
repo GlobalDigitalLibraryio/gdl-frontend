@@ -15,7 +15,7 @@ import type {
   Chapter,
   Language,
   FeaturedContent,
-  Book,
+  Book
 } from '../types';
 import { bookApiUrl } from '../config';
 
