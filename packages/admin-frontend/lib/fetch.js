@@ -9,14 +9,13 @@
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
 import type {
-  BookDetails,
-  Category,
-  RemoteData,
-  Chapter,
-  Language
+    BookDetails,
+    Category,
+    RemoteData,
+    Chapter,
+    Language, FeaturedContent
 } from '../types';
 import { bookApiUrl } from '../config';
-import type { FeaturedContent } from '../../gdl-frontend/types';
 
 const JWT_KEY = 'jwt';
 const Cookie = () => new UniversalCookie();
@@ -140,6 +139,15 @@ export function fetchFeaturedContent(
   language: ?string
 ): Promise<RemoteData<Array<FeaturedContent>>> {
   return doFetch(`${bookApiUrl}/featured/${language || ''}`);
+}
+
+export function saveFeaturedContent(
+  featuredContent: Object
+): Promise<RemoteData<any>> {
+  return doFetch(`${bookApiUrl}/featured`, {
+    method: 'POST',
+    body: JSON.stringify(featuredContent)
+  });
 }
 
 export function updateFeaturedContent(
