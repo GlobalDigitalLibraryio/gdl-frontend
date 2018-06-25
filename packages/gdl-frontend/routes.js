@@ -25,6 +25,7 @@ routes.add({
 routes.add('login');
 routes.add('logout');
 routes.add('search');
+routes.add('favorites');
 
 // in other environments we want the books page to be the landing page
 routes.add('books', `/${langParam}?`, 'index');
