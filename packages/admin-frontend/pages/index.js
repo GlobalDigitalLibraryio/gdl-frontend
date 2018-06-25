@@ -20,7 +20,7 @@ class IndexPage extends React.Component<{}> {
           </Link>
         </div>
         <div>
-          <Link href="/admin/export">
+          <Link prefetch href="/admin/export">
             <a>Export books from language and source</a>
           </Link>
         </div>
@@ -30,7 +30,7 @@ class IndexPage extends React.Component<{}> {
           </Link>
         </div>
         <div>
-          <Link href="/admin/edit_featured_content">
+          <Link prefetch href="/admin/featured">
             <a>Edit featured content</a>
           </Link>
         </div>
