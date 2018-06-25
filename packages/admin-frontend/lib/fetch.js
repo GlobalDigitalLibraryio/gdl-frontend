@@ -58,7 +58,7 @@ const bookCategoryMapper = book => {
 async function doFetch(
   url: string,
   options: ?{
-    method: 'POST' | 'GET' | 'PUT',
+    method: 'POST' | 'GET' | 'PUT' | 'DELETE',
     body: ?any
   }
 ): Promise<RemoteData<any>> {
@@ -177,4 +177,13 @@ export function updateFeaturedContent(
     method: 'PUT',
     body: JSON.stringify(featuredContent)
   });
+}
+
+export function deleteFeaturedContent(
+    id: number
+): Promise<RemoteData<{}>> {
+    return doFetch(`${bookApiUrl}/featured/${id}`, {
+        method: 'DELETE',
+        body: JSON.stringify(id)
+    })
 }
