@@ -9,11 +9,12 @@
 import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
 import type {
-    BookDetails,
-    Category,
-    RemoteData,
-    Chapter,
-    Language, FeaturedContent
+  BookDetails,
+  Category,
+  RemoteData,
+  Chapter,
+  Language,
+  FeaturedContent
 } from '../types';
 import { bookApiUrl } from '../config';
 
@@ -143,7 +144,7 @@ export function fetchFeaturedContent(
 
 export function saveFeaturedContent(
   featuredContent: Object
-): Promise<RemoteData<any>> {
+): Promise<RemoteData<{}>> {
   return doFetch(`${bookApiUrl}/featured`, {
     method: 'POST',
     body: JSON.stringify(featuredContent)
@@ -152,8 +153,7 @@ export function saveFeaturedContent(
 
 export function updateFeaturedContent(
   featuredContent: Object
-  // todo: what here
-): Promise<RemoteData<any>> {
+): Promise<RemoteData<{}>> {
   return doFetch(`${bookApiUrl}/featured`, {
     method: 'PUT',
     body: JSON.stringify(featuredContent)
