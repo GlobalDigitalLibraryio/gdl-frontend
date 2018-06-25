@@ -14,7 +14,8 @@ import type {
   RemoteData,
   Chapter,
   Language,
-  FeaturedContent
+  FeaturedContent,
+  Book,
 } from '../types';
 import { bookApiUrl } from '../config';
 
@@ -127,6 +128,24 @@ export async function saveChapter(
       chapter.id
     }`,
     { method: 'PUT', body: JSON.stringify(chapter) }
+  );
+
+  return result;
+}
+
+export async function fetchFlaggedBooks(
+  pageSize: number,
+  page: number
+): Promise<
+  RemoteData<{
+    results: Array<Book>,
+    totalCount: number,
+    page: number,
+    pageSize: number
+  }>
+> {
+  const result = await doFetch(
+    `${bookApiUrl}/books/flagged/?page-size=${pageSize}&page=${page}`
   );
 
   return result;
