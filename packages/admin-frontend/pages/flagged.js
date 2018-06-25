@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Fragment } from 'react';
 import { fetchFlaggedBooks } from '../lib/fetch';
 import type { Book } from '../types';
 import {
@@ -12,6 +11,7 @@ import {
   TablePagination
 } from '@material-ui/core';
 import NextLink from 'next/link';
+import Container from '../components/Container';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
@@ -45,7 +45,10 @@ class Flagged extends React.Component<Props, State> {
       loadingState: { ...state.loadingState, [page]: 'LOADING' }
     }));
 
-    const flaggedBooksRes = await fetchFlaggedBooks(page + 1);
+    const flaggedBooksRes = await fetchFlaggedBooks(
+      this.state.pageSize,
+      page + 1
+    );
 
     if (!flaggedBooksRes.isOk) {
       this.setState(state => ({
@@ -91,49 +94,46 @@ class Flagged extends React.Component<Props, State> {
     );
   };
 
-  renderFlaggedBooks = () => {
-    const { page, totalCount, pages, pageSize } = this.state;
+  render() {
+    const { loadingState, page, totalCount, pageSize, pages } = this.state;
     if (totalCount === 0) {
       return <div>There are no flagged books.</div>;
     }
+
     const flaggedBooks = pages[page] || [];
+
     return (
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Title</TableCell>
-            <TableCell>Language</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {flaggedBooks.map(book =>
-            this.renderTableRow(book.id, book.title, book.language)
-          )}
-        </TableBody>
-
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={totalCount}
-              page={page}
-              rowsPerPage={pageSize}
-              rowsPerPageOptions={[]}
-              onChangePage={this.handleChangePage}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    );
-  };
-
-  render() {
-    const { loadingState, page } = this.state;
-    return (
-      <Fragment>
+      <Container>
         <h1>Flagged books</h1>
-        {loadingState[page] === 'SUCCESS' && this.renderFlaggedBooks()}
-      </Fragment>
+
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Language</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {loadingState[page] === 'SUCCESS' &&
+              flaggedBooks.map(book =>
+                this.renderTableRow(book.id, book.title, book.language)
+              )}
+          </TableBody>
+
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={totalCount}
+                page={page}
+                rowsPerPage={pageSize}
+                rowsPerPageOptions={[]}
+                onChangePage={this.handleChangePage}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </Container>
     );
   }
 }

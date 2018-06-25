@@ -133,6 +133,7 @@ export async function saveChapter(
 }
 
 export async function fetchFlaggedBooks(
+  pageSize: number,
   page: number
 ): Promise<
   RemoteData<{
@@ -143,7 +144,7 @@ export async function fetchFlaggedBooks(
   }>
 > {
   const result = await doFetch(
-    `${bookApiUrl}/books/flagged/?page-size=30&page=${page}`
+    `${bookApiUrl}/books/flagged/?page-size=${pageSize}&page=${page}`
   );
 
   return result;
