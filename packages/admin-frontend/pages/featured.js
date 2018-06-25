@@ -20,7 +20,8 @@ import {
   fetchLanguages,
   fetchFeaturedContent,
   updateFeaturedContent,
-  saveFeaturedContent
+  saveFeaturedContent,
+  deleteFeaturedContent
 } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
@@ -55,11 +56,14 @@ class EditFeaturedContent extends React.Component<
       ? featuredContentRes.data[0]
       : {};
 
+    console.log(featuredContent);
+
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
     if (featuredContent.language.code !== languageCode) {
       this.setState({
         isNewFeaturedContent: true,
         featuredContent: {
+          id: featuredContent.id,
           description: '',
           language: languageCode,
           link: '',
@@ -90,6 +94,15 @@ class EditFeaturedContent extends React.Component<
     this.setState({ selectedLanguage: event.target.value });
 
     this.getFeaturedContent(event.target.value);
+  };
+
+  deleteFeaturedContent = async (id: number) => {
+    await deleteFeaturedContent(id);
+  };
+
+  handleDelete = () => {
+    console.log(this.state.featuredContent.id);
+    this.deleteFeaturedContent(this.state.featuredContent.id);
   };
 
   render() {
@@ -211,6 +224,17 @@ class EditFeaturedContent extends React.Component<
                   >
                     Save changes
                   </Button>
+
+                  <Grid item xs>
+                    <Button
+                      color="secondary"
+                      disabled={this.state.selectedLanguage === ''}
+                      type="submit"
+                      onClick={this.handleDelete}
+                    >
+                      Delete featured content
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </form>
