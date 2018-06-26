@@ -93,14 +93,13 @@ export default class Editor extends React.Component<
   };
 
   handlePublishingStatusChange = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ selectedPublishingStatus: event.target.value });
-  };
+    const selectedPublishingStatus = event.target.value;
 
-  handleChangePublishingStatusButtonClick = async () => {
     this.setState(state => ({
+      selectedPublishingStatus: selectedPublishingStatus,
       book: {
         ...state.book,
-        publishingStatus: this.state.selectedPublishingStatus
+        publishingStatus: selectedPublishingStatus
       }
     }));
   };
@@ -168,12 +167,6 @@ export default class Editor extends React.Component<
               ))}
             </Select>
           </FormControl>
-          <Button
-            color="primary"
-            onClick={this.handleChangePublishingStatusButtonClick}
-          >
-            Change status
-          </Button>
         </form>
       </Container>
     );
