@@ -13,20 +13,14 @@ import Link from 'next/link';
 import type { BookDetails, Chapter, PublishingStatus } from '../../types';
 import { saveBook, saveChapter } from '../../lib/fetch';
 import Container from '../Container';
-import { FormControl, InputLabel, Select } from '@material-ui/core';
+import { FormControl, InputLabel, Select, Typography } from '@material-ui/core';
 
 // ReactJson doesn't work on the server, so make sure we lazy load it
 const ReactJson = dynamic(import('react-json-view'));
 
 // Only allow these fields to be edited
 const EDITABLE_CHAPTER_FIELDS = ['content', 'chapterType'];
-const EDITABLE_BOOK_FIELDS = [
-  'title',
-  'description',
-  'pageOrientation',
-  'publishingStatus'
-];
-
+const EDITABLE_BOOK_FIELDS = ['title', 'description', 'pageOrientation'];
 const publishingStatus = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 
 type State = {
@@ -87,10 +81,12 @@ export default class Editor extends React.Component<
   };
 
   handlePublishingStatusChange = (event: SyntheticInputEvent<EventTarget>) => {
-    const selectedPublishingStatus = event.target.value;
+    // $FlowFixMe: ignore flow
+    const selectedPublishingStatus: PublishingStatus = event.target.value;
 
     this.setState(state => ({
       selectedPublishingStatus: selectedPublishingStatus,
+      // $FlowFixMe: ignore flow
       book: {
         ...state.book,
         publishingStatus: selectedPublishingStatus
@@ -102,14 +98,14 @@ export default class Editor extends React.Component<
     const { book, chapter } = this.props;
     return (
       <Container>
-        <h1>
+        <Typography variant="headline" component="h1" gutterBottom>
           Editing book:{' '}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
             <a>{book.title}</a>
           </Link>
-        </h1>
+        </Typography>
         {this.props.chapter && (
-          <h2>
+          <Typography variant="headline" component="h2">
             Editing chapter:{' '}
             <Link
               href={`/${book.language.code}/books/read/${book.id}/${
@@ -118,7 +114,7 @@ export default class Editor extends React.Component<
             >
               <a>{this.props.chapter.seqNo}</a>
             </Link>
-          </h2>
+          </Typography>
         )}
 
         <div style={{ textAlign: 'right' }}>
@@ -145,7 +141,9 @@ export default class Editor extends React.Component<
           displayDataTypes={false}
         />
 
-        <h2>Edit Publishing Status</h2>
+        <Typography variant="headline" component="h2">
+          Edit Publishing Status
+        </Typography>
         <form>
           <FormControl>
             <InputLabel>Select publishing status</InputLabel>
