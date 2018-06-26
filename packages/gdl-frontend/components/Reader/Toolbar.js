@@ -22,7 +22,11 @@ import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import { markAsFavorite, isFavorite } from '../../lib/favorites';
+import {
+  markAsFavorite,
+  removeAsFavorite,
+  isFavorite
+} from '../../lib/favorites';
 
 const Div = styled.div`
   z-index: 2;
@@ -101,16 +105,23 @@ class FavButton extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({ client: true });
+    this.setState({ client: true, isFav: isFavorite(this.props.book) });
   }
 
+  handleFav = () => {
+    this.state.isFav
+      ? removeAsFavorite(this.props.book)
+      : markAsFavorite(this.props.book);
+
+    this.setState({ isFav: isFavorite(this.props.book) });
+  };
+
   render() {
-    const { book } = this.props;
     if (!this.state.client) return null;
-    const isFav = isFavorite(book);
+    const isFav = this.state.isFav;
     return (
       <IconButton
-        onClick={() => markAsFavorite(book)}
+        onClick={this.handleFav}
         css={`
           position: absolute;
           right: 50px;
