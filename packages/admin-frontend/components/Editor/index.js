@@ -13,13 +13,7 @@ import Link from 'next/link';
 import type { BookDetails, Chapter, PublishingStatus } from '../../types';
 import { saveBook, saveChapter } from '../../lib/fetch';
 import Container from '../Container';
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  Grid,
-  Button
-} from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@material-ui/core';
 
 // ReactJson doesn't work on the server, so make sure we lazy load it
 const ReactJson = dynamic(import('react-json-view'));
