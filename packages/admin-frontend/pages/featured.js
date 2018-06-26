@@ -9,6 +9,7 @@
 import * as React from 'react';
 import Select from '@material-ui/core/Select/Select';
 import Button from '@material-ui/core/Button/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import Grid from '@material-ui/core/Grid';
@@ -25,15 +26,16 @@ import {
 } from '../lib/fetch';
 import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
+import type { FeaturedContent, Language } from '../types';
 
 type State = {
-  featuredContent: {},
+  featuredContent: ?FeaturedContent,
   selectedLanguage: string,
   defaultReturned: boolean
 };
 
 class EditFeaturedContent extends React.Component<
-  { languages: Array<any> },
+  { languages: Array<Language> },
   State
 > {
   static async getInitialProps() {
@@ -45,7 +47,7 @@ class EditFeaturedContent extends React.Component<
   }
 
   state = {
-    featuredContent: {},
+    featuredContent: null,
     selectedLanguage: '',
     defaultReturned: true
   };
@@ -54,28 +56,21 @@ class EditFeaturedContent extends React.Component<
     const featuredContentRes = await fetchFeaturedContent(languageCode);
     const featuredContent = featuredContentRes.isOk
       ? featuredContentRes.data[0]
-      : {};
+      : null;
 
-    console.log(featuredContent);
-
-    // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
-    if (featuredContent.language.code !== languageCode) {
-      this.setState({
-        defaultReturned: true,
-        featuredContent: {
-          id: featuredContent.id,
-          description: '',
-          language: languageCode,
-          link: '',
-          title: '',
-          imageUrl: ''
-        }
-      });
-    } else {
-      this.setState({
-        featuredContent: featuredContent,
-        defaultReturned: false
-      });
+    if (featuredContent) {
+      // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
+      if (featuredContent.language.code !== languageCode) {
+        this.setState({
+          defaultReturned: true,
+          featuredContent: null
+        });
+      } else {
+        this.setState({
+          featuredContent: featuredContent,
+          defaultReturned: false
+        });
+      }
     }
   };
 
@@ -84,7 +79,7 @@ class EditFeaturedContent extends React.Component<
   };
 
   postFeaturedContent = async content => {
-    await saveFeaturedContent(content);
+    await saveFeaturedContent(content, this.state.selectedLanguage);
   };
 
   handleSaveButtonClick = content => {
@@ -106,7 +101,9 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleDelete = () => {
-    this.deleteFeaturedContent(this.state.featuredContent.id);
+    this.deleteFeaturedContent(
+      this.state.featuredContent ? this.state.featuredContent.id : -1
+    );
   };
 
   render() {
@@ -137,23 +134,34 @@ class EditFeaturedContent extends React.Component<
         </FormControl>
 
         <Form
-          initialValues={this.state.featuredContent}
+          initialValues={
+            this.state.featuredContent !== null
+              ? this.state.featuredContent
+              : {}
+          }
           onSubmit={this.handleSaveButtonClick}
-          validate={validate}
+          validate={handleValidate}
           render={({ handleSubmit, pristine, invalid }) => (
             <form>
               <Grid container spacing={24} direction="column">
                 <Grid item xs>
                   <Field
                     name="title"
-                    render={({ input }) => (
-                      <TextField
-                        fullWidth
-                        required
-                        disabled={this.state.selectedLanguage === ''}
-                        label="Title"
-                        {...input}
-                      />
+                    render={({ input, meta }) => (
+                      <div>
+                        <TextField
+                          fullWidth
+                          error={meta.error && meta.touched}
+                          required
+                          disabled={this.state.selectedLanguage === ''}
+                          label="Title"
+                          {...input}
+                        />
+                        {meta.error &&
+                          meta.touched && (
+                            <FormHelperText error>{meta.error}</FormHelperText>
+                          )}
+                      </div>
                     )}
                   />
                 </Grid>
@@ -161,15 +169,22 @@ class EditFeaturedContent extends React.Component<
                 <Grid item xs>
                   <Field
                     name="description"
-                    render={({ input }) => (
-                      <TextField
-                        fullWidth
-                        required
-                        disabled={this.state.selectedLanguage === ''}
-                        label="Description"
-                        {...input}
-                        multiline
-                      />
+                    render={({ input, meta }) => (
+                      <div>
+                        <TextField
+                          fullWidth
+                          required
+                          error={meta.error && meta.touched}
+                          disabled={this.state.selectedLanguage === ''}
+                          label="Description"
+                          {...input}
+                          multiline
+                        />
+                        {meta.error &&
+                          meta.touched && (
+                            <FormHelperText error>{meta.error}</FormHelperText>
+                          )}
+                      </div>
                     )}
                   />
                 </Grid>
@@ -177,15 +192,22 @@ class EditFeaturedContent extends React.Component<
                 <Grid item xs>
                   <Field
                     name="link"
-                    render={({ input }) => (
-                      <TextField
-                        fullWidth
-                        type="url"
-                        required
-                        disabled={this.state.selectedLanguage === ''}
-                        label="Link"
-                        {...input}
-                      />
+                    render={({ input, meta }) => (
+                      <div>
+                        <TextField
+                          fullWidth
+                          type="url"
+                          error={meta.error && meta.touched}
+                          required
+                          disabled={this.state.selectedLanguage === ''}
+                          label="Link"
+                          {...input}
+                        />
+                        {meta.error &&
+                          meta.touched && (
+                            <FormHelperText error>{meta.error}</FormHelperText>
+                          )}
+                      </div>
                     )}
                   >
                     />
@@ -195,15 +217,22 @@ class EditFeaturedContent extends React.Component<
                 <Grid item xs>
                   <Field
                     name="imageUrl"
-                    render={({ input }) => (
-                      <TextField
-                        required
-                        fullWidth
-                        type="url"
-                        disabled={this.state.selectedLanguage === ''}
-                        label="Image Url"
-                        {...input}
-                      />
+                    render={({ input, meta }) => (
+                      <div>
+                        <TextField
+                          required
+                          fullWidth
+                          error={meta.error && meta.touched}
+                          type="url"
+                          disabled={this.state.selectedLanguage === ''}
+                          label="Image Url"
+                          {...input}
+                        />
+                        {meta.error &&
+                          meta.touched && (
+                            <FormHelperText error>{meta.error}</FormHelperText>
+                          )}
+                      </div>
                     )}
                   >
                     />
@@ -252,23 +281,34 @@ class EditFeaturedContent extends React.Component<
     );
   }
 }
-
-function validate(values) {
+function handleValidate(values) {
   const errors = {};
-  if (values.title === '') {
-    errors.title = 'Required';
+
+  if (values.title === undefined || values.title.trim() === '') {
+    errors.title = 'You have to enter a title';
   }
 
-  if (values.description === '') {
-    errors.description = 'Required';
+  if (values.description === undefined || values.description.trim() === '') {
+    errors.description = 'You have to enter a description';
   }
 
-  if (values.link === '') {
-    errors.link = 'Required';
+  const regex = /http(s)?:\/\/.*/;
+  if (
+    values.link === undefined ||
+    values.link.trim() === '' ||
+    !values.link.match(regex)
+  ) {
+    errors.link =
+      'You have to enter a valid url e.g "https://www.digitallibrary.io"';
   }
 
-  if (values.imageUrl === '') {
-    errors.imageUrl = 'Required';
+  if (
+    values.imageUrl === undefined ||
+    values.imageUrl.trim() === '' ||
+    !values.imageUrl.match(regex)
+  ) {
+    errors.imageUrl =
+      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png"';
   }
 
   return errors;
