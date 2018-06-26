@@ -6,8 +6,8 @@
  * See LICENSE
  */
 
-import UniversalCookie from 'universal-cookie';
 import fetch from 'isomorphic-unfetch';
+import { getAuthToken } from 'gdl-auth';
 import type {
   BookDetails,
   Category,
@@ -17,13 +17,6 @@ import type {
   Language
 } from '../types';
 import { bookApiUrl } from '../config';
-
-const JWT_KEY = 'jwt';
-const Cookie = () => new UniversalCookie();
-
-export function getTokenFromLocalCookie() {
-  return Cookie().get(JWT_KEY);
-}
 
 export async function fetchBook(
   id: string | number,
@@ -61,7 +54,7 @@ async function doFetch(
     body: ?any
   }
 ): Promise<RemoteData<any>> {
-  const token = process.browser ? getTokenFromLocalCookie() : undefined;
+  const token = process.browser ? getAuthToken() : undefined;
 
   const response = await fetch(url, {
     headers: {

@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
+import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
 
 import { imageApiUrl } from '../config';
-import { getTokenFromLocalCookie } from '../lib/fetch';
 
 type Props = {
   imageUrl?: string
@@ -90,10 +90,11 @@ class Crop extends Component<Props, State> {
   postToImageApi = async () => {
     if (this.state.imageApiBody !== null) {
       this.setState({ postResult: 'Posting…' });
+      const authToken = getAuthToken();
       const response = await fetch(`${imageApiUrl}/images/stored-parameters`, {
         method: 'POST',
         headers: {
-          Authorization: 'Bearer ' + getTokenFromLocalCookie(),
+          Authorization: authToken ? `Bearer ${authToken}` : null,
           Accept: 'application/json'
         },
         body: JSON.stringify(this.state.imageApiBody)
