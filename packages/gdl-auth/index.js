@@ -13,7 +13,7 @@ const Cookie = () => new UniversalCookie();
  * @param req Optional Express request object (for SSR)
  */
 export function hasClaim(claim: string, req: ?$Request): boolean {
-  const jwt = req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
+  const jwt = getAuthToken(req);
 
   if (!jwt) {
     return false;
@@ -21,4 +21,12 @@ export function hasClaim(claim: string, req: ?$Request): boolean {
   const decoded = jwtDecode(jwt);
 
   return decoded.scope && decoded.scope.includes(claim);
+}
+
+/**
+ * Read the JWT auth token from cookies.
+ * @param req Optional Express request object (for SSR)
+ */
+export function getAuthToken(req: ?$Request): ?string {
+  return req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
 }
