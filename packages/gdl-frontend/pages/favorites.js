@@ -26,6 +26,7 @@ import { Container } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { withMuiRoot } from '../hocs';
 import { getFavorites, removeAsFavorite } from '../lib/favorites';
+import BookGrid from '../components/BookGrid';
 
 type State = {
   books?: Array<Book>
@@ -55,15 +56,10 @@ class FavoritesPage extends React.Component<{}, State> {
       <>
         <Head title="Favorites" />
         <Layout crumbs={[<Trans>Favorites</Trans>]}>
-          <Typography>Favorites</Typography>
-          {this.state.books &&
-            this.state.books.map(b => (
-              <Favorite
-                key={b.id}
-                book={b}
-                removeFavorite={this.removeFavorite}
-              />
-            ))}
+          <Typography align="center" variant="headline">
+            Favorites
+          </Typography>
+          {this.state.books && <BookGrid books={this.state.books} />}
           {!this.state.books && (
             <div>
               <Typography>
