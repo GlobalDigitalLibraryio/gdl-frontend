@@ -162,16 +162,26 @@ export function fetchFeaturedContent(
 }
 
 export function saveFeaturedContent(
-  featuredContent: Object
+  featuredContent: FeaturedContent,
+  languageCode: string
 ): Promise<RemoteData<{}>> {
+  // transform the featured content object into the format that the API is accepting
+  const transformedFeaturedContent = {
+    description: featuredContent.description,
+    language: languageCode,
+    link: featuredContent.link,
+    title: featuredContent.title,
+    imageUrl: featuredContent.imageUrl
+  };
+
   return doFetch(`${bookApiUrl}/featured`, {
     method: 'POST',
-    body: JSON.stringify(featuredContent)
+    body: JSON.stringify(transformedFeaturedContent)
   });
 }
 
 export function updateFeaturedContent(
-  featuredContent: Object
+  featuredContent: FeaturedContent
 ): Promise<RemoteData<{}>> {
   return doFetch(`${bookApiUrl}/featured`, {
     method: 'PUT',
