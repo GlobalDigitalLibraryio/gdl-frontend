@@ -111,6 +111,7 @@ export type BookDetails = $ReadOnly<{|
 |}>;
 
 export type FeaturedContent = $ReadOnly<{|
+  id: number,
   title: string,
   description: string,
   link: string,
