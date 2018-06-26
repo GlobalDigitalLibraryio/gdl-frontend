@@ -81,6 +81,8 @@ export type Category = 'library_books' | 'classroom_books';
 
 export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
+export type PublishingStatus = 'PUBLISHED' | 'FLAGGED' | 'UNLISTED';
+
 export type Book = $ReadOnly<{|
   id: number,
   uuid: string,
@@ -96,6 +98,7 @@ export type Book = $ReadOnly<{|
 
 export type BookDetails = $ReadOnly<{|
   ...Book,
+  publishingStatus: PublishingStatus,
   datePublished?: string,
   publisher: Publisher,
   license: License,
