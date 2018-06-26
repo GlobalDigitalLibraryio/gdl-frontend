@@ -91,6 +91,8 @@ class EditFeaturedContent extends React.Component<
     this.state.defaultReturned
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
+
+    this.setState({ featuredContent: content });
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
@@ -104,7 +106,6 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleDelete = () => {
-    console.log(this.state.featuredContent.id);
     this.deleteFeaturedContent(this.state.featuredContent.id);
   };
 
