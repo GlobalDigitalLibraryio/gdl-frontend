@@ -179,11 +179,9 @@ export function updateFeaturedContent(
   });
 }
 
-export function deleteFeaturedContent(
-    id: number
-): Promise<RemoteData<{}>> {
-    return doFetch(`${bookApiUrl}/featured/${id}`, {
-        method: 'DELETE',
-        body: JSON.stringify(id)
-    })
+export function deleteFeaturedContent(id: number): Promise<RemoteData<{}>> {
+  return doFetch(`${bookApiUrl}/featured/${id}`, {
+    method: 'DELETE',
+    body: JSON.stringify(id)
+  });
 }
