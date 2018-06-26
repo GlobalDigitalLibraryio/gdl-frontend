@@ -29,7 +29,7 @@ import Container from '../components/Container';
 type State = {
   featuredContent: {},
   selectedLanguage: string,
-  isNewFeaturedContent: boolean
+  defaultReturned: boolean
 };
 
 class EditFeaturedContent extends React.Component<
@@ -47,7 +47,7 @@ class EditFeaturedContent extends React.Component<
   state = {
     featuredContent: {},
     selectedLanguage: '',
-    isNewFeaturedContent: false
+    defaultReturned: true
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -61,7 +61,7 @@ class EditFeaturedContent extends React.Component<
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
     if (featuredContent.language.code !== languageCode) {
       this.setState({
-        isNewFeaturedContent: true,
+        defaultReturned: true,
         featuredContent: {
           id: featuredContent.id,
           description: '',
@@ -72,7 +72,10 @@ class EditFeaturedContent extends React.Component<
         }
       });
     } else {
-      this.setState({ featuredContent: featuredContent });
+      this.setState({
+        featuredContent: featuredContent,
+        defaultReturned: false
+      });
     }
   };
 
@@ -85,7 +88,7 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleSaveButtonClick = content => {
-    this.state.isNewFeaturedContent
+    this.state.defaultReturned
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
   };
@@ -228,7 +231,11 @@ class EditFeaturedContent extends React.Component<
                   <Grid item xs>
                     <Button
                       color="secondary"
-                      disabled={this.state.selectedLanguage === ''}
+                      // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
+                      disabled={
+                        this.state.selectedLanguage === '' ||
+                        this.state.defaultReturned
+                      }
                       type="submit"
                       onClick={this.handleDelete}
                     >
