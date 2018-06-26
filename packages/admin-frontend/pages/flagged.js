@@ -8,7 +8,8 @@ import {
   TableRow,
   TableHead,
   TableFooter,
-  TablePagination
+  TablePagination,
+  Typography
 } from '@material-ui/core';
 import NextLink from 'next/link';
 import Container from '../components/Container';
@@ -19,7 +20,7 @@ type State = {
   loadingState: { [number]: LoadingState },
   page: number,
   pageSize: number,
-  totalCount: number,
+  totalCount?: number,
   pages: { [number]: Array<Book> }
 };
 
@@ -28,7 +29,6 @@ class Flagged extends React.Component<Props, State> {
     loadingState: {},
     page: 0,
     pageSize: 30,
-    totalCount: 0,
     pages: {}
   };
 
@@ -75,67 +75,88 @@ class Flagged extends React.Component<Props, State> {
     this.loadPage(this.state.page);
   }
 
-  renderTableRow = (id, title, language) => {
-    return (
-      <TableRow key={`${id}-${language.code}`}>
-        <TableCell>
-          <NextLink
-            href={{
-              pathname: '/admin/edit',
-              query: { id: id, lang: language.code }
-            }}
-            passHref
-          >
-            <a>{title}</a>
-          </NextLink>
-        </TableCell>
-        <TableCell>{language.name}</TableCell>
-      </TableRow>
-    );
-  };
-
   render() {
     const { loadingState, page, totalCount, pageSize, pages } = this.state;
-    if (totalCount === 0) {
-      return <div>There are no flagged books.</div>;
-    }
-
-    const flaggedBooks = pages[page] || [];
 
     return (
       <Container>
-        <h1>Flagged books</h1>
+        <Typography variant="headline" gutterBottom>
+          Flagged books
+        </Typography>
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Title</TableCell>
-              <TableCell>Language</TableCell>
-            </TableRow>
-          </TableHead>
+        {totalCount === 0 && (
+          <Typography variant="subheading" align="center">
+            Could not find any flagged books.
+          </Typography>
+        )}
 
-          <TableBody>
-            {loadingState[page] === 'SUCCESS' &&
-              flaggedBooks.map(book =>
-                this.renderTableRow(book.id, book.title, book.language)
-              )}
-          </TableBody>
-
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                count={totalCount}
-                page={page}
-                rowsPerPage={pageSize}
-                rowsPerPageOptions={[]}
-                onChangePage={this.handleChangePage}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
+        {totalCount > 0 && (
+          <FlaggedTable
+            page={page}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            pages={pages}
+            onPageChange={this.handleChangePage}
+            loadingState={loadingState}
+          />
+        )}
       </Container>
     );
   }
 }
+
+const FlaggedTable = ({
+  page,
+  totalCount,
+  pageSize,
+  loadingState,
+  onPageChange,
+  pages
+}) => {
+  const flaggedBooks = pages[page] || [];
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Title</TableCell>
+          <TableCell>Language</TableCell>
+        </TableRow>
+      </TableHead>
+
+      <TableBody>
+        {loadingState[page] === 'SUCCESS' &&
+          flaggedBooks.map(book => (
+            <TableRow key={`${book.id}-${book.language.code}`}>
+              <TableCell>
+                <NextLink
+                  href={{
+                    pathname: '/admin/edit',
+                    query: { id: book.id, lang: book.language.code }
+                  }}
+                  passHref
+                >
+                  <a>{book.title}</a>
+                </NextLink>
+              </TableCell>
+              <TableCell>{book.language.name}</TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+
+      <TableFooter>
+        <TableRow />
+        <TableRow>
+          <TablePagination
+            count={totalCount}
+            page={page}
+            rowsPerPage={pageSize}
+            rowsPerPageOptions={[]}
+            onChangePage={onPageChange}
+          />
+        </TableRow>
+      </TableFooter>
+    </Table>
+  );
+};
 
 export default Flagged;
