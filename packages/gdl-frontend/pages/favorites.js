@@ -8,16 +8,10 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import {
-  Typography,
-  IconButton,
-  Card,
-  CardContent,
-  Icon
-} from '@material-ui/core';
-import { Favorite as FavoriteIcon } from '@material-ui/icons';
+import { Avatar, Button, Typography } from '@material-ui/core';
+import { FavoriteBorder as FavoriteBorderIcon } from '@material-ui/icons';
+import Link from 'next/link';
 
-import { Link } from '../routes';
 import { fetchBook } from '../fetch';
 import type { Book } from '../types';
 import Layout from '../components/Layout';
@@ -25,7 +19,7 @@ import Head from '../components/Head';
 import { Container } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { withMuiRoot } from '../hocs';
-import { getFavorites, removeAsFavorite } from '../lib/favorites';
+import { getFavorites } from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
 
 type State = {
@@ -46,34 +40,57 @@ class FavoritesPage extends React.Component<{}, State> {
     console.log(books);
   }
 
-  removeFavorite = book => {
-    removeAsFavorite(book);
-    this.setState(state => ({ books: state.books.filter(b => b !== book) }));
-  };
-
   render() {
+    const books = this.state.books;
     return (
       <>
         <Head title="Favorites" />
         <Layout crumbs={[<Trans>Favorites</Trans>]}>
-          <Typography align="center" variant="headline">
+          <Typography
+            align="center"
+            variant="headline"
+            css={{ marginTop: spacing.large }}
+          >
             Favorites
           </Typography>
-          {this.state.books && <BookGrid books={this.state.books} />}
-          {!this.state.books && (
-            <div>
-              <Typography>
-                <Trans>Books you mark as favorites are listed here.</Trans>
-              </Typography>
-            </div>
-          )}
+          {books && books.length > 0 && <BookGrid books={books} />}
+          {books &&
+            books.length === 0 && (
+              <div css={{ textAlign: 'center' }}>
+                <div
+                  css={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: spacing.xlarge
+                  }}
+                >
+                  <Avatar css={{ height: 100, width: 100 }}>
+                    <FavoriteBorderIcon css={{ color: 'red', fontSize: 70 }} />
+                  </Avatar>
+                </div>
+                <Typography
+                  css={{
+                    marginTop: spacing.large,
+                    marginBottom: spacing.medium
+                  }}
+                >
+                  <Trans>
+                    Add books to your favorites so you can easily find them
+                    later.
+                  </Trans>
+                </Typography>
+                <Link passHref href="/">
+                  <Button variant="outlined">Find something to read</Button>
+                </Link>
+              </div>
+            )}
         </Layout>
       </>
     );
   }
 }
 
-const Favorite = ({ book, removeFavorite }) => (
+/*const Favorite = ({ book, removeFavorite }) => (
   <Card>
     <CardContent>
       <IconButton onClick={() => removeFavorite(book)}>
@@ -87,6 +104,6 @@ const Favorite = ({ book, removeFavorite }) => (
       <Typography lang={book.language.code}>{book.description}</Typography>
     </CardContent>
   </Card>
-);
+);*/
 
 export default withMuiRoot(FavoritesPage);
