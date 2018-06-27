@@ -167,11 +167,8 @@ export function saveFeaturedContent(
 ): Promise<RemoteData<{}>> {
   // transform the featured content object into the format that the API is accepting
   const transformedFeaturedContent = {
-    description: featuredContent.description,
-    language: languageCode,
-    link: featuredContent.link,
-    title: featuredContent.title,
-    imageUrl: featuredContent.imageUrl
+    ...featuredContent,
+    language: languageCode
   };
 
   return doFetch(`${bookApiUrl}/featured`, {
@@ -192,6 +189,6 @@ export function updateFeaturedContent(
 export function deleteFeaturedContent(id: number): Promise<RemoteData<{}>> {
   return doFetch(`${bookApiUrl}/featured/${id}`, {
     method: 'DELETE',
-    body: JSON.stringify(id)
+    body: null
   });
 }

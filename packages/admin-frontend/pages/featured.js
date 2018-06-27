@@ -30,8 +30,7 @@ import type { FeaturedContent, Language } from '../types';
 
 type State = {
   featuredContent: ?FeaturedContent,
-  selectedLanguage: string,
-  defaultReturned: boolean
+  selectedLanguage: string
 };
 
 class EditFeaturedContent extends React.Component<
@@ -48,8 +47,7 @@ class EditFeaturedContent extends React.Component<
 
   state = {
     featuredContent: null,
-    selectedLanguage: '',
-    defaultReturned: true
+    selectedLanguage: ''
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -59,16 +57,13 @@ class EditFeaturedContent extends React.Component<
       : null;
 
     if (featuredContent) {
-      // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
       if (featuredContent.language.code !== languageCode) {
         this.setState({
-          defaultReturned: true,
           featuredContent: null
         });
       } else {
         this.setState({
-          featuredContent: featuredContent,
-          defaultReturned: false
+          featuredContent: featuredContent
         });
       }
     }
@@ -82,8 +77,10 @@ class EditFeaturedContent extends React.Component<
     await saveFeaturedContent(content, this.state.selectedLanguage);
   };
 
-  handleSaveButtonClick = content => {
-    this.state.defaultReturned
+  handleSaveButtonClick = (defaultReturned: boolean) => (
+    content: FeaturedContent
+  ) => {
+    defaultReturned
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
 
@@ -104,9 +101,23 @@ class EditFeaturedContent extends React.Component<
     this.deleteFeaturedContent(
       this.state.featuredContent ? this.state.featuredContent.id : -1
     );
+
+    this.setState({ featuredContent: null });
   };
 
   render() {
+    // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
+    let defaultReturned = true;
+    if (
+      this.state.featuredContent &&
+      this.state.featuredContent.language &&
+      this.state.featuredContent.language.code
+    ) {
+      defaultReturned =
+        this.state.featuredContent.language.code !==
+        this.state.selectedLanguage;
+    }
+
     return (
       <Container>
         <Typography variant="headline" component="h1" gutterBottom>
@@ -139,7 +150,7 @@ class EditFeaturedContent extends React.Component<
               ? this.state.featuredContent
               : {}
           }
-          onSubmit={this.handleSaveButtonClick}
+          onSubmit={this.handleSaveButtonClick(defaultReturned)}
           validate={handleValidate}
           render={({ handleSubmit, pristine, invalid }) => (
             <form>
@@ -148,7 +159,7 @@ class EditFeaturedContent extends React.Component<
                   <Field
                     name="title"
                     render={({ input, meta }) => (
-                      <div>
+                      <>
                         <TextField
                           fullWidth
                           error={meta.error && meta.touched}
@@ -161,7 +172,7 @@ class EditFeaturedContent extends React.Component<
                           meta.touched && (
                             <FormHelperText error>{meta.error}</FormHelperText>
                           )}
-                      </div>
+                      </>
                     )}
                   />
                 </Grid>
@@ -170,7 +181,7 @@ class EditFeaturedContent extends React.Component<
                   <Field
                     name="description"
                     render={({ input, meta }) => (
-                      <div>
+                      <>
                         <TextField
                           fullWidth
                           required
@@ -184,7 +195,7 @@ class EditFeaturedContent extends React.Component<
                           meta.touched && (
                             <FormHelperText error>{meta.error}</FormHelperText>
                           )}
-                      </div>
+                      </>
                     )}
                   />
                 </Grid>
@@ -193,7 +204,7 @@ class EditFeaturedContent extends React.Component<
                   <Field
                     name="link"
                     render={({ input, meta }) => (
-                      <div>
+                      <>
                         <TextField
                           fullWidth
                           type="url"
@@ -207,7 +218,7 @@ class EditFeaturedContent extends React.Component<
                           meta.touched && (
                             <FormHelperText error>{meta.error}</FormHelperText>
                           )}
-                      </div>
+                      </>
                     )}
                   >
                     />
@@ -218,7 +229,7 @@ class EditFeaturedContent extends React.Component<
                   <Field
                     name="imageUrl"
                     render={({ input, meta }) => (
-                      <div>
+                      <>
                         <TextField
                           required
                           fullWidth
@@ -232,7 +243,7 @@ class EditFeaturedContent extends React.Component<
                           meta.touched && (
                             <FormHelperText error>{meta.error}</FormHelperText>
                           )}
-                      </div>
+                      </>
                     )}
                   >
                     />
@@ -264,9 +275,8 @@ class EditFeaturedContent extends React.Component<
                       // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
                       disabled={
                         this.state.selectedLanguage === '' ||
-                        this.state.defaultReturned
+                        !this.state.featuredContent
                       }
-                      type="submit"
                       onClick={this.handleDelete}
                     >
                       Delete featured content
