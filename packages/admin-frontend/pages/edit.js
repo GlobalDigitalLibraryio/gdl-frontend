@@ -11,6 +11,7 @@ import * as React from 'react';
 import type { BookDetails, Chapter, Context } from '../types';
 import { fetchBook, fetchChapter } from '../lib/fetch';
 import Editor from '../components/Editor';
+import Layout from '../components/Layout';
 
 type Props = {
   book: BookDetails,
@@ -49,6 +50,10 @@ export default class EditPage extends React.Component<Props> {
   render() {
     const { book, chapter } = this.props;
 
-    return <Editor book={book} chapter={chapter} />;
+    return (
+      <Layout>
+        <Editor book={book} chapter={chapter} />
+      </Layout>
+    );
   }
 }

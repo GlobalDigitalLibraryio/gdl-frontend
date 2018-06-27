@@ -95,7 +95,7 @@ export default class Editor extends React.Component<
   render() {
     const { book, chapter } = this.props;
     return (
-      <Container>
+      <main>
         <Typography variant="headline" component="h1" gutterBottom>
           Editing book:{' '}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
@@ -167,7 +167,7 @@ export default class Editor extends React.Component<
             </form>
           </div>
         )}
-      </Container>
+      </main>
     );
   }
 }

@@ -5,6 +5,7 @@ import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
 import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
+import Layout from '../components/Layout';
 
 import { imageApiUrl } from '../config';
 
@@ -202,7 +203,7 @@ class Crop extends Component<Props, State> {
 }
 
 const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
-  <div>
+  <Layout>
     <h1>Crop</h1>
     {imageUrl == null ? (
       <p>
@@ -211,7 +212,7 @@ const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
     ) : (
       <Crop imageUrl={imageUrl} />
     )}
-  </div>
+  </Layout>
 );
 
 CropPage.getInitialProps = context => {

@@ -7,34 +7,15 @@
  */
 
 import * as React from 'react';
-import Link from 'next/link';
+import Layout from '../components/Layout';
 
 class IndexPage extends React.Component<{}> {
   render() {
     return (
-      <main>
-        <h1>GDL Admin</h1>
-        <div>
-          <Link prefetch href="/admin/crop">
-            <a>Crop images</a>
-          </Link>
-        </div>
-        <div>
-          <Link href="/admin/export">
-            <a>Export books from language and source</a>
-          </Link>
-        </div>
-        <div>
-          <Link prefetch href="/admin/edit">
-            <a>Edit book</a>
-          </Link>
-        </div>
-        <div>
-          <Link prefetch href="/admin/flagged">
-            <a>Flagged books</a>
-          </Link>
-        </div>
-      </main>
+      <Layout>
+        <p>this page is intentionally left blank</p>
+        {/* find something to put on index page */}
+      </Layout>
     );
   }
 }
