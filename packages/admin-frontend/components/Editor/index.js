@@ -43,7 +43,7 @@ export default class Editor extends React.Component<
     didSave: false,
     book: this.props.book,
     chapter: this.props.chapter,
-    selectedPublishingStatus: this.props.book.publishingStatus,
+    selectedPublishingStatus: this.props.book.publishingStatus
   };
 
   handleChapterEdit = (edit: {
@@ -139,7 +139,12 @@ export default class Editor extends React.Component<
           displayDataTypes={false}
         />
 
-        <Typography variant="headline" component="h2" gutterBottom css={{marginTop: "30px"}}>
+        <Typography
+          variant="headline"
+          component="h2"
+          gutterBottom
+          css={{ marginTop: '30px' }}
+        >
           Edit Publishing Status
         </Typography>
         <form>
