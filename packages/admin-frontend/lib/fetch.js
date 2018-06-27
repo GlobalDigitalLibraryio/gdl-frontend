@@ -13,8 +13,9 @@ import type {
   Category,
   RemoteData,
   Chapter,
-  Book,
-  Language
+  Language,
+  FeaturedContent,
+  Book
 } from '../types';
 import { bookApiUrl } from '../config';
 
@@ -50,8 +51,8 @@ const bookCategoryMapper = book => {
 async function doFetch(
   url: string,
   options: ?{
-    method: 'POST' | 'GET' | 'PUT',
-    body: ?any
+    method: 'POST' | 'GET' | 'PUT' | 'DELETE',
+    body?: any
   }
 ): Promise<RemoteData<any>> {
   const token = process.browser ? getAuthToken() : undefined;
@@ -145,4 +146,45 @@ export async function fetchFlaggedBooks(
 
 export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
   return doFetch(`${bookApiUrl}/languages`);
+}
+
+export function fetchFeaturedContent(
+  language: ?string
+): Promise<RemoteData<Array<FeaturedContent>>> {
+  return doFetch(`${bookApiUrl}/featured/${language || ''}`);
+}
+
+export function saveFeaturedContent(
+  featuredContent: FeaturedContent,
+  languageCode: string
+): Promise<RemoteData<{ id: number }>> {
+  // transform the featured content object into the format that the API is accepting
+  const transformedFeaturedContent = {
+    ...featuredContent,
+    language: languageCode
+  };
+
+  return doFetch(`${bookApiUrl}/featured`, {
+    method: 'POST',
+    body: JSON.stringify(transformedFeaturedContent)
+  });
+}
+
+export function updateFeaturedContent(
+  featuredContent: FeaturedContent
+): Promise<RemoteData<{ id: number }>> {
+  return doFetch(`${bookApiUrl}/featured`, {
+    method: 'PUT',
+    body: JSON.stringify(featuredContent)
+  });
+}
+
+export function deleteFeaturedContent(
+  id: number
+): Promise<
+  RemoteData<{ code: string, description: string, occuredAt: string }>
+> {
+  return doFetch(`${bookApiUrl}/featured/${id}`, {
+    method: 'DELETE'
+  });
 }
