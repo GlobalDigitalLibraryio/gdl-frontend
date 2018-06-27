@@ -18,9 +18,8 @@ import {
   ListItem,
   ListItemText
 } from '@material-ui/core';
-import Container from '../Container';
 
-const drawerWidth = 240;  // TODO: set this to be width of drawer, not elements in drawer...
+const drawerWidth = 240; // TODO: set this to be width of drawer, not elements in drawer...
 const toolbarHeight = 70; // TODO: fix this
 
 export default class Layout extends React.Component<{ children: Node }> {
@@ -65,7 +64,15 @@ export default class Layout extends React.Component<{ children: Node }> {
           <Divider />
         </Drawer>
 
-        <main css={{ marginLeft: drawerWidth, marginTop: toolbarHeight, padding: 16}}>{this.props.children}</main>
+        <main
+          css={{
+            marginLeft: drawerWidth,
+            marginTop: toolbarHeight,
+            padding: 16
+          }}
+        >
+          {this.props.children}
+        </main>
       </div>
     );
   }

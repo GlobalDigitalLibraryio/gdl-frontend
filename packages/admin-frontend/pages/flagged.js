@@ -80,7 +80,7 @@ class Flagged extends React.Component<Props, State> {
 
     return (
       <Layout>
-        <Typography variant="headline" gutterBottom>
+        <Typography variant="headline" component="h1" gutterBottom>
           Flagged books
         </Typography>
 

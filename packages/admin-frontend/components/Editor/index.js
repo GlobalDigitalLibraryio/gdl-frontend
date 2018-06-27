@@ -9,11 +9,17 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { Trans } from '@lingui/react';
 
 import type { BookDetails, Chapter, PublishingStatus } from '../../types';
 import { saveBook, saveChapter } from '../../lib/fetch';
-import Container from '../Container';
-import { FormControl, InputLabel, Select, Typography } from '@material-ui/core';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  Typography,
+  Button
+} from '@material-ui/core';
 
 // ReactJson doesn't work on the server, so make sure we lazy load it
 const ReactJson = dynamic(import('react-json-view'));
@@ -95,7 +101,7 @@ export default class Editor extends React.Component<
   render() {
     const { book, chapter } = this.props;
     return (
-      <main>
+      <div>
         <Typography variant="headline" component="h1" gutterBottom>
           Editing book:{' '}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
@@ -116,15 +122,23 @@ export default class Editor extends React.Component<
         )}
 
         <div style={{ textAlign: 'right' }}>
-          {this.state.didSave && <span>Saved changes!</span>}
+          {this.state.didSave && <Trans>Saved changes!</Trans>}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
-            <button disabled={this.state.isSaving} style={{ margin: '0 1rem' }}>
+            <Button
+              color="secondary"
+              disabled={this.state.isSaving}
+              style={{ margin: '0 1rem' }}
+            >
               Discard changes
-            </button>
+            </Button>
           </Link>
-          <button onClick={this.handleSave} disabled={this.state.isSaving}>
+          <Button
+            color="primary"
+            onClick={this.handleSave}
+            disabled={this.state.isSaving}
+          >
             Save changes
-          </button>
+          </Button>
         </div>
 
         <ReactJson
@@ -167,7 +181,7 @@ export default class Editor extends React.Component<
             </form>
           </div>
         )}
-      </main>
+      </div>
     );
   }
 }

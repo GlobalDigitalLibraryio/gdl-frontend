@@ -174,7 +174,9 @@ class Crop extends Component<Props, State> {
     return (
       <div>
         <p>
-          <Button color="primary" onClick={this.toggleRatio}>Toggle ratio</Button>
+          <Button color="primary" onClick={this.toggleRatio}>
+            Toggle ratio
+          </Button>
         </p>
         <Cropper
           ref={c => {
@@ -194,7 +196,11 @@ class Crop extends Component<Props, State> {
           className="preview"
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
-        <Button variant="contained" color="primary" onClick={this.postToImageApi}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.postToImageApi}
+        >
           Save this crop config for ratio={this.state.ratio}
         </Button>
         {this.displayPostResult()}
@@ -209,9 +215,9 @@ const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
       Crop
     </Typography>
     {imageUrl == null ? (
-      <p>
-        You need to specify <tt>imageUrl</tt> in the URL
-      </p>
+      <Typography variant="subheading">
+        You need to specify <code>imageUrl</code> in the URL
+      </Typography>
     ) : (
       <Crop imageUrl={imageUrl} />
     )}
