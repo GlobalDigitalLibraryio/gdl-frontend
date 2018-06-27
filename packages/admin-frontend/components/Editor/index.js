@@ -103,7 +103,7 @@ export default class Editor extends React.Component<
           </Link>
         </Typography>
         {this.props.chapter && (
-          <Typography variant="headline" component="h2">
+          <Typography variant="headline" component="h2" gutterBottom>
             Editing chapter:{' '}
             <Link
               href={`/${book.language.code}/books/read/${book.id}/${
@@ -139,12 +139,12 @@ export default class Editor extends React.Component<
           displayDataTypes={false}
         />
 
-        <Typography variant="headline" component="h2">
+        <Typography variant="headline" component="h2" gutterBottom css={{marginTop: "30px"}}>
           Edit Publishing Status
         </Typography>
         <form>
           <FormControl>
-            <InputLabel>Select publishing status</InputLabel>
+            <InputLabel>Publishing status</InputLabel>
             <Select
               native
               value={this.state.selectedPublishingStatus}
