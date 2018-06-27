@@ -55,6 +55,11 @@ export default class Layout extends React.Component<{ children: Node }> {
                 <ListItemText primary="Edit book" />
               </ListItem>
             </Link>
+            <Link prefetch href="/admin/featured">
+              <ListItem button>
+                <ListItemText primary="Edit featured content" />
+              </ListItem>
+            </Link>
             <Link href="/admin/flagged">
               <ListItem button>
                 <ListItemText primary="Flagged books" />
