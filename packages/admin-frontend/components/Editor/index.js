@@ -28,8 +28,7 @@ type State = {
   book: BookDetails,
   didSave: boolean,
   chapter: ?Chapter,
-  selectedPublishingStatus: PublishingStatus,
-  publishingStatus: Array<PublishingStatus>
+  selectedPublishingStatus: PublishingStatus
 };
 
 export default class Editor extends React.Component<
@@ -45,7 +44,6 @@ export default class Editor extends React.Component<
     book: this.props.book,
     chapter: this.props.chapter,
     selectedPublishingStatus: this.props.book.publishingStatus,
-    publishingStatus: publishingStatus
   };
 
   handleChapterEdit = (edit: {
@@ -152,7 +150,7 @@ export default class Editor extends React.Component<
               value={this.state.selectedPublishingStatus}
               onChange={this.handlePublishingStatusChange}
             >
-              {this.state.publishingStatus.map(status => (
+              {publishingStatus.map(status => (
                 <option key={status} value={status}>
                   {status}
                 </option>
