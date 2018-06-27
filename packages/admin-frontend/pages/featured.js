@@ -74,7 +74,15 @@ class EditFeaturedContent extends React.Component<
   };
 
   postFeaturedContent = async content => {
-    await saveFeaturedContent(content, this.state.selectedLanguage);
+    const result = await saveFeaturedContent(
+      content,
+      this.state.selectedLanguage
+    );
+    if (result.isOk) {
+      this.setState(prevState => ({
+        featuredContent: { ...prevState.featuredContent, id: result.data.id }
+      }));
+    }
   };
 
   handleSaveButtonClick = (defaultReturned: boolean) => (
@@ -98,24 +106,23 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleDelete = () => {
-    this.deleteFeaturedContent(
-      this.state.featuredContent ? this.state.featuredContent.id : -1
-    );
-
-    this.setState({ featuredContent: null });
+    if (this.state.featuredContent) {
+      this.deleteFeaturedContent(this.state.featuredContent.id);
+      this.setState({ featuredContent: null });
+    }
   };
 
   render() {
+    const { featuredContent, selectedLanguage } = this.state;
+
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
     let defaultReturned = true;
     if (
-      this.state.featuredContent &&
-      this.state.featuredContent.language &&
-      this.state.featuredContent.language.code
+      featuredContent &&
+      featuredContent.language &&
+      featuredContent.language.code
     ) {
-      defaultReturned =
-        this.state.featuredContent.language.code !==
-        this.state.selectedLanguage;
+      defaultReturned = featuredContent.language.code !== selectedLanguage;
     }
 
     return (
@@ -129,7 +136,7 @@ class EditFeaturedContent extends React.Component<
 
           <Select
             onChange={this.handleLanguageSelect}
-            value={this.state.selectedLanguage}
+            value={selectedLanguage}
             native
             inputProps={{ id: 'language-select' }}
           >
@@ -145,11 +152,7 @@ class EditFeaturedContent extends React.Component<
         </FormControl>
 
         <Form
-          initialValues={
-            this.state.featuredContent !== null
-              ? this.state.featuredContent
-              : {}
-          }
+          initialValues={featuredContent !== null ? featuredContent : {}}
           onSubmit={this.handleSaveButtonClick(defaultReturned)}
           validate={handleValidate}
           render={({ handleSubmit, pristine, invalid }) => (
@@ -164,7 +167,7 @@ class EditFeaturedContent extends React.Component<
                           fullWidth
                           error={meta.error && meta.touched}
                           required
-                          disabled={this.state.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Title"
                           {...input}
                         />
@@ -186,7 +189,7 @@ class EditFeaturedContent extends React.Component<
                           fullWidth
                           required
                           error={meta.error && meta.touched}
-                          disabled={this.state.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Description"
                           {...input}
                           multiline
@@ -210,7 +213,7 @@ class EditFeaturedContent extends React.Component<
                           type="url"
                           error={meta.error && meta.touched}
                           required
-                          disabled={this.state.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Link"
                           {...input}
                         />
@@ -235,7 +238,7 @@ class EditFeaturedContent extends React.Component<
                           fullWidth
                           error={meta.error && meta.touched}
                           type="url"
-                          disabled={this.state.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Image Url"
                           {...input}
                         />
@@ -273,10 +276,7 @@ class EditFeaturedContent extends React.Component<
                     <Button
                       color="secondary"
                       // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                      disabled={
-                        this.state.selectedLanguage === '' ||
-                        !this.state.featuredContent
-                      }
+                      disabled={selectedLanguage === '' || !featuredContent}
                       onClick={this.handleDelete}
                     >
                       Delete featured content
