@@ -139,30 +139,34 @@ export default class Editor extends React.Component<
           displayDataTypes={false}
         />
 
-        <Typography
-          variant="headline"
-          component="h2"
-          gutterBottom
-          css={{ marginTop: '30px' }}
-        >
-          Edit Publishing Status
-        </Typography>
-        <form>
-          <FormControl>
-            <InputLabel>Publishing status</InputLabel>
-            <Select
-              native
-              value={this.state.selectedPublishingStatus}
-              onChange={this.handlePublishingStatusChange}
+        {!this.props.chapter && (
+          <div>
+            <Typography
+              variant="headline"
+              component="h2"
+              gutterBottom
+              css={{ marginTop: '30px' }}
             >
-              {publishingStatus.map(status => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </form>
+              Edit Publishing Status
+            </Typography>
+            <form>
+              <FormControl>
+                <InputLabel>Publishing status</InputLabel>
+                <Select
+                  native
+                  value={this.state.selectedPublishingStatus}
+                  onChange={this.handlePublishingStatusChange}
+                >
+                  {publishingStatus.map(status => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </form>
+          </div>
+        )}
       </Container>
     );
   }
