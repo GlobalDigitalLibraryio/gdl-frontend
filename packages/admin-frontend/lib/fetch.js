@@ -59,7 +59,7 @@ async function doFetch(
   url: string,
   options: ?{
     method: 'POST' | 'GET' | 'PUT' | 'DELETE',
-    body: ?any
+    body?: any
   }
 ): Promise<RemoteData<any>> {
   const token = process.browser ? getTokenFromLocalCookie() : undefined;
@@ -192,7 +192,6 @@ export function deleteFeaturedContent(
   RemoteData<{ code: string, description: string, occuredAt: string }>
 > {
   return doFetch(`${bookApiUrl}/featured/${id}`, {
-    method: 'DELETE',
-    body: null
+    method: 'DELETE'
   });
 }
