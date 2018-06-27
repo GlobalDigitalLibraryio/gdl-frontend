@@ -179,14 +179,18 @@ export function saveFeaturedContent(
 
 export function updateFeaturedContent(
   featuredContent: FeaturedContent
-): Promise<RemoteData<{id: number}>> {
+): Promise<RemoteData<{ id: number }>> {
   return doFetch(`${bookApiUrl}/featured`, {
     method: 'PUT',
     body: JSON.stringify(featuredContent)
   });
 }
 
-export function deleteFeaturedContent(id: number): Promise<RemoteData<{code: string, description: string, occuredAt: string}>> {
+export function deleteFeaturedContent(
+  id: number
+): Promise<
+  RemoteData<{ code: string, description: string, occuredAt: string }>
+> {
   return doFetch(`${bookApiUrl}/featured/${id}`, {
     method: 'DELETE',
     body: null
