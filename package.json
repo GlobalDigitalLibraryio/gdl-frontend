@@ -21,7 +21,8 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
-    "start": "cd packages/gdl-frontend && yarn start"
+    "start": "cd packages/gdl-frontend && yarn start",
+    "cypress:open": "cypress open"
   },
   "resolutions": {
     "@lingui/cli/**/@babel/plugin-transform-typescript": "7.0.0-beta.42",
@@ -41,6 +42,7 @@
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",
     "babel-plugin-transform-imports": "^1.5.0",
+    "cypress": "^3.0.1",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
