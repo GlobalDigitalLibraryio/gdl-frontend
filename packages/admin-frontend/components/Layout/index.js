@@ -18,9 +18,6 @@ import {
   Paper
 } from '@material-ui/core';
 
-
-
-
 export default class Layout extends React.Component<{ children: Node }> {
   render() {
     return (
@@ -71,7 +68,7 @@ export default class Layout extends React.Component<{ children: Node }> {
         >
           {this.props.children}
         </main>
-      </div >
+      </div>
     );
   }
 }
