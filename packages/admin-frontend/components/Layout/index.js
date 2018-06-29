@@ -12,21 +12,20 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Drawer,
-  Divider,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  Paper
 } from '@material-ui/core';
 
-const drawerWidth = 240; // TODO: set this to be width of drawer, not elements in drawer...
-const toolbarHeight = 70; // TODO: fix this
+
+
 
 export default class Layout extends React.Component<{ children: Node }> {
   render() {
     return (
-      <div>
-        <AppBar color="primary" position="absolute" css={{ zIndex: 2 }}>
+      <div css={{ display: 'flex', flexFlow: 'row wrap' }}>
+        <AppBar color="primary" position="static">
           <Toolbar>
             <Typography variant="title" color="inherit" noWrap>
               Welcome to <strong>GDL Admin</strong>.
@@ -34,12 +33,8 @@ export default class Layout extends React.Component<{ children: Node }> {
           </Toolbar>
         </AppBar>
 
-        <Drawer
-          variant="permanent"
-          css={{ zIndex: 1, position: 'relative', width: drawerWidth }}
-        >
-          <div css={{ height: toolbarHeight, width: drawerWidth }} />
-          <List component="nav">
+        <Paper square={true} css={{ width: '240px' }}>
+          <List component="nav" css={{ width: '240px', height: '100%' }}>
             <Link prefetch href="/admin/crop">
               <ListItem button>
                 <ListItemText primary="Crop images" />
@@ -66,19 +61,17 @@ export default class Layout extends React.Component<{ children: Node }> {
               </ListItem>
             </Link>
           </List>
-          <Divider />
-        </Drawer>
+        </Paper>
 
         <main
           css={{
-            marginLeft: drawerWidth,
-            marginTop: toolbarHeight,
-            padding: 16
+            padding: 16,
+            flexGrow: 1
           }}
         >
           {this.props.children}
         </main>
-      </div>
+      </div >
     );
   }
 }
