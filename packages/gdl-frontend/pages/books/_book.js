@@ -145,11 +145,20 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>
                 <View>
-                  <BookCover
-                    coverImage={book.coverImage}
-                    w={[130, 260]}
-                    h={[175, 365]}
-                  />
+                  <Link
+                    route="read"
+                    passHref
+                    params={{ id: book.id, lang: book.language.code }}
+                    prefetch
+                  >
+                    <a title={book.title} aria-hidden>
+                      <BookCover
+                        coverImage={book.coverImage}
+                        w={[130, 260]}
+                        h={[175, 365]}
+                      />
+                    </a>
+                  </Link>
                   {this.props.userHasEditImageAccess && (
                     <NextLink
                       href={{
