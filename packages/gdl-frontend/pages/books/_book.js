@@ -30,7 +30,7 @@ import {
 import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
-import { errorPage, withMuiRoot } from '../../hocs';
+import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
 import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
@@ -371,4 +371,4 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   }
 }
 
-export default withMuiRoot(errorPage(BookPage));
+export default errorPage(BookPage);

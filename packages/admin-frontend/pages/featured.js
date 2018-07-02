@@ -24,7 +24,6 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../lib/fetch';
-import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 import type { FeaturedContent, Language } from '../types';
 
@@ -69,11 +68,11 @@ class EditFeaturedContent extends React.Component<
     }
   };
 
-  putFeaturedContent = async content => {
+  putFeaturedContent = async (content: FeaturedContent) => {
     await updateFeaturedContent(content);
   };
 
-  postFeaturedContent = async content => {
+  postFeaturedContent = async (content: FeaturedContent) => {
     const result = await saveFeaturedContent(
       content,
       this.state.selectedLanguage
@@ -324,4 +323,4 @@ function handleValidate(values) {
   return errors;
 }
 
-export default withMuiRoot(EditFeaturedContent);
+export default EditFeaturedContent;

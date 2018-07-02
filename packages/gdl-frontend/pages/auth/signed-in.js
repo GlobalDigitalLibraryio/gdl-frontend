@@ -10,7 +10,6 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
 
-import { withMuiRoot } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import { setToken } from '../../lib/auth/token';
@@ -39,4 +38,4 @@ class Success extends React.Component<*> {
   }
 }
 
-export default withMuiRoot(Success);
+export default Success;

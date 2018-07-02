@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 
 import type { Language } from '../types';
 import { fetchLanguages, exportBooks } from '../lib/fetch';
-import withMuiRoot from '../withMuiRoot';
 import Container from '../components/Container';
 
 // Current book sources. Currently there's no endpoint to get these, so hardcode here for now
@@ -156,4 +155,4 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
   }
 }
 
-export default withMuiRoot(Export);
+export default Export;
