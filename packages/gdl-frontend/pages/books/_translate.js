@@ -36,7 +36,7 @@ import type {
   Context
 } from '../../types';
 import { Link, Router } from '../../routes';
-import { securePage, errorPage, withI18n, withMuiRoot } from '../../hocs/';
+import { securePage, errorPage, withI18n } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import { A, LoadingButton } from '../../elements';
@@ -345,4 +345,4 @@ const styles = {
   `
 };
 
-export default withMuiRoot(securePage(errorPage(withI18n(TranslatePage))));
+export default securePage(errorPage(withI18n(TranslatePage)));
