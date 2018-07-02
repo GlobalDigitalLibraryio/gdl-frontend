@@ -91,6 +91,7 @@ export default class LanguageMenu extends React.Component<Props> {
     return (
       <Drawer open onClose={onClose}>
         <List
+          data-cy="language-list"
           // Add some padding bottom so we can select the bottom alternative in mobile safari
           // otherwise the option gets hidden behind browser chrome
           css={media.mobile({ paddingBottom: '100px' })}

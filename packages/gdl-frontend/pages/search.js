@@ -249,6 +249,7 @@ class SearchPage extends React.Component<Props, State> {
                   align="center"
                   variant="subheading"
                   css={{ marginTop: spacing.medium }}
+                  data-cy="search-result-response"
                 >
                   {searchResult.results.length > 0 ? (
                     <Fragment>

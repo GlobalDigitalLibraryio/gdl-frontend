@@ -65,6 +65,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
             color="inherit"
             component="a"
             css={{ marginLeft: 'auto' }}
+            data-cy="search-button"
           >
             <SearchIcon />
             <SrOnly>

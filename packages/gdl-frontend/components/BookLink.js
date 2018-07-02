@@ -53,7 +53,7 @@ export default ({ book }: { book: Book }) => (
       params={{ id: book.id, lang: book.language.code }}
       passHref
     >
-      <ClickTarget aria-hidden tabIndex="-1" />
+      <ClickTarget aria-hidden tabIndex="-1" data-cy="book-cover-div" />
     </Link>
     <CoverImage
       ariaHidden

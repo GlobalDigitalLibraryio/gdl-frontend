@@ -1,19 +1,13 @@
-describe('Front page', () => {
+describe('Book details', () => {
   beforeEach(() => {
-    cy.visit('/en/books/details/49'); // should get lang and id in some way
+    cy.visit('/en/books/details/478'); // should get lang and id in some way
   });
 
   it('Clicking read book should open readable book', () => {
-    cy.get('[role="button"]')
+    cy.get('[data-cy="read-book-button"]')
       .contains('Read book')
       .click();
 
-    cy.url().should('include', '/en/books/read/49');
+    cy.url().should('include', '/en/books/read/478');
   });
-
-  it('Downloading a book shoul do something ...', () => {
-    cy.get('[type="button"]')
-      .contains('Download book')
-      .click();
-  }); // om epub og pdf sjekkat et kommer en liste
 });
