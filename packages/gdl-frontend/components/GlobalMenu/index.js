@@ -55,8 +55,8 @@ class GlobalMenu extends React.Component<Props, State> {
     const { onClose } = this.props;
 
     return (
-      <Drawer open={this.props.isOpen} onClose={onClose}>
-        <List component="nav">
+      <Drawer open={this.props.isOpen} onClose={onClose} label="Open menu">
+        <List>
           <SelectLanguage
             language={this.state.language}
             onSelectLanguage={onClose}

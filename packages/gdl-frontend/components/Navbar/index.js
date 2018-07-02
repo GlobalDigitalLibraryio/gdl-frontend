@@ -51,7 +51,6 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
         <IconButton
           color="inherit"
           onClick={onMenuClick}
-          aria-expanded={menuIsExpanded}
           css={{ marginRight: 18 }}
         >
           <MenuIcon />

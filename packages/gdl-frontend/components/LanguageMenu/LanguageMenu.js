@@ -109,7 +109,7 @@ export default class LanguageMenu extends React.Component<Props> {
                 </ListItemIcon>
                 <ListItemText inset>
                   <SrOnly>
-                    <Trans>Selected:</Trans>
+                    <Trans>Selected: </Trans>
                   </SrOnly>
                   {selectedLanguage.name}
                 </ListItemText>
