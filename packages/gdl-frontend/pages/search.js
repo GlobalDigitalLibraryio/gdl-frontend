@@ -235,6 +235,7 @@ class SearchPage extends React.Component<Props, State> {
                 onChange={this.handleQueryChange}
                 value={this.state.searchQuery}
                 placeholder="Search"
+                data-cy="book-search"
               />
             </form>
 

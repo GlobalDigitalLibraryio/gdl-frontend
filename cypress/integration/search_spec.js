@@ -9,7 +9,7 @@ describe('Search', () => {
     cy.get('[data-cy="search-button"]').click();
     cy.url().should('include', '/search');
 
-    cy.get('[id="booksearch"]')
+    cy.get('[data-cy="book-search"]')
       .type('Friend')
       .should('have.value', 'Friend')
       .type('{enter}');
@@ -18,13 +18,13 @@ describe('Search', () => {
   });
 
   it('Should not do anything if input is empty string', () => {
-    cy.get('[id="booksearch"]')
+    cy.get('[data-cy="book-search"]')
       .type('{enter}')
       .should('have.value', '');
   });
 
   it('A search without hits should return no results message', () => {
-    cy.get('[id="booksearch"]')
+    cy.get('[data-cy="book-search"]')
       .type('aaabbbccc ddd')
       .type('{enter}');
     cy.get('[data-cy="search-result-response"]').contains('No results');
