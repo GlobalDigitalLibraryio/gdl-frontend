@@ -66,7 +66,7 @@ const Separator = (
 );
 
 const Breadcrumb = ({ i18n, crumbs, theme }: Props) => (
-  <Div aria-label={i18n.t`Breadcrumb`}>
+  <nav aria-label={i18n.t`Breadcrumb`}>
     <Ol palette={theme.palette}>
       <li>
         <Link route="books">
@@ -89,7 +89,7 @@ const Breadcrumb = ({ i18n, crumbs, theme }: Props) => (
           </React.Fragment>
         ))}
     </Ol>
-  </Div>
+  </nav>
 );
 
 export default withTheme()(withI18n()(Breadcrumb));

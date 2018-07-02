@@ -36,7 +36,7 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
+const Navbar = ({ onMenuClick }: Props) => {
   const brandLink = (
     <Link route="books" passHref>
       <BrandLink aria-label="Global Digital Library">
@@ -52,6 +52,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           color="inherit"
           onClick={onMenuClick}
           css={{ marginRight: 18 }}
+          label="Open menu"
         >
           <MenuIcon />
           <SrOnly>
@@ -77,8 +78,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
 };
 
 Navbar.defaultProps = {
-  menuIsExpanded: false,
-  onMenuClick() {}
+  menuIsExpanded: false
 };
 
 export default Navbar;
