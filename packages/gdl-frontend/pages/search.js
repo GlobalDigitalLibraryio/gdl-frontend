@@ -32,7 +32,7 @@ import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
 import { search } from '../fetch';
-import { errorPage, withMuiRoot } from '../hocs';
+import { errorPage } from '../hocs';
 
 const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
@@ -312,4 +312,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default withMuiRoot(errorPage(withRouter(SearchPage)));
+export default errorPage(withRouter(SearchPage));

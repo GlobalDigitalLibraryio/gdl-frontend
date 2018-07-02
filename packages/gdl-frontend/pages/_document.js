@@ -9,8 +9,7 @@
 import React from 'react';
 import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { extractCritical } from 'emotion-server';
-import JssProvider from 'react-jss/lib/JssProvider';
-import getPageContext from '../getPageContext';
+import PropTypes from 'prop-types';
 
 import type { Context } from '../types';
 import config from '../config';
@@ -28,18 +27,20 @@ const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png
 
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
-    const pageContext = getPageContext();
-
     // Needed to SSR MUI's styles
-    const page = renderPage(Component => props => (
-      <JssProvider
-        registry={pageContext.sheetsRegistry}
-        generateClassName={pageContext.generateClassName}
-      >
-        <Component pageContext={pageContext} {...props} />
-      </JssProvider>
-    ));
+    let pageContext;
+    const page = renderPage(Component => {
+      const WrappedComponent = props => {
+        pageContext = props.pageContext;
+        return <Component {...props} />;
+      };
 
+      WrappedComponent.propTypes = {
+        pageContext: PropTypes.object.isRequired
+      };
+
+      return WrappedComponent;
+    });
     // Extract Emotion's styles for SSR
     const emotionStyles = extractCritical(page.html);
 

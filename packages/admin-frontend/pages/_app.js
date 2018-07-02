@@ -10,8 +10,13 @@ import * as React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
 import Error from 'next/error';
 import type { $Request, $Response } from 'express';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import JssProvider from 'react-jss/lib/JssProvider';
 
 import { hasClaim, claims } from 'gdl-auth';
+
+import getPageContext from '../getPageContext';
 
 type Context = {
   req?: $Request,
@@ -52,6 +57,11 @@ class App extends NextApp {
     isClient: false
   };
 
+  constructor(props: {}) {
+    super(props);
+    this.pageContext = getPageContext();
+  }
+
   componentDidMount() {
     this.setState({ isClient: true });
   }
@@ -61,7 +71,22 @@ class App extends NextApp {
 
     const Page = userHasAdminPrivileges ? (
       this.state.isClient ? (
-        <Component {...pageProps} />
+        <JssProvider
+          jss={this.pageContext.jss}
+          registry={this.pageContext.sheetsRegistry}
+          generateClassName={this.pageContext.generateClassName}
+        >
+          {/* MuiThemeProvider makes the theme available down the React
+              tree thanks to React context. */}
+          <MuiThemeProvider
+            theme={this.pageContext.theme}
+            sheetsManager={this.pageContext.sheetsManager}
+          >
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component pageContext={this.pageContext} {...pageProps} />
+          </MuiThemeProvider>
+        </JssProvider>
       ) : null
     ) : (
       <Error statusCode={403} {...pageProps} />

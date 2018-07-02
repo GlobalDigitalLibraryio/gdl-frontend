@@ -17,6 +17,10 @@ import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
 import { hydrate } from 'react-emotion';
 import Router from 'next/router';
+import { MuiThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import JssProvider from 'react-jss/lib/JssProvider';
+import getPageContext from '../getPageContext';
 
 import Raven from '../lib/raven';
 import type { Context } from '../types';
@@ -51,6 +55,11 @@ class App extends NextApp {
     return { pageProps };
   }
 
+  constructor(props: {}) {
+    super(props);
+    this.pageContext = getPageContext();
+  }
+
   // componentDidCatch works only in the client, not on the server
   componentDidCatch(error: *, errorInfo: *) {
     Raven.captureException(error);
@@ -63,6 +72,11 @@ class App extends NextApp {
    */
   componentDidMount() {
     window.addEventListener('storage', this.logout, false);
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
   }
 
   // Stop listening to logout events
@@ -85,7 +99,25 @@ class App extends NextApp {
       <NextContainer>
         <GdlThemeProvider>
           <GdlI18nProvider>
-            <Component {...pageProps} />
+            {/* Wrap every page in Jss and Theme providers */}
+            <JssProvider
+              jss={this.pageContext.jss}
+              registry={this.pageContext.sheetsRegistry}
+              generateClassName={this.pageContext.generateClassName}
+            >
+              {/* MuiThemeProvider makes the theme available down the React
+              tree thanks to React context. */}
+              <MuiThemeProvider
+                theme={this.pageContext.theme}
+                sheetsManager={this.pageContext.sheetsManager}
+              >
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                {/* Pass pageContext to the _document though the renderPage enhancer
+                to render collected styles on server side. */}
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </MuiThemeProvider>
+            </JssProvider>
           </GdlI18nProvider>
         </GdlThemeProvider>
       </NextContainer>

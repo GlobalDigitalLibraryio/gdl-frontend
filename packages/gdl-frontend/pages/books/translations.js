@@ -23,7 +23,7 @@ import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
 import type { Translation, I18n } from '../../types';
-import { securePage, withI18n, withMuiRoot } from '../../hocs';
+import { securePage, withI18n } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
@@ -209,4 +209,4 @@ class MyTranslationsPage extends React.Component<Props, State> {
   }
 }
 
-export default withMuiRoot(securePage(withI18n(MyTranslationsPage)));
+export default securePage(withI18n(MyTranslationsPage));
