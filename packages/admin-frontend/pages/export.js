@@ -12,7 +12,6 @@ import type { Language } from '../types';
 import { fetchLanguages, exportBooks } from '../lib/fetch';
 import Layout from '../components/Layout';
 
-
 // Current book sources. Currently there's no endpoint to get these, so hardcode here for now
 const sources = [
   { code: 'all', name: 'All' },
