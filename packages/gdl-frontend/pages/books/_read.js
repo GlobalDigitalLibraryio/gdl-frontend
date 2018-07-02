@@ -13,7 +13,7 @@ import { withRouter } from 'next/router';
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from '../../lib/auth/token';
 import type { BookDetails, Chapter, Context } from '../../types';
-import { errorPage, withMuiRoot } from '../../hocs';
+import { errorPage } from '../../hocs';
 import Reader from '../../components/Reader';
 import { canonical } from '../../config';
 
@@ -84,4 +84,4 @@ class Read extends React.Component<Props> {
   }
 }
 
-export default withMuiRoot(errorPage(withRouter(Read)));
+export default errorPage(withRouter(Read));
