@@ -19,7 +19,6 @@ import GlobalDigitalLibraryLogo from './beta-logo.svg';
 import media from '../../style/media';
 
 type Props = {
-  menuIsExpanded: boolean,
   onMenuClick(): void
 };
 
@@ -52,11 +51,10 @@ const Navbar = ({ onMenuClick }: Props) => {
           color="inherit"
           onClick={onMenuClick}
           css={{ marginRight: 18 }}
-          label="Open menu"
         >
           <MenuIcon />
           <SrOnly>
-            <Trans>Menu</Trans>
+            <Trans>Open menu</Trans>
           </SrOnly>
         </IconButton>
         {brandLink}
@@ -75,10 +73,6 @@ const Navbar = ({ onMenuClick }: Props) => {
       </Toolbar>
     </AppBar>
   );
-};
-
-Navbar.defaultProps = {
-  menuIsExpanded: false
 };
 
 export default Navbar;
