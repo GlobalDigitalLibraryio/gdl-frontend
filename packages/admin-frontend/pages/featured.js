@@ -24,6 +24,7 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../lib/fetch';
+import Layout from '../components/Layout';
 import Container from '../components/Container';
 import type { FeaturedContent, Language } from '../types';
 
@@ -125,7 +126,7 @@ class EditFeaturedContent extends React.Component<
     }
 
     return (
-      <Container>
+      <Layout>
         <Typography variant="headline" component="h1" gutterBottom>
           Edit featured content
         </Typography>
@@ -252,14 +253,16 @@ class EditFeaturedContent extends React.Component<
                   </Field>
                 </Grid>
 
-                <FormSpy
-                  render={({ values }) =>
-                    //$FlowFixMe
-                    values.imageUrl ? (
-                      <img alt="Featured content" src={values.imageUrl} />
-                    ) : null
-                  }
-                />
+                <Container>
+                  <FormSpy
+                    render={({ values }) =>
+                      //$FlowFixMe
+                      values.imageUrl ? (
+                        <img alt="Featured content" src={values.imageUrl} />
+                      ) : null
+                    }
+                  />
+                </Container>
 
                 <Grid item xs>
                   <Button
@@ -286,7 +289,7 @@ class EditFeaturedContent extends React.Component<
             </form>
           )}
         />
-      </Container>
+      </Layout>
     );
   }
 }

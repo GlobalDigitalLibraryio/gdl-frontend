@@ -12,7 +12,7 @@ import {
   Typography
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import Container from '../components/Container';
+import Layout from '../components/Layout';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
@@ -79,8 +79,8 @@ class Flagged extends React.Component<Props, State> {
     const { loadingState, page, totalCount, pageSize, pages } = this.state;
 
     return (
-      <Container>
-        <Typography variant="headline" gutterBottom>
+      <Layout>
+        <Typography variant="headline" component="h1" gutterBottom>
           Flagged books
         </Typography>
 
@@ -100,7 +100,7 @@ class Flagged extends React.Component<Props, State> {
             loadingState={loadingState}
           />
         )}
-      </Container>
+      </Layout>
     );
   }
 }

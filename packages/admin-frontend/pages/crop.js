@@ -5,6 +5,8 @@ import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
 import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
+import Layout from '../components/Layout';
+import { Typography, Button } from '@material-ui/core';
 
 import { imageApiUrl } from '../config';
 
@@ -172,7 +174,9 @@ class Crop extends Component<Props, State> {
     return (
       <div>
         <p>
-          <button onClick={this.toggleRatio}>Toggle ratio</button>
+          <Button color="primary" onClick={this.toggleRatio}>
+            Toggle ratio
+          </Button>
         </p>
         <Cropper
           ref={c => {
@@ -192,9 +196,13 @@ class Crop extends Component<Props, State> {
           className="preview"
           style={{ overflow: 'hidden', height: 400, width: 400 }}
         />
-        <button onClick={this.postToImageApi}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={this.postToImageApi}
+        >
           Save this crop config for ratio={this.state.ratio}
-        </button>
+        </Button>
         {this.displayPostResult()}
       </div>
     );
@@ -202,16 +210,18 @@ class Crop extends Component<Props, State> {
 }
 
 const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
-  <div>
-    <h1>Crop</h1>
+  <Layout>
+    <Typography variant="headline" component="h1" gutterBottom>
+      Crop
+    </Typography>
     {imageUrl == null ? (
-      <p>
-        You need to specify <tt>imageUrl</tt> in the URL
-      </p>
+      <Typography variant="subheading">
+        You need to specify <code>imageUrl</code> in the URL
+      </Typography>
     ) : (
       <Crop imageUrl={imageUrl} />
     )}
-  </div>
+  </Layout>
 );
 
 CropPage.getInitialProps = context => {
