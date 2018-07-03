@@ -1,6 +1,9 @@
+// @flow
+
+// Add source maps in production for Sentry
+const withSourceMaps = require('@zeit/next-source-maps');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { ANALYZE } = process.env;
-const withSourceMaps = require('@zeit/next-source-maps');
 
 module.exports = withSourceMaps({
   webpack(config, options) {
