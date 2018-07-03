@@ -108,10 +108,10 @@ export default class LanguageMenu extends React.Component<Props> {
                   <CheckIcon css={{ color: colors.base.green }} />
                 </ListItemIcon>
                 <ListItemText inset>
-                  <SrOnly>
-                    <Trans>Selected:</Trans>
-                  </SrOnly>
-                  {selectedLanguage.name}
+                  <Trans>
+                    <SrOnly>Selected: </SrOnly>
+                    {selectedLanguage.name}
+                  </Trans>
                 </ListItemText>
               </ListItem>
               <Divider />

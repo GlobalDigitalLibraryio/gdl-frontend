@@ -19,7 +19,6 @@ import GlobalDigitalLibraryLogo from './beta-logo.svg';
 import media from '../../style/media';
 
 type Props = {
-  menuIsExpanded: boolean,
   onMenuClick(): void
 };
 
@@ -36,7 +35,7 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
+const Navbar = ({ onMenuClick }: Props) => {
   const brandLink = (
     <Link route="books" passHref>
       <BrandLink aria-label="Global Digital Library">
@@ -51,12 +50,11 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
         <IconButton
           color="inherit"
           onClick={onMenuClick}
-          aria-expanded={menuIsExpanded}
           css={{ marginRight: 18 }}
         >
           <MenuIcon />
           <SrOnly>
-            <Trans>Menu</Trans>
+            <Trans>Open menu</Trans>
           </SrOnly>
         </IconButton>
         {brandLink}
@@ -75,11 +73,6 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
       </Toolbar>
     </AppBar>
   );
-};
-
-Navbar.defaultProps = {
-  menuIsExpanded: false,
-  onMenuClick() {}
 };
 
 export default Navbar;
