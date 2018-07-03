@@ -15,23 +15,50 @@ import {
   List,
   ListItem,
   ListItemText,
-  Paper
+  Drawer,
+  Divider
 } from '@material-ui/core';
+
+const drawerWidth = '240px';
 
 export default class Layout extends React.Component<{ children: Node }> {
   render() {
     return (
-      <div css={{ display: 'flex', flexFlow: 'row wrap' }}>
-        <AppBar color="primary" position="static">
+      <div
+        css={{
+          display: 'flex',
+          flexFlow: 'row wrap'
+        }}
+      >
+        <AppBar
+          color="primary"
+          position="static"
+          css={{
+            marginLeft: drawerWidth
+          }}
+        >
           <Toolbar>
             <Typography variant="title" color="inherit" noWrap>
-              Welcome to <strong>GDL Admin</strong>.
+              <strong>GDL Admin</strong>
             </Typography>
           </Toolbar>
         </AppBar>
 
-        <Paper square={true} css={{ width: '240px' }}>
-          <List component="nav" css={{ width: '240px', height: '100%' }}>
+        <Drawer
+          variant="permanent"
+          css={{
+            width: drawerWidth,
+            position: 'relative'
+          }}
+        >
+          <div css={{ height: '64px' }} />
+          <Divider />
+          <List
+            component="nav"
+            css={{
+              width: drawerWidth
+            }}
+          >
             <Link prefetch href="/admin/crop">
               <ListItem button component="a">
                 <ListItemText primary="Crop images" />
@@ -58,7 +85,7 @@ export default class Layout extends React.Component<{ children: Node }> {
               </ListItem>
             </Link>
           </List>
-        </Paper>
+        </Drawer>
 
         <main
           css={{
