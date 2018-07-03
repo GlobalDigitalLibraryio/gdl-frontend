@@ -33,27 +33,27 @@ export default class Layout extends React.Component<{ children: Node }> {
         <Paper square={true} css={{ width: '240px' }}>
           <List component="nav" css={{ width: '240px', height: '100%' }}>
             <Link prefetch href="/admin/crop">
-              <ListItem button>
+              <ListItem button component="a">
                 <ListItemText primary="Crop images" />
               </ListItem>
             </Link>
             <Link href="/admin/export">
-              <ListItem button>
+              <ListItem button component="a">
                 <ListItemText primary="Export books" />
               </ListItem>
             </Link>
             <Link prefetch href="/admin/edit">
-              <ListItem button>
+              <ListItem button component="a">
                 <ListItemText primary="Edit book" />
               </ListItem>
             </Link>
             <Link prefetch href="/admin/featured">
-              <ListItem button>
+              <ListItem button component="a">
                 <ListItemText primary="Edit featured content" />
               </ListItem>
             </Link>
             <Link href="/admin/flagged">
-              <ListItem button>
+              <ListItem button component="a">
                 <ListItemText primary="Flagged books" />
               </ListItem>
             </Link>
