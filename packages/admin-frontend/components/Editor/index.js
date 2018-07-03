@@ -9,7 +9,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { Trans } from '@lingui/react';
 
 import type { BookDetails, Chapter, PublishingStatus } from '../../types';
 import { saveBook, saveChapter } from '../../lib/fetch';
@@ -122,7 +121,7 @@ export default class Editor extends React.Component<
         )}
 
         <div style={{ textAlign: 'right' }}>
-          {this.state.didSave && <Trans>Saved changes!</Trans>}
+          {this.state.didSave && <span>Saved changes!</span>}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
             <Button
               color="secondary"
