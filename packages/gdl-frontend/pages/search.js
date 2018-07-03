@@ -242,7 +242,7 @@ class SearchPage extends React.Component<Props, State> {
               Important that the div with the aria-live is present when the search page first loads
               cause screen readers doesn't recognize that content has been added
             */}
-            <div aria-live="polite">
+            <div aria-live="polite" aria-atomic="true">
               {searchResult && (
                 <Typography
                   component="h1"

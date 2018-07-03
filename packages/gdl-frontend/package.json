@@ -27,7 +27,8 @@
     "start": "NODE_ENV=production node server",
     "i18n:extract": "node_modules/@lingui/cli/lingui.js extract --clean",
     "i18n:compile": "node_modules/@lingui/cli/lingui.js compile",
-    "i18n:add-locale": "node_modules/@lingui/cli/lingui.js add-locale"
+    "i18n:add-locale": "node_modules/@lingui/cli/lingui.js add-locale",
+    "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
     "@lingui/react": "2.0.8",
@@ -74,6 +75,8 @@
     "enzyme-to-json": "^3.3.4",
     "jest-emotion": "9.2.4",
     "nock": "^9.2.6",
-    "react-test-renderer": "^16.4.1"
+    "react-test-renderer": "^16.4.1",
+    "cross-env": "^5.0.1",
+    "webpack-bundle-analyzer": "^2.8.2"
   }
 }

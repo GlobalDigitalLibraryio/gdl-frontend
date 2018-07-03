@@ -20,7 +20,7 @@ import type { I18n } from '../../types';
 import { Link } from '../../routes';
 import { colors } from '../../style/theme';
 
-const Div = styled.div`
+const Nav = styled.nav`
   display: flex;
   align-items: stretch;
   flex: 1;
@@ -66,7 +66,7 @@ const Separator = (
 );
 
 const Breadcrumb = ({ i18n, crumbs, theme }: Props) => (
-  <Div aria-label={i18n.t`Breadcrumb`}>
+  <Nav aria-label={i18n.t`Breadcrumb`}>
     <Ol palette={theme.palette}>
       <li>
         <Link route="books">
@@ -89,7 +89,7 @@ const Breadcrumb = ({ i18n, crumbs, theme }: Props) => (
           </React.Fragment>
         ))}
     </Ol>
-  </Div>
+  </Nav>
 );
 
 export default withTheme()(withI18n()(Breadcrumb));
