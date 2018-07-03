@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 import type { Language } from '../types';
 import { fetchLanguages, exportBooks } from '../lib/fetch';
-import Container from '../components/Container';
+import Layout from '../components/Layout';
 
 // Current book sources. Currently there's no endpoint to get these, so hardcode here for now
 const sources = [
@@ -89,7 +89,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
 
   render() {
     return (
-      <Container>
+      <Layout>
         <Typography variant="headline" component="h1" gutterBottom>
           Export books as CSV
         </Typography>
@@ -150,7 +150,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
             </Grid>
           </Grid>
         </form>
-      </Container>
+      </Layout>
     );
   }
 }
