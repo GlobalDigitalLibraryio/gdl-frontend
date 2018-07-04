@@ -31,7 +31,6 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       alignItems="center"
       justifyContent="space-between"
       mb={spacing.small}
-      data-cy="book-list"
     >
       <Typography component="h1" variant="headline">
         {heading}

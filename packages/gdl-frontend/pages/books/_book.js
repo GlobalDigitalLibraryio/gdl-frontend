@@ -251,6 +251,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             aria-haspopup="true"
                             color="primary"
                             onClick={this.handleDownloadClick}
+                            data-cy="download-book-button"
                           >
                             <FileDownloadIcon /> <Trans>Download book</Trans>
                           </Button>
@@ -260,6 +261,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           onClose={this.closeDownloadMenu}
                           anchorEl={this.state.anchorEl}
                           open={Boolean(this.state.anchorEl)}
+                          data-cy="download-book-menu"
                         >
                           {book.downloads.epub && (
                             <MenuItem
