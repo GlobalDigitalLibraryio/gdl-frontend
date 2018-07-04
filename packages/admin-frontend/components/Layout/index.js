@@ -8,21 +8,51 @@
 
 import React, { type Node } from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import {
   AppBar,
-  Toolbar,
-  Typography,
+  Button,
+  Divider,
+  Drawer,
   List,
   ListItem,
   ListItemText,
-  Drawer,
-  Divider
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography
 } from '@material-ui/core';
+import AccountBox from '@material-ui/icons/AccountBox';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+
+import { getUserName, logout } from 'gdl-auth';
 
 const drawerWidth = '240px';
 
-export default class Layout extends React.Component<{ children: Node }> {
+class Layout extends React.Component<
+  { children: Node },
+  { anchorEl: ?HTMLElement }
+> {
+  state = {
+    anchorEl: null
+  };
+
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  handleLogOut = () => {
+    logout();
+    Router.push('/');
+  };
+
   render() {
+    const { anchorEl } = this.state;
+
     return (
       <div
         css={{
@@ -34,6 +64,7 @@ export default class Layout extends React.Component<{ children: Node }> {
           color="primary"
           position="static"
           css={{
+            width: `calc(100% - ${drawerWidth})`,
             marginLeft: drawerWidth
           }}
         >
@@ -51,7 +82,13 @@ export default class Layout extends React.Component<{ children: Node }> {
             position: 'relative'
           }}
         >
-          <div css={{ height: '64px' }} />
+          <ProfileMenu
+            anchorEl={anchorEl}
+            handleClick={this.handleClick}
+            drawerWidth={drawerWidth}
+            handleClose={this.handleClose}
+            handleLogOut={this.handleLogOut}
+          />
           <Divider />
           <List
             component="nav"
@@ -99,3 +136,45 @@ export default class Layout extends React.Component<{ children: Node }> {
     );
   }
 }
+
+const ProfileMenu = ({
+  anchorEl,
+  handleClick,
+  drawerWidth,
+  handleClose,
+  handleLogOut
+}) => {
+  const userName = getUserName();
+
+  return (
+    <div css={{ minHeight: '64px', display: 'flex' }}>
+      <Button
+        aria-owns={anchorEl ? 'menu-drawer' : null}
+        aria-haspopup="true"
+        onClick={handleClick}
+        css={{
+          width: drawerWidth,
+          textTransform: 'none'
+        }}
+      >
+        <AccountBox color="secondary" css={{ margin: '4px', fontSize: 36 }} />
+        <Typography variant="subheading" css={{ margin: '4px' }}>
+          {userName}
+        </Typography>
+        <ExpandMore css={{ alignItems: 'flex-end', fontSize: 18 }} />
+      </Button>
+      <Menu
+        id="menu-drawer"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleLogOut} css={{ width: drawerWidth }} button>
+          Log out
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+};
+
+export default Layout;
