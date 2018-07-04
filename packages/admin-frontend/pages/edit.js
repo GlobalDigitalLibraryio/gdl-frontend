@@ -8,17 +8,14 @@
 
 import * as React from 'react';
 
-import type { BookDetails, Chapter, Context } from '../types';
+import EditBookForm from '../components/EditBookForm';
+import EditChapterForm from '../components/EditChapterForm';
 import { fetchBook, fetchChapter } from '../lib/fetch';
-import Editor from '../components/Editor';
+
 import Layout from '../components/Layout';
+import Container from '../components/Container';
 
-type Props = {
-  book: BookDetails,
-  chapter?: Chapter
-};
-
-export default class EditPage extends React.Component<Props> {
+export default class EditPage extends React.Component {
   static async getInitialProps({ query }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {
@@ -27,32 +24,21 @@ export default class EditPage extends React.Component<Props> {
       };
     }
     const book = bookRes.data;
+    const chapterId = query.chapterId;
 
-    let chapter;
-    if (query.chapterId) {
-      const chapterRes = await fetchChapter(
-        query.id,
-        query.chapterId,
-        query.lang
-      );
-
-      if (!chapterRes.isOk) {
-        return {
-          statusCode: chapterRes.statusCode
-        };
-      }
-      chapter = chapterRes.data;
-    }
-
-    return { book, chapter };
+    return { book, chapterId };
   }
 
   render() {
-    const { book, chapter } = this.props;
+    const { book, chapterId } = this.props;
 
     return (
       <Layout>
-        <Editor book={book} chapter={chapter} />
+        <div>
+          <EditBookForm book={book} />
+
+          <EditChapterForm book={book} chapterId={chapterId} />
+        </div>
       </Layout>
     );
   }
