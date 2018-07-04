@@ -13,7 +13,6 @@ import PropTypes from 'prop-types';
 
 import type { Context } from '../types';
 import config from '../config';
-import { DEFAULT_TITLE } from '../components/Head';
 
 // This is an import with a sideeffect :/
 // eslint-disable-next-line no-unused-vars
@@ -82,7 +81,6 @@ export default class Document extends NextDocument {
               content="t5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA"
             />
           )}
-          <title>{DEFAULT_TITLE}</title>
           {/* Twitter */}
           <meta name="twitter:site" content="@GDigitalLibrary" />
           <meta name="twitter:card" content="summary" />
