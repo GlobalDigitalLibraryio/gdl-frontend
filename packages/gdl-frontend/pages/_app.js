@@ -15,18 +15,20 @@ import 'core-js/modules/es7.object.values';
 import 'core-js/modules/es7.array.includes';
 import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
+import Head from 'next/head';
 import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
-import getPageContext from '../getPageContext';
 
+import getPageContext from '../getPageContext';
 import Raven from '../lib/raven';
 import type { Context } from '../types';
 import GdlThemeProvider from '../components/GdlThemeProvider';
 import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
+import { DEFAULT_TITLE } from '../components/Head';
 import logPageView from '../lib/analytics';
 
 // Analytics
@@ -97,6 +99,9 @@ class App extends NextApp {
     const { Component, pageProps } = this.props;
     return (
       <NextContainer>
+        <Head>
+          <title>{DEFAULT_TITLE}</title>
+        </Head>
         <GdlThemeProvider>
           <GdlI18nProvider>
             {/* Wrap every page in Jss and Theme providers */}
