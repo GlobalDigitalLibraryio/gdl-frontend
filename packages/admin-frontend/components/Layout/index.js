@@ -169,11 +169,7 @@ const ProfileMenu = ({
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem
-          onClick={handleLogOut}
-          css={{ width: drawerWidth }}
-          button
-        >
+        <MenuItem onClick={handleLogOut} css={{ width: drawerWidth }} button>
           Log out
         </MenuItem>
       </Menu>
