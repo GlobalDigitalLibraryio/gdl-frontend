@@ -10,12 +10,11 @@ import * as React from 'react';
 
 import EditBookForm from '../components/EditBookForm';
 import EditChapterForm from '../components/EditChapterForm';
-import { fetchBook, fetchChapter } from '../lib/fetch';
+import { fetchBook} from '../lib/fetch';
 
 import Layout from '../components/Layout';
-import Container from '../components/Container';
 
-export default class EditPage extends React.Component {
+export default class EditPage extends React.Component<> {
   static async getInitialProps({ query }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {

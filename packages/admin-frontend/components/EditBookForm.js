@@ -1,18 +1,18 @@
 // @flow
 
-import { fetchBook, fetchChapter, saveBook } from '../lib/fetch';
-import type { BookDetails, Chapter, Context } from '../types';
 import * as React from 'react';
 import Link from 'next/link';
+import Button from '@material-ui/core/Button/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Form, Field } from 'react-final-form';
-import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button/Button';
 
-import Container from './Container';
-import FormHelperText from "@material-ui/core/FormHelperText";
+import { saveBook } from '../lib/fetch';
+import Select from '@material-ui/core/Select';
+import type { BookDetails } from '../types';
+
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['VERTICAL', 'LANDSCAPE'];
@@ -30,11 +30,11 @@ export default class EditBookForm extends React.Component<Props, State> {
     book: this.props.book
   };
 
-  handleSubmit = (content: Object) => {
+  handleSubmit = (content: BookDetails) => {
     this.updateBook(content);
   };
 
-  updateBook = async (content: Object) => {
+  updateBook = async (content: BookDetails) => {
     this.setState({ book: content });
 
     await saveBook(content);
@@ -42,10 +42,9 @@ export default class EditBookForm extends React.Component<Props, State> {
 
   render() {
     const book = this.state.book;
-    console.log(book);
 
     return (
-      <Container>
+      <div>
         {' '}
         {book && (
           <Typography variant="headline" component="h1" gutterBottom>
@@ -73,9 +72,9 @@ export default class EditBookForm extends React.Component<Props, State> {
                           label="Title"
                           {...input}
                         />
-                          {meta.error &&
+                        {meta.error &&
                           meta.touched && (
-                              <FormHelperText error>{meta.error}</FormHelperText>
+                            <FormHelperText error>{meta.error}</FormHelperText>
                           )}
                       </>
                     )}
@@ -94,9 +93,9 @@ export default class EditBookForm extends React.Component<Props, State> {
                           {...input}
                           multiline
                         />
-                          {meta.error &&
+                        {meta.error &&
                           meta.touched && (
-                              <FormHelperText error>{meta.error}</FormHelperText>
+                            <FormHelperText error>{meta.error}</FormHelperText>
                           )}
                       </>
                     )}
@@ -108,7 +107,7 @@ export default class EditBookForm extends React.Component<Props, State> {
                     name="pageOrientation"
                     render={({ input }) => (
                       <>
-                        <Select fullWidth {...input}>
+                        <Select fullWidth {...input} native>
                           {PAGE_ORIENTATIONS.map(orientation => (
                             <option key={orientation} value={orientation}>
                               {orientation}
@@ -125,7 +124,7 @@ export default class EditBookForm extends React.Component<Props, State> {
                     name="publishingStatus"
                     render={({ input }) => (
                       <>
-                        <Select fullWidth {...input}>
+                        <Select fullWidth {...input} native>
                           {PUBLISHING_STATUS.map(status => (
                             <option key={status} value={status}>
                               {status}
@@ -147,21 +146,19 @@ export default class EditBookForm extends React.Component<Props, State> {
                     Save changes
                   </Button>
 
-                  <Grid item xs>
-                    <Button
-                      color="secondary"
-                      disabled={pristine}
-                      onClick={form.reset}
-                    >
-                      Discard changes
-                    </Button>
-                  </Grid>
+                  <Button
+                    color="secondary"
+                    disabled={pristine}
+                    onClick={form.reset}
+                  >
+                    Discard changes
+                  </Button>
                 </Grid>
               </Grid>
             </form>
           )}
         />
-      </Container>
+      </div>
     );
   }
 }
