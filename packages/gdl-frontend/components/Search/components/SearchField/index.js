@@ -8,7 +8,6 @@
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
 import { Input, Label, Container, Icon } from './styled';
-import { TABLET_BREAKPOINT } from '../../../../style/theme/misc';
 
 type Props = {
   autoFocus?: boolean,
@@ -21,12 +20,6 @@ type Props = {
 };
 
 class SearchField extends React.Component<Props> {
-  blurSearchField = (event: SyntheticInputEvent<EventTarget>) => {
-    if (event.key === 'Enter' && window.innerWidth < TABLET_BREAKPOINT) {
-      event.target.blur();
-    }
-  };
-
   render() {
     const { id, label } = this.props;
 
@@ -36,12 +29,7 @@ class SearchField extends React.Component<Props> {
         <Icon>
           <SearchIcon />
         </Icon>
-        <Input
-          id={id}
-          type="search"
-          {...this.props}
-          onKeyPress={this.blurSearchField}
-        />
+        <Input id={id} type="search" {...this.props} />
       </Container>
     );
   }

@@ -31,6 +31,7 @@ import {
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
+import { TABLET_BREAKPOINT } from '../style/theme/misc';
 import { search } from '../fetch';
 import { errorPage, withMuiRoot } from '../hocs';
 
@@ -123,6 +124,12 @@ class SearchPage extends React.Component<Props, State> {
       !this.state.language
     ) {
       return;
+    }
+
+    // If we are on mobile, blur the input field on submit so we hide the virtual keyboard
+    if (window.innerWidth < TABLET_BREAKPOINT) {
+      const searchInput = document.querySelector('#booksearch');
+      searchInput && searchInput.blur();
     }
 
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
