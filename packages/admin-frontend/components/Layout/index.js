@@ -171,8 +171,8 @@ const ProfileMenu = ({
       >
         <MenuItem
           onClick={handleLogOut}
-          component="a"
           css={{ width: drawerWidth }}
+          button
         >
           Log out
         </MenuItem>
