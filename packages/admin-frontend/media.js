@@ -7,7 +7,7 @@
  */
 
 import { css } from 'react-emotion';
-import { TABLET_BREAKPOINT } from './theme/misc';
+import { TABLET_BREAKPOINT } from './misc';
 
 /**
  * Mobile first media template
