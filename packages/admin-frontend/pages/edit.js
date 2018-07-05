@@ -17,7 +17,6 @@ import { fetchBook } from '../lib/fetch';
 import Layout from '../components/Layout';
 import type { BookDetails, Context } from '../types';
 
-
 type State = {
   selectedTab: number
 };
@@ -51,40 +50,38 @@ export default class EditPage extends React.Component<
     const { book, chapterId } = this.props;
     const selectedTab = this.state.selectedTab;
 
-    {
-      if (!book) {
-        return (
-          <Layout>
-            <p>
-              You have to specify a correct book id and/or the chapter id in the
-              url.
-            </p>
-          </Layout>
-        );
-      } else {
-        return (
-          <Layout shouldAddPadding={false}>
-            <div>
-              <AppBar position="static" color="default">
-                <Tabs value={selectedTab} onChange={this.handleChange}>
-                  <Tab label="Book" />
-                  <Tab label="Chapters" />
-                </Tabs>
-              </AppBar>
-              {selectedTab === 0 && (
-                <TabContainer>
-                  <EditBookForm book={book} />
-                </TabContainer>
-              )}
-              {selectedTab === 1 && (
-                <TabContainer>
-                  <EditChapterForm book={book} chapterId={chapterId} />
-                </TabContainer>
-              )}
-            </div>
-          </Layout>
-        );
-      }
+    if (!book) {
+      return (
+        <Layout>
+          <p>
+            You have to specify a correct book id and/or the chapter id in the
+            url.
+          </p>
+        </Layout>
+      );
+    } else {
+      return (
+        <Layout shouldAddPadding={false}>
+          <div>
+            <AppBar position="static" color="default">
+              <Tabs value={selectedTab} onChange={this.handleChange}>
+                <Tab label="Book" />
+                <Tab label="Chapters" />
+              </Tabs>
+            </AppBar>
+            {selectedTab === 0 && (
+              <TabContainer>
+                <EditBookForm book={book} />
+              </TabContainer>
+            )}
+            {selectedTab === 1 && (
+              <TabContainer>
+                <EditChapterForm book={book} chapterId={chapterId} />
+              </TabContainer>
+            )}
+          </div>
+        </Layout>
+      );
     }
   }
 }

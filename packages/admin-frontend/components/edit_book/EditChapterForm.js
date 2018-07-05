@@ -80,7 +80,6 @@ export default class EditChapterForm extends React.Component<Props, State> {
       return a.seqNo - b.seqNo;
     });
 
-    console.log(this.state.currentChapter);
     return (
       <div css={{ width: '100%' }}>
         <Typography variant="headline" component="h1" gutterBottom>
