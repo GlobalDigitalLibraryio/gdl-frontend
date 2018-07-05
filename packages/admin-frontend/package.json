@@ -24,8 +24,7 @@
     "react-cropper": "^1.0.1",
     "react-dom": "^16.4.1",
     "react-emotion": "9.2.4",
-    "react-final-form": "^3.6.2",
-    "react-json-view": "^1.16.6"
+    "react-final-form": "^3.6.2"
   },
   "devDependencies": {
     "@zeit/next-css": "^0.2.0",
