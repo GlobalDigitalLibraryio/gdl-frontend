@@ -59,11 +59,15 @@ class Layout extends React.Component<
 
     const defaultCss = {
       padding: 16,
-      flexGrow: 1
+      flexGrow: 1,
+      width: `calc(100% - ${drawerWidth})`,
+      marginLeft: drawerWidth
     };
 
     const noPaddingCss = {
-      flexGrow: 1
+      flexGrow: 1,
+      width: `calc(100% - ${drawerWidth})`,
+      marginLeft: drawerWidth
     };
 
     const renderedCss = this.props.shouldAddPadding ? defaultCss : noPaddingCss;
