@@ -162,7 +162,6 @@ export default class EditBookForm extends React.Component<Props, State> {
   }
 }
 
-// todo: extract this and the other validator in featured.js ?
 function handleValidate(values) {
   const errors = {};
 

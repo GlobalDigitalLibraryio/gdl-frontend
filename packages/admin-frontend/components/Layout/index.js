@@ -57,20 +57,20 @@ class Layout extends React.Component<
   render() {
     const { anchorEl } = this.state;
 
-    const defaultCss = {
+    const baseMainCSS = {
+      flexGrow: 1,
+      width: `calc(100% - ${drawerWidth})`,
+      marginLeft: drawerWidth
+    };
+
+    const paddedMainCSS = {
       padding: 16,
-      flexGrow: 1,
-      width: `calc(100% - ${drawerWidth})`,
-      marginLeft: drawerWidth
+      ...baseMainCSS
     };
 
-    const noPaddingCss = {
-      flexGrow: 1,
-      width: `calc(100% - ${drawerWidth})`,
-      marginLeft: drawerWidth
-    };
-
-    const renderedCss = this.props.shouldAddPadding ? defaultCss : noPaddingCss;
+    const renderedMainCSS = this.props.shouldAddPadding
+      ? paddedMainCSS
+      : baseMainCSS;
 
     return (
       <div
@@ -143,7 +143,7 @@ class Layout extends React.Component<
           </List>
         </Drawer>
 
-        <main css={renderedCss}>{this.props.children}</main>
+        <main css={renderedMainCSS}>{this.props.children}</main>
       </div>
     );
   }
