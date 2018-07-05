@@ -3,10 +3,9 @@ import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
 
 import type { BookDetails, Chapter } from '../types';
-import Container from './Container';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -14,6 +13,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import ChapterPreview from './ChapterPreview';
 import { fetchChapter, saveChapter } from '../lib/fetch';
+import { Page } from './Page';
 
 type Props = {
   chapterId?: string,
@@ -30,6 +30,12 @@ export default class EditChapterForm extends React.Component<Props, State> {
     currentChapter: null,
     currentChapterId: this.props.chapterId
   };
+
+  componentDidMount() {
+    if (this.state.currentChapterId) {
+      this.fetchSelectedChapter(this.state.currentChapterId);
+    }
+  }
 
   handleSubmit = async (content: Chapter) => {
     if (this.state.currentChapter) {
@@ -58,10 +64,8 @@ export default class EditChapterForm extends React.Component<Props, State> {
     this.fetchSelectedChapter(event.target.value);
   };
 
-  componentDidMount() {
-    if (this.state.currentChapterId) {
-      this.fetchSelectedChapter(this.state.currentChapterId);
-    }
+  handleContentChanged() {
+    console.log('rerender');
   }
 
   render() {
@@ -71,10 +75,8 @@ export default class EditChapterForm extends React.Component<Props, State> {
     });
 
     return (
-        <div>
-
-
-        <Typography variant="headline" component="h2" gutterBottom>
+      <div css={{ width: '100%' }}>
+        <Typography variant="headline" component="h1" gutterBottom>
           Edit chapter
         </Typography>
 
@@ -105,7 +107,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
               initialValues={
                 this.state.currentChapter ? this.state.currentChapter : {}
               }
-              render={({ pristine, invalid, handleSubmit, form }) => (
+              render={({ pristine, invalid, handleSubmit, form, values }) => (
                 <form>
                   <Field
                     name="content"
@@ -117,6 +119,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
                           disabled={!this.state.currentChapter}
                           multiline
                           label="Chapter content"
+                          onChange={this.handleContentChanged}
                           {...input}
                         />
                         {meta.error &&
@@ -136,28 +139,32 @@ export default class EditChapterForm extends React.Component<Props, State> {
                     Save chapter
                   </Button>
 
-                    <Button
-                        color="secondary"
-                        onClick={form.reset}
-                        type="submit"
-                        disabled={pristine}
-                    >
-                        Discard changes
-                    </Button>
+                  <Button
+                    color="secondary"
+                    onClick={form.reset}
+                    type="submit"
+                    disabled={pristine}
+                  >
+                    Discard changes
+                  </Button>
+
+                    <div css={{paddingTop: "16px"}}>
+
+
+                    <Typography variant="headline" component="h2" gutterBottom>
+                        Preview
+                    </Typography>
+
+                  <Page>
+                    <ChapterPreview content={values.content} />
+                  </Page>
+                    </div>
                 </form>
               )}
             />
-
-            <ChapterPreview
-              content={
-                this.state.currentChapter
-                  ? this.state.currentChapter.content
-                  : ''
-              }
-            />
           </Grid>
         </Grid>
-        </div>
+      </div>
     );
   }
 }

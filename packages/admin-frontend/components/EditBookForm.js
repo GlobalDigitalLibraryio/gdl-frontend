@@ -15,7 +15,7 @@ import type { BookDetails } from '../types';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
-const PAGE_ORIENTATIONS = ['VERTICAL', 'LANDSCAPE'];
+const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
 
 type Props = {
   book: BookDetails

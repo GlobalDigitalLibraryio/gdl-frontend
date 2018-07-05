@@ -9,6 +9,8 @@ type Props = {
 
 export default class ChapterPreview extends React.Component<Props> {
     render() {
+        console.log(this.props.content)
+
         return <div dangerouslySetInnerHTML={{__html: this.props.content}}/>
 
     }
