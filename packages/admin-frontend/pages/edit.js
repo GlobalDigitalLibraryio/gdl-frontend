@@ -5,37 +5,35 @@
  *
  * See LICENSE
  */
-
+import * as React from 'react';
 import AppBar from '@material-ui/core/AppBar/AppBar';
 import Tab from '@material-ui/core/Tab/Tab';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Typography from '@material-ui/core/Typography/Typography';
-import * as React from 'react';
 
-import EditBookForm from '../components/EditBookForm';
-import EditChapterForm from '../components/EditChapterForm';
+import EditBookForm from '../components/edit_book/EditBookForm';
+import EditChapterForm from '../components/edit_book/EditChapterForm';
 import { fetchBook } from '../lib/fetch';
-
 import Layout from '../components/Layout';
 import type { BookDetails, Context } from '../types';
+
 
 type State = {
   selectedTab: number
 };
 
 export default class EditPage extends React.Component<
-  { book: BookDetails, chapterId: string },
+  { book: ?BookDetails, chapterId: string },
   State
 > {
   static async getInitialProps({ query }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
-    if (!bookRes.isOk) {
-      return {
-        statusCode: bookRes.statusCode
-      };
-    }
-    const book = bookRes.data;
     const chapterId = query.chapterId;
+
+    let book;
+    if (bookRes.isOk) {
+      book = bookRes.data;
+    }
 
     return { book, chapterId };
   }
@@ -53,28 +51,41 @@ export default class EditPage extends React.Component<
     const { book, chapterId } = this.props;
     const selectedTab = this.state.selectedTab;
 
-    return (
-      <Layout shouldAddPadding={false}>
-        <div>
-          <AppBar position="static">
-            <Tabs value={selectedTab} onChange={this.handleChange}>
-              <Tab label="Book" />
-              <Tab label="Chapters" />
-            </Tabs>
-          </AppBar>
-          {selectedTab === 0 && (
-            <TabContainer>
-              <EditBookForm book={book} />
-            </TabContainer>
-          )}
-          {selectedTab === 1 && (
-            <TabContainer>
-              <EditChapterForm book={book} chapterId={chapterId} />
-            </TabContainer>
-          )}
-        </div>
-      </Layout>
-    );
+    {
+      if (!book) {
+        return (
+          <Layout>
+            <p>
+              You have to specify a correct book id and/or the chapter id in the
+              url.
+            </p>
+          </Layout>
+        );
+      } else {
+        return (
+          <Layout shouldAddPadding={false}>
+            <div>
+              <AppBar position="static" color="default">
+                <Tabs value={selectedTab} onChange={this.handleChange}>
+                  <Tab label="Book" />
+                  <Tab label="Chapters" />
+                </Tabs>
+              </AppBar>
+              {selectedTab === 0 && (
+                <TabContainer>
+                  <EditBookForm book={book} />
+                </TabContainer>
+              )}
+              {selectedTab === 1 && (
+                <TabContainer>
+                  <EditChapterForm book={book} chapterId={chapterId} />
+                </TabContainer>
+              )}
+            </div>
+          </Layout>
+        );
+      }
+    }
   }
 }
 

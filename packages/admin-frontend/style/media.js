@@ -7,6 +7,7 @@
  */
 
 import { css } from 'react-emotion';
+
 import { TABLET_BREAKPOINT } from './misc';
 
 /**

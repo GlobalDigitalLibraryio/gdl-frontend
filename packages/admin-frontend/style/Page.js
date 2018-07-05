@@ -1,5 +1,7 @@
-import { fonts } from '../../gdl-frontend/style/theme';
+// @flow
 import styled from 'react-emotion';
+
+import { fonts } from '../../gdl-frontend/style/theme/index';
 
 export const Page = styled.div`
   color: #000;

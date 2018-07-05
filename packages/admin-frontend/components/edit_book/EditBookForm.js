@@ -1,18 +1,16 @@
 // @flow
-
 import * as React from 'react';
 import Link from 'next/link';
+import { Form, Field } from 'react-final-form';
 import Button from '@material-ui/core/Button/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { Form, Field } from 'react-final-form';
-
-import { saveBook } from '../lib/fetch';
 import Select from '@material-ui/core/Select';
-import type { BookDetails } from '../types';
-
 import FormHelperText from '@material-ui/core/FormHelperText';
+
+import { saveBook } from '../../lib/fetch';
+import type { BookDetails } from '../../types';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
@@ -35,9 +33,10 @@ export default class EditBookForm extends React.Component<Props, State> {
   };
 
   updateBook = async (content: BookDetails) => {
-    this.setState({ book: content });
-
-    await saveBook(content);
+    const result = await saveBook(content);
+    if (result.isOk) {
+      this.setState({ book: content });
+    }
   };
 
   render() {

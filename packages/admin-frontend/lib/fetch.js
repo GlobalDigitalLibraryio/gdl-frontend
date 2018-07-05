@@ -109,6 +109,8 @@ export async function fetchChapter(
     `${bookApiUrl}/books/${language}/${bookId}/chapters/${chapterId}`
   );
 
+  console.log("fetched chapter: ");
+  console.log(result)
   return result;
 }
 

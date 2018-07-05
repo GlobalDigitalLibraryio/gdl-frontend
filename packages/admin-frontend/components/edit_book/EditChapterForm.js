@@ -1,19 +1,19 @@
 // @flow
-import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
-
-import type { BookDetails, Chapter } from '../types';
+import { Form, Field } from 'react-final-form';
+import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import { Form, Field, FormSpy } from 'react-final-form';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
-
 import TextField from '@material-ui/core/TextField';
+import Link from 'next/link';
+
 import ChapterPreview from './ChapterPreview';
-import { fetchChapter, saveChapter } from '../lib/fetch';
-import { Page } from './Page';
+import { fetchChapter, saveChapter } from '../../lib/fetch';
+import type { BookDetails, Chapter } from '../../types';
+import { Page } from '../../style/Page';
 
 type Props = {
   chapterId?: string,
@@ -47,37 +47,51 @@ export default class EditChapterForm extends React.Component<Props, State> {
     }
   };
 
-  fetchSelectedChapter = async (chapterId: string) => {
-    const result = await fetchChapter(
-      this.props.book.id,
-      chapterId,
-      this.props.book.language.code
-    );
-
-    if (result.isOk) {
-      this.setState({ currentChapter: result.data });
+  fetchSelectedChapter = async (chapterId: ?string) => {
+    let result;
+    if (chapterId) {
+      result = await fetchChapter(
+        this.props.book.id,
+        chapterId,
+        this.props.book.language.code
+      );
+      if (result.isOk) {
+        this.setState({ currentChapter: result.data });
+      }
+    } else {
+      this.setState({ currentChapter: null });
     }
   };
 
   handleSelectChange = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ currentChapterId: event.target.value });
+    this.setState({
+      currentChapterId: event.target.value,
+      currentChapter: null
+    });
     this.fetchSelectedChapter(event.target.value);
   };
 
-  handleContentChanged() {
-    console.log('rerender');
-  }
-
   render() {
     const chapterList = this.props.book.chapters;
+    const book = this.props.book;
+    const currentChapter = this.state.currentChapter;
+
     chapterList.sort(function(a, b) {
       return a.seqNo - b.seqNo;
     });
 
+    console.log(this.state.currentChapter);
     return (
       <div css={{ width: '100%' }}>
         <Typography variant="headline" component="h1" gutterBottom>
-          Edit chapter
+          Edit chapter:{' '}
+          <Link
+            href={`/${book.language.code}/books/read/${book.id}/${
+              this.props.chapterId ? this.props.chapterId : ''
+            }`}
+          >
+            <a>{book.title}</a>
+          </Link>
         </Typography>
 
         <Grid container spacing={24} direction="column">
@@ -94,7 +108,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
               <option value="" />
               {chapterList.map(chapter => (
                 <option key={chapter.id} value={chapter.id}>
-                  {chapter.seqNo}
+                  Chapter {chapter.seqNo}
                 </option>
               ))}
             </Select>
@@ -104,9 +118,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
             <Form
               validate={handleValidate}
               onSubmit={this.handleSubmit}
-              initialValues={
-                this.state.currentChapter ? this.state.currentChapter : {}
-              }
+              initialValues={currentChapter ? currentChapter : {}}
               render={({ pristine, invalid, handleSubmit, form, values }) => (
                 <form>
                   <Field
@@ -116,10 +128,9 @@ export default class EditChapterForm extends React.Component<Props, State> {
                         <TextField
                           fullWidth
                           required
-                          disabled={!this.state.currentChapter}
+                          disabled={!currentChapter}
                           multiline
                           label="Chapter content"
-                          onChange={this.handleContentChanged}
                           {...input}
                         />
                         {meta.error &&
@@ -148,15 +159,28 @@ export default class EditChapterForm extends React.Component<Props, State> {
                     Discard changes
                   </Button>
 
-                  <div css={{ paddingTop: '16px' }}>
-                    <Typography variant="headline" component="h2" gutterBottom>
-                      Preview
-                    </Typography>
+                  {currentChapter && (
+                    <div css={{ paddingTop: '16px' }}>
+                      <Typography
+                        variant="headline"
+                        component="h2"
+                        gutterBottom
+                      >
+                        Preview
+                      </Typography>
 
-                    <Page>
-                      <ChapterPreview content={values.content} />
-                    </Page>
-                  </div>
+                      <Page
+                        css={{
+                          maxWidth: '960px',
+                          width: '100%',
+                          border: '1px solid black'
+                        }}
+                      >
+                        {/* $FlowFixMe*/}
+                        <ChapterPreview content={values.content} />
+                      </Page>
+                    </div>
+                  )}
                 </form>
               )}
             />
