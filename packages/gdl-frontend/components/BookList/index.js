@@ -32,13 +32,13 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       justifyContent="space-between"
       mb={spacing.small}
     >
-      <Typography component="h1" variant="headline">
+      <Typography component="h1" variant="headline" data-cy="book-list-header">
         {heading}
       </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
           {/* Negative margin to align the link against the edge of the container */}
-          <Button color="primary" css={{ marginRight: '-16px' }}>
+          <Button color="primary" css={{ marginRight: '-16px' }} data-cy="book-list-more-button">
             <Trans>More</Trans>
           </Button>
         </BrowseLink>

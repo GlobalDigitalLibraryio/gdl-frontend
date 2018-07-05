@@ -119,10 +119,16 @@ export default class HomePage extends React.Component<
           variant="headline"
           component="h2"
           gutterBottom
+          data-cy="card-title"
         >
           {featured.title}
         </Typography>
-        <Typography lang={featured.language.code} align="center" paragraph>
+        <Typography
+          lang={featured.language.code}
+          align="center"
+          paragraph
+          data-cy="card-description"
+        >
           {featured.description}
         </Typography>
         <Button
@@ -130,6 +136,7 @@ export default class HomePage extends React.Component<
           variant="raised"
           color="primary"
           size="large"
+          data-cy="card-link"
         >
           <Trans>More</Trans>
         </Button>
@@ -156,27 +163,29 @@ export default class HomePage extends React.Component<
           />
         </NavContextBar>
         <Main>
-          <Banner src={featured.imageUrl}>
-            <HeroCovertitle>
-              <Typography
-                component="h1"
-                variant="title"
-                css={{ color: colors.base.white }}
-              >
-                <Trans>Featured</Trans>
-              </Typography>
-            </HeroCovertitle>
-            <HeroCardTablet>
+          <div data-cy="featured-banner">
+            <Banner src={featured.imageUrl}>
+              <HeroCovertitle>
+                <Typography
+                  component="h1"
+                  variant="title"
+                  css={{ color: colors.base.white }}
+                >
+                  <Trans>Featured</Trans>
+                </Typography>
+              </HeroCovertitle>
+              <HeroCardTablet>
+                <CardContent>{cardContent}</CardContent>
+              </HeroCardTablet>
+            </Banner>
+            <HeroCardMobile>
               <CardContent>{cardContent}</CardContent>
-            </HeroCardTablet>
-          </Banner>
-          <HeroCardMobile>
-            <CardContent>{cardContent}</CardContent>
-          </HeroCardMobile>
+            </HeroCardMobile>
+          </div>
 
           {levels.map((level, index) => (
             <View {...bookListViewStyle} key={level}>
-              <Container width="100%">
+              <Container width="100%" data-cy="book-list">
                 <BookList
                   heading={<ReadingLevelTrans readingLevel={level} />}
                   browseLinkProps={{
@@ -191,7 +200,7 @@ export default class HomePage extends React.Component<
           ))}
 
           <View {...bookListViewStyle}>
-            <Container width="100%">
+            <Container width="100%" data-cy="new-arrivals">
               <BookList
                 heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{

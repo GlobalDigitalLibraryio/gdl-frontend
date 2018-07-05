@@ -79,7 +79,7 @@ export default class CategoriesMenu extends React.Component<Props, State> {
         {children({ onClick: this.handleShowMenu })}
         {this.state.showMenu && (
           <Drawer open onClose={this.handleCloseMenu}>
-            <List component="nav">
+            <List component="nav" data-cy="categories-menu">
               {categories &&
                 categories.classroom_books && (
                   <Fragment>

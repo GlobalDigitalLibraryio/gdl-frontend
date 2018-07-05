@@ -22,6 +22,6 @@ describe('Book details', () => {
     cy.get('[data-cy="download-book-menu"]')
       .children()
       .first()
-      .click();
+      .click(); // TODO: fix with a should or in some other way?
   });
 });

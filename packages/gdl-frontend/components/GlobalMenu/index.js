@@ -66,7 +66,11 @@ class GlobalMenu extends React.Component<Props, State> {
             })}
           >
             {({ onClick }) => (
-              <ListItem button onClick={onClick}>
+              <ListItem
+                button
+                onClick={onClick}
+                data-cy="select-language-list-item"
+              >
                 <ListItemText>
                   <Trans>Book language</Trans>
                 </ListItemText>
@@ -79,7 +83,11 @@ class GlobalMenu extends React.Component<Props, State> {
             languageCode={this.state.language.code}
           >
             {({ onClick }) => (
-              <ListItem button onClick={onClick}>
+              <ListItem
+                button
+                onClick={onClick}
+                data-cy="select-category-list-item"
+              >
                 <ListItemText>
                   <Trans>Categories</Trans>
                 </ListItemText>

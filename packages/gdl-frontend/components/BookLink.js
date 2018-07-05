@@ -47,13 +47,13 @@ const ClickTarget = styled('a')`
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
 export default ({ book }: { book: Book }) => (
-  <Card className={cardCss}>
+  <Card className={cardCss} data-cy="book-list-book-link">
     <Link
       route="book"
       params={{ id: book.id, lang: book.language.code }}
       passHref
     >
-      <ClickTarget aria-hidden tabIndex="-1" data-cy="book-cover-div" />
+      <ClickTarget aria-hidden tabIndex="-1" />
     </Link>
     <CoverImage
       ariaHidden

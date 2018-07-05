@@ -39,7 +39,7 @@ const BrandLink = styled('a')`
 const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
   const brandLink = (
     <Link route="books" passHref>
-      <BrandLink aria-label="Global Digital Library">
+      <BrandLink aria-label="Global Digital Library" data-cy="gdl-logo">
         <GlobalDigitalLibraryLogo aria-hidden />
       </BrandLink>
     </Link>
@@ -53,6 +53,7 @@ const Navbar = ({ onMenuClick, menuIsExpanded }: Props) => {
           onClick={onMenuClick}
           aria-expanded={menuIsExpanded}
           css={{ marginRight: 18 }}
+          data-cy="menu-button"
         >
           <MenuIcon />
           <SrOnly>
