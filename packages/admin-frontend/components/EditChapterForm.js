@@ -148,17 +148,15 @@ export default class EditChapterForm extends React.Component<Props, State> {
                     Discard changes
                   </Button>
 
-                    <div css={{paddingTop: "16px"}}>
-
-
+                  <div css={{ paddingTop: '16px' }}>
                     <Typography variant="headline" component="h2" gutterBottom>
-                        Preview
+                      Preview
                     </Typography>
 
-                  <Page>
-                    <ChapterPreview content={values.content} />
-                  </Page>
-                    </div>
+                    <Page>
+                      <ChapterPreview content={values.content} />
+                    </Page>
+                  </div>
                 </form>
               )}
             />

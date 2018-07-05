@@ -1,4 +1,4 @@
-import {fonts} from "../../gdl-frontend/style/theme";
+import { fonts } from '../../gdl-frontend/style/theme';
 import styled from 'react-emotion';
 
 export const Page = styled.div`
