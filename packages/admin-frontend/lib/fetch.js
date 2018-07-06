@@ -188,3 +188,38 @@ export function deleteFeaturedContent(
     method: 'DELETE'
   });
 }
+
+type Options = {
+  pageSize?: number,
+  level?: string,
+  category?: Category,
+  sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
+  page?: number
+};
+
+export async function search(
+  query: string,
+  language?: string,
+  options: Options = {}
+): Promise<
+  RemoteData<{|
+    page: number,
+    totalCount: number,
+    results: Array<Book>,
+    language: Language
+  |}>
+> {
+  const result = await doFetch(
+    encodeURI(
+      `${bookApiUrl}/search/${language ||
+        ''}?query=${query}&page-size=${options.pageSize ||
+        10}&page=${options.page || 1}`
+    )
+  );
+
+  if (result.isOk) {
+    result.data.results = result.data.results.map(bookCategoryMapper);
+  }
+
+  return result;
+}
