@@ -5,6 +5,7 @@ const Container = (props: {}) => (
   <div
     css={{
       maxWidth: '960px',
+      margin: '0 auto',
       paddingLeft: 16,
       paddingRight: 16
     }}

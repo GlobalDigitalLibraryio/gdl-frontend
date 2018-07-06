@@ -64,7 +64,11 @@ export default class EditPage extends React.Component<
         <Layout shouldAddPadding={false}>
           <div>
             <AppBar position="static" color="default">
-              <Tabs value={selectedTab} onChange={this.handleChange}>
+              <Tabs
+                centered={true}
+                value={selectedTab}
+                onChange={this.handleChange}
+              >
                 <Tab label="Book" />
                 <Tab label="Chapters" />
               </Tabs>
