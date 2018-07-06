@@ -11,8 +11,8 @@ import Tab from '@material-ui/core/Tab/Tab';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Typography from '@material-ui/core/Typography/Typography';
 
-import EditBookForm from '../components/edit_book/EditBookForm';
-import EditChapterForm from '../components/edit_book/EditChapterForm';
+import EditBookForm from '../components/EditBook/EditBookForm';
+import EditChapterForm from '../components/EditBook/EditChapterForm';
 import { fetchBook } from '../lib/fetch';
 import Layout from '../components/Layout';
 import type { BookDetails, Context } from '../types';
