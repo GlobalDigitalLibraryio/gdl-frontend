@@ -12,7 +12,6 @@ import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
-import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { Form, Field, FormSpy } from 'react-final-form';
