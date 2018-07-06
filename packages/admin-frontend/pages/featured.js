@@ -127,168 +127,147 @@ class EditFeaturedContent extends React.Component<
 
     return (
       <Layout>
-        <Typography variant="headline" component="h1" gutterBottom>
-          Edit featured content
-        </Typography>
+        <Container>
+          <Typography variant="headline" component="h1" gutterBottom>
+            Edit featured content
+          </Typography>
 
-        <FormControl>
-          <InputLabel htmlFor="language-select">Select language</InputLabel>
+          <FormControl>
+            <InputLabel htmlFor="language-select">Select language</InputLabel>
 
-          <Select
-            onChange={this.handleLanguageSelect}
-            value={selectedLanguage}
-            native
-            inputProps={{ id: 'language-select' }}
-          >
-            <option value="" />
-            {this.props.languages.map(language => {
-              return (
-                <option key={language.code} value={language.code}>
-                  {language.name} ({language.code})
-                </option>
-              );
-            })};
-          </Select>
-        </FormControl>
-
-        <Form
-          initialValues={featuredContent !== null ? featuredContent : {}}
-          onSubmit={this.handleSaveButtonClick(defaultReturned)}
-          validate={handleValidate}
-          render={({ handleSubmit, pristine, invalid }) => (
-            <form>
-              <Grid container spacing={24} direction="column">
-                <Grid item xs>
-                  <Field
-                    name="title"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          error={meta.error && meta.touched}
-                          required
-                          disabled={selectedLanguage === ''}
-                          label="Title"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
+            <Select
+              onChange={this.handleLanguageSelect}
+              value={selectedLanguage}
+              native
+              inputProps={{ id: 'language-select' }}
+            >
+              <option value="" />
+              {this.props.languages.map(language => {
+                return (
+                  <option key={language.code} value={language.code}>
+                    {language.name} ({language.code})
+                  </option>
+                );
+              })};
+            </Select>
+          </FormControl>
+          <Form
+            initialValues={featuredContent !== null ? featuredContent : {}}
+            onSubmit={this.handleSaveButtonClick(defaultReturned)}
+            validate={handleValidate}
+            render={({ handleSubmit, pristine, invalid }) => (
+              <form>
+                <Field
+                  name="title"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        error={meta.error && meta.touched}
+                        margin="normal"
+                        disabled={selectedLanguage === ''}
+                        label="Title"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
+                <Field
+                  name="description"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        error={meta.error && meta.touched}
+                        disabled={selectedLanguage === ''}
+                        label="Description"
+                        {...input}
+                        multiline
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
+                <Field
+                  name="link"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        type="url"
+                        error={meta.error && meta.touched}
+                        margin="normal"
+                        disabled={selectedLanguage === ''}
+                        label="Link"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                >
                   />
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="description"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          required
-                          error={meta.error && meta.touched}
-                          disabled={selectedLanguage === ''}
-                          label="Description"
-                          {...input}
-                          multiline
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
+                </Field>
+                <Field
+                  name="imageUrl"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        margin="normal"
+                        fullWidth
+                        error={meta.error && meta.touched}
+                        type="url"
+                        disabled={selectedLanguage === ''}
+                        label="Image Url"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                >
                   />
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="link"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          type="url"
-                          error={meta.error && meta.touched}
-                          required
-                          disabled={selectedLanguage === ''}
-                          label="Link"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  >
-                    />
-                  </Field>
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="imageUrl"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          required
-                          fullWidth
-                          error={meta.error && meta.touched}
-                          type="url"
-                          disabled={selectedLanguage === ''}
-                          label="Image Url"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  >
-                    />
-                  </Field>
-                </Grid>
-
-                <Container>
-                  <FormSpy
-                    render={({ values }) =>
-                      //$FlowFixMe
-                      values.imageUrl ? (
-                        <img alt="Featured content" src={values.imageUrl} />
-                      ) : null
-                    }
-                  />
-                </Container>
-
-                <Grid item xs>
-                  <Button
-                    color="primary"
-                    disabled={pristine || invalid}
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Save changes
-                  </Button>
-
-                  <Grid item xs>
-                    <Button
-                      color="secondary"
-                      // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                      disabled={selectedLanguage === '' || !featuredContent}
-                      onClick={this.handleDelete}
-                    >
-                      Delete featured content
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </form>
-          )}
-        />
+                </Field>
+                <FormSpy
+                  render={({ values }) =>
+                    //$FlowFixMe
+                    values.imageUrl ? (
+                      <img alt="Featured content" src={values.imageUrl} />
+                    ) : null
+                  }
+                />
+                <Button
+                  color="primary"
+                  disabled={pristine || invalid}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Save changes
+                </Button>
+                <Button
+                  color="secondary"
+                  // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
+                  disabled={selectedLanguage === '' || !featuredContent}
+                  onClick={this.handleDelete}
+                >
+                  Delete featured content
+                </Button>
+              </form>
+            )}
+          />
+        </Container>
       </Layout>
     );
   }

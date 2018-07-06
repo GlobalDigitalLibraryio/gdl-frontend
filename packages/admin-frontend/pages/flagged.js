@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Container from '../components/Container';
 import { fetchFlaggedBooks } from '../lib/fetch';
 import type { Book } from '../types';
 import {
@@ -80,26 +81,27 @@ class Flagged extends React.Component<Props, State> {
 
     return (
       <Layout>
-        <Typography variant="headline" component="h1" gutterBottom>
-          Flagged books
-        </Typography>
-
-        {totalCount === 0 && (
-          <Typography variant="subheading" align="center">
-            Could not find any flagged books.
+        <Container>
+          <Typography variant="headline" component="h1" gutterBottom>
+            Flagged books
           </Typography>
-        )}
+          {totalCount === 0 && (
+            <Typography variant="subheading" align="center">
+              Could not find any flagged books.
+            </Typography>
+          )}
 
-        {totalCount > 0 && (
-          <FlaggedTable
-            page={page}
-            totalCount={totalCount}
-            pageSize={pageSize}
-            pages={pages}
-            onPageChange={this.handleChangePage}
-            loadingState={loadingState}
-          />
-        )}
+          {totalCount > 0 && (
+            <FlaggedTable
+              page={page}
+              totalCount={totalCount}
+              pageSize={pageSize}
+              pages={pages}
+              onPageChange={this.handleChangePage}
+              loadingState={loadingState}
+            />
+          )}
+        </Container>
       </Layout>
     );
   }
@@ -122,7 +124,6 @@ const FlaggedTable = ({
           <TableCell>Language</TableCell>
         </TableRow>
       </TableHead>
-
       <TableBody>
         {loadingState[page] === 'SUCCESS' &&
           flaggedBooks.map(book => (
@@ -142,7 +143,6 @@ const FlaggedTable = ({
             </TableRow>
           ))}
       </TableBody>
-
       <TableFooter>
         <TableRow />
         <TableRow>

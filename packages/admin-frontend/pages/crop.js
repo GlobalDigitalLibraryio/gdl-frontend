@@ -5,6 +5,7 @@ import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
 import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
+import Container from "../components/Container";
 import Layout from '../components/Layout';
 import { Typography, Button } from '@material-ui/core';
 
@@ -211,6 +212,7 @@ class Crop extends Component<Props, State> {
 
 const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
   <Layout>
+      <Container>
     <Typography variant="headline" component="h1" gutterBottom>
       Crop
     </Typography>
@@ -221,6 +223,7 @@ const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
     ) : (
       <Crop imageUrl={imageUrl} />
     )}
+      </Container>
   </Layout>
 );
 
