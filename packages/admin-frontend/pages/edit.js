@@ -69,8 +69,8 @@ export default class EditPage extends React.Component<
                 value={selectedTab}
                 onChange={this.handleChange}
               >
-                <Tab label="Book" />
-                <Tab label="Chapters" />
+                <Tab label="Edit Book" />
+                <Tab label="Edit Chapters" />
               </Tabs>
             </AppBar>
             {selectedTab === 0 && (
