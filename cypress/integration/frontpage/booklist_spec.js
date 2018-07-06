@@ -20,6 +20,9 @@ describe('Book lists (frontpage)', () => {
       .and('contain', '/en/books/details/');
   });
 
-  // TODO:
+  it('It should be possible to scroll in booklist on mobile', () => {
+    cy.get('[data-cy="book-list-book-link"]').last().scrollIntoView()
+  });
+
   // it('Should contain at least one child', () => {});
 });

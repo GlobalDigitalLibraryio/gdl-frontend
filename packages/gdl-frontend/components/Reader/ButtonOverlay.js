@@ -54,6 +54,7 @@ const TouchOverlay = (props: Props) => [
     onClick={props.onRequestPrev}
     type="button"
     disabled={props.disablePrev}
+    data-cy="book-reader-left-arrow"
   >
     <SrOnly>
       <Trans>Previous</Trans>
@@ -66,6 +67,7 @@ const TouchOverlay = (props: Props) => [
     onClick={props.onRequestNext}
     type="button"
     disabled={props.disableNext}
+    data-cy="book-reader-right-arrow"
   >
     <SrOnly>
       <Trans>Next</Trans>

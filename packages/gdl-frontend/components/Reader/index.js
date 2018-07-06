@@ -103,7 +103,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     const disablePrev = chapterPointer.seqNo <= 1;
 
     return (
-      <Container px={0} size="large">
+      <Container px={0} size="large" data-cy="book-reader">
         <Backdrop />
         <Card>
           <Toolbar

@@ -1,13 +1,6 @@
 describe('Book details', () => {
   beforeEach(() => {
-    /*
-    cy.server();
-    cy.route(
-      'GET',
-      'https://api.test.digitallibrary.io/book-api/v1/books/en/478'
-    ).as('getBook'); // find out how/ where do use this, also replace url with const from config
-*/
-    cy.visit('/en/books/details/478'); // TODO: fix this
+    cy.visit('/en/books/details/478'); // TODO: consider how to do this (test-data? api? need book that has both epub nd pdf)
   });
 
   it('Clicking read book should open readable book', () => {
