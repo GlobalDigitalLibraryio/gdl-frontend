@@ -30,11 +30,15 @@ import { getUserName, logout } from 'gdl-auth';
 const drawerWidth = '240px';
 
 class Layout extends React.Component<
-  { children: Node },
+  { children: Node, shouldAddPadding?: boolean },
   { anchorEl: ?HTMLElement }
 > {
   state = {
     anchorEl: null
+  };
+
+  static defaultProps = {
+    shouldAddPadding: true
   };
 
   handleClick = (event: SyntheticEvent<HTMLButtonElement>) => {
@@ -52,6 +56,21 @@ class Layout extends React.Component<
 
   render() {
     const { anchorEl } = this.state;
+
+    const baseMainCSS = {
+      flexGrow: 1,
+      width: `calc(100% - ${drawerWidth})`,
+      marginLeft: drawerWidth
+    };
+
+    const paddedMainCSS = {
+      padding: 16,
+      ...baseMainCSS
+    };
+
+    const renderedMainCSS = this.props.shouldAddPadding
+      ? paddedMainCSS
+      : baseMainCSS;
 
     return (
       <div
@@ -124,14 +143,7 @@ class Layout extends React.Component<
           </List>
         </Drawer>
 
-        <main
-          css={{
-            padding: 16,
-            flexGrow: 1
-          }}
-        >
-          {this.props.children}
-        </main>
+        <main css={renderedMainCSS}>{this.props.children}</main>
       </div>
     );
   }
