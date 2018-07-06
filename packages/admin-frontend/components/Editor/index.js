@@ -12,8 +12,13 @@ import Link from 'next/link';
 
 import type { BookDetails, Chapter, PublishingStatus } from '../../types';
 import { saveBook, saveChapter } from '../../lib/fetch';
-import Container from '../Container';
-import { FormControl, InputLabel, Select, Typography } from '@material-ui/core';
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  Typography,
+  Button
+} from '@material-ui/core';
 
 // ReactJson doesn't work on the server, so make sure we lazy load it
 const ReactJson = dynamic(import('react-json-view'));
@@ -95,7 +100,7 @@ export default class Editor extends React.Component<
   render() {
     const { book, chapter } = this.props;
     return (
-      <Container>
+      <div>
         <Typography variant="headline" component="h1" gutterBottom>
           Editing book:{' '}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
@@ -118,13 +123,21 @@ export default class Editor extends React.Component<
         <div style={{ textAlign: 'right' }}>
           {this.state.didSave && <span>Saved changes!</span>}
           <Link href={`/${book.language.code}/books/details/${book.id}`}>
-            <button disabled={this.state.isSaving} style={{ margin: '0 1rem' }}>
+            <Button
+              color="secondary"
+              disabled={this.state.isSaving}
+              style={{ margin: '0 1rem' }}
+            >
               Discard changes
-            </button>
+            </Button>
           </Link>
-          <button onClick={this.handleSave} disabled={this.state.isSaving}>
+          <Button
+            color="primary"
+            onClick={this.handleSave}
+            disabled={this.state.isSaving}
+          >
             Save changes
-          </button>
+          </Button>
         </div>
 
         <ReactJson
@@ -139,31 +152,35 @@ export default class Editor extends React.Component<
           displayDataTypes={false}
         />
 
-        <Typography
-          variant="headline"
-          component="h2"
-          gutterBottom
-          css={{ marginTop: '30px' }}
-        >
-          Edit Publishing Status
-        </Typography>
-        <form>
-          <FormControl>
-            <InputLabel>Publishing status</InputLabel>
-            <Select
-              native
-              value={this.state.selectedPublishingStatus}
-              onChange={this.handlePublishingStatusChange}
+        {!this.props.chapter && (
+          <div>
+            <Typography
+              variant="headline"
+              component="h2"
+              gutterBottom
+              css={{ marginTop: '30px' }}
             >
-              {publishingStatus.map(status => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-        </form>
-      </Container>
+              Edit Publishing Status
+            </Typography>
+            <form>
+              <FormControl>
+                <InputLabel>Publishing status</InputLabel>
+                <Select
+                  native
+                  value={this.state.selectedPublishingStatus}
+                  onChange={this.handlePublishingStatusChange}
+                >
+                  {publishingStatus.map(status => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </form>
+          </div>
+        )}
+      </div>
     );
   }
 }

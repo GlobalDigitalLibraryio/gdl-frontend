@@ -19,14 +19,20 @@ type Props = {
   value?: string
 };
 
-const SearchField = ({ id, label, ...props }: Props) => (
-  <Container>
-    <Label htmlFor={id}>{label}</Label>
-    <Icon>
-      <SearchIcon />
-    </Icon>
-    <Input id={id} type="search" {...props} />
-  </Container>
-);
+class SearchField extends React.Component<Props> {
+  render() {
+    const { id, label } = this.props;
+
+    return (
+      <Container>
+        <Label htmlFor={id}>{label}</Label>
+        <Icon>
+          <SearchIcon />
+        </Icon>
+        <Input id={id} type="search" {...this.props} />
+      </Container>
+    );
+  }
+}
 
 export default SearchField;
