@@ -43,7 +43,6 @@ function renderBookDescription(book) {
 const SearchHit = ({ book }: { book: Book }) => {
   return (
     <Wrapper>
-
           <BookCover
             w={[80, 115]}
             h={[108, 155]}
@@ -53,6 +52,7 @@ const SearchHit = ({ book }: { book: Book }) => {
       <Div>
         <BookLevel>
         </BookLevel>
+          {renderTitle(book)}
         {renderBookDescription(book)}
       </Div>
     </Wrapper>
