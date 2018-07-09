@@ -70,7 +70,6 @@ export default ({ book }: { book: Book }) => (
           lang={book.language.code}
           title={book.title}
           noWrap
-          gutterBottom
           component="a"
           align="center"
         >
