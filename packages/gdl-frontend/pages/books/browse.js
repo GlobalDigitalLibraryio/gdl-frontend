@@ -178,20 +178,22 @@ class BrowsePage extends React.Component<Props, State> {
             )}
           </Typography>
           <BookGrid books={books.results} />
-          <LoadingButton
-            disabled={!canLoadMore}
-            onClick={this.handleLoadMore}
-            size="large"
-            isLoading={this.state.isLoadingMore}
-            color="primary"
-            fullWidth
-            css={{
-              marginTop: spacing.xlarge,
-              marginBottom: spacing.medium
-            }}
-          >
-            <Trans>More books</Trans>
-          </LoadingButton>
+
+          <div css={{ alignSelf: 'center' }}>
+            <LoadingButton
+              disabled={!canLoadMore}
+              onClick={this.handleLoadMore}
+              isLoading={this.state.isLoadingMore}
+              color="primary"
+              variant="outlined"
+              css={{
+                marginTop: spacing.xlarge,
+                marginBottom: spacing.medium
+              }}
+            >
+              <Trans>More books</Trans>
+            </LoadingButton>
+          </div>
         </Container>
       </Layout>
     );
