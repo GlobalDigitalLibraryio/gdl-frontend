@@ -19,13 +19,16 @@ import {
   CardContent,
   Typography,
   Divider,
-  Grid
+  Grid,
+  Tab
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
   CloudDownload as CloudDownloadIcon,
   Translate as TranslateIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteOutlineIcon
 } from '@material-ui/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -42,6 +45,11 @@ import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+import {
+  markAsFavorite,
+  removeAsFavorite,
+  isFavorite
+} from '../../lib/favorites';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -83,7 +91,8 @@ const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
 class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    isFav: false
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -110,6 +119,18 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     this.setState({ anchorEl: event.currentTarget });
 
   closeDownloadMenu = () => this.setState({ anchorEl: null });
+
+  handleFavClick = () => {
+    this.state.isFav
+      ? removeAsFavorite(this.props.book)
+      : markAsFavorite(this.props.book);
+
+    this.setState({ isFav: isFavorite(this.props.book) });
+  };
+
+  componentDidMount() {
+    this.setState({ isFav: isFavorite(this.props.book) });
+  }
 
   render() {
     const { similarBooks, book } = this.props;
@@ -201,6 +222,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             </Button>
                           </Link>
                         </Grid>
+<<<<<<< HEAD
                         <Grid item>
                           <Button
                             aria-owns={
@@ -214,6 +236,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             <Trans>Download book</Trans>
                           </Button>
                         </Grid>
+=======
+>>>>>>> Better faving
                         <Menu
                           id="download-book-menu"
                           onClose={this.closeDownloadMenu}
@@ -269,6 +293,38 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     )}
                   </Grid>
                 </CardContent>
+                <div css={{ display: 'flex' }}>
+                  <Tab
+                    css={{ flexGrow: 1, flexShrink: 1 }}
+                    role=""
+                    icon={<FileDownloadIcon />}
+                    label={<Trans>Download</Trans>}
+                    aria-owns={
+                      this.state.anchorEl ? 'download-book-menu' : null
+                    }
+                    aria-haspopup="true"
+                    onClick={this.handleDownloadClick}
+                  >
+                    Download
+                  </Tab>
+                  <Tab
+                    css={{ flexGrow: 1, flexShrink: 1 }}
+                    onClick={this.handleFavClick}
+                    role=""
+                    icon={
+                      this.state.isFav ? (
+                        <FavoriteIcon
+                          style={this.state.isFav ? { color: 'red' } : null}
+                        />
+                      ) : (
+                        <FavoriteOutlineIcon />
+                      )
+                    }
+                    label={<Trans>Favorite</Trans>}
+                  >
+                    Favorite
+                  </Tab>
+                </div>
               </Card>
             </View>
           </Container>

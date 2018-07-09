@@ -18,7 +18,6 @@ import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { Container } from '../elements';
 import { spacing, colors } from '../style/theme';
-import { withMuiRoot } from '../hocs';
 import { getFavorites } from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
 
@@ -36,8 +35,6 @@ class FavoritesPage extends React.Component<{}, State> {
     ).then(bookResults => bookResults.map(bookResult => bookResult.data));
 
     this.setState({ books });
-
-    console.log(books);
   }
 
   render() {
@@ -45,11 +42,11 @@ class FavoritesPage extends React.Component<{}, State> {
     return (
       <>
         <Head title="Favorites" />
-        <Layout crumbs={[<Trans>Favorites</Trans>]}>
+        <Layout>
           <Typography
             align="center"
             variant="headline"
-            css={{ marginTop: spacing.large }}
+            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
           >
             Favorites
           </Typography>
@@ -90,20 +87,4 @@ class FavoritesPage extends React.Component<{}, State> {
   }
 }
 
-/*const Favorite = ({ book, removeFavorite }) => (
-  <Card>
-    <CardContent>
-      <IconButton onClick={() => removeFavorite(book)}>
-        <FavoriteIcon />
-      </IconButton>
-      <Link route={`/${book.language.code}/books/details/${book.id}`} passHref>
-        <Typography component="a" lang={book.language.code}>
-          {book.title}
-        </Typography>
-      </Link>
-      <Typography lang={book.language.code}>{book.description}</Typography>
-    </CardContent>
-  </Card>
-);*/
-
-export default withMuiRoot(FavoritesPage);
+export default FavoritesPage;

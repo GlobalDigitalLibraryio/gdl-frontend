@@ -6,24 +6,27 @@
  * See LICENSE
  */
 import lscache from 'lscache';
-import type { Book } from '../types';
+import type { BookDetails } from '../types';
 
 const FAVORITES_KEY = 'favorites';
 type Fav = { id: number, lang: string };
 
-export function markAsFavorite(book: Book) {
-  const favs = [...getFavorites(), { id: book.id, lang: book.language.code }];
-  setFavorites(favs);
+export function markAsFavorite(book: BookDetails) {
+  // Make sure we don't add the same book multiple times
+  if (!isFavorite(book)) {
+    const favs = [{ id: book.id, lang: book.language.code }, ...getFavorites()];
+    setFavorites(favs);
+  }
 }
 
-export function removeAsFavorite(book: Book) {
+export function removeAsFavorite(book: BookDetails) {
   const favs = getFavorites().filter(
     fav => !(fav.id === book.id && fav.lang === book.language.code)
   );
   setFavorites(favs);
 }
 
-export function isFavorite(book: Book) {
+export function isFavorite(book: BookDetails) {
   const favs = getFavorites();
   return Boolean(
     favs.find(f => f.id === book.id && f.lang === book.language.code)

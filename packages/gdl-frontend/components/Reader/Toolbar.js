@@ -99,13 +99,16 @@ const Toolbar = ({
   </Div>
 );
 
-class FavButton extends React.Component {
+class FavButton extends React.Component<
+  { book: BookDetails },
+  { isFav: boolean }
+> {
   state = {
-    client: false
+    isFav: false
   };
 
   componentDidMount() {
-    this.setState({ client: true, isFav: isFavorite(this.props.book) });
+    this.setState({ isFav: isFavorite(this.props.book) });
   }
 
   handleFav = () => {
@@ -117,7 +120,6 @@ class FavButton extends React.Component {
   };
 
   render() {
-    if (!this.state.client) return null;
     const isFav = this.state.isFav;
     return (
       <IconButton
