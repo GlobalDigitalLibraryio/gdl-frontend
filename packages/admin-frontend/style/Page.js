@@ -7,7 +7,7 @@ export const Page = styled.div`
   color: #000;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  font-size: 18px;
+  font-size: 1.375rem;
   text-align: center;
   line-height: 1.5;
   font-family: ${fonts.family.book};

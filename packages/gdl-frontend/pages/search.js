@@ -296,17 +296,19 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  <LoadingButton
-                    fullWidth
-                    color="primary"
-                    disabled={
-                      searchResult.results.length >= searchResult.totalCount
-                    }
-                    onClick={this.handleLoadMore}
-                    isLoading={this.state.isLoadingMore}
-                  >
-                    <Trans>More books</Trans>
-                  </LoadingButton>
+                  <div css={{ alignSelf: 'center' }}>
+                    <LoadingButton
+                      variant="outlined"
+                      color="primary"
+                      disabled={
+                        searchResult.results.length >= searchResult.totalCount
+                      }
+                      onClick={this.handleLoadMore}
+                      isLoading={this.state.isLoadingMore}
+                    >
+                      <Trans>More books</Trans>
+                    </LoadingButton>
+                  </div>
                 </Fragment>
               )
             ) : (

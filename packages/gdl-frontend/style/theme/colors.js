@@ -22,8 +22,8 @@ const colors = {
     default: '#444',
     subtle: '#666'
   },
-  default: '#004380', // new suggested color: #0277bd
-  alternate: '#842e5c' // new suggested color: #407a4f, or #d32f2f
+  default: '#0277bd',
+  alternate: '#2e7d32'
 };
 
 export default colors;

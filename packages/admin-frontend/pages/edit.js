@@ -10,7 +10,7 @@ import AppBar from '@material-ui/core/AppBar/AppBar';
 import Tab from '@material-ui/core/Tab/Tab';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Typography from '@material-ui/core/Typography/Typography';
-
+import Container from '../components/Container';
 import EditBookForm from '../components/EditBook/EditBookForm';
 import EditChapterForm from '../components/EditBook/EditChapterForm';
 import SearchPage from "../components/Search/SearchPage";
@@ -54,7 +54,13 @@ export default class EditPage extends React.Component<
     if (!book) {
       return (
         <Layout>
+          <Container>
+            <p>
+              You have to specify a correct book id and/or the chapter id in the
+              url.
+            </p>
             <SearchPage id={"booksearch"} label={"Search"}/>
+          </Container>
         </Layout>
       );
     } else {
