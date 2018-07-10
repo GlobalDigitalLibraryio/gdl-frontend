@@ -81,7 +81,7 @@ export default class AutoCompleteSearchField extends React.Component<
               })}
             />
             {isOpen ? (
-              <Paper css={{ position: 'absolute' }}>
+              <Paper css={{ position: 'absolute', maxWidth: '960px' }}>
                 {result &&
                   result.results.map((book, index) => {
                     return (
@@ -110,14 +110,8 @@ export default class AutoCompleteSearchField extends React.Component<
                           )}
                           <ListItemText
                             primary={book.title}
-                            secondary={
-                              book.description.length > DESCRIPTION_LENGTH
-                                ? book.description.slice(
-                                    0,
-                                    DESCRIPTION_LENGTH
-                                  ) + '...'
-                                : book.description
-                            }
+                            secondary={book.description}
+                            secondaryTypographyProps={{ noWrap: true }}
                           />
                         </ListItem>
                       </Link>
