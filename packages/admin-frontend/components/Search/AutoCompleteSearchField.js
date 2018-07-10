@@ -80,7 +80,7 @@ export default class AutoCompleteSearchField extends React.Component<
             />
             {isOpen ? (
               <Paper css={{ position: 'absolute', maxWidth: '960px' }}>
-                {result &&
+                {result && result.results.length > 0 ? (
                   result.results.map((book, index) => {
                     return (
                       <ListItem
@@ -108,7 +108,17 @@ export default class AutoCompleteSearchField extends React.Component<
                         />
                       </ListItem>
                     );
-                  })}
+                  })
+                ) : (
+                  <Paper css={{ position: 'absolute', maxWidth: '960px' }}>
+                    <ListItem>
+                      <ListItemText
+                        primary="No search results"
+                        primaryTypographyProps={{ noWrap: true }}
+                      />
+                    </ListItem>
+                  </Paper>
+                )}
               </Paper>
             ) : null}
           </div>
