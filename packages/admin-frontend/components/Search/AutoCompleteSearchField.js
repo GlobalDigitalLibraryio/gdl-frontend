@@ -111,6 +111,7 @@ export default class AutoCompleteSearchField extends React.Component<
                           <ListItemText
                             primary={book.title}
                             secondary={book.description}
+                            primaryTypographyProps={{ noWrap: true }}
                             secondaryTypographyProps={{ noWrap: true }}
                           />
                         </ListItem>
