@@ -62,7 +62,7 @@ export default class AutoCompleteSearchField extends React.Component<
     return (
       <Downshift
         onChange={this.handleSelection}
-        itemToString={item => (item ? item.data : '')}
+        itemToString={item => (item ? item.title : '')}
       >
         {({
           getInputProps,
@@ -84,37 +84,30 @@ export default class AutoCompleteSearchField extends React.Component<
                 {result &&
                   result.results.map((book, index) => {
                     return (
-                      <Link
-                        href={{
-                          pathname: '/admin/edit',
-                          query: { id: book.id, lang: book.language.code }
-                        }}
+                      <ListItem
+                        {...getItemProps({
+                          key: book.id,
+                          item: book,
+                          index,
+                          style: {
+                            backgroundColor:
+                              highlightedIndex === index
+                                ? colors.base.grayLight
+                                : 'inherit'
+                          }
+                        })}
+                        button
                       >
-                        <ListItem
-                          {...getItemProps({
-                            item: book,
-                            key: book.id,
-                            index,
-                            style: {
-                              backgroundColor:
-                                highlightedIndex === index
-                                  ? colors.base.grayLight
-                                  : 'inherit'
-                            }
-                          })}
-                          button
-                        >
-                          {book.coverImage && (
-                            <Avatar src={book.coverImage.url} />
-                          )}
-                          <ListItemText
-                            primary={book.title}
-                            secondary={book.description}
-                            primaryTypographyProps={{ noWrap: true }}
-                            secondaryTypographyProps={{ noWrap: true }}
-                          />
-                        </ListItem>
-                      </Link>
+                        {book.coverImage && (
+                          <Avatar src={book.coverImage.url} />
+                        )}
+                        <ListItemText
+                          primary={book.title}
+                          secondary={book.description}
+                          primaryTypographyProps={{ noWrap: true }}
+                          secondaryTypographyProps={{ noWrap: true }}
+                        />
+                      </ListItem>
                     );
                   })}
               </Paper>
