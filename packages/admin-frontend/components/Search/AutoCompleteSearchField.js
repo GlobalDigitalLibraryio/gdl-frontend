@@ -14,8 +14,6 @@ import colors from '../../style/colors';
 import type { Book } from '../../types';
 import SearchField from './SearchField';
 
-const PAGE_SIZE = 10;
-const LANGUAGE = 'en';
 const DESCRIPTION_LENGTH = 70;
 
 type State = {
@@ -51,9 +49,7 @@ export default class AutoCompleteSearchField extends React.Component<
   };
 
   fetchBooks = async (event: SyntheticInputEvent<EventTarget>) => {
-    const queryRes = await search(event.target.value, LANGUAGE, {
-      pageSize: PAGE_SIZE
-    });
+    const queryRes = await search(event.target.value);
 
     if (!queryRes.isOk) {
       return;
