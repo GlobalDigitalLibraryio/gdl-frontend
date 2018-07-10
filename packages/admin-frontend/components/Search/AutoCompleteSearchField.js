@@ -41,6 +41,8 @@ export default class AutoCompleteSearchField extends React.Component<
   };
 
   handleSearch = (event: SyntheticInputEvent<EventTarget>) => {
+    this.setState({ searchResult: null });
+
     if (!event.target.value) {
       return;
     }
