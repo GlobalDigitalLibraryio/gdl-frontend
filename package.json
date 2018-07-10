@@ -97,7 +97,9 @@
     "react-ga": "^2.5.2",
     "react-swipeable": "^4.3.0",
     "styled-system": "^2.2.5",
-    "universal-cookie": "^2.1.5"
+    "universal-cookie": "^2.1.5",
+    "downshift": "1.31.16"
+
   },
   "engines": {
     "node": ">=8.0.0"

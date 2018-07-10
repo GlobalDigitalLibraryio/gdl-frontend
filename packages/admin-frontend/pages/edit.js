@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography/Typography';
 import Container from '../components/Container';
 import EditBookForm from '../components/EditBook/EditBookForm';
 import EditChapterForm from '../components/EditBook/EditChapterForm';
-import SearchPage from "../components/Search/SearchPage";
 import { fetchBook } from '../lib/fetch';
 import Layout from '../components/Layout';
 import type { BookDetails, Context } from '../types';
@@ -55,11 +54,7 @@ export default class EditPage extends React.Component<
       return (
         <Layout>
           <Container>
-            <p>
-              You have to specify a correct book id and/or the chapter id in the
-              url.
-            </p>
-            <SearchPage id={"booksearch"} label={"Search"}/>
+            <p>Search for a book to edit it</p>
           </Container>
         </Layout>
       );

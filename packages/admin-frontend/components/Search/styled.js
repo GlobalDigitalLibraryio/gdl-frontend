@@ -1,7 +1,7 @@
 // @flow
 import styled from 'react-emotion';
 import { placeholder, hideVisually } from 'polished';
-import  colors from '../../style/colors';
+import colors from '../../style/colors';
 
 export const Container = styled('div')`
   display: flex;
