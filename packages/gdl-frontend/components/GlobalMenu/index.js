@@ -29,7 +29,8 @@ import CCLogo from './cc-logo.svg';
 
 type Props = {|
   onClose(): void,
-  isOpen: boolean
+  isOpen: boolean,
+  userHasAdminPrivileges: boolean
 |};
 
 type State = {
@@ -52,11 +53,16 @@ class GlobalMenu extends React.Component<Props, State> {
   }
 
   render() {
-    const { onClose } = this.props;
+    const { onClose, userHasAdminPrivileges } = this.props;
 
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List>
+          {userHasAdminPrivileges && (
+            <ListItemA href="/admin">
+              <Trans>GDL Admin</Trans>
+            </ListItemA>
+          )}
           <SelectLanguage
             language={this.state.language}
             onSelectLanguage={onClose}

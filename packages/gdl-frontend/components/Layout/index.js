@@ -10,6 +10,7 @@ import React, { type Node } from 'react';
 import styled from 'react-emotion';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
+import { claims, hasClaim } from '../../lib/auth/token';
 
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
@@ -40,14 +41,24 @@ type Props = {|
   wrapWithMain: boolean
 |};
 
-class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
+type State = {
+  drawerIsOpen: boolean,
+  userHasAdminPrivileges: boolean
+};
+
+class Layout extends React.Component<Props, State> {
   static defaultProps = {
     wrapWithMain: true
   };
 
   state = {
-    drawerIsOpen: false
+    drawerIsOpen: false,
+    userHasAdminPrivileges: false
   };
+
+  componentDidMount() {
+    this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
+  }
 
   wrapWithCategoryTheme(node: Node) {
     if (this.props.category === 'classroom_books') {
@@ -64,6 +75,7 @@ class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
         <GlobalMenu
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
+          userHasAdminPrivileges={this.state.userHasAdminPrivileges}
         />
         {crumbs && (
           <NavContextBar>
