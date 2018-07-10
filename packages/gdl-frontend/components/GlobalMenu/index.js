@@ -20,7 +20,11 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { getTokenFromLocalCookie } from '../../lib/auth/token';
+import {
+  claims,
+  getTokenFromLocalCookie,
+  hasClaim
+} from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
@@ -29,17 +33,18 @@ import CCLogo from './cc-logo.svg';
 
 type Props = {|
   onClose(): void,
-  isOpen: boolean,
-  userHasAdminPrivileges: boolean
+  isOpen: boolean
 |};
 
 type State = {
-  language: Language
+  language: Language,
+  userHasAdminPrivileges: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    language: getBookLanguage()
+    language: getBookLanguage(),
+    userHasAdminPrivileges: false
   };
 
   // Makes sure we always show the correct language as selected when the menu is opened
@@ -52,13 +57,17 @@ class GlobalMenu extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
+  }
+
   render() {
-    const { onClose, userHasAdminPrivileges } = this.props;
+    const { onClose } = this.props;
 
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List>
-          {userHasAdminPrivileges && (
+          {this.state.userHasAdminPrivileges && (
             <ListItemA href="/admin">
               <Trans>GDL Admin</Trans>
             </ListItemA>
