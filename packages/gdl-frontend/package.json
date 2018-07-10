@@ -67,7 +67,6 @@
     "@lingui/babel-preset-react": "^2.0.8",
     "@lingui/cli": "^2.0.8",
     "babel-plugin-emotion": "9.2.5",
-    "babel-plugin-inline-react-svg": "^0.5.2",
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",
     "enzyme": "^3.3.0",
