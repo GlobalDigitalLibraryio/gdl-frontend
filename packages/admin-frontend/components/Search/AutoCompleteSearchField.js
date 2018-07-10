@@ -11,8 +11,6 @@ import colors from '../../style/colors';
 import type { Book } from '../../types';
 import SearchField from './SearchField';
 
-const DESCRIPTION_LENGTH = 70;
-
 type State = {
   searchResult: ?{
     results: Array<Book>,
@@ -30,9 +28,10 @@ export default class AutoCompleteSearchField extends React.Component<
   };
 
   handleSelection = (selectedBook: Book) => {
-    Router.push(
-      `/admin/edit?id=${selectedBook.id}&lang=${selectedBook.language.code}`
-    );
+    Router.push({
+      pathname: '/admin/edit',
+      query: { id: selectedBook.id, lang: selectedBook.language.code }
+    });
   };
 
   handleSearch = (event: SyntheticInputEvent<EventTarget>) => {
