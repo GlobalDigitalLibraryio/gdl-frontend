@@ -1,13 +1,10 @@
 // @flow
 
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar/Avatar';
-import ListItemText from '@material-ui/core/ListItemText/ListItemText';
-import Paper from '@material-ui/core/Paper/Paper';
-import { ListItem } from '@material-ui/core/index';
 import Link from 'next/link';
 import Router from 'next/router';
 import Downshift from 'downshift';
+import { Avatar, ListItemText, ListItem, Paper } from '@material-ui/core';
 
 import { search } from '../../lib/fetch';
 import colors from '../../style/colors';
