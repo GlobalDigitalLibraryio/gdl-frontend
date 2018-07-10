@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import Link from 'next/link';
 import Router from 'next/router';
 import Downshift from 'downshift';
 import { Avatar, ListItemText, ListItem, Paper } from '@material-ui/core';
