@@ -54,10 +54,7 @@ export default class EditPage extends React.Component<
       return (
         <Layout>
           <Container>
-            <p>
-              You have to specify a correct book id and/or the chapter id in the
-              url.
-            </p>
+            <p>Search for a book to edit it</p>
           </Container>
         </Layout>
       );

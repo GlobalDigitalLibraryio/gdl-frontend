@@ -1,4 +1,22 @@
 {
+  "<0>Selected: </0>{0}": {
+    "translation": "<0>Selected: </0>{0}",
+    "origin": [
+      [
+        "components/LanguageMenu/LanguageMenu.js",
+        111
+      ]
+    ]
+  },
+  "Open menu": {
+    "translation": "Open menu",
+    "origin": [
+      [
+        "components/Navbar/index.js",
+        57
+      ]
+    ]
+  },
   "Dismiss": {
     "translation": "Dismiss",
     "origin": [
@@ -264,10 +282,6 @@
     "translation": "Selected:",
     "origin": [
       [
-        "components/LanguageMenu/LanguageMenu.js",
-        112
-      ],
-      [
         "components/Menu/MenuItem.js",
         78
       ],
@@ -326,25 +340,16 @@
       ]
     ]
   },
-  "Menu": {
-    "translation": "Menu",
-    "origin": [
-      [
-        "components/Navbar/index.js",
-        58
-      ]
-    ]
-  },
   "Search": {
     "translation": "Search",
     "origin": [
       [
         "components/Navbar/index.js",
-        70
+        69
       ],
       [
         "pages/search.js",
-        219
+        226
       ]
     ]
   },
@@ -528,7 +533,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        207
+        198
       ],
       [
         "pages/books/_translate.js",
@@ -545,7 +550,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        241
+        232
       ]
     ]
   },
@@ -558,11 +563,11 @@
       ],
       [
         "pages/books/_book.js",
-        254
+        245
       ],
       [
         "pages/books/_book.js",
-        306
+        297
       ]
     ]
   },
@@ -575,7 +580,7 @@
       ],
       [
         "pages/books/_book.js",
-        269
+        260
       ]
     ]
   },
@@ -588,7 +593,7 @@
       ],
       [
         "pages/books/_book.js",
-        278
+        269
       ]
     ]
   },
@@ -597,7 +602,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        331
+        322
       ]
     ]
   },
@@ -606,7 +611,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        351
+        342
       ]
     ]
   },
@@ -615,7 +620,7 @@
     "origin": [
       [
         "pages/books/_book.js",
-        362
+        353
       ]
     ]
   },
@@ -736,11 +741,11 @@
     "origin": [
       [
         "pages/books/browse.js",
-        193
+        194
       ],
       [
         "pages/search.js",
-        301
+        309
       ]
     ]
   },
@@ -785,7 +790,7 @@
     "origin": [
       [
         "pages/search.js",
-        255
+        262
       ]
     ]
   },
@@ -794,7 +799,7 @@
     "origin": [
       [
         "pages/search.js",
-        263
+        270
       ]
     ]
   }

@@ -26,6 +26,7 @@ import AccountBox from '@material-ui/icons/AccountBox';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
 import { getUserName, logout } from 'gdl-auth';
+import AutoCompleteSearchField from '../Search/AutoCompleteSearchField';
 
 const drawerWidth = '240px';
 
@@ -73,12 +74,7 @@ class Layout extends React.Component<
       : baseMainCSS;
 
     return (
-      <div
-        css={{
-          display: 'flex',
-          flexFlow: 'row wrap'
-        }}
-      >
+      <div css={{ display: 'flex', flexFlow: 'row wrap' }}>
         <AppBar
           color="primary"
           position="static"
@@ -91,15 +87,23 @@ class Layout extends React.Component<
             <Typography variant="title" color="inherit" noWrap>
               <strong>GDL Admin</strong>
             </Typography>
+
+            <div
+              css={{
+                maxWidth: '960px',
+                width: '100%',
+                margin: 'auto',
+                marginTop: '8px'
+              }}
+            >
+              <AutoCompleteSearchField />
+            </div>
           </Toolbar>
         </AppBar>
 
         <Drawer
           variant="permanent"
-          css={{
-            width: drawerWidth,
-            position: 'relative'
-          }}
+          css={{ width: drawerWidth, position: 'relative' }}
         >
           <ProfileMenu
             anchorEl={anchorEl}
@@ -109,12 +113,7 @@ class Layout extends React.Component<
             handleLogOut={this.handleLogOut}
           />
           <Divider />
-          <List
-            component="nav"
-            css={{
-              width: drawerWidth
-            }}
-          >
+          <List component="nav" css={{ width: drawerWidth }}>
             <Link prefetch href="/admin/crop">
               <ListItem button component="a">
                 <ListItemText primary="Crop images" />

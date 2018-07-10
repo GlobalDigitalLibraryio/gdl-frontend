@@ -23,6 +23,7 @@
     "react": "^16.4.1",
     "react-cropper": "^1.0.1",
     "react-dom": "^16.4.1",
+    "downshift": "2.0.10",
     "react-emotion": "9.2.5",
     "react-final-form": "^3.6.2"
   },
