@@ -21,7 +21,6 @@ export default class CropPage extends React.Component<{ imageUrl?: string }> {
 
   render() {
     const imageUrl = this.props.imageUrl;
-    console.log(imageUrl);
     return (
       <Layout>
         <Container>
