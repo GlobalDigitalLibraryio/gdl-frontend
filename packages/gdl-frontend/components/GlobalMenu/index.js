@@ -67,11 +67,6 @@ class GlobalMenu extends React.Component<Props, State> {
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List>
-          {this.state.userHasAdminPrivileges && (
-            <ListItemA href="/admin">
-              <Trans>GDL Admin</Trans>
-            </ListItemA>
-          )}
           <SelectLanguage
             language={this.state.language}
             onSelectLanguage={onClose}
@@ -103,6 +98,11 @@ class GlobalMenu extends React.Component<Props, State> {
             )}
           </CategoriesMenu>
           <Divider />
+          {this.state.userHasAdminPrivileges && (
+            <ListItemA href="/admin">
+              <Trans>GDL Admin</Trans>
+            </ListItemA>
+          )}
           {config.TRANSLATION_PAGES && (
             <Fragment>
               {getTokenFromLocalCookie() == null ? (
