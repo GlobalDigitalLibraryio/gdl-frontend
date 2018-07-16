@@ -3,10 +3,10 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
-import { getAuthToken } from 'gdl-auth';
+import { getAuthToken } from 'packages/gdl-auth/index';
 import 'cropperjs/dist/cropper.css';
 
-import { imageApiUrl } from '../config';
+import { imageApiUrl } from '../../config';
 
 type Props = {
   imageUrl?: string,
