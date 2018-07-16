@@ -139,6 +139,13 @@ export default class EditBookForm extends React.Component<Props, State> {
                     )}
                   />
                 </div>
+                <Button
+                  color="secondary"
+                  disabled={pristine}
+                  onClick={form.reset}
+                >
+                  Discard changes
+                </Button>
 
                 <Button
                   color="primary"
@@ -147,14 +154,6 @@ export default class EditBookForm extends React.Component<Props, State> {
                   disabled={pristine || invalid}
                 >
                   Save book
-                </Button>
-
-                <Button
-                  color="secondary"
-                  disabled={pristine}
-                  onClick={form.reset}
-                >
-                  Discard changes
                 </Button>
               </form>
             )}
