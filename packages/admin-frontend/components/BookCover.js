@@ -7,10 +7,9 @@
  */
 import * as React from 'react';
 import { css } from 'react-emotion';
-
-import CoverImage from './CoverImage';
 import type { CoverImageInfo } from '../types';
-import { misc } from '../style/theme';
+import misc from '../style/misc';
+import CoverImage from './CoverImage';
 
 type Props = {
   coverImage: ?CoverImageInfo,

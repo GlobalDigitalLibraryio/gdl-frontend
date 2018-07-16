@@ -8,9 +8,9 @@
 
 import * as React from 'react';
 import Image from './Image';
-import { TABLET_BREAKPOINT } from '../style/theme/misc';
+import { TABLET_BREAKPOINT } from '../style/misc';
 
-const NO_COVER_PLACEHOLDER_URL = require('../static/placeholder-cover.png');
+const NO_COVER_PLACEHOLDER_URL = require('../placeholder-cover.png');
 
 // To prevent downloading the same covers again again with small differences
 // Set the "biggest" size for each viewport here.
