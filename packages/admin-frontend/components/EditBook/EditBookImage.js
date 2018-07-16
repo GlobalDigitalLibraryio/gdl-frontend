@@ -11,7 +11,6 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Edit as EditIcon } from '@material-ui/icons';
 import type { BookDetails } from '../../types';
-import BookCover from '../BookCover';
 import colors from '../../style/colors';
 import Crop from './Crop';
 type State = {
@@ -43,7 +42,6 @@ export default class EditBookImage extends React.Component<Props, State> {
 
   render() {
     const book = this.props.book;
-
     return (
       <div>
         <div
@@ -53,11 +51,17 @@ export default class EditBookImage extends React.Component<Props, State> {
             marginRight: 16
           }}
         >
-          <BookCover
-            coverImage={book.coverImage}
-            w={[130, 260]}
-            h={[175, 365]}
+          <img
+            src={
+              book.coverImage.url +
+              '?storedRatio=0.81&ratio=0.81' +
+              '&timestamp=' +
+              Date.now()
+            }
+            width={260}
+            height={365}
           />
+
           <div onClick={this.handleOpen}>
             <EditBookLink>
               <EditIcon />
