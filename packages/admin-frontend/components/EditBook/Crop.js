@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
-import { getAuthToken } from '../../../../packages/gdl-auth/index';
+import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
 
 import { imageApiUrl } from '../../config';
