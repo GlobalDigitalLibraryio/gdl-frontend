@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import 'cropperjs/dist/cropper.css';
 import Container from '../components/Container';
 import Crop from '../components/EditBook/Crop';
 import Layout from '../components/Layout';

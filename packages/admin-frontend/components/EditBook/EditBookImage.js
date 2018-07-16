@@ -54,20 +54,19 @@ export default class EditBookImage extends React.Component<Props, State> {
           <img
             src={
               book.coverImage.url +
-              '?storedRatio=0.81&ratio=0.81' +
+              '?storedRatio=0.81&ratio=0.81&focalX=50&focalY=50' +
               '&timestamp=' +
               Date.now()
             }
+            css=""
             alt="Cover"
             width={260}
             height={365}
           />
 
-          <div onClick={this.handleOpen}>
-            <EditBookLink>
-              <EditIcon />
-            </EditBookLink>
-          </div>
+          <EditBookButton title="Edit book link" onClick={this.handleOpen}>
+            <EditIcon />
+          </EditBookButton>
         </div>
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
@@ -85,9 +84,12 @@ export default class EditBookImage extends React.Component<Props, State> {
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={this.handleClose}>Cancel</Button>
+            <Button onClick={this.handleClose} color="primary">
+              Cancel
+            </Button>
 
             <Button
+              color="primary"
               onClick={() => {
                 this.cropInstance && this.cropInstance.handleSave();
                 this.handleClose();
@@ -102,13 +104,15 @@ export default class EditBookImage extends React.Component<Props, State> {
   }
 }
 
-const EditBookLink = styled('div')`
+const EditBookButton = styled('button')`
   color: ${colors.base.white};
   position: absolute;
+  border: 0;
   top: 0;
   right: 0;
   padding: 5px;
   transition: all 0.3s ease;
+  cursor: pointer;
   background: rgba(0, 0, 0, 0.5);
   &:hover {
     background: rgba(0, 0, 0, 0.6);
