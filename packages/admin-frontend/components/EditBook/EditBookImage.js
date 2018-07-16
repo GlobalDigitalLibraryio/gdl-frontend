@@ -58,6 +58,7 @@ export default class EditBookImage extends React.Component<Props, State> {
               '&timestamp=' +
               Date.now()
             }
+            alt="Cover"
             width={260}
             height={365}
           />
