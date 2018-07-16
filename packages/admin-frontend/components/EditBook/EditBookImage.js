@@ -29,17 +29,16 @@ export default class EditBookImage extends React.Component<Props, State> {
 
   cropInstance: ?Crop;
 
+  componentWillUnmount() {
+    this.cropInstance = null;
+  }
+
   handleOpen = () => {
     this.setState({ open: true });
   };
 
   handleClose = () => {
     this.setState({ open: false });
-  };
-
-  handleSave = (child: Crop) => {
-    child.handleSave();
-    this.handleClose();
   };
 
   render() {
@@ -84,8 +83,8 @@ export default class EditBookImage extends React.Component<Props, State> {
             <Button onClick={this.handleClose}>Cancel</Button>
 
             <Button
-              onClick={child => {
-                this.handleSave(child);
+              onClick={() => {
+                this.cropInstance && this.cropInstance.handleSave();
                 this.handleClose();
               }}
             >

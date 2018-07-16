@@ -146,25 +146,21 @@ export default class Crop extends Component<Props, State> {
 
   render() {
     return (
-      <div>
-        <div>
-          <Cropper
-            ref={c => {
-              this.cropper = c;
-            }}
-            style={{ height: 400, width: '100%' }}
-            src={this.props.imageUrl}
-            aspectRatio={this.props.ratio}
-            guides={false}
-            viewMode={2}
-            zoomable={false}
-            dragMode={'move'}
-            preview={'.preview'}
-            crop={this.crop}
-            ready={this.onReady}
-          />
-        </div>
-      </div>
+      <Cropper
+        ref={c => {
+          this.cropper = c;
+        }}
+        style={{ height: 400, width: '100%' }}
+        src={this.props.imageUrl}
+        aspectRatio={this.props.ratio}
+        guides={false}
+        viewMode={2}
+        zoomable={false}
+        dragMode={'move'}
+        preview={'.preview'}
+        crop={this.crop}
+        ready={this.onReady}
+      />
     );
   }
 }
