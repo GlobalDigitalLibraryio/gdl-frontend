@@ -64,7 +64,7 @@ export default class EditBookImage extends React.Component<Props, State> {
             height={365}
           />
 
-          <EditBookButton title="Edit book link" onClick={this.handleOpen}>
+          <EditBookButton title="Edit cover image" onClick={this.handleOpen}>
             <EditIcon />
           </EditBookButton>
         </div>
