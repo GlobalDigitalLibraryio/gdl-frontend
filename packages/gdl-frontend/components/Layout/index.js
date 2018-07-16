@@ -40,7 +40,11 @@ type Props = {|
   wrapWithMain: boolean
 |};
 
-class Layout extends React.Component<Props, { drawerIsOpen: boolean }> {
+type State = {
+  drawerIsOpen: boolean
+};
+
+class Layout extends React.Component<Props, State> {
   static defaultProps = {
     wrapWithMain: true
   };

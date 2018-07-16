@@ -20,7 +20,11 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { getTokenFromLocalCookie } from '../../lib/auth/token';
+import {
+  claims,
+  getTokenFromLocalCookie,
+  hasClaim
+} from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
@@ -33,12 +37,14 @@ type Props = {|
 |};
 
 type State = {
-  language: Language
+  language: Language,
+  userHasAdminPrivileges: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    language: getBookLanguage()
+    language: getBookLanguage(),
+    userHasAdminPrivileges: false
   };
 
   // Makes sure we always show the correct language as selected when the menu is opened
@@ -49,6 +55,10 @@ class GlobalMenu extends React.Component<Props, State> {
         this.setState({ language });
       }
     }
+  }
+
+  componentDidMount() {
+    this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
   }
 
   render() {
@@ -88,6 +98,11 @@ class GlobalMenu extends React.Component<Props, State> {
             )}
           </CategoriesMenu>
           <Divider />
+          {this.state.userHasAdminPrivileges && (
+            <ListItemA href="/admin">
+              <Trans>GDL Admin</Trans>
+            </ListItemA>
+          )}
           {config.TRANSLATION_PAGES && (
             <Fragment>
               {getTokenFromLocalCookie() == null ? (
