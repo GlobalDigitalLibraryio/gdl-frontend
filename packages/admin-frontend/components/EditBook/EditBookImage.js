@@ -27,6 +27,8 @@ export default class EditBookImage extends React.Component<Props, State> {
     open: false
   };
 
+  cropInstance: ?Crop;
+
   handleOpen = () => {
     this.setState({ open: true });
   };
@@ -35,7 +37,7 @@ export default class EditBookImage extends React.Component<Props, State> {
     this.setState({ open: false });
   };
 
-  handleSave = child => {
+  handleSave = (child: Crop) => {
     child.handleSave();
     this.handleClose();
   };
@@ -70,7 +72,7 @@ export default class EditBookImage extends React.Component<Props, State> {
             <div>
               <Crop
                 ref={instance => {
-                  this.child = instance;
+                  this.cropInstance = instance;
                 }}
                 imageUrl={book.coverImage.url}
                 ratio={0.81}
@@ -82,8 +84,8 @@ export default class EditBookImage extends React.Component<Props, State> {
             <Button onClick={this.handleClose}>Cancel</Button>
 
             <Button
-              onClick={() => {
-                this.child.handleSave();
+              onClick={child => {
+                this.handleSave(child);
                 this.handleClose();
               }}
             >

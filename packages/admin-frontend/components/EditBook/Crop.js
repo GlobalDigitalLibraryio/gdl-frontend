@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
-import { getAuthToken } from 'packages/gdl-auth/index';
+import { getAuthToken } from '../../../../packages/gdl-auth/index';
 import 'cropperjs/dist/cropper.css';
 
 import { imageApiUrl } from '../../config';
@@ -89,7 +89,7 @@ export default class Crop extends Component<Props, State> {
   postToImageApi = async () => {
     if (this.state.imageApiBody !== null) {
       const authToken = getAuthToken();
-      const response = await fetch(`${imageApiUrl}/images/stored-parameters`, {
+      await fetch(`${imageApiUrl}/images/stored-parameters`, {
         method: 'POST',
         headers: {
           Authorization: authToken ? `Bearer ${authToken}` : null,
