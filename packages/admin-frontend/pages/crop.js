@@ -5,31 +5,56 @@ import 'cropperjs/dist/cropper.css';
 import Container from '../components/Container';
 import Crop from '../components/EditBook/Crop';
 import Layout from '../components/Layout';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
+import type { Context } from '../types';
 
-const CropPage = ({ imageUrl }: { imageUrl?: string }) => (
-  <Layout>
-    <Container>
-      <Typography variant="headline" component="h1" gutterBottom>
-        Crop
-      </Typography>
-      {imageUrl == null ? (
-        <Typography variant="subheading">
-          You need to specify <code>imageUrl</code> in the URL
-        </Typography>
-      ) : (
-        <Crop imageUrl={imageUrl} ratio={0.81} />
-      )}
-    </Container>
-  </Layout>
-);
+export default class CropPage extends React.Component<{ imageUrl?: string }> {
+  cropper: ?Crop;
 
-CropPage.getInitialProps = context => {
-  const imageUrl = context.query.imageUrl;
+  static async getInitialProps({ query }: Context) {
+    const imageUrl = query.imageUrl;
 
-  return {
-    imageUrl
-  };
-};
+    return {
+      imageUrl
+    };
+  }
 
-export default CropPage;
+  render() {
+    const imageUrl = this.props.imageUrl;
+    console.log(imageUrl);
+    return (
+      <Layout>
+        <Container>
+          <Typography variant="headline" component="h1" gutterBottom>
+            Crop
+          </Typography>
+          {imageUrl == null ? (
+            <Typography variant="subheading">
+              You need to specify <code>imageUrl</code> in the URL
+            </Typography>
+          ) : (
+            <Crop
+              imageUrl={imageUrl}
+              ratio={2.63}
+              ref={instance => {
+                this.cropper = instance;
+              }}
+            />
+          )}
+
+          {imageUrl && (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.cropper && this.cropper.postToImageApi();
+              }}
+            >
+              Crop image
+            </Button>
+          )}
+        </Container>
+      </Layout>
+    );
+  }
+}
