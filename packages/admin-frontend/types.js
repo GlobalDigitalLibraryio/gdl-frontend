@@ -102,6 +102,7 @@ export type BookDetails = $ReadOnly<{|
   datePublished?: string,
   publisher: Publisher,
   license: License,
+  coverImage: CoverImageInfo,
   supportsTranslation: boolean,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
