@@ -32,7 +32,6 @@ import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
-import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import View from '../../elements/View';
@@ -43,7 +42,6 @@ import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
 type Props = {
   book: BookDetails,
@@ -106,23 +104,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     };
   }
 
-  getCrumbs() {
-    const { book } = this.props;
-
-    return [
-      <BrowseLink
-        lang={book.language.code}
-        readingLevel={book.readingLevel}
-        category={book.category}
-      >
-        <a>
-          <ReadingLevelTrans readingLevel={book.readingLevel} />
-        </a>
-      </BrowseLink>,
-      book.title
-    ];
-  }
-
   handleDownloadClick = event =>
     this.setState({ anchorEl: event.currentTarget });
 
@@ -140,7 +121,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
         >
           <BookJsonLd book={book} />
         </Head>
-        <Layout crumbs={this.getCrumbs()} category={book.category}>
+        <Layout category={book.category}>
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>

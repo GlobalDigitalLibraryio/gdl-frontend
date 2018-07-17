@@ -21,7 +21,7 @@ import {
   NoResults
 } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
-import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
+import { NavContextBar } from '../components/NavContextBar';
 import { SelectLanguage } from '../components/LanguageMenu';
 import {
   setBookLanguage,
@@ -223,7 +223,6 @@ class SearchPage extends React.Component<Props, State> {
       <Layout wrapWithMain={false}>
         <Head title="Search" />
         <NavContextBar>
-          <Breadcrumb crumbs={[<Trans>Search</Trans>]} />
           {language && (
             <SelectLanguage
               language={language}

@@ -15,7 +15,6 @@ import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import { misc, colors } from '../../style/theme';
-import { NavContextBar, Breadcrumb } from '../NavContextBar';
 import { classRoomTheme } from '../../getPageContext';
 
 const Main = styled(Paper)`
@@ -36,7 +35,6 @@ const PageWrapper = styled('div')`
 type Props = {|
   children: Node,
   category?: ?Category,
-  crumbs?: Array<Node | string>,
   wrapWithMain: boolean
 |};
 
@@ -61,7 +59,7 @@ class Layout extends React.Component<Props, State> {
   }
 
   render() {
-    const { children, wrapWithMain, crumbs } = this.props;
+    const { children, wrapWithMain } = this.props;
     return this.wrapWithCategoryTheme(
       <PageWrapper>
         <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
@@ -69,11 +67,6 @@ class Layout extends React.Component<Props, State> {
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
         />
-        {crumbs && (
-          <NavContextBar>
-            <Breadcrumb crumbs={crumbs} />
-          </NavContextBar>
-        )}
         {wrapWithMain ? <Main component="main">{children}</Main> : children}
       </PageWrapper>
     );

@@ -149,15 +149,7 @@ class TranslatePage extends React.Component<Props, State> {
     const { selectedLanguage, translationState } = this.state;
 
     return (
-      <Layout
-        category={book.category}
-        crumbs={[
-          <Link route="book" params={{ lang: book.language.code, id: book.id }}>
-            <a>{book.title}</a>
-          </Link>,
-          <Trans>Translate book</Trans>
-        ]}
-      >
+      <Layout category={book.category}>
         <Head
           title={i18n.t`Translate: ${book.title}`}
           description={book.description}
