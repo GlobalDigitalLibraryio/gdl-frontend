@@ -7,8 +7,6 @@
  */
 
 import React, { Fragment, type Node } from 'react';
-import { Trans } from '@lingui/react';
-import { Button, Typography } from '@material-ui/core';
 
 import type { Language } from '../../types';
 import { fetchLanguages } from '../../fetch';
@@ -16,7 +14,7 @@ import LanguageMenu from './LanguageMenu';
 
 type Props = {
   // Render prop
-  children?: (data: { onClick: () => void }) => Node,
+  children: (data: { onClick: () => void }) => Node,
   language: Language,
   linkProps?: (language: Language) => {},
   onSelectLanguage?: Language => void
@@ -65,23 +63,17 @@ export default class SelectLanguage extends React.Component<Props, State> {
   }
 
   render() {
-    const { language, linkProps, children } = this.props;
+    const { language, children } = this.props;
     const { showMenu, languages } = this.state;
     return (
       <Fragment>
-        {children ? (
-          children({ onClick: this.handleShowMenu })
-        ) : (
-          <Typography component="div" variant="body2">
-            {language.name}{' '}
-            <Button onClick={this.handleShowMenu} color="primary" size="small">
-              <Trans>Change</Trans>
-            </Button>
-          </Typography>
-        )}
+        {children({ onClick: this.handleShowMenu })}
         {showMenu && (
           <LanguageMenu
-            linkProps={linkProps}
+            linkProps={language => ({
+              route: 'books',
+              params: { lang: language.code }
+            })}
             languages={languages || []}
             selectedLanguageCode={language && language.code}
             showActivityIndicator={languages == null}

@@ -13,6 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LanguageIcon from '@material-ui/icons/Language';
 import { Trans } from '@lingui/react';
+import SelectLanguage from '../LanguageMenu/SelectLanguage';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
@@ -59,12 +60,20 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
-        <IconButton color="inherit" css={{ marginLeft: 'auto' }}>
-          <LanguageIcon />
-          <SrOnly>
-            <Trans>Search</Trans>
-          </SrOnly>
-        </IconButton>
+        <SelectLanguage>
+          {({ onClick }) => (
+            <IconButton
+              onClick={onClick}
+              color="inherit"
+              css={{ marginLeft: 'auto' }}
+            >
+              <LanguageIcon />
+              <SrOnly>
+                <Trans>Search</Trans>
+              </SrOnly>
+            </IconButton>
+          )}
+        </SelectLanguage>
         <Link route="search" passHref>
           <IconButton color="inherit" component="a">
             <SearchIcon />

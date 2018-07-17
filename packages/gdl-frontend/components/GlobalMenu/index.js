@@ -70,10 +70,6 @@ class GlobalMenu extends React.Component<Props, State> {
           <SelectLanguage
             language={this.state.language}
             onSelectLanguage={onClose}
-            linkProps={language => ({
-              route: 'books',
-              params: { lang: language.code }
-            })}
           >
             {({ onClick }) => (
               <ListItem button onClick={onClick}>
