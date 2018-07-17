@@ -63,12 +63,12 @@ type State = {
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
     let searchResult;
+    // FIXME: Hmm.... we can't do this because of caching right?
+    // We get the language code either from the query params or the cookie
+    const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
-
-      // We get the language code either from the query params or the cookie
-      const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
       searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
@@ -83,7 +83,8 @@ class SearchPage extends React.Component<Props, State> {
 
     return {
       searchResult:
-        searchResult && searchResult.data ? searchResult.data : undefined
+        searchResult && searchResult.data ? searchResult.data : undefined,
+      languageCode
     };
   }
 
