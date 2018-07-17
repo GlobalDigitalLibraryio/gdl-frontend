@@ -198,13 +198,40 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     <Trans>from {book.publisher.name}</Trans>
                   </Typography>
 
+                  {book.bookFormat === 'HTML' && (
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      spacing={16}
+                      css={[media.tablet({ display: 'none' })]}
+                    >
+                      <Fragment>
+                        <Grid item>
+                          <Link
+                            route="read"
+                            passHref
+                            params={{ id: book.id, lang: book.language.code }}
+                            prefetch
+                          >
+                            <Button
+                              variant="raised"
+                              color="primary"
+                              size="large"
+                              css={{ marginBottom: spacing.small }}
+                            >
+                              <Trans>Read book</Trans>
+                            </Button>
+                          </Link>
+                        </Grid>
+                      </Fragment>
+                    </Grid>
+                  )}
+
                   <Typography
                     lang={book.language.code}
                     paragraph
-                    css={[
-                      media.mobile`text-align: center`,
-                      media.tablet({ flex: 1 })
-                    ]}
+                    css={[media.tablet({ flex: 1 })]}
                   >
                     {book.description}
                   </Typography>
@@ -228,6 +255,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                               variant="raised"
                               color="primary"
                               size="large"
+                              css={[
+                                { marginBottom: spacing.small },
+                                media.mobile({ display: 'none' })
+                              ]}
                             >
                               <Trans>Read book</Trans>
                             </Button>
