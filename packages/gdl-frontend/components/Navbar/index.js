@@ -11,6 +11,7 @@ import styled from 'react-emotion';
 import { AppBar, Toolbar, IconButton } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import LanguageIcon from '@material-ui/icons/Language';
 import { Trans } from '@lingui/react';
 
 import { Link } from '../../routes';
@@ -58,12 +59,14 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
+        <IconButton color="inherit" css={{ marginLeft: 'auto' }}>
+          <LanguageIcon />
+          <SrOnly>
+            <Trans>Search</Trans>
+          </SrOnly>
+        </IconButton>
         <Link route="search" passHref>
-          <IconButton
-            color="inherit"
-            component="a"
-            css={{ marginLeft: 'auto' }}
-          >
+          <IconButton color="inherit" component="a">
             <SearchIcon />
             <SrOnly>
               <Trans>Search</Trans>
