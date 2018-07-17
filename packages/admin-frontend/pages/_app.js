@@ -14,7 +14,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 
-import { hasClaim, claims } from 'gdl-auth';
+import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 
 import getPageContext from '../getPageContext';
 
@@ -43,7 +43,14 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
+    const userHasAuthToken = hasAuthToken(ctx.req);
+
     const userHasAdminPrivileges = hasClaim(claims.readAdmin, ctx.req);
+
+    // If user is not logged in
+    if (!userHasAuthToken){
+      // TODO: Implement so that it redirects to log in page if not logged in/ has auth token
+    }
 
     // If we have response object, set a proper HTTP status code
     if (!userHasAdminPrivileges && ctx.res) {

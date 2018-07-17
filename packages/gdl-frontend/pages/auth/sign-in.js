@@ -16,7 +16,7 @@ import type { I18n } from '../../types';
 import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import { loginSocialMedia } from '../../lib/auth';
+import { loginSocialMedia } from 'gdl-auth';
 import { spacing } from '../../style/theme';
 
 const googleColor = '#db3236';
