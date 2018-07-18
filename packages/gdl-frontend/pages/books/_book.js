@@ -114,7 +114,7 @@ class BookPage extends React.Component<
 
   async componentDidMount() {
     const share = Boolean(navigator.share);
-    return { share: share };
+    this.setState({ share: share });
   }
 
   getCrumbs() {
