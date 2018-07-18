@@ -11,20 +11,21 @@ import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import styled from 'react-emotion';
 import {
-  Menu,
-  MenuItem,
   Button,
   Card,
   CardContent,
-  Typography,
   Divider,
-  Grid
+  Grid,
+  Menu,
+  MenuItem,
+  Typography
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
   FileDownload as FileDownloadIcon,
   Translate as TranslateIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  Share as ShareIcon
 } from '@material-ui/icons';
 
 import config from '../../config';
@@ -127,6 +128,25 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     this.setState({ anchorEl: event.currentTarget });
 
   closeDownloadMenu = () => this.setState({ anchorEl: null });
+
+  handleShareClick = book => {
+    if (navigator.share) {
+      navigator
+        .share({
+          title: book.title,
+          text: book.description,
+          url: window.location.href
+        })
+        .then(() => {
+          alert('Thanks for sharing!');
+        })
+        .catch(err => {
+          console.log(`Couldn't share because of`, err.message);
+        });
+    } else {
+      console.log('web share not supported');
+    }
+  };
 
   render() {
     const { similarBooks, book } = this.props;
@@ -298,6 +318,12 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                         </Button>
                       </Grid>
                     )}
+
+                    <Grid item>
+                      <Button color="primary" onClick={this.handleShareClick}>
+                        <ShareIcon /> <Trans>Share</Trans>
+                      </Button>
+                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
