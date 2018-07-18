@@ -100,7 +100,7 @@ export default class LanguageMenu extends React.Component<Props> {
           onClose={onClose}
           subheader={
             <ListSubheader component="div">
-              <Trans>Choose language</Trans>
+              <Trans>Choose book language</Trans>
             </ListSubheader>
           }
         >
