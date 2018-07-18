@@ -38,7 +38,6 @@ type Props = {
     page: number,
     totalCount: number
   },
-  languageCode: string,
   router: {
     query: {
       q?: string,
@@ -57,7 +56,8 @@ type State = {
   },
   searchQuery: string,
   lastSearchQuery?: string,
-  isLoadingMore: boolean
+  isLoadingMore: boolean,
+  languageCode: string
 };
 
 class SearchPage extends React.Component<Props, State> {
@@ -65,10 +65,10 @@ class SearchPage extends React.Component<Props, State> {
     let searchResult;
     // FIXME: Hmm.... we can't do this because of caching right?
     // We get the language code either from the query params or the cookie
-    const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
+      const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
       searchResult = await search(searchQuery, languageCode, {
         pageSize: SEARCH_PAGE_SIZE
@@ -83,8 +83,7 @@ class SearchPage extends React.Component<Props, State> {
 
     return {
       searchResult:
-        searchResult && searchResult.data ? searchResult.data : undefined,
-      languageCode
+        searchResult && searchResult.data ? searchResult.data : undefined
     };
   }
 
@@ -92,7 +91,8 @@ class SearchPage extends React.Component<Props, State> {
     searchResult: this.props.searchResult,
     searchQuery: this.props.router.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.router.query[QUERY_PARAM],
-    isLoadingMore: false
+    isLoadingMore: false,
+    languageCode: this.props.router.query[LANG_PARAM] || getBookLanguageCode()
   };
 
   handleSearch = async event => {
@@ -121,7 +121,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      this.state.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE
       }
@@ -142,7 +142,7 @@ class SearchPage extends React.Component<Props, State> {
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.props.languageCode,
+      this.state.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
