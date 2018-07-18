@@ -114,7 +114,7 @@ class BookPage extends React.Component<
 
   async componentDidMount() {
     const share = Boolean(navigator.share);
-    return { share: share }; // TODO: this does not update share
+    return { share: share };
   }
 
   getCrumbs() {
@@ -264,7 +264,7 @@ class BookPage extends React.Component<
                             label="Download"
                             icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
                           />
-                          {navigator.share && (
+                          {this.state.share && (
                             <Tab
                               label="Share"
                               icon={<ShareIcon css={{ fontSize: 30 }} />}
