@@ -26,7 +26,7 @@ import {
   hasClaim
 } from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
-import { SelectLanguage } from '../LanguageMenu';
+//import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 import config from '../../config';
 import CCLogo from './cc-logo.svg';
@@ -67,7 +67,9 @@ class GlobalMenu extends React.Component<Props, State> {
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List>
-          <SelectLanguage onSelectLanguage={onClose}>
+          {/*} <SelectLanguage
+            onSelectLanguage={onClose}
+          >
             {({ onClick }) => (
               <ListItem button onClick={onClick}>
                 <ListItemText>
@@ -76,7 +78,7 @@ class GlobalMenu extends React.Component<Props, State> {
                 <KeyboardArrowRightIcon />
               </ListItem>
             )}
-          </SelectLanguage>
+          </SelectLanguage>*/}
           <CategoriesMenu
             onSelectCategory={onClose}
             languageCode={this.state.language.code}
