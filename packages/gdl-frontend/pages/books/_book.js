@@ -18,6 +18,7 @@ import {
   Grid,
   Menu,
   MenuItem,
+  Tab,
   Typography
 } from '@material-ui/core';
 import {
@@ -107,6 +108,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     };
   }
 
+  async componentDidMount() {
+    return { share: navigator.share };
+  }
+
   getCrumbs() {
     const { book } = this.props;
 
@@ -143,8 +148,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
         .catch(err => {
           console.log(`Couldn't share because of`, err.message);
         });
-    } else {
-      console.log('web share not supported');
     }
   };
 
@@ -254,16 +257,22 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           </Link>
                         </Grid>
                         <Grid item>
-                          <Button
+                          <Tab
                             aria-owns={
                               this.state.anchorEl ? 'download-book-menu' : null
                             }
                             aria-haspopup="true"
-                            color="primary"
                             onClick={this.handleDownloadClick}
-                          >
-                            <FileDownloadIcon /> <Trans>Download book</Trans>
-                          </Button>
+                            label="Download"
+                            icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
+                          />
+                          {this.state.share && (
+                            <Tab
+                              label="Share"
+                              icon={<ShareIcon css={{ fontSize: 30 }} />}
+                              onClick={this.handleShareClick}
+                            />
+                          )}
                         </Grid>
                         <Menu
                           id="download-book-menu"
@@ -306,6 +315,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                         )}
                       </Fragment>
                     )}
+
                     {book.bookFormat === 'PDF' && (
                       <Grid item>
                         <Button
@@ -318,12 +328,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                         </Button>
                       </Grid>
                     )}
-
-                    <Grid item>
-                      <Button color="primary" onClick={this.handleShareClick}>
-                        <ShareIcon /> <Trans>Share</Trans>
-                      </Button>
-                    </Grid>
                   </Grid>
                 </CardContent>
               </Card>
