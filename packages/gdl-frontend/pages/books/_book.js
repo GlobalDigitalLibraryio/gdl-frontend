@@ -113,7 +113,7 @@ class BookPage extends React.Component<
   }
 
   async componentDidMount() {
-    const share = navigator.share ? 'webshare' : null;
+    const share = Boolean(navigator.share);
     return { share: share };
   }
 
@@ -141,24 +141,16 @@ class BookPage extends React.Component<
 
   handleShareClick = book => {
     if (navigator.share) {
-      navigator
-        .share({
-          title: book.title,
-          text: book.description,
-          url: window.location.href
-        })
-        .then(() => {
-          alert('Thanks for sharing!');
-        })
-        .catch(err => {
-          console.log(`Couldn't share because of`, err.message);
-        });
+      navigator.share({
+        title: book.title,
+        text: book.description,
+        url: window.location.href
+      });
     }
   };
 
   render() {
     const { similarBooks, book } = this.props;
-    console.log(this.state.share);
 
     return (
       <Fragment>
@@ -272,13 +264,14 @@ class BookPage extends React.Component<
                             label="Download"
                             icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
                           />
-                          {this.state.share === 'webshare' && (
+                          {this.state.share && (
                             <Tab
                               label="Share"
                               icon={<ShareIcon css={{ fontSize: 30 }} />}
                               onClick={this.handleShareClick}
                             />
                           )}
+
                         </Grid>
                         <Menu
                           id="download-book-menu"
