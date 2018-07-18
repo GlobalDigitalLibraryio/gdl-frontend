@@ -10,9 +10,10 @@ import {
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Edit as EditIcon } from '@material-ui/icons';
+import { EditIconButton } from '../../style/icons';
 import type { BookDetails } from '../../types';
 import colors from '../../style/colors';
-import Crop from './Crop';
+import Crop from '../Crop';
 type State = {
   open: boolean
 };
@@ -64,9 +65,9 @@ export default class EditBookImage extends React.Component<Props, State> {
             height={365}
           />
 
-          <EditBookButton title="Edit cover image" onClick={this.handleOpen}>
+          <EditIconButton title="Edit cover image" onClick={this.handleOpen}>
             <EditIcon />
-          </EditBookButton>
+          </EditIconButton>
         </div>
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
@@ -103,18 +104,3 @@ export default class EditBookImage extends React.Component<Props, State> {
     );
   }
 }
-
-const EditBookButton = styled('button')`
-  color: ${colors.base.white};
-  position: absolute;
-  border: 0;
-  top: 0;
-  right: 0;
-  padding: 5px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.5);
-  &:hover {
-    background: rgba(0, 0, 0, 0.6);
-  }
-`;

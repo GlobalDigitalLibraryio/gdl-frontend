@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Container from '../components/Container';
-import Crop from '../components/EditBook/Crop';
+import Crop from '../components/Crop';
 import Layout from '../components/Layout';
 import { Typography, Button } from '@material-ui/core';
 import type { Context } from '../types';

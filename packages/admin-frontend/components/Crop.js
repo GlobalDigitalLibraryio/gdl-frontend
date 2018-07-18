@@ -3,14 +3,14 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import fetch from 'isomorphic-fetch';
-import { getAuthToken } from 'gdl-auth';
 import 'cropperjs/dist/cropper.css';
 
-import { imageApiUrl } from '../../config';
+import { imageApiUrl } from '../config';
 
 type Props = {
   imageUrl?: string,
-  ratio: number
+  ratio: number,
+  passImageApiBody: (imageApiBody: any) => void
 };
 
 type State = {
@@ -27,6 +27,20 @@ export default class Crop extends Component<Props, State> {
   componentDidMount() {
     this.getExistingParameters();
   }
+
+  getExistingParameters = async () => {
+    const imageUrl =
+      this.props.imageUrl &&
+      this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
+    const url =
+      imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
+    const response = await fetch(url);
+    if (response.status === 200) {
+      this.setState({ existingParameters: await response.json() });
+    } else {
+      this.setState({ existingParameters: null });
+    }
+  };
 
   toPercentages = (c: any) => {
     const data = c.getData();
@@ -83,41 +97,13 @@ export default class Crop extends Component<Props, State> {
 
   crop = () => {
     const pcnt = this.toPercentages(this.cropper);
-    this.setState({ imageApiBody: this.toImageApiBody(pcnt) });
-  };
 
-  postToImageApi = async () => {
-    if (this.state.imageApiBody !== null) {
-      const authToken = getAuthToken();
-      await fetch(`${imageApiUrl}/images/stored-parameters`, {
-        method: 'POST',
-        headers: {
-          Authorization: authToken ? `Bearer ${authToken}` : null,
-          Accept: 'application/json'
-        },
-        body: JSON.stringify(this.state.imageApiBody)
-      });
+    const imageApiBody = this.toImageApiBody(pcnt);
+    this.setState({ imageApiBody: imageApiBody });
 
-      await this.getExistingParameters();
-    }
-  };
+    console.log(imageApiBody);
 
-  handleSave() {
-    this.postToImageApi();
-  }
-
-  getExistingParameters = async () => {
-    const imageUrl =
-      this.props.imageUrl &&
-      this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
-    const url =
-      imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
-    const response = await fetch(url);
-    if (response.status === 200) {
-      this.setState({ existingParameters: await response.json() });
-    } else {
-      this.setState({ existingParameters: null });
-    }
+    this.props.passImageApiBody(imageApiBody);
   };
 
   existingParametersToCropData = (ps: any) => {
@@ -157,6 +143,7 @@ export default class Crop extends Component<Props, State> {
         viewMode={2}
         zoomable={false}
         dragMode={'move'}
+        // todo: remove this
         preview={'.preview'}
         crop={this.crop}
         ready={this.onReady}
