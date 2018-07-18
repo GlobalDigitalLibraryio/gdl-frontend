@@ -82,9 +82,13 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
+class BookPage extends React.Component<
+  Props,
+  { anchorEl: ?HTMLElement, share: ?string }
+> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    share: null
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -109,7 +113,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   }
 
   async componentDidMount() {
-    return { share: navigator.share };
+    const share = navigator.share ? 'webshare' : null;
+    return { share: share };
   }
 
   getCrumbs() {
@@ -153,6 +158,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
 
   render() {
     const { similarBooks, book } = this.props;
+    console.log(this.state.share);
 
     return (
       <Fragment>
@@ -266,7 +272,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             label="Download"
                             icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
                           />
-                          {this.state.share && (
+                          {this.state.share === 'webshare' && (
                             <Tab
                               label="Share"
                               icon={<ShareIcon css={{ fontSize: 30 }} />}
