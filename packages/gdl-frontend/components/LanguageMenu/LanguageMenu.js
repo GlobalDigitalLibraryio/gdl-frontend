@@ -27,6 +27,7 @@ import { spacing, colors } from '../../style/theme';
 import media from '../../style/media';
 
 type Props = {
+  anchor: 'left' | 'right',
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
@@ -42,6 +43,7 @@ type Props = {
 
 export default class LanguageMenu extends React.Component<Props> {
   static defaultProps = {
+    anchor: 'left',
     showActivityIndicator: false
   };
 
@@ -73,6 +75,7 @@ export default class LanguageMenu extends React.Component<Props> {
 
   render() {
     const {
+      anchor,
       languages,
       onClose,
       selectedLanguageCode,
@@ -89,7 +92,7 @@ export default class LanguageMenu extends React.Component<Props> {
       : languages;
 
     return (
-      <Drawer open onClose={onClose}>
+      <Drawer anchor={anchor} open onClose={onClose}>
         <List
           // Add some padding bottom so we can select the bottom alternative in mobile safari
           // otherwise the option gets hidden behind browser chrome

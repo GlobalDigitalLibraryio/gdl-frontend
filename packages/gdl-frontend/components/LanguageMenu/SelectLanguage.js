@@ -13,6 +13,7 @@ import { fetchLanguages } from '../../fetch';
 import LanguageMenu from './LanguageMenu';
 
 type Props = {
+  anchor: 'left' | 'right',
   // Render prop
   children: (data: { onClick: () => void }) => Node,
   language: Language,
@@ -63,13 +64,14 @@ export default class SelectLanguage extends React.Component<Props, State> {
   }
 
   render() {
-    const { language, children } = this.props;
+    const { language, children, anchor } = this.props;
     const { showMenu, languages } = this.state;
     return (
       <Fragment>
         {children({ onClick: this.handleShowMenu })}
         {showMenu && (
           <LanguageMenu
+            anchor={anchor}
             linkProps={language => ({
               route: 'books',
               params: { lang: language.code }

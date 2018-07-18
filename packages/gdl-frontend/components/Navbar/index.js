@@ -60,7 +60,7 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
-        <SelectLanguage>
+        <SelectLanguage anchor="right">
           {({ onClick }) => (
             <IconButton
               onClick={onClick}
