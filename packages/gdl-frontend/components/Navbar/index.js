@@ -69,7 +69,7 @@ const Navbar = ({ onMenuClick }: Props) => {
             >
               <LanguageIcon />
               <SrOnly>
-                <Trans>Search</Trans>
+                <Trans>Book language</Trans>
               </SrOnly>
             </IconButton>
           )}
