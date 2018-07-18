@@ -204,25 +204,14 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                       direction="column"
                       alignItems="center"
                       spacing={16}
-                      css={[media.tablet({ display: 'none' })]}
+                      css={[
+                        media.tablet({ display: 'none' }),
+                        { marginBottom: spacing.xsmall }
+                      ]}
                     >
                       <Fragment>
                         <Grid item>
-                          <Link
-                            route="read"
-                            passHref
-                            params={{ id: book.id, lang: book.language.code }}
-                            prefetch
-                          >
-                            <Button
-                              variant="raised"
-                              color="primary"
-                              size="large"
-                              css={{ marginBottom: spacing.small }}
-                            >
-                              <Trans>Read book</Trans>
-                            </Button>
-                          </Link>
+                          <ReadBookButton book={book} />
                         </Grid>
                       </Fragment>
                     </Grid>
@@ -244,25 +233,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                   >
                     {book.bookFormat === 'HTML' && (
                       <Fragment>
-                        <Grid item>
-                          <Link
-                            route="read"
-                            passHref
-                            params={{ id: book.id, lang: book.language.code }}
-                            prefetch
-                          >
-                            <Button
-                              variant="raised"
-                              color="primary"
-                              size="large"
-                              css={[
-                                { marginBottom: spacing.small },
-                                media.mobile({ display: 'none' })
-                              ]}
-                            >
-                              <Trans>Read book</Trans>
-                            </Button>
-                          </Link>
+                        <Grid item css={[media.mobile({ display: 'none' })]}>
+                          <ReadBookButton book={book} />
                         </Grid>
                         <Grid item>
                           <Button
@@ -392,5 +364,20 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     );
   }
 }
+
+const ReadBookButton = ({ book }) => {
+  return (
+    <Link
+      route="read"
+      passHref
+      params={{ id: book.id, lang: book.language.code }}
+      prefetch
+    >
+      <Button variant="raised" color="primary" size="large">
+        <Trans>Read book</Trans>
+      </Button>
+    </Link>
+  );
+};
 
 export default errorPage(BookPage);
