@@ -84,11 +84,11 @@ const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
 class BookPage extends React.Component<
   Props,
-  { anchorEl: ?HTMLElement, share: ?string }
+  { anchorEl: ?HTMLElement, share: boolean }
 > {
   state = {
     anchorEl: null,
-    share: null
+    share: false
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -114,7 +114,7 @@ class BookPage extends React.Component<
 
   async componentDidMount() {
     const share = Boolean(navigator.share);
-    return { share: share };
+    return { share: share }; // TODO: this does not update share
   }
 
   getCrumbs() {
@@ -264,14 +264,13 @@ class BookPage extends React.Component<
                             label="Download"
                             icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
                           />
-                          {this.state.share && (
+                          {navigator.share && (
                             <Tab
                               label="Share"
                               icon={<ShareIcon css={{ fontSize: 30 }} />}
                               onClick={this.handleShareClick}
                             />
                           )}
-
                         </Grid>
                         <Menu
                           id="download-book-menu"
