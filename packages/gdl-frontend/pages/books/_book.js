@@ -159,7 +159,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
 
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
               <Card
-                css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
+                css={[
+                  { width: '100%' },
+                  media.tablet({ display: 'flex', flexDirection: 'column' })
+                ]}
               >
                 <CardContent
                   css={[
@@ -296,21 +299,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                 <div css={{ display: 'flex' }}>
                   <Tab
                     css={{ flexGrow: 1, flexShrink: 1 }}
-                    role=""
-                    icon={<FileDownloadIcon />}
-                    label={<Trans>Download</Trans>}
-                    aria-owns={
-                      this.state.anchorEl ? 'download-book-menu' : null
-                    }
-                    aria-haspopup="true"
-                    onClick={this.handleDownloadClick}
-                  >
-                    Download
-                  </Tab>
-                  <Tab
-                    css={{ flexGrow: 1, flexShrink: 1 }}
                     onClick={this.handleFavClick}
-                    role=""
+                    role="button"
                     icon={
                       this.state.isFav ? (
                         <FavoriteIcon
@@ -323,6 +313,19 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     label={<Trans>Favorite</Trans>}
                   >
                     Favorite
+                  </Tab>
+                  <Tab
+                    css={{ flexGrow: 1, flexShrink: 1 }}
+                    role="button"
+                    icon={<FileDownloadIcon />}
+                    label={<Trans>Download</Trans>}
+                    aria-owns={
+                      this.state.anchorEl ? 'download-book-menu' : null
+                    }
+                    aria-haspopup="true"
+                    onClick={this.handleDownloadClick}
+                  >
+                    Download
                   </Tab>
                 </div>
               </Card>
