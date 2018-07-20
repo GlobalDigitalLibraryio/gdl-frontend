@@ -128,8 +128,20 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     this.setState({ isFav: isFavorite(this.props.book) });
   };
 
+  /**
+   * When we mount, check if the book is a user's favorite
+   */
   componentDidMount() {
     this.setState({ isFav: isFavorite(this.props.book) });
+  }
+
+  /**
+   * We need to recalculate the favorite state if the book changes
+   */
+  componentDidUpdate(prevProps) {
+    if (prevProps.book !== this.props.book) {
+      this.setState({ isFav: isFavorite(this.props.book) });
+    }
   }
 
   render() {
