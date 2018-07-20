@@ -9,19 +9,29 @@ import lscache from 'lscache';
 import type { BookDetails } from '../types';
 
 const FAVORITES_KEY = 'favorites';
-type Fav = { id: number, lang: string };
+// The object format that we store for each favorite
+type Fav = { id: number, language: string };
 
 export function markAsFavorite(book: BookDetails) {
   // Make sure we don't add the same book multiple times
   if (!isFavorite(book)) {
-    const favs = [{ id: book.id, lang: book.language.code }, ...getFavorites()];
+    const favs = [
+      { id: book.id, language: book.language.code },
+      ...getFavorites()
+    ];
     setFavorites(favs);
   }
 }
 
-export function removeAsFavorite(book: BookDetails) {
+/**
+ * Supports both a full book object and a simple fav object
+ */
+export function removeAsFavorite(book: BookDetails | Fav) {
+  const language =
+    typeof book.language === 'string' ? book.language : book.language.code;
+
   const favs = getFavorites().filter(
-    fav => !(fav.id === book.id && fav.lang === book.language.code)
+    fav => !(fav.id === book.id && fav.language === language)
   );
   setFavorites(favs);
 }
@@ -29,12 +39,16 @@ export function removeAsFavorite(book: BookDetails) {
 export function isFavorite(book: BookDetails) {
   const favs = getFavorites();
   return Boolean(
-    favs.find(f => f.id === book.id && f.lang === book.language.code)
+    favs.find(f => f.id === book.id && f.language === book.language.code)
   );
 }
 
 export function getFavorites(): Array<Fav> {
   return lscache.get(FAVORITES_KEY) || [];
+}
+
+export function clearFavorites() {
+  lscache.remove(FAVORITES_KEY);
 }
 
 function setFavorites(favs) {
