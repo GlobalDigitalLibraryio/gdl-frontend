@@ -121,7 +121,9 @@ export default class LanguageMenu extends React.Component<Props> {
             </Fragment>
           )}
           {showActivityIndicator ? (
-            <CircularProgress css={{ marginTop: spacing.large }} />
+            <div css={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress css={{ marginTop: spacing.large }} />
+            </div>
           ) : (
             filteredLanguages.map(this.renderMenuItem)
           )}
