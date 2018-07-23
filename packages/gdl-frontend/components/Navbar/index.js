@@ -74,11 +74,11 @@ const Navbar = ({ onMenuClick }: Props) => {
         </Link>
         <SelectLanguage anchor="right">
           {({ onClick }) => (
-            <Tooltip title={<Trans>Change book language</Trans>}>
+            <Tooltip title={<Trans>Choose book language</Trans>}>
               <IconButton onClick={onClick} color="inherit">
                 <LanguageIcon />
                 <SrOnly>
-                  <Trans>Change book language</Trans>
+                  <Trans>Choose book language</Trans>
                 </SrOnly>
               </IconButton>
             </Tooltip>
