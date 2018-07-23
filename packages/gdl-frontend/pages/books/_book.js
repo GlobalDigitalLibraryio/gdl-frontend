@@ -11,20 +11,22 @@ import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import styled from 'react-emotion';
 import {
-  Menu,
-  MenuItem,
   Button,
   Card,
   CardContent,
-  Typography,
   Divider,
-  Grid
+  Grid,
+  Menu,
+  MenuItem,
+  Tab,
+  Typography
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
   FileDownload as FileDownloadIcon,
   Translate as TranslateIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  Share as ShareIcon
 } from '@material-ui/icons';
 
 import config from '../../config';
@@ -80,9 +82,13 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
+class BookPage extends React.Component<
+  Props,
+  { anchorEl: ?HTMLElement, share: boolean }
+> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    share: false
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -106,6 +112,11 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     };
   }
 
+  async componentDidMount() {
+    const share = Boolean(navigator.share);
+    this.setState({ share: share });
+  }
+
   getCrumbs() {
     const { book } = this.props;
 
@@ -127,6 +138,16 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     this.setState({ anchorEl: event.currentTarget });
 
   closeDownloadMenu = () => this.setState({ anchorEl: null });
+
+  handleShareClick = book => {
+    if (navigator.share) {
+      navigator.share({
+        title: book.title,
+        text: book.description,
+        url: window.location.href
+      });
+    }
+  };
 
   render() {
     const { similarBooks, book } = this.props;
@@ -234,16 +255,22 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                           </Link>
                         </Grid>
                         <Grid item>
-                          <Button
+                          <Tab
                             aria-owns={
                               this.state.anchorEl ? 'download-book-menu' : null
                             }
                             aria-haspopup="true"
-                            color="primary"
                             onClick={this.handleDownloadClick}
-                          >
-                            <FileDownloadIcon /> <Trans>Download book</Trans>
-                          </Button>
+                            label="Download"
+                            icon={<FileDownloadIcon css={{ fontSize: 30 }} />}
+                          />
+                          {this.state.share && (
+                            <Tab
+                              label="Share"
+                              icon={<ShareIcon css={{ fontSize: 30 }} />}
+                              onClick={this.handleShareClick}
+                            />
+                          )}
                         </Grid>
                         <Menu
                           id="download-book-menu"
@@ -286,6 +313,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                         )}
                       </Fragment>
                     )}
+
                     {book.bookFormat === 'PDF' && (
                       <Grid item>
                         <Button
