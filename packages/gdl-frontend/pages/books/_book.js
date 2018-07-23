@@ -22,7 +22,7 @@ import {
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
-  FileDownload as FileDownloadIcon,
+  CloudDownload as CloudDownloadIcon,
   Translate as TranslateIcon,
   Warning as WarningIcon
 } from '@material-ui/icons';
@@ -242,7 +242,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             color="primary"
                             onClick={this.handleDownloadClick}
                           >
-                            <FileDownloadIcon /> <Trans>Download book</Trans>
+                            <CloudDownloadIcon css={{ marginRight: '10px' }} />
+                            <Trans>Download book</Trans>
                           </Button>
                         </Grid>
                         <Menu
