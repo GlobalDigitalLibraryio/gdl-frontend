@@ -4,9 +4,6 @@ import jwtDecode from 'jwt-decode';
 import UniversalCookie from 'universal-cookie';
 import lscache from 'lscache';
 
-// Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
-const auth0 = import('auth0-js');
-
 export { default as claims } from './claims';
 
 const JWT_KEY = 'jwt';

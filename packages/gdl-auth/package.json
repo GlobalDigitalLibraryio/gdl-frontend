@@ -5,7 +5,6 @@
   "main": "index.js",
   "private": true,
   "dependencies": {
-    "auth0-js": "9.7.2",
     "gdl-config": "^0.0.0",
     "jwt-decode": "^2.2.0",
     "lscache": "1.2.0",
