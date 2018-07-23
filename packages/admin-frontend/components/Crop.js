@@ -2,129 +2,97 @@
 
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
-import fetch from 'isomorphic-fetch';
 import 'cropperjs/dist/cropper.css';
-
-import { imageApiUrl } from '../config';
+import type { ImageParameters } from '../pages/featured';
 
 type Props = {
-  imageUrl?: string,
+  imageUrl: string,
   ratio: number,
-  passImageApiBody: (imageApiBody: any) => void
+  passCroppedParameters: (imageApiBody: any) => void
 };
 
 type State = {
-  imageApiBody?: any,
-  existingParameters?: any
+  existingParameters: ?ImageParameters,
+  imageUrl: string
 };
 
 export default class Crop extends Component<Props, State> {
-  state = { imageApiBody: null, existingParameters: null };
+  state = {
+    existingParameters: null,
+    imageUrl: ''
+  };
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
   cropper: any;
 
   componentDidMount() {
-    this.getExistingParameters();
+    const imageUrl = this.props.imageUrl;
+
+    if (imageUrl.includes('?')) {
+      const baseUrl = imageUrl.substring(0, imageUrl.indexOf('?'));
+      const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
+
+      const parameters = parseQuery(queryParameters);
+
+      // $FlowFixMe
+      this.setState({ imageUrl: baseUrl, existingParameters: parameters });
+    } else {
+      this.setState({ imageUrl: imageUrl, existingParameters: null });
+    }
   }
 
-  getExistingParameters = async () => {
-    const imageUrl =
-      this.props.imageUrl &&
-      this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/'));
-    const url =
-      imageUrl && `${imageApiUrl}/images/stored-parameters${imageUrl}`;
-    const response = await fetch(url);
-    if (response.status === 200) {
-      this.setState({ existingParameters: await response.json() });
-    } else {
-      this.setState({ existingParameters: null });
-    }
-  };
-
-  toPercentages = (c: any) => {
-    const data = c.getData();
+  toPercentages = (cropper: any) => {
+    const data = cropper.getData();
     return {
       cropStartX: Math.max(
         0,
-        Math.round((data.x / c.getImageData().naturalWidth) * 100)
+        Math.round((data.x / cropper.getImageData().naturalWidth) * 100)
       ),
       cropEndX: Math.min(
         100,
         Math.round(
-          ((data.x + data.width) / c.getImageData().naturalWidth) * 100
+          ((data.x + data.width) / cropper.getImageData().naturalWidth) * 100
         )
       ),
       cropStartY: Math.max(
         0,
-        Math.round((data.y / c.getImageData().naturalHeight) * 100)
+        Math.round((data.y / cropper.getImageData().naturalHeight) * 100)
       ),
 
       cropEndY: Math.min(
         100,
         Math.round(
-          ((data.y + data.height) / c.getImageData().naturalHeight) * 100
+          ((data.y + data.height) / cropper.getImageData().naturalHeight) * 100
         )
       )
     };
   };
 
-  toImageApiBody = (pcnt: any) => {
-    const existingParametersForCurrentRatio =
-      this.state.existingParameters &&
-      this.state.existingParameters.find(
-        p => p.forRatio === String(this.props.ratio)
-      );
-    const revision =
-      (existingParametersForCurrentRatio &&
-        existingParametersForCurrentRatio.revision) ||
-      1;
+  crop = () => {
+    const croppedParametersInPercent = this.toPercentages(this.cropper);
+    this.props.passCroppedParameters(croppedParametersInPercent);
+  };
 
+  existingParametersToCropData = (existingParameters: ImageParameters) => {
+    const imageWidth = this.cropper.getImageData().naturalWidth;
+    const imageHeight = this.cropper.getImageData().naturalHeight;
     return {
-      forRatio: String(this.props.ratio),
-      revision: revision,
-      imageUrl:
-        this.props.imageUrl &&
-        this.props.imageUrl.substr(this.props.imageUrl.lastIndexOf('/')),
-      rawImageQueryParameters: {
-        cropStartX: pcnt.cropStartX,
-        cropEndX: pcnt.cropEndX,
-        cropStartY: pcnt.cropStartY,
-        cropEndY: pcnt.cropEndY
-      }
+      x: imageWidth * (existingParameters.cropStartX / 100),
+      y: imageHeight * (existingParameters.cropStartY / 100),
+      width:
+        imageWidth *
+        ((existingParameters.cropEndX - existingParameters.cropStartX) / 100),
+      height:
+        imageHeight *
+        ((existingParameters.cropEndY - existingParameters.cropStartY) / 100)
     };
   };
 
-  crop = () => {
-    const pcnt = this.toPercentages(this.cropper);
-
-    const imageApiBody = this.toImageApiBody(pcnt);
-    this.setState({ imageApiBody: imageApiBody });
-
-    console.log(imageApiBody);
-
-    this.props.passImageApiBody(imageApiBody);
-  };
-
-  existingParametersToCropData = (ps: any) => {
-    const p = ps && ps.find(x => x.forRatio === String(this.props.ratio));
-    const imageWidth = this.cropper.getImageData().naturalWidth;
-    const imageHeight = this.cropper.getImageData().naturalHeight;
-    if (p && p.rawImageQueryParameters) {
-      const r = p.rawImageQueryParameters;
-      return {
-        x: imageWidth * (r.cropStartX / 100),
-        y: imageHeight * (r.cropStartY / 100),
-        width: imageWidth * ((r.cropEndX - r.cropStartX) / 100),
-        height: imageHeight * ((r.cropEndY - r.cropStartY) / 100)
-      };
-    }
-  };
-
   onReady = () => {
-    const data = this.existingParametersToCropData(
-      this.state.existingParameters
-    );
+    const data =
+      this.state.existingParameters &&
+      this.existingParametersToCropData(this.state.existingParameters);
+
     if (data !== null) {
       this.cropper.setData(data);
     }
@@ -137,7 +105,7 @@ export default class Crop extends Component<Props, State> {
           this.cropper = c;
         }}
         style={{ height: 400, width: '100%' }}
-        src={this.props.imageUrl}
+        src={this.state.imageUrl}
         aspectRatio={this.props.ratio}
         guides={false}
         viewMode={2}
@@ -150,4 +118,17 @@ export default class Crop extends Component<Props, State> {
       />
     );
   }
+}
+
+function parseQuery(queryString) {
+  const query = {};
+  const pairs = (queryString[0] === '?'
+    ? queryString.substr(1)
+    : queryString
+  ).split('&');
+  for (let i = 0; i < pairs.length; i++) {
+    const pair = pairs[i].split('=');
+    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
+  }
+  return query;
 }

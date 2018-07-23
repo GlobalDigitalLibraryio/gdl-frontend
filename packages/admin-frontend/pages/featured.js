@@ -17,9 +17,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-import { getAuthToken } from 'gdl-auth';
-import CropImageViewer from '../CropImageViewer';
-
+import CropImageViewer from '../components/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -29,30 +27,20 @@ import {
 } from '../lib/fetch';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
-import type { FeaturedContent, Language } from '../types';
-import { imageApiUrl } from '../config';
+import type { FeaturedContent, ImageParameters, Language } from '../types';
 
 type Props = {
   languages: Array<Language>
 };
 
 type State = {
-  croppedImageUrl: string,
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
-  existingParameters: ?Array<{
-    forRatio: number,
-    imageUrl: string,
-    rawImageQueryParameters: {
-      cropStartY: number,
-      cropEndY: number,
-      cropStartX: number,
-      cropEndX: number
-    }
-  }>
+  existingCropParameters: string,
+  croppedParameters: ?ImageParameters
 };
 
-class EditFeaturedContent extends React.Component<Props, State> {
+export default class EditFeaturedContent extends React.Component<Props, State> {
   static async getInitialProps() {
     const languagesRes = await fetchLanguages();
 
@@ -61,14 +49,11 @@ class EditFeaturedContent extends React.Component<Props, State> {
     };
   }
 
-  cropImageViewer: ?CropImageViewer;
-
   state = {
-    croppedImageUrl: '',
     featuredContent: null,
     selectedLanguage: '',
-    imageApiBody: null,
-    existingParameters: null
+    existingCropParameters: '',
+    croppedParameters: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -91,7 +76,6 @@ class EditFeaturedContent extends React.Component<Props, State> {
   };
 
   putFeaturedContent = async (content: FeaturedContent) => {
-    console.log(content);
     await updateFeaturedContent(content);
   };
 
@@ -107,50 +91,20 @@ class EditFeaturedContent extends React.Component<Props, State> {
     }
   };
 
-  stripImageUrlParameter(content: FeaturedContent) {
-    const newContent = {
-      ...content,
-      imageUrl: content.imageUrl.substring(0, content.imageUrl.indexOf('?'))
-    };
-    console.log(newContent);
-
-    return newContent;
-  }
-
   handleSaveButtonClick = (defaultReturned: boolean) => (
     content: FeaturedContent
   ) => {
-    const newContent = this.stripImageUrlParameter(content);
-
     defaultReturned
-      ? this.postFeaturedContent(newContent)
-      : this.putFeaturedContent(newContent);
-
-    if (this.cropImageViewer.state.imageIsCropped) {
-      this.postToImageApi(this.state.imageApiBody);
-    }
+      ? this.postFeaturedContent(content)
+      : this.putFeaturedContent(content);
 
     this.setState({ featuredContent: content });
   };
 
-  postToImageApi = async (imageApiBody: any) => {
-    console.log('posted!');
-    console.log(imageApiBody);
-    if (imageApiBody !== null) {
-      const authToken = getAuthToken();
-      await fetch(`${imageApiUrl}/images/stored-parameters`, {
-        method: 'POST',
-        headers: {
-          Authorization: authToken ? `Bearer ${authToken}` : null,
-          Accept: 'application/json'
-        },
-        body: JSON.stringify(imageApiBody)
-      });
-    }
-  };
-
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ selectedLanguage: event.target.value });
+    this.setState({
+      selectedLanguage: event.target.value
+    });
 
     this.getFeaturedContent(event.target.value);
   };
@@ -166,24 +120,31 @@ class EditFeaturedContent extends React.Component<Props, State> {
     }
   };
 
-  // todo: fix any
-  handleImageUrlChanged = (formstate: any) => {
+  handleCroppedParametersReceived = (
+    croppedParameters: ?ImageParameters,
+    mutator: any,
+    imageUrl: string
+  ) => {
+    const baseUrl =
+      imageUrl && imageUrl.includes('?')
+        ? imageUrl.substring(0, imageUrl.indexOf('?'))
+        : imageUrl;
 
-    // If we are showing the cropped image and the user changes the imageUrl we dont want to show the cropped image anymore, and we want to change icon
-    if (
-      this.cropImageViewer &&
-      this.cropImageViewer.state.imageIsCropped === true &&
-      formstate.active === 'imageUrl' &&
-      formstate.values.imageUrl !== this.cropImageViewer.state.croppedImageUrl
-    ) {
-      console.log('revertcrop');
-      this.cropImageViewer.handleRevertCrop();
+    if (croppedParameters) {
+      mutator.setNewImageUrl(
+        baseUrl +
+          '?cropStartX=' +
+          croppedParameters.cropStartX +
+          '&cropEndX=' +
+          croppedParameters.cropEndX +
+          '&cropStartY=' +
+          croppedParameters.cropStartY +
+          '&cropEndY=' +
+          croppedParameters.cropEndY
+      );
     }
 
-  };
-
-  handleImageApiBodyReceived = (imageApiBody: any) => {
-    this.setState({ imageApiBody: imageApiBody });
+    this.setState({ croppedParameters: croppedParameters });
   };
 
   render() {
@@ -198,8 +159,6 @@ class EditFeaturedContent extends React.Component<Props, State> {
     ) {
       defaultReturned = featuredContent.language.code !== selectedLanguage;
     }
-
-    console.log(this.state);
 
     return (
       <Layout>
@@ -318,40 +277,47 @@ class EditFeaturedContent extends React.Component<Props, State> {
                   )}
                 />
 
-                {/*we need a separate formspy to listen for url changes or else the render method will not be called*/}
                 <FormSpy
-                  onChange={formstate => this.handleImageUrlChanged(formstate)}
+                  render={({ values }) => (
+                    <div>
+                      {/*$FlowFixMe*/}
+                      {values.imageUrl && (
+                        <CropImageViewer
+                          imageUrl={values.imageUrl}
+                          passCroppedParameters={croppedParameters => {
+                            this.handleCroppedParametersReceived(
+                              croppedParameters,
+                              form.mutators,
+                              /*$FlowFixMe*/
+                              values.imageUrl
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
+                  )}
                 />
-                <FormSpy
-                  // If the url is changed when we have cropped an image - do not show the cropped image anymore
-                  render={({ values }) =>
-                    /*$FlowFixMe*/
-                    //todo: remove ref
-                    values.imageUrl ? (
-                      <CropImageViewer
-                        ref={instance => {
-                          this.cropImageViewer = instance;
-                        }}
-                        values={values}
-                        form={form}
-                        passImageApiBody={imageApiBody => {
-                          this.handleImageApiBodyReceived(imageApiBody);
-                        }}
-                      />
-                    ) : null
-                  }
-                />
+
                 <Button
                   color="primary"
-                  disabled={pristine || invalid}
+                  disabled={invalid || pristine}
                   type="submit"
                   onClick={handleSubmit}
                 >
                   Save changes
                 </Button>
                 <Button
-                  color="secondary" // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                  disabled={selectedLanguage === '' || !featuredContent}
+                  color="secondary"
+                  disabled={pristine}
+                  onClick={form.reset}
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  color="secondary"
+                  disabled={
+                    selectedLanguage === '' || !featuredContent // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
+                  }
                   onClick={this.handleDelete}
                 >
                   Delete featured content
@@ -391,10 +357,8 @@ function handleValidate(values) {
     !values.imageUrl.match(regex)
   ) {
     errors.imageUrl =
-      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png"';
+      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }
 
   return errors;
 }
-
-export default EditFeaturedContent;

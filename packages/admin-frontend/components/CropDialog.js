@@ -9,33 +9,28 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core/';
+import type { ImageParameters } from '../types';
 import Crop from './Crop';
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  notifyDialogOk: (
-    imageApiBody: any,
-    imageUrl: string
-  ) => void,
+  notifyDialogOk: (croppedParameters: ?ImageParameters) => void,
   notifyDialogCancelled: () => void
 };
 
 type State = {
-  imageApibody: any
+  croppedParameters: ?ImageParameters
 };
 
 export default class CropDialog extends React.Component<Props, State> {
   state = {
-    imageApiBody: null
+    croppedParameters: null
   };
 
   handleDialogOk = () => {
     // Communicate to the parent that the dialog was closed and the image parameters that we should use for showing the image
-    this.props.notifyDialogOk(
-      this.state.imageApiBody,
-        this.props.imageUrl
-    );
+    this.props.notifyDialogOk(this.state.croppedParameters);
   };
 
   handleDialogCancel = () => {
@@ -43,8 +38,8 @@ export default class CropDialog extends React.Component<Props, State> {
     this.props.notifyDialogCancelled();
   };
 
-  handleImageApiBodyReceived = (imageApiBody: any) => {
-    this.setState({ imageApiBody: imageApiBody });
+  handleCroppedParametersReceived = (croppedParameters: ImageParameters) => {
+    this.setState({ croppedParameters: croppedParameters });
   };
 
   render() {
@@ -56,8 +51,8 @@ export default class CropDialog extends React.Component<Props, State> {
             <Crop
               ratio={this.props.ratio}
               imageUrl={this.props.imageUrl}
-              passImageApiBody={imageApiBody => {
-                this.handleImageApiBodyReceived(imageApiBody);
+              passCroppedParameters={croppedParameters => {
+                this.handleCroppedParametersReceived(croppedParameters);
               }}
             />
           </div>

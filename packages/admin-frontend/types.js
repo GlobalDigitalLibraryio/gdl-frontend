@@ -114,6 +114,13 @@ export type BookDetails = $ReadOnly<{|
   }
 |}>;
 
+export type ImageParameters = {
+  cropStartX: number,
+  cropEndX: number,
+  cropStartY: number,
+  cropEndY: number
+};
+
 export type FeaturedContent = $ReadOnly<{
   id: number,
   title: string,
