@@ -15,7 +15,7 @@ import {
   getTokenFromServerCookie,
   hasClaim
 } from '../lib/auth/token';
-import { setRedirectUrl } from '../lib/auth';
+import { setRedirectUrl } from 'gdl-auth';
 import type { Context } from '../types';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';

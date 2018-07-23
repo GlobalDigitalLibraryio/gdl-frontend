@@ -16,7 +16,7 @@ import type { I18n } from '../../types';
 import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import { loginSocialMedia } from 'gdl-auth';
+import { loginSocialMedia } from '../../lib/auth';
 import { spacing } from '../../style/theme';
 
 const googleColor = '#db3236';
@@ -62,7 +62,7 @@ const LoginPage = ({ i18n }: Props) => (
       </div>
       <Typography align="center" css={{ marginTop: spacing.xxlarge }} paragraph>
         By signing in to this service I am hereby accepting the principles in
-        the GDL{' '}
+        the GDL
         <A
           href="https://home.digitallibrary.io/privacy/"
           css={{ display: 'inline' }}

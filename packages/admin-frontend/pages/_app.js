@@ -8,13 +8,15 @@
 
 import * as React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
-import Error from 'next/error';
+import Error from './_error';
 import type { $Request, $Response } from 'express';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 
-import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
+import { hasClaim, claims, hasAuthToken, setRedirectUrl } from 'gdl-auth';
+import Router from 'next/router';
+import { Button } from '@material-ui/core';
 
 import getPageContext from '../getPageContext';
 
@@ -47,17 +49,12 @@ class App extends NextApp {
 
     const userHasAdminPrivileges = hasClaim(claims.readAdmin, ctx.req);
 
-    // If user is not logged in
-    if (!userHasAuthToken){
-      // TODO: Implement so that it redirects to log in page if not logged in/ has auth token
-    }
-
     // If we have response object, set a proper HTTP status code
     if (!userHasAdminPrivileges && ctx.res) {
       ctx.res.statusCode = 403;
     }
 
-    return { pageProps, userHasAdminPrivileges };
+    return { pageProps, userHasAdminPrivileges, userHasAuthToken };
   }
 
   state = {
@@ -73,8 +70,22 @@ class App extends NextApp {
     this.setState({ isClient: true });
   }
 
+  handleLogInClick = () => {
+    setRedirectUrl({
+      pathname: this.props.router.pathname,
+      asPath: this.props.router.asPath,
+      query: this.props.router.query
+    });
+    Router.replace('/auth/sign-in');
+  };
+
   render() {
-    const { Component, userHasAdminPrivileges, pageProps } = this.props;
+    const {
+      Component,
+      userHasAdminPrivileges,
+      pageProps,
+      userHasAuthToken
+    } = this.props;
 
     const Page = userHasAdminPrivileges ? (
       this.state.isClient ? (
@@ -96,7 +107,16 @@ class App extends NextApp {
         </JssProvider>
       ) : null
     ) : (
-      <Error statusCode={403} {...pageProps} />
+      <Error statusCode={403} {...pageProps}>
+        {!userHasAuthToken && (
+          <div>
+            <p>You must log in to access this page.</p>
+            <Button variant="outlined" onClick={this.handleLogInClick}>
+              Log in
+            </Button>
+          </div>
+        )}
+      </Error>
     );
 
     return <NextContainer>{Page}</NextContainer>;

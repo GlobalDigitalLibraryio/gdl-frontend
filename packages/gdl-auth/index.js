@@ -2,7 +2,7 @@
 import type { $Request } from 'express';
 import jwtDecode from 'jwt-decode';
 import UniversalCookie from 'universal-cookie';
-import { clientAuth } from './config';
+import lscache from 'lscache';
 
 // Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
 const auth0 = import('auth0-js');
@@ -28,13 +28,8 @@ export function hasClaim(claim: string, req: ?$Request): boolean {
   return decoded.scope && decoded.scope.includes(claim);
 }
 
-export function hasAuthToken(req: ?$Request): boolean { // TODO: simplify
-  const jwt = getAuthToken(req);
-
-  if (!jwt) {
-    return false;
-  }
-  return true;
+export function hasAuthToken(req: ?$Request): boolean {
+  return Boolean(getAuthToken(req));
 }
 
 /**
@@ -70,39 +65,5 @@ export function logout() {
   Cookie().remove(JWT_KEY, { path: '/' });
 }
 
-
-
-
-/**  --------------- LOGIN REDIRECT -------------------  */
-
-// Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
-
-/**
- * Returns the index/home URL
- */
-export const getBaseUrl = () =>
-  `${window.location.protocol}//${window.location.host}`;
-
-export const getAuth = async options => {
-  const auth = await auth0;
-
-  return new auth.WebAuth({
-    clientID: clientAuth.clientId,
-    audience: clientAuth.audience,
-    domain: clientAuth.domain,
-    responseType: 'token id_token',
-    scope: 'openid profile',
-    redirectUri: `${getBaseUrl()}/auth/signed-in`,
-    options
-  });
-};
-
-/**
- * Login using one of the social providers
- */
-export async function loginSocialMedia(type: 'facebook' | 'google-oauth2') {
-  (await getAuth()).authorize({
-    connection: type
-  });
-}
-
+export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
+  lscache.set('REDIRECT_AFTER_LOGIN', path, 5);
