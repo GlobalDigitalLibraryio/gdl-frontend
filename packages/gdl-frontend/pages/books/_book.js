@@ -89,7 +89,10 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
+class BookPage extends React.Component<
+  Props,
+  { anchorEl: ?HTMLElement, isFav: boolean }
+> {
   state = {
     anchorEl: null,
     isFav: false
@@ -237,22 +240,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             </Button>
                           </Link>
                         </Grid>
-<<<<<<< HEAD
-                        <Grid item>
-                          <Button
-                            aria-owns={
-                              this.state.anchorEl ? 'download-book-menu' : null
-                            }
-                            aria-haspopup="true"
-                            color="primary"
-                            onClick={this.handleDownloadClick}
-                          >
-                            <CloudDownloadIcon css={{ marginRight: '10px' }} />
-                            <Trans>Download book</Trans>
-                          </Button>
-                        </Grid>
-=======
->>>>>>> Better faving
                         <Menu
                           id="download-book-menu"
                           onClose={this.closeDownloadMenu}
@@ -329,7 +316,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                   <Tab
                     css={{ flexGrow: 1, flexShrink: 1 }}
                     role="button"
-                    icon={<FileDownloadIcon />}
+                    icon={<CloudDownloadIcon />}
                     label={<Trans>Download</Trans>}
                     aria-owns={
                       this.state.anchorEl ? 'download-book-menu' : null
