@@ -8,10 +8,12 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import LanguageIcon from '@material-ui/icons/Language';
 import { Trans } from '@lingui/react';
+import SelectLanguage from '../LanguageMenu/SelectLanguage';
 
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
@@ -70,6 +72,18 @@ const Navbar = ({ onMenuClick }: Props) => {
             </SrOnly>
           </IconButton>
         </Link>
+        <SelectLanguage anchor="right">
+          {({ onClick }) => (
+            <Tooltip title={<Trans>Choose book language</Trans>}>
+              <IconButton onClick={onClick} color="inherit">
+                <LanguageIcon />
+                <SrOnly>
+                  <Trans>Choose book language</Trans>
+                </SrOnly>
+              </IconButton>
+            </Tooltip>
+          )}
+        </SelectLanguage>
       </Toolbar>
     </AppBar>
   );
