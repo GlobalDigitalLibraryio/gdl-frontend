@@ -61,13 +61,13 @@ export default class CropImageViewer extends React.Component<Props, State> {
           onError={this.handleImageError}
           onLoad={this.handleImageLoad}
           alt="Featured content"
-          src={this.props.imageUrlNoParameters}
+          src={this.props.imageUrl}
         />
 
         {this.state.dialogOpen && (
           <CropDialog
             ratio={this.props.ratio}
-            imageUrl={this.props.imageUrlNoParameters}
+            imageUrl={this.props.imageUrl}
             notifyDialogOk={croppedParameters =>
               this.handleDialogOk(croppedParameters)
             }

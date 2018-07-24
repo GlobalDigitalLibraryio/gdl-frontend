@@ -14,12 +14,12 @@ export default class CropPage extends React.Component<{ imageUrl?: string }> {
     const imageUrl = query.imageUrl;
 
     return {
-      imageUrl: imageUrlNoParams
+      imageUrl: imageUrl
     };
   }
 
   render() {
-    const imageUrl = this.props.imageUrlNoParameters;
+    const imageUrl = this.props.imageUrl;
     return (
       <Layout>
         <Container>
