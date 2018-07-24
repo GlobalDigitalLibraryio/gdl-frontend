@@ -8,14 +8,24 @@ import {
 } from '@material-ui/core';
 
 import * as React from 'react';
-import styled from 'react-emotion';
 import { Edit as EditIcon } from '@material-ui/icons';
+import { fetchStoredParameters, postStoredParameters } from '../../lib/fetch';
 import { EditIconButton } from '../../style/icons';
-import type { BookDetails } from '../../types';
-import colors from '../../style/colors';
+import type { BookDetails, ImageParameters } from '../../types';
 import Crop from '../Crop';
 type State = {
-  open: boolean
+  open: boolean,
+  croppedParameters: ?ImageParameters,
+  existingStoredParameters: ?{
+    forRatio: string,
+    revision: number,
+    rawImageQueryParameters: {
+      cropStartX: number,
+      cropEndX: number,
+      cropStartY: number,
+      cropEndY: number
+    }
+  }
 };
 
 type Props = {
@@ -24,24 +34,56 @@ type Props = {
 
 export default class EditBookImage extends React.Component<Props, State> {
   state = {
-    open: false
+    open: false,
+    croppedParameters: null,
+    existingStoredParameters: null
   };
 
-  cropInstance: ?Crop;
-
-  componentWillUnmount() {
-    this.cropInstance = null;
-  }
-
-  handleOpen = () => {
+  handleOpen = async () => {
     this.setState({ open: true });
+
+    const storedParameters = await fetchStoredParameters(
+      this.props.book.coverImage.url.substring(
+        this.props.book.coverImage.url.lastIndexOf('/')
+      )
+    );
+
+    if (storedParameters.isOk) {
+      this.setState({ existingStoredParameters: storedParameters.data[0] });
+    } else {
+      this.setState({ existingStoredParameters: null });
+    }
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
 
+  handleSave = async () => {
+    console.log('saving');
+    const imageApiBody = {
+      rawImageQueryParameters: {
+        ...this.state.croppedParameters
+      },
+      forRatio: '0.81',
+      revision: this.state.existingStoredParameters
+        ? this.state.existingStoredParameters.revision + 1
+        : 1,
+      imageUrl: this.props.book.coverImage.url.substring(
+        this.props.book.coverImage.url.lastIndexOf('/')
+      )
+    };
+
+    console.log(imageApiBody);
+    const result = await postStoredParameters(imageApiBody);
+    console.log(result)
+
+    this.handleClose();
+  };
+
   render() {
+    console.log(this.state);
+    console.log(this.props.book.coverImage.url)
     const book = this.props.book;
     return (
       <div>
@@ -53,12 +95,7 @@ export default class EditBookImage extends React.Component<Props, State> {
           }}
         >
           <img
-            src={
-              book.coverImage.url +
-              '?storedRatio=0.81&ratio=0.81&focalX=50&focalY=50' +
-              '&timestamp=' +
-              Date.now()
-            }
+            src={book.coverImage.url + '?storedRatio=0.81&timestamp=' + Date.now()}
             css=""
             alt="Cover"
             width={260}
@@ -75,9 +112,9 @@ export default class EditBookImage extends React.Component<Props, State> {
           <DialogContent>
             <div>
               <Crop
-                ref={instance => {
-                  this.cropInstance = instance;
-                }}
+                passCroppedParameters={croppedParameters =>
+                  this.handleCroppedParametersReceived(croppedParameters)
+                }
                 imageUrl={book.coverImage.url}
                 ratio={0.81}
               />
@@ -92,8 +129,8 @@ export default class EditBookImage extends React.Component<Props, State> {
             <Button
               color="primary"
               onClick={() => {
-                this.cropInstance && this.cropInstance.handleSave();
                 this.handleClose();
+                this.handleSave();
               }}
             >
               Save
@@ -103,4 +140,8 @@ export default class EditBookImage extends React.Component<Props, State> {
       </div>
     );
   }
+
+  handleCroppedParametersReceived = (croppedParameters: ImageParameters) => {
+    this.setState({ croppedParameters: croppedParameters });
+  };
 }

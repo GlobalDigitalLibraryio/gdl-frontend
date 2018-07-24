@@ -17,7 +17,7 @@ import type {
   FeaturedContent,
   Book
 } from '../types';
-import { bookApiUrl } from '../config';
+import { bookApiUrl, imageApiUrl } from '../config';
 
 export async function fetchBook(
   id: string | number,
@@ -97,6 +97,34 @@ export async function saveBook(
   if (result.isOk) {
     result.data = bookCategoryMapper(result.data);
   }
+  return result;
+}
+
+export async function postStoredParameters(
+  imageApiBody: any
+): Promise<RemoteData<any>> {
+  const result = await doFetch(`${imageApiUrl}/images/stored-parameters`, {
+    method: 'POST',
+    body: JSON.stringify(imageApiBody)
+  });
+
+  return result;
+}
+
+export async function fetchStoredParameters(
+  imageUrl: string
+): Promise<RemoteData<any>> {
+    console.log(imageUrl)
+  const result = await doFetch(
+    `${imageApiUrl}/images/stored-parameters${imageUrl}`,
+    {
+      method: 'GET',
+      body: null
+    }
+  );
+
+    console.log(result)
+
   return result;
 }
 

@@ -3,23 +3,23 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import type { ImageParameters } from '../pages/featured';
+import type {ImageParameters} from "../types";
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  passCroppedParameters: (imageApiBody: any) => void
+  passCroppedParameters: (croppedParameters: ImageParameters) => void
 };
 
 type State = {
   existingParameters: ?ImageParameters,
-  imageUrl: string
+  imageUrlNoParameters: string
 };
 
 export default class Crop extends Component<Props, State> {
   state = {
     existingParameters: null,
-    imageUrl: ''
+    imageUrlNoParameters: ''
   };
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
@@ -35,9 +35,15 @@ export default class Crop extends Component<Props, State> {
       const parameters = parseQuery(queryParameters);
 
       // $FlowFixMe
-      this.setState({ imageUrl: baseUrl, existingParameters: parameters });
+      this.setState({
+        imageUrlNoParameters: baseUrl,
+        existingParameters: parameters
+      });
     } else {
-      this.setState({ imageUrl: imageUrl, existingParameters: null });
+      this.setState({
+        imageUrlNoParameters: imageUrl,
+        existingParameters: null
+      });
     }
   }
 
@@ -105,7 +111,7 @@ export default class Crop extends Component<Props, State> {
           this.cropper = c;
         }}
         style={{ height: 400, width: '100%' }}
-        src={this.state.imageUrl}
+        src={this.state.imageUrlNoParameters}
         aspectRatio={this.props.ratio}
         guides={false}
         viewMode={2}

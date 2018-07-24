@@ -189,7 +189,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
           <Form
             mutators={{
               setNewImageUrl: (args, state, utils) => {
-                utils.changeValue(state, 'imageUrl', () => args[0]);
+                utils.changeValue(state, 'imageUrlNoParameters', () => args[0]);
               }
             }}
             initialValues={featuredContent !== null ? featuredContent : {}}
@@ -281,15 +281,16 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                   render={({ values }) => (
                     <div>
                       {/*$FlowFixMe*/}
-                      {values.imageUrl && (
+                      {values.imageUrlNoParameters && (
                         <CropImageViewer
-                          imageUrl={values.imageUrl}
+                            ratio={2.63}
+                          imageUrl={values.imageUrlNoParameters}
                           passCroppedParameters={croppedParameters => {
                             this.handleCroppedParametersReceived(
                               croppedParameters,
                               form.mutators,
                               /*$FlowFixMe*/
-                              values.imageUrl
+                              values.imageUrlNoParameters
                             );
                           }}
                         />
@@ -352,9 +353,9 @@ function handleValidate(values) {
   }
 
   if (
-    values.imageUrl === undefined ||
-    values.imageUrl.trim() === '' ||
-    !values.imageUrl.match(regex)
+    values.imageUrlNoParameters === undefined ||
+    values.imageUrlNoParameters.trim() === '' ||
+    !values.imageUrlNoParameters.match(regex)
   ) {
     errors.imageUrl =
       'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';

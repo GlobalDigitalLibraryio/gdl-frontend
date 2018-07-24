@@ -50,7 +50,7 @@ export default class CropDialog extends React.Component<Props, State> {
           <div>
             <Crop
               ratio={this.props.ratio}
-              imageUrl={this.props.imageUrl}
+              imageUrl={this.props.imageUrlNoParameters}
               passCroppedParameters={croppedParameters => {
                 this.handleCroppedParametersReceived(croppedParameters);
               }}

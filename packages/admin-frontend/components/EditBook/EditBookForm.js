@@ -11,11 +11,12 @@ import {
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
-import { Form, Field } from 'react-final-form';
+import { Form, Field, FormSpy } from 'react-final-form';
 
 import { saveBook } from '../../lib/fetch';
-import type { BookDetails } from '../../types';
+import type { BookDetails, ImageParameters } from '../../types';
 import Container from '../Container';
+import CropImageViewer from '../CropImageViewer';
 import EditBookImage from './EditBookImage';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
@@ -35,6 +36,7 @@ export default class EditBookForm extends React.Component<Props, State> {
   };
 
   handleSubmit = (content: BookDetails) => {
+      console.log(content)
     this.updateBook(content);
   };
 
@@ -47,7 +49,7 @@ export default class EditBookForm extends React.Component<Props, State> {
 
   render() {
     const book = this.state.book;
-
+    console.log(book);
     return (
       <Container>
         {' '}
