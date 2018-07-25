@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import type {ImageParameters} from "../types";
+import type { ImageParameters } from '../types';
 
 type Props = {
   imageUrl: string,
@@ -12,14 +12,12 @@ type Props = {
 };
 
 type State = {
-  existingParameters: ?ImageParameters,
-  imageUrlNoParameters: string
+  existingParameters: ?ImageParameters
 };
 
 export default class Crop extends Component<Props, State> {
   state = {
-    existingParameters: null,
-    imageUrlNoParameters: ''
+    existingParameters: null
   };
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
@@ -29,19 +27,16 @@ export default class Crop extends Component<Props, State> {
     const imageUrl = this.props.imageUrl;
 
     if (imageUrl.includes('?')) {
-      const baseUrl = imageUrl.substring(0, imageUrl.indexOf('?'));
       const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
 
       const parameters = parseQuery(queryParameters);
 
       // $FlowFixMe
       this.setState({
-        imageUrlNoParameters: baseUrl,
         existingParameters: parameters
       });
     } else {
       this.setState({
-        imageUrlNoParameters: imageUrl,
         existingParameters: null
       });
     }
@@ -105,20 +100,24 @@ export default class Crop extends Component<Props, State> {
   };
 
   render() {
+    const imageUrl = this.props.imageUrl;
+
     return (
       <Cropper
         ref={c => {
           this.cropper = c;
         }}
         style={{ height: 400, width: '100%' }}
-        src={this.state.imageUrlNoParameters}
+        src={
+          imageUrl.includes('?')
+            ? imageUrl.substring(0, imageUrl.indexOf('?'))
+            : imageUrl
+        }
         aspectRatio={this.props.ratio}
         guides={false}
         viewMode={2}
         zoomable={false}
         dragMode={'move'}
-        // todo: remove this
-        preview={'.preview'}
         crop={this.crop}
         ready={this.onReady}
       />
