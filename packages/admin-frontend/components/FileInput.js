@@ -49,7 +49,7 @@ export default class FileInput extends React.Component<Props, State> {
               metadata
             </p>
 
-            <img src={this.state.fileChosen} />
+            <img src={this.state.fileChosen} alt="Uploaded" />
           </DialogContent>
 
           <DialogActions>
