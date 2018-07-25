@@ -283,6 +283,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                       {/*$FlowFixMe*/}
                       {values.imageUrl && (
                         <CropImageViewer
+                          ratio={2.63}
                           imageUrl={values.imageUrl}
                           passCroppedParameters={croppedParameters => {
                             this.handleCroppedParametersReceived(

@@ -35,6 +35,7 @@ export default class EditBookForm extends React.Component<Props, State> {
   };
 
   handleSubmit = (content: BookDetails) => {
+    console.log(content);
     this.updateBook(content);
   };
 
@@ -47,7 +48,7 @@ export default class EditBookForm extends React.Component<Props, State> {
 
   render() {
     const book = this.state.book;
-
+    console.log(book);
     return (
       <Container>
         {' '}

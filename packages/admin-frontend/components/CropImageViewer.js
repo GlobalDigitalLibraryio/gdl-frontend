@@ -12,6 +12,7 @@ type State = {
 };
 
 type Props = {
+  ratio: number,
   imageUrl: string,
   passCroppedParameters: (croppedParameters: ?ImageParameters) => void
 };
@@ -65,7 +66,7 @@ export default class CropImageViewer extends React.Component<Props, State> {
 
         {this.state.dialogOpen && (
           <CropDialog
-            ratio={2.63}
+            ratio={this.props.ratio}
             imageUrl={this.props.imageUrl}
             notifyDialogOk={croppedParameters =>
               this.handleDialogOk(croppedParameters)

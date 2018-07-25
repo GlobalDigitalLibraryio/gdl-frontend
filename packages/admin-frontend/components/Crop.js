@@ -3,23 +3,21 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import type { ImageParameters } from '../pages/featured';
+import type { ImageParameters } from '../types';
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  passCroppedParameters: (imageApiBody: any) => void
+  passCroppedParameters: (croppedParameters: ImageParameters) => void
 };
 
 type State = {
-  existingParameters: ?ImageParameters,
-  imageUrl: string
+  existingParameters: ?ImageParameters
 };
 
 export default class Crop extends Component<Props, State> {
   state = {
-    existingParameters: null,
-    imageUrl: ''
+    existingParameters: null
   };
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
@@ -29,15 +27,18 @@ export default class Crop extends Component<Props, State> {
     const imageUrl = this.props.imageUrl;
 
     if (imageUrl.includes('?')) {
-      const baseUrl = imageUrl.substring(0, imageUrl.indexOf('?'));
       const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
 
       const parameters = parseQuery(queryParameters);
 
       // $FlowFixMe
-      this.setState({ imageUrl: baseUrl, existingParameters: parameters });
+      this.setState({
+        existingParameters: parameters
+      });
     } else {
-      this.setState({ imageUrl: imageUrl, existingParameters: null });
+      this.setState({
+        existingParameters: null
+      });
     }
   }
 
@@ -99,20 +100,24 @@ export default class Crop extends Component<Props, State> {
   };
 
   render() {
+    const imageUrl = this.props.imageUrl;
+
     return (
       <Cropper
         ref={c => {
           this.cropper = c;
         }}
         style={{ height: 400, width: '100%' }}
-        src={this.state.imageUrl}
+        src={
+          imageUrl.includes('?')
+            ? imageUrl.substring(0, imageUrl.indexOf('?'))
+            : imageUrl
+        }
         aspectRatio={this.props.ratio}
         guides={false}
         viewMode={2}
         zoomable={false}
         dragMode={'move'}
-        // todo: remove this
-        preview={'.preview'}
         crop={this.crop}
         ready={this.onReady}
       />
