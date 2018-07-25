@@ -12,6 +12,7 @@ import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LanguageIcon from '@material-ui/icons/Language';
+import HomeIcon from '@material-ui/icons/Home';
 import { Trans } from '@lingui/react';
 import SelectLanguage from '../LanguageMenu/SelectLanguage';
 
@@ -60,12 +61,20 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
-        <Link route="search" passHref>
+        <Link route="books" passHref>
           <IconButton
             color="inherit"
             component="a"
             css={{ marginLeft: 'auto' }}
           >
+            <HomeIcon />
+            <SrOnly>
+              <Trans>Home</Trans>
+            </SrOnly>
+          </IconButton>
+        </Link>
+        <Link route="search" passHref>
+          <IconButton color="inherit" component="a">
             <SearchIcon />
             <SrOnly>
               <Trans>Search</Trans>
