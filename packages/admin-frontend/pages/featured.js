@@ -262,7 +262,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                   css={{
                     display: 'flex',
                     flexWrap: 'wrap',
-                    alignItems: 'center',
+                    alignItems: 'center'
                   }}
                 >
                   <div css={{ flex: 1 }}>
