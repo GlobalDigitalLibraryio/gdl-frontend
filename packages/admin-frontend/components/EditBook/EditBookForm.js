@@ -11,12 +11,11 @@ import {
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
-import { Form, Field, FormSpy } from 'react-final-form';
+import { Form, Field } from 'react-final-form';
 
 import { saveBook } from '../../lib/fetch';
-import type { BookDetails, ImageParameters } from '../../types';
+import type { BookDetails } from '../../types';
 import Container from '../Container';
-import CropImageViewer from '../CropImageViewer';
 import EditBookImage from './EditBookImage';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
