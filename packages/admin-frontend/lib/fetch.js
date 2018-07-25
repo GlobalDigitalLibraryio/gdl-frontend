@@ -114,7 +114,7 @@ export async function postStoredParameters(
 export async function fetchStoredParameters(
   imageUrl: string
 ): Promise<RemoteData<any>> {
-    console.log(imageUrl)
+  console.log(imageUrl);
   const result = await doFetch(
     `${imageApiUrl}/images/stored-parameters${imageUrl}`,
     {
@@ -123,7 +123,7 @@ export async function fetchStoredParameters(
     }
   );
 
-    console.log(result)
+  console.log(result);
 
   return result;
 }

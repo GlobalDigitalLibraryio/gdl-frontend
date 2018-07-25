@@ -94,7 +94,9 @@ export default class EditBookImage extends React.Component<Props, State> {
           }}
         >
           <img
-            src={book.coverImage.url + '?storedRatio=0.81&timestamp=' + Date.now()}
+            src={
+              book.coverImage.url + '?storedRatio=0.81&timestamp=' + Date.now()
+            }
             alt="Cover"
             width={260}
             height={365}

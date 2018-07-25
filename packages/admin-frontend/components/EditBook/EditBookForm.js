@@ -36,7 +36,7 @@ export default class EditBookForm extends React.Component<Props, State> {
   };
 
   handleSubmit = (content: BookDetails) => {
-      console.log(content)
+    console.log(content);
     this.updateBook(content);
   };
 
