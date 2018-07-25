@@ -15,7 +15,8 @@ import type {
   Chapter,
   Language,
   FeaturedContent,
-  Book
+  Book,
+  StoredParameters
 } from '../types';
 import { bookApiUrl, imageApiUrl } from '../config';
 
@@ -101,8 +102,8 @@ export async function saveBook(
 }
 
 export async function postStoredParameters(
-  imageApiBody: any
-): Promise<RemoteData<any>> {
+  imageApiBody: StoredParameters
+): Promise<RemoteData<StoredParameters>> {
   const result = await doFetch(`${imageApiUrl}/images/stored-parameters`, {
     method: 'POST',
     body: JSON.stringify(imageApiBody)
@@ -113,8 +114,7 @@ export async function postStoredParameters(
 
 export async function fetchStoredParameters(
   imageUrl: string
-): Promise<RemoteData<any>> {
-  console.log(imageUrl);
+): Promise<RemoteData<StoredParameters>> {
   const result = await doFetch(
     `${imageApiUrl}/images/stored-parameters${imageUrl}`,
     {
@@ -122,9 +122,6 @@ export async function fetchStoredParameters(
       body: null
     }
   );
-
-  console.log(result);
-
   return result;
 }
 

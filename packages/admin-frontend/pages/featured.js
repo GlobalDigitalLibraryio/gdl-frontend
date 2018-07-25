@@ -36,7 +36,6 @@ type Props = {
 type State = {
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
-  existingCropParameters: string,
   croppedParameters: ?ImageParameters
 };
 
@@ -52,7 +51,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   state = {
     featuredContent: null,
     selectedLanguage: '',
-    existingCropParameters: '',
     croppedParameters: null
   };
 

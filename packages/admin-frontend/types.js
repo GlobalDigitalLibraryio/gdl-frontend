@@ -121,6 +121,13 @@ export type ImageParameters = {
   cropEndY: number
 };
 
+export type StoredParameters = {
+  imageUrl: string,
+  revision: number,
+  forRatio: string,
+  rawImageQueryParameters: ImageParameters
+};
+
 export type FeaturedContent = $ReadOnly<{
   id: number,
   title: string,

@@ -10,22 +10,19 @@ import {
 import * as React from 'react';
 import { Edit as EditIcon } from '@material-ui/icons';
 import { fetchStoredParameters, postStoredParameters } from '../../lib/fetch';
+
 import { EditIconButton } from '../../style/icons';
-import type { BookDetails, ImageParameters } from '../../types';
+import type {
+  BookDetails,
+  ImageParameters,
+  StoredParameters
+} from '../../types';
 import Crop from '../Crop';
+
 type State = {
   open: boolean,
   croppedParameters: ?ImageParameters,
-  existingStoredParameters: ?{
-    forRatio: string,
-    revision: number,
-    rawImageQueryParameters: {
-      cropStartX: number,
-      cropEndX: number,
-      cropStartY: number,
-      cropEndY: number
-    }
-  }
+  existingStoredParameters: ?StoredParameters
 };
 
 type Props = {
@@ -60,23 +57,23 @@ export default class EditBookImage extends React.Component<Props, State> {
   };
 
   handleSave = async () => {
-    const imageApiBody = {
-      rawImageQueryParameters: {
-        ...this.state.croppedParameters
-      },
-      forRatio: '0.81',
-      revision: this.state.existingStoredParameters
-        ? this.state.existingStoredParameters.revision
-        : 1,
-      imageUrl: this.props.book.coverImage.url.substring(
-        this.props.book.coverImage.url.lastIndexOf('/')
-      )
-    };
+    if (this.state.croppedParameters) {
+      const imageApiBody = {
+        rawImageQueryParameters: this.state.croppedParameters,
+        forRatio: '0.81',
+        revision: this.state.existingStoredParameters
+          ? this.state.existingStoredParameters.revision
+          : 1,
+        imageUrl: this.props.book.coverImage.url.substring(
+          this.props.book.coverImage.url.lastIndexOf('/')
+        )
+      };
 
-    const result = await postStoredParameters(imageApiBody);
+      const result = await postStoredParameters(imageApiBody);
 
-    if (result.isOk) {
-      this.setState({ existingStoredParameters: result.data });
+      if (result.isOk) {
+        this.setState({ existingStoredParameters: result.data });
+      }
     }
 
     this.handleClose();

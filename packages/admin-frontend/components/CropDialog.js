@@ -34,7 +34,7 @@ export default class CropDialog extends React.Component<Props, State> {
   };
 
   handleDialogCancel = () => {
-    // Communicate to the parent that the dialog was closed but use the same imageurl
+    // Communicate to the parent that the dialog was closed
     this.props.notifyDialogCancelled();
   };
 
