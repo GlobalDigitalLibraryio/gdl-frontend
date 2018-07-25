@@ -263,7 +263,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     display: 'flex',
                     flexWrap: 'wrap',
                     alignItems: 'center',
-                    justifyContent: 'center'
                   }}
                 >
                   <div css={{ flex: 1 }}>
@@ -293,7 +292,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 
                   <div css={{ margin: '20px' }}>or</div>
 
-                  <div css={{ align: 'center' }}>
+                  <div>
                     <FileInput
                       passUploadedImageUrl={imageUrl => {
                         this.handleUploadedImageUrlReceived(
