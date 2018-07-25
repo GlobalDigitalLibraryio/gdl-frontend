@@ -60,30 +60,29 @@ export default class EditBookImage extends React.Component<Props, State> {
   };
 
   handleSave = async () => {
-    console.log('saving');
     const imageApiBody = {
       rawImageQueryParameters: {
         ...this.state.croppedParameters
       },
       forRatio: '0.81',
       revision: this.state.existingStoredParameters
-        ? this.state.existingStoredParameters.revision + 1
+        ? this.state.existingStoredParameters.revision
         : 1,
       imageUrl: this.props.book.coverImage.url.substring(
         this.props.book.coverImage.url.lastIndexOf('/')
       )
     };
 
-    console.log(imageApiBody);
     const result = await postStoredParameters(imageApiBody);
-    console.log(result)
+
+    if (result.isOk) {
+      this.setState({ existingStoredParameters: result.data });
+    }
 
     this.handleClose();
   };
 
   render() {
-    console.log(this.state);
-    console.log(this.props.book.coverImage.url)
     const book = this.props.book;
     return (
       <div>
@@ -95,8 +94,7 @@ export default class EditBookImage extends React.Component<Props, State> {
           }}
         >
           <img
-            src={book.coverImage.url + '?storedRatio=0.81&timestamp=' + Date.now()}
-            css=""
+            src={book.coverImage.url + '?storedRatio=0.81'}
             alt="Cover"
             width={260}
             height={365}

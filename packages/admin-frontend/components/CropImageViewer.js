@@ -12,7 +12,7 @@ type State = {
 };
 
 type Props = {
-    ratio: number,
+  ratio: number,
   imageUrl: string,
   passCroppedParameters: (croppedParameters: ?ImageParameters) => void
 };
