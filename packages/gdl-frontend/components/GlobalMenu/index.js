@@ -91,9 +91,11 @@ class GlobalMenu extends React.Component<Props, State> {
           </CategoriesMenu>
           <Divider />
           {this.state.userHasAdminPrivileges && (
-            <ListItemA href="/admin">
-              <Trans>GDL Admin</Trans>
-            </ListItemA>
+            <ListItem component="a" href="/admin" button>
+              <ListItemText>
+                <Trans>GDL Admin</Trans>
+              </ListItemText>
+            </ListItem>
           )}
           {config.TRANSLATION_PAGES && (
             <Fragment>
