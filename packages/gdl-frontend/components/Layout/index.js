@@ -47,7 +47,8 @@ const Footer = styled('footer')`
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 40px;
+  margin-bottom: 50px;
   a {
     text-decoration: none;
     color: ${colors.text.default};
@@ -192,13 +193,22 @@ class Layout extends React.Component<Props, State> {
             </CreativeCommons>
 
             <SocialMediaIcons>
-              <a href="https://nb-no.facebook.com/globaldigitallibrary/">
+              <a
+                aria-label="Facebook"
+                href="https://nb-no.facebook.com/globaldigitallibrary/"
+              >
                 <FaFacebookSquare />
               </a>
-              <a href="https://www.facebook.com/globaldigitallibrary/">
+              <a
+                aria-label="Twitter"
+                href="https://www.facebook.com/globaldigitallibrary/"
+              >
                 <FaTwitterSquare />
               </a>
-              <a href="https://www.youtube.com/channel/UCN5RyDXS_aKA37YwIPzQPTg">
+              <a
+                aria-label="Youtube"
+                href="https://www.youtube.com/channel/UCN5RyDXS_aKA37YwIPzQPTg"
+              >
                 <FaYoutubeSquare />
               </a>
             </SocialMediaIcons>
