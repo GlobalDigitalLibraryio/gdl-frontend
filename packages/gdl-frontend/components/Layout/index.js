@@ -25,7 +25,7 @@ import Container from '../../elements/Container';
 
 import FaFacebookSquare from 'react-icons/lib/fa/facebook-square';
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square';
-import FaGithubSquare from 'react-icons/lib/fa/github-square';
+import FaYoutubeSquare from 'react-icons/lib/fa/youtube-square';
 
 const Main = styled(Paper)`
   background: ${colors.container.background};
@@ -50,7 +50,7 @@ const Footer = styled('footer')`
   margin-top: 8px;
   a {
     text-decoration: none;
-    color: #444;
+    color: ${colors.text.default};
     &:hover {
       text-decoration: underline;
     }
@@ -58,6 +58,7 @@ const Footer = styled('footer')`
 `;
 
 export const LinkGrid = styled('div')`
+  order: 2;
   font-size: 0.8rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -66,22 +67,40 @@ export const LinkGrid = styled('div')`
   margin-top: 20px;
   margin-bottom: 20px;
   ${media.tablet`
-    width: 100%;
-    grid-template-columns: repeat(6, 1fr);
+    flex-grow: 3;
+    grid-template-columns: repeat(3, 1fr);
   `};
 `;
 
 export const SocialMediaIcons = styled('div')`
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-start;
+  justify-content: space-evenly;
+  flex-grow: 1;
   a {
     font-size: 2.25rem;
-    color: #555;
+    color: ${colors.text.subtle};
     &:hover {
       color: ${colors.default};
     }
   }
+  ${media.tablet`
+    order: 4;
+  `};
+  ${media.mobile`
+    order: 1;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  `};
+`;
+
+export const CreativeCommons = styled('div')`
+  flex-grow: 1;
+  order: 3;
+  text-align: center;
+  a {
+    &:hover {
+    fill: ${colors.default};
+    }
 `;
 
 type Props = {|
@@ -128,6 +147,18 @@ class Layout extends React.Component<Props, State> {
         )}
         <Container size="large" stickToEdgeOnLargeScreens width="100%">
           <Footer>
+            <div
+              css={[
+                {
+                  order: 2,
+                  border: 'solid 1px #e3e3e3',
+                  width: '100%',
+                  margin: '10px'
+                },
+                media.tablet({ display: 'none' })
+              ]}
+            />
+
             <LinkGrid>
               <a href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
                 <Trans>Cookie policy</Trans>
@@ -150,31 +181,25 @@ class Layout extends React.Component<Props, State> {
               </a>
             </LinkGrid>
 
-            <div
-              css={{
-                border: '1px solid grey',
-                width: '100%',
-                margin: '10px'
-              }}
-            />
-
-            <a
-              href="https://creativecommons.org/"
-              component="a"
-              aria-label="Creative Commons"
-            >
-              <CCLogo css={{ width: '100px' }} />
-            </a>
+            <CreativeCommons>
+              <a
+                href="https://creativecommons.org/"
+                component="a"
+                aria-label="Creative Commons"
+              >
+                <CCLogo css={{ width: '100px' }} />
+              </a>
+            </CreativeCommons>
 
             <SocialMediaIcons>
               <a href="https://nb-no.facebook.com/globaldigitallibrary/">
                 <FaFacebookSquare />
               </a>
-              <a href="">
+              <a href="https://www.facebook.com/globaldigitallibrary/">
                 <FaTwitterSquare />
               </a>
-              <a href="">
-                <FaGithubSquare />
+              <a href="https://www.youtube.com/channel/UCN5RyDXS_aKA37YwIPzQPTg">
+                <FaYoutubeSquare />
               </a>
             </SocialMediaIcons>
           </Footer>
