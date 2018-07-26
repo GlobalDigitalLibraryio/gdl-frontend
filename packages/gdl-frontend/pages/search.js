@@ -101,7 +101,7 @@ class SearchPage extends React.Component<Props, State> {
       return;
     }
 
-    // If we are on mobile, blur the input field on submit so we hide the virtual keyboard
+    // On mobile, blur the input field on submit to hide the virtual keyboard
     if (window.innerWidth < TABLET_BREAKPOINT) {
       const searchInput = document.querySelector('#booksearch');
       searchInput && searchInput.blur();

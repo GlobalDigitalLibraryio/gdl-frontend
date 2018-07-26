@@ -20,6 +20,7 @@ import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
 import media from '../../style/media';
+import NavbarSearch from './NavbarSearch';
 
 type Props = {
   onMenuClick(): void
@@ -61,6 +62,7 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
+
         <Link route="books" passHref>
           <IconButton
             color="inherit"
@@ -73,14 +75,22 @@ const Navbar = ({ onMenuClick }: Props) => {
             </SrOnly>
           </IconButton>
         </Link>
+
         <Link route="search" passHref>
-          <IconButton color="inherit" component="a">
+          <IconButton
+            color="inherit"
+            component="a"
+            css={media.tablet({ display: 'none' })}
+          >
             <SearchIcon />
             <SrOnly>
               <Trans>Search</Trans>
             </SrOnly>
           </IconButton>
         </Link>
+
+        <NavbarSearch />
+
         <SelectLanguage anchor="right">
           {({ onClick }) => (
             <Tooltip title={<Trans>Choose book language</Trans>}>
