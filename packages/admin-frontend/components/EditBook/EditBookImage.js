@@ -109,7 +109,7 @@ export default class EditBookImage extends React.Component<Props, State> {
           <DialogContent>
             <div>
               <Crop
-                passCroppedParameters={croppedParameters =>
+                onCrop={croppedParameters =>
                   this.handleCroppedParametersReceived(croppedParameters)
                 }
                 imageUrl={book.coverImage.url}

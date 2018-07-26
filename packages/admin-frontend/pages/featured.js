@@ -119,8 +119,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   };
 
   handleCroppedParametersReceived = (
-    croppedParameters: ?ImageParameters,
-    mutator: any,
+    croppedParameters: ImageParameters,
+    change: (name: string, value: any) => void,
     imageUrl: string
   ) => {
     const baseUrl =
@@ -129,7 +129,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
         : imageUrl;
 
     if (croppedParameters) {
-      mutator.setNewImageUrl(
+      change(
+        'imageUrl',
         baseUrl +
           '?cropStartX=' +
           croppedParameters.cropStartX +
@@ -185,11 +186,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
             </Select>
           </FormControl>
           <Form
-            mutators={{
-              setNewImageUrl: (args, state, utils) => {
-                utils.changeValue(state, 'imageUrl', () => args[0]);
-              }
-            }}
             initialValues={featuredContent !== null ? featuredContent : {}}
             onSubmit={this.handleSaveButtonClick(defaultReturned)}
             validate={handleValidate}
@@ -283,10 +279,10 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                         <CropImageViewer
                           ratio={2.63}
                           imageUrl={values.imageUrl}
-                          passCroppedParameters={croppedParameters => {
+                          onDialogOk={croppedParameters => {
                             this.handleCroppedParametersReceived(
                               croppedParameters,
-                              form.mutators,
+                              form.change,
                               /*$FlowFixMe*/
                               values.imageUrl
                             );
