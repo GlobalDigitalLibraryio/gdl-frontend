@@ -37,8 +37,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       </Typography>
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
-          {/* Negative margin to align the link against the edge of the container */}
-          <Button color="primary" css={{ marginRight: '-16px' }}>
+          <Button variant="contained" color="primary">
             <Trans>More</Trans>
           </Button>
         </BrowseLink>
