@@ -12,7 +12,7 @@ export function parseQuery(queryString: string) {
     }
 
     const [key, value] = pair.split('=');
-    //$FlowFixMe the key cannot be null because we know that the pair will contain an "=" at this point
+    //$FlowFixMe the key cannot be null because we know that the pair will match the above regex at this point
     accumulator[key] = parseInt(value, 10) || value;
     return accumulator;
   }, {});
