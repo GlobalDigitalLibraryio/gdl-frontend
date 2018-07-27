@@ -59,6 +59,7 @@
     "react-dom": "^16.4.1",
     "react-emotion": "9.2.6",
     "react-ga": "^2.5.2",
+    "react-icons": "^2.2.7",
     "react-swipeable": "^4.3.0",
     "styled-system": "^2.2.5",
     "universal-cookie": "^2.1.5"

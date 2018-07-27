@@ -14,6 +14,7 @@ import { Paper } from '@material-ui/core';
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
+import Footer from './Footer';
 import { misc, colors } from '../../style/theme';
 import { classRoomTheme } from '../../getPageContext';
 
@@ -67,7 +68,14 @@ class Layout extends React.Component<Props, State> {
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
         />
-        {wrapWithMain ? <Main component="main">{children}</Main> : children}
+        {wrapWithMain ? (
+          <Main square component="main">
+            {children}
+          </Main>
+        ) : (
+          children
+        )}
+        <Footer />
       </PageWrapper>
     );
   }
