@@ -7,7 +7,7 @@
  */
 
 import React, { Fragment } from 'react';
-import { Trans, Plural } from '@lingui/react';
+import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
@@ -33,17 +33,32 @@ const Heading = styled('div')`
 `;
 
 function headingText(type, value) {
+  // NB! This should really use <Plural />, but after an update it suddenly implicitly depends on the Intl API. Which causes it to thow exceptions in some browsers
+  // Since we currently have no other langauge than English, we skip the polyfill for now because it is quite huge.
+  // See issue here: https://github.com/GlobalDigitalLibraryio/issues/issues/437
   switch (type) {
     case ContributorTypes.AUTHOR:
-      return <Plural one="Author" other="Authors" value={value} />;
+      return value > 1 ? <Trans>Authors</Trans> : <Trans>Author</Trans>; // <Plural one="Author" other="Authors" value={value} />;
     case ContributorTypes.ILLUSTRATOR:
-      return <Plural one="Illustrator" other="Illustrators" value={value} />;
+      return value > 1 ? (
+        <Trans>Illustrators</Trans>
+      ) : (
+        <Trans>Illustrator</Trans>
+      ); //<Plural one="Illustrator" other="Illustrators" value={value} />;
     case ContributorTypes.TRANSLATOR:
-      return <Plural one="Translator" other="Translators" value={value} />;
+      return value > 1 ? <Trans>Translators</Trans> : <Trans>Translator</Trans>; //<Plural one="Translator" other="Translators" value={value} />;
     case ContributorTypes.PHOTOGRAPHER:
-      return <Plural one="Photographer" other="Photographers" value={value} />;
+      return value > 1 ? (
+        <Trans>Photographers</Trans>
+      ) : (
+        <Trans>Photographer</Trans>
+      ); //<Plural one="Photographer" other="Photographers" value={value} />;
     default:
-      return <Plural one="Contributor" other="Contributors" value={value} />;
+      return value > 1 ? (
+        <Trans>Contributors</Trans>
+      ) : (
+        <Trans>Contributor</Trans>
+      ); //<Plural one="Contributor" other="Contributors" value={value} />;
   }
 }
 
