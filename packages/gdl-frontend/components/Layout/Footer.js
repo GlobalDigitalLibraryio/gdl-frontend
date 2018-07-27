@@ -155,19 +155,22 @@ const Footer = () => {
 
         <SocialMediaIcons>
           <a
+            title="Facebook"
             aria-label="Facebook"
             href="https://nb-no.facebook.com/globaldigitallibrary/"
           >
             <FaFacebookSquare />
           </a>
           <a
+            title="Twitter"
             aria-label="Twitter"
             href="https://www.facebook.com/globaldigitallibrary/"
           >
             <FaTwitterSquare />
           </a>
           <a
-            aria-label="Youtube"
+            title="YouTube"
+            aria-label="YouTube"
             href="https://www.youtube.com/channel/UCN5RyDXS_aKA37YwIPzQPTg"
           >
             <FaYoutubeSquare />
