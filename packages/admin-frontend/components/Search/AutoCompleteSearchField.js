@@ -15,7 +15,8 @@ type State = {
     results: Array<Book>,
     page: number,
     totalCount: number
-  }
+  },
+  currentInput: string
 };
 
 export default class AutoCompleteSearchField extends React.Component<
@@ -23,7 +24,8 @@ export default class AutoCompleteSearchField extends React.Component<
   State
 > {
   state = {
-    searchResult: null
+    searchResult: null,
+    currentInput: ''
   };
 
   handleSelection = (selectedBook: Book) => {
@@ -34,7 +36,7 @@ export default class AutoCompleteSearchField extends React.Component<
   };
 
   handleSearch = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ searchResult: null });
+    this.setState({ searchResult: null, currentInput: event.target.value });
 
     if (!event.target.value) {
       return;
@@ -109,16 +111,25 @@ export default class AutoCompleteSearchField extends React.Component<
                       </ListItem>
                     );
                   })
-                ) : (
-                  <Paper css={{ position: 'absolute', maxWidth: '960px' }}>
+                ) : this.state.currentInput !== '' ? (
+                  <Paper
+                    css={{
+                      position: 'absolute',
+                      maxWidth: '960px',
+                      minWidth: '960px'
+                    }}
+                    square
+                  >
                     <ListItem>
                       <ListItemText
-                        primary="No search results"
+                        primary={`No search results for "${
+                          this.state.currentInput
+                        }"`}
                         primaryTypographyProps={{ noWrap: true }}
                       />
                     </ListItem>
                   </Paper>
-                )}
+                ) : null}
               </Paper>
             ) : null}
           </div>

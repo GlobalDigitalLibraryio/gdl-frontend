@@ -8,16 +8,6 @@ export const Container = styled('div')`
   align-items: center;
   justify-content: justify;
   position: relative;
-
-  :focus-within {
-    ::after {
-      border-bottom: 3px solid #444;
-      content: '';
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
-  }
 `;
 
 export const Input = styled('input')`
