@@ -186,7 +186,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
             </Select>
           </FormControl>
           <Form
-            initialValues={featuredContent !== null ? featuredContent : {}}
+            initialValues={featuredContent || {}}
             onSubmit={this.handleSaveButtonClick(defaultReturned)}
             validate={handleValidate}
             render={({ handleSubmit, pristine, invalid, form }) => (

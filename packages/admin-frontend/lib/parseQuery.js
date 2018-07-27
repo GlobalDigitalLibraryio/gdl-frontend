@@ -7,8 +7,9 @@ export function parseQuery(queryString: string) {
   ).split('&');
 
   return pairs.reduce((accumulator, pair) => {
+    // Return empty object if the pair is not on the format: key=value. The query is then invalid.
     if (!pair.match('.+=.+')) {
-      return null;
+      return {};
     }
 
     const [key, value] = pair.split('=');

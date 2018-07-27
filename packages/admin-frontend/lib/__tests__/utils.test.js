@@ -1,6 +1,6 @@
 // @flow
 
-import { parseQuery } from '../lib/utils';
+import { parseQuery } from '../parseQuery';
 
 test('Parsing of valid query with number parameters', () => {
   expect(

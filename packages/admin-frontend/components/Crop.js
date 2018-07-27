@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import { parseQuery } from '../lib/utils';
+import { parseQuery } from '../lib/parseQuery';
 import type { ImageParameters } from '../types';
 
 type Props = {
@@ -70,10 +70,12 @@ export default class Crop extends Component<Props> {
       const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
       const parameters = parseQuery(queryParameters);
 
-      //$FlowFixMe
-      const data = this.existingParametersToCropData(parameters);
-      if (data) {
-        this.cropper.setData(data);
+      if (equalToImageParameterType(parameters)) {
+        // $FlowFixMe
+        const data = this.existingParametersToCropData(parameters);
+        if (data) {
+          this.cropper.setData(data);
+        }
       }
     }
   };
@@ -102,4 +104,17 @@ export default class Crop extends Component<Props> {
       />
     );
   }
+}
+
+function equalToImageParameterType(parameters: {}) {
+  const keys = Object.keys(parameters);
+  const values = Object.values(parameters);
+
+  return (
+    keys.includes('cropStartX') &&
+    keys.includes('cropEndX') &&
+    keys.includes('cropStartY') &&
+    keys.includes('cropEndY') &&
+    values.every(value => typeof value === 'number')
+  );
 }
