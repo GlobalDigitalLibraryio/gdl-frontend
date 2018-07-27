@@ -46,8 +46,7 @@ import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean,
-  userHasEditImageAccess: boolean
+  userHasEditAccess: boolean
 };
 
 const CoverWrap = styled('div')`
@@ -98,7 +97,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     return {
       book: bookRes.data,
       userHasEditAccess: hasClaim(claims.writeBook, req),
-      userHasEditImageAccess: hasClaim(claims.writeImage, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
@@ -131,21 +129,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     w={[130, 260]}
                     h={[175, 365]}
                   />
-                  {this.props.userHasEditImageAccess && (
-                    <NextLink
-                      href={{
-                        pathname: '/admin/crop',
-                        query: {
-                          imageUrl: book.coverImage && book.coverImage.url
-                        }
-                      }}
-                      passHref
-                    >
-                      <EditBookLink title="Edit book image">
-                        <EditIcon />
-                      </EditBookLink>
-                    </NextLink>
-                  )}
                 </View>
               </CoverWrap>
 
