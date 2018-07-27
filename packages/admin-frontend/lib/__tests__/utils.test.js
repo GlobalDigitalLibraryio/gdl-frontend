@@ -31,9 +31,9 @@ test('Parsing of valid query with single argument', () => {
 });
 
 test('Parsing of single invalid query parameter', () => {
-  expect(parseQuery('?cropStartX=')).toEqual(null);
+  expect(parseQuery('?cropStartX=')).toEqual({});
 });
 
 test('Parsing of invalid query parameters', () => {
-  expect(parseQuery('?cropStartX=10&lala')).toEqual(null);
+  expect(parseQuery('?cropStartX=10&lala')).toEqual({});
 });
