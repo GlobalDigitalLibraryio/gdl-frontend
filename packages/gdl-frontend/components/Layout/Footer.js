@@ -96,7 +96,13 @@ const CreativeCommons = styled('div')`
 
 const Footer = () => {
   return (
-    <Container size="large" stickToEdgeOnLargeScreens width="100%">
+    <Container
+      size="large"
+      stickToEdgeOnLargeScreens
+      width="100%"
+      // https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/
+      css={{ flexShrink: '0' }}
+    >
       <FooterStyle>
         <div
           css={[

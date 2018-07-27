@@ -20,15 +20,16 @@ import { classRoomTheme } from '../../getPageContext';
 
 const Main = styled(Paper)`
   background: ${colors.container.background};
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
   max-width: ${misc.containers.large};
   margin-left: auto;
   margin-right: auto;
 `;
 
+// Use height instead of min-height to fix flexbox issue in IE (https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/)
 const PageWrapper = styled('div')`
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 `;
