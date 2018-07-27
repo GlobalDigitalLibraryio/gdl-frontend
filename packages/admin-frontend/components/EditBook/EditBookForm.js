@@ -47,7 +47,6 @@ export default class EditBookForm extends React.Component<Props, State> {
 
   render() {
     const book = this.state.book;
-
     return (
       <Container>
         {' '}
