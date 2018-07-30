@@ -25,6 +25,7 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../lib/fetch';
+import FileDialog from '../components/FileDialog';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
 import type { FeaturedContent, ImageParameters, Language } from '../types';
@@ -36,7 +37,9 @@ type Props = {
 type State = {
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
-  croppedParameters: ?ImageParameters
+  croppedParameters: ?ImageParameters,
+  fileDialogOpen: boolean,
+  file: ?File
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -51,7 +54,9 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   state = {
     featuredContent: null,
     selectedLanguage: '',
-    croppedParameters: null
+    croppedParameters: null,
+    fileDialogOpen: false,
+    file: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -144,6 +149,35 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     }
 
     this.setState({ croppedParameters: croppedParameters });
+  };
+
+  handleOnUpload = (
+    imageUrl: string,
+    change: (name: string, value: any) => void
+  ) => {
+    this.setState({ fileDialogOpen: false });
+    change('imageUrl', imageUrl);
+  };
+
+  handleOnCancel = (change: (value: any) => void) => {
+    this.setState({ fileDialogOpen: false });
+
+    // Set the value of the file-input to the empty string to reset it
+    change('');
+  };
+
+  handleFileChosen = (
+    event: SyntheticInputEvent<EventTarget>,
+    onChange: (SyntheticInputEvent<any> | any) => void
+  ) => {
+    // Sets the filename as the value of the input field
+    onChange(event.target.value);
+
+    const file = event.target.files[0];
+    this.setState({
+      fileDialogOpen: true,
+      file: file
+    });
   };
 
   render() {
@@ -251,26 +285,73 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     </>
                   )}
                 />
-                <Field
-                  name="imageUrl"
-                  render={({ input, meta }) => (
-                    <>
-                      <TextField
-                        margin="normal"
-                        fullWidth
-                        error={meta.error && meta.touched}
-                        type="url"
-                        disabled={selectedLanguage === ''}
-                        label="Image Url"
-                        {...input}
-                      />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
-                    </>
-                  )}
-                />
+
+                <div
+                  css={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div css={{ flex: 1 }}>
+                    <Field
+                      name="imageUrl"
+                      render={({ input, meta }) => (
+                        <>
+                          <TextField
+                            fullWidth
+                            margin="normal"
+                            error={meta.error && meta.touched}
+                            type="url"
+                            disabled={selectedLanguage === ''}
+                            label="Image Url"
+                            {...input}
+                          />
+                          {meta.error &&
+                            meta.touched && (
+                              <FormHelperText error>
+                                {meta.error}
+                              </FormHelperText>
+                            )}
+                        </>
+                      )}
+                    />
+                  </div>
+
+                  <div css={{ margin: '20px' }}>or</div>
+
+                  <div css={{ align: 'center' }}>
+                    <Field
+                      name="selectedFile"
+                      render={({ input }) => (
+                        <>
+                          <input
+                            disabled={this.state.selectedLanguage === ''}
+                            type="file"
+                            id="fileinput"
+                            value={input.value}
+                            onChange={event =>
+                              this.handleFileChosen(event, input.onChange)
+                            }
+                          />
+
+                          {this.state.file && (
+                            <FileDialog
+                              fileDialogOpen={this.state.fileDialogOpen}
+                              selectedFile={this.state.file}
+                              onCancel={() =>
+                                this.handleOnCancel(input.onChange)
+                              }
+                              onUpload={url =>
+                                this.handleOnUpload(url, form.change)
+                              }
+                            />
+                          )}
+                        </>
+                      )}
+                    />
+                  </div>
+                </div>
 
                 <FormSpy
                   render={({ values }) => (

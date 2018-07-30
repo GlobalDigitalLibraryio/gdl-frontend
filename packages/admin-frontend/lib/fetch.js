@@ -16,7 +16,9 @@ import type {
   Language,
   FeaturedContent,
   Book,
-  StoredParameters
+  StoredParameters,
+  NewImageMetadata,
+  ImageMetadata
 } from '../types';
 import { bookApiUrl, imageApiUrl } from '../config';
 
@@ -246,5 +248,22 @@ export async function search(
     result.data.results = result.data.results.map(bookCategoryMapper);
   }
 
+  return result;
+}
+
+export async function uploadNewImage(
+  file: File,
+  metadata: NewImageMetadata
+): Promise<RemoteData<ImageMetadata>> {
+  const url = `${imageApiUrl}/images`;
+
+  const formData = new FormData();
+  formData.append('metadata', JSON.stringify(metadata));
+  formData.append('file', file);
+
+  const result = await doFetch(url, {
+    method: 'POST',
+    body: formData
+  });
   return result;
 }
