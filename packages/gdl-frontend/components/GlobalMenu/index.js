@@ -29,7 +29,6 @@ import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 import config from '../../config';
-import CCLogo from './cc-logo.svg';
 
 type Props = {|
   onClose(): void,
@@ -92,9 +91,11 @@ class GlobalMenu extends React.Component<Props, State> {
           </CategoriesMenu>
           <Divider />
           {this.state.userHasAdminPrivileges && (
-            <ListItemA href="/admin">
-              <Trans>GDL Admin</Trans>
-            </ListItemA>
+            <ListItem component="a" href="/admin" button>
+              <ListItemText>
+                <Trans>GDL Admin</Trans>
+              </ListItemText>
+            </ListItem>
           )}
           {config.TRANSLATION_PAGES && (
             <Fragment>
@@ -124,38 +125,10 @@ class GlobalMenu extends React.Component<Props, State> {
               </RouteLink>
             </Fragment>
           )}
-          <ListItemA href="https://home.digitallibrary.io/about/">
-            <Trans>About the Global Digital Library</Trans>
-          </ListItemA>
-          <ListItemA href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
-            <Trans>Cookie policy</Trans>
-          </ListItemA>
-          <ListItemA href="https://home.digitallibrary.io/privacy/">
-            <Trans>Privacy policy</Trans>
-          </ListItemA>
-          <ListItemA href={config.zendeskUrl}>
-            <Trans>Report issues</Trans>
-          </ListItemA>
-          <ListItemA href="https://blog.digitallibrary.io/cc/">
-            <Trans>Licensing and reuse</Trans>
-          </ListItemA>
-          <ListItem
-            href="https://creativecommons.org/"
-            component="a"
-            aria-label="Creative Commons"
-          >
-            <CCLogo css={{ width: '100px' }} />
-          </ListItem>
         </List>
       </Drawer>
     );
   }
 }
-
-const ListItemA = ({ href, ...props }) => (
-  <ListItem component="a" href={href} button>
-    <ListItemText {...props} />
-  </ListItem>
-);
 
 export default GlobalMenu;

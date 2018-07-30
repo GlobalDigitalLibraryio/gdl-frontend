@@ -230,12 +230,20 @@ class SearchPage extends React.Component<Props, State> {
                         one="# result for"
                         other="# results for"
                       />{' '}
-                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                      <strong>
+                        &quot;
+                        {lastSearchQuery}
+                        &quot;
+                      </strong>
                     </Fragment>
                   ) : (
                     <Trans>
                       No results for{' '}
-                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                      <strong>
+                        &quot;
+                        {lastSearchQuery}
+                        &quot;
+                      </strong>
                     </Trans>
                   )}
                 </Typography>

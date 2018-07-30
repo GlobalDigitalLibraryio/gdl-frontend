@@ -7,15 +7,17 @@
  */
 
 import * as React from 'react';
-import Select from '@material-ui/core/Select/Select';
-import Button from '@material-ui/core/Button/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import {
+  Select,
+  Button,
+  FormHelperText,
+  InputLabel,
+  FormControl,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-
+import CropImageViewer from '../components/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -25,17 +27,19 @@ import {
 } from '../lib/fetch';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
-import type { FeaturedContent, Language } from '../types';
+import type { FeaturedContent, ImageParameters, Language } from '../types';
+
+type Props = {
+  languages: Array<Language>
+};
 
 type State = {
   featuredContent: ?FeaturedContent,
-  selectedLanguage: string
+  selectedLanguage: string,
+  croppedParameters: ?ImageParameters
 };
 
-class EditFeaturedContent extends React.Component<
-  { languages: Array<Language> },
-  State
-> {
+export default class EditFeaturedContent extends React.Component<Props, State> {
   static async getInitialProps() {
     const languagesRes = await fetchLanguages();
 
@@ -46,7 +50,8 @@ class EditFeaturedContent extends React.Component<
 
   state = {
     featuredContent: null,
-    selectedLanguage: ''
+    selectedLanguage: '',
+    croppedParameters: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -95,7 +100,9 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ selectedLanguage: event.target.value });
+    this.setState({
+      selectedLanguage: event.target.value
+    });
 
     this.getFeaturedContent(event.target.value);
   };
@@ -109,6 +116,34 @@ class EditFeaturedContent extends React.Component<
       this.deleteFeaturedContent(this.state.featuredContent.id);
       this.setState({ featuredContent: null });
     }
+  };
+
+  handleCroppedParametersReceived = (
+    croppedParameters: ImageParameters,
+    change: (name: string, value: any) => void,
+    imageUrl: string
+  ) => {
+    const baseUrl =
+      imageUrl && imageUrl.includes('?')
+        ? imageUrl.substring(0, imageUrl.indexOf('?'))
+        : imageUrl;
+
+    if (croppedParameters) {
+      change(
+        'imageUrl',
+        baseUrl +
+          '?cropStartX=' +
+          croppedParameters.cropStartX +
+          '&cropEndX=' +
+          croppedParameters.cropEndX +
+          '&cropStartY=' +
+          croppedParameters.cropStartY +
+          '&cropEndY=' +
+          croppedParameters.cropEndY
+      );
+    }
+
+    this.setState({ croppedParameters: croppedParameters });
   };
 
   render() {
@@ -147,14 +182,15 @@ class EditFeaturedContent extends React.Component<
                     {language.name} ({language.code})
                   </option>
                 );
-              })};
+              })}
+              ;
             </Select>
           </FormControl>
           <Form
-            initialValues={featuredContent !== null ? featuredContent : {}}
+            initialValues={featuredContent || {}}
             onSubmit={this.handleSaveButtonClick(defaultReturned)}
             validate={handleValidate}
-            render={({ handleSubmit, pristine, invalid }) => (
+            render={({ handleSubmit, pristine, invalid, form }) => (
               <form>
                 <Field
                   name="title"
@@ -214,9 +250,7 @@ class EditFeaturedContent extends React.Component<
                         )}
                     </>
                   )}
-                >
-                  />
-                </Field>
+                />
                 <Field
                   name="imageUrl"
                   render={({ input, meta }) => (
@@ -236,20 +270,33 @@ class EditFeaturedContent extends React.Component<
                         )}
                     </>
                   )}
-                >
-                  />
-                </Field>
-                <FormSpy
-                  render={({ values }) =>
-                    //$FlowFixMe
-                    values.imageUrl ? (
-                      <img alt="Featured content" src={values.imageUrl} />
-                    ) : null
-                  }
                 />
+
+                <FormSpy
+                  render={({ values }) => (
+                    <div>
+                      {/*$FlowFixMe*/}
+                      {values.imageUrl && (
+                        <CropImageViewer
+                          ratio={2.63}
+                          imageUrl={values.imageUrl}
+                          onDialogOk={croppedParameters => {
+                            this.handleCroppedParametersReceived(
+                              croppedParameters,
+                              form.change,
+                              /*$FlowFixMe*/
+                              values.imageUrl
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
+                  )}
+                />
+
                 <Button
                   color="primary"
-                  disabled={pristine || invalid}
+                  disabled={invalid || pristine}
                   type="submit"
                   onClick={handleSubmit}
                 >
@@ -257,8 +304,16 @@ class EditFeaturedContent extends React.Component<
                 </Button>
                 <Button
                   color="secondary"
-                  // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                  disabled={selectedLanguage === '' || !featuredContent}
+                  disabled={pristine}
+                  onClick={form.reset}
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  color="secondary"
+                  disabled={
+                    selectedLanguage === '' || !featuredContent // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
+                  }
                   onClick={this.handleDelete}
                 >
                   Delete featured content
@@ -298,10 +353,8 @@ function handleValidate(values) {
     !values.imageUrl.match(regex)
   ) {
     errors.imageUrl =
-      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png"';
+      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }
 
   return errors;
 }
-
-export default EditFeaturedContent;

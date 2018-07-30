@@ -80,7 +80,7 @@ class Navbar extends React.Component<Props, State> {
             <IconButton
               color="inherit"
               onClick={this.props.onMenuClick}
-              css={{ marginRight: 18 }}
+              css={media.tablet({ marginRight: 18 })}
             >
               <MenuIcon />
               <SrOnly>
