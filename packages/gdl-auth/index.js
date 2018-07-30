@@ -30,3 +30,20 @@ export function hasClaim(claim: string, req: ?$Request): boolean {
 export function getAuthToken(req: ?$Request): ?string {
   return req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
 }
+
+export function getUserName(req: ?$Request): ?string {
+  const jwt = getAuthToken(req);
+  if (!jwt) {
+    return;
+  }
+  const decoded = jwtDecode(jwt);
+
+  return decoded['https://digitallibrary.io/user_name'];
+}
+
+export function logout() {
+  if (!process.browser) {
+    return;
+  }
+  Cookie().remove(JWT_KEY, { path: '/' });
+}

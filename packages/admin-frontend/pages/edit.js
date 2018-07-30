@@ -5,50 +5,94 @@
  *
  * See LICENSE
  */
-
 import * as React from 'react';
+import AppBar from '@material-ui/core/AppBar/AppBar';
+import Tab from '@material-ui/core/Tab/Tab';
+import Tabs from '@material-ui/core/Tabs/Tabs';
+import Typography from '@material-ui/core/Typography/Typography';
+import Container from '../components/Container';
+import EditBookForm from '../components/EditBook/EditBookForm';
+import EditChapterForm from '../components/EditBook/EditChapterForm';
+import { fetchBook } from '../lib/fetch';
+import Layout from '../components/Layout';
+import type { BookDetails, Context } from '../types';
 
-import type { BookDetails, Chapter, Context } from '../types';
-import { fetchBook, fetchChapter } from '../lib/fetch';
-import Editor from '../components/Editor';
-
-type Props = {
-  book: BookDetails,
-  chapter?: Chapter
+type State = {
+  selectedTab: number
 };
 
-export default class EditPage extends React.Component<Props> {
+export default class EditPage extends React.Component<
+  { book: ?BookDetails, chapterId: string },
+  State
+> {
   static async getInitialProps({ query }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
-    if (!bookRes.isOk) {
-      return {
-        statusCode: bookRes.statusCode
-      };
-    }
-    const book = bookRes.data;
+    const chapterId = query.chapterId;
 
-    let chapter;
-    if (query.chapterId) {
-      const chapterRes = await fetchChapter(
-        query.id,
-        query.chapterId,
-        query.lang
-      );
-
-      if (!chapterRes.isOk) {
-        return {
-          statusCode: chapterRes.statusCode
-        };
-      }
-      chapter = chapterRes.data;
+    let book;
+    if (bookRes.isOk) {
+      book = bookRes.data;
     }
 
-    return { book, chapter };
+    return { book, chapterId };
   }
+
+  state = {
+    // If the chapter id is provided in the url the default tab will be the chapters tab
+    selectedTab: this.props.chapterId ? 1 : 0
+  };
+
+  handleChange = (event: Event, selectedTab: number) => {
+    this.setState({ selectedTab });
+  };
 
   render() {
-    const { book, chapter } = this.props;
+    const { book, chapterId } = this.props;
+    const selectedTab = this.state.selectedTab;
 
-    return <Editor book={book} chapter={chapter} />;
+    if (!book) {
+      return (
+        <Layout>
+          <Container>
+            <p>Search for a book to edit it</p>
+          </Container>
+        </Layout>
+      );
+    } else {
+      return (
+        <Layout shouldAddPadding={false}>
+          <div>
+            <AppBar position="static" color="default">
+              <Tabs
+                centered={true}
+                value={selectedTab}
+                onChange={this.handleChange}
+              >
+                <Tab label="Edit Book" />
+                <Tab label="Edit Chapters" />
+              </Tabs>
+            </AppBar>
+            {selectedTab === 0 && (
+              <TabContainer>
+                <EditBookForm book={book} />
+              </TabContainer>
+            )}
+            {selectedTab === 1 && (
+              <TabContainer>
+                <EditChapterForm book={book} chapterId={chapterId} />
+              </TabContainer>
+            )}
+          </div>
+        </Layout>
+      );
+    }
   }
+}
+
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  );
 }

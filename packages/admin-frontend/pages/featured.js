@@ -7,16 +7,17 @@
  */
 
 import * as React from 'react';
-import Select from '@material-ui/core/Select/Select';
-import Button from '@material-ui/core/Button/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import InputLabel from '@material-ui/core/InputLabel/InputLabel';
-import FormControl from '@material-ui/core/FormControl/FormControl';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
+import {
+  Select,
+  Button,
+  FormHelperText,
+  InputLabel,
+  FormControl,
+  TextField,
+  Typography
+} from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-
+import CropImageViewer from '../components/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -24,18 +25,21 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../lib/fetch';
+import Layout from '../components/Layout';
 import Container from '../components/Container';
-import type { FeaturedContent, Language } from '../types';
+import type { FeaturedContent, ImageParameters, Language } from '../types';
+
+type Props = {
+  languages: Array<Language>
+};
 
 type State = {
   featuredContent: ?FeaturedContent,
-  selectedLanguage: string
+  selectedLanguage: string,
+  croppedParameters: ?ImageParameters
 };
 
-class EditFeaturedContent extends React.Component<
-  { languages: Array<Language> },
-  State
-> {
+export default class EditFeaturedContent extends React.Component<Props, State> {
   static async getInitialProps() {
     const languagesRes = await fetchLanguages();
 
@@ -46,7 +50,8 @@ class EditFeaturedContent extends React.Component<
 
   state = {
     featuredContent: null,
-    selectedLanguage: ''
+    selectedLanguage: '',
+    croppedParameters: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -95,7 +100,9 @@ class EditFeaturedContent extends React.Component<
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
-    this.setState({ selectedLanguage: event.target.value });
+    this.setState({
+      selectedLanguage: event.target.value
+    });
 
     this.getFeaturedContent(event.target.value);
   };
@@ -109,6 +116,34 @@ class EditFeaturedContent extends React.Component<
       this.deleteFeaturedContent(this.state.featuredContent.id);
       this.setState({ featuredContent: null });
     }
+  };
+
+  handleCroppedParametersReceived = (
+    croppedParameters: ImageParameters,
+    change: (name: string, value: any) => void,
+    imageUrl: string
+  ) => {
+    const baseUrl =
+      imageUrl && imageUrl.includes('?')
+        ? imageUrl.substring(0, imageUrl.indexOf('?'))
+        : imageUrl;
+
+    if (croppedParameters) {
+      change(
+        'imageUrl',
+        baseUrl +
+          '?cropStartX=' +
+          croppedParameters.cropStartX +
+          '&cropEndX=' +
+          croppedParameters.cropEndX +
+          '&cropStartY=' +
+          croppedParameters.cropStartY +
+          '&cropEndY=' +
+          croppedParameters.cropEndY
+      );
+    }
+
+    this.setState({ croppedParameters: croppedParameters });
   };
 
   render() {
@@ -125,168 +160,169 @@ class EditFeaturedContent extends React.Component<
     }
 
     return (
-      <Container>
-        <Typography variant="headline" component="h1" gutterBottom>
-          Edit featured content
-        </Typography>
+      <Layout>
+        <Container>
+          <Typography variant="headline" component="h1" gutterBottom>
+            Edit featured content
+          </Typography>
 
-        <FormControl>
-          <InputLabel htmlFor="language-select">Select language</InputLabel>
+          <FormControl>
+            <InputLabel htmlFor="language-select">Select language</InputLabel>
 
-          <Select
-            onChange={this.handleLanguageSelect}
-            value={selectedLanguage}
-            native
-            inputProps={{ id: 'language-select' }}
-          >
-            <option value="" />
-            {this.props.languages.map(language => {
-              return (
-                <option key={language.code} value={language.code}>
-                  {language.name} ({language.code})
-                </option>
-              );
-            })};
-          </Select>
-        </FormControl>
-
-        <Form
-          initialValues={featuredContent !== null ? featuredContent : {}}
-          onSubmit={this.handleSaveButtonClick(defaultReturned)}
-          validate={handleValidate}
-          render={({ handleSubmit, pristine, invalid }) => (
-            <form>
-              <Grid container spacing={24} direction="column">
-                <Grid item xs>
-                  <Field
-                    name="title"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          error={meta.error && meta.touched}
-                          required
-                          disabled={selectedLanguage === ''}
-                          label="Title"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="description"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          required
-                          error={meta.error && meta.touched}
-                          disabled={selectedLanguage === ''}
-                          label="Description"
-                          {...input}
-                          multiline
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  />
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="link"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          fullWidth
-                          type="url"
-                          error={meta.error && meta.touched}
-                          required
-                          disabled={selectedLanguage === ''}
-                          label="Link"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  >
-                    />
-                  </Field>
-                </Grid>
-
-                <Grid item xs>
-                  <Field
-                    name="imageUrl"
-                    render={({ input, meta }) => (
-                      <>
-                        <TextField
-                          required
-                          fullWidth
-                          error={meta.error && meta.touched}
-                          type="url"
-                          disabled={selectedLanguage === ''}
-                          label="Image Url"
-                          {...input}
-                        />
-                        {meta.error &&
-                          meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                      </>
-                    )}
-                  >
-                    />
-                  </Field>
-                </Grid>
-
-                <FormSpy
-                  render={({ values }) =>
-                    //$FlowFixMe
-                    values.imageUrl ? (
-                      <img alt="Featured content" src={values.imageUrl} />
-                    ) : null
-                  }
+            <Select
+              onChange={this.handleLanguageSelect}
+              value={selectedLanguage}
+              native
+              inputProps={{ id: 'language-select' }}
+            >
+              <option value="" />
+              {this.props.languages.map(language => {
+                return (
+                  <option key={language.code} value={language.code}>
+                    {language.name} ({language.code})
+                  </option>
+                );
+              })}
+              ;
+            </Select>
+          </FormControl>
+          <Form
+            initialValues={featuredContent || {}}
+            onSubmit={this.handleSaveButtonClick(defaultReturned)}
+            validate={handleValidate}
+            render={({ handleSubmit, pristine, invalid, form }) => (
+              <form>
+                <Field
+                  name="title"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        error={meta.error && meta.touched}
+                        margin="normal"
+                        disabled={selectedLanguage === ''}
+                        label="Title"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
+                <Field
+                  name="description"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        margin="normal"
+                        error={meta.error && meta.touched}
+                        disabled={selectedLanguage === ''}
+                        label="Description"
+                        {...input}
+                        multiline
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
+                <Field
+                  name="link"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        fullWidth
+                        type="url"
+                        error={meta.error && meta.touched}
+                        margin="normal"
+                        disabled={selectedLanguage === ''}
+                        label="Link"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
+                <Field
+                  name="imageUrl"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        margin="normal"
+                        fullWidth
+                        error={meta.error && meta.touched}
+                        type="url"
+                        disabled={selectedLanguage === ''}
+                        label="Image Url"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
                 />
 
-                <Grid item xs>
-                  <Button
-                    color="primary"
-                    disabled={pristine || invalid}
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    Save changes
-                  </Button>
+                <FormSpy
+                  render={({ values }) => (
+                    <div>
+                      {/*$FlowFixMe*/}
+                      {values.imageUrl && (
+                        <CropImageViewer
+                          ratio={2.63}
+                          imageUrl={values.imageUrl}
+                          onDialogOk={croppedParameters => {
+                            this.handleCroppedParametersReceived(
+                              croppedParameters,
+                              form.change,
+                              /*$FlowFixMe*/
+                              values.imageUrl
+                            );
+                          }}
+                        />
+                      )}
+                    </div>
+                  )}
+                />
 
-                  <Grid item xs>
-                    <Button
-                      color="secondary"
-                      // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                      disabled={selectedLanguage === '' || !featuredContent}
-                      onClick={this.handleDelete}
-                    >
-                      Delete featured content
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </form>
-          )}
-        />
-      </Container>
+                <Button
+                  color="primary"
+                  disabled={invalid || pristine}
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Save changes
+                </Button>
+                <Button
+                  color="secondary"
+                  disabled={pristine}
+                  onClick={form.reset}
+                >
+                  Discard changes
+                </Button>
+                <Button
+                  color="secondary"
+                  disabled={
+                    selectedLanguage === '' || !featuredContent // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
+                  }
+                  onClick={this.handleDelete}
+                >
+                  Delete featured content
+                </Button>
+              </form>
+            )}
+          />
+        </Container>
+      </Layout>
     );
   }
 }
@@ -317,10 +353,8 @@ function handleValidate(values) {
     !values.imageUrl.match(regex)
   ) {
     errors.imageUrl =
-      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png"';
+      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }
 
   return errors;
 }
-
-export default EditFeaturedContent;

@@ -29,12 +29,6 @@ type Props = {
 const srcUrl = (src, width) =>
   `${src}?storedRatio=0.81&focalX=50&focalY=50&ratio=0.81&width=${width}`;
 
-/** Generate srcset value for two different pixels densities */
-function srcSet(url: string, width: number) {
-  // Note: 1x descriptior is assumed when left out
-  return `${srcUrl(url, width)}, ${srcUrl(url, width * 2)} 2x`;
-}
-
 /**
  * Add query parameters to book cover images so they fit our wanted ratio
  * This also means we don't download the full image, just the part we want
@@ -56,13 +50,13 @@ const CoverImage = ({ src, ariaHidden, ...props }: Props) => {
   return (
     <Image
       ariaHidden={ariaHidden}
-      srcSet={srcSet(src, COVER_WIDTHS[0])}
+      srcSet={srcUrl(src, COVER_WIDTHS[0])}
       src={srcOrPlaceholder}
       {...props}
     >
       <source
         media={`(min-width: ${TABLET_BREAKPOINT}px)`}
-        srcSet={srcSet(src, COVER_WIDTHS[1])}
+        srcSet={srcUrl(src, COVER_WIDTHS[1])}
       />
     </Image>
   );

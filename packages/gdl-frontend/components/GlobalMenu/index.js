@@ -20,12 +20,15 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { getTokenFromLocalCookie } from '../../lib/auth/token';
+import {
+  claims,
+  getTokenFromLocalCookie,
+  hasClaim
+} from '../../lib/auth/token';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
 import config from '../../config';
-import CCLogo from './cc-logo.svg';
 
 type Props = {|
   onClose(): void,
@@ -33,12 +36,14 @@ type Props = {|
 |};
 
 type State = {
-  language: Language
+  language: Language,
+  userHasAdminPrivileges: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    language: getBookLanguage()
+    language: getBookLanguage(),
+    userHasAdminPrivileges: false
   };
 
   // Makes sure we always show the correct language as selected when the menu is opened
@@ -51,20 +56,17 @@ class GlobalMenu extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
+  }
+
   render() {
     const { onClose } = this.props;
 
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
-        <List component="nav">
-          <SelectLanguage
-            language={this.state.language}
-            onSelectLanguage={onClose}
-            linkProps={language => ({
-              route: 'books',
-              params: { lang: language.code }
-            })}
-          >
+        <List>
+          <SelectLanguage onSelectLanguage={onClose}>
             {({ onClick }) => (
               <ListItem
                 button
@@ -96,6 +98,13 @@ class GlobalMenu extends React.Component<Props, State> {
             )}
           </CategoriesMenu>
           <Divider />
+          {this.state.userHasAdminPrivileges && (
+            <ListItem component="a" href="/admin" button>
+              <ListItemText>
+                <Trans>GDL Admin</Trans>
+              </ListItemText>
+            </ListItem>
+          )}
           {config.TRANSLATION_PAGES && (
             <Fragment>
               {getTokenFromLocalCookie() == null ? (
@@ -124,38 +133,10 @@ class GlobalMenu extends React.Component<Props, State> {
               </RouteLink>
             </Fragment>
           )}
-          <ListItemA href="https://home.digitallibrary.io/about/">
-            <Trans>About the Global Digital Library</Trans>
-          </ListItemA>
-          <ListItemA href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
-            <Trans>Cookie policy</Trans>
-          </ListItemA>
-          <ListItemA href="https://home.digitallibrary.io/privacy/">
-            <Trans>Privacy policy</Trans>
-          </ListItemA>
-          <ListItemA href={config.zendeskUrl}>
-            <Trans>Report issues</Trans>
-          </ListItemA>
-          <ListItemA href="https://blog.digitallibrary.io/cc/">
-            <Trans>Licensing and reuse</Trans>
-          </ListItemA>
-          <ListItem
-            href="https://creativecommons.org/"
-            component="a"
-            aria-label="Creative Commons"
-          >
-            <CCLogo css={{ width: '100px' }} />
-          </ListItem>
         </List>
       </Drawer>
     );
   }
 }
-
-const ListItemA = ({ href, ...props }) => (
-  <ListItem component="a" href={href} button>
-    <ListItemText {...props} />
-  </ListItem>
-);
 
 export default GlobalMenu;

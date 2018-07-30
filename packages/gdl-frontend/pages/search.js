@@ -11,7 +11,7 @@ import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 
-import type { Book, Context, Language } from '../types';
+import type { Book, Context } from '../types';
 import { Router } from '../routes';
 import { SEARCH_PAGE_SIZE } from '../config';
 import {
@@ -21,16 +21,11 @@ import {
   NoResults
 } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
-import { Breadcrumb, NavContextBar } from '../components/NavContextBar';
-import { SelectLanguage } from '../components/LanguageMenu';
-import {
-  setBookLanguage,
-  getBookLanguageCode,
-  getBookLanguage
-} from '../lib/storage';
+import { getBookLanguageCode } from '../lib/storage';
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
+import { TABLET_BREAKPOINT } from '../style/theme/misc';
 import { search } from '../fetch';
 import { errorPage } from '../hocs';
 
@@ -41,11 +36,8 @@ type Props = {
   searchResult: ?{
     results: Array<Book>,
     page: number,
-    totalCount: number,
-    language: Language
+    totalCount: number
   },
-  languages: Array<Language>,
-  languageCode: string,
   router: {
     query: {
       q?: string,
@@ -65,17 +57,17 @@ type State = {
   searchQuery: string,
   lastSearchQuery?: string,
   isLoadingMore: boolean,
-  language: ?Language
+  languageCode: string
 };
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
     let searchResult;
+    // FIXME: Hmm.... we can't do this because of caching right?
+    // We get the language code either from the query params or the cookie
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
-
-      // We get the language code either from the query params or the cookie
       const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
       searchResult = await search(searchQuery, languageCode, {
@@ -100,29 +92,19 @@ class SearchPage extends React.Component<Props, State> {
     searchQuery: this.props.router.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.router.query[QUERY_PARAM],
     isLoadingMore: false,
-    language: this.props.searchResult ? this.props.searchResult.language : null
+    languageCode: this.props.router.query[LANG_PARAM] || getBookLanguageCode()
   };
-
-  /**
-   * We only want to render the language menu on the client side.
-   * So we don't fill the cache with all the search pages with the only change in the HTML being the shown language name
-   */
-  componentDidMount() {
-    const language =
-      (this.props.searchResult && this.props.searchResult.language) ||
-      getBookLanguage();
-
-    this.setState({ language });
-  }
 
   handleSearch = async event => {
     event.preventDefault();
-    if (
-      !this.state.searchQuery ||
-      this.state.searchQuery.trim() === '' ||
-      !this.state.language
-    ) {
+    if (!this.state.searchQuery || this.state.searchQuery.trim() === '') {
       return;
+    }
+
+    // If we are on mobile, blur the input field on submit so we hide the virtual keyboard
+    if (window.innerWidth < TABLET_BREAKPOINT) {
+      const searchInput = document.querySelector('#booksearch');
+      searchInput && searchInput.blur();
     }
 
     this.setState(state => ({ lastSearchQuery: state.searchQuery }));
@@ -132,15 +114,14 @@ class SearchPage extends React.Component<Props, State> {
       {
         [QUERY_PARAM]: this.state.searchQuery,
         // $FlowFixMe: We're already checking if language is defined
-        [LANG_PARAM]: this.state.language.code
+        [LANG_PARAM]: this.props.languageCode
       },
       { shallow: true }
     );
 
     const queryRes = await search(
       this.state.searchQuery,
-      // $FlowFixMe: We're already checking if language is defined
-      this.state.language.code,
+      this.state.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE
       }
@@ -154,19 +135,14 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchResult: queryRes.data });
   };
 
-  handleChangeLanguage = language => {
-    this.setState({ language, searchResult: null });
-    setBookLanguage(language);
-  };
-
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     // Fixes flow warnings
-    if (!this.state.searchResult || !this.state.language) return;
+    if (!this.state.searchResult) return;
 
     const queryRes = await search(
       this.state.searchQuery,
-      this.state.language.code,
+      this.state.languageCode,
       {
         pageSize: SEARCH_PAGE_SIZE,
         page: this.state.searchResult.page + 1
@@ -210,20 +186,11 @@ class SearchPage extends React.Component<Props, State> {
     this.setState({ searchQuery: event.target.value });
 
   render() {
-    const { searchResult, lastSearchQuery, language } = this.state;
+    const { searchResult, lastSearchQuery } = this.state;
 
     return (
       <Layout wrapWithMain={false}>
         <Head title="Search" />
-        <NavContextBar>
-          <Breadcrumb crumbs={[<Trans>Search</Trans>]} />
-          {language && (
-            <SelectLanguage
-              language={language}
-              onSelectLanguage={this.handleChangeLanguage}
-            />
-          )}
-        </NavContextBar>
         <Main>
           <Container my={spacing.medium}>
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
@@ -243,7 +210,7 @@ class SearchPage extends React.Component<Props, State> {
               Important that the div with the aria-live is present when the search page first loads
               cause screen readers doesn't recognize that content has been added
             */}
-            <div aria-live="polite">
+            <div aria-live="polite" aria-atomic="true">
               {searchResult && (
                 <Typography
                   component="h1"
@@ -259,12 +226,20 @@ class SearchPage extends React.Component<Props, State> {
                         one="# result for"
                         other="# results for"
                       />{' '}
-                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                      <strong>
+                        &quot;
+                        {lastSearchQuery}
+                        &quot;
+                      </strong>
                     </Fragment>
                   ) : (
                     <Trans>
                       No results for{' '}
-                      <strong>&quot;{lastSearchQuery}&quot;</strong>
+                      <strong>
+                        &quot;
+                        {lastSearchQuery}
+                        &quot;
+                      </strong>
                     </Trans>
                   )}
                 </Typography>
@@ -291,17 +266,19 @@ class SearchPage extends React.Component<Props, State> {
                       <SearchHit key={book.id} book={book} />
                     ))}
                   </div>
-                  <LoadingButton
-                    fullWidth
-                    color="primary"
-                    disabled={
-                      searchResult.results.length >= searchResult.totalCount
-                    }
-                    onClick={this.handleLoadMore}
-                    isLoading={this.state.isLoadingMore}
-                  >
-                    <Trans>More books</Trans>
-                  </LoadingButton>
+                  <div css={{ alignSelf: 'center' }}>
+                    <LoadingButton
+                      variant="outlined"
+                      color="primary"
+                      disabled={
+                        searchResult.results.length >= searchResult.totalCount
+                      }
+                      onClick={this.handleLoadMore}
+                      isLoading={this.state.isLoadingMore}
+                    >
+                      <Trans>More books</Trans>
+                    </LoadingButton>
+                  </div>
                 </Fragment>
               )
             ) : (

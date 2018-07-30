@@ -27,7 +27,7 @@ class Success extends React.Component<*> {
 
   render() {
     return (
-      <Layout crumbs={[<Trans>Redirecting...</Trans>]}>
+      <Layout>
         <Container pt={50}>
           <div css={{ textAlign: 'center' }}>
             <Trans>Logged in, please wait while we redirect you!</Trans>

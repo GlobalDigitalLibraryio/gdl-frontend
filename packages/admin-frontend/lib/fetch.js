@@ -15,9 +15,10 @@ import type {
   Chapter,
   Language,
   FeaturedContent,
-  Book
+  Book,
+  StoredParameters
 } from '../types';
-import { bookApiUrl } from '../config';
+import { bookApiUrl, imageApiUrl } from '../config';
 
 export async function fetchBook(
   id: string | number,
@@ -97,6 +98,30 @@ export async function saveBook(
   if (result.isOk) {
     result.data = bookCategoryMapper(result.data);
   }
+  return result;
+}
+
+export async function postStoredParameters(
+  imageApiBody: StoredParameters
+): Promise<RemoteData<StoredParameters>> {
+  const result = await doFetch(`${imageApiUrl}/images/stored-parameters`, {
+    method: 'POST',
+    body: JSON.stringify(imageApiBody)
+  });
+
+  return result;
+}
+
+export async function fetchStoredParameters(
+  imageUrl: string
+): Promise<RemoteData<StoredParameters>> {
+  const result = await doFetch(
+    `${imageApiUrl}/images/stored-parameters${imageUrl}`,
+    {
+      method: 'GET',
+      body: null
+    }
+  );
   return result;
 }
 
@@ -187,4 +212,39 @@ export function deleteFeaturedContent(
   return doFetch(`${bookApiUrl}/featured/${id}`, {
     method: 'DELETE'
   });
+}
+
+type Options = {
+  pageSize?: number,
+  level?: string,
+  category?: Category,
+  sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
+  page?: number
+};
+
+export async function search(
+  query: string,
+  language?: string,
+  options: Options = {}
+): Promise<
+  RemoteData<{|
+    page: number,
+    totalCount: number,
+    results: Array<Book>,
+    language: Language
+  |}>
+> {
+  const result = await doFetch(
+    encodeURI(
+      `${bookApiUrl}/search/${language ||
+        ''}?query=${query}&page-size=${options.pageSize ||
+        10}&page=${options.page || 1}`
+    )
+  );
+
+  if (result.isOk) {
+    result.data.results = result.data.results.map(bookCategoryMapper);
+  }
+
+  return result;
 }

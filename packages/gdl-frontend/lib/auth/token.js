@@ -62,6 +62,6 @@ export function hasClaim(claim: string, req: ?$Request) {
 }
 
 export const claims = {
-  writeBook: `books-${GDL_ENVIRONMENT}:write`,
-  writeImage: `images-${GDL_ENVIRONMENT}:write`
+  readAdmin: `admin-${GDL_ENVIRONMENT}:read`,
+  writeBook: `books-${GDL_ENVIRONMENT}:write`
 };

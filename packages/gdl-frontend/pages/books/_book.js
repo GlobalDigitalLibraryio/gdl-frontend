@@ -22,7 +22,7 @@ import {
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
-  FileDownload as FileDownloadIcon,
+  CloudDownload as CloudDownloadIcon,
   Translate as TranslateIcon,
   Warning as WarningIcon
 } from '@material-ui/icons';
@@ -32,7 +32,6 @@ import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import type { Book, BookDetails, Context } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
-import BrowseLink from '../../components/BrowseLink';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import View from '../../elements/View';
@@ -43,13 +42,11 @@ import { hasClaim, claims } from '../../lib/auth/token';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 
 type Props = {
   book: BookDetails,
   similarBooks: Array<Book>,
-  userHasEditAccess: boolean,
-  userHasEditImageAccess: boolean
+  userHasEditAccess: boolean
 };
 
 const CoverWrap = styled('div')`
@@ -100,27 +97,9 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     return {
       book: bookRes.data,
       userHasEditAccess: hasClaim(claims.writeBook, req),
-      userHasEditImageAccess: hasClaim(claims.writeImage, req),
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
-  }
-
-  getCrumbs() {
-    const { book } = this.props;
-
-    return [
-      <BrowseLink
-        lang={book.language.code}
-        readingLevel={book.readingLevel}
-        category={book.category}
-      >
-        <a>
-          <ReadingLevelTrans readingLevel={book.readingLevel} />
-        </a>
-      </BrowseLink>,
-      book.title
-    ];
   }
 
   handleDownloadClick = event =>
@@ -140,40 +119,16 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
         >
           <BookJsonLd book={book} />
         </Head>
-        <Layout crumbs={this.getCrumbs()} category={book.category}>
+        <Layout category={book.category}>
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>
                 <View>
-                  <Link
-                    route="read"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                    prefetch
-                  >
-                    <a title={book.title} aria-hidden>
-                      <BookCover
-                        coverImage={book.coverImage}
-                        w={[130, 260]}
-                        h={[175, 365]}
-                      />
-                    </a>
-                  </Link>
-                  {this.props.userHasEditImageAccess && (
-                    <NextLink
-                      href={{
-                        pathname: '/admin/crop',
-                        query: {
-                          imageUrl: book.coverImage && book.coverImage.url
-                        }
-                      }}
-                      passHref
-                    >
-                      <EditBookLink title="Edit book image">
-                        <EditIcon />
-                      </EditBookLink>
-                    </NextLink>
-                  )}
+                  <BookCover
+                    coverImage={book.coverImage}
+                    w={[130, 260]}
+                    h={[175, 365]}
+                  />
                 </View>
               </CoverWrap>
 
@@ -253,7 +208,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             onClick={this.handleDownloadClick}
                             data-cy="download-book-button"
                           >
-                            <FileDownloadIcon /> <Trans>Download book</Trans>
+                            <CloudDownloadIcon css={{ marginRight: '10px' }} />
+                            <Trans>Download book</Trans>
                           </Button>
                         </Grid>
                         <Menu

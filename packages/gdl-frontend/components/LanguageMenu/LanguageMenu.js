@@ -27,6 +27,7 @@ import { spacing, colors } from '../../style/theme';
 import media from '../../style/media';
 
 type Props = {
+  anchor: 'left' | 'right',
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
@@ -42,6 +43,7 @@ type Props = {
 
 export default class LanguageMenu extends React.Component<Props> {
   static defaultProps = {
+    anchor: 'left',
     showActivityIndicator: false
   };
 
@@ -73,6 +75,7 @@ export default class LanguageMenu extends React.Component<Props> {
 
   render() {
     const {
+      anchor,
       languages,
       onClose,
       selectedLanguageCode,
@@ -89,7 +92,7 @@ export default class LanguageMenu extends React.Component<Props> {
       : languages;
 
     return (
-      <Drawer open onClose={onClose}>
+      <Drawer anchor={anchor} open onClose={onClose}>
         <List
           data-cy="language-menu"
           // Add some padding bottom so we can select the bottom alternative in mobile safari
@@ -98,7 +101,7 @@ export default class LanguageMenu extends React.Component<Props> {
           onClose={onClose}
           subheader={
             <ListSubheader component="div">
-              <Trans>Choose language</Trans>
+              <Trans>Choose book language</Trans>
             </ListSubheader>
           }
         >
@@ -109,17 +112,19 @@ export default class LanguageMenu extends React.Component<Props> {
                   <CheckIcon css={{ color: colors.base.green }} />
                 </ListItemIcon>
                 <ListItemText inset>
-                  <SrOnly>
-                    <Trans>Selected:</Trans>
-                  </SrOnly>
-                  {selectedLanguage.name}
+                  <Trans>
+                    <SrOnly>Selected: </SrOnly>
+                    {selectedLanguage.name}
+                  </Trans>
                 </ListItemText>
               </ListItem>
               <Divider />
             </Fragment>
           )}
           {showActivityIndicator ? (
-            <CircularProgress css={{ marginTop: spacing.large }} />
+            <div css={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress css={{ marginTop: spacing.large }} />
+            </div>
           ) : (
             filteredLanguages.map(this.renderMenuItem)
           )}

@@ -195,8 +195,7 @@ export async function search(
   RemoteData<{|
     page: number,
     totalCount: number,
-    results: Array<Book>,
-    language: Language
+    results: Array<Book>
   |}>
 > {
   const result = await doFetch(

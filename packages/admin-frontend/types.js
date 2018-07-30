@@ -102,6 +102,7 @@ export type BookDetails = $ReadOnly<{|
   datePublished?: string,
   publisher: Publisher,
   license: License,
+  coverImage: CoverImageInfo,
   supportsTranslation: boolean,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
@@ -112,6 +113,20 @@ export type BookDetails = $ReadOnly<{|
     pdf?: string
   }
 |}>;
+
+export type ImageParameters = {
+  cropStartX: number,
+  cropEndX: number,
+  cropStartY: number,
+  cropEndY: number
+};
+
+export type StoredParameters = {
+  imageUrl: string,
+  revision: number,
+  forRatio: string,
+  rawImageQueryParameters: ImageParameters
+};
 
 export type FeaturedContent = $ReadOnly<{
   id: number,

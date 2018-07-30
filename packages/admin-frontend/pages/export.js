@@ -5,12 +5,12 @@ import Select from '@material-ui/core/Select/Select';
 import Button from '@material-ui/core/Button/Button';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Container from '../components/Container';
 
 import type { Language } from '../types';
 import { fetchLanguages, exportBooks } from '../lib/fetch';
-import Container from '../components/Container';
+import Layout from '../components/Layout';
 
 // Current book sources. Currently there's no endpoint to get these, so hardcode here for now
 const sources = [
@@ -89,68 +89,60 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
 
   render() {
     return (
-      <Container>
-        <Typography variant="headline" component="h1" gutterBottom>
-          Export books as CSV
-        </Typography>
-
-        <form>
-          <Grid container alignItems="center">
-            <Grid item xs>
-              <FormControl>
-                <InputLabel htmlFor="language-select">
-                  Select language
-                </InputLabel>
-                <Select
-                  native
-                  inputProps={{ id: 'language-select' }}
-                  value={this.state.selectedLanguage}
-                  onChange={this.handleLanguageChange}
-                >
-                  <option value="" />
-                  {this.props.languages.map(language => {
-                    return (
-                      <option key={language.code} value={language.code}>
-                        {language.name} ({language.code})
-                      </option>
-                    );
-                  })};
-                </Select>
-              </FormControl>
-            </Grid>
-
-            <Grid item xs>
-              <FormControl>
-                <InputLabel htmlFor="source-select">Select source</InputLabel>
-
-                <Select
-                  inputProps={{ id: 'source-select' }}
-                  value={this.state.selectedSource}
-                  onChange={this.handleSourceChange}
-                  native
-                >
-                  {this.state.sources.map(source => (
-                    <option key={source.code} value={source.code}>
-                      {source.name}
-                    </option>
-                  ))};
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs>
-              <Button
-                color="primary"
-                disabled={Boolean(
-                  !this.state.selectedSource || !this.state.selectedLanguage
-                )}
-                onClick={this.handleExportButtonClick}
+      <Layout>
+        <Container>
+          <Typography variant="headline">Export books as CSV</Typography>
+          <div>
+            <FormControl margin="normal">
+              <InputLabel htmlFor="language-select">Select language</InputLabel>
+              <Select
+                native
+                inputProps={{ id: 'language-select' }}
+                value={this.state.selectedLanguage}
+                onChange={this.handleLanguageChange}
               >
-                Export books
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Container>
+                <option value="" />
+                {this.props.languages.map(language => {
+                  return (
+                    <option key={language.code} value={language.code}>
+                      {language.name} ({language.code})
+                    </option>
+                  );
+                })}
+                ;
+              </Select>
+            </FormControl>
+          </div>
+          <div>
+            <FormControl margin="normal">
+              <InputLabel htmlFor="source-select">Select source</InputLabel>
+
+              <Select
+                inputProps={{ id: 'source-select' }}
+                value={this.state.selectedSource}
+                onChange={this.handleSourceChange}
+                native
+              >
+                {this.state.sources.map(source => (
+                  <option key={source.code} value={source.code}>
+                    {source.name}
+                  </option>
+                ))}
+                ;
+              </Select>
+            </FormControl>
+          </div>
+          <Button
+            color="primary"
+            disabled={Boolean(
+              !this.state.selectedSource || !this.state.selectedLanguage
+            )}
+            onClick={this.handleExportButtonClick}
+          >
+            Export books
+          </Button>
+        </Container>
+      </Layout>
     );
   }
 }

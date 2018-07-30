@@ -12,7 +12,6 @@ import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Link } from '../routes';
 import type { Book } from '../types';
-import ReadingLevel from './ReadingLevel';
 import CoverImage from './CoverImage';
 import media from '../style/media';
 
@@ -71,14 +70,12 @@ export default ({ book }: { book: Book }) => (
           lang={book.language.code}
           title={book.title}
           noWrap
-          gutterBottom
           component="a"
           align="center"
         >
           {book.title}
         </Typography>
       </Link>
-      <ReadingLevel level={book.readingLevel} />
     </CardContent>
   </Card>
 );

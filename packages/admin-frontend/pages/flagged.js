@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Container from '../components/Container';
 import { fetchFlaggedBooks } from '../lib/fetch';
 import type { Book } from '../types';
 import {
@@ -12,7 +13,7 @@ import {
   Typography
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import Container from '../components/Container';
+import Layout from '../components/Layout';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
@@ -79,28 +80,29 @@ class Flagged extends React.Component<Props, State> {
     const { loadingState, page, totalCount, pageSize, pages } = this.state;
 
     return (
-      <Container>
-        <Typography variant="headline" gutterBottom>
-          Flagged books
-        </Typography>
-
-        {totalCount === 0 && (
-          <Typography variant="subheading" align="center">
-            Could not find any flagged books.
+      <Layout>
+        <Container>
+          <Typography variant="headline" component="h1" gutterBottom>
+            Flagged books
           </Typography>
-        )}
+          {totalCount === 0 && (
+            <Typography variant="subheading" align="center">
+              Could not find any flagged books.
+            </Typography>
+          )}
 
-        {totalCount > 0 && (
-          <FlaggedTable
-            page={page}
-            totalCount={totalCount}
-            pageSize={pageSize}
-            pages={pages}
-            onPageChange={this.handleChangePage}
-            loadingState={loadingState}
-          />
-        )}
-      </Container>
+          {totalCount > 0 && (
+            <FlaggedTable
+              page={page}
+              totalCount={totalCount}
+              pageSize={pageSize}
+              pages={pages}
+              onPageChange={this.handleChangePage}
+              loadingState={loadingState}
+            />
+          )}
+        </Container>
+      </Layout>
     );
   }
 }
@@ -122,7 +124,6 @@ const FlaggedTable = ({
           <TableCell>Language</TableCell>
         </TableRow>
       </TableHead>
-
       <TableBody>
         {loadingState[page] === 'SUCCESS' &&
           flaggedBooks.map(book => (
@@ -142,7 +143,6 @@ const FlaggedTable = ({
             </TableRow>
           ))}
       </TableBody>
-
       <TableFooter>
         <TableRow />
         <TableRow>

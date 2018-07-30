@@ -148,17 +148,7 @@ class BrowsePage extends React.Component<Props, State> {
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <Layout
-        category={category}
-        crumbs={[
-          readingLevel ? (
-            // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-            <ReadingLevelTrans readingLevel={readingLevel} />
-          ) : (
-            <Trans>New arrivals</Trans>
-          )
-        ]}
-      >
+      <Layout category={category}>
         <Head title={i18n.t`Browse books`} />
         <Container>
           <Typography
@@ -178,20 +168,22 @@ class BrowsePage extends React.Component<Props, State> {
             )}
           </Typography>
           <BookGrid books={books.results} />
-          <LoadingButton
-            disabled={!canLoadMore}
-            onClick={this.handleLoadMore}
-            size="large"
-            isLoading={this.state.isLoadingMore}
-            color="primary"
-            fullWidth
-            css={{
-              marginTop: spacing.xlarge,
-              marginBottom: spacing.medium
-            }}
-          >
-            <Trans>More books</Trans>
-          </LoadingButton>
+
+          <div css={{ alignSelf: 'center' }}>
+            <LoadingButton
+              disabled={!canLoadMore}
+              onClick={this.handleLoadMore}
+              isLoading={this.state.isLoadingMore}
+              color="primary"
+              variant="outlined"
+              css={{
+                marginTop: spacing.xlarge,
+                marginBottom: spacing.medium
+              }}
+            >
+              <Trans>More books</Trans>
+            </LoadingButton>
+          </div>
         </Container>
       </Layout>
     );
