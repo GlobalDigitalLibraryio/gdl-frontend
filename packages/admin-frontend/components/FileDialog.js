@@ -19,31 +19,29 @@ type Props = {
 export default class FileDialog extends React.Component<Props> {
   render() {
     return (
-      <div>
-        <Dialog open={this.props.fileDialogOpen} onClose={this.props.onCancel}>
-          <DialogTitle>Upload file</DialogTitle>
-          <DialogContent>
-            <p>
-              We can create a form here asking for values like alttext or other
-              metadata
-            </p>
-            <img
-              src={URL.createObjectURL(this.props.selectedFile)}
-              alt="Uploaded"
-            />
-          </DialogContent>
+      <Dialog open={this.props.fileDialogOpen} onClose={this.props.onCancel}>
+        <DialogTitle>Upload file</DialogTitle>
+        <DialogContent>
+          <p>
+            We can create a form here asking for values like alttext or other
+            metadata
+          </p>
+          <img
+            src={URL.createObjectURL(this.props.selectedFile)}
+            alt="Uploaded"
+          />
+        </DialogContent>
 
-          <DialogActions>
-            <Button onClick={this.props.onCancel} color="secondary">
-              Cancel
-            </Button>
+        <DialogActions>
+          <Button onClick={this.props.onCancel} color="secondary">
+            Cancel
+          </Button>
 
-            <Button onClick={this.handleFileUpload} color="primary">
-              Upload
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
+          <Button onClick={this.handleFileUpload} color="primary">
+            Upload
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   }
 

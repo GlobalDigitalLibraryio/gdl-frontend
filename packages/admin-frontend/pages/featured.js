@@ -172,7 +172,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     event: SyntheticInputEvent<EventTarget>,
     onChange: (SyntheticInputEvent<any> | any) => void
   ) => {
-    // Sets the filename as the value of the input field
+    // Sets the filename to the value of the input field
     onChange(event.target.value);
 
     const file = event.target.files[0];
