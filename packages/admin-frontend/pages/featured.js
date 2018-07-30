@@ -97,6 +97,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   handleSaveButtonClick = (defaultReturned: boolean) => (
     content: FeaturedContent
   ) => {
+    if (content.selectedFile) delete content.selectedFile;
+
     defaultReturned
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
