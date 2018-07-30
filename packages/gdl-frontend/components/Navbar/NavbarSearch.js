@@ -2,7 +2,6 @@ import React from 'react';
 import { SearchField } from '../Search';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import { Router } from '../../routes';
-import { SEARCH_PAGE_SIZE } from '../../config';
 
 const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
@@ -15,7 +14,7 @@ export default class NavbarSearch extends React.Component<
   }
 > {
   state = {
-    searchResult: ''
+    searchQuery: ''
   };
 
   handleSearch = async event => {

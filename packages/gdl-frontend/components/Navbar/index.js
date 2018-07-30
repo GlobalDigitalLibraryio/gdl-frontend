@@ -113,10 +113,6 @@ class Navbar extends React.Component<Props, State> {
               </SrOnly>
             </IconButton>
 
-            <div css={media.mobile({ display: 'none' })}>
-              <NavbarSearch />
-            </div>
-
             <SelectLanguage anchor="right">
               {({ onClick }) => (
                 <Tooltip title={<Trans>Choose book language</Trans>}>
@@ -129,6 +125,10 @@ class Navbar extends React.Component<Props, State> {
                 </Tooltip>
               )}
             </SelectLanguage>
+
+            <div css={media.mobile({ display: 'none' })}>
+              <NavbarSearch />
+            </div>
           </Toolbar>
         </AppBar>
 

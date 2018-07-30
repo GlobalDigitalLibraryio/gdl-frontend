@@ -95,6 +95,12 @@ class SearchPage extends React.Component<Props, State> {
     languageCode: this.props.router.query[LANG_PARAM] || getBookLanguageCode()
   };
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.router.query.q !== prevProps.router.query.q) {
+      window.location.reload();
+    }
+  }
+
   handleSearch = async event => {
     event.preventDefault();
     if (!this.state.searchQuery || this.state.searchQuery.trim() === '') {
