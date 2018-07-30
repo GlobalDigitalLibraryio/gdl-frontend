@@ -66,10 +66,10 @@
     "universal-cookie": "^2.1.5"
   },
   "devDependencies": {
-    "@zeit/next-css": "^0.2.0",
-    "@weco/next-plugin-transpile-modules": "^0.0.2",
     "@lingui/babel-preset-react": "2.3.0",
     "@lingui/cli": "2.3.0",
+    "@zeit/next-css": "^0.2.0",
+    "@weco/next-plugin-transpile-modules": "^0.0.2",
     "babel-plugin-emotion": "9.2.6",
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",
