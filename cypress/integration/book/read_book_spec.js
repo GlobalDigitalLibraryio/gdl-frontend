@@ -25,7 +25,7 @@ describe('Read book', () => {
     // TODO: check if possible to test for .type() right and left arrow .
   });
 
-/*  it('Should be possible to navigate by swiping left and right', () => {
+  /*  it('Should be possible to navigate by swiping left and right', () => {
     // TODO: check if possible to test for swipe left and right.
   });*/
 });

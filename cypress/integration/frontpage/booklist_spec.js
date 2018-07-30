@@ -5,7 +5,7 @@ describe('Book lists (frontpage)', () => {
 
   it('All book lists should be visible, have title and more button', () => {
     cy.get('[data-cy="book-list"]').should('be.visible');
-    cy.get('[data-cy="book-list-more-button"]')  // TODO: consider using .each() and .contains('More')
+    cy.get('[data-cy="book-list-more-button"]') // TODO: consider using .each() and .contains('More')
       .and('be.visible')
       .and('have.attr', 'href');
     cy.get('[data-cy="book-list-header"]').should('be.visible');
@@ -21,7 +21,9 @@ describe('Book lists (frontpage)', () => {
   });
 
   it('It should be possible to scroll in booklist on mobile', () => {
-    cy.get('[data-cy="book-list-book-link"]').last().scrollIntoView()
+    cy.get('[data-cy="book-list-book-link"]')
+      .last()
+      .scrollIntoView();
   });
 
   // it('Should contain at least one child', () => {});
