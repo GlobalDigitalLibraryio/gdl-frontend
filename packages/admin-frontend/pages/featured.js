@@ -182,7 +182,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     {language.name} ({language.code})
                   </option>
                 );
-              })};
+              })}
+              ;
             </Select>
           </FormControl>
           <Form

@@ -108,7 +108,8 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                       {language.name} ({language.code})
                     </option>
                   );
-                })};
+                })}
+                ;
               </Select>
             </FormControl>
           </div>
@@ -126,7 +127,8 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                   <option key={source.code} value={source.code}>
                     {source.name}
                   </option>
-                ))};
+                ))}
+                ;
               </Select>
             </FormControl>
           </div>
