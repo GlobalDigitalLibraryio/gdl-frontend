@@ -20,7 +20,9 @@ const A = ({ openNewTab, className, ...restProps }: Props) => {
     ...restProps
   };
   if (openNewTab) {
+    // $FlowFixMe
     props.target = '_blank';
+    // $FlowFixMe
     props.rel = 'noopener noreferrer';
   }
   return (

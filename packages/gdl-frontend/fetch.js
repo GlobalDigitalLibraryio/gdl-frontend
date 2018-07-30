@@ -45,7 +45,8 @@ async function doFetch(
     body: ?any
   }
 ): Promise<RemoteData<any>> {
-  const token = process.browser ? getTokenFromLocalCookie() : undefined;
+  const token =
+    typeof window !== 'undefined' ? getTokenFromLocalCookie() : undefined;
 
   const response = await fetch(url, {
     headers: {

@@ -42,8 +42,7 @@ export function getUserName(req: ?$Request): ?string {
 }
 
 export function logout() {
-  if (!process.browser) {
-    return;
+  if (typeof window !== 'undefined') {
+    Cookie().remove(JWT_KEY, { path: '/' });
   }
-  Cookie().remove(JWT_KEY, { path: '/' });
 }
