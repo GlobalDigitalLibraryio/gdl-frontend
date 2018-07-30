@@ -53,7 +53,8 @@ const Navbar = ({ onMenuClick }: Props) => {
         <IconButton
           color="inherit"
           onClick={onMenuClick}
-          css={media.tablet({ marginRight: 18 })}        >
+          css={media.tablet({ marginRight: 18 })}
+        >
           <MenuIcon />
           <SrOnly>
             <Trans>Open menu</Trans>

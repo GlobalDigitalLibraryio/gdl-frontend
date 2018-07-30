@@ -15,8 +15,8 @@
     "build:admin": "cd packages/admin-frontend && yarn build",
     "delete": "yarn run delete:modules",
     "delete:modules": "find . -type d -name node_modules -maxdepth 3 -exec rm -rf '{}' +",
-    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn cypress:test && killall node",
-    "ci:remote": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn cypress:test:record",
+    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:test",
+    "ci:remote": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:boot && yarn cypress:test:record",
     "typecheck": "flow check",
     "test": "jest",
     "format": "prettier --write \"**/*.js\"",
@@ -24,8 +24,9 @@
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
     "start": "cd packages/gdl-frontend && yarn start",
     "cypress:open": "cypress open",
-    "cypress:test": "cd packages/gdl-frontend && yarn start & wait-on http://localhost:3000 && ./node_modules/.bin/cypress run",
-    "cypress:test:record": "cd packages/gdl-frontend && yarn start & wait-on http://localhost:3000 && ./node_modules/.bin/cypress run --record"
+    "cypress:boot": "cd packages/gdl-frontend && yarn start & wait-on http://localhost:3000",
+    "cypress:test": "./node_modules/.bin/cypress run",
+    "cypress:test:record": "./node_modules/.bin/cypress run --record"
 
   },
   "devDependencies": {
