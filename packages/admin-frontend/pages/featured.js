@@ -18,7 +18,6 @@ import {
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
 import CropImageViewer from '../components/CropImageViewer';
-import FileInput from '../components/FileInput';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -37,8 +36,7 @@ type Props = {
 type State = {
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
-  croppedParameters: ?ImageParameters,
-  fileDialogOpen: boolean
+  croppedParameters: ?ImageParameters
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -53,8 +51,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   state = {
     featuredContent: null,
     selectedLanguage: '',
-    croppedParameters: null,
-    fileDialogOpen: false
+    croppedParameters: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -122,8 +119,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   };
 
   handleCroppedParametersReceived = (
-    croppedParameters: ?ImageParameters,
-    mutator: any,
+    croppedParameters: ImageParameters,
+    change: (name: string, value: any) => void,
     imageUrl: string
   ) => {
     const baseUrl =
@@ -132,7 +129,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
         : imageUrl;
 
     if (croppedParameters) {
-      mutator.setNewImageUrl(
+      change(
+        'imageUrl',
         baseUrl +
           '?cropStartX=' +
           croppedParameters.cropStartX +
@@ -184,16 +182,12 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     {language.name} ({language.code})
                   </option>
                 );
-              })};
+              })}
+              ;
             </Select>
           </FormControl>
           <Form
-            mutators={{
-              setNewImageUrl: (args, state, utils) => {
-                utils.changeValue(state, 'imageUrl', () => args[0]);
-              }
-            }}
-            initialValues={featuredContent !== null ? featuredContent : {}}
+            initialValues={featuredContent || {}}
             onSubmit={this.handleSaveButtonClick(defaultReturned)}
             validate={handleValidate}
             render={({ handleSubmit, pristine, invalid, form }) => (
@@ -257,53 +251,26 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     </>
                   )}
                 />
-
-                <div
-                  css={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center'
-                  }}
-                >
-                  <div css={{ flex: 1 }}>
-                    <Field
-                      name="imageUrl"
-                      render={({ input, meta }) => (
-                        <>
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            error={meta.error && meta.touched}
-                            type="url"
-                            disabled={selectedLanguage === ''}
-                            label="Image Url"
-                            {...input}
-                          />
-                          {meta.error &&
-                            meta.touched && (
-                              <FormHelperText error>
-                                {meta.error}
-                              </FormHelperText>
-                            )}
-                        </>
-                      )}
-                    />
-                  </div>
-
-                  <div css={{ margin: '20px' }}>or</div>
-
-                  <div>
-                    <FileInput
-                      passUploadedImageUrl={imageUrl => {
-                        this.handleUploadedImageUrlReceived(
-                          imageUrl,
-                          form.mutators
-                        );
-                      }}
-                      selectedLanguage={this.state.selectedLanguage === ''}
-                    />
-                  </div>
-                </div>
+                <Field
+                  name="imageUrl"
+                  render={({ input, meta }) => (
+                    <>
+                      <TextField
+                        margin="normal"
+                        fullWidth
+                        error={meta.error && meta.touched}
+                        type="url"
+                        disabled={selectedLanguage === ''}
+                        label="Image Url"
+                        {...input}
+                      />
+                      {meta.error &&
+                        meta.touched && (
+                          <FormHelperText error>{meta.error}</FormHelperText>
+                        )}
+                    </>
+                  )}
+                />
 
                 <FormSpy
                   render={({ values }) => (
@@ -313,10 +280,10 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                         <CropImageViewer
                           ratio={2.63}
                           imageUrl={values.imageUrl}
-                          passCroppedParameters={croppedParameters => {
+                          onDialogOk={croppedParameters => {
                             this.handleCroppedParametersReceived(
                               croppedParameters,
-                              form.mutators,
+                              form.change,
                               /*$FlowFixMe*/
                               values.imageUrl
                             );
@@ -357,10 +324,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
         </Container>
       </Layout>
     );
-  }
-
-  handleUploadedImageUrlReceived(imageUrl: string, mutator: any) {
-    mutator.setNewImageUrl(imageUrl);
   }
 }
 function handleValidate(values) {

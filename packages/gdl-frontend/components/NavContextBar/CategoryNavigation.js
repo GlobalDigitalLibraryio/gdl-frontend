@@ -13,7 +13,6 @@ import { withTheme } from '@material-ui/core/styles';
 
 import type { Category } from '../../types';
 import SrOnly from '../../components/SrOnly';
-import media from '../../style/media';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
 
@@ -35,13 +34,6 @@ const A = styled('a')`
     `};
 `;
 
-// Because of space limitations, we only show "mobile" on big screens
-const HiddenMobile = styled('span')`
-  ${media.mobile`
-    display: none;
-  `};
-`;
-
 type Props = {|
   categories: Array<Category>,
   category: Category,
@@ -58,9 +50,7 @@ class CategoryNavigation extends React.Component<Props> {
             isSelected={category === 'library_books'}
             linkProps={{ route: 'library', params: { lang: languageCode } }}
           >
-            <Trans>
-              Library <HiddenMobile>books</HiddenMobile>
-            </Trans>
+            <Trans>Library books</Trans>
           </Tab>
         )}
         {categories.includes('classroom_books') && (
@@ -68,9 +58,7 @@ class CategoryNavigation extends React.Component<Props> {
             isSelected={category === 'classroom_books'}
             linkProps={{ route: 'classroom', params: { lang: languageCode } }}
           >
-            <Trans>
-              Classroom <HiddenMobile>books</HiddenMobile>
-            </Trans>
+            <Trans>Classroom books</Trans>
           </Tab>
         )}
       </Div>

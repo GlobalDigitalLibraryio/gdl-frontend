@@ -17,7 +17,9 @@ type Props = {
 
 const BookGrid = ({ books }: Props) => (
   <GridContainer>
-    {books.map(book => <BookLink key={book.id} book={book} />)}
+    {books.map(book => (
+      <BookLink key={book.id} book={book} />
+    ))}
   </GridContainer>
 );
 

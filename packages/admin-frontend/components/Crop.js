@@ -3,44 +3,18 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
+import { parseQuery } from '../lib/parseQuery';
 import type { ImageParameters } from '../types';
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  passCroppedParameters: (croppedParameters: ImageParameters) => void
+  onCrop: (croppedParameters: ImageParameters) => void
 };
 
-type State = {
-  existingParameters: ?ImageParameters
-};
-
-export default class Crop extends Component<Props, State> {
-  state = {
-    existingParameters: null
-  };
-
+export default class Crop extends Component<Props> {
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
   cropper: any;
-
-  componentDidMount() {
-    const imageUrl = this.props.imageUrl;
-
-    if (imageUrl.includes('?')) {
-      const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
-
-      const parameters = parseQuery(queryParameters);
-
-      // $FlowFixMe
-      this.setState({
-        existingParameters: parameters
-      });
-    } else {
-      this.setState({
-        existingParameters: null
-      });
-    }
-  }
 
   toPercentages = (cropper: any) => {
     const data = cropper.getData();
@@ -71,7 +45,7 @@ export default class Crop extends Component<Props, State> {
 
   crop = () => {
     const croppedParametersInPercent = this.toPercentages(this.cropper);
-    this.props.passCroppedParameters(croppedParametersInPercent);
+    this.props.onCrop(croppedParametersInPercent);
   };
 
   existingParametersToCropData = (existingParameters: ImageParameters) => {
@@ -90,12 +64,19 @@ export default class Crop extends Component<Props, State> {
   };
 
   onReady = () => {
-    const data =
-      this.state.existingParameters &&
-      this.existingParametersToCropData(this.state.existingParameters);
+    const imageUrl = this.props.imageUrl;
 
-    if (data !== null) {
-      this.cropper.setData(data);
+    if (imageUrl.includes('?')) {
+      const queryParameters = imageUrl.substring(imageUrl.indexOf('?') + 1);
+      const parameters = parseQuery(queryParameters);
+
+      if (equalToImageParameterType(parameters)) {
+        // $FlowFixMe
+        const data = this.existingParametersToCropData(parameters);
+        if (data) {
+          this.cropper.setData(data);
+        }
+      }
     }
   };
 
@@ -125,15 +106,15 @@ export default class Crop extends Component<Props, State> {
   }
 }
 
-function parseQuery(queryString) {
-  const query = {};
-  const pairs = (queryString[0] === '?'
-    ? queryString.substr(1)
-    : queryString
-  ).split('&');
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i].split('=');
-    query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
-  }
-  return query;
+function equalToImageParameterType(parameters: {}) {
+  const keys = Object.keys(parameters);
+  const values = Object.values(parameters);
+
+  return (
+    keys.includes('cropStartX') &&
+    keys.includes('cropEndX') &&
+    keys.includes('cropStartY') &&
+    keys.includes('cropEndY') &&
+    values.every(value => typeof value === 'number')
+  );
 }

@@ -14,21 +14,22 @@ import { Paper } from '@material-ui/core';
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
+import Footer from './Footer';
 import { misc, colors } from '../../style/theme';
-import { NavContextBar, Breadcrumb } from '../NavContextBar';
 import { classRoomTheme } from '../../getPageContext';
 
 const Main = styled(Paper)`
   background: ${colors.container.background};
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
   max-width: ${misc.containers.large};
   margin-left: auto;
   margin-right: auto;
 `;
 
+// Use height instead of min-height to fix flexbox issue in IE (https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/)
 const PageWrapper = styled('div')`
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 `;
@@ -36,7 +37,6 @@ const PageWrapper = styled('div')`
 type Props = {|
   children: Node,
   category?: ?Category,
-  crumbs?: Array<Node | string>,
   wrapWithMain: boolean
 |};
 
@@ -61,7 +61,7 @@ class Layout extends React.Component<Props, State> {
   }
 
   render() {
-    const { children, wrapWithMain, crumbs } = this.props;
+    const { children, wrapWithMain } = this.props;
     return this.wrapWithCategoryTheme(
       <PageWrapper>
         <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
@@ -69,12 +69,14 @@ class Layout extends React.Component<Props, State> {
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
         />
-        {crumbs && (
-          <NavContextBar>
-            <Breadcrumb crumbs={crumbs} />
-          </NavContextBar>
+        {wrapWithMain ? (
+          <Main square component="main">
+            {children}
+          </Main>
+        ) : (
+          children
         )}
-        {wrapWithMain ? <Main component="main">{children}</Main> : children}
+        <Footer />
       </PageWrapper>
     );
   }

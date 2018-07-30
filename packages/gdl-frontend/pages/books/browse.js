@@ -148,17 +148,7 @@ class BrowsePage extends React.Component<Props, State> {
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <Layout
-        category={category}
-        crumbs={[
-          readingLevel ? (
-            // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-            <ReadingLevelTrans readingLevel={readingLevel} />
-          ) : (
-            <Trans>New arrivals</Trans>
-          )
-        ]}
-      >
+      <Layout category={category}>
         <Head title={i18n.t`Browse books`} />
         <Container>
           <Typography

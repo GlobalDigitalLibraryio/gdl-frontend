@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Edit as EditIcon } from '@material-ui/icons';
+import { Crop as CropIcon } from '@material-ui/icons';
 import CropDialog from './CropDialog';
 import { EditIconButton } from '../style/icons';
 import type { ImageParameters } from '../types';
@@ -14,7 +14,7 @@ type State = {
 type Props = {
   ratio: number,
   imageUrl: string,
-  passCroppedParameters: (croppedParameters: ?ImageParameters) => void
+  onDialogOk: (croppedParameters: ImageParameters) => void
 };
 
 export default class CropImageViewer extends React.Component<Props, State> {
@@ -39,12 +39,12 @@ export default class CropImageViewer extends React.Component<Props, State> {
     this.setState({ dialogOpen: false });
   };
 
-  handleDialogOk = (croppedParameters: ?ImageParameters) => {
+  handleDialogOk = (croppedParameters: ImageParameters) => {
     this.setState({
       dialogOpen: false
     });
 
-    this.props.passCroppedParameters(croppedParameters);
+    this.props.onDialogOk(croppedParameters);
   };
 
   render() {
@@ -52,7 +52,7 @@ export default class CropImageViewer extends React.Component<Props, State> {
       <div css={{ position: 'relative' }}>
         {!this.state.imageError && (
           <EditIconButton onClick={this.handleOpen}>
-            <EditIcon />
+            <CropIcon />
           </EditIconButton>
         )}
 
@@ -68,10 +68,10 @@ export default class CropImageViewer extends React.Component<Props, State> {
           <CropDialog
             ratio={this.props.ratio}
             imageUrl={this.props.imageUrl}
-            notifyDialogOk={croppedParameters =>
+            onDialogOk={croppedParameters =>
               this.handleDialogOk(croppedParameters)
             }
-            notifyDialogCancelled={() => this.handleDialogCancelled()}
+            onDialogCancelled={this.handleDialogCancelled}
           />
         )}
       </div>
