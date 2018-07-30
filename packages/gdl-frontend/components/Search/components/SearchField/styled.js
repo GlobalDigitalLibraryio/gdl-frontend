@@ -43,6 +43,29 @@ export const Input = styled('input')`
   }
 `;
 
+export const InputDesktopAppbar = styled('input')`
+  -webkit-appearance: none;
+  background-color: #fff;
+  width: 100%;
+  outline: none;
+  border-radius: 30px;
+  border: 0;
+  padding: 12px 16px;
+  padding-left: 40px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  transition: all 0.2s ease-in-out;
+  ${placeholder({ color: colors.base.gray })};
+
+  &:focus {
+    ${placeholder({ color: 'rgb(117, 117, 117)' })};
+  }
+  &:hover,
+  &:focus {
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.15);
+  }
+`;
+
 export const Icon = styled('span')`
   position: absolute;
   color: ${colors.base.grayDarkest};

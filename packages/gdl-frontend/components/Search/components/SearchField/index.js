@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
-import { Input, Label, Container, Icon } from './styled';
+import { Input, InputDesktopAppbar, Label, Container, Icon } from './styled';
 
 type Props = {
   autoFocus?: boolean,
@@ -16,12 +16,30 @@ type Props = {
   onChange?: (event: SyntheticInputEvent<HTMLInputElement>) => void,
   placeholder?: string,
   required?: boolean,
-  value?: string
+  value?: string,
+  inputFieldType?: string
 };
 
 class SearchField extends React.Component<Props> {
   render() {
-    const { id, label } = this.props;
+    const { id, label, inputFieldType } = this.props;
+
+    let inputField;
+
+    if (inputFieldType === 'desktopAppbar') {
+      inputField = <InputDesktopAppbar id={id} type="search" {...this.props} />;
+    } else if (inputFieldType === 'mobileAppbar') {
+      inputField = (
+        <Input
+          id={id}
+          type="search"
+          css={{ minHeight: '56px' }}
+          {...this.props}
+        />
+      );
+    } else {
+      inputField = <Input id={id} type="search" {...this.props} />;
+    }
 
     return (
       <Container>
@@ -29,7 +47,7 @@ class SearchField extends React.Component<Props> {
         <Icon>
           <SearchIcon />
         </Icon>
-        <Input id={id} type="search" {...this.props} />
+        {inputField}
       </Container>
     );
   }

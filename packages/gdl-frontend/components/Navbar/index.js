@@ -127,7 +127,7 @@ class Navbar extends React.Component<Props, State> {
             </SelectLanguage>
 
             <div css={media.mobile({ display: 'none' })}>
-              <NavbarSearch />
+              <NavbarSearch inputFieldType="desktopAppbar" />
             </div>
           </Toolbar>
         </AppBar>
@@ -138,7 +138,7 @@ class Navbar extends React.Component<Props, State> {
           onClose={this.handleSearchClose}
           css={[media.tablet({ display: 'none' })]}
         >
-          <NavbarSearch />
+          <NavbarSearch inputFieldType="mobileAppbar" />
         </Drawer>
       </div>
     );

@@ -7,7 +7,9 @@ const QUERY_PARAM = 'q';
 const LANG_PARAM = 'l';
 
 export default class NavbarSearch extends React.Component<
-  Props,
+  {
+    inputFieldType?: string
+  },
   {
     searchQuery: string,
     lastSearchQuery?: string
@@ -56,6 +58,7 @@ export default class NavbarSearch extends React.Component<
             onChange={this.handleQueryChange}
             value={this.state.searchQuery}
             placeholder="Search"
+            inputFieldType={this.props.inputFieldType}
           />
         </form>
       </div>
