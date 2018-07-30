@@ -29,6 +29,7 @@ export default class FileDialog extends React.Component<Props> {
           <img
             src={URL.createObjectURL(this.props.selectedFile)}
             alt="Uploaded"
+            width="100%"
           />
         </DialogContent>
 
