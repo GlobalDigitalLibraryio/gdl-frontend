@@ -22,7 +22,7 @@ function createPageContext() {
   // To have take precedence. See _document.js as well.
   const jss = create(jssPreset());
 
-  if (process.browser) {
+  if (typeof window !== 'undefined') {
     jss.options.insertionPoint = document.getElementById('jss-insertion-point');
   }
 
@@ -42,7 +42,7 @@ function createPageContext() {
 export default function getPageContext() {
   // Make sure to create a new context for every server-side request so that data
   // isn't shared between connections (which would be bad).
-  if (!process.browser) {
+  if (typeof window === 'undefined') {
     return createPageContext();
   }
 

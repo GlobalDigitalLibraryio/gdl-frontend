@@ -72,8 +72,9 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     }
   }
 
-  onTap = (event: SyntheticTouchEvent<>) => {
+  onTap = (event: SyntheticTouchEvent<HTMLElement>) => {
     // If we clicked a button, ignore the tap
+    // $FlowFixMe: Not sure why Flow complains here
     if (event.target.type === 'button') {
       return;
     }

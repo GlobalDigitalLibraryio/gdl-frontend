@@ -39,6 +39,7 @@ class App extends NextApp {
   }) {
     let pageProps = {};
 
+    // $FlowFixMe: Next static method on the React component type
     if (typeof Component.getInitialProps === 'function') {
       pageProps = await Component.getInitialProps(ctx);
     }
