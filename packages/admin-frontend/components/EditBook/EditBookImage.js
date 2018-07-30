@@ -8,13 +8,21 @@ import {
 } from '@material-ui/core';
 
 import * as React from 'react';
-import styled from 'react-emotion';
 import { Edit as EditIcon } from '@material-ui/icons';
-import type { BookDetails } from '../../types';
-import colors from '../../style/colors';
-import Crop from './Crop';
+import { fetchStoredParameters, postStoredParameters } from '../../lib/fetch';
+
+import { EditIconButton } from '../../style/icons';
+import type {
+  BookDetails,
+  ImageParameters,
+  StoredParameters
+} from '../../types';
+import Crop from '../Crop';
+
 type State = {
-  open: boolean
+  open: boolean,
+  croppedParameters: ?ImageParameters,
+  existingStoredParameters: ?StoredParameters
 };
 
 type Props = {
@@ -23,21 +31,52 @@ type Props = {
 
 export default class EditBookImage extends React.Component<Props, State> {
   state = {
-    open: false
+    open: false,
+    croppedParameters: null,
+    existingStoredParameters: null
   };
 
-  cropInstance: ?Crop;
-
-  componentWillUnmount() {
-    this.cropInstance = null;
-  }
-
-  handleOpen = () => {
+  handleOpen = async () => {
     this.setState({ open: true });
+
+    const storedParameters = await fetchStoredParameters(
+      this.props.book.coverImage.url.substring(
+        this.props.book.coverImage.url.lastIndexOf('/')
+      )
+    );
+
+    if (storedParameters.isOk) {
+      this.setState({ existingStoredParameters: storedParameters.data[0] });
+    } else {
+      this.setState({ existingStoredParameters: null });
+    }
   };
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleSave = async () => {
+    if (this.state.croppedParameters) {
+      const imageApiBody = {
+        rawImageQueryParameters: this.state.croppedParameters,
+        forRatio: '0.81',
+        revision: this.state.existingStoredParameters
+          ? this.state.existingStoredParameters.revision
+          : 1,
+        imageUrl: this.props.book.coverImage.url.substring(
+          this.props.book.coverImage.url.lastIndexOf('/')
+        )
+      };
+
+      const result = await postStoredParameters(imageApiBody);
+
+      if (result.isOk) {
+        this.setState({ existingStoredParameters: result.data });
+      }
+    }
+
+    this.handleClose();
   };
 
   render() {
@@ -53,20 +92,18 @@ export default class EditBookImage extends React.Component<Props, State> {
         >
           <img
             src={
-              book.coverImage.url +
-              '?storedRatio=0.81&ratio=0.81&focalX=50&focalY=50' +
-              '&timestamp=' +
-              Date.now()
+              // Adds the storedRatio parameter to get the latest crop-parameters of the cover image.
+              // The timestamp parameter needs to be added to cache bust the CDN.
+              book.coverImage.url + '?storedRatio=0.81&timestamp=' + Date.now()
             }
-            css=""
             alt="Cover"
             width={260}
             height={365}
           />
 
-          <EditBookButton title="Edit cover image" onClick={this.handleOpen}>
+          <EditIconButton title="Edit cover image" onClick={this.handleOpen}>
             <EditIcon />
-          </EditBookButton>
+          </EditIconButton>
         </div>
 
         <Dialog open={this.state.open} onClose={this.handleClose}>
@@ -74,9 +111,9 @@ export default class EditBookImage extends React.Component<Props, State> {
           <DialogContent>
             <div>
               <Crop
-                ref={instance => {
-                  this.cropInstance = instance;
-                }}
+                onCrop={croppedParameters =>
+                  this.handleCroppedParametersReceived(croppedParameters)
+                }
                 imageUrl={book.coverImage.url}
                 ratio={0.81}
               />
@@ -91,8 +128,8 @@ export default class EditBookImage extends React.Component<Props, State> {
             <Button
               color="primary"
               onClick={() => {
-                this.cropInstance && this.cropInstance.handleSave();
                 this.handleClose();
+                this.handleSave();
               }}
             >
               Save
@@ -102,19 +139,8 @@ export default class EditBookImage extends React.Component<Props, State> {
       </div>
     );
   }
-}
 
-const EditBookButton = styled('button')`
-  color: ${colors.base.white};
-  position: absolute;
-  border: 0;
-  top: 0;
-  right: 0;
-  padding: 5px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  background: rgba(0, 0, 0, 0.5);
-  &:hover {
-    background: rgba(0, 0, 0, 0.6);
-  }
-`;
+  handleCroppedParametersReceived = (croppedParameters: ImageParameters) => {
+    this.setState({ croppedParameters: croppedParameters });
+  };
+}

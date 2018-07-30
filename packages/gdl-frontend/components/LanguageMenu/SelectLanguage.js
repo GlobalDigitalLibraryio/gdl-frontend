@@ -7,36 +7,51 @@
  */
 
 import React, { Fragment, type Node } from 'react';
-import { Trans } from '@lingui/react';
-import { Button, Typography } from '@material-ui/core';
 
 import type { Language } from '../../types';
 import { fetchLanguages } from '../../fetch';
 import LanguageMenu from './LanguageMenu';
+import { getBookLanguageCode } from '../../lib/storage';
 
 type Props = {
+  anchor?: 'left' | 'right',
   // Render prop
-  children?: (data: { onClick: () => void }) => Node,
-  language: Language,
-  linkProps?: (language: Language) => {},
+  children: (data: { onClick: () => void }) => Node,
   onSelectLanguage?: Language => void
 };
 
 type State = {
   showMenu: boolean,
-  languages: ?Array<Language>
+  languages: ?Array<Language>,
+  language: string
 };
 
 let cache = undefined;
 
+function linkProps(language) {
+  return {
+    route: 'books',
+    params: { lang: language.code }
+  };
+}
+
 export default class SelectLanguage extends React.Component<Props, State> {
   state = {
     showMenu: false,
-    languages: cache
+    languages: cache,
+    language: getBookLanguageCode()
   };
 
   // We only hit the network to get the languages if we really need to
   componentDidUpdate(prevProps: Props, prevState: State) {
+    // Makes sure we always show the correct language as selected when the menu is opened
+    if (!prevState.showMenu && this.state.showMenu) {
+      const language = getBookLanguageCode();
+      if (language !== prevState.language) {
+        this.setState({ language });
+      }
+    }
+
     if (
       !prevState.showMenu &&
       this.state.showMenu &&
@@ -65,25 +80,17 @@ export default class SelectLanguage extends React.Component<Props, State> {
   }
 
   render() {
-    const { language, linkProps, children } = this.props;
-    const { showMenu, languages } = this.state;
+    const { children, anchor } = this.props;
+    const { showMenu, languages, language } = this.state;
     return (
       <Fragment>
-        {children ? (
-          children({ onClick: this.handleShowMenu })
-        ) : (
-          <Typography component="div" variant="body2">
-            {language.name}{' '}
-            <Button onClick={this.handleShowMenu} color="primary" size="small">
-              <Trans>Change</Trans>
-            </Button>
-          </Typography>
-        )}
+        {children({ onClick: this.handleShowMenu })}
         {showMenu && (
           <LanguageMenu
+            anchor={anchor}
             linkProps={linkProps}
             languages={languages || []}
-            selectedLanguageCode={language && language.code}
+            selectedLanguageCode={language}
             showActivityIndicator={languages == null}
             onSelectLanguage={this.handleSelectLanguage}
             onClose={this.handleCloseMenu}

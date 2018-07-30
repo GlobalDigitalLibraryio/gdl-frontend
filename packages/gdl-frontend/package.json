@@ -31,7 +31,7 @@
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
-    "@lingui/react": "2.0.8",
+    "@lingui/react": "2.3.0",
     "@material-ui/core": "1.4.1",
     "@material-ui/icons": "2.0.0",
     "@zeit/next-source-maps": "^0.0.2",
@@ -60,15 +60,16 @@
     "react-dom": "^16.4.1",
     "react-emotion": "9.2.6",
     "react-ga": "^2.5.2",
+    "react-icons": "^2.2.7",
     "react-swipeable": "^4.3.0",
     "styled-system": "^2.2.5",
     "universal-cookie": "^2.1.5"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "^2.0.8",
-    "@lingui/cli": "^2.0.8",
     "@zeit/next-css": "^0.2.0",
     "@weco/next-plugin-transpile-modules": "^0.0.2",
+    "@lingui/babel-preset-react": "2.3.0",
+    "@lingui/cli": "2.3.0",
     "babel-plugin-emotion": "9.2.6",
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",

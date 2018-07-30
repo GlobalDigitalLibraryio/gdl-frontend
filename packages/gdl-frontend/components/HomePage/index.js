@@ -26,7 +26,6 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import { SelectLanguage } from '../../components/LanguageMenu';
 import BookList from '../../components/BookList';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
@@ -146,13 +145,6 @@ export default class HomePage extends React.Component<
             category={category}
             categories={categories}
             languageCode={languageCode}
-          />
-          <SelectLanguage
-            language={newArrivals.language}
-            linkProps={language => ({
-              route: 'books',
-              params: { lang: language.code }
-            })}
           />
         </NavContextBar>
         <Main>

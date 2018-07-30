@@ -68,8 +68,8 @@ const LoginPage = ({ i18n }: Props) => (
           css={{ display: 'inline' }}
         >
           privacy policy
-        </A>, and I am giving my consent to GDL’s use of my personal
-        information.
+        </A>
+        , and I am giving my consent to GDL’s use of my personal information.
       </Typography>
     </Container>
   </Layout>

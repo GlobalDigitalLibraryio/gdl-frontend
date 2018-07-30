@@ -7,5 +7,4 @@
  */
 
 export { default as NavContextBar } from './NavContextBar';
-export { default as Breadcrumb } from './Breadcrumb';
 export { default as CategoryNavigation } from './CategoryNavigation';
