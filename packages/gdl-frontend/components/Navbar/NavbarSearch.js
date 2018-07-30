@@ -2,7 +2,6 @@ import React from 'react';
 import { SearchField } from '../Search';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import { Router } from '../../routes';
-import media from '../../style/media';
 import { SEARCH_PAGE_SIZE } from '../../config';
 
 const QUERY_PARAM = 'q';
@@ -49,7 +48,7 @@ export default class NavbarSearch extends React.Component<
 
   render() {
     return (
-      <div css={media.mobile({ display: 'none' })}>
+      <div>
         <form onSubmit={this.handleSearch} action=".">
           <SearchField
             autoFocus

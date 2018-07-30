@@ -8,7 +8,13 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
+import {
+  AppBar,
+  Drawer,
+  IconButton,
+  Toolbar,
+  Tooltip
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LanguageIcon from '@material-ui/icons/Language';
@@ -26,6 +32,10 @@ type Props = {
   onMenuClick(): void
 };
 
+type State = {
+  searchIsOpen: boolean
+};
+
 // The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
 const BrandLink = styled('a')`
   svg {
@@ -39,73 +49,100 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick }: Props) => {
-  const brandLink = (
-    <Link route="books" passHref>
-      <BrandLink aria-label="Global Digital Library">
-        <GlobalDigitalLibraryLogo aria-hidden />
-      </BrandLink>
-    </Link>
-  );
+const brandLink = (
+  <Link route="books" passHref>
+    <BrandLink aria-label="Global Digital Library">
+      <GlobalDigitalLibraryLogo aria-hidden />
+    </BrandLink>
+  </Link>
+);
 
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          onClick={onMenuClick}
-          css={{ marginRight: 18 }}
-        >
-          <MenuIcon />
-          <SrOnly>
-            <Trans>Open menu</Trans>
-          </SrOnly>
-        </IconButton>
-        {brandLink}
+class Navbar extends React.Component<Props, State> {
+  state = {
+    searchIsOpen: false
+  };
 
-        <Link route="books" passHref>
-          <IconButton
-            color="inherit"
-            component="a"
-            css={{ marginLeft: 'auto' }}
-          >
-            <HomeIcon />
-            <SrOnly>
-              <Trans>Home</Trans>
-            </SrOnly>
-          </IconButton>
-        </Link>
+  handleSearchClick = () => {
+    this.setState({ searchIsOpen: true });
+  };
 
-        <Link route="search" passHref>
-          <IconButton
-            color="inherit"
-            component="a"
-            css={media.tablet({ display: 'none' })}
-          >
-            <SearchIcon />
-            <SrOnly>
-              <Trans>Search</Trans>
-            </SrOnly>
-          </IconButton>
-        </Link>
+  handleSearchClose = () => {
+    this.setState({ searchIsOpen: false });
+  };
 
-        <NavbarSearch />
+  render() {
+    const { searchIsOpen } = this.state;
 
-        <SelectLanguage anchor="right">
-          {({ onClick }) => (
-            <Tooltip title={<Trans>Choose book language</Trans>}>
-              <IconButton onClick={onClick} color="inherit">
-                <LanguageIcon />
+    return (
+      <div>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              onClick={this.props.onMenuClick}
+              css={{ marginRight: 18 }}
+            >
+              <MenuIcon />
+              <SrOnly>
+                <Trans>Open menu</Trans>
+              </SrOnly>
+            </IconButton>
+            {brandLink}
+
+            <Link route="books" passHref>
+              <IconButton
+                color="inherit"
+                component="a"
+                css={{ marginLeft: 'auto' }}
+              >
+                <HomeIcon />
                 <SrOnly>
-                  <Trans>Choose book language</Trans>
+                  <Trans>Home</Trans>
                 </SrOnly>
               </IconButton>
-            </Tooltip>
-          )}
-        </SelectLanguage>
-      </Toolbar>
-    </AppBar>
-  );
-};
+            </Link>
+
+            <IconButton
+              color="inherit"
+              onClick={this.handleSearchClick}
+              css={media.tablet({ display: 'none' })}
+            >
+              <SearchIcon />
+              <SrOnly>
+                <Trans>Search</Trans>
+              </SrOnly>
+            </IconButton>
+
+            <div css={media.mobile({ display: 'none' })}>
+              <NavbarSearch />
+            </div>
+
+            <SelectLanguage anchor="right">
+              {({ onClick }) => (
+                <Tooltip title={<Trans>Choose book language</Trans>}>
+                  <IconButton onClick={onClick} color="inherit">
+                    <LanguageIcon />
+                    <SrOnly>
+                      <Trans>Choose book language</Trans>
+                    </SrOnly>
+                  </IconButton>
+                </Tooltip>
+              )}
+            </SelectLanguage>
+          </Toolbar>
+        </AppBar>
+
+        <Drawer
+          anchor="top"
+          open={searchIsOpen}
+          onClose={this.handleSearchClose}
+          css={[media.tablet({ display: 'none' })]}
+        >
+          <NavbarSearch />
+        </Drawer>
+      </div>
+    );
+  }
+}
 
 export default Navbar;
