@@ -257,17 +257,11 @@ export async function uploadNewImage(
 ): Promise<RemoteData<ImageMetadata>> {
   const url = `${imageApiUrl}/images`;
 
-  // build formdata object
   const formData = new FormData();
   formData.append('metadata', JSON.stringify(metadata));
   formData.append('file', file);
 
-  const token = process.browser ? getAuthToken() : undefined;
-
   const result = await doFetch(url, {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : null
-    },
     method: 'POST',
     body: formData
   });
