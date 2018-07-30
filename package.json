@@ -15,14 +15,16 @@
     "build:admin": "cd packages/admin-frontend && yarn build",
     "delete": "yarn run delete:modules",
     "delete:modules": "find . -type d -name node_modules -maxdepth 3 -exec rm -rf '{}' +",
-    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && ./node_modules/.bin/cypress run --record CYPRESS_RECORD_KEY",
+    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn cypress:boot && yarn cypress:test",
     "typecheck": "flow check",
     "test": "jest",
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
     "start": "cd packages/gdl-frontend && yarn start",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:boot": "cd packages/gdl-frontend && yarn start & wait-on http://localhost:3000",
+    "cypress:test": "./node_modules/.bin/cypress run --record"
   },
   "resolutions": {
     "@lingui/cli/**/@babel/plugin-transform-typescript": "7.0.0-beta.42",
@@ -44,6 +46,7 @@
     "babel-plugin-transform-imports": "^1.5.0",
     "cypress": "^3.0.1",
     "eslint-plugin-cypress": "^2.0.1",
+    "wait-on": "^2.1.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.4",
