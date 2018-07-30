@@ -163,14 +163,14 @@ const Footer = () => {
           <a
             title="Facebook"
             aria-label="Facebook"
-            href="https://nb-no.facebook.com/globaldigitallibrary/"
+            href="https://www.facebook.com/globaldigitallibrary/"
           >
             <FaFacebookSquare />
           </a>
           <a
             title="Twitter"
             aria-label="Twitter"
-            href="https://www.facebook.com/globaldigitallibrary/"
+            href="https://twitter.com/gdigitallibrary"
           >
             <FaTwitterSquare />
           </a>
