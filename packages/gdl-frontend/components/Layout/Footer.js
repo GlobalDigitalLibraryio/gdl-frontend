@@ -128,7 +128,7 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a href="https://blog.digitallibrary.io/cc/">
+            <a href="https://home.digitallibrary.io/cc/">
               <Trans>Licensing and reuse</Trans>
             </a>
           </li>
