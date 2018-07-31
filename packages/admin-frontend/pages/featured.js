@@ -39,7 +39,8 @@ type State = {
   selectedLanguage: string,
   croppedParameters: ?ImageParameters,
   fileDialogOpen: boolean,
-  file: ?File
+  file: ?File,
+  inputKey: string
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -56,7 +57,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     selectedLanguage: '',
     croppedParameters: null,
     fileDialogOpen: false,
-    file: null
+    file: null,
+    inputKey: ''
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -97,8 +99,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   handleSaveButtonClick = (defaultReturned: boolean) => (
     content: FeaturedContent
   ) => {
-    if (content.selectedFile) delete content.selectedFile;
-
     defaultReturned
       ? this.postFeaturedContent(content)
       : this.putFeaturedContent(content);
@@ -161,20 +161,11 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     change('imageUrl', imageUrl);
   };
 
-  handleOnCancel = (change: (value: any) => void) => {
-    this.setState({ fileDialogOpen: false });
-
-    // Set the value of the file-input to the empty string to reset it
-    change('');
+  handleOnCancel = () => {
+    this.setState({ fileDialogOpen: false, file: null });
   };
 
-  handleFileChosen = (
-    event: SyntheticInputEvent<EventTarget>,
-    onChange: (SyntheticInputEvent<*> | any) => void
-  ) => {
-    // Sets the filename to the value of the input field
-    onChange(event.target.value);
-
+  handleFileChosen = (event: SyntheticInputEvent<EventTarget>) => {
     const file = event.target.files[0];
     this.setState({
       fileDialogOpen: true,
@@ -323,36 +314,23 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                   <div css={{ margin: '20px' }}>or</div>
 
                   <div css={{ align: 'center' }}>
-                    <Field
-                      name="selectedFile"
-                      render={({ input }) => (
-                        <>
-                          <input
-                            disabled={this.state.selectedLanguage === ''}
-                            type="file"
-                            id="fileinput"
-                            value={input.value}
-                            onChange={event =>
-                              this.handleFileChosen(event, input.onChange)
-                            }
-                          />
-
-                          {this.state.file && (
-                            <FileDialog
-                              fileDialogOpen={this.state.fileDialogOpen}
-                              selectedFile={this.state.file}
-                              objectURL={URL.createObjectURL(this.state.file)}
-                              onCancel={() =>
-                                this.handleOnCancel(input.onChange)
-                              }
-                              onUpload={url =>
-                                this.handleOnUpload(url, form.change)
-                              }
-                            />
-                          )}
-                        </>
-                      )}
+                    <input
+                      disabled={this.state.selectedLanguage === ''}
+                      type="file"
+                      id="fileinput"
+                      key={this.state.inputKey}
+                      onChange={event => this.handleFileChosen(event)}
                     />
+
+                    {this.state.file && (
+                      <FileDialog
+                        fileDialogOpen={this.state.fileDialogOpen}
+                        selectedFile={this.state.file}
+                        objectURL={URL.createObjectURL(this.state.file)}
+                        onCancel={() => this.handleOnCancel()}
+                        onUpload={url => this.handleOnUpload(url, form.change)}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -389,7 +367,12 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                 <Button
                   color="secondary"
                   disabled={pristine}
-                  onClick={form.reset}
+                  onClick={() => {
+                    form.reset();
+
+                    // To reset the file input - we update the key of the input with a new value (It is not possible to edit the value prop directly)
+                    this.setState({ inputKey: Date.now().toString(10) });
+                  }}
                 >
                   Discard changes
                 </Button>
