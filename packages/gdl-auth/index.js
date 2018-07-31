@@ -56,10 +56,9 @@ export function getUserName(req: ?$Request): ?string {
  * redirect path to '/' and remove JWT auth token
  */
 export function unsetJwtToken() {
-  if (!process.browser) {
-    return;
+  if (typeof window !== 'undefined') {
+    Cookie().remove(JWT_KEY, { path: '/' });
   }
-  Cookie().remove(JWT_KEY, { path: '/' });
 }
 
 export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
