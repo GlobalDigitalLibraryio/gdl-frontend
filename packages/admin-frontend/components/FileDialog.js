@@ -12,7 +12,6 @@ import { uploadNewImage } from '../lib/fetch';
 type Props = {
   onUpload: (imageUrl: string) => void,
   onCancel: () => void,
-  fileDialogOpen: boolean,
   selectedFile: File,
   objectURL: string
 };
@@ -20,7 +19,7 @@ type Props = {
 export default class FileDialog extends React.Component<Props> {
   render() {
     return (
-      <Dialog open={this.props.fileDialogOpen} onClose={this.closeDialog}>
+      <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
         <DialogContent>
           <p>

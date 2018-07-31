@@ -38,9 +38,7 @@ type State = {
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
   croppedParameters: ?ImageParameters,
-  fileDialogOpen: boolean,
-  file: ?File,
-  inputKey: string
+  file: ?File
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -56,9 +54,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     featuredContent: null,
     selectedLanguage: '',
     croppedParameters: null,
-    fileDialogOpen: false,
-    file: null,
-    inputKey: ''
+    file: null
   };
 
   getFeaturedContent = async (languageCode: string) => {
@@ -157,19 +153,17 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     imageUrl: string,
     change: (name: string, value: any) => void
   ) => {
-    this.setState({ fileDialogOpen: false });
+    this.setState({ file: null });
     change('imageUrl', imageUrl);
   };
 
   handleOnCancel = () => {
-    this.setState({ fileDialogOpen: false, file: null });
+    this.setState({ file: null });
   };
 
   handleFileChosen = (event: SyntheticInputEvent<EventTarget>) => {
-    const file = event.target.files[0];
     this.setState({
-      fileDialogOpen: true,
-      file: file
+      file: event.target.files[0]
     });
   };
 
@@ -317,14 +311,13 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     <input
                       disabled={this.state.selectedLanguage === ''}
                       type="file"
-                      id="fileinput"
-                      key={this.state.inputKey}
+                      accept="image/*"
+                      value=""
                       onChange={event => this.handleFileChosen(event)}
                     />
 
                     {this.state.file && (
                       <FileDialog
-                        fileDialogOpen={this.state.fileDialogOpen}
                         selectedFile={this.state.file}
                         objectURL={URL.createObjectURL(this.state.file)}
                         onCancel={() => this.handleOnCancel()}
@@ -367,12 +360,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                 <Button
                   color="secondary"
                   disabled={pristine}
-                  onClick={() => {
-                    form.reset();
-
-                    // To reset the file input - we update the key of the input with a new value (It is not possible to edit the value prop directly)
-                    this.setState({ inputKey: Date.now().toString(10) });
-                  }}
+                  onClick={form.reset}
                 >
                   Discard changes
                 </Button>
