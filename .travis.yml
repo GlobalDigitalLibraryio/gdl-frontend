@@ -6,7 +6,7 @@ before_install:
 install:
 - bolt
 script:
-- yarn run ci:remote
+- yarn ci:remote
 cache: yarn
 notifications:
   slack:
