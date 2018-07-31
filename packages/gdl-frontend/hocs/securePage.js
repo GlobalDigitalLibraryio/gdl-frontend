@@ -39,6 +39,7 @@ const securePageHoc = (Page, options) => {
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
       // Check if it actually is a next page
+      // $FlowFixMe: Next static method on the React component type
       if (typeof Page.getInitialProps === 'function') {
         composedInitialProps = await Page.getInitialProps(ctx);
       }

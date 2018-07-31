@@ -19,13 +19,12 @@ const Cookie = () => new UniversalCookie();
  * Set auth tokens (for user logging in)
  */
 export function setToken(token: { accessToken: string, expiresIn: number }) {
-  if (!process.browser || token.accessToken == null) {
-    return;
+  if (typeof window !== 'undefined' && token.accessToken != null) {
+    Cookie().set(JWT_KEY, token.accessToken, {
+      maxAge: token.expiresIn,
+      path: '/'
+    });
   }
-  Cookie().set(JWT_KEY, token.accessToken, {
-    maxAge: token.expiresIn,
-    path: '/'
-  });
 }
 
 export function unsetToken() {
