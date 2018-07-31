@@ -38,6 +38,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
           <Button
+            size="small"
             variant="outlined"
             color="primary"
             css={{ backgroundColor: '#fff', color: '#0277bd' }}
