@@ -20,8 +20,8 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { claims, getTokenFromLocalCookie } from '../../lib/auth/token';
-import { hasClaim } from 'gdl-auth';
+import { getTokenFromLocalCookie } from '../../lib/auth/token';
+import { hasClaim, claims } from 'gdl-auth';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';

@@ -7,7 +7,6 @@
  */
 
 import UniversalCookie from 'universal-cookie';
-import { GDL_ENVIRONMENT } from '../../config';
 import { unsetJwtToken } from 'gdl-auth';
 
 const JWT_KEY = 'jwt';
@@ -36,8 +35,3 @@ export function unsetToken() {
 export function getTokenFromLocalCookie() {
   return Cookie().get(JWT_KEY);
 }
-
-export const claims = {
-  readAdmin: `admin-${GDL_ENVIRONMENT}:read`,
-  writeBook: `books-${GDL_ENVIRONMENT}:write`
-};

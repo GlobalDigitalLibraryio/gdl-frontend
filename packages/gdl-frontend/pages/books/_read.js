@@ -11,8 +11,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 import { fetchBook, fetchChapter } from '../../fetch';
-import { claims } from '../../lib/auth/token';
-import { hasClaim } from 'gdl-auth';
+import { hasClaim, claims } from 'gdl-auth';
 import type { BookDetails, Chapter, Context } from '../../types';
 import { errorPage } from '../../hocs';
 import Reader from '../../components/Reader';
