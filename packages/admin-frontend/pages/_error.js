@@ -37,7 +37,7 @@ export default class Error extends React.Component {
           <div style={styles.desc}>
             <h2 style={styles.h2}>{title}.</h2>
           </div>
-          {children}
+          {statusCode === 403 && children}
         </div>
       </div>
     );

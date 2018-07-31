@@ -62,7 +62,7 @@ const LoginPage = ({ i18n }: Props) => (
       </div>
       <Typography align="center" css={{ marginTop: spacing.xxlarge }} paragraph>
         By signing in to this service I am hereby accepting the principles in
-        the GDL
+        the GDL{' '}
         <A
           href="https://home.digitallibrary.io/privacy/"
           css={{ display: 'inline' }}

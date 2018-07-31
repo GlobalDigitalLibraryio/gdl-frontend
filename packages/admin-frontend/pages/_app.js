@@ -72,8 +72,8 @@ class App extends NextApp {
 
   handleLogInClick = () => {
     setRedirectUrl({
-      pathname: this.props.router.pathname,
-      asPath: this.props.router.asPath,
+      pathname: `/admin${this.props.router.pathname}`,
+      asPath: `${this.props.router.asPath}`,
       query: this.props.router.query
     });
     Router.replace('/auth/sign-in');
