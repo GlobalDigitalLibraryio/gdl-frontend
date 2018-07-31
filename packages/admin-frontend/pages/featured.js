@@ -170,7 +170,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 
   handleFileChosen = (
     event: SyntheticInputEvent<EventTarget>,
-    onChange: (SyntheticInputEvent<any> | any) => void
+    onChange: (SyntheticInputEvent<*> | any) => void
   ) => {
     // Sets the filename to the value of the input field
     onChange(event.target.value);
@@ -341,6 +341,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                             <FileDialog
                               fileDialogOpen={this.state.fileDialogOpen}
                               selectedFile={this.state.file}
+                              objectURL={URL.createObjectURL(this.state.file)}
                               onCancel={() =>
                                 this.handleOnCancel(input.onChange)
                               }

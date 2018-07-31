@@ -13,13 +13,14 @@ type Props = {
   onUpload: (imageUrl: string) => void,
   onCancel: () => void,
   fileDialogOpen: boolean,
-  selectedFile: File
+  selectedFile: File,
+  objectURL: string
 };
 
 export default class FileDialog extends React.Component<Props> {
   render() {
     return (
-      <Dialog open={this.props.fileDialogOpen} onClose={this.props.onCancel}>
+      <Dialog open={this.props.fileDialogOpen} onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
         <DialogContent>
           <p>
@@ -27,14 +28,15 @@ export default class FileDialog extends React.Component<Props> {
             metadata
           </p>
           <img
-            src={URL.createObjectURL(this.props.selectedFile)}
+            src={this.props.objectURL}
+            onLoad={this.revokeObjectURL}
             alt="Uploaded"
             width="100%"
           />
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={this.props.onCancel} color="secondary">
+          <Button onClick={this.closeDialog} color="secondary">
             Cancel
           </Button>
 
@@ -45,6 +47,16 @@ export default class FileDialog extends React.Component<Props> {
       </Dialog>
     );
   }
+
+  closeDialog = () => {
+    this.props.onCancel();
+
+    this.revokeObjectURL();
+  };
+
+  revokeObjectURL = () => {
+    URL.revokeObjectURL(this.props.objectURL);
+  };
 
   handleFileUpload = async () => {
     // Dummy metadata until we want to enter something useful in here
@@ -74,5 +86,7 @@ export default class FileDialog extends React.Component<Props> {
         this.props.onUpload(result.data.imageUrl);
       }
     }
+
+    this.revokeObjectURL();
   };
 }
