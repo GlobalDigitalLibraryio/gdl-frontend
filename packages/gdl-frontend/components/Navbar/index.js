@@ -54,6 +54,7 @@ const Navbar = ({ onMenuClick }: Props) => {
           color="inherit"
           onClick={onMenuClick}
           css={media.tablet({ marginRight: 18 })}
+          data-cy="menu-button"
         >
           <MenuIcon />
           <SrOnly>
@@ -66,7 +67,6 @@ const Navbar = ({ onMenuClick }: Props) => {
             color="inherit"
             component="a"
             css={{ marginLeft: 'auto' }}
-            data-cy="search-button"
           >
             <HomeIcon />
             <SrOnly>
@@ -75,7 +75,7 @@ const Navbar = ({ onMenuClick }: Props) => {
           </IconButton>
         </Link>
         <Link route="search" passHref>
-          <IconButton color="inherit" component="a">
+          <IconButton color="inherit" component="a" data-cy="search-button">
             <SearchIcon />
             <SrOnly>
               <Trans>Search</Trans>
@@ -85,7 +85,11 @@ const Navbar = ({ onMenuClick }: Props) => {
         <SelectLanguage anchor="right">
           {({ onClick }) => (
             <Tooltip title={<Trans>Choose book language</Trans>}>
-              <IconButton onClick={onClick} color="inherit">
+              <IconButton
+                onClick={onClick}
+                color="inherit"
+                data-cy="change-book-language-button"
+              >
                 <LanguageIcon />
                 <SrOnly>
                   <Trans>Choose book language</Trans>

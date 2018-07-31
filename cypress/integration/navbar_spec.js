@@ -9,5 +9,6 @@ describe('Navigation Bar', () => {
     cy.get('[data-cy="search-button"]')
       .should('be.visible')
       .and('have.attr', 'href', '/search');
+    cy.get('[data-cy="change-book-language-button"]').should('be.visible')
   });
 });
