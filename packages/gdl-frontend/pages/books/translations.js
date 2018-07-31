@@ -11,14 +11,17 @@ import { Trans } from '@lingui/react';
 import {
   Button,
   Card,
-  CardContent,
   CardActions,
-  Typography,
-  Grid,
+  CardContent,
+  CircularProgress,
   Divider,
-  CircularProgress
+  Typography
 } from '@material-ui/core';
+
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
+import { Translate as TranslateIcon } from '@material-ui/icons';
+import { Sync as SyncIcon } from '@material-ui/icons';
+import { Edit as EditIcon } from '@material-ui/icons';
 
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
@@ -29,6 +32,7 @@ import Container from '../../components/Container';
 import Head from '../../components/Head';
 import BookCover from '../../components/BookCover';
 import { spacing } from '../../style/theme';
+import media from '../../style/media';
 
 class TranslationCard extends React.Component<
   { translation: Translation },
@@ -51,64 +55,86 @@ class TranslationCard extends React.Component<
 
     return (
       <Card key={translation.id} css={{ marginBottom: spacing.large }}>
-        <Grid container>
-          <Grid item>
-            <Link
-              route="book"
-              params={{
-                lang: translation.translatedTo.code,
-                id: translation.id
-              }}
-            >
-              <a>
-                <BookCover
-                  w={[75, 120]}
-                  h={[100, 150]}
-                  coverImage={translation.coverImage}
-                />
-              </a>
-            </Link>
-          </Grid>
-          <Grid item xs>
-            <CardContent>
-              <Typography variant="headline">{translation.title}</Typography>
-              <Typography variant="subheading">
-                <Trans>from {translation.publisher.name}</Trans>
-              </Typography>
-            </CardContent>
-          </Grid>
-        </Grid>
-        <CardContent>
-          <Grid container alignItems="center">
-            <Grid item xs={4}>
-              <Typography>{translation.translatedFrom.name}</Typography>
-            </Grid>
-            <Grid item xs={4} css={{ textAlign: 'center' }}>
-              <ArrowForwardIcon />
-            </Grid>
-            <Grid item xs={4}>
-              <Typography align="right" variant="body2">
-                {translation.translatedTo.name}
-              </Typography>
-            </Grid>
-          </Grid>
+        <CardContent css={{ display: 'flex' }}>
+          <TranslateIcon />
+          <Typography
+            css={{ marginLeft: spacing.large, marginRight: spacing.medium }}
+          >
+            {translation.translatedFrom.name}
+          </Typography>
+          <ArrowForwardIcon />
+          <Typography
+            css={{ marginLeft: spacing.medium, marginRight: spacing.medium }}
+          >
+            {translation.translatedTo.name}
+          </Typography>
         </CardContent>
         <Divider />
-        <CardActions>
+
+        <CardContent
+          css={{
+            display: 'flex',
+            marginTop: spacing.small,
+            marginBottom: spacing.small
+          }}
+        >
+          <Link
+            route="book"
+            params={{
+              lang: translation.translatedTo.code,
+              id: translation.id
+            }}
+          >
+            <a>
+              <BookCover
+                w={[120, 120]}
+                h={[150, 150]}
+                coverImage={translation.coverImage}
+              />
+            </a>
+          </Link>
+
+          <div
+            css={{
+              marginLeft: spacing.medium
+            }}
+          >
+            <Typography variant="headline">{translation.title}</Typography>
+            <Typography variant="subheading">
+              <Trans>from {translation.publisher.name}</Trans>
+            </Typography>
+          </div>
+        </CardContent>
+
+        <Divider />
+
+        <CardActions
+          css={[
+            { display: 'flex' },
+            media.mobile({ justifyContent: 'space-evenly' }),
+            media.tablet({ justifyContent: 'flex-end' })
+          ]}
+        >
           <Button
             color="primary"
             onClick={this.handleSynchronize}
             disabled={this.state.isSynchronized}
+            aria-label="Sync Translation"
+            css={{ textAlign: 'left' }}
           >
-            <Trans>Sync</Trans>
+            <SyncIcon css={{ margin: spacing.xsmall }} />
+            <Trans>Sync with Crowdin</Trans>
           </Button>
+
           <Button
             color="primary"
             href={translation.crowdinUrl}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Edit Translation"
           >
-            <Trans>Edit</Trans>
+            <EditIcon css={{ margin: spacing.xsmall }} />
+            <Trans>Edit translation</Trans>
           </Button>
         </CardActions>
       </Card>
