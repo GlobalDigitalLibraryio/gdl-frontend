@@ -114,11 +114,6 @@ class Layout extends React.Component<
           />
           <Divider />
           <List component="nav" css={{ width: drawerWidth }}>
-            <Link prefetch href="/admin/crop">
-              <ListItem button component="a">
-                <ListItemText primary="Crop images" />
-              </ListItem>
-            </Link>
             <Link href="/admin/export">
               <ListItem button component="a">
                 <ListItemText primary="Export books" />
