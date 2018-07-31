@@ -1,5 +1,4 @@
 // @flow
-const withCSS = require('@zeit/next-css');
 const withTM = require('@weco/next-plugin-transpile-modules');
 
 // Add source maps in production for Sentry
@@ -23,6 +22,4 @@ module.exports = withSourceMaps({
   }
 });
 
-module.exports = withCSS(
-  withTM({ transpileModules: ['gdl-auth', 'gdl-config'] })
-);
+module.exports = withTM({ transpileModules: ['gdl-auth', 'gdl-config'] });

@@ -52,10 +52,10 @@ export function getUserName(req: ?$Request): ?string {
 }
 
 /**
- * Log out used in admin
+ * Unset token to log out of admin
  * redirect path to '/' and remove JWT auth token
  */
-export function logout() {
+export function unsetJwtToken() {
   if (!process.browser) {
     return;
   }
