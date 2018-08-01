@@ -47,12 +47,17 @@ class SearchField extends React.Component<Props> {
         <IconButton
           aria-label="Search"
           type="submit"
+          disabled={Boolean(!this.props.value)}
           css={{ position: 'absolute' }}
         >
           <SearchIcon />
         </IconButton>
       ) : (
-        <IconButton aria-label="Search" type="submit">
+        <IconButton
+          aria-label="Search"
+          type="submit"
+          disabled={Boolean(!this.props.value)}
+        >
           <SearchIcon />
         </IconButton>
       );
