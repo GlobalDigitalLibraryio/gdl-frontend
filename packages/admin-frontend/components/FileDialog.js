@@ -5,8 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
-  Typography
+  Button
 } from '@material-ui/core';
 import React from 'react';
 import { Form } from 'react-final-form';
