@@ -20,27 +20,27 @@ type Props = {
   objectURL: string
 };
 
+const initialMetadata = {
+  externalId: Date.now().toString(10),
+  title: '',
+  alttext: '',
+  copyright: {
+    license: {
+      license: '',
+      description: ''
+    },
+    origin: '',
+    creators: [],
+    processors: [],
+    rightsholders: []
+  },
+  tags: [],
+  caption: '',
+  language: 'en'
+};
+
 export default class FileDialog extends React.Component<Props> {
   render() {
-    const initialMetadata = {
-      externalId: Date.now().toString(10),
-      title: '',
-      alttext: '',
-      copyright: {
-        license: {
-          license: '',
-          description: ''
-        },
-        origin: '',
-        creators: [],
-        processors: [],
-        rightsholders: []
-      },
-      tags: [],
-      caption: '',
-      language: 'en'
-    };
-
     return (
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
