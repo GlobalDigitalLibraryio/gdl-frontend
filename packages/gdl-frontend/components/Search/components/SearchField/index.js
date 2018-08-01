@@ -7,7 +7,8 @@
  */
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
-import { Input, InputDesktopAppbar, Label, Container, Icon } from './styled';
+import { Container, Input, InputDesktopAppbar, Label } from './styled';
+import { IconButton } from '@material-ui/core';
 
 type Props = {
   autoFocus?: boolean,
@@ -41,13 +42,26 @@ class SearchField extends React.Component<Props> {
       inputField = <Input id={id} type="search" {...this.props} />;
     }
 
+    let submitButton =
+      inputFieldType === 'desktopAppbar' ? (
+        <IconButton
+          aria-label="Search"
+          type="submit"
+          css={{ position: 'absolute' }}
+        >
+          <SearchIcon />
+        </IconButton>
+      ) : (
+        <IconButton aria-label="Search" type="submit">
+          <SearchIcon />
+        </IconButton>
+      );
+
     return (
       <Container>
         <Label htmlFor={id}>{label}</Label>
-        <Icon>
-          <SearchIcon />
-        </Icon>
         {inputField}
+        {submitButton}
       </Container>
     );
   }
