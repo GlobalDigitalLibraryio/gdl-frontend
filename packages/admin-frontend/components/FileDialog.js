@@ -12,6 +12,7 @@ import { Form } from 'react-final-form';
 import { uploadNewImage } from '../lib/fetch';
 import { handleValidate } from '../lib/metadataValidator';
 import { MetadataFormFields } from './MetadataFormFields';
+
 type Props = {
   onUpload: (imageUrl: string) => void,
   onCancel: () => void,
@@ -21,22 +22,22 @@ type Props = {
 
 export default class FileDialog extends React.Component<Props> {
   render() {
-    const metadata = {
+    const initialMetadata = {
       externalId: Date.now().toString(10),
-      title: "",
-      alttext: "",
+      title: '',
+      alttext: '',
       copyright: {
         license: {
-          license: license.license,
-          description: license.description
+          license: '',
+          description: ''
         },
-        origin: values.origin,
+        origin: '',
         creators: [],
         processors: [],
         rightsholders: []
       },
       tags: [],
-      caption: values.caption,
+      caption: '',
       language: 'en'
     };
 
@@ -44,8 +45,8 @@ export default class FileDialog extends React.Component<Props> {
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
         <Form
-          initialValues={metadata}
-          validate={handleValidate}
+          initialValues={initialMetadata}
+          // validate={handleValidate}
           onSubmit={this.handleFileUpload}
           render={({ handleSubmit, pristine, invalid }) => (
             <div>
@@ -58,7 +59,16 @@ export default class FileDialog extends React.Component<Props> {
                   alt="Uploaded"
                   width="100%"
                 />
-                <MetadataFormFields />
+                <MetadataFormFields
+                  names={{
+                    title: 'title',
+                    alttext: 'alttext',
+                    license: 'copyright.license.license',
+                    licenseDescription: 'copyright.license.description',
+                    origin: 'copyright.origin',
+                    caption: 'caption'
+                  }}
+                />
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.closeDialog} color="secondary">

@@ -76,7 +76,6 @@ export default class EditImageDialog extends React.Component<Props, State> {
     const imageMetadata = await fetchImageMetadata(imageId);
 
     if (imageMetadata.isOk) {
-      console.log(imageMetadata.data);
       this.setState({ imageMetadata: imageMetadata.data });
     }
   };
@@ -100,7 +99,6 @@ export default class EditImageDialog extends React.Component<Props, State> {
       }
     }
 
-    console.log(values);
     const payload = {
       language: this.props.book.language.code,
       alttext: values.alttext.alttext,
@@ -110,7 +108,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
       caption: values.caption.caption
     };
 
-    // FixMe: See above fixme
+    // FixMe: Remove hardcoding
     const result = await patchImageMetadata('10001', payload);
 
     this.props.onSave();
@@ -152,7 +150,16 @@ export default class EditImageDialog extends React.Component<Props, State> {
                       ratio={0.81}
                     />
                   )}
-                  <MetadataFormFields />
+                  <MetadataFormFields
+                    names={{
+                      title: 'title.title',
+                      alttext: 'alttext.alttext',
+                      caption: 'caption.caption',
+                      license: 'copyright.license.license',
+                      licenseDescription: 'copyright.license.description',
+                      origin: 'copyright.origin'
+                    }}
+                  />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={this.props.onCancel} color="secondary">

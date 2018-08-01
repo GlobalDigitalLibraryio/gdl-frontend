@@ -1,7 +1,8 @@
 export function handleValidate(values) {
+    console.log(values)
   const errors = {};
 
-  if (values.title === undefined || values.title.trim() === '') {
+  if (values.title.title === undefined || values.title.trim() === '') {
     errors.title = 'You have to enter a title';
   }
 

@@ -2,16 +2,25 @@
 import React from 'react';
 import { Field } from 'react-final-form';
 
-import {
-  FormHelperText,
-  TextField
-} from '@material-ui/core';
+import { FormHelperText, TextField } from '@material-ui/core';
 
-export const MetadataFormFields = () => {
+type Props = {
+  // Since we operate on different objects from the backend we want to specify the nesting of the names so that react-final-form can edit the value-object for us
+  names: {
+    title: string,
+    alttext: string,
+    caption: string,
+    origin: string,
+    license: string,
+    licenseDescription: string
+  }
+};
+
+export const MetadataFormFields = (props: Props) => {
   return (
     <div>
       <Field
-        name="title.title"
+        name={props.names.title}
         render={({ input, meta }) => (
           <div>
             <TextField
@@ -30,7 +39,7 @@ export const MetadataFormFields = () => {
       />
 
       <Field
-        name="alttext.alttext"
+        name={props.names.alttext}
         render={({ input, meta }) => (
           <div>
             <TextField
@@ -48,7 +57,7 @@ export const MetadataFormFields = () => {
         )}
       />
       <Field
-        name="caption.caption"
+        name={props.names.caption}
         render={({ input, meta }) => (
           <div>
             <TextField
@@ -67,7 +76,7 @@ export const MetadataFormFields = () => {
       />
 
       <Field
-        name="copyright.origin"
+        name={props.names.origin}
         render={({ input, meta }) => (
           <div>
             <TextField
@@ -86,7 +95,7 @@ export const MetadataFormFields = () => {
       />
 
       <Field
-        name="copyright.license.license"
+        name={props.names.license}
         render={({ input, meta }) => (
           <div>
             <TextField
@@ -106,7 +115,7 @@ export const MetadataFormFields = () => {
 
       <Field
         label="License"
-        name="copyright.license.description"
+        name={props.names.licenseDescription}
         render={({ input, meta }) => (
           <div>
             <TextField
