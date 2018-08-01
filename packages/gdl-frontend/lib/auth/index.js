@@ -12,9 +12,6 @@ import { clientAuth } from '../../config';
 // Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
 const auth0 = import('auth0-js');
 
-export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
-  lscache.set('REDIRECT_AFTER_LOGIN', path, 5);
-
 export const getRedirectUrl = () => lscache.get('REDIRECT_AFTER_LOGIN');
 
 const getAuth = async options => {

@@ -42,6 +42,7 @@
     "emotion-theming": "9.2.6",
     "express": "^4.16.3",
     "express-request-language": "^1.1.15",
+    "gdl-auth": "^0.0.0",
     "glob": "^7.1.2",
     "helmet": "^3.12.1",
     "invariant": "^2.2.4",
@@ -67,6 +68,7 @@
   "devDependencies": {
     "@lingui/babel-preset-react": "2.3.0",
     "@lingui/cli": "2.3.0",
+    "@weco/next-plugin-transpile-modules": "^0.0.2",
     "babel-plugin-emotion": "9.2.6",
     "babel-plugin-polished": "^1.1.0",
     "babel-plugin-transform-assets": "^0.2.0",

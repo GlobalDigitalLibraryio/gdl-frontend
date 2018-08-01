@@ -38,7 +38,7 @@ import View from '../../elements/View';
 import Container from '../../elements/Container';
 import BookCover from '../../components/BookCover';
 import BookList from '../../components/BookList';
-import { hasClaim, claims } from '../../lib/auth/token';
+import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';

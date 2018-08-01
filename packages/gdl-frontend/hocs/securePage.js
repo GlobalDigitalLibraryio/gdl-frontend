@@ -10,12 +10,7 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router, { withRouter } from 'next/router';
 
-import {
-  getTokenFromLocalCookie,
-  getTokenFromServerCookie,
-  hasClaim
-} from '../lib/auth/token';
-import { setRedirectUrl } from '../lib/auth';
+import { setRedirectUrl, hasClaim, getAuthToken } from 'gdl-auth';
 import type { Context } from '../types';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';
@@ -29,9 +24,7 @@ const securePageHoc = (Page, options) => {
 
   return class SecurePage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
-      const token = ctx.req
-        ? getTokenFromServerCookie(ctx.req)
-        : getTokenFromLocalCookie();
+      const token = getAuthToken(ctx.req);
       const isAuthenticated = Boolean(token);
 
       const hasAccess = claim
