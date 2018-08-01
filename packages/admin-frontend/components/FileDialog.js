@@ -69,14 +69,16 @@ export default class FileDialog extends React.Component<Props> {
   };
 
   handleFileUpload = async (values: Object) => {
+    const license = JSON.parse(values.license);
+
     const metadata = {
       externalId: Date.now().toString(10),
       title: values.title,
       alttext: values.alttext,
       copyright: {
         license: {
-          license: values.license,
-          description: 'Creative Commons Attribution 4.0 International'
+          license: license.license,
+          description: license.description
         },
         origin: values.origin,
         creators: [],
@@ -84,7 +86,7 @@ export default class FileDialog extends React.Component<Props> {
         rightsholders: []
       },
       tags: [],
-      caption: 'something',
+      caption: values.caption,
       language: 'en'
     };
 
@@ -117,6 +119,10 @@ function handleValidate(values) {
 
   if (values.license === undefined || values.license === '') {
     errors.license = 'You have to choose a license';
+  }
+
+  if (values.caption === undefined || values.caption.trim() === '') {
+    errors.caption = 'You have to specify a caption';
   }
 
   return errors;
