@@ -17,7 +17,6 @@ const LICENSES = [
   'bare hvis du er kul'
 ];
 
-
 export const MetadataFormFields = () => {
   return (
     <div>
