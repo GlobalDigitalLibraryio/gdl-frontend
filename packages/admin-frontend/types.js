@@ -149,3 +149,58 @@ export type Context = {
 export type I18n = {
   t: (Array<string>) => string
 };
+
+export type NewImageMetadata = {
+  externalId: string,
+  title: string,
+  alttext: string,
+  copyright: {
+    license: {
+      license: string,
+      description: string
+    },
+    origin: string,
+    creators: [],
+    processors: [],
+    rightsholders: []
+  },
+  tags: [],
+  caption: string,
+  language: string
+};
+
+export type ImageMetadata = {
+  id: string,
+  externalId: string,
+  metaUrl: string,
+  title: {
+    title: string,
+    language: string
+  },
+  alttext: {
+    alttext: string,
+    language: string
+  },
+  imageUrl: string,
+  size: number,
+  contentType: string,
+  copyright: {
+    licence: {
+      licence: string,
+      description: string
+    },
+    origin: string,
+    creators: [string],
+    processors: [string],
+    rightsholders: [string]
+  },
+  tags: {
+    tags: [string],
+    language: string
+  },
+  caption: {
+    caption: string,
+    language: string
+  },
+  supportedLanguages: [string]
+};

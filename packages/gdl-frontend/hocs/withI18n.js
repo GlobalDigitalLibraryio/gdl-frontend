@@ -14,6 +14,7 @@ export default (Page: React.ComponentType<*>) => {
   return class I18n extends React.Component<*> {
     static getInitialProps(ctx: Context) {
       return (
+        // $FlowFixMe: Next static method on the React component type
         typeof Page.getInitialProps === 'function' && Page.getInitialProps(ctx)
       );
     }

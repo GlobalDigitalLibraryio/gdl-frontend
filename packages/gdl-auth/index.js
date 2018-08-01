@@ -2,6 +2,8 @@
 import type { $Request } from 'express';
 import jwtDecode from 'jwt-decode';
 import UniversalCookie from 'universal-cookie';
+import lscache from 'lscache';
+
 export { default as claims } from './claims';
 
 const JWT_KEY = 'jwt';
@@ -23,6 +25,10 @@ export function hasClaim(claim: string, req: ?$Request): boolean {
   return decoded.scope && decoded.scope.includes(claim);
 }
 
+export function hasAuthToken(req: ?$Request): boolean {
+  return Boolean(getAuthToken(req));
+}
+
 /**
  * Read the JWT auth token from cookies.
  * @param req Optional Express request object (for SSR)
@@ -31,6 +37,10 @@ export function getAuthToken(req: ?$Request): ?string {
   return req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
 }
 
+/**
+ * Get username from JWT auth token
+ * @param req Optional Express request object (for SSR)
+ */
 export function getUserName(req: ?$Request): ?string {
   const jwt = getAuthToken(req);
   if (!jwt) {
@@ -41,9 +51,15 @@ export function getUserName(req: ?$Request): ?string {
   return decoded['https://digitallibrary.io/user_name'];
 }
 
-export function logout() {
-  if (!process.browser) {
-    return;
+/**
+ * Unset token to log out of admin
+ * redirect path to '/' and remove JWT auth token
+ */
+export function unsetJwtToken() {
+  if (typeof window !== 'undefined') {
+    Cookie().remove(JWT_KEY, { path: '/' });
   }
-  Cookie().remove(JWT_KEY, { path: '/' });
 }
+
+export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
+  lscache.set('REDIRECT_AFTER_LOGIN', path, 5);

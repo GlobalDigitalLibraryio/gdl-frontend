@@ -103,6 +103,7 @@ export default class HomePage extends React.Component<
     } = this.props;
 
     const featuredForChosenCategory = featuredContent.filter(
+      // $FlowFixMe...
       f => f.category && f.category.name === category
     );
     const featured =

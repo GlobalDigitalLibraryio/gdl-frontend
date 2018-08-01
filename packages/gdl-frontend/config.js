@@ -20,8 +20,9 @@ const globalVarName = '__GDL_ENVIRONMENT__';
  */
 const GDL_ENVIRONMENT = (function() {
   return (
-    (process.browser ? window[globalVarName] : process.env.GDL_ENVIRONMENT) ||
-    'dev'
+    (typeof window !== 'undefined'
+      ? window[globalVarName]
+      : process.env.GDL_ENVIRONMENT) || 'dev'
   );
 })();
 
@@ -96,7 +97,7 @@ function getConfig() {
   };
 
   // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
-  if (!process.browser && process.env.GDL_ENVIRONMENT) {
+  if (typeof window === 'undefined' && process.env.GDL_ENVIRONMENT) {
     // Define a getter method when retrieving the book api url inside Docker.
     // $FlowFixMe
     Object.defineProperty(toRet, 'bookApiUrl', {

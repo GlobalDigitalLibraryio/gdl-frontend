@@ -25,7 +25,7 @@ import {
 import AccountBox from '@material-ui/icons/AccountBox';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import { getUserName, logout } from 'gdl-auth';
+import { getUserName, unsetJwtToken } from 'gdl-auth';
 import AutoCompleteSearchField from '../Search/AutoCompleteSearchField';
 
 const drawerWidth = '240px';
@@ -51,7 +51,7 @@ class Layout extends React.Component<
   };
 
   handleLogOut = () => {
-    logout();
+    unsetJwtToken();
     Router.push('/');
   };
 
@@ -114,11 +114,6 @@ class Layout extends React.Component<
           />
           <Divider />
           <List component="nav" css={{ width: drawerWidth }}>
-            <Link prefetch href="/admin/crop">
-              <ListItem button component="a">
-                <ListItemText primary="Crop images" />
-              </ListItem>
-            </Link>
             <Link href="/admin/export">
               <ListItem button component="a">
                 <ListItemText primary="Export books" />
