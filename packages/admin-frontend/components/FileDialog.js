@@ -10,6 +10,7 @@ import {
 import React from 'react';
 import { Form } from 'react-final-form';
 import { uploadNewImage } from '../lib/fetch';
+import { handleValidate } from '../lib/metadataValidator';
 import { MetadataFormFields } from './MetadataFormFields';
 type Props = {
   onUpload: (imageUrl: string) => void,
@@ -20,10 +21,30 @@ type Props = {
 
 export default class FileDialog extends React.Component<Props> {
   render() {
+    const metadata = {
+      externalId: Date.now().toString(10),
+      title: "",
+      alttext: "",
+      copyright: {
+        license: {
+          license: license.license,
+          description: license.description
+        },
+        origin: values.origin,
+        creators: [],
+        processors: [],
+        rightsholders: []
+      },
+      tags: [],
+      caption: values.caption,
+      language: 'en'
+    };
+
     return (
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
         <Form
+          initialValues={metadata}
           validate={handleValidate}
           onSubmit={this.handleFileUpload}
           render={({ handleSubmit, pristine, invalid }) => (
@@ -69,29 +90,8 @@ export default class FileDialog extends React.Component<Props> {
   };
 
   handleFileUpload = async (values: Object) => {
-    const license = JSON.parse(values.license);
-
-    const metadata = {
-      externalId: Date.now().toString(10),
-      title: values.title,
-      alttext: values.alttext,
-      copyright: {
-        license: {
-          license: license.license,
-          description: license.description
-        },
-        origin: values.origin,
-        creators: [],
-        processors: [],
-        rightsholders: []
-      },
-      tags: [],
-      caption: values.caption,
-      language: 'en'
-    };
-
     if (this.props.selectedFile) {
-      const result = await uploadNewImage(this.props.selectedFile, metadata);
+      const result = await uploadNewImage(this.props.selectedFile, values);
 
       if (result.isOk) {
         this.props.onUpload(result.data.imageUrl);
@@ -100,30 +100,4 @@ export default class FileDialog extends React.Component<Props> {
 
     this.revokeObjectURL();
   };
-}
-
-function handleValidate(values) {
-  const errors = {};
-
-  if (values.title === undefined || values.title.trim() === '') {
-    errors.title = 'You have to enter a title';
-  }
-
-  if (values.alttext === undefined || values.alttext.trim() === '') {
-    errors.alttext = 'You have to enter a alttext';
-  }
-
-  if (values.origin === undefined || values.origin.trim() === '') {
-    errors.origin = 'You have to specify origin';
-  }
-
-  if (values.license === undefined || values.license === '') {
-    errors.license = 'You have to choose a license';
-  }
-
-  if (values.caption === undefined || values.caption.trim() === '') {
-    errors.caption = 'You have to specify a caption';
-  }
-
-  return errors;
 }

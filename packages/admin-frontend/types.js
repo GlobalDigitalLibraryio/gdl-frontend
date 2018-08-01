@@ -185,8 +185,8 @@ export type ImageMetadata = {
   size: number,
   contentType: string,
   copyright: {
-    licence: {
-      licence: string,
+    license: {
+      license: string,
       description: string
     },
     origin: string,

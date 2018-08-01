@@ -54,7 +54,7 @@ const bookCategoryMapper = book => {
 async function doFetch(
   url: string,
   options: ?{
-    method: 'POST' | 'GET' | 'PUT' | 'DELETE',
+    method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH',
     body?: any
   }
 ): Promise<RemoteData<any>> {
@@ -124,6 +124,29 @@ export async function fetchStoredParameters(
       body: null
     }
   );
+  return result;
+}
+
+export async function fetchImageMetadata(
+  imageId: string
+): Promise<RemoteData<ImageMetadata>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+    method: 'GET',
+    body: null
+  });
+  return result;
+}
+
+export async function patchImageMetadata(
+  imageId: string,
+  data: Object
+): Promise<RemoteData<{}>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+
+      method: 'PATCH',
+    body: JSON.stringify(data)
+  });
+
   return result;
 }
 

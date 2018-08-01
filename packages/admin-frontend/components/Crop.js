@@ -4,12 +4,13 @@ import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import { parseQuery } from '../lib/parseQuery';
-import type { ImageParameters } from '../types';
+import type { ImageParameters, StoredParameters } from '../types';
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  onCrop: (croppedParameters: ImageParameters) => void
+  onCrop: (croppedParameters: ImageParameters) => void,
+  existingImageParameters: ?ImageParameters
 };
 
 export default class Crop extends Component<Props> {
@@ -76,6 +77,13 @@ export default class Crop extends Component<Props> {
         if (data) {
           this.cropper.setData(data);
         }
+      }
+    } else {
+      const data =
+        this.props.existingImageParameters &&
+        this.existingParametersToCropData(this.props.existingImageParameters);
+      if (data) {
+        this.cropper.setData(data);
       }
     }
   };
