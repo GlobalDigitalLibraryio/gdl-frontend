@@ -5,10 +5,13 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button
+  Button,
+    Typography
 } from '@material-ui/core';
 import React from 'react';
+import { Form } from 'react-final-form';
 import { uploadNewImage } from '../lib/fetch';
+import { MetadataFormFields } from './MetadataFormFields';
 type Props = {
   onUpload: (imageUrl: string) => void,
   onCancel: () => void,
@@ -21,28 +24,37 @@ export default class FileDialog extends React.Component<Props> {
     return (
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload file</DialogTitle>
-        <DialogContent>
-          <p>
-            We can create a form here asking for values like alttext or other
-            metadata
-          </p>
-          <img
-            src={this.props.objectURL}
-            onLoad={this.revokeObjectURL}
-            alt="Uploaded"
-            width="100%"
-          />
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={this.closeDialog} color="secondary">
-            Cancel
-          </Button>
-
-          <Button onClick={this.handleFileUpload} color="primary">
-            Upload
-          </Button>
-        </DialogActions>
+        <Form
+          validate={handleValidate}
+          onSubmit={this.handleFileUpload}
+          render={({ handleSubmit, pristine, invalid }) => (
+            <div>
+              <DialogContent
+                style={{ paddingTop: '0px', paddingBottom: '0px' }}
+              >
+                <img
+                  src={this.props.objectURL}
+                  onLoad={this.revokeObjectURL}
+                  alt="Uploaded"
+                  width="100%"
+                />
+                <MetadataFormFields />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.closeDialog} color="secondary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  disabled={pristine || invalid}
+                  color="primary"
+                >
+                  Upload
+                </Button>
+              </DialogActions>
+            </div>
+          )}
+        />
       </Dialog>
     );
   }
@@ -57,18 +69,17 @@ export default class FileDialog extends React.Component<Props> {
     URL.revokeObjectURL(this.props.objectURL);
   };
 
-  handleFileUpload = async () => {
-    // Dummy metadata until we want to enter something useful in here
+  handleFileUpload = async (values: Object) => {
     const metadata = {
       externalId: Date.now().toString(10),
-      title: 'usefultitle',
-      alttext: 'this is an alttext',
+      title: values.title,
+      alttext: values.alttext,
       copyright: {
         license: {
-          license: 'by-4.0',
+          license: values.license,
           description: 'Creative Commons Attribution 4.0 International'
         },
-        origin: 'storyweaver',
+        origin: values.origin,
         creators: [],
         processors: [],
         rightsholders: []
@@ -88,4 +99,26 @@ export default class FileDialog extends React.Component<Props> {
 
     this.revokeObjectURL();
   };
+}
+
+function handleValidate(values) {
+  const errors = {};
+
+  if (values.title === undefined || values.title.trim() === '') {
+    errors.title = 'You have to enter a title';
+  }
+
+  if (values.alttext === undefined || values.alttext.trim() === '') {
+    errors.alttext = 'You have to enter a alttext';
+  }
+
+  if (values.origin === undefined || values.origin.trim() === '') {
+    errors.origin = 'You have to specify origin';
+  }
+
+  if (values.license === undefined || values.license === '') {
+    errors.license = 'You have to choose a license';
+  }
+
+  return errors;
 }
