@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
 import {
@@ -25,7 +25,6 @@ import { hasClaim, claims } from 'gdl-auth';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
-import config from '../../config';
 
 type Props = {|
   onClose(): void,
@@ -94,33 +93,30 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           )}
-          {config.TRANSLATION_PAGES && (
-            <Fragment>
-              {getTokenFromLocalCookie() == null ? (
-                <Link passHref href="/auth/sign-in">
-                  <ListItem button component="a">
-                    <ListItemText>
-                      <Trans>Log in</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </Link>
-              ) : (
-                <Link passHref href="/auth/sign-off">
-                  <ListItem button component="a">
-                    <ListItemText>
-                      <Trans>Log out</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </Link>
-              )}
-              <RouteLink passHref route="translations">
-                <ListItem button component="a">
-                  <ListItemText>
-                    <Trans>My translations</Trans>
-                  </ListItemText>
-                </ListItem>
-              </RouteLink>
-            </Fragment>
+          {getTokenFromLocalCookie() == null ? (
+            <Link passHref href="/auth/sign-in">
+              <ListItem button component="a">
+                <ListItemText>
+                  <Trans>Log in</Trans>
+                </ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            <Link passHref href="/auth/sign-off">
+              <ListItem button component="a">
+                <ListItemText>
+                  <Trans>Log out</Trans>
+                </ListItemText>
+              </ListItem>
+            </Link>
+          )}
+          <RouteLink passHref route="translations">
+            <ListItem button component="a">
+              <ListItemText>
+                <Trans>My translations</Trans>
+              </ListItemText>
+            </ListItem>
+          </RouteLink>
           )}
         </List>
       </Drawer>

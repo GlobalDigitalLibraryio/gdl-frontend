@@ -6,26 +6,22 @@
  * See LICENSE
  */
 const nextRoutes = require('next-routes');
-const config = require('./config');
 
 const routes = nextRoutes();
 
 // For the language parameter, match any combination of alphanumeric and - (Poor man's BCP47 matching!)
 const langParam = `:lang([\\w-]+)`;
 
-// Translate book
-if (config.TRANSLATION_PAGES) {
-  routes.add(
-    'translate',
-    `/${langParam}/books/translate/:id(\\d+)`,
-    'books/_translate'
-  );
-  routes.add({
-    name: 'translations',
-    pattern: '/books/translations',
-    page: '/books/translations'
-  });
-}
+routes.add(
+  'translate',
+  `/${langParam}/books/translate/:id(\\d+)`,
+  'books/_translate'
+);
+routes.add({
+  name: 'translations',
+  pattern: '/books/translations',
+  page: '/books/translations'
+});
 routes.add('login');
 routes.add('logout');
 routes.add('search');
