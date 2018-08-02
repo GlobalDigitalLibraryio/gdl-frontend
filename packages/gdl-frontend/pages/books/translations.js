@@ -156,6 +156,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
   };
 
   handleSync = () => {
+    // Refreshes my translation cards when a card is synced
     this.loadMyTranslations();
   };
 
