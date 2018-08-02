@@ -31,7 +31,10 @@ import BookCover from '../../components/BookCover';
 import { spacing } from '../../style/theme';
 
 class TranslationCard extends React.Component<
-  { translation: Translation },
+  {
+    translation: Translation,
+    handleSync: () => void
+  },
   { isLoading: boolean, isSynchronized: boolean }
 > {
   state = {
@@ -44,6 +47,7 @@ class TranslationCard extends React.Component<
     this.setState({ isLoading: true });
     await doFetch(this.props.translation.synchronizeUrl);
     this.setState({ isLoading: false, isSynchronized: true });
+    this.props.handleSync();
   };
 
   render() {
@@ -134,6 +138,10 @@ class MyTranslationsPage extends React.Component<Props, State> {
   };
 
   async componentDidMount() {
+    this.loadMyTranslations();
+  }
+
+  loadMyTranslations = async () => {
     const translationsRes = await fetchMyTranslations();
     if (translationsRes.isOk) {
       this.setState({
@@ -145,7 +153,12 @@ class MyTranslationsPage extends React.Component<Props, State> {
         loadingState: 'ERROR'
       });
     }
-  }
+  };
+
+  handleSync = () => {
+    // Refreshes my translation cards when a card is synced
+    this.loadMyTranslations();
+  };
 
   renderTranslations = () => {
     if (this.state.translations.length === 0) {
@@ -164,6 +177,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
       <TranslationCard
         key={`${translation.id}-${translation.translatedTo.code}`}
         translation={translation}
+        handleSync={this.handleSync}
       />
     ));
   };
