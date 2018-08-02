@@ -25,18 +25,6 @@ export function hasClaim(claim: string, req: ?$Request): boolean {
   return decoded.scope && decoded.scope.includes(claim);
 }
 
-export function hasAuthToken(req: ?$Request): boolean {
-  return Boolean(getAuthToken(req));
-}
-
-/**
- * Read the JWT auth token from cookies.
- * @param req Optional Express request object (for SSR)
- */
-export function getAuthToken(req: ?$Request): ?string {
-  return req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
-}
-
 /**
  * Get username from JWT auth token
  * @param req Optional Express request object (for SSR)
@@ -51,11 +39,23 @@ export function getUserName(req: ?$Request): ?string {
   return decoded['https://digitallibrary.io/user_name'];
 }
 
+export function hasAuthToken(req: ?$Request): boolean {
+  return Boolean(getAuthToken(req));
+}
+
+/**
+ * Read the JWT auth token from cookies.
+ * @param req Optional Express request object (for SSR)
+ */
+export function getAuthToken(req: ?$Request): ?string {
+  return req ? req.cookies[JWT_KEY] : Cookie().get(JWT_KEY);
+}
+
 /**
  * Unset token to log out of admin
  * redirect path to '/' and remove JWT auth token
  */
-export function unsetJwtToken() {
+export function unsetAuthToken() {
   if (typeof window !== 'undefined') {
     Cookie().remove(JWT_KEY, { path: '/' });
   }
@@ -64,7 +64,10 @@ export function unsetJwtToken() {
 /**
  * Set auth tokens (for user logging in)
  */
-export function setJwtToken(token: { accessToken: string, expiresIn: number }) {
+export function setAuthToken(token: {
+  accessToken: string,
+  expiresIn: number
+}) {
   if (typeof window !== 'undefined' && token.accessToken != null) {
     Cookie().set(JWT_KEY, token.accessToken, {
       maxAge: token.expiresIn,

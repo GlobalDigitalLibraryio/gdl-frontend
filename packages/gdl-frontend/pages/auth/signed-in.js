@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
-import { setJwtToken } from 'gdl-auth';
+import { setAuthToken } from 'gdl-auth';
 
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
@@ -19,7 +19,7 @@ class Success extends React.Component<*> {
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.accessToken) {
-      setJwtToken(authResult);
+      setAuthToken(authResult);
 
       Router.push(getRedirectUrl() || '/');
     }

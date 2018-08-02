@@ -25,7 +25,7 @@ import {
 import AccountBox from '@material-ui/icons/AccountBox';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 
-import { getUserName, unsetJwtToken } from 'gdl-auth';
+import { getUserName, unsetAuthToken } from 'gdl-auth';
 import AutoCompleteSearchField from '../Search/AutoCompleteSearchField';
 
 const drawerWidth = '240px';
@@ -51,7 +51,7 @@ class Layout extends React.Component<
   };
 
   handleLogOut = () => {
-    unsetJwtToken();
+    unsetAuthToken();
     Router.push('/');
   };
 
