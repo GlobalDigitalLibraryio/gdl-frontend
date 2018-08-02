@@ -116,7 +116,6 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           </RouteLink>
-          )}
         </List>
       </Drawer>
     );
