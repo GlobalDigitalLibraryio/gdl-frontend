@@ -88,9 +88,9 @@ export const MetadataFormFields = (props: Props) => {
         name={props.names.origin}
         render={({ input, meta }) => (
           <div>
-            <FormControl margin="normal">
+            <FormControl fullWidth margin="normal">
               <InputLabel>Origin</InputLabel>
-              <Select fullWidth {...input} native>
+              <Select fullWidth {...input} native value>
                 {SOURCES.map(source => (
                   <option key={source.code} value={source.code}>
                     {source.name}
@@ -111,9 +111,9 @@ export const MetadataFormFields = (props: Props) => {
         name={props.names.license}
         render={({ input, meta }) => (
           <div>
-            <FormControl margin="normal">
+            <FormControl fullWidth margin="normal">
               <InputLabel>License</InputLabel>
-              <Select fullWidth {...input} native>
+              <Select {...input} native value>
                 {LICENSES.map(license => (
                   <option key={license.license} value={license.license}>
                     {license.description}

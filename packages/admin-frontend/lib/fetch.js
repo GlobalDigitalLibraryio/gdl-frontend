@@ -142,8 +142,7 @@ export async function patchImageMetadata(
   data: Object
 ): Promise<RemoteData<{}>> {
   const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
-
-      method: 'PATCH',
+    method: 'PATCH',
     body: JSON.stringify(data)
   });
 

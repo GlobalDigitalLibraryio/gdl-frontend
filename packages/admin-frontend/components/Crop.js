@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import { parseQuery } from '../lib/parseQuery';
-import type { ImageParameters, StoredParameters } from '../types';
+import type { ImageParameters } from '../types';
 
 type Props = {
   imageUrl: string,

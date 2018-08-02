@@ -1,5 +1,6 @@
 // @flow
 
+import type { FormApi } from 'final-form';
 import React from 'react';
 
 import {
@@ -18,7 +19,6 @@ import {
   patchImageMetadata,
   postStoredParameters
 } from '../lib/fetch';
-import { handleValidate } from '../lib/metadataValidator';
 import type {
   BookDetails,
   ImageMetadata,
@@ -77,35 +77,30 @@ export default class EditImageDialog extends React.Component<Props, State> {
     const imageId = '10001';
     const imageMetadata = await fetchImageMetadata(imageId);
 
-    console.log(imageMetadata);
-
     if (imageMetadata.isOk) {
       this.setState({ imageMetadata: imageMetadata.data });
     }
   };
 
-  handleSave = async (values: Object) => {
+  handleSave = async (values: Object, form: FormApi) => {
     if (this.state.croppedParameters) {
-      const imageApiBody = {
-        rawImageQueryParameters: this.state.croppedParameters,
-        forRatio: '0.81',
-        revision: this.state.existingStoredParameters
-          ? this.state.existingStoredParameters.revision
-          : 1,
-        imageUrl: this.props.book.coverImage.url.substring(
-          this.props.book.coverImage.url.lastIndexOf('/')
-        )
-      };
-
-      const result = await postStoredParameters(imageApiBody);
-      if (result.isOk) {
-        this.setState({ existingStoredParameters: result.data });
-      }
+      await this.postCroppedImage(this.state.croppedParameters);
     }
 
+    if (form.getState().dirty) {
+      await this.patchMetadata(values);
+    }
+
+    this.props.onSave();
+  };
+
+  async patchMetadata(values: Object) {
     // We need to find the description of the selected license
     const descriptionForLicense = LICENSES.find(
-      element => element === values.copyright.license.license
+      (element: { license: string, description: string }) =>
+        element.license === values.copyright.license.license
+
+      // $FlowFixMe
     ).description;
 
     const payLoad = {
@@ -120,10 +115,26 @@ export default class EditImageDialog extends React.Component<Props, State> {
     };
 
     // FixMe: Remove hardcoding
-    const result = await patchImageMetadata('10001', payLoad);
+    await patchImageMetadata('10001', payLoad);
+  }
 
-    this.props.onSave();
-  };
+  async postCroppedImage(croppedParameters: ImageParameters) {
+    const imageApiBody = {
+      rawImageQueryParameters: croppedParameters,
+      forRatio: '0.81',
+      revision: this.state.existingStoredParameters
+        ? this.state.existingStoredParameters.revision
+        : 1,
+      imageUrl: this.props.book.coverImage.url.substring(
+        this.props.book.coverImage.url.lastIndexOf('/')
+      )
+    };
+
+    const result = await postStoredParameters(imageApiBody);
+    if (result.isOk) {
+      this.setState({ existingStoredParameters: result.data });
+    }
+  }
 
   handleCroppedParametersReceived = (croppedParameters: ImageParameters) => {
     this.setState({ croppedParameters: croppedParameters });
@@ -142,7 +153,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
               this.state.imageMetadata ? this.state.imageMetadata : {}
             }
             onSubmit={this.handleSave}
-            render={({ handleSubmit, pristine, invalid, form }) => (
+            render={({ handleSubmit, pristine }) => (
               <div>
                 <DialogContent
                   style={{ paddingTop: '0px', paddingBottom: '0px' }}

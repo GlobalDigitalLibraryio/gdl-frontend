@@ -1,5 +1,6 @@
 // @flow
 
+// There is no endpoint to get a list of licenses, so it is hardcoded here for now
 export const LICENSES = [
   {
     license: 'by-4.0',
