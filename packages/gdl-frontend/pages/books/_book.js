@@ -49,19 +49,6 @@ type Props = {
   userHasEditAccess: boolean
 };
 
-const CoverWrap = styled('div')`
-  ${media.mobile`
-    position: absolute;
-    top: -120px;
-    z-index: 10;
-    left: 50%;
-    transform: translateX(-50%);
-  `} ${media.tablet`
-    flex: 0 0 260px;
-    margin-right: 20px;
-  `};
-`;
-
 const EditBookLink = styled('a')`
   color: ${colors.base.white};
   position: absolute;
@@ -120,25 +107,34 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
           <BookJsonLd book={book} />
         </Head>
         <Layout category={book.category}>
-          <Container>
-            <View flexDirection="row" mt={['135px', spacing.medium]}>
-              <CoverWrap>
-                <View>
-                  <BookCover
-                    coverImage={book.coverImage}
-                    w={[130, 260]}
-                    h={[175, 365]}
-                  />
-                </View>
-              </CoverWrap>
+          <Container
+            mt={spacing.medium}
+            // Ignore the whitespacing from the container on mobile
+            css={media.mobile`
+              padding-left: 0;
+              margin-top:0;
+              padding-right: 0;
+            `}
+          >
+            <View flexDirection="row">
+              <CoverPositioner>
+                <BookCover
+                  coverImage={book.coverImage}
+                  w={[130, 260]}
+                  h={[175, 365]}
+                />
+              </CoverPositioner>
 
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
               <Card
-                css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
+                css={`
+                  width: 100%;
+                  ${media.tablet`display: flex;`};
+                `}
               >
                 <CardContent
                   css={[
-                    media.mobile({ paddingTop: '70px' }),
+                    media.mobile({ paddingTop: '200px' }),
                     media.tablet({
                       display: 'flex',
                       flexDirection: 'column',
@@ -321,5 +317,21 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     );
   }
 }
+
+/**
+ * Positions the book cover correctly on the differnt devices.
+ * On mobile we want it to appear inside the card, but on >= tablet we want it to the left of the card
+ */
+const CoverPositioner = styled('div')`
+  ${media.mobile`
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: ${spacing.small};
+  `} ${media.tablet`
+    flex: 0 0 260px;
+    margin-right: 20px;
+  `};
+`;
 
 export default errorPage(BookPage);
