@@ -56,8 +56,8 @@
     "prop-types": "15.6.2",
     "raven": "2.6.3",
     "raven-js": "3.26.4",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1",
+    "react": "16.4.2",
+    "react-dom": "16.4.2",
     "react-emotion": "9.2.6",
     "react-ga": "^2.5.2",
     "react-icons": "^2.2.7",
@@ -77,7 +77,7 @@
     "enzyme-to-json": "^3.3.4",
     "jest-emotion": "9.2.5",
     "nock": "^9.2.6",
-    "react-test-renderer": "^16.4.1",
+    "react-test-renderer": "16.4.2",
     "cross-env": "^5.0.1",
     "webpack-bundle-analyzer": "^2.8.2"
   }
