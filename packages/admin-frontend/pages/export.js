@@ -7,21 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import Typography from '@material-ui/core/Typography';
 import Container from '../components/Container';
-
+import { SOURCES } from '../data/sources';
 import type { Language } from '../types';
 import { fetchLanguages, exportBooks } from '../lib/fetch';
 import Layout from '../components/Layout';
-
-// Current book sources. Currently there's no endpoint to get these, so hardcode here for now
-const sources = [
-  { code: 'all', name: 'All' },
-  { code: 'african_storybook', name: 'African Storybook Project' },
-  { code: 'bookdash', name: 'Bookdash' },
-  { code: 'ew', name: 'EW' },
-  { code: 'storyweaver', name: 'Storyweaver' },
-  { code: 'taf', name: 'Taf' },
-  { code: 'usaid', name: 'USAID' }
-];
 
 type State = {
   selectedLanguage: string,
@@ -41,7 +30,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
   state = {
     selectedLanguage: '',
     selectedSource: 'all', // Default value
-    sources: sources
+    sources: SOURCES
   };
 
   handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
@@ -123,6 +112,9 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 onChange={this.handleSourceChange}
                 native
               >
+                <option key="all" value="All">
+                  All
+                </option>
                 {this.state.sources.map(source => (
                   <option key={source.code} value={source.code}>
                     {source.name}

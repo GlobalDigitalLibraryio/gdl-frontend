@@ -10,6 +10,7 @@ import {
   Button
 } from '@material-ui/core';
 import { Form } from 'react-final-form';
+import { LICENSES } from '../data/licenses';
 
 import {
   fetchImageMetadata,
@@ -76,6 +77,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
     const imageId = '10001';
     const imageMetadata = await fetchImageMetadata(imageId);
 
+    console.log(imageMetadata);
+
     if (imageMetadata.isOk) {
       this.setState({ imageMetadata: imageMetadata.data });
     }
@@ -100,17 +103,24 @@ export default class EditImageDialog extends React.Component<Props, State> {
       }
     }
 
-    const payload = {
+    // We need to find the description of the selected license
+    const descriptionForLicense = LICENSES.find(
+      element => element === values.copyright.license.license
+    ).description;
+
+    const payLoad = {
       language: this.props.book.language.code,
-      alttext: values.alttext.alttext,
-      origin: values.copyright.origin,
-      license: values.copyright.license.license,
-      description: values.copyright.license.description,
-      caption: values.caption.caption
+      copyright: {
+        license: {
+          license: values.copyright.license.license,
+          description: descriptionForLicense
+        }
+      },
+      ...values
     };
 
     // FixMe: Remove hardcoding
-    const result = await patchImageMetadata('10001', payload);
+    const result = await patchImageMetadata('10001', payLoad);
 
     this.props.onSave();
   };

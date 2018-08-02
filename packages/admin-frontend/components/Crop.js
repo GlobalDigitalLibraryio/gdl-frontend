@@ -33,7 +33,6 @@ export default class Crop extends Component<Props, State> {
 
   toPercentages = (cropper: any) => {
     const data = cropper.getData();
-
     return {
       cropStartX: Math.max(
         0,
@@ -65,7 +64,6 @@ export default class Crop extends Component<Props, State> {
       this.setState({
         firstCrop: false
       });
-
       return;
     }
 

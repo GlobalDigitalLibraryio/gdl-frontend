@@ -10,7 +10,6 @@ import {
 import React from 'react';
 import { Form } from 'react-final-form';
 import { uploadNewImage } from '../lib/fetch';
-import { handleValidate } from '../lib/metadataValidator';
 import { MetadataFormFields } from './MetadataFormFields';
 
 type Props = {
@@ -46,7 +45,6 @@ export default class FileDialog extends React.Component<Props> {
         <DialogTitle>Upload file</DialogTitle>
         <Form
           initialValues={initialMetadata}
-          // validate={handleValidate}
           onSubmit={this.handleFileUpload}
           render={({ handleSubmit, pristine, invalid }) => (
             <div>
