@@ -9,17 +9,17 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router from 'next/router';
+import { setJwtToken } from 'gdl-auth';
 
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import { setToken } from '../../lib/auth/token';
 import { parseHash, getRedirectUrl } from '../../lib/auth';
 
 class Success extends React.Component<*> {
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.accessToken) {
-      setToken(authResult);
+      setJwtToken(authResult);
 
       Router.push(getRedirectUrl() || '/');
     }

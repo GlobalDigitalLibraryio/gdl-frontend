@@ -20,8 +20,7 @@ import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { getTokenFromLocalCookie } from '../../lib/auth/token';
-import { hasClaim, claims } from 'gdl-auth';
+import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
@@ -93,7 +92,7 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           )}
-          {getTokenFromLocalCookie() == null ? (
+          {!hasAuthToken() ? (
             <Link passHref href="/auth/sign-in">
               <ListItem button component="a">
                 <ListItemText>

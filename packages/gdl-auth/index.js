@@ -61,5 +61,17 @@ export function unsetJwtToken() {
   }
 }
 
+/**
+ * Set auth tokens (for user logging in)
+ */
+export function setJwtToken(token: { accessToken: string, expiresIn: number }) {
+  if (typeof window !== 'undefined' && token.accessToken != null) {
+    Cookie().set(JWT_KEY, token.accessToken, {
+      maxAge: token.expiresIn,
+      path: '/'
+    });
+  }
+}
+
 export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
   lscache.set('REDIRECT_AFTER_LOGIN', path, 5);
