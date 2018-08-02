@@ -10,6 +10,7 @@ import {
   Button
 } from '@material-ui/core';
 import { Form } from 'react-final-form';
+
 import {
   fetchImageMetadata,
   fetchStoredParameters,
@@ -119,6 +120,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
   };
 
   render() {
+    const isImageCropped = !(this.state.croppedParameters === null);
+
     return (
       <div>
         <Dialog open onClose={this.props.onCancel}>
@@ -128,9 +131,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
             initialValues={
               this.state.imageMetadata ? this.state.imageMetadata : {}
             }
-            //validate={handleValidate}
             onSubmit={this.handleSave}
-            render={({ handleSubmit, pristine, invalid }) => (
+            render={({ handleSubmit, pristine, invalid, form }) => (
               <div>
                 <DialogContent
                   style={{ paddingTop: '0px', paddingBottom: '0px' }}
@@ -167,7 +169,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
                   </Button>
                   <Button
                     onClick={handleSubmit}
-                    disabled={pristine || invalid}
+                    // If the user cropped the image, the button will be enabled. If the User did not touch the cropper, the pristine value of the form will decide if it is disabled or not.
+                    disabled={isImageCropped ? false : pristine}
                     color="primary"
                   >
                     Save
