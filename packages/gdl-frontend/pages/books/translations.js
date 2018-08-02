@@ -128,15 +128,13 @@ type Props = {
 
 type State = {
   translations: Array<Translation>,
-  loadingState: LoadingState,
-  isCardSynchronized: boolean
+  loadingState: LoadingState
 };
 
 class MyTranslationsPage extends React.Component<Props, State> {
   state = {
     translations: [],
-    loadingState: 'LOADING',
-    isCardSynchronized: false
+    loadingState: 'LOADING'
   };
 
   async componentDidMount() {
@@ -157,14 +155,8 @@ class MyTranslationsPage extends React.Component<Props, State> {
     }
   };
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.state.isCardSynchronized !== prevState.isCardSynchronized) {
-      this.loadMyTranslations();
-    }
-  }
-
   handleSync = () => {
-    this.setState({ isCardSynchronized: true });
+    this.loadMyTranslations();
   };
 
   renderTranslations = () => {
