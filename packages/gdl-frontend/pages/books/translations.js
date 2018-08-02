@@ -31,7 +31,10 @@ import BookCover from '../../components/BookCover';
 import { spacing } from '../../style/theme';
 
 class TranslationCard extends React.Component<
-  { translation: Translation },
+  {
+    translation: Translation,
+    handleSync: () => void
+  },
   { isLoading: boolean, isSynchronized: boolean }
 > {
   state = {
@@ -44,6 +47,7 @@ class TranslationCard extends React.Component<
     this.setState({ isLoading: true });
     await doFetch(this.props.translation.synchronizeUrl);
     this.setState({ isLoading: false, isSynchronized: true });
+    this.props.handleSync();
   };
 
   render() {
@@ -124,16 +128,22 @@ type Props = {
 
 type State = {
   translations: Array<Translation>,
-  loadingState: LoadingState
+  loadingState: LoadingState,
+  isCardSynchronized: boolean
 };
 
 class MyTranslationsPage extends React.Component<Props, State> {
   state = {
     translations: [],
-    loadingState: 'LOADING'
+    loadingState: 'LOADING',
+    isCardSynchronized: false
   };
 
   async componentDidMount() {
+    this.loadMyTranslations();
+  }
+
+  loadMyTranslations = async () => {
     const translationsRes = await fetchMyTranslations();
     if (translationsRes.isOk) {
       this.setState({
@@ -145,7 +155,17 @@ class MyTranslationsPage extends React.Component<Props, State> {
         loadingState: 'ERROR'
       });
     }
+  };
+
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (this.state.isCardSynchronized !== prevState.isCardSynchronized) {
+      this.loadMyTranslations();
+    }
   }
+
+  handleSync = () => {
+    this.setState({ isCardSynchronized: true });
+  };
 
   renderTranslations = () => {
     if (this.state.translations.length === 0) {
@@ -164,6 +184,7 @@ class MyTranslationsPage extends React.Component<Props, State> {
       <TranslationCard
         key={`${translation.id}-${translation.translatedTo.code}`}
         translation={translation}
+        handleSync={this.handleSync}
       />
     ));
   };
