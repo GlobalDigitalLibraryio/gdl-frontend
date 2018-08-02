@@ -144,64 +144,62 @@ export default class EditImageDialog extends React.Component<Props, State> {
     const isImageCropped = !(this.state.croppedParameters === null);
 
     return (
-      <div>
-        <Dialog open onClose={this.props.onCancel}>
-          <DialogTitle>Edit image and metadata</DialogTitle>
+      <Dialog open onClose={this.props.onCancel}>
+        <DialogTitle>Edit image and metadata</DialogTitle>
 
-          <Form
-            initialValues={
-              this.state.imageMetadata ? this.state.imageMetadata : {}
-            }
-            onSubmit={this.handleSave}
-            render={({ handleSubmit, pristine }) => (
-              <div>
-                <DialogContent
-                  style={{ paddingTop: '0px', paddingBottom: '0px' }}
-                >
-                  {/* We don't want to render the cropper until we have fetched the stored parameters. The cropper uses the stored parameters to show the current cropped area on the image. */}
-                  {this.state.existingStoredParametersLoaded && (
-                    <Crop
-                      existingImageParameters={
-                        this.state.existingStoredParameters &&
-                        this.state.existingStoredParameters
-                          .rawImageQueryParameters
-                      }
-                      onCrop={croppedParameters =>
-                        this.handleCroppedParametersReceived(croppedParameters)
-                      }
-                      imageUrl={this.props.book.coverImage.url}
-                      ratio={0.81}
-                    />
-                  )}
-                  <MetadataFormFields
-                    names={{
-                      title: 'title.title',
-                      alttext: 'alttext.alttext',
-                      caption: 'caption.caption',
-                      license: 'copyright.license.license',
-                      licenseDescription: 'copyright.license.description',
-                      origin: 'copyright.origin'
-                    }}
+        <Form
+          initialValues={
+            this.state.imageMetadata ? this.state.imageMetadata : {}
+          }
+          onSubmit={this.handleSave}
+          render={({ handleSubmit, pristine }) => (
+            <div>
+              <DialogContent
+                style={{ paddingTop: '0px', paddingBottom: '0px' }}
+              >
+                {/* We don't want to render the cropper until we have fetched the stored parameters. The cropper uses the stored parameters to show the current cropped area on the image. */}
+                {this.state.existingStoredParametersLoaded && (
+                  <Crop
+                    existingImageParameters={
+                      this.state.existingStoredParameters &&
+                      this.state.existingStoredParameters
+                        .rawImageQueryParameters
+                    }
+                    onCrop={croppedParameters =>
+                      this.handleCroppedParametersReceived(croppedParameters)
+                    }
+                    imageUrl={this.props.book.coverImage.url}
+                    ratio={0.81}
                   />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.props.onCancel} color="secondary">
-                    Cancel
-                  </Button>
-                  <Button
-                    onClick={handleSubmit}
-                    // If the user cropped the image, the button will be enabled. If the User did not touch the cropper, the pristine value of the form will decide if it is disabled or not.
-                    disabled={isImageCropped ? false : pristine}
-                    color="primary"
-                  >
-                    Save
-                  </Button>
-                </DialogActions>
-              </div>
-            )}
-          />
-        </Dialog>
-      </div>
+                )}
+                <MetadataFormFields
+                  names={{
+                    title: 'title.title',
+                    alttext: 'alttext.alttext',
+                    caption: 'caption.caption',
+                    license: 'copyright.license.license',
+                    licenseDescription: 'copyright.license.description',
+                    origin: 'copyright.origin'
+                  }}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.props.onCancel} color="secondary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleSubmit}
+                  // If the user cropped the image, the button will be enabled. If the User did not touch the cropper, the pristine value of the form will decide if it is disabled or not.
+                  disabled={isImageCropped ? false : pristine}
+                  color="primary"
+                >
+                  Save
+                </Button>
+              </DialogActions>
+            </div>
+          )}
+        />
+      </Dialog>
     );
   }
 }
