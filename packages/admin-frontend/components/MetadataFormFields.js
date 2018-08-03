@@ -20,8 +20,7 @@ type Props = {
     alttext: string,
     caption: string,
     origin: string,
-    license: string,
-    licenseDescription: string
+    license: string
   },
   featurePreview: boolean
 };
@@ -105,13 +104,7 @@ export default class MetadataFormFields extends React.Component<Props> {
             <div>
               <FormControl disabled={featurePreview} fullWidth margin="normal">
                 <InputLabel>Origin</InputLabel>
-                <Select
-                  {...input}
-                  // To prevent the inputlabel to overlap the text we set the first item as value if there is no initial value
-                  value={input.value === '' ? SOURCES[0].name : input.value}
-                  fullWidth
-                  native
-                >
+                <Select {...input} fullWidth native>
                   {SOURCES.map(source => (
                     <option key={source.code} value={source.code}>
                       {source.name}
@@ -134,14 +127,7 @@ export default class MetadataFormFields extends React.Component<Props> {
             <div>
               <FormControl disabled={featurePreview} fullWidth margin="normal">
                 <InputLabel>License</InputLabel>
-                <Select
-                  {...input}
-                  // To prevent the inputlabel to overlap the text we set the first item as value if there is no initial value
-                  value={
-                    input.value === '' ? LICENSES[0].description : input.value
-                  }
-                  native
-                >
+                <Select {...input} native>
                   {LICENSES.map(license => (
                     <option key={license.license} value={license.license}>
                       {license.description}

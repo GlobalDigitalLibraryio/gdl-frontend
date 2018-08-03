@@ -9,6 +9,8 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { Form } from 'react-final-form';
+import { LICENSES } from '../data/licenses';
+import { SOURCES } from '../data/sources';
 import { uploadNewImage } from '../lib/fetch';
 import MetadataFormFields from './MetadataFormFields';
 
@@ -21,20 +23,18 @@ type Props = {
 
 const initialMetadata = {
   externalId: Date.now().toString(10),
-  title: '',
-  alttext: '',
   copyright: {
     license: {
-      license: '',
+      license: LICENSES[0].license,
       description: ''
     },
-    origin: '',
+    origin: SOURCES[0].code,
     creators: [],
     processors: [],
     rightsholders: []
   },
   tags: [],
-  caption: '',
+  // Todo: list of languages to select from?
   language: 'en'
 };
 
@@ -42,7 +42,7 @@ export default class FileDialog extends React.Component<Props> {
   render() {
     return (
       <Dialog open onClose={this.closeDialog}>
-        <DialogTitle>Upload file</DialogTitle>
+        <DialogTitle>Upload image</DialogTitle>
         <Form
           initialValues={initialMetadata}
           onSubmit={this.handleFileUpload}
@@ -62,7 +62,6 @@ export default class FileDialog extends React.Component<Props> {
                     title: 'title',
                     alttext: 'alttext',
                     license: 'copyright.license.license',
-                    licenseDescription: 'copyright.license.description',
                     origin: 'copyright.origin',
                     caption: 'caption'
                   }}
@@ -98,14 +97,35 @@ export default class FileDialog extends React.Component<Props> {
   };
 
   handleFileUpload = async (values: Object) => {
-    if (this.props.selectedFile) {
-      const result = await uploadNewImage(this.props.selectedFile, values);
+    const descriptionForLicense = LICENSES.find(
+      element => {
+        console.log('tet');
+        return element.license === values.copyright.license.license;
+      }
+      // $FlowFixMe
+    ).description;
+    console.log(values);
 
+    const payload = {
+      ...values,
+      copyright: {
+        license: {
+          license: values.copyright.license.license,
+          description: descriptionForLicense
+        },
+        origin: values.copyright.origin,
+        rightsholders: [],
+        creators: [],
+        processors: []
+      }
+    };
+
+    if (this.props.selectedFile) {
+      const result = await uploadNewImage(this.props.selectedFile, payload);
       if (result.isOk) {
         this.props.onUpload(result.data.imageUrl);
       }
     }
-
     this.revokeObjectURL();
   };
 }

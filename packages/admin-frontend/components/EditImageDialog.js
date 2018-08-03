@@ -115,7 +115,9 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
     const payload = {
       language: this.props.book.language.code,
-      ...values,
+      alttext: values.alttext.alttext,
+      caption: values.caption.caption,
+      title: values.title.title,
       copyright: {
         license: {
           license: values.copyright.license.license,
@@ -192,7 +194,6 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     alttext: 'alttext.alttext',
                     caption: 'caption.caption',
                     license: 'copyright.license.license',
-                    licenseDescription: 'copyright.license.description',
                     origin: 'copyright.origin'
                   }}
                   featurePreview={this.props.featurePreview}
