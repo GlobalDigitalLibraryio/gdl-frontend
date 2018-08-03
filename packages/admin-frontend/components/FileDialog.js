@@ -98,13 +98,9 @@ export default class FileDialog extends React.Component<Props> {
 
   handleFileUpload = async (values: Object) => {
     const descriptionForLicense = LICENSES.find(
-      element => {
-        console.log('tet');
-        return element.license === values.copyright.license.license;
-      }
+      element => element.license === values.copyright.license.license
       // $FlowFixMe
     ).description;
-    console.log(values);
 
     const payload = {
       ...values,
