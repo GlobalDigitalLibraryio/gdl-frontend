@@ -56,10 +56,9 @@ export default class EditBookImage extends React.Component<Props, State> {
 
         {this.state.dialogOpen && (
           <EditImageDialog
-            onCancel={() => this.handleOnCancel()}
-            onSave={() => this.handleOnCancel()}
+            onClose={this.handleOnCancel}
             book={this.props.book}
-            featurePreview={true}
+            featurePreview={false}
           />
         )}
       </div>

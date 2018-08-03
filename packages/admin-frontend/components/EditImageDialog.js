@@ -28,8 +28,7 @@ import MetadataFormFields from './MetadataFormFields';
 import { LICENSES } from '../data/licenses';
 
 type Props = {
-  onCancel: () => void,
-  onSave: () => void,
+  onClose: () => void,
   book: BookDetails,
   featurePreview: boolean
 };
@@ -103,7 +102,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
       }
     }
 
-    this.props.onSave();
+    this.props.onClose();
   };
 
   async patchMetadata(values: Object) {
@@ -116,7 +115,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
     const payload = {
       language: this.props.book.language.code,
-      title: values.title.title,
+      ...values,
       copyright: {
         license: {
           license: values.copyright.license.license,
@@ -126,9 +125,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
         rightsholders: [],
         creators: [],
         processors: []
-      },
-      alttext: values.alttext.alttext,
-      caption: values.caption.caption
+      }
     };
 
     // FixMe: Remove hardcoding
@@ -161,7 +158,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
     const isImageCropped = !(this.state.croppedParameters === null);
 
     return (
-      <Dialog open onClose={this.props.onCancel}>
+      <Dialog open onClose={this.props.onClose}>
         <DialogTitle>Edit image and metadata</DialogTitle>
 
         <Form
@@ -202,7 +199,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
                 />
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.props.onCancel} color="secondary">
+                <Button onClick={this.props.onClose} color="secondary">
                   Cancel
                 </Button>
                 <Button
