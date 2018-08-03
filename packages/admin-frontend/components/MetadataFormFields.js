@@ -22,112 +22,141 @@ type Props = {
     origin: string,
     license: string,
     licenseDescription: string
+  },
+  featurePreview: boolean
+};
+
+export default class MetadataFormFields extends React.Component<Props> {
+  static defaultProps = {
+    featurePreview: false
+  };
+
+  render() {
+    const featurePreview = this.props.featurePreview;
+
+    return (
+      <div>
+        {featurePreview && (
+          <p>Feature to edit image metadata will be enabled soon!</p>
+        )}
+
+        <Field
+          name={this.props.names.title}
+          render={({ input, meta }) => (
+            <div>
+              <TextField
+                disabled={featurePreview}
+                fullWidth
+                error={meta.error && meta.touched}
+                margin="normal"
+                label="Title"
+                {...input}
+              />
+              {meta.error &&
+                meta.touched && (
+                  <FormHelperText error>{meta.error}</FormHelperText>
+                )}
+            </div>
+          )}
+        />
+
+        <Field
+          name={this.props.names.alttext}
+          render={({ input, meta }) => (
+            <div>
+              <TextField
+                disabled={featurePreview}
+                fullWidth
+                error={meta.error && meta.touched}
+                margin="normal"
+                label="Alt text"
+                {...input}
+              />
+              {meta.error &&
+                meta.touched && (
+                  <FormHelperText error>{meta.error}</FormHelperText>
+                )}
+            </div>
+          )}
+        />
+        <Field
+          name={this.props.names.caption}
+          render={({ input, meta }) => (
+            <div>
+              <TextField
+                disabled={featurePreview}
+                fullWidth
+                error={meta.error && meta.touched}
+                margin="normal"
+                label="Caption"
+                {...input}
+              />
+              {meta.error &&
+                meta.touched && (
+                  <FormHelperText error>{meta.error}</FormHelperText>
+                )}
+            </div>
+          )}
+        />
+        <Field
+          label="Origin"
+          name={this.props.names.origin}
+          render={({ input, meta }) => (
+            <div>
+              <FormControl disabled={featurePreview} fullWidth margin="normal">
+                <InputLabel>Origin</InputLabel>
+                <Select
+                  {...input}
+                  // To prevent the inputlabel to overlap the text we set the first item as value if there is no initial value
+                  value={input.value === '' ? SOURCES[0].name : input.value}
+                  fullWidth
+                  native
+                >
+                  {SOURCES.map(source => (
+                    <option key={source.code} value={source.code}>
+                      {source.name}
+                    </option>
+                  ))}
+                </Select>
+                {meta.error &&
+                  meta.touched && (
+                    <FormHelperText error>{meta.error}</FormHelperText>
+                  )}
+              </FormControl>
+            </div>
+          )}
+        />
+
+        <Field
+          label="License"
+          name={this.props.names.license}
+          render={({ input, meta }) => (
+            <div>
+              <FormControl disabled={featurePreview} fullWidth margin="normal">
+                <InputLabel>License</InputLabel>
+                <Select
+                  {...input}
+                  // To prevent the inputlabel to overlap the text we set the first item as value if there is no initial value
+                  value={
+                    input.value === '' ? LICENSES[0].description : input.value
+                  }
+                  native
+                >
+                  {LICENSES.map(license => (
+                    <option key={license.license} value={license.license}>
+                      {license.description}
+                    </option>
+                  ))}
+                </Select>
+                {meta.error &&
+                  meta.touched && (
+                    <FormHelperText error>{meta.error}</FormHelperText>
+                  )}
+              </FormControl>
+            </div>
+          )}
+        />
+      </div>
+    );
   }
-};
-
-export const MetadataFormFields = (props: Props) => {
-  return (
-    <div>
-      <Field
-        name={props.names.title}
-        render={({ input, meta }) => (
-          <div>
-            <TextField
-              fullWidth
-              error={meta.error && meta.touched}
-              margin="normal"
-              label="Title"
-              {...input}
-            />
-            {meta.error &&
-              meta.touched && (
-                <FormHelperText error>{meta.error}</FormHelperText>
-              )}
-          </div>
-        )}
-      />
-
-      <Field
-        name={props.names.alttext}
-        render={({ input, meta }) => (
-          <div>
-            <TextField
-              fullWidth
-              error={meta.error && meta.touched}
-              margin="normal"
-              label="Alttext"
-              {...input}
-            />
-            {meta.error &&
-              meta.touched && (
-                <FormHelperText error>{meta.error}</FormHelperText>
-              )}
-          </div>
-        )}
-      />
-      <Field
-        name={props.names.caption}
-        render={({ input, meta }) => (
-          <div>
-            <TextField
-              fullWidth
-              error={meta.error && meta.touched}
-              margin="normal"
-              label="Caption"
-              {...input}
-            />
-            {meta.error &&
-              meta.touched && (
-                <FormHelperText error>{meta.error}</FormHelperText>
-              )}
-          </div>
-        )}
-      />
-      <Field
-        label="Origin"
-        name={props.names.origin}
-        render={({ input, meta }) => (
-          <div>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Origin</InputLabel>
-              <Select fullWidth {...input} native value>
-                {SOURCES.map(source => (
-                  <option key={source.code} value={source.code}>
-                    {source.name}
-                  </option>
-                ))}
-              </Select>
-              {meta.error &&
-                meta.touched && (
-                  <FormHelperText error>{meta.error}</FormHelperText>
-                )}
-            </FormControl>
-          </div>
-        )}
-      />
-
-      <Field
-        label="License"
-        name={props.names.license}
-        render={({ input, meta }) => (
-          <div>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>License</InputLabel>
-              <Select {...input} native value>
-                {LICENSES.map(license => (
-                  <option key={license.license} value={license.license}>
-                    {license.description}
-                  </option>
-                ))}
-              </Select>
-              {meta.error &&
-                meta.touched && (
-                  <FormHelperText error>{meta.error}</FormHelperText>
-                )}
-            </FormControl>
-          </div>
-        )}
-      />
-    </div>
-  );
-};
+}

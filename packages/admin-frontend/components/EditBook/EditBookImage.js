@@ -59,6 +59,7 @@ export default class EditBookImage extends React.Component<Props, State> {
             onCancel={() => this.handleOnCancel()}
             onSave={() => this.handleOnCancel()}
             book={this.props.book}
+            featurePreview={true}
           />
         )}
       </div>

@@ -1,8 +1,8 @@
 // @flow
 
+import { Form } from 'react-final-form';
 import type { FormApi } from 'final-form';
 import React from 'react';
-
 import {
   Dialog,
   DialogTitle,
@@ -10,8 +10,6 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core';
-import { Form } from 'react-final-form';
-import { LICENSES } from '../data/licenses';
 
 import {
   fetchImageMetadata,
@@ -26,12 +24,14 @@ import type {
   StoredParameters
 } from '../types';
 import Crop from './Crop';
-import { MetadataFormFields } from './MetadataFormFields';
+import MetadataFormFields from './MetadataFormFields';
+import { LICENSES } from '../data/licenses';
 
 type Props = {
   onCancel: () => void,
   onSave: () => void,
-  book: BookDetails
+  book: BookDetails,
+  featurePreview: boolean
 };
 
 type State = {
@@ -54,6 +54,25 @@ export default class EditImageDialog extends React.Component<Props, State> {
   }
 
   fetchData = async () => {
+    await this.fetchStoredParameters();
+
+    if (!this.props.featurePreview) {
+      await this.fetchImageMetadata();
+    }
+  };
+
+  async fetchImageMetadata() {
+    // FixMe: Since the image-api is not exposing any image_id i have to hardcode one for now.
+    // See issue https://github.com/GlobalDigitalLibraryio/issues/issues/443
+    const imageId = '10010';
+    const imageMetadata = await fetchImageMetadata(imageId);
+
+    if (imageMetadata.isOk) {
+      this.setState({ imageMetadata: imageMetadata.data });
+    }
+  }
+
+  async fetchStoredParameters() {
     const storedParameters = await fetchStoredParameters(
       this.props.book.coverImage.url.substring(
         this.props.book.coverImage.url.lastIndexOf('/')
@@ -71,24 +90,17 @@ export default class EditImageDialog extends React.Component<Props, State> {
         existingStoredParametersLoaded: true
       });
     }
-
-    // FixMe: Since the image-api is not exposing any image_id i have to hardcode one for now.
-    // See issue https://github.com/GlobalDigitalLibraryio/issues/issues/443
-    const imageId = '10001';
-    const imageMetadata = await fetchImageMetadata(imageId);
-
-    if (imageMetadata.isOk) {
-      this.setState({ imageMetadata: imageMetadata.data });
-    }
-  };
+  }
 
   handleSave = async (values: Object, form: FormApi) => {
     if (this.state.croppedParameters) {
       await this.postCroppedImage(this.state.croppedParameters);
     }
 
-    if (form.getState().dirty) {
-      await this.patchMetadata(values);
+    if (!this.props.featurePreview) {
+      if (form.getState().dirty) {
+        await this.patchMetadata(values);
+      }
     }
 
     this.props.onSave();
@@ -97,25 +109,30 @@ export default class EditImageDialog extends React.Component<Props, State> {
   async patchMetadata(values: Object) {
     // We need to find the description of the selected license
     const descriptionForLicense = LICENSES.find(
-      (element: { license: string, description: string }) =>
-        element.license === values.copyright.license.license
+      element => element.license === values.copyright.license.license
 
       // $FlowFixMe
     ).description;
 
-    const payLoad = {
+    const payload = {
       language: this.props.book.language.code,
+      title: values.title.title,
       copyright: {
         license: {
           license: values.copyright.license.license,
           description: descriptionForLicense
-        }
+        },
+        origin: values.copyright.origin,
+        rightsholders: [],
+        creators: [],
+        processors: []
       },
-      ...values
+      alttext: values.alttext.alttext,
+      caption: values.caption.caption
     };
 
     // FixMe: Remove hardcoding
-    await patchImageMetadata('10001', payLoad);
+    await patchImageMetadata('10010', payload);
   }
 
   async postCroppedImage(croppedParameters: ImageParameters) {
@@ -181,6 +198,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     licenseDescription: 'copyright.license.description',
                     origin: 'copyright.origin'
                   }}
+                  featurePreview={this.props.featurePreview}
                 />
               </DialogContent>
               <DialogActions>

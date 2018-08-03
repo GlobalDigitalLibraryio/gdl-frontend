@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { Form } from 'react-final-form';
 import { uploadNewImage } from '../lib/fetch';
-import { MetadataFormFields } from './MetadataFormFields';
+import MetadataFormFields from './MetadataFormFields';
 
 type Props = {
   onUpload: (imageUrl: string) => void,
