@@ -18,28 +18,28 @@ type Props = {
   onUpload: (imageUrl: string) => void,
   onCancel: () => void,
   selectedFile: File,
-  objectURL: string
-};
-
-const initialMetadata = {
-  externalId: Date.now().toString(10),
-  copyright: {
-    license: {
-      license: LICENSES[0].license,
-      description: ''
-    },
-    origin: SOURCES[0].code,
-    creators: [],
-    processors: [],
-    rightsholders: []
-  },
-  tags: [],
-  // Todo: list of languages to select from?
-  language: 'en'
+  objectURL: string,
+  language: string
 };
 
 export default class FileDialog extends React.Component<Props> {
   render() {
+    const initialMetadata = {
+      externalId: Date.now().toString(10),
+      copyright: {
+        license: {
+          license: LICENSES[0].license,
+          description: ''
+        },
+        origin: SOURCES[0].code,
+        creators: [],
+        processors: [],
+        rightsholders: []
+      },
+      tags: [],
+      language: this.props.language
+    };
+
     return (
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload image</DialogTitle>

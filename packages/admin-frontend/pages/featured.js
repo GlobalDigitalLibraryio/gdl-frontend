@@ -318,6 +318,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 
                     {this.state.file && (
                       <FileDialog
+                        language={selectedLanguage}
                         selectedFile={this.state.file}
                         objectURL={URL.createObjectURL(this.state.file)}
                         onCancel={() => this.handleOnCancel()}
