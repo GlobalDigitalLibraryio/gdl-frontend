@@ -10,7 +10,6 @@ import {
 import React from 'react';
 import { Form } from 'react-final-form';
 import { LICENSES } from '../data/licenses';
-import { SOURCES } from '../data/sources';
 import { uploadNewImage } from '../lib/fetch';
 import MetadataFormFields from './MetadataFormFields';
 
@@ -31,7 +30,7 @@ export default class FileDialog extends React.Component<Props> {
           license: LICENSES[0].license,
           description: ''
         },
-        origin: SOURCES[0].code,
+        origin: '',
         creators: [],
         processors: [],
         rightsholders: []
@@ -104,6 +103,7 @@ export default class FileDialog extends React.Component<Props> {
 
     const payload = {
       ...values,
+      language: this.props.language,
       copyright: {
         license: {
           license: values.copyright.license.license,

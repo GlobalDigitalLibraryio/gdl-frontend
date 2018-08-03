@@ -13,23 +13,14 @@ type Props = {
   existingImageParameters: ?ImageParameters
 };
 
-type State = {
-  firstCrop: boolean
-};
-
-export default class Crop extends Component<Props, State> {
+export default class Crop extends Component<Props> {
   static defaultProps = {
     existingImageParameters: null
   };
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
   cropper: any;
-
-  componentDidMount() {
-    this.setState({
-      firstCrop: true
-    });
-  }
+  firstCrop: boolean;
 
   toPercentages = (cropper: any) => {
     const data = cropper.getData();
@@ -60,10 +51,8 @@ export default class Crop extends Component<Props, State> {
 
   crop = () => {
     // We skip the callback if it is the first time we crop because the cropper-data (this.cropper.getData()) will be off by a tiny fraction of the input values we set in onReady().
-    if (this.state.firstCrop) {
-      this.setState({
-        firstCrop: false
-      });
+    if (this.firstCrop) {
+      this.firstCrop = false;
       return;
     }
 

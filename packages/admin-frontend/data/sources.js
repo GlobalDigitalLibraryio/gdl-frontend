@@ -2,6 +2,7 @@
 
 // Current book sources. Currently there's no endpoint to get these, so hardcode here for now
 export const SOURCES = [
+  { code: '', name: '' },
   { code: 'african_storybook', name: 'African Storybook Project' },
   { code: 'bookdash', name: 'Bookdash' },
   { code: 'ew', name: 'EW' },
