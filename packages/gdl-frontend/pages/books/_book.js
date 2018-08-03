@@ -17,8 +17,7 @@ import {
   Card,
   CardContent,
   Typography,
-  Divider,
-  Grid
+  Divider
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
@@ -106,198 +105,191 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
         >
           <BookJsonLd book={book} />
         </Head>
+
         <Layout category={book.category}>
-          <Container
-            mt={spacing.medium}
-            // Ignore the whitespacing from the container on mobile
-            css={media.mobile`
-              padding-left: 0;
-              margin-top:0;
-              padding-right: 0;
-            `}
+          <Card
+            square
+            css={[
+              { display: 'flex' },
+              media.mobile({ flexWrap: 'wrap', flexDirection: 'row' })
+            ]}
           >
-            <View flexDirection="row">
-              <CoverPositioner>
-                <BookCover
-                  coverImage={book.coverImage}
-                  w={[130, 260]}
-                  h={[175, 365]}
-                />
-              </CoverPositioner>
+            <div
+              css={[
+                { display: 'flex', marginTop: spacing.medium },
+                media.tablet({
+                  marginBottom: spacing.medium,
+                  justifyContent: 'flex-end',
+                  flex: '1 1 0'
+                }),
+                media.mobile({
+                  width: '100%',
+                  justifyContent: 'center'
+                })
+              ]}
+            >
+              <BookCover
+                coverImage={book.coverImage}
+                w={[130, 260]}
+                h={[175, 365]}
+              />
+            </div>
 
-              {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
-              <Card
-                css={`
-                  width: 100%;
-                  ${media.tablet`display: flex;`};
-                `}
+            <CardContent
+              css={[
+                media.mobile({ textAlign: 'center' }),
+                {
+                  flex: '2 1 0',
+                  position: 'relative'
+                }
+              ]}
+            >
+              <Typography lang={book.language.code} variant="headline">
+                {book.title}
+              </Typography>
+
+              <Typography paragraph variant="subheading">
+                <Trans>from {book.publisher.name}</Trans>
+              </Typography>
+
+              <Typography
+                lang={book.language.code}
+                paragraph
+                css={[media.tablet({ flex: 1 })]}
               >
-                <CardContent
-                  css={[
-                    media.mobile({ paddingTop: '200px' }),
-                    media.tablet({
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flex: '1'
-                    })
-                  ]}
-                >
-                  <Typography
-                    lang={book.language.code}
-                    variant="headline"
-                    css={media.mobile`text-align: center`}
-                  >
-                    {book.title}
-                  </Typography>
+                {book.description}
+              </Typography>
 
-                  <Typography
-                    paragraph
-                    variant="subheading"
-                    css={media.mobile`text-align: center`}
-                  >
-                    <Trans>from {book.publisher.name}</Trans>
-                  </Typography>
-
-                  <Typography
-                    lang={book.language.code}
-                    paragraph
-                    css={[
-                      media.mobile`text-align: center`,
-                      media.tablet({ flex: 1 })
-                    ]}
-                  >
-                    {book.description}
-                  </Typography>
-
-                  <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                    spacing={16}
-                  >
-                    {book.bookFormat === 'HTML' && (
-                      <Fragment>
-                        <Grid item>
-                          <Link
-                            route="read"
-                            passHref
-                            params={{ id: book.id, lang: book.language.code }}
-                            prefetch
-                          >
-                            <Button
-                              variant="raised"
-                              color="primary"
-                              size="large"
-                            >
-                              <Trans>Read book</Trans>
-                            </Button>
-                          </Link>
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            aria-owns={
-                              this.state.anchorEl ? 'download-book-menu' : null
-                            }
-                            aria-haspopup="true"
-                            color="primary"
-                            onClick={this.handleDownloadClick}
-                          >
-                            <CloudDownloadIcon css={{ marginRight: '10px' }} />
-                            <Trans>Download book</Trans>
-                          </Button>
-                        </Grid>
-                        <Menu
-                          id="download-book-menu"
-                          onClose={this.closeDownloadMenu}
-                          anchorEl={this.state.anchorEl}
-                          open={Boolean(this.state.anchorEl)}
-                        >
-                          {book.downloads.epub && (
-                            <MenuItem
-                              href={book.downloads.epub}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>E-book (ePUB)</Trans>
-                            </MenuItem>
-                          )}
-                          {book.downloads.pdf && (
-                            <MenuItem
-                              href={book.downloads.pdf}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>Printable book (PDF)</Trans>
-                            </MenuItem>
-                          )}
-                        </Menu>
-
-                        {this.props.userHasEditAccess && (
-                          <NextLink
-                            href={{
-                              pathname: '/admin/edit',
-                              query: { id: book.id, lang: book.language.code }
-                            }}
-                            passHref
-                          >
-                            <EditBookLink title="Edit book">
-                              <EditIcon />
-                            </EditBookLink>
-                          </NextLink>
-                        )}
-                      </Fragment>
-                    )}
-                    {book.bookFormat === 'PDF' && (
-                      <Grid item>
-                        <Button
-                          href={book.downloads.pdf}
-                          color="primary"
-                          variant="raised"
-                          size="large"
-                        >
-                          <Trans>Download book</Trans>
-                        </Button>
-                      </Grid>
-                    )}
-                  </Grid>
-                </CardContent>
-              </Card>
-            </View>
-          </Container>
-
-          <Container mt={spacing.medium}>
-            <View ml={[0, 'auto']} w={['auto', 438]}>
-              <Metadata book={book} />
-              {book.supportsTranslation && (
-                <View borderTop={BORDER_STYLE} mt={spacing.medium}>
-                  <Link
-                    route="translate"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                  >
-                    <Button
-                      color="primary"
-                      css={{ margin: `${spacing.medium} 0` }}
+              <div
+                css={media.tablet({
+                  position: 'absolute',
+                  bottom: spacing.medium,
+                  textAlign: 'center',
+                  width: '90%'
+                })}
+              >
+                {book.bookFormat === 'HTML' && (
+                  <Fragment>
+                    <div
+                      css={{
+                        width: '100%',
+                        marginBottom: spacing.medium
+                      }}
                     >
-                      <TranslateIcon /> <Trans>Translate this book</Trans>
+                      <Link
+                        route="read"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                        prefetch
+                      >
+                        <Button
+                          variant="raised"
+                          color="primary"
+                          size="large"
+                          css={{ flex: 1 }}
+                        >
+                          <Trans>Read book</Trans>
+                        </Button>
+                      </Link>
+                    </div>
+                    <Button
+                      aria-owns={
+                        this.state.anchorEl ? 'download-book-menu' : null
+                      }
+                      aria-haspopup="true"
+                      color="primary"
+                      onClick={this.handleDownloadClick}
+                    >
+                      <CloudDownloadIcon css={{ marginRight: '10px' }} />
+                      <Trans>Download book</Trans>
                     </Button>
-                  </Link>
-                </View>
-              )}
-              <View
-                borderTop={BORDER_STYLE}
-                mt={book.supportsTranslation ? 0 : spacing.medium}
-              >
-                <Button
-                  color="primary"
-                  css={{ margin: `${spacing.medium} 0` }}
-                  href={config.zendeskUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    <Menu
+                      id="download-book-menu"
+                      onClose={this.closeDownloadMenu}
+                      anchorEl={this.state.anchorEl}
+                      open={Boolean(this.state.anchorEl)}
+                    >
+                      {book.downloads.epub && (
+                        <MenuItem
+                          href={book.downloads.epub}
+                          component="a"
+                          onClick={this.closeDownloadMenu}
+                        >
+                          <Trans>E-book (ePUB)</Trans>
+                        </MenuItem>
+                      )}
+                      {book.downloads.pdf && (
+                        <MenuItem
+                          href={book.downloads.pdf}
+                          component="a"
+                          onClick={this.closeDownloadMenu}
+                        >
+                          <Trans>Printable book (PDF)</Trans>
+                        </MenuItem>
+                      )}
+                    </Menu>
+                    {this.props.userHasEditAccess && (
+                      <NextLink
+                        href={{
+                          pathname: '/admin/edit',
+                          query: { id: book.id, lang: book.language.code }
+                        }}
+                        passHref
+                      >
+                        <EditBookLink title="Edit book">
+                          <EditIcon />
+                        </EditBookLink>
+                      </NextLink>
+                    )}
+                  </Fragment>
+                )}
+
+                {book.bookFormat === 'PDF' && (
+                  <Button
+                    href={book.downloads.pdf}
+                    color="primary"
+                    variant="raised"
+                    size="large"
+                  >
+                    <Trans>Download book</Trans>
+                  </Button>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Container mt={spacing.large}>
+            <Metadata book={book} />
+
+            {book.supportsTranslation && (
+              <View borderTop={BORDER_STYLE} mt={spacing.medium}>
+                <Link
+                  route="translate"
+                  passHref
+                  params={{ id: book.id, lang: book.language.code }}
                 >
-                  <WarningIcon /> <Trans>Report a problem with this book</Trans>
-                </Button>
+                  <Button
+                    color="primary"
+                    css={{ margin: `${spacing.medium} 0` }}
+                  >
+                    <TranslateIcon /> <Trans>Translate this book</Trans>
+                  </Button>
+                </Link>
               </View>
+            )}
+            <View
+              borderTop={BORDER_STYLE}
+              mt={book.supportsTranslation ? 0 : spacing.medium}
+            >
+              <Button
+                color="primary"
+                css={{ margin: `${spacing.medium} 0` }}
+                href={config.zendeskUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <WarningIcon /> <Trans>Report a problem with this book</Trans>
+              </Button>
             </View>
           </Container>
 
@@ -317,21 +309,5 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     );
   }
 }
-
-/**
- * Positions the book cover correctly on the differnt devices.
- * On mobile we want it to appear inside the card, but on >= tablet we want it to the left of the card
- */
-const CoverPositioner = styled('div')`
-  ${media.mobile`
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: ${spacing.small};
-  `} ${media.tablet`
-    flex: 0 0 260px;
-    margin-right: 20px;
-  `};
-`;
 
 export default errorPage(BookPage);

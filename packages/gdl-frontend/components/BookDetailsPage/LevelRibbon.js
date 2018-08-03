@@ -13,7 +13,7 @@ import { triangle } from 'polished';
 import type { ReadingLevel } from '../../types';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import media from '../../style/media';
-import { colors, fonts, spacing } from '../../style/theme';
+import { colors, fonts } from '../../style/theme';
 
 const HEIGHT = '30px';
 
@@ -40,7 +40,6 @@ const Ribbon = styled('div')`
   ${media.mobile`
     position: absolute;
     right: 0;
-    margin-right: -${spacing.medium};
   `};
   &:before {
     content: '';
