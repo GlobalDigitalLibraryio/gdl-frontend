@@ -46,7 +46,7 @@ export const InputDesktopAppbar = styled('input')`
   background-color: #fff;
   width: 100%;
   outline: none;
-  border-radius: 30px;
+  border-radius: 0;
   border: 0;
   padding: 12px 16px;
   padding-left: 48px;

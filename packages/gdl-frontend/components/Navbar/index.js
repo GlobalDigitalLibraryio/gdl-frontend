@@ -11,6 +11,7 @@ import styled from 'react-emotion';
 import {
   AppBar,
   Drawer,
+  Grid,
   IconButton,
   Toolbar,
   Tooltip
@@ -77,58 +78,69 @@ class Navbar extends React.Component<Props, State> {
       <div>
         <AppBar position="static">
           <Toolbar>
-            <IconButton
-              color="inherit"
-              onClick={this.props.onMenuClick}
-              css={media.tablet({ marginRight: 18 })}
-            >
-              <MenuIcon />
-              <SrOnly>
-                <Trans>Open menu</Trans>
-              </SrOnly>
-            </IconButton>
-            {brandLink}
-
-            <Link route="books" passHref>
-              <IconButton
-                color="inherit"
-                component="a"
-                css={{ marginLeft: 'auto' }}
+            <Grid container alignItems="center">
+              <Grid
+                item
+                lg={4}
+                xs={6}
+                css={{ display: 'flex', alignItems: 'center' }}
               >
-                <HomeIcon />
-                <SrOnly>
-                  <Trans>Home</Trans>
-                </SrOnly>
-              </IconButton>
-            </Link>
+                <IconButton
+                  color="inherit"
+                  onClick={this.props.onMenuClick}
+                  css={media.tablet({ marginRight: 18 })}
+                >
+                  <MenuIcon />
+                  <SrOnly>
+                    <Trans>Open menu</Trans>
+                  </SrOnly>
+                </IconButton>
+                {brandLink}
+              </Grid>
 
-            <IconButton
-              color="inherit"
-              onClick={this.handleSearchClick}
-              css={media.tablet({ display: 'none' })}
-            >
-              <SearchIcon />
-              <SrOnly>
-                <Trans>Search</Trans>
-              </SrOnly>
-            </IconButton>
+              <Grid item lg={4} xs={0} css={media.mobile({ display: 'none' })}>
+                <NavbarSearch inputFieldType="desktopAppbar" />
+              </Grid>
 
-            <SelectLanguage anchor="right">
-              {({ onClick }) => (
-                <Tooltip title={<Trans>Choose book language</Trans>}>
-                  <IconButton onClick={onClick} color="inherit">
-                    <LanguageIcon />
+              <Grid item lg={4} xs={6} css={{ textAlign: 'right' }}>
+                <Link route="books" passHref>
+                  <IconButton
+                    color="inherit"
+                    component="a"
+                    css={{ marginLeft: '0' }}
+                  >
+                    <HomeIcon />
                     <SrOnly>
-                      <Trans>Choose book language</Trans>
+                      <Trans>Home</Trans>
                     </SrOnly>
                   </IconButton>
-                </Tooltip>
-              )}
-            </SelectLanguage>
+                </Link>
 
-            <div css={media.mobile({ display: 'none' })}>
-              <NavbarSearch inputFieldType="desktopAppbar" />
-            </div>
+                <IconButton
+                  color="inherit"
+                  onClick={this.handleSearchClick}
+                  css={media.tablet({ display: 'none' })}
+                >
+                  <SearchIcon />
+                  <SrOnly>
+                    <Trans>Search</Trans>
+                  </SrOnly>
+                </IconButton>
+
+                <SelectLanguage anchor="right">
+                  {({ onClick }) => (
+                    <Tooltip title={<Trans>Choose book language</Trans>}>
+                      <IconButton onClick={onClick} color="inherit">
+                        <LanguageIcon />
+                        <SrOnly>
+                          <Trans>Choose book language</Trans>
+                        </SrOnly>
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </SelectLanguage>
+              </Grid>
+            </Grid>
           </Toolbar>
         </AppBar>
 
