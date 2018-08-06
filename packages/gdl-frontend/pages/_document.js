@@ -7,12 +7,14 @@
  */
 
 import React from 'react';
-import NextDocument, { Head, Main, NextScript } from 'next/document';
+import { NextScript } from '@engineerapart/nextscript';
+import NextDocument, { Head, Main } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import PropTypes from 'prop-types';
 
 import type { Context } from '../types';
 import config from '../config';
+import polyfills from '../polyfills';
 
 // This is an import with a sideeffect :/
 // eslint-disable-next-line no-unused-vars
@@ -139,7 +141,7 @@ export default class Document extends NextDocument {
         </Head>
         <body>
           <Main />
-          <NextScript />
+          <NextScript features={polyfills} allowUserMonitoring={false} />
         </body>
       </html>
     );

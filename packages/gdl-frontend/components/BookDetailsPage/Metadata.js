@@ -7,7 +7,7 @@
  */
 
 import React, { Fragment } from 'react';
-import { Trans } from '@lingui/react';
+import { Trans, Plural } from '@lingui/react';
 import styled from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
@@ -38,27 +38,15 @@ function headingText(type, value) {
   // See issue here: https://github.com/GlobalDigitalLibraryio/issues/issues/437
   switch (type) {
     case ContributorTypes.AUTHOR:
-      return value > 1 ? <Trans>Authors</Trans> : <Trans>Author</Trans>; // <Plural one="Author" other="Authors" value={value} />;
+      return <Plural one="Author" other="Authors" value={value} />;
     case ContributorTypes.ILLUSTRATOR:
-      return value > 1 ? (
-        <Trans>Illustrators</Trans>
-      ) : (
-        <Trans>Illustrator</Trans>
-      ); //<Plural one="Illustrator" other="Illustrators" value={value} />;
+      return <Plural one="Illustrator" other="Illustrators" value={value} />;
     case ContributorTypes.TRANSLATOR:
-      return value > 1 ? <Trans>Translators</Trans> : <Trans>Translator</Trans>; //<Plural one="Translator" other="Translators" value={value} />;
+      return <Plural one="Translator" other="Translators" value={value} />;
     case ContributorTypes.PHOTOGRAPHER:
-      return value > 1 ? (
-        <Trans>Photographers</Trans>
-      ) : (
-        <Trans>Photographer</Trans>
-      ); //<Plural one="Photographer" other="Photographers" value={value} />;
+      return <Plural one="Photographer" other="Photographers" value={value} />;
     default:
-      return value > 1 ? (
-        <Trans>Contributors</Trans>
-      ) : (
-        <Trans>Contributor</Trans>
-      ); //<Plural one="Contributor" other="Contributors" value={value} />;
+      return <Plural one="Contributor" other="Contributors" value={value} />;
   }
 }
 
