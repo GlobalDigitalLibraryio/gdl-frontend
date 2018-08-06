@@ -8,7 +8,7 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Tooltip } from '@material-ui/core';
 import {
   Close as CloseIcon,
   Edit as EditIcon,
@@ -21,35 +21,8 @@ import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
+import Favorite from '../Favorite';
 import { flexCenter } from '../../style/flex';
-import {
-  markAsFavorite,
-  removeAsFavorite,
-  isFavorite
-} from '../../lib/favorites';
-
-const Div = styled.div`
-  z-index: 2;
-  position: relative;
-  position: sticky;
-  top: 0;
-  left: 0;
-  right: 0;
-  color: ${colors.text.subtle};
-  border-bottom: 1px solid ${colors.base.grayLight};
-  background: ${colors.base.white};
-  ${flexCenter};
-
-  font-size: 14px;
-  min-height: 48px;
-  span {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  ${media.tablet`
-    margin-bottom: 50px;
-  `};
-`;
 
 type Props = {
   book: BookDetails,
@@ -58,7 +31,6 @@ type Props = {
   chapter: ChapterSummary
 };
 
-// Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line
 const Toolbar = ({
   book,
   chapter,
@@ -66,77 +38,95 @@ const Toolbar = ({
   onRequestClose
 }: Props) => (
   <Div>
+    {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
-    {userHasEditAccess && (
-      <Link
-        href={{
-          pathname: '/admin/edit',
-          query: {
-            id: book.id,
-            lang: book.language.code,
-            chapterId: chapter.id
-          }
-        }}
-      >
-        <IconButton
-          title="Edit book"
-          css={{ position: 'absolute', right: '50px' }}
+    <Buttons>
+      {!userHasEditAccess && (
+        <Link
+          href={{
+            pathname: '/admin/edit',
+            query: {
+              id: book.id,
+              lang: book.language.code,
+              chapterId: chapter.id
+            }
+          }}
         >
-          <EditIcon />
-        </IconButton>
-      </Link>
-    )}
-    <FavButton book={book} />
-    <IconButton
-      onClick={onRequestClose}
-      css={{ position: 'absolute', right: '0' }}
-    >
-      <CloseIcon />
-      <SrOnly>
-        <Trans>Close book</Trans>
-      </SrOnly>
-    </IconButton>
+          <IconButton title="Edit book">
+            <EditIcon />
+          </IconButton>
+        </Link>
+      )}
+      <FavButton book={book} />
+      <IconButton onClick={onRequestClose}>
+        <CloseIcon />
+        <SrOnly>
+          <Trans>Close book</Trans>
+        </SrOnly>
+      </IconButton>
+    </Buttons>
   </Div>
 );
 
-class FavButton extends React.Component<
-  { book: BookDetails },
-  { isFav: boolean }
-> {
-  state = {
-    isFav: false
-  };
-
-  componentDidMount() {
-    this.setState({ isFav: isFavorite(this.props.book) });
-  }
-
-  handleFav = () => {
-    this.state.isFav
-      ? removeAsFavorite(this.props.book)
-      : markAsFavorite(this.props.book);
-
-    this.setState({ isFav: isFavorite(this.props.book) });
-  };
-
+class FavButton extends React.Component<{ book: BookDetails }> {
   render() {
-    const isFav = this.state.isFav;
     return (
-      <IconButton
-        onClick={this.handleFav}
-        css={`
-          position: absolute;
-          right: 50px;
-        `}
-        style={isFav ? { color: 'red' } : null}
+      <Favorite
+        id={this.props.book.id}
+        language={this.props.book.language.code}
       >
-        {isFav ? <FavoriteIcon /> : <FavoriteOutlineIcon />}
-        <SrOnly>
-          <Trans>Mark book as favorite</Trans>
-        </SrOnly>
-      </IconButton>
+        {({ isFav, onClick }) => (
+          <Tooltip
+            // Force remounting of the tooltip when the fav state changes
+            key={isFav.toString()}
+            title={
+              isFav ? (
+                <Trans>Remove from favorites</Trans>
+              ) : (
+                <Trans>Add to favorites</Trans>
+              )
+            }
+          >
+            <IconButton
+              onClick={onClick}
+              style={isFav ? { color: 'red' } : null}
+            >
+              {isFav ? <FavoriteIcon /> : <FavoriteOutlineIcon />}
+              <SrOnly>
+                <Trans>Mark book as favorite</Trans>
+                {isFav ? (
+                  <Trans>Remove from favorites</Trans>
+                ) : (
+                  <Trans>Add to favorites</Trans>
+                )}
+              </SrOnly>
+            </IconButton>
+          </Tooltip>
+        )}
+      </Favorite>
     );
   }
 }
+
+const Div = styled.div`
+  position: relative;
+  position: sticky;
+  top: 0;
+  color: ${colors.text.subtle};
+  border-bottom: 1px solid ${colors.base.grayLight};
+  ${flexCenter};
+
+  font-size: 14px;
+  min-height: 48px;
+  ${media.tablet`
+    margin-bottom: 50px;
+  `};
+`;
+
+const Buttons = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+`;
 
 export default Toolbar;

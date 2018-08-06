@@ -45,11 +45,7 @@ import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
-import {
-  markAsFavorite,
-  removeAsFavorite,
-  isFavorite
-} from '../../lib/favorites';
+import Favorite from '../../components/Favorite';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -89,13 +85,9 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<
-  Props,
-  { anchorEl: ?HTMLElement, isFav: boolean }
-> {
+class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
   state = {
-    anchorEl: null,
-    isFav: false
+    anchorEl: null
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -122,30 +114,6 @@ class BookPage extends React.Component<
     this.setState({ anchorEl: event.currentTarget });
 
   closeDownloadMenu = () => this.setState({ anchorEl: null });
-
-  handleFavClick = () => {
-    this.state.isFav
-      ? removeAsFavorite(this.props.book)
-      : markAsFavorite(this.props.book);
-
-    this.setState({ isFav: isFavorite(this.props.book) });
-  };
-
-  /**
-   * When we mount, check if the book is a user's favorite
-   */
-  componentDidMount() {
-    this.setState({ isFav: isFavorite(this.props.book) });
-  }
-
-  /**
-   * We need to recalculate the favorite state if the book changes
-   */
-  componentDidUpdate(prevProps) {
-    if (prevProps.book !== this.props.book) {
-      this.setState({ isFav: isFavorite(this.props.book) });
-    }
-  }
 
   render() {
     const { similarBooks, book } = this.props;
@@ -296,23 +264,28 @@ class BookPage extends React.Component<
                   </Grid>
                 </CardContent>
                 <div css={{ display: 'flex' }}>
-                  <Tab
-                    css={{ flexGrow: 1, flexShrink: 1 }}
-                    onClick={this.handleFavClick}
-                    role="button"
-                    icon={
-                      this.state.isFav ? (
-                        <FavoriteIcon
-                          style={this.state.isFav ? { color: 'red' } : null}
-                        />
-                      ) : (
-                        <FavoriteOutlineIcon />
-                      )
-                    }
-                    label={<Trans>Favorite</Trans>}
+                  <Favorite
+                    id={this.props.book.id}
+                    language={this.props.book.language.code}
                   >
-                    Favorite
-                  </Tab>
+                    {({ onClick, isFav }) => (
+                      <Tab
+                        css={{ flexGrow: 1, flexShrink: 1 }}
+                        onClick={onClick}
+                        role="button"
+                        icon={
+                          isFav ? (
+                            <FavoriteIcon
+                              style={isFav ? { color: 'red' } : null}
+                            />
+                          ) : (
+                            <FavoriteOutlineIcon />
+                          )
+                        }
+                        label={<Trans>Favorite</Trans>}
+                      />
+                    )}
+                  </Favorite>
                   <Tab
                     css={{ flexGrow: 1, flexShrink: 1 }}
                     role="button"
@@ -323,9 +296,7 @@ class BookPage extends React.Component<
                     }
                     aria-haspopup="true"
                     onClick={this.handleDownloadClick}
-                  >
-                    Download
-                  </Tab>
+                  />
                 </div>
               </Card>
             </View>

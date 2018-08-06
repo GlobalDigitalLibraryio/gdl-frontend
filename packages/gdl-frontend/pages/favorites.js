@@ -23,12 +23,16 @@ import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
-import { getFavorites, clearFavorites } from '../lib/favorites';
+import {
+  getFavorites,
+  clearFavorites,
+  removeAsFavorite
+} from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
 
 type State = {
   books: Array<Book>,
-  loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR'
+  loadingStatus: 'LOADING' | 'SUCCESS'
 };
 
 class FavoritesPage extends React.Component<{}, State> {
@@ -40,22 +44,25 @@ class FavoritesPage extends React.Component<{}, State> {
   async componentDidMount() {
     const favs = getFavorites();
 
+    // Tuples of [fav, res];
     const booksResults = await Promise.all(
-      favs.map(fav => fetchBook(fav.id, fav.language))
+      favs.map(async fav => [fav, await fetchBook(fav.id, fav.language)])
     );
 
-    // If fetching of any of the books fail, we set an error
-    // kind of unfortunate as if a faved book has been removed
-    // (so it 404s), we will always show the error message until
-    // the user clear her favorites.
-    if (booksResults.some(res => !res.isOk)) {
-      this.setState({ loadingStatus: 'ERROR' });
-    } else {
-      // $FlowFixMe: Failed books handled by if condition
-      const books = booksResults.map(res => res.data);
-      // $FlowFixMe: Failed books handled by if condition
-      this.setState({ books, loadingStatus: 'SUCCESS' });
-    }
+    /**
+     * Try to cleanup failures
+     */
+    const fails = booksResults.filter(([_, res]) => !res.isOk);
+    fails.forEach(([fav]) => removeAsFavorite(fav));
+
+    /**
+     * The books we successfully retrived
+     */
+    const books = booksResults
+      .filter(([_, res]) => res.isOk)
+      .map(([_, res]) => res.data);
+
+    this.setState({ books, loadingStatus: 'SUCCESS' });
   }
 
   handleClearFavorites = () => {
@@ -70,11 +77,13 @@ class FavoritesPage extends React.Component<{}, State> {
       <>
         <Head title="Favorites" />
         <Layout>
-          <Container>
+          <Container
+            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+          >
             <Typography
               variant="headline"
               align="center"
-              css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+              css={{ marginBottom: spacing.large }}
             >
               <Trans>Favorites</Trans>
             </Typography>
@@ -85,26 +94,22 @@ class FavoritesPage extends React.Component<{}, State> {
               </Center>
             )}
 
-            {loadingStatus === 'ERROR' && (
-              <Center>
-                <Typography>
-                  <Trans>Unable to load your favorites due to an error.</Trans>
-                </Typography>
-                <Typography gutterBottom>
-                  <Trans>
-                    If this keeps happening, try clearing all your favorites.
-                  </Trans>
-                </Typography>
-                <Button onClick={this.handleClearFavorites} variant="outlined">
-                  <Trans>Clear favorites</Trans>
-                </Button>
-              </Center>
-            )}
-
             {loadingStatus === 'SUCCESS' && (
               <>
                 {books.length > 0 ? (
-                  <BookGrid books={books} />
+                  <>
+                    <BookGrid books={books} />
+                    <Center>
+                      <Button
+                        onClick={this.handleClearFavorites}
+                        css={{ marginTop: spacing.large }}
+                        variant="outlined"
+                        size="small"
+                      >
+                        <Trans>Clear all favorites</Trans>
+                      </Button>
+                    </Center>
+                  </>
                 ) : (
                   <Center>
                     <Avatar css={{ height: 100, width: 100 }}>
