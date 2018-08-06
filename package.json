@@ -59,6 +59,7 @@
     "webpack-bundle-analyzer": "^2.8.2"
   },
   "dependencies": {
+    "@engineerapart/nextscript": "0.0.8",
     "@lingui/react": "2.3.0",
     "@material-ui/core": "1.4.1",
     "@material-ui/icons": "2.0.0",
