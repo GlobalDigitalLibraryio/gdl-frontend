@@ -202,7 +202,6 @@ class SearchPage extends React.Component<Props, State> {
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
             <form onSubmit={this.handleSearch} action=".">
               <SearchField
-                autoFocus
                 label="Search"
                 id="booksearch"
                 onChange={this.handleQueryChange}
