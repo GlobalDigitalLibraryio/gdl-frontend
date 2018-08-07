@@ -14,9 +14,15 @@ import {
   Divider,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  ListItemIcon
 } from '@material-ui/core';
-import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons';
+import {
+  KeyboardArrowRight as KeyboardArrowRightIcon,
+  ExitToApp as ExitToAppIcon,
+  Translate as TranslateIcon,
+  Edit as EditIcon
+} from '@material-ui/icons';
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
@@ -87,14 +93,30 @@ class GlobalMenu extends React.Component<Props, State> {
           <Divider />
           {this.state.userHasAdminPrivileges && (
             <ListItem component="a" href="/admin" button>
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
               <ListItemText>
                 <Trans>GDL Admin</Trans>
               </ListItemText>
             </ListItem>
           )}
+          <RouteLink passHref route="translations">
+            <ListItem button component="a">
+              <ListItemIcon>
+                <TranslateIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Trans>My translations</Trans>
+              </ListItemText>
+            </ListItem>
+          </RouteLink>
           {!hasAuthToken() ? (
             <Link passHref href="/auth/sign-in">
               <ListItem button component="a">
+                <ListItemIcon>
+                  <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
+                </ListItemIcon>
                 <ListItemText>
                   <Trans>Log in</Trans>
                 </ListItemText>
@@ -103,19 +125,15 @@ class GlobalMenu extends React.Component<Props, State> {
           ) : (
             <Link passHref href="/auth/sign-off">
               <ListItem button component="a">
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
                 <ListItemText>
                   <Trans>Log out</Trans>
                 </ListItemText>
               </ListItem>
             </Link>
           )}
-          <RouteLink passHref route="translations">
-            <ListItem button component="a">
-              <ListItemText>
-                <Trans>My translations</Trans>
-              </ListItemText>
-            </ListItem>
-          </RouteLink>
         </List>
       </Drawer>
     );
