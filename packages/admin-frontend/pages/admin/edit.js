@@ -10,12 +10,12 @@ import AppBar from '@material-ui/core/AppBar/AppBar';
 import Tab from '@material-ui/core/Tab/Tab';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 import Typography from '@material-ui/core/Typography/Typography';
-import Container from '../components/Container';
-import EditBookForm from '../components/EditBook/EditBookForm';
-import EditChapterForm from '../components/EditBook/EditChapterForm';
-import { fetchBook } from '../lib/fetch';
-import Layout from '../components/Layout';
-import type { BookDetails, Context } from '../types';
+import Container from '../../components/Container';
+import EditBookForm from '../../components/EditBook/EditBookForm';
+import EditChapterForm from '../../components/EditBook/EditChapterForm';
+import { fetchBook } from '../../lib/fetch';
+import Layout from '../../components/Layout';
+import type { BookDetails, Context } from '../../types';
 
 type State = {
   selectedTab: number
