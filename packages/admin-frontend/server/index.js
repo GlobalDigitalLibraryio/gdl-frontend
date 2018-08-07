@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-const PORT = 3000;
+const PORT = process.env['ADMIN_FRONTEND_PORT'] || 3010;
 
 const initServer = require('./server');
 

@@ -1,11 +1,12 @@
-import Document, { Head, Main, NextScript } from 'next/document';
+import NextDocument, { Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
 const isDev = process.env.NODE_ENV !== 'production';
-const cssPath = (isDev ? '/' : '/admin/') + '_next/static/style.css';
+const cssPath =
+  (isDev ? 'http://localhost:3010/' : '/admin/') + '_next/static/style.css';
 
-export default class MyDocument extends Document {
+export default class Document extends NextDocument {
   render() {
     return (
       <html>

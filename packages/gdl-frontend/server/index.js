@@ -6,7 +6,8 @@
  * See LICENSE
  */
 
-const PORT = 3000;
+//const PORT = 3005;
+const PORT = process.env['GDL_FRONTEND_PORT'] || 3005;
 
 const initServer = require('./server');
 

@@ -17,8 +17,8 @@ async function setup() {
   await app.prepare();
   const server = express();
 
-  if (!isDev) {
-    app.setAssetPrefix('/admin');
+  if (isDev) {
+    app.setAssetPrefix('http://localhost:3010');
   }
 
   // Health check for AWS
@@ -29,6 +29,19 @@ async function setup() {
 
   // Setup the cookie parsing for express
   server.use(cookieParser());
+
+  /*server.use(function(req, res, next) {
+    console.log('Time:', Date.now());
+    console.log(req.headers.host);
+
+    if (req.headers.host === 'http://localhost:3010') {
+      app.setAssetPrefix('http://localhost:3010');
+    } else {
+      app.setAssetPrefix('');
+    }
+
+    next();
+  });*/
 
   server.use(app.getRequestHandler());
 
