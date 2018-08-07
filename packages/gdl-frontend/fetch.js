@@ -189,7 +189,6 @@ export function sendToTranslation(
 
 export async function search(
   query: string,
-  language?: string,
   options: Options = {}
 ): Promise<
   RemoteData<{|
@@ -200,8 +199,7 @@ export async function search(
 > {
   const result = await doFetch(
     encodeURI(
-      `${bookApiUrl}/search/${language ||
-        ''}?query=${query}&page-size=${options.pageSize ||
+      `${bookApiUrl}/search?query=${query}&page-size=${options.pageSize ||
         PAGE_SIZE}&page=${options.page || 1}`
     )
   );

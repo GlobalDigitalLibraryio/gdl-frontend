@@ -21,7 +21,6 @@ import {
   NoResults
 } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
-import { getBookLanguageCode } from '../lib/storage';
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
@@ -30,7 +29,6 @@ import { search } from '../fetch';
 import { errorPage } from '../hocs';
 
 const QUERY_PARAM = 'q';
-const LANG_PARAM = 'l';
 
 type Props = {
   searchResult: ?{
@@ -56,21 +54,17 @@ type State = {
   },
   searchQuery: string,
   lastSearchQuery?: string,
-  isLoadingMore: boolean,
-  languageCode: string
+  isLoadingMore: boolean
 };
 
 class SearchPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
     let searchResult;
-    // FIXME: Hmm.... we can't do this because of caching right?
-    // We get the language code either from the query params or the cookie
 
     if (query[QUERY_PARAM]) {
       const searchQuery = query[QUERY_PARAM];
-      const languageCode = query[LANG_PARAM] || getBookLanguageCode(req);
 
-      searchResult = await search(searchQuery, languageCode, {
+      searchResult = await search(searchQuery, {
         pageSize: SEARCH_PAGE_SIZE
       });
 
@@ -91,8 +85,7 @@ class SearchPage extends React.Component<Props, State> {
     searchResult: this.props.searchResult,
     searchQuery: this.props.router.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.router.query[QUERY_PARAM],
-    isLoadingMore: false,
-    languageCode: this.props.router.query[LANG_PARAM] || getBookLanguageCode()
+    isLoadingMore: false
   };
 
   handleSearch = async event => {
@@ -112,20 +105,14 @@ class SearchPage extends React.Component<Props, State> {
     Router.pushRoute(
       'search',
       {
-        [QUERY_PARAM]: this.state.searchQuery,
-        // $FlowFixMe: We're already checking if language is defined
-        [LANG_PARAM]: this.props.languageCode
+        [QUERY_PARAM]: this.state.searchQuery
       },
       { shallow: true }
     );
 
-    const queryRes = await search(
-      this.state.searchQuery,
-      this.state.languageCode,
-      {
-        pageSize: SEARCH_PAGE_SIZE
-      }
-    );
+    const queryRes = await search(this.state.searchQuery, {
+      pageSize: SEARCH_PAGE_SIZE
+    });
 
     // TODO: Notify user of error
     if (!queryRes.isOk) {
@@ -140,14 +127,10 @@ class SearchPage extends React.Component<Props, State> {
     // Fixes flow warnings
     if (!this.state.searchResult) return;
 
-    const queryRes = await search(
-      this.state.searchQuery,
-      this.state.languageCode,
-      {
-        pageSize: SEARCH_PAGE_SIZE,
-        page: this.state.searchResult.page + 1
-      }
-    );
+    const queryRes = await search(this.state.searchQuery, {
+      pageSize: SEARCH_PAGE_SIZE,
+      page: this.state.searchResult.page + 1
+    });
 
     // TODO: Notify user of error
     if (!queryRes.isOk) {

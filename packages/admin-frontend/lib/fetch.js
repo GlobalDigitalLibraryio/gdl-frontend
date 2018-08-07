@@ -226,20 +226,17 @@ type Options = {
 
 export async function search(
   query: string,
-  language?: string,
   options: Options = {}
 ): Promise<
   RemoteData<{|
     page: number,
     totalCount: number,
-    results: Array<Book>,
-    language: Language
+    results: Array<Book>
   |}>
 > {
   const result = await doFetch(
     encodeURI(
-      `${bookApiUrl}/search/${language ||
-        ''}?query=${query}&page-size=${options.pageSize ||
+      `${bookApiUrl}/search?query=${query}&page-size=${options.pageSize ||
         10}&page=${options.page || 1}`
     )
   );
