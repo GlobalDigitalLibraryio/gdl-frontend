@@ -8,6 +8,7 @@
 
 import fetch from 'isomorphic-unfetch';
 import { getAuthToken } from 'gdl-auth';
+import getConfig from 'next/config';
 import type {
   BookDetails,
   Category,
@@ -20,7 +21,10 @@ import type {
   NewImageMetadata,
   ImageMetadata
 } from '../types';
-import { bookApiUrl, imageApiUrl } from '../config';
+
+const {
+  publicRuntimeConfig: { bookApiUrl, imageApiUrl }
+} = getConfig();
 
 export async function fetchBook(
   id: string | number,

@@ -5,106 +5,92 @@
  *
  * See LICENSE
  */
-
+/*::
+import type { ConfigShape } from './types';
+*/
+const { GDL_ENVIRONMENT } = require('gdl-config');
 const dnsResolver = require('./lib/customResolver');
 
-// Immutable, multi environment config
-// See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
+const isDev = process.env.NODE_ENV !== 'production';
 
-const globalVarName = '__GDL_ENVIRONMENT__';
-
-/**
- * Read the GDL environment from a global variable in the client (see _document.js)
- * On the server, we use environment variables.
- * Fallback to 'dev' if none is provided.
- */
-const GDL_ENVIRONMENT = (function() {
-  return (
-    (typeof window !== 'undefined'
-      ? window[globalVarName]
-      : process.env.GDL_ENVIRONMENT) || 'dev'
-  );
-})();
-
-function getConfig() {
-  const config = {
-    common: {
-      DEFAULT_LANGUAGE: {
-        code: 'en',
-        name: 'English'
-      },
-      GLOBAL_VAR_NAME: globalVarName,
-      SENTRY_PROJECT_ID: '1195015',
-      SENTRY_PUBLIC_KEY: '7d5b3ec618464d4abceb4b4fc2ee0ed0',
-      REPORT_ERRORS: false,
-      BLOCK_SEARCH_INDEXING: true,
-      SEARCH_PAGE_SIZE: 10,
-      clientAuth: {
-        clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
-        audience: 'gdl_system',
-        domain: 'digitallibrary.eu.auth0.com'
-      },
-      zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new',
-      googleAnalyticsTrackingID: 'N/A'
-    },
-
-    dev: {
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
-      canonical: 'http://localhost:3000'
-    },
-
-    local: {
-      bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1',
-      canonical: 'http://localhost:40003'
-    },
-
-    test: {
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1',
-      REPORT_ERRORS: true,
-      googleAnalyticsTrackingID: 'UA-111724798-1',
-      canonical: 'https://test.digitallibrary.io'
-    },
-
-    staging: {
-      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1',
-      REPORT_ERRORS: true,
-      googleAnalyticsTrackingID: 'UA-111796456-1',
-      canonical: 'https://staging.digitallibrary.io'
-    },
-
-    demo: {
-      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1',
-      REPORT_ERRORS: true,
-      canonical: 'https://demo.digitallibrary.io'
-    },
-
-    prod: {
-      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1',
-      REPORT_ERRORS: true,
-      googleAnalyticsTrackingID: 'UA-111771573-1',
-      canonical: 'https://digitallibrary.io',
-      BLOCK_SEARCH_INDEXING: false
-    }
-  };
-
-  const toRet = {
-    ...config.common,
-    // Overwrite with environment specific variables
-    ...config[GDL_ENVIRONMENT],
-    // Add the environment itself
-    GDL_ENVIRONMENT
-  };
-
-  // Poor way to determine if we're running in docker, but in that case we access the book api directly, not via the gateway/proxy
-  if (typeof window === 'undefined' && process.env.GDL_ENVIRONMENT) {
-    // Define a getter method when retrieving the book api url inside Docker.
-    // $FlowFixMe
-    Object.defineProperty(toRet, 'bookApiUrl', {
-      get: dnsResolver('book-api.gdl-local', '/book-api/v1')
-    });
+const bookApiUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'https://api.test.digitallibrary.io/book-api/v1';
+    case 'local':
+      return 'http://book-api.gdl-local:40001/book-api/v1';
+    case 'prod':
+      return 'https://api.digitallibrary.io/book-api/v1';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/book-api/v1`;
   }
+};
 
-  return toRet;
-}
+const canonicalUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'http://localhost:3000';
+    case 'local':
+      return 'http://localhost:40003';
+    case 'test':
+      return 'https://test.digitallibrary.io';
+    case 'staging':
+      return 'https://staging.digitallibrary.io';
+    default:
+      return 'https://digitallibrary.io';
+  }
+};
 
-module.exports = getConfig();
+const googleAnalyticsId = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'test':
+      return 'UA-111724798-1';
+    case 'staging':
+      return 'UA-111796456-1';
+    case 'prod':
+      return 'UA-111771573-1';
+    default:
+      return null;
+  }
+};
+
+module.exports = {
+  serverRuntimeConfig: {
+    port: process.env.GDL_FRONTEND_PORT || 3005,
+    // No need to add this to the public config (and ship to client) since we only use it in _document.js
+    googleSiteVerificationId: 't5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA',
+    // If we want to use our own custom DNS resolver (when running in Docker)
+    get bookApiUrl() {
+      return process.env.CUSTOM_DNS_RESOLVE
+        ? dnsResolver('book-api.gdl-local', '/book-api/v1')
+        : bookApiUrl();
+    }
+  },
+  publicRuntimeConfig: {
+    bookApiUrl: bookApiUrl(),
+    canonicalUrl: canonicalUrl(),
+
+    DEFAULT_LANGUAGE: {
+      code: 'en',
+      name: 'English'
+    },
+
+    SENTRY_PROJECT_ID: '1195015',
+    SENTRY_PUBLIC_KEY: '7d5b3ec618464d4abceb4b4fc2ee0ed0',
+    REPORT_ERRORS: !(
+      isDev ||
+      GDL_ENVIRONMENT === 'dev' ||
+      GDL_ENVIRONMENT === 'local'
+    ),
+
+    AUTH0: {
+      clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
+      audience: 'gdl_system',
+      domain: 'digitallibrary.eu.auth0.com'
+    },
+
+    googleAnalyticsId: googleAnalyticsId(),
+
+    zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new'
+  }
+};

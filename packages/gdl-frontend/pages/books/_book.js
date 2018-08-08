@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
+import getConfig from 'next/config';
 import styled from 'react-emotion';
 import {
   Menu,
@@ -27,9 +28,8 @@ import {
   Warning as WarningIcon
 } from '@material-ui/icons';
 
-import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, BookDetails, Context } from '../../types';
+import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
@@ -42,6 +42,10 @@ import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+
+const {
+  publicRuntimeConfig: { zendeskUrl }
+}: ConfigShape = getConfig();
 
 type Props = {
   book: BookDetails,
@@ -295,7 +299,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                 <Button
                   color="primary"
                   css={{ margin: `${spacing.medium} 0` }}
-                  href={config.zendeskUrl}
+                  href={zendeskUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

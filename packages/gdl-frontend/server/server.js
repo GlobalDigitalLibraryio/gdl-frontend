@@ -11,9 +11,14 @@ const helmet = require('helmet');
 const next = require('next');
 const requestLanguage = require('express-request-language');
 const cookieParser = require('cookie-parser');
+const { GDL_ENVIRONMENT } = require('gdl-config');
 const glob = require('glob');
 const routes = require('../routes');
-const config = require('../config');
+
+const {
+  publicRuntimeConfig: { REPORT_ERRORS },
+  serverRuntimeConfig: { port }
+} = require('../config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDev });
@@ -21,8 +26,8 @@ const handle = app.getRequestHandler();
 
 const languages = glob.sync('locale/*/messages.js').map(f => f.split('/')[1]);
 console.log('> Found translations for the following languages: ', languages);
-console.log('> GDL environment: ', config.GDL_ENVIRONMENT);
-console.log('> Will report errors: ', config.REPORT_ERRORS);
+console.log('> GDL environment: ', GDL_ENVIRONMENT);
+console.log('> Will report errors: ', REPORT_ERRORS);
 
 // Setup cache for rendered HTML
 const renderAndCache = require('./cache')(app);
@@ -38,8 +43,10 @@ async function setup() {
   await app.prepare();
   const server = express();
 
-  // Security setup if we're not running in development mode
-  if (!isDev) {
+  if (isDev) {
+    app.setAssetPrefix(`http://localhost:${port}`);
+  } else {
+    // Security setup if we're not running in development mode
     server.use(
       helmet({
         contentSecurityPolicy: require('./contentSecurityPolicy')

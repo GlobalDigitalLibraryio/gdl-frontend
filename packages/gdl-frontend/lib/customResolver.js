@@ -20,23 +20,21 @@ let expires;
  * @param {string} pathname
  */
 function customResolver(hostname /*: string */, pathname /*: string */) {
-  return function() {
-    if (address && expires > Date.now()) {
-      return address;
+  if (address && expires > Date.now()) {
+    return address;
+  }
+
+  // $FlowFixMe: Flow isn't updated with latest type signature for the resolve4 method
+  dns.resolve4(hostname, { ttl: true }, (err, addresses) => {
+    if (!err && addresses && addresses[0]) {
+      const { ttl, address: ip } = addresses[0];
+
+      expires = ttl * 1000 + Date.now();
+      address = `http://${ip}${pathname}`;
     }
+  });
 
-    // $FlowFixMe: Flow isn't updated with latest type signature for the resolve4 method
-    dns.resolve4(hostname, { ttl: true }, (err, addresses) => {
-      if (!err && addresses && addresses[0]) {
-        const { ttl, address: ip } = addresses[0];
-
-        expires = ttl * 1000 + Date.now();
-        address = `http://${ip}${pathname}`;
-      }
-    });
-
-    return `http://${hostname}${pathname}`;
-  };
+  return `http://${hostname}${pathname}`;
 }
 
 module.exports = customResolver;

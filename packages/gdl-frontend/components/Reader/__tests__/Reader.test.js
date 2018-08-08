@@ -13,6 +13,17 @@ import Router from 'next/router';
 import type { BookDetails, Chapter } from '../../../types';
 import Reader from '../';
 
+jest.mock('next/config', () => {
+  return function() {
+    return {
+      publicRuntimeConfig: {},
+      serverRuntimeConfig: {
+        bookApiUrl: 'http://test.no'
+      }
+    };
+  };
+});
+
 // Mock out the router. See https://github.com/zeit/next.js/issues/1827#issuecomment-323314141
 const mockedRouter = {
   push: () => Promise.resolve(),

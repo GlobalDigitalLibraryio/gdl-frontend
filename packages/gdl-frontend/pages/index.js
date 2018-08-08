@@ -8,9 +8,11 @@
 
 import React, { Fragment } from 'react';
 import Head from 'next/head';
+import getConfig from 'next/config';
 
 import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
 import type {
+  ConfigShape,
   Book,
   Language,
   FeaturedContent,
@@ -25,7 +27,10 @@ import {
   getBookLanguageCode,
   getBookCategory
 } from '../lib/storage';
-import { canonical } from '../config';
+
+const {
+  publicRuntimeConfig: { canonicalUrl }
+}: ConfigShape = getConfig();
 
 type Props = {|
   featuredContent: Array<FeaturedContent>,
@@ -147,13 +152,13 @@ class IndexPage extends React.Component<Props> {
           <Head>
             <link
               rel="canonical"
-              href={`${canonical}/${
+              href={`${canonicalUrl}/${
                 language.code
               }/books/category/${categoryTypeForUrl}`}
             />
             <meta
               property="og:url"
-              content={`${canonical}/${
+              content={`${canonicalUrl}/${
                 language.code
               }/books/category/${categoryTypeForUrl}`}
             />
