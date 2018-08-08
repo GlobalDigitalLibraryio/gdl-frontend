@@ -1,18 +1,20 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2018 @PROJECT@
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
 
-const PORT = process.env['ADMIN_FRONTEND_PORT'] || 3010;
+const {
+  serverRuntimeConfig: { port }
+} = require('../config');
 
 const initServer = require('./server');
 
 initServer().then(server => {
-  server.listen(PORT, err => {
+  server.listen(port, err => {
     if (err) throw err;
-    console.log(`> Ready on http://localhost:${PORT}`);
+    console.log(`> Ready on http://localhost:${port}`);
   });
 });

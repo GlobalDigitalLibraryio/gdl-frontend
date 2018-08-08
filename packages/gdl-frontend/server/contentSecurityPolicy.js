@@ -5,7 +5,9 @@
  *
  * See LICENSE
  */
-const { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY } = require('../config');
+const {
+  publicRuntimeConfig: { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY }
+} = require('../config');
 
 const googleAnalytics = 'www.google-analytics.com';
 

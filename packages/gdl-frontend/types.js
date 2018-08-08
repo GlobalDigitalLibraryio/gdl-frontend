@@ -11,6 +11,33 @@ export type Publisher = {
   +name: string
 };
 
+export type Language = {
+  +code: string,
+  +name: string
+};
+
+export type ConfigShape = {
+  publicRuntimeConfig: {
+    bookApiUrl: string,
+    canonicalUrl: string,
+    SENTRY_PROJECT_ID: string,
+    SENTRY_PUBLIC_KEY: string,
+    REPORT_ERRORS: boolean,
+    AUTH0: {
+      clientId: string,
+      audience: string,
+      domain: string
+    },
+    DEFAULT_LANGUAGE: Language,
+    googleAnalyticsId: ?string,
+    zendeskUrl: string
+  },
+  // Empty object on the client
+  serverRuntimeConfig: {
+    bookApiUrl?: string
+  }
+};
+
 // Neat little enum type trick https://github.com/facebook/flow/issues/2377#issuecomment-372613462
 export const ContributorTypes: {|
   AUTHOR: 'Author',
@@ -36,11 +63,6 @@ export type License = {
   +name: string,
   +description: string,
   +url: string
-};
-
-export type Language = {
-  +code: string,
-  +name: string
 };
 
 export type Chapter = {|

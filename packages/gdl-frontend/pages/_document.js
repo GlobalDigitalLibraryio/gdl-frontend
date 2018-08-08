@@ -11,10 +11,11 @@ import { NextScript } from '@engineerapart/nextscript';
 import NextDocument, { Head, Main } from 'next/document';
 import { extractCritical } from 'emotion-server';
 import PropTypes from 'prop-types';
+import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
 import type { Context } from '../types';
-import config from '../config';
 import polyfills from '../polyfills';
+import config from '../config';
 
 // This is an import with a sideeffect :/
 // eslint-disable-next-line no-unused-vars
@@ -74,15 +75,18 @@ export default class Document extends NextDocument {
             name="keywords"
             content="Books, Reading, Children, Library, Learning"
           />
-          {config.BLOCK_SEARCH_INDEXING && (
+
+          {GDL_ENVIRONMENT !== 'prod' && (
             <meta name="robots" content="noindex, nofollow" />
           )}
-          {config.GDL_ENVIRONMENT === 'prod' && (
-            <meta
-              name="google-site-verification"
-              content="t5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA"
-            />
-          )}
+          {GDL_ENVIRONMENT === 'prod' &&
+            config.serverRuntimeConfig.googleSiteVerificationId && (
+              <meta
+                name="google-site-verification"
+                content={config.serverRuntimeConfig.googleSiteVerificationId}
+              />
+            )}
+
           {/* Twitter */}
           <meta name="twitter:site" content="@GDigitalLibrary" />
           <meta name="twitter:card" content="summary" />
@@ -119,9 +123,7 @@ export default class Document extends NextDocument {
           {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script
             dangerouslySetInnerHTML={{
-              __html: `window.${config.GLOBAL_VAR_NAME} = '${
-                config.GDL_ENVIRONMENT
-              }';`
+              __html: `window.${globalVarName} = '${GDL_ENVIRONMENT}';`
             }}
           />
 

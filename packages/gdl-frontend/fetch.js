@@ -7,7 +7,9 @@
  */
 
 import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
 import type {
+  ConfigShape,
   RemoteData,
   Language,
   Book,
@@ -18,10 +20,14 @@ import type {
   Chapter,
   ReadingLevel
 } from './types';
-import { bookApiUrl } from './config';
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
 import { getAuthToken } from 'gdl-auth';
+
+const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
+
+const bookApiUrl =
+  serverRuntimeConfig.bookApiUrl || publicRuntimeConfig.bookApiUrl;
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {

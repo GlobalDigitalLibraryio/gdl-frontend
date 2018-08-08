@@ -1,13 +1,18 @@
 import ReactGA from 'react-ga';
 import Router from 'next/router';
-import config from '../config';
+import getConfig from 'next/config';
+import type { ConfigShape } from '../types';
+
+const {
+  publicRuntimeConfig: { googleAnalyticsId }
+}: ConfigShape = getConfig();
 
 let GA_INITIALIZED = false;
 
 const logPageView = () => {
-  if (process.browser) {
+  if (process.browser && googleAnalyticsId) {
     if (!GA_INITIALIZED) {
-      ReactGA.initialize(config.googleAnalyticsTrackingID);
+      ReactGA.initialize(googleAnalyticsId);
       GA_INITIALIZED = true;
     }
     ReactGA.set({ page: window.location.pathname });

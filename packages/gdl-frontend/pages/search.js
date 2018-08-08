@@ -13,7 +13,6 @@ import { Typography } from '@material-ui/core';
 
 import type { Book, Context } from '../types';
 import { Router } from '../routes';
-import { SEARCH_PAGE_SIZE } from '../config';
 import {
   SearchField,
   SearchHit,
@@ -29,6 +28,7 @@ import { search } from '../fetch';
 import { errorPage } from '../hocs';
 
 const QUERY_PARAM = 'q';
+const SEARCH_PAGE_SIZE = 10;
 
 type Props = {
   searchResult: ?{

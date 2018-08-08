@@ -44,6 +44,7 @@
     "express": "^4.16.3",
     "express-request-language": "^1.1.15",
     "gdl-auth": "^0.0.0",
+    "gdl-config": "^0.0.0",
     "glob": "^7.1.2",
     "helmet": "^3.12.1",
     "invariant": "^2.2.4",

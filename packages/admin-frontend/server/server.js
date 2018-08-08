@@ -9,6 +9,11 @@
 const express = require('express');
 const next = require('next');
 const cookieParser = require('cookie-parser');
+const { GDL_ENVIRONMENT } = require('gdl-config');
+
+const {
+  serverRuntimeConfig: { port }
+} = require('../config');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDev });
@@ -17,8 +22,14 @@ async function setup() {
   await app.prepare();
   const server = express();
 
-  if (isDev) {
-    app.setAssetPrefix('http://localhost:3010');
+  if (isDev || GDL_ENVIRONMENT === 'dev') {
+    app.setAssetPrefix(`http://localhost:${port}`);
+  } else if (GDL_ENVIRONMENT === 'local') {
+    // NB! If you try to access admin-frontend through the nginx proxy locally
+    // you probably want to comment out this part and set /admin as the prefix
+    app.setAssetPrefix('http://localhost:40006/');
+  } else {
+    app.setAssetPrefix('/admin');
   }
 
   // Health check for AWS
@@ -29,19 +40,6 @@ async function setup() {
 
   // Setup the cookie parsing for express
   server.use(cookieParser());
-
-  /*server.use(function(req, res, next) {
-    console.log('Time:', Date.now());
-    console.log(req.headers.host);
-
-    if (req.headers.host === 'http://localhost:3010') {
-      app.setAssetPrefix('http://localhost:3010');
-    } else {
-      app.setAssetPrefix('');
-    }
-
-    next();
-  });*/
 
   server.use(app.getRequestHandler());
 

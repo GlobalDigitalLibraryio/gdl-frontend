@@ -8,6 +8,15 @@
 
 import Error from '../../pages/_error';
 
+jest.mock('next/config', () => {
+  return function() {
+    return {
+      publicRuntimeConfig: {},
+      serverRuntimeConfig: {}
+    };
+  };
+});
+
 test('Returns statusCode from res (server)', async () => {
   expect(
     // $FlowFixMe: Ignore not sending context obj
