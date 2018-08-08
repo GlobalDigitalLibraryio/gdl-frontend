@@ -30,8 +30,7 @@ import MetadataFormFields from './MetadataFormFields';
 
 type Props = {
   onClose: () => void,
-  book: BookDetails,
-  featurePreview: boolean
+  book: BookDetails
 };
 
 type State = {
@@ -57,11 +56,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
   fetchData = async () => {
     await this.fetchStoredParameters();
-
-    if (!this.props.featurePreview) {
-      await this.fetchImageMetadata();
-    }
-
+    await this.fetchImageMetadata();
     await this.fetchLicenses();
   };
 
@@ -107,10 +102,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
       await this.postCroppedImage(this.state.croppedParameters);
     }
 
-    if (!this.props.featurePreview) {
-      if (form.getState().dirty) {
-        await this.patchMetadata(values);
-      }
+    if (form.getState().dirty) {
+      await this.patchMetadata(values);
     }
 
     this.props.onClose();
@@ -209,7 +202,6 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     license: 'copyright.license.license',
                     origin: 'copyright.origin'
                   }}
-                  featurePreview={this.props.featurePreview}
                   licenses={this.state.licenses}
                 />
               </DialogContent>

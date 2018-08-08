@@ -20,30 +20,18 @@ type Props = {
     origin: string,
     license: string
   },
-  featurePreview: boolean,
   licenses: ?Array<License>
 };
 
 export default class MetadataFormFields extends React.Component<Props> {
-  static defaultProps = {
-    featurePreview: false
-  };
-
   render() {
-    const featurePreview = this.props.featurePreview;
-
     return (
       <div>
-        {featurePreview && (
-          <p>Feature to edit image metadata will be enabled soon!</p>
-        )}
-
         <Field
           name={this.props.names.title}
           render={({ input, meta }) => (
             <div>
               <TextField
-                disabled={featurePreview}
                 fullWidth
                 error={meta.error && meta.touched}
                 margin="normal"
@@ -63,7 +51,6 @@ export default class MetadataFormFields extends React.Component<Props> {
           render={({ input, meta }) => (
             <div>
               <TextField
-                disabled={featurePreview}
                 fullWidth
                 error={meta.error && meta.touched}
                 margin="normal"
@@ -82,7 +69,6 @@ export default class MetadataFormFields extends React.Component<Props> {
           render={({ input, meta }) => (
             <div>
               <TextField
-                disabled={featurePreview}
                 fullWidth
                 error={meta.error && meta.touched}
                 margin="normal"
@@ -120,7 +106,7 @@ export default class MetadataFormFields extends React.Component<Props> {
           name={this.props.names.license}
           render={({ input, meta }) => (
             <div>
-              <FormControl disabled={featurePreview} fullWidth margin="normal">
+              <FormControl fullWidth margin="normal">
                 <InputLabel>License</InputLabel>
                 <Select {...input} native>
                   <option key="" value="" />
