@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Field } from 'react-final-form';
-import { LICENSES } from '../data/licenses';
 import { SOURCES } from '../data/sources';
 
 import {
@@ -12,6 +11,7 @@ import {
   InputLabel,
   Select
 } from '@material-ui/core';
+import type { License } from '../types';
 
 type Props = {
   // Since we operate on different objects from the backend we want to specify the nesting of the names so that react-final-form can edit the value-object for us
@@ -22,7 +22,8 @@ type Props = {
     origin: string,
     license: string
   },
-  featurePreview: boolean
+  featurePreview: boolean,
+  licenses: ?Array<License>
 };
 
 export default class MetadataFormFields extends React.Component<Props> {
@@ -128,11 +129,13 @@ export default class MetadataFormFields extends React.Component<Props> {
               <FormControl disabled={featurePreview} fullWidth margin="normal">
                 <InputLabel>License</InputLabel>
                 <Select {...input} native>
-                  {LICENSES.map(license => (
-                    <option key={license.license} value={license.license}>
-                      {license.description}
-                    </option>
-                  ))}
+                  <option key="" value="" />
+                  {this.props.licenses &&
+                    this.props.licenses.map((license: License) => (
+                      <option key={license.license} value={license.license}>
+                        {license.description}
+                      </option>
+                    ))}
                 </Select>
                 {meta.error &&
                   meta.touched && (

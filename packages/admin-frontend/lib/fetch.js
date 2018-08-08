@@ -18,7 +18,8 @@ import type {
   Book,
   StoredParameters,
   NewImageMetadata,
-  ImageMetadata
+  ImageMetadata,
+  License
 } from '../types';
 import { bookApiUrl, imageApiUrl } from '../config';
 
@@ -288,4 +289,13 @@ export async function uploadNewImage(
     body: formData
   });
   return result;
+}
+
+export async function fetchLicenses(): Promise<RemoteData<Array<License>>> {
+  const url = `${imageApiUrl}/images/licenses`;
+
+  return await doFetch(url, {
+    method: 'GET',
+    body: null
+  });
 }

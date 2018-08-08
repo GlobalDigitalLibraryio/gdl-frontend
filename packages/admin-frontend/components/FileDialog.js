@@ -9,8 +9,8 @@ import {
 } from '@material-ui/core';
 import React from 'react';
 import { Form } from 'react-final-form';
-import { LICENSES } from '../data/licenses';
-import { uploadNewImage } from '../lib/fetch';
+import { fetchLicenses, uploadNewImage } from '../lib/fetch';
+import type { License } from '../types';
 import MetadataFormFields from './MetadataFormFields';
 
 type Props = {
@@ -21,13 +21,33 @@ type Props = {
   language: string
 };
 
-export default class FileDialog extends React.Component<Props> {
+type State = {
+  licenses: ?Array<License>
+};
+
+export default class FileDialog extends React.Component<Props, State> {
+  state = {
+    licenses: null
+  };
+
+  componentDidMount() {
+    this.fetchLicenses();
+  }
+
+  fetchLicenses = async () => {
+    const result = await fetchLicenses();
+
+    if (result.isOk) {
+      this.setState({ licenses: result.data });
+    }
+  };
+
   render() {
     const initialMetadata = {
       externalId: Date.now().toString(10),
       copyright: {
         license: {
-          license: LICENSES[0].license,
+          license: '',
           description: ''
         },
         origin: '',
@@ -64,6 +84,7 @@ export default class FileDialog extends React.Component<Props> {
                     origin: 'copyright.origin',
                     caption: 'caption'
                   }}
+                  licenses={this.state.licenses}
                 />
               </DialogContent>
               <DialogActions>
@@ -96,10 +117,13 @@ export default class FileDialog extends React.Component<Props> {
   };
 
   handleFileUpload = async (values: Object) => {
-    const descriptionForLicense = LICENSES.find(
-      element => element.license === values.copyright.license.license
-      // $FlowFixMe
-    ).description;
+    const descriptionForLicense =
+      this.state.licenses &&
+      this.state.licenses.find(
+        // $FlowFixMe
+        element => element.license === values.copyright.license.license
+        // $FlowFixMe
+      ).description;
 
     const payload = {
       ...values,

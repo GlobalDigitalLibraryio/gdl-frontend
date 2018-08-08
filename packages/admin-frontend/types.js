@@ -33,7 +33,7 @@ export type Contributor = {
 };
 
 export type License = {
-  +name: string,
+  +license: string,
   +description: string,
   +url: string
 };
@@ -168,7 +168,7 @@ export type NewImageMetadata = {
   caption: string,
   language: string
 };
-
+// todo: use the other objects here
 export type ImageMetadata = {
   id: string,
   externalId: string,

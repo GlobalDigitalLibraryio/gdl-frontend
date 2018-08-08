@@ -12,20 +12,20 @@ import {
 } from '@material-ui/core';
 
 import {
-  fetchImageMetadata,
-  fetchStoredParameters,
-  patchImageMetadata,
-  postStoredParameters
+    fetchImageMetadata, fetchLicenses,
+    fetchStoredParameters,
+    patchImageMetadata,
+    postStoredParameters
 } from '../lib/fetch';
 import type {
   BookDetails,
   ImageMetadata,
   ImageParameters,
+  License,
   StoredParameters
 } from '../types';
 import Crop from './Crop';
 import MetadataFormFields from './MetadataFormFields';
-import { LICENSES } from '../data/licenses';
 
 type Props = {
   onClose: () => void,
@@ -37,7 +37,8 @@ type State = {
   croppedParameters: ?ImageParameters,
   existingStoredParameters: ?StoredParameters,
   existingStoredParametersLoaded: boolean,
-  imageMetadata: ?ImageMetadata
+  imageMetadata: ?ImageMetadata,
+  licenses: ?Array<License>
 };
 
 export default class EditImageDialog extends React.Component<Props, State> {
@@ -45,7 +46,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
     croppedParameters: null,
     existingStoredParameters: null,
     existingStoredParametersLoaded: false,
-    imageMetadata: null
+    imageMetadata: null,
+    licenses: null
   };
 
   componentDidMount() {
@@ -57,6 +59,16 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
     if (!this.props.featurePreview) {
       await this.fetchImageMetadata();
+    }
+
+    await this.fetchLicenses();
+  };
+
+  fetchLicenses = async () => {
+    const result = await fetchLicenses();
+
+    if (result.isOk) {
+      this.setState({ licenses: result.data });
     }
   };
 
@@ -107,11 +119,13 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
   async patchMetadata(values: Object) {
     // We need to find the description of the selected license
-    const descriptionForLicense = LICENSES.find(
-      element => element.license === values.copyright.license.license
+    const descriptionForLicense =
+      this.state.licenses &&
+      this.state.licenses.find(
+        element => element.license === values.copyright.license.license
 
-      // $FlowFixMe
-    ).description;
+        // $FlowFixMe
+      ).description;
 
     const payload = {
       language: this.props.book.language.code,
@@ -197,6 +211,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     origin: 'copyright.origin'
                   }}
                   featurePreview={this.props.featurePreview}
+                  licenses={this.state.licenses}
                 />
               </DialogContent>
               <DialogActions>
