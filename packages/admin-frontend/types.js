@@ -151,25 +151,24 @@ export type I18n = {
   t: (Array<string>) => string
 };
 
+export type Copyright = {
+  license: License,
+  origin: string,
+  creators: [],
+  processors: [],
+  rightsholders: []
+};
+
 export type NewImageMetadata = {
   externalId: string,
   title: string,
   alttext: string,
-  copyright: {
-    license: {
-      license: string,
-      description: string
-    },
-    origin: string,
-    creators: [],
-    processors: [],
-    rightsholders: []
-  },
+  copyright: Copyright,
   tags: [],
   caption: string,
   language: string
 };
-// todo: use the other objects here
+
 export type ImageMetadata = {
   id: string,
   externalId: string,
@@ -185,16 +184,7 @@ export type ImageMetadata = {
   imageUrl: string,
   size: number,
   contentType: string,
-  copyright: {
-    license: {
-      license: string,
-      description: string
-    },
-    origin: string,
-    creators: [string],
-    processors: [string],
-    rightsholders: [string]
-  },
+  copyright: Copyright,
   tags: {
     tags: [string],
     language: string
