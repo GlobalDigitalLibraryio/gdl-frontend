@@ -12,10 +12,11 @@ import {
 } from '@material-ui/core';
 
 import {
-    fetchImageMetadata, fetchLicenses,
-    fetchStoredParameters,
-    patchImageMetadata,
-    postStoredParameters
+  fetchImageMetadata,
+  fetchLicenses,
+  fetchStoredParameters,
+  patchImageMetadata,
+  postStoredParameters
 } from '../lib/fetch';
 import type {
   BookDetails,
@@ -73,9 +74,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
   };
 
   async fetchImageMetadata() {
-    // FixMe: Since the image-api is not exposing any image_id i have to hardcode one for now.
-    // See issue https://github.com/GlobalDigitalLibraryio/issues/issues/443
-    const imageId = '10010';
+    const imageId = this.props.book.coverImage.imageId;
     const imageMetadata = await fetchImageMetadata(imageId);
 
     if (imageMetadata.isOk) {
@@ -144,8 +143,8 @@ export default class EditImageDialog extends React.Component<Props, State> {
       }
     };
 
-    // FixMe: Remove hardcoding
-    await patchImageMetadata('10010', payload);
+    const imageId = this.props.book.coverImage.imageId;
+    await patchImageMetadata(imageId, payload);
   }
 
   async postCroppedImage(croppedParameters: ImageParameters) {

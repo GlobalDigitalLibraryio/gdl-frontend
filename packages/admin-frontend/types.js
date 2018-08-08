@@ -61,7 +61,8 @@ export type RemoteData<T> = Success<T> | Failed;
 
 export type CoverImageInfo = {
   url: string,
-  alttext?: string
+  alttext?: string,
+  imageId: string
 };
 
 export type Translation = {
