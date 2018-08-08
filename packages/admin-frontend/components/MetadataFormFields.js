@@ -2,8 +2,6 @@
 
 import React from 'react';
 import { Field } from 'react-final-form';
-import { SOURCES } from '../data/sources';
-
 import {
   FormHelperText,
   TextField,
@@ -103,24 +101,20 @@ export default class MetadataFormFields extends React.Component<Props> {
           name={this.props.names.origin}
           render={({ input, meta }) => (
             <div>
-              <FormControl disabled={featurePreview} fullWidth margin="normal">
-                <InputLabel>Origin</InputLabel>
-                <Select {...input} fullWidth native>
-                  {SOURCES.map(source => (
-                    <option key={source.code} value={source.code}>
-                      {source.name}
-                    </option>
-                  ))}
-                </Select>
-                {meta.error &&
-                  meta.touched && (
-                    <FormHelperText error>{meta.error}</FormHelperText>
-                  )}
-              </FormControl>
+              <TextField
+                fullWidth
+                error={meta.error && meta.touched}
+                margin="normal"
+                label="Origin"
+                {...input}
+              />
+              {meta.error &&
+                meta.touched && (
+                  <FormHelperText error>{meta.error}</FormHelperText>
+                )}
             </div>
           )}
         />
-
         <Field
           label="License"
           name={this.props.names.license}
