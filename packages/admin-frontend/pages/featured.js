@@ -25,9 +25,10 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../lib/fetch';
-import FileDialog from '../components/FileDialog';
+import UploadFileDialog from '../components/UploadFileDialog';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
+import { inputFieldEmpty } from '../lib/inputStringEmpty';
 import type { FeaturedContent, ImageParameters, Language } from '../types';
 
 type Props = {
@@ -317,7 +318,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     />
 
                     {this.state.file && (
-                      <FileDialog
+                      <UploadFileDialog
                         language={selectedLanguage}
                         selectedFile={this.state.file}
                         objectURL={URL.createObjectURL(this.state.file)}
@@ -385,29 +386,21 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 function handleValidate(values) {
   const errors = {};
 
-  if (values.title === undefined || values.title.trim() === '') {
+  if (inputFieldEmpty(values.title)) {
     errors.title = 'You have to enter a title';
   }
 
-  if (values.description === undefined || values.description.trim() === '') {
+  if (inputFieldEmpty(values.description)) {
     errors.description = 'You have to enter a description';
   }
 
   const regex = /http(s)?:\/\/.*/;
-  if (
-    values.link === undefined ||
-    values.link.trim() === '' ||
-    !values.link.match(regex)
-  ) {
+  if (inputFieldEmpty(values.link) || !values.link.match(regex)) {
     errors.link =
       'You have to enter a valid url e.g "https://www.digitallibrary.io"';
   }
 
-  if (
-    values.imageUrl === undefined ||
-    values.imageUrl.trim() === '' ||
-    !values.imageUrl.match(regex)
-  ) {
+  if (inputFieldEmpty(values.imageUrl) || !values.imageUrl.match(regex)) {
     errors.imageUrl =
       'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }

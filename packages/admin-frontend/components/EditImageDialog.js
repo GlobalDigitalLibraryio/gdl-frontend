@@ -27,6 +27,7 @@ import type {
 } from '../types';
 import Crop from './Crop';
 import MetadataFormFields from './MetadataFormFields';
+import { handleValidate } from './metadataValidator';
 
 type Props = {
   onClose: () => void,
@@ -115,29 +116,13 @@ export default class EditImageDialog extends React.Component<Props, State> {
       this.state.licenses &&
       this.state.licenses.find(
         element => element.license === values.copyright.license.license
-
         // $FlowFixMe
       ).description;
 
-    const payload = {
-      language: this.props.book.language.code,
-      alttext: values.alttext.alttext,
-      caption: values.caption.caption,
-      title: values.title.title,
-      copyright: {
-        license: {
-          license: values.copyright.license.license,
-          description: descriptionForLicense
-        },
-        origin: values.copyright.origin,
-        rightsholders: [],
-        creators: [],
-        processors: []
-      }
-    };
+    values.copyright.license.description = descriptionForLicense;
 
     const imageId = this.props.book.coverImage.imageId;
-    await patchImageMetadata(imageId, payload);
+    await patchImageMetadata(imageId, values);
   }
 
   async postCroppedImage(croppedParameters: ImageParameters) {
@@ -165,14 +150,34 @@ export default class EditImageDialog extends React.Component<Props, State> {
   render() {
     const isImageCropped = !(this.state.croppedParameters === null);
 
+    const metadata = this.state.imageMetadata;
+
+    // Set the initial metadata in the same format as the payload, in this way react final form will work on this object and make it ready to post it. The only thing we need to add is the description.
+    const initialMetadata = metadata
+      ? {
+          language: this.props.book.language.code,
+          alttext: metadata.alttext.alttext,
+          caption: metadata.caption.caption,
+          title: metadata.title.title,
+          copyright: {
+            license: {
+              license: metadata.copyright.license.license,
+              description: undefined
+            },
+            origin: metadata.copyright.origin,
+            rightsholders: [],
+            creators: [],
+            processors: []
+          }
+        }
+      : {};
+
     return (
       <Dialog open onClose={this.props.onClose}>
         <DialogTitle>Edit image and metadata</DialogTitle>
-
         <Form
-          initialValues={
-            this.state.imageMetadata ? this.state.imageMetadata : {}
-          }
+          initialValues={initialMetadata}
+          validate={handleValidate}
           onSubmit={this.handleSave}
           render={({ handleSubmit, pristine }) => (
             <div>
@@ -194,16 +199,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     ratio={0.81}
                   />
                 )}
-                <MetadataFormFields
-                  names={{
-                    title: 'title.title',
-                    alttext: 'alttext.alttext',
-                    caption: 'caption.caption',
-                    license: 'copyright.license.license',
-                    origin: 'copyright.origin'
-                  }}
-                  licenses={this.state.licenses}
-                />
+                <MetadataFormFields licenses={this.state.licenses} />
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.props.onClose} color="secondary">

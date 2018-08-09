@@ -20,7 +20,7 @@ export default class Crop extends Component<Props> {
 
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
   cropper: any;
-  firstCrop: boolean;
+  firstCrop: boolean = true;
 
   toPercentages = (cropper: any) => {
     const data = cropper.getData();

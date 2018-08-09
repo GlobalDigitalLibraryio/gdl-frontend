@@ -12,14 +12,6 @@ import {
 import type { License } from '../types';
 
 type Props = {
-  // Since we operate on different objects from the backend we want to specify the nesting of the names so that react-final-form can edit the value-object for us
-  names: {
-    title: string,
-    alttext: string,
-    caption: string,
-    origin: string,
-    license: string
-  },
   licenses: ?Array<License>
 };
 
@@ -28,7 +20,7 @@ export default class MetadataFormFields extends React.Component<Props> {
     return (
       <div>
         <Field
-          name={this.props.names.title}
+          name="title"
           render={({ input, meta }) => (
             <div>
               <TextField
@@ -47,14 +39,14 @@ export default class MetadataFormFields extends React.Component<Props> {
         />
 
         <Field
-          name={this.props.names.alttext}
+          name="alttext"
           render={({ input, meta }) => (
             <div>
               <TextField
                 fullWidth
                 error={meta.error && meta.touched}
                 margin="normal"
-                label="Alt text"
+                label="Alternative text"
                 {...input}
               />
               {meta.error &&
@@ -65,7 +57,7 @@ export default class MetadataFormFields extends React.Component<Props> {
           )}
         />
         <Field
-          name={this.props.names.caption}
+          name="caption"
           render={({ input, meta }) => (
             <div>
               <TextField
@@ -83,8 +75,7 @@ export default class MetadataFormFields extends React.Component<Props> {
           )}
         />
         <Field
-          label="Origin"
-          name={this.props.names.origin}
+          name="copyright.origin"
           render={({ input, meta }) => (
             <div>
               <TextField
@@ -102,11 +93,14 @@ export default class MetadataFormFields extends React.Component<Props> {
           )}
         />
         <Field
-          label="License"
-          name={this.props.names.license}
+          name="copyright.license.license"
           render={({ input, meta }) => (
             <div>
-              <FormControl fullWidth margin="normal">
+              <FormControl
+                error={meta.error && meta.touched}
+                fullWidth
+                margin="normal"
+              >
                 <InputLabel>License</InputLabel>
                 <Select {...input} native>
                   <option key="" value="" />
@@ -117,11 +111,11 @@ export default class MetadataFormFields extends React.Component<Props> {
                       </option>
                     ))}
                 </Select>
-                {meta.error &&
-                  meta.touched && (
-                    <FormHelperText error>{meta.error}</FormHelperText>
-                  )}
               </FormControl>
+              {meta.error &&
+                meta.touched && (
+                  <FormHelperText error>{meta.error}</FormHelperText>
+                )}
             </div>
           )}
         />
