@@ -28,7 +28,7 @@ import {
 import UploadFileDialog from '../components/UploadFileDialog';
 import Layout from '../components/Layout';
 import Container from '../components/Container';
-import { inputFieldEmpty } from '../lib/inputStringEmpty';
+import { inputStringEmpty } from '../lib/inputStringEmpty';
 import type { FeaturedContent, ImageParameters, Language } from '../types';
 
 type Props = {
@@ -386,21 +386,21 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 function handleValidate(values) {
   const errors = {};
 
-  if (inputFieldEmpty(values.title)) {
+  if (inputStringEmpty(values.title)) {
     errors.title = 'You have to enter a title';
   }
 
-  if (inputFieldEmpty(values.description)) {
+  if (inputStringEmpty(values.description)) {
     errors.description = 'You have to enter a description';
   }
 
   const regex = /http(s)?:\/\/.*/;
-  if (inputFieldEmpty(values.link) || !values.link.match(regex)) {
+  if (inputStringEmpty(values.link) || !values.link.match(regex)) {
     errors.link =
       'You have to enter a valid url e.g "https://www.digitallibrary.io"';
   }
 
-  if (inputFieldEmpty(values.imageUrl) || !values.imageUrl.match(regex)) {
+  if (inputStringEmpty(values.imageUrl) || !values.imageUrl.match(regex)) {
     errors.imageUrl =
       'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }

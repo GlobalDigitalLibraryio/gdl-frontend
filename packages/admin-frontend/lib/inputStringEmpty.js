@@ -1,6 +1,6 @@
 // @flow
 
-export function inputFieldEmpty(inputString: ?string) {
+export function inputStringEmpty(inputString: ?string) {
   return (
     inputString === undefined ||
     inputString === null ||
