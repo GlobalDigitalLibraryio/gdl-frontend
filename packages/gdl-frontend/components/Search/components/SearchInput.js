@@ -13,6 +13,7 @@ import { IconButton } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
 import styled, { css } from 'react-emotion';
+import I18n from '../../I18n';
 import media from '../../../style/media';
 import { colors } from '../../../style/theme';
 
@@ -67,18 +68,28 @@ export default withRouter(SmartSearch);
 const SearchInput = ({ autoFocus, onSubmit, onChange, value }) => (
   /* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/
   <Form role="search" onSubmit={onSubmit} action=".">
-    <Input
-      aria-label="Search for books"
-      autoComplete="off"
-      type="search"
-      placeholder="Search"
-      autoFocus={autoFocus}
-      onChange={onChange}
-      value={value}
-    />
-    <IconButton aria-label="Search" className={styles.iconButton} type="submit">
-      <SearchIcon />
-    </IconButton>
+    <I18n>
+      {({ i18n }) => (
+        <>
+          <Input
+            aria-label={i18n.t`Search for books`}
+            autoComplete="off"
+            type="search"
+            placeholder={i18n.t`Search`}
+            autoFocus={autoFocus}
+            onChange={onChange}
+            value={value}
+          />
+          <IconButton
+            aria-label="Search"
+            className={styles.iconButton}
+            type="submit"
+          >
+            <SearchIcon />
+          </IconButton>
+        </>
+      )}
+    </I18n>
   </Form>
 );
 
@@ -87,15 +98,22 @@ const Form = styled('form')`
   align-items: center;
   justify-content: center;
   position: relative;
+  max-width: 1024px;
+  flex: 1;
 `;
 
+/**
+ * Set height on mobile so it takes up as much space as the appbar
+ */
 const Input = styled('input')`
   -webkit-appearance: none;
-  background-color: #fff;
   width: 100%;
   outline: none;
   ${media.tablet`
-    border-radius: 30px;
+    border-radius: 4px;
+  `};
+  ${media.mobile`
+    min-height: 56px;
   `};
   border: 0;
   padding: 12px 16px;
@@ -103,14 +121,11 @@ const Input = styled('input')`
   font-size: 1rem;
   line-height: 1.5rem;
   transition: all 0.2s ease-in-out;
+  background-color: #fff;
   ${placeholder({ color: colors.base.gray })};
-  &:focus {
+  &:focus,
+  &:hover {
     ${placeholder({ color: 'rgb(117, 117, 117)' })};
-  }
-  &:hover,
-  &:focus {
-    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-      0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
   }
 `;
 
