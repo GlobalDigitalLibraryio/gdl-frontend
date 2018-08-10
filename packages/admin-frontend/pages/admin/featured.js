@@ -24,12 +24,11 @@ import {
   updateFeaturedContent,
   saveFeaturedContent,
   deleteFeaturedContent
-
 } from '../../lib/fetch';
 import UploadFileDialog from '../../components/UploadFileDialog';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import {inputStringEmpty} from "../../lib/inputStringEmpty";
+import { inputStringEmpty } from '../../lib/inputStringEmpty';
 import type { FeaturedContent, ImageParameters, Language } from '../../types';
 
 type Props = {

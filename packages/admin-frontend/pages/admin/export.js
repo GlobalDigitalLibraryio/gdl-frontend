@@ -8,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl/FormControl';
 import Typography from '@material-ui/core/Typography';
 
 import Container from '../../components/Container';
-import {SOURCES} from "../../data/sources";
+import { SOURCES } from '../../data/sources';
 import type { Language } from '../../types';
 import { fetchLanguages, exportBooks } from '../../lib/fetch';
 import Layout from '../../components/Layout';
