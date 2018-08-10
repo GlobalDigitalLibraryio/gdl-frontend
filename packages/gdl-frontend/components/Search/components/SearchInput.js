@@ -9,10 +9,12 @@
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
 import { placeholder } from 'polished';
-import { IconButton } from '@material-ui/core';
+import { Trans } from '@lingui/react';
+import { IconButton, Tooltip } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
 import styled, { css } from 'react-emotion';
+
 import I18n from '../../I18n';
 import media from '../../../style/media';
 import { colors } from '../../../style/theme';
@@ -80,13 +82,15 @@ const SearchInput = ({ autoFocus, onSubmit, onChange, value }) => (
             onChange={onChange}
             value={value}
           />
-          <IconButton
-            aria-label="Search"
-            className={styles.iconButton}
-            type="submit"
-          >
-            <SearchIcon />
-          </IconButton>
+          <Tooltip title={<Trans>Search</Trans>}>
+            <IconButton
+              aria-label="Search"
+              className={styles.iconButton}
+              type="submit"
+            >
+              <SearchIcon />
+            </IconButton>
+          </Tooltip>
         </>
       )}
     </I18n>
