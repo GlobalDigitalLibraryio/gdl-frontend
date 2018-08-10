@@ -32,12 +32,10 @@ const canonicalUrl = () => {
       return 'http://localhost:3000';
     case 'local':
       return 'http://localhost:40003';
-    case 'test':
-      return 'https://test.digitallibrary.io';
-    case 'staging':
-      return 'https://staging.digitallibrary.io';
-    default:
+    case 'prod':
       return 'https://digitallibrary.io';
+    default:
+      return `https://${GDL_ENVIRONMENT}.digitallibrary.io`;
   }
 };
 
