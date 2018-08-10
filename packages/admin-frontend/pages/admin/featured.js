@@ -17,19 +17,20 @@ import {
   Typography
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-import CropImageViewer from '../components/CropImageViewer';
+import CropImageViewer from '../../components/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
   updateFeaturedContent,
   saveFeaturedContent,
   deleteFeaturedContent
-} from '../lib/fetch';
-import UploadFileDialog from '../components/UploadFileDialog';
-import Layout from '../components/Layout';
-import Container from '../components/Container';
-import { inputStringEmpty } from '../lib/inputStringEmpty';
-import type { FeaturedContent, ImageParameters, Language } from '../types';
+
+} from '../../lib/fetch';
+import UploadFileDialog from '../../components/UploadFileDialog';
+import Layout from '../../components/Layout';
+import Container from '../../components/Container';
+import {inputStringEmpty} from "../../lib/inputStringEmpty";
+import type { FeaturedContent, ImageParameters, Language } from '../../types';
 
 type Props = {
   languages: Array<Language>

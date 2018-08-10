@@ -6,13 +6,6 @@
  * See LICENSE
  */
 
-// Explicitly import the polyfills needed to at least render in IE11
-import 'core-js/modules/es6.array.find';
-import 'core-js/modules/es6.object.assign';
-import 'core-js/modules/es6.string.includes';
-import 'core-js/modules/es7.object.entries';
-import 'core-js/modules/es7.object.values';
-import 'core-js/modules/es7.array.includes';
 import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
 import Head from 'next/head';

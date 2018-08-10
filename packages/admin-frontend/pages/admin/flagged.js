@@ -1,7 +1,4 @@
 import * as React from 'react';
-import Container from '../components/Container';
-import { fetchFlaggedBooks } from '../lib/fetch';
-import type { Book } from '../types';
 import {
   Table,
   TableBody,
@@ -13,7 +10,11 @@ import {
   Typography
 } from '@material-ui/core';
 import NextLink from 'next/link';
-import Layout from '../components/Layout';
+
+import Container from '../../components/Container';
+import { fetchFlaggedBooks } from '../../lib/fetch';
+import type { Book } from '../types';
+import Layout from '../../components/Layout';
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 

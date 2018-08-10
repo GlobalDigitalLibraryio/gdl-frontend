@@ -4,9 +4,14 @@ const withTM = require('@weco/next-plugin-transpile-modules');
 // Add source maps in production for Sentry
 const withSourceMaps = require('@zeit/next-source-maps');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
 const { ANALYZE } = process.env;
 
-module.exports = withSourceMaps({
+const nextConfig = {
+  serverRuntimeConfig,
+  publicRuntimeConfig,
+  transpileModules: ['gdl-auth'],
   webpack(config, options) {
     if (ANALYZE) {
       config.plugins.push(
@@ -17,9 +22,8 @@ module.exports = withSourceMaps({
         })
       );
     }
-
     return config;
   }
-});
+};
 
-module.exports = withTM({ transpileModules: ['gdl-auth', 'gdl-config'] });
+module.exports = withSourceMaps(withTM(nextConfig));

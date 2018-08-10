@@ -7,10 +7,15 @@
  */
 
 import lscache from 'lscache';
-import { clientAuth } from '../../config';
+import getConfig from 'next/config';
+import type { ConfigShape } from '../../types';
 
 // Dynamic import to reduce bundle size. Should shave off about > 100 KB (uncompressed)
 const auth0 = import('auth0-js');
+
+const {
+  publicRuntimeConfig: { AUTH0 }
+}: ConfigShape = getConfig();
 
 export const getRedirectUrl = () => lscache.get('REDIRECT_AFTER_LOGIN');
 
@@ -18,9 +23,9 @@ const getAuth = async options => {
   const auth = await auth0;
 
   return new auth.WebAuth({
-    clientID: clientAuth.clientId,
-    audience: clientAuth.audience,
-    domain: clientAuth.domain,
+    clientID: AUTH0.clientId,
+    audience: AUTH0.audience,
+    domain: AUTH0.domain,
     responseType: 'token id_token',
     scope: 'openid profile',
     redirectUri: `${getBaseUrl()}/auth/signed-in`,

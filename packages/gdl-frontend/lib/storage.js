@@ -9,9 +9,13 @@
 import type { $Request, $Response } from 'express';
 import UniversalCookie from 'universal-cookie';
 import lscache from 'lscache';
+import getConfig from 'next/config';
 
-import { DEFAULT_LANGUAGE } from '../config';
-import type { Category, Language } from '../types';
+import type { Category, Language, ConfigShape } from '../types';
+
+const {
+  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+}: ConfigShape = getConfig();
 
 const BOOK_LANGUAGE_KEY = 'bookLanguage';
 const BOOK_CATEGORY_KEY = 'bookCategory';

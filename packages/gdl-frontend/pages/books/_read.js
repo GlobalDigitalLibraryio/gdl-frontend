@@ -9,13 +9,17 @@
 import * as React from 'react';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
+import getConfig from 'next/config';
 
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from 'gdl-auth';
-import type { BookDetails, Chapter, Context } from '../../types';
+import type { ConfigShape, BookDetails, Chapter, Context } from '../../types';
 import { errorPage } from '../../hocs';
 import Reader from '../../components/Reader';
-import { canonical } from '../../config';
+
+const {
+  publicRuntimeConfig: { canonicalUrl }
+}: ConfigShape = getConfig();
 
 type Props = {
   book: BookDetails,
@@ -67,9 +71,9 @@ class Read extends React.Component<Props> {
           {!this.props.router.query.chapterId && (
             <link
               rel="canonical"
-              href={`${canonical}/${book.language.code}/books/read/${book.id}/${
-                chapter.id
-              }`}
+              href={`${canonicalUrl}/${book.language.code}/books/read/${
+                book.id
+              }/${chapter.id}`}
             />
           )}
         </Head>

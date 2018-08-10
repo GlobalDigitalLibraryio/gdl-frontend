@@ -6,11 +6,12 @@ import Button from '@material-ui/core/Button/Button';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import Typography from '@material-ui/core/Typography';
-import Container from '../components/Container';
-import { SOURCES } from '../data/sources';
-import type { Language } from '../types';
-import { fetchLanguages, exportBooks } from '../lib/fetch';
-import Layout from '../components/Layout';
+
+import Container from '../../components/Container';
+import {SOURCES} from "../../data/sources";
+import type { Language } from '../../types';
+import { fetchLanguages, exportBooks } from '../../lib/fetch';
+import Layout from '../../components/Layout';
 
 type State = {
   selectedLanguage: string,

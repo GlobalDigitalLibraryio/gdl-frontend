@@ -5,13 +5,20 @@
  *
  * See LICENSE
  */
-const { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY } = require('../config');
+const {
+  publicRuntimeConfig: { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY }
+} = require('../config');
 
 const googleAnalytics = 'www.google-analytics.com';
 
 const directives = {
   defaultSrc: ["'self'"],
-  scriptSrc: ["'self'", "'unsafe-inline'", googleAnalytics],
+  scriptSrc: [
+    "'self'",
+    "'unsafe-inline'",
+    googleAnalytics,
+    'https://cdn.polyfill.io'
+  ],
   styleSrc: [
     "'self'",
     "'unsafe-inline'",

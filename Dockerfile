@@ -21,11 +21,8 @@ RUN bolt
 # Copy necessary source files for server and client build
 COPY .babelrc $APP_PATH/
 
-# Build client code
-WORKDIR $APP_PATH
-RUN bolt run build
-
-# Make sure we start the correct frontend
+# Build and start the correct frontend
 WORKDIR $APP_PATH/packages/$MODULE
+RUN yarn build
 
 CMD ["yarn", "run", "start"]

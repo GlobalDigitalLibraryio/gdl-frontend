@@ -9,8 +9,9 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
+import getConfig from 'next/config';
+import type { ConfigShape } from '../../types';
 
-import config from '../../config';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
 import { colors } from '../../style/theme';
@@ -19,6 +20,10 @@ import media from '../../style/media';
 import FaFacebookSquare from 'react-icons/lib/fa/facebook-square';
 import FaTwitterSquare from 'react-icons/lib/fa/twitter-square';
 import FaYoutubeSquare from 'react-icons/lib/fa/youtube-square';
+
+const {
+  publicRuntimeConfig: { zendeskUrl }
+}: ConfigShape = getConfig();
 
 const FooterStyle = styled('footer')`
   display: flex;
@@ -133,7 +138,7 @@ const Footer = () => {
             </a>
           </li>
           <li>
-            <a href={config.zendeskUrl}>
+            <a href={zendeskUrl}>
               <Trans>Report issues</Trans>
             </a>
           </li>

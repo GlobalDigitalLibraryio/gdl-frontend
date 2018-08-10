@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
 import {
@@ -14,18 +14,22 @@ import {
   Divider,
   List,
   ListItem,
-  ListItemText
+  ListItemText,
+  ListItemIcon
 } from '@material-ui/core';
-import { KeyboardArrowRight as KeyboardArrowRightIcon } from '@material-ui/icons';
+import {
+  KeyboardArrowRight as KeyboardArrowRightIcon,
+  ExitToApp as ExitToAppIcon,
+  Translate as TranslateIcon,
+  Edit as EditIcon
+} from '@material-ui/icons';
 
 import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
-import { getTokenFromLocalCookie } from '../../lib/auth/token';
-import { hasClaim, claims } from 'gdl-auth';
+import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import { getBookLanguage } from '../../lib/storage';
 import { SelectLanguage } from '../LanguageMenu';
 import CategoriesMenu from './CategoriesMenu';
-import config from '../../config';
 
 type Props = {|
   onClose(): void,
@@ -89,38 +93,46 @@ class GlobalMenu extends React.Component<Props, State> {
           <Divider />
           {this.state.userHasAdminPrivileges && (
             <ListItem component="a" href="/admin" button>
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
               <ListItemText>
                 <Trans>GDL Admin</Trans>
               </ListItemText>
             </ListItem>
           )}
-          {config.TRANSLATION_PAGES && (
-            <Fragment>
-              {getTokenFromLocalCookie() == null ? (
-                <Link passHref href="/auth/sign-in">
-                  <ListItem button component="a">
-                    <ListItemText>
-                      <Trans>Log in</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </Link>
-              ) : (
-                <Link passHref href="/auth/sign-off">
-                  <ListItem button component="a">
-                    <ListItemText>
-                      <Trans>Log out</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </Link>
-              )}
-              <RouteLink passHref route="translations">
-                <ListItem button component="a">
-                  <ListItemText>
-                    <Trans>My translations</Trans>
-                  </ListItemText>
-                </ListItem>
-              </RouteLink>
-            </Fragment>
+          <RouteLink passHref route="translations">
+            <ListItem button component="a">
+              <ListItemIcon>
+                <TranslateIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Trans>My translations</Trans>
+              </ListItemText>
+            </ListItem>
+          </RouteLink>
+          {!hasAuthToken() ? (
+            <Link passHref href="/auth/sign-in">
+              <ListItem button component="a">
+                <ListItemIcon>
+                  <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
+                </ListItemIcon>
+                <ListItemText>
+                  <Trans>Log in</Trans>
+                </ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            <Link passHref href="/auth/sign-off">
+              <ListItem button component="a">
+                <ListItemIcon>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Trans>Log out</Trans>
+                </ListItemText>
+              </ListItem>
+            </Link>
           )}
         </List>
       </Drawer>

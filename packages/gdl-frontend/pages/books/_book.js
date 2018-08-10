@@ -9,6 +9,7 @@
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
+import getConfig from 'next/config';
 import styled from 'react-emotion';
 import {
   Menu,
@@ -27,9 +28,8 @@ import {
   Warning as WarningIcon
 } from '@material-ui/icons';
 
-import config from '../../config';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
-import type { Book, BookDetails, Context } from '../../types';
+import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
@@ -42,6 +42,10 @@ import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+
+const {
+  publicRuntimeConfig: { zendeskUrl }
+}: ConfigShape = getConfig();
 
 type Props = {
   book: BookDetails,
@@ -272,35 +276,30 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
           <Container mt={spacing.medium}>
             <View ml={[0, 'auto']} w={['auto', 438]}>
               <Metadata book={book} />
-              {config.TRANSLATION_PAGES &&
-                book.supportsTranslation && (
-                  <View borderTop={BORDER_STYLE} mt={spacing.medium}>
-                    <Link
-                      route="translate"
-                      passHref
-                      params={{ id: book.id, lang: book.language.code }}
+              {book.supportsTranslation && (
+                <View borderTop={BORDER_STYLE} mt={spacing.medium}>
+                  <Link
+                    route="translate"
+                    passHref
+                    params={{ id: book.id, lang: book.language.code }}
+                  >
+                    <Button
+                      color="primary"
+                      css={{ margin: `${spacing.medium} 0` }}
                     >
-                      <Button
-                        color="primary"
-                        css={{ margin: `${spacing.medium} 0` }}
-                      >
-                        <TranslateIcon /> <Trans>Translate this book</Trans>
-                      </Button>
-                    </Link>
-                  </View>
-                )}
+                      <TranslateIcon /> <Trans>Translate this book</Trans>
+                    </Button>
+                  </Link>
+                </View>
+              )}
               <View
                 borderTop={BORDER_STYLE}
-                mt={
-                  config.TRANSLATION_PAGES && book.supportsTranslation
-                    ? 0
-                    : spacing.medium
-                }
+                mt={book.supportsTranslation ? 0 : spacing.medium}
               >
                 <Button
                   color="primary"
                   css={{ margin: `${spacing.medium} 0` }}
-                  href={config.zendeskUrl}
+                  href={zendeskUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

@@ -7,16 +7,19 @@
  */
 
 // This is configured in package.json to load raven-js in the brower, and raven for node on the server
-const Raven = require('raven');
-const config = require('../config');
+import Raven from 'raven';
+import getConfig from 'next/config';
+import { GDL_ENVIRONMENT } from 'gdl-config';
+import type { ConfigShape } from '../types';
 
-if (process.env.NODE_ENV === 'production' && config.REPORT_ERRORS) {
-  Raven.config(
-    `https://${config.SENTRY_PUBLIC_KEY}@sentry.io/${config.SENTRY_PROJECT_ID}`,
-    {
-      environment: config.GDL_ENVIRONMENT
-    }
-  ).install();
+const {
+  publicRuntimeConfig: { SENTRY_PROJECT_ID, SENTRY_PUBLIC_KEY, REPORT_ERRORS }
+}: ConfigShape = getConfig();
+
+if (process.env.NODE_ENV === 'production' && REPORT_ERRORS) {
+  Raven.config(`https://${SENTRY_PUBLIC_KEY}@sentry.io/${SENTRY_PROJECT_ID}`, {
+    environment: GDL_ENVIRONMENT
+  }).install();
 }
 
-module.exports = Raven;
+export default Raven;

@@ -7,7 +7,9 @@
  */
 
 import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
 import type {
+  ConfigShape,
   RemoteData,
   Language,
   Book,
@@ -18,10 +20,14 @@ import type {
   Chapter,
   ReadingLevel
 } from './types';
-import { bookApiUrl } from './config';
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-import { getTokenFromLocalCookie } from './lib/auth/token';
+import { getAuthToken } from 'gdl-auth';
+
+const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
+
+const bookApiUrl =
+  serverRuntimeConfig.bookApiUrl || publicRuntimeConfig.bookApiUrl;
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {
@@ -45,8 +51,7 @@ async function doFetch(
     body: ?any
   }
 ): Promise<RemoteData<any>> {
-  const token =
-    typeof window !== 'undefined' ? getTokenFromLocalCookie() : undefined;
+  const token = typeof window !== 'undefined' ? getAuthToken() : undefined;
 
   const response = await fetch(url, {
     headers: {
@@ -190,7 +195,6 @@ export function sendToTranslation(
 
 export async function search(
   query: string,
-  language?: string,
   options: Options = {}
 ): Promise<
   RemoteData<{|
@@ -201,8 +205,7 @@ export async function search(
 > {
   const result = await doFetch(
     encodeURI(
-      `${bookApiUrl}/search/${language ||
-        ''}?query=${query}&page-size=${options.pageSize ||
+      `${bookApiUrl}/search?query=${query}&page-size=${options.pageSize ||
         PAGE_SIZE}&page=${options.page || 1}`
     )
   );

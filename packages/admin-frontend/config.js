@@ -7,48 +7,38 @@
  */
 const { GDL_ENVIRONMENT } = require('gdl-config');
 
-// Immutable, multi environment config
-// See https://github.com/zeit/next.js/issues/1488#issuecomment-339324995
+const bookApiUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'local':
+      return 'http://book-api.gdl-local:40001/book-api/v1';
+    case 'dev':
+      return 'https://api.test.digitallibrary.io/book-api/v1';
+    case 'prod':
+      return 'https://api.digitallibrary.io/book-api/v1';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/book-api/v1`;
+  }
+};
 
-function getConfig() {
-  const config = {
-    common: {},
-    dev: {
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
-    },
+const imageApiUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'local':
+      return 'http://image-api.gdl-local:40002/image-api/v2';
+    case 'dev':
+      return 'https://api.test.digitallibrary.io/image-api/v2';
+    case 'prod':
+      return 'https://api.digitallibrary.io/image-api/v2';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/image-api/v2`;
+  }
+};
 
-    local: {
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'http://book-api.gdl-local:40001/book-api/v1'
-    },
-
-    test: {
-      imageApiUrl: 'https://api.test.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.test.digitallibrary.io/book-api/v1'
-    },
-
-    staging: {
-      imageApiUrl: 'https://api.staging.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.staging.digitallibrary.io/book-api/v1'
-    },
-
-    demo: {
-      imageApiUrl: 'https://api.demo.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.demo.digitallibrary.io/book-api/v1'
-    },
-
-    prod: {
-      imageApiUrl: 'https://api.digitallibrary.io/image-api/v2',
-      bookApiUrl: 'https://api.digitallibrary.io/book-api/v1'
-    }
-  };
-
-  return {
-    ...config.common,
-    // Overwrite with environment specific variables
-    ...config[GDL_ENVIRONMENT]
-  };
-}
-
-module.exports = getConfig();
+module.exports = {
+  serverRuntimeConfig: {
+    port: process.env.ADMIN_FRONTEND_PORT || 3010
+  },
+  publicRuntimeConfig: {
+    imageApiUrl: imageApiUrl(),
+    bookApiUrl: bookApiUrl()
+  }
+};
