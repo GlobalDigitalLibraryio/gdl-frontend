@@ -30,6 +30,7 @@ type Props = {
 
 // The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
 const BrandLink = styled('a')`
+  margin-right: auto;
   svg {
     margin-top: 2px;
     padding-right: 2px;
@@ -67,19 +68,6 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
-        <Link route="books" passHref>
-          <IconButton
-            color="inherit"
-            component="a"
-            css={{ marginLeft: 'auto' }}
-            onClick={() => logEvent('Navigation', 'Home', 'House icon')}
-          >
-            <HomeIcon />
-            <SrOnly>
-              <Trans>Home</Trans>
-            </SrOnly>
-          </IconButton>
-        </Link>
         <SearchInput />
         <SearchDrawer>
           {({ onShowClick }) => (
@@ -91,6 +79,18 @@ const Navbar = ({ onMenuClick }: Props) => {
             </IconButton>
           )}
         </SearchDrawer>
+        <Link route="books" passHref>
+          <IconButton
+            color="inherit"
+            component="a"
+            onClick={() => logEvent('Navigation', 'Home', 'House icon')}
+          >
+            <HomeIcon />
+            <SrOnly>
+              <Trans>Home</Trans>
+            </SrOnly>
+          </IconButton>
+        </Link>
         <SelectLanguage anchor="right">
           {({ onClick }) => (
             <Tooltip title={<Trans>Choose book language</Trans>}>

@@ -19,18 +19,15 @@ export default class SearchDrawer extends React.Component<
   };
 
   handleOpen = () => this.setState({ showDrawer: true });
+  handleClose = () => this.setState({ showDrawer: false });
 
   render() {
     const { showDrawer } = this.state;
 
     return (
       <>
-        <Drawer
-          anchor="top"
-          open={showDrawer}
-          onClose={() => this.setState({ showDrawer: false })}
-        >
-          {showDrawer && <SearchInput autoFocus />}
+        <Drawer anchor="top" open={showDrawer} onClose={this.handleClose}>
+          {showDrawer && <SearchInput autoFocus onSubmit={this.handleClose} />}
         </Drawer>
         {this.props.children({ onShowClick: this.handleOpen })}
       </>

@@ -13,18 +13,11 @@ import { Typography } from '@material-ui/core';
 
 import { logEvent } from '../lib/analytics';
 import type { Book, Context } from '../types';
-import { Router } from '../routes';
-import {
-  SearchField,
-  SearchHit,
-  Placeholder,
-  NoResults
-} from '../components/Search';
+import { SearchHit, Placeholder, NoResults } from '../components/Search';
 import Layout, { Main } from '../components/Layout';
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing, colors } from '../style/theme';
-import { TABLET_BREAKPOINT } from '../style/theme/misc';
 import { search } from '../fetch';
 import { errorPage } from '../hocs';
 
@@ -39,11 +32,8 @@ type Props = {
   },
   router: {
     query: {
-      q?: string,
-      l?: string
-    },
-    pathname: string,
-    asPath: string
+      q?: string
+    }
   }
 };
 
@@ -53,8 +43,6 @@ type State = {
     page: number,
     totalCount: number
   },
-  searchQuery: string,
-  lastSearchQuery?: string,
   isLoadingMore: boolean
 };
 
@@ -84,34 +72,18 @@ class SearchPage extends React.Component<Props, State> {
 
   state = {
     searchResult: this.props.searchResult,
-    searchQuery: this.props.router.query[QUERY_PARAM] || '',
     lastSearchQuery: this.props.router.query[QUERY_PARAM],
     isLoadingMore: false
   };
 
-  handleSearch = async event => {
-    event.preventDefault();
-    if (!this.state.searchQuery || this.state.searchQuery.trim() === '') {
-      return;
+  componentDidUpdate(prevProps) {
+    if (prevProps.router.query.q !== this.props.router.query.q) {
+      this.handleSearch();
     }
+  }
 
-    // If we are on mobile, blur the input field on submit so we hide the virtual keyboard
-    if (window.innerWidth < TABLET_BREAKPOINT) {
-      const searchInput = document.querySelector('#booksearch');
-      searchInput && searchInput.blur();
-    }
-
-    this.setState(state => ({ lastSearchQuery: state.searchQuery }));
-
-    Router.pushRoute(
-      'search',
-      {
-        [QUERY_PARAM]: this.state.searchQuery
-      },
-      { shallow: true }
-    );
-
-    const queryRes = await search(this.state.searchQuery, {
+  handleSearch = async () => {
+    const queryRes = await search(this.props.router.query.q, {
       pageSize: SEARCH_PAGE_SIZE
     });
 
@@ -131,7 +103,7 @@ class SearchPage extends React.Component<Props, State> {
     // Fixes flow warnings
     if (!this.state.searchResult) return;
 
-    const queryRes = await search(this.state.searchQuery, {
+    const queryRes = await search(this.props.router.query.q, {
       pageSize: SEARCH_PAGE_SIZE,
       page: this.state.searchResult.page + 1
     });
@@ -169,29 +141,14 @@ class SearchPage extends React.Component<Props, State> {
     );
   };
 
-  handleQueryChange = event =>
-    this.setState({ searchQuery: event.target.value });
-
   render() {
-    const { searchResult, lastSearchQuery } = this.state;
+    const { searchResult } = this.state;
 
     return (
       <Layout wrapWithMain={false}>
         <Head title="Search" />
         <Main>
           <Container my={spacing.medium}>
-            {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
-            <form onSubmit={this.handleSearch} action=".">
-              <SearchField
-                autoFocus
-                label="Search"
-                id="booksearch"
-                onChange={this.handleQueryChange}
-                value={this.state.searchQuery}
-                placeholder="Search"
-              />
-            </form>
-
             {/* 
               Important that the div with the aria-live is present when the search page first loads
               cause screen readers doesn't recognize that content has been added
@@ -213,7 +170,7 @@ class SearchPage extends React.Component<Props, State> {
                       />{' '}
                       <strong>
                         &quot;
-                        {lastSearchQuery}
+                        {this.props.router.query.q}
                         &quot;
                       </strong>
                     </Fragment>
@@ -222,7 +179,7 @@ class SearchPage extends React.Component<Props, State> {
                       No results for{' '}
                       <strong>
                         &quot;
-                        {lastSearchQuery}
+                        {this.props.router.query.q}
                         &quot;
                       </strong>
                     </Trans>
