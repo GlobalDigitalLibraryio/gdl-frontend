@@ -68,10 +68,14 @@ const Navbar = ({ onMenuClick }: Props) => {
           </SrOnly>
         </IconButton>
         {brandLink}
-        <SearchInput />
+        <SearchInput css={media.mobile`display: none;`} />
         <SearchDrawer>
           {({ onShowClick }) => (
-            <IconButton color="inherit" onClick={onShowClick}>
+            <IconButton
+              color="inherit"
+              onClick={onShowClick}
+              css={media.tablet`display: none;`}
+            >
               <SearchIcon />
               <SrOnly>
                 <Trans>Search</Trans>

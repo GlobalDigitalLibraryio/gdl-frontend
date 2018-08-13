@@ -21,6 +21,7 @@ import { colors } from '../../../style/theme';
 
 type Props = {
   autoFocus?: boolean,
+  className?: string,
   onSubmit?: () => void,
   router: {
     pathname: string,
@@ -57,6 +58,7 @@ class SmartSearch extends React.Component<Props, { searchQuery: string }> {
     return (
       <SearchInput
         autoFocus={this.props.autoFocus}
+        className={this.props.className}
         onChange={this.handleChange}
         onSubmit={this.handleSubmit}
         value={this.state.searchQuery}
@@ -67,9 +69,9 @@ class SmartSearch extends React.Component<Props, { searchQuery: string }> {
 
 export default withRouter(SmartSearch);
 
-const SearchInput = ({ autoFocus, onSubmit, onChange, value }) => (
+const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
   /* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/
-  <Form role="search" onSubmit={onSubmit} action=".">
+  <Form role="search" onSubmit={onSubmit} className={className} action=".">
     <I18n>
       {({ i18n }) => (
         <>
