@@ -43,6 +43,7 @@ type State = {
     page: number,
     totalCount: number
   },
+  lastSearchQuery?: string,
   isLoadingMore: boolean
 };
 
@@ -92,7 +93,10 @@ class SearchPage extends React.Component<Props, State> {
       return;
     }
 
-    this.setState({ searchResult: queryRes.data });
+    this.setState({
+      searchResult: queryRes.data,
+      lastSearchQuery: this.props.router.query.q
+    });
   };
 
   handleLoadMore = async () => {
@@ -170,7 +174,7 @@ class SearchPage extends React.Component<Props, State> {
                       />{' '}
                       <strong>
                         &quot;
-                        {this.props.router.query.q}
+                        {this.state.lastSearchQuery}
                         &quot;
                       </strong>
                     </Fragment>
@@ -179,7 +183,7 @@ class SearchPage extends React.Component<Props, State> {
                       No results for{' '}
                       <strong>
                         &quot;
-                        {this.props.router.query.q}
+                        {this.state.lastSearchQuery}
                         &quot;
                       </strong>
                     </Trans>
