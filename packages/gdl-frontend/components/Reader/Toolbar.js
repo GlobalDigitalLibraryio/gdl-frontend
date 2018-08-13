@@ -109,6 +109,8 @@ class FavButton extends React.Component<{ book: BookDetails }> {
 }
 
 const Div = styled.div`
+  z-index: 2;
+  background: #fff;
   position: relative;
   position: sticky;
   top: 0;
