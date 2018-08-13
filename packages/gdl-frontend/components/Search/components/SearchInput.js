@@ -106,6 +106,11 @@ const Form = styled('form')`
   position: relative;
   max-width: 1024px;
   flex: 1;
+  :not(:focus-within) {
+    button {
+      color: #fff;
+    }
+  }
 `;
 
 /**
@@ -123,14 +128,16 @@ const Input = styled('input')`
   `};
   border: 0;
   padding: 12px 16px;
-  padding-left: 45px;
+  padding-left: 50px;
   font-size: 1rem;
   line-height: 1.5rem;
-  transition: all 0.2s ease-in-out;
-  background-color: #fff;
-  ${placeholder({ color: colors.base.gray })};
-  &:focus,
-  &:hover {
+  transition: background 100ms ease-in, width 100ms ease-out;
+  background-color: rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.7);
+  ${placeholder({ color: 'rgba(255, 255, 255, 0.7)' })};
+  &:focus {
+    background-color: #fff;
+    color: black;
     ${placeholder({ color: 'rgb(117, 117, 117)' })};
   }
 `;
@@ -139,5 +146,8 @@ const styles = {
   iconButton: css`
     position: absolute;
     left: 0;
+    width: 40px;
+    height: 40px;
+    margin-left: 5px;
   `
 };
