@@ -19,13 +19,16 @@ import {
   CardContent,
   Typography,
   Divider,
-  Grid
+  Grid,
+  Tab
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
   CloudDownload as CloudDownloadIcon,
   Translate as TranslateIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  Favorite as FavoriteIcon,
+  FavoriteBorder as FavoriteOutlineIcon
 } from '@material-ui/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -42,6 +45,7 @@ import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
 import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+import Favorite from '../../components/Favorite';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -138,7 +142,10 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
 
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
               <Card
-                css={[{ width: '100%' }, media.tablet({ display: 'flex' })]}
+                css={[
+                  { width: '100%' },
+                  media.tablet({ display: 'flex', flexDirection: 'column' })
+                ]}
               >
                 <CardContent
                   css={[
@@ -201,19 +208,6 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                             </Button>
                           </Link>
                         </Grid>
-                        <Grid item>
-                          <Button
-                            aria-owns={
-                              this.state.anchorEl ? 'download-book-menu' : null
-                            }
-                            aria-haspopup="true"
-                            color="primary"
-                            onClick={this.handleDownloadClick}
-                          >
-                            <CloudDownloadIcon css={{ marginRight: '10px' }} />
-                            <Trans>Download book</Trans>
-                          </Button>
-                        </Grid>
                         <Menu
                           id="download-book-menu"
                           onClose={this.closeDownloadMenu}
@@ -269,6 +263,41 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     )}
                   </Grid>
                 </CardContent>
+                <div css={{ display: 'flex' }}>
+                  <Favorite
+                    id={this.props.book.id}
+                    language={this.props.book.language.code}
+                  >
+                    {({ onClick, isFav }) => (
+                      <Tab
+                        css={{ flexGrow: 1, flexShrink: 1 }}
+                        onClick={onClick}
+                        role="button"
+                        icon={
+                          isFav ? (
+                            <FavoriteIcon
+                              style={isFav ? { color: 'red' } : null}
+                            />
+                          ) : (
+                            <FavoriteOutlineIcon />
+                          )
+                        }
+                        label={<Trans>Favorite</Trans>}
+                      />
+                    )}
+                  </Favorite>
+                  <Tab
+                    css={{ flexGrow: 1, flexShrink: 1 }}
+                    role="button"
+                    icon={<CloudDownloadIcon />}
+                    label={<Trans>Download</Trans>}
+                    aria-owns={
+                      this.state.anchorEl ? 'download-book-menu' : null
+                    }
+                    aria-haspopup="true"
+                    onClick={this.handleDownloadClick}
+                  />
+                </div>
               </Card>
             </View>
           </Container>

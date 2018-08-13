@@ -21,7 +21,8 @@ import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
   ExitToApp as ExitToAppIcon,
   Translate as TranslateIcon,
-  Edit as EditIcon
+  Edit as EditIcon,
+  Favorite as FavoriteIcon
 } from '@material-ui/icons';
 
 import type { Language } from '../../types';
@@ -101,6 +102,16 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           )}
+          <RouteLink passHref route="favorites">
+            <ListItem button component="a">
+              <ListItemIcon>
+                <FavoriteIcon />
+              </ListItemIcon>
+              <ListItemText>
+                <Trans>Favorites</Trans>
+              </ListItemText>
+            </ListItem>
+          </RouteLink>
           <RouteLink passHref route="translations">
             <ListItem button component="a">
               <ListItemIcon>
