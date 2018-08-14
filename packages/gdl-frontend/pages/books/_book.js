@@ -19,7 +19,6 @@ import {
   CardContent,
   Typography,
   Divider,
-  Grid,
   Tab
 } from '@material-ui/core';
 import {
@@ -37,7 +36,7 @@ import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
-import View from '../../elements/View';
+import { Center, View } from '../../elements';
 import Container from '../../elements/Container';
 import BookCover from '../../components/BookCover';
 import BookList from '../../components/BookList';
@@ -184,84 +183,46 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     {book.description}
                   </Typography>
 
-                  <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                    spacing={16}
-                  >
-                    {book.bookFormat === 'HTML' && (
-                      <Fragment>
-                        <Grid item>
-                          <Link
-                            route="read"
-                            passHref
-                            params={{ id: book.id, lang: book.language.code }}
-                            prefetch
-                          >
-                            <Button
-                              variant="raised"
-                              color="primary"
-                              size="large"
-                            >
-                              <Trans>Read book</Trans>
-                            </Button>
-                          </Link>
-                        </Grid>
-                        <Menu
-                          id="download-book-menu"
-                          onClose={this.closeDownloadMenu}
-                          anchorEl={this.state.anchorEl}
-                          open={Boolean(this.state.anchorEl)}
-                        >
-                          {book.downloads.epub && (
-                            <MenuItem
-                              href={book.downloads.epub}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>E-book (ePUB)</Trans>
-                            </MenuItem>
-                          )}
-                          {book.downloads.pdf && (
-                            <MenuItem
-                              href={book.downloads.pdf}
-                              component="a"
-                              onClick={this.closeDownloadMenu}
-                            >
-                              <Trans>Printable book (PDF)</Trans>
-                            </MenuItem>
-                          )}
-                        </Menu>
-
-                        {this.props.userHasEditAccess && (
-                          <NextLink
-                            href={{
-                              pathname: '/admin/edit',
-                              query: { id: book.id, lang: book.language.code }
-                            }}
-                            passHref
-                          >
-                            <EditBookLink title="Edit book">
-                              <EditIcon />
-                            </EditBookLink>
-                          </NextLink>
-                        )}
-                      </Fragment>
-                    )}
-                    {book.bookFormat === 'PDF' && (
-                      <Grid item>
-                        <Button
-                          href={book.downloads.pdf}
-                          color="primary"
-                          variant="raised"
-                          size="large"
-                        >
-                          <Trans>Download book</Trans>
+                  <Center>
+                    {book.bookFormat === 'HTML' ? (
+                      <Link
+                        route="read"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                        prefetch
+                      >
+                        <Button variant="raised" color="primary" size="large">
+                          <Trans>Read book</Trans>
                         </Button>
-                      </Grid>
+                      </Link>
+                    ) : (
+                      <>
+                        <Button size="large" variant="raised" disabled>
+                          <Trans>Read book</Trans>
+                        </Button>
+                        <Typography
+                          align="center"
+                          css={{ marginTop: spacing.small }}
+                        >
+                          This book is only available for download.
+                        </Typography>
+                      </>
                     )}
-                  </Grid>
+                  </Center>
+
+                  {this.props.userHasEditAccess && (
+                    <NextLink
+                      href={{
+                        pathname: '/admin/edit',
+                        query: { id: book.id, lang: book.language.code }
+                      }}
+                      passHref
+                    >
+                      <EditBookLink title="Edit book">
+                        <EditIcon />
+                      </EditBookLink>
+                    </NextLink>
+                  )}
                 </CardContent>
                 <div css={{ display: 'flex' }}>
                   <Favorite
@@ -286,6 +247,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                       />
                     )}
                   </Favorite>
+
                   <Tab
                     css={{ flexGrow: 1, flexShrink: 1 }}
                     role="button"
@@ -298,6 +260,32 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     onClick={this.handleDownloadClick}
                   />
                 </div>
+
+                <Menu
+                  id="download-book-menu"
+                  onClose={this.closeDownloadMenu}
+                  anchorEl={this.state.anchorEl}
+                  open={Boolean(this.state.anchorEl)}
+                >
+                  {book.downloads.epub && (
+                    <MenuItem
+                      href={book.downloads.epub}
+                      component="a"
+                      onClick={this.closeDownloadMenu}
+                    >
+                      <Trans>E-book (ePUB)</Trans>
+                    </MenuItem>
+                  )}
+                  {book.downloads.pdf && (
+                    <MenuItem
+                      href={book.downloads.pdf}
+                      component="a"
+                      onClick={this.closeDownloadMenu}
+                    >
+                      <Trans>Printable book (PDF)</Trans>
+                    </MenuItem>
+                  )}
+                </Menu>
               </Card>
             </View>
           </Container>
