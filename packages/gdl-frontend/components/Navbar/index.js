@@ -72,9 +72,12 @@ const Navbar = ({ onMenuClick }: Props) => {
           </IconButton>
           {brandLink}
         </Left>
+
+        {/* This component is not visibile on mobile */}
         <Center>
           <SearchInput />
         </Center>
+
         <Right>
           <SearchDrawer>
             {({ onShowClick }) => (

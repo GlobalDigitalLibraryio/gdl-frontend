@@ -84,6 +84,8 @@ class SearchPage extends React.Component<Props, State> {
   }
 
   handleSearch = async () => {
+    if (!this.props.router.query.q) return;
+
     const queryRes = await search(this.props.router.query.q, {
       pageSize: SEARCH_PAGE_SIZE
     });
@@ -102,10 +104,10 @@ class SearchPage extends React.Component<Props, State> {
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
 
-    logEvent('Navigation', 'More - Search', this.state.searchQuery);
+    logEvent('Navigation', 'More - Search', this.props.router.query.q);
 
     // Fixes flow warnings
-    if (!this.state.searchResult) return;
+    if (!this.state.searchResult || !this.props.router.query.q) return;
 
     const queryRes = await search(this.props.router.query.q, {
       pageSize: SEARCH_PAGE_SIZE,

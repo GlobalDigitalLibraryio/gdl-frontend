@@ -15,8 +15,13 @@ import type { I18n as I18nType } from '../types';
  * Renders props aren't so destructive to Flow as HoCs...
  */
 const I18n = withI18n()(
-  ({ i18n, children }: { i18n: I18nType, children: React.Node }) =>
-    children({ i18n })
+  ({
+    i18n,
+    children
+  }: {
+    i18n: I18nType,
+    children: (data: { i18n: I18nType }) => React.Node
+  }) => children({ i18n })
 );
 
 export default I18n;
