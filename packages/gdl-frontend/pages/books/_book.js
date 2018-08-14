@@ -27,7 +27,8 @@ import {
   Translate as TranslateIcon,
   Warning as WarningIcon,
   Favorite as FavoriteIcon,
-  FavoriteBorder as FavoriteOutlineIcon
+  FavoriteBorder as FavoriteOutlineIcon,
+  Share as ShareIcon
 } from '@material-ui/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
@@ -84,9 +85,13 @@ const EditBookLink = styled('a')`
 
 const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
 
-class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
+class BookPage extends React.Component<
+  Props,
+  { anchorEl: ?HTMLElement, supportsNavigatorShare: boolean }
+> {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    supportsNavigatorShare: false
   };
 
   static async getInitialProps({ query, req }: Context) {
@@ -109,10 +114,24 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     };
   }
 
+  componentDidMount() {
+    this.setState({ supportsNavigatorShare: Boolean(navigator.share) });
+  }
+
   handleDownloadClick = event =>
     this.setState({ anchorEl: event.currentTarget });
 
   closeDownloadMenu = () => this.setState({ anchorEl: null });
+
+  handleShareClick = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: this.props.book.title,
+        text: this.props.book.description,
+        url: window.location.href
+      });
+    }
+  };
 
   render() {
     const { similarBooks, book } = this.props;
@@ -230,10 +249,8 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     language={this.props.book.language.code}
                   >
                     {({ onClick, isFav }) => (
-                      <Tab
-                        css={{ flexGrow: 1, flexShrink: 1 }}
+                      <TabButton
                         onClick={onClick}
-                        role="button"
                         icon={
                           isFav ? (
                             <FavoriteIcon
@@ -248,9 +265,7 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     )}
                   </Favorite>
 
-                  <Tab
-                    css={{ flexGrow: 1, flexShrink: 1 }}
-                    role="button"
+                  <TabButton
                     icon={<CloudDownloadIcon />}
                     label={<Trans>Download</Trans>}
                     aria-owns={
@@ -259,6 +274,14 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
                     aria-haspopup="true"
                     onClick={this.handleDownloadClick}
                   />
+
+                  {this.state.supportsNavigatorShare && (
+                    <TabButton
+                      icon={<ShareIcon />}
+                      label={<Trans>Share</Trans>}
+                      onClick={this.handleShareClick}
+                    />
+                  )}
                 </div>
 
                 <Menu
@@ -342,5 +365,19 @@ class BookPage extends React.Component<Props, { anchorEl: ?HTMLElement }> {
     );
   }
 }
+
+const TabButton = props => (
+  <Tab
+    role="button"
+    css={`
+      flex-grow: 1;
+      flex-shrink: 1;
+      ${media.tablet`
+        min-width: 72px;
+      `};
+    `}
+    {...props}
+  />
+);
 
 export default errorPage(BookPage);
