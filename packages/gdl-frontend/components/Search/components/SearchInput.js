@@ -17,7 +17,6 @@ import styled, { css } from 'react-emotion';
 
 import I18n from '../../I18n';
 import media from '../../../style/media';
-import { colors } from '../../../style/theme';
 
 type Props = {
   autoFocus?: boolean,
@@ -104,7 +103,6 @@ const Form = styled('form')`
   align-items: center;
   justify-content: center;
   position: relative;
-  max-width: 1024px;
   flex: 1;
   :not(:focus-within) {
     button {
