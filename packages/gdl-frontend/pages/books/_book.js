@@ -304,10 +304,10 @@ class BookPage extends React.Component<
                       component="a"
                       onClick={() => {
                         this.closeDownloadMenu();
-                        logEvent('Downloads', 'ePUB', book.title);
+                        logEvent('Books', 'Downloaded ePub', book.title);
                       }}
                     >
-                      <Trans>E-book (ePUB)</Trans>
+                      <Trans>E-book (ePub)</Trans>
                     </MenuItem>
                   )}
                   {book.downloads.pdf && (
@@ -316,7 +316,7 @@ class BookPage extends React.Component<
                       component="a"
                       onClick={() => {
                         this.closeDownloadMenu();
-                        logEvent('Downloads', 'PDF', book.title);
+                        logEvent('Books', 'Downloaded PDF', book.title);
                       }}
                     >
                       <Trans>Printable book (PDF)</Trans>
