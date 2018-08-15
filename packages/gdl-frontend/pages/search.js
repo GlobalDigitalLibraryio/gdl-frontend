@@ -88,13 +88,19 @@ class SearchPage extends React.Component<Props, State> {
     isLoadingMore: false
   };
 
+  componentDidUpdate(prevProps: Props) {
+    if (this.props.router.query.q !== prevProps.router.query.q) {
+      window.location.reload();
+    }
+  }
+
   handleSearch = async event => {
     event.preventDefault();
     if (!this.state.searchQuery || this.state.searchQuery.trim() === '') {
       return;
     }
 
-    // If we are on mobile, blur the input field on submit so we hide the virtual keyboard
+    // On mobile, blur the input field on submit to hide the virtual keyboard
     if (window.innerWidth < TABLET_BREAKPOINT) {
       const searchInput = document.querySelector('#booksearch');
       searchInput && searchInput.blur();
@@ -179,7 +185,6 @@ class SearchPage extends React.Component<Props, State> {
             {/* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/}
             <form onSubmit={this.handleSearch} action=".">
               <SearchField
-                autoFocus
                 label="Search"
                 id="booksearch"
                 onChange={this.handleQueryChange}
