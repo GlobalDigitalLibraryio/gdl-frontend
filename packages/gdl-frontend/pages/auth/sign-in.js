@@ -48,8 +48,8 @@ const LoginPage = ({ i18n }: Props) => (
           <Button
             variant="outlined"
             onClick={() => {
-              loginSocialMedia('google-oauth2');
               logEvent('User', 'Login', 'Google');
+              loginSocialMedia('google-oauth2');
             }}
             css={{ color: googleColor }}
           >
@@ -58,8 +58,8 @@ const LoginPage = ({ i18n }: Props) => (
           <Button
             variant="outlined"
             onClick={() => {
-              loginSocialMedia('facebook');
               logEvent('User', 'Login', 'Facebook');
+              loginSocialMedia('facebook');
             }}
             css={{ color: facebookColor }}
           >

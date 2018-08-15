@@ -211,7 +211,14 @@ class BookPage extends React.Component<
                         params={{ id: book.id, lang: book.language.code }}
                         prefetch
                       >
-                        <Button variant="raised" color="primary" size="large">
+                        <Button
+                          variant="raised"
+                          color="primary"
+                          size="large"
+                          onClick={() =>
+                            logEvent('Books', 'Read', this.props.book.title)
+                          }
+                        >
                           <Trans>Read book</Trans>
                         </Button>
                       </Link>
@@ -338,6 +345,7 @@ class BookPage extends React.Component<
                     params={{ id: book.id, lang: book.language.code }}
                   >
                     <Button
+                      onClick={() => logEvent('Books', 'Translate', book.title)}
                       color="primary"
                       css={{ margin: `${spacing.medium} 0` }}
                     >
@@ -356,6 +364,7 @@ class BookPage extends React.Component<
                   href={zendeskUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => logEvent('Books', 'Report', book.title)}
                 >
                   <WarningIcon /> <Trans>Report a problem with this book</Trans>
                 </Button>
