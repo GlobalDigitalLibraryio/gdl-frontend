@@ -251,7 +251,14 @@ class BookPage extends React.Component<
                   >
                     {({ onClick, isFav }) => (
                       <TabButton
-                        onClick={onClick}
+                        onClick={() => {
+                          onClick();
+                          logEvent(
+                            'Books',
+                            isFav ? 'Unfavorited' : 'Favorited',
+                            book.title
+                          );
+                        }}
                         icon={
                           isFav ? (
                             <FavoriteIcon
