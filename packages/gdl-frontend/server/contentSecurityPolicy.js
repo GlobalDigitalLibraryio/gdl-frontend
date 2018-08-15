@@ -17,7 +17,8 @@ const directives = {
     "'self'",
     "'unsafe-inline'",
     googleAnalytics,
-    'https://cdn.polyfill.io'
+    'https://cdn.polyfill.io',
+    'https://storage.googleapis.com' // Used by Workbox for PWA/service worker
   ],
   styleSrc: [
     "'self'",
@@ -42,4 +43,8 @@ const directives = {
   reportUri: `https://sentry.io/api/${SENTRY_PROJECT_ID}/csp-report/?sentry_key=${SENTRY_PUBLIC_KEY}`
 };
 
-module.exports = { directives };
+// We have a different connect directive for the service worker, sicne a service worker is essentially a script
+// See https://qubyte.codes/blog/content-security-policy-and-service-workers
+const serviceWorkerDirectives = { ...directives, connectSrc: ['*'] };
+
+module.exports = { normalDirectives: directives, serviceWorkerDirectives };

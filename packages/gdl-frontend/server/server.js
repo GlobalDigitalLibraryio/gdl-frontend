@@ -13,12 +13,17 @@ const requestLanguage = require('express-request-language');
 const cookieParser = require('cookie-parser');
 const { GDL_ENVIRONMENT } = require('gdl-config');
 const glob = require('glob');
+const csp = require('helmet-csp');
+const { join } = require('path');
+
 const routes = require('../routes');
 
 const {
   publicRuntimeConfig: { REPORT_ERRORS },
   serverRuntimeConfig: { port }
 } = require('../config');
+
+const contentSecurityPolicy = require('./contentSecurityPolicy');
 
 const isDev = process.env.NODE_ENV !== 'production';
 const app = next({ dev: isDev });
@@ -49,7 +54,9 @@ async function setup() {
     // Security setup if we're not running in development mode
     server.use(
       helmet({
-        contentSecurityPolicy: require('./contentSecurityPolicy')
+        contentSecurityPolicy: {
+          directives: contentSecurityPolicy.normalDirectives
+        }
       })
     );
   }
@@ -59,6 +66,19 @@ async function setup() {
   server.get('/health', (req, res) => {
     res.status(200).json({ status: 200, text: 'Health check ok' });
   });
+
+  // Serve serice worker from root of site so it applies to all pages
+  // We have different CSP directives for the service worker, sicne a service worker is essentially a script
+  // See https://qubyte.codes/blog/content-security-policy-and-service-workers
+  // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
+  server.get(
+    '/service-worker.js',
+    csp({ directives: contentSecurityPolicy.serviceWorkerDirectives }),
+    (req, res) => {
+      const filePath = join(app.distDir, 'service-worker.js');
+      res.sendFile(filePath);
+    }
+  );
 
   // Setup the cookie parsing for express
   server.use(cookieParser());

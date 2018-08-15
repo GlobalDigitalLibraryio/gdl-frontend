@@ -15,6 +15,7 @@ import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
 import type { Context } from '../types';
 import polyfills from '../polyfills';
+import { colors } from '../style/theme';
 import config from '../config';
 
 // This is an import with a sideeffect :/
@@ -66,6 +67,8 @@ export default class Document extends NextDocument {
       <html lang={this.props.language}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="theme-color" content={colors.default} />
+          <link rel="manifest" href="/static/manifest/manifest.json" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
