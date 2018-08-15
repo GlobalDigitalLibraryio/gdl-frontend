@@ -32,6 +32,7 @@ import {
 } from '@material-ui/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
+import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
@@ -294,7 +295,10 @@ class BookPage extends React.Component<
                     <MenuItem
                       href={book.downloads.epub}
                       component="a"
-                      onClick={this.closeDownloadMenu}
+                      onClick={() => {
+                        this.closeDownloadMenu();
+                        logEvent('Downloads', 'ePUB', book.title);
+                      }}
                     >
                       <Trans>E-book (ePUB)</Trans>
                     </MenuItem>
@@ -303,7 +307,10 @@ class BookPage extends React.Component<
                     <MenuItem
                       href={book.downloads.pdf}
                       component="a"
-                      onClick={this.closeDownloadMenu}
+                      onClick={() => {
+                        this.closeDownloadMenu();
+                        logEvent('Downloads', 'PDF', book.title);
+                      }}
                     >
                       <Trans>Printable book (PDF)</Trans>
                     </MenuItem>

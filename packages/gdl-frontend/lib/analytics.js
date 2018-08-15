@@ -1,5 +1,5 @@
+// @flow
 import ReactGA from 'react-ga';
-import Router from 'next/router';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../types';
 
@@ -9,19 +9,22 @@ const {
 
 let GA_INITIALIZED = false;
 
-const logPageView = () => {
-  if (process.browser && googleAnalyticsId) {
-    if (!GA_INITIALIZED) {
-      ReactGA.initialize(googleAnalyticsId);
-      GA_INITIALIZED = true;
-    }
+export function initGA() {
+  if (googleAnalyticsId && !GA_INITIALIZED) {
+    ReactGA.initialize(googleAnalyticsId);
+    GA_INITIALIZED = true;
+  }
+}
+
+export function logPageView() {
+  if (GA_INITIALIZED) {
     ReactGA.set({ page: window.location.pathname });
     ReactGA.pageview(window.location.pathname);
   }
-};
+}
 
-Router.onRouteChangeComplete = () => {
-  logPageView();
-};
-
-export default logPageView;
+export function logEvent(category: string, action: string, label?: string) {
+  if (GA_INITIALIZED) {
+    ReactGA.event({ category, action, label });
+  }
+}

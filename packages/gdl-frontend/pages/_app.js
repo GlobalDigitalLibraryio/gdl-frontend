@@ -22,10 +22,7 @@ import GdlThemeProvider from '../components/GdlThemeProvider';
 import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
-import logPageView from '../lib/analytics';
-
-// Analytics
-logPageView();
+import { logPageView, initGA } from '../lib/analytics';
 
 // Adds server generated styles to the emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -62,20 +59,24 @@ class App extends NextApp {
     super.componentDidCatch(error, errorInfo);
   }
 
-  /**
-   * Listen to log out events (across all tabs)
-   */
   componentDidMount() {
+    // Listen to log out events (across all tabs)
     window.addEventListener('storage', this.logout, false);
+
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+
+    // Setup Google Analytics to log the current page and subsequent other pages
+    initGA();
+    logPageView();
+    Router.router.events.on('routeChangeComplete', logPageView);
   }
 
-  // Stop listening to logout events
   componentWillUnmount() {
+    // Stop listening to logout events
     window.removeEventListener('storage', this.logout, false);
   }
 
