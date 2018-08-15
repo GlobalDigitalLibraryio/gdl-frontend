@@ -32,6 +32,7 @@ import {
 } from '@material-ui/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
+import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
@@ -210,7 +211,14 @@ class BookPage extends React.Component<
                         params={{ id: book.id, lang: book.language.code }}
                         prefetch
                       >
-                        <Button variant="raised" color="primary" size="large">
+                        <Button
+                          variant="raised"
+                          color="primary"
+                          size="large"
+                          onClick={() =>
+                            logEvent('Books', 'Read', this.props.book.title)
+                          }
+                        >
                           <Trans>Read book</Trans>
                         </Button>
                       </Link>
@@ -250,7 +258,14 @@ class BookPage extends React.Component<
                   >
                     {({ onClick, isFav }) => (
                       <TabButton
-                        onClick={onClick}
+                        onClick={() => {
+                          onClick();
+                          logEvent(
+                            'Books',
+                            isFav ? 'Unfavorited' : 'Favorited',
+                            book.title
+                          );
+                        }}
                         icon={
                           isFav ? (
                             <FavoriteIcon
@@ -294,16 +309,22 @@ class BookPage extends React.Component<
                     <MenuItem
                       href={book.downloads.epub}
                       component="a"
-                      onClick={this.closeDownloadMenu}
+                      onClick={() => {
+                        this.closeDownloadMenu();
+                        logEvent('Books', 'Downloaded ePub', book.title);
+                      }}
                     >
-                      <Trans>E-book (ePUB)</Trans>
+                      <Trans>E-book (ePub)</Trans>
                     </MenuItem>
                   )}
                   {book.downloads.pdf && (
                     <MenuItem
                       href={book.downloads.pdf}
                       component="a"
-                      onClick={this.closeDownloadMenu}
+                      onClick={() => {
+                        this.closeDownloadMenu();
+                        logEvent('Books', 'Downloaded PDF', book.title);
+                      }}
                     >
                       <Trans>Printable book (PDF)</Trans>
                     </MenuItem>
@@ -324,6 +345,7 @@ class BookPage extends React.Component<
                     params={{ id: book.id, lang: book.language.code }}
                   >
                     <Button
+                      onClick={() => logEvent('Books', 'Translate', book.title)}
                       color="primary"
                       css={{ margin: `${spacing.medium} 0` }}
                     >
@@ -342,6 +364,7 @@ class BookPage extends React.Component<
                   href={zendeskUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => logEvent('Books', 'Report', book.title)}
                 >
                   <WarningIcon /> <Trans>Report a problem with this book</Trans>
                 </Button>

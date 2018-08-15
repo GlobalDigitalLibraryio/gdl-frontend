@@ -16,6 +16,7 @@ import HomeIcon from '@material-ui/icons/Home';
 import { Trans } from '@lingui/react';
 import SelectLanguage from '../LanguageMenu/SelectLanguage';
 
+import { logEvent } from '../../lib/analytics';
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
 import GlobalDigitalLibraryLogo from './beta-logo.svg';
@@ -41,7 +42,10 @@ const BrandLink = styled('a')`
 const Navbar = ({ onMenuClick }: Props) => {
   const brandLink = (
     <Link route="books" passHref>
-      <BrandLink aria-label="Global Digital Library">
+      <BrandLink
+        aria-label="Global Digital Library"
+        onClick={() => logEvent('Navigation', 'Home', 'Brand logo')}
+      >
         <GlobalDigitalLibraryLogo aria-hidden />
       </BrandLink>
     </Link>
@@ -66,6 +70,7 @@ const Navbar = ({ onMenuClick }: Props) => {
             color="inherit"
             component="a"
             css={{ marginLeft: 'auto' }}
+            onClick={() => logEvent('Navigation', 'Home', 'House icon')}
           >
             <HomeIcon />
             <SrOnly>
@@ -84,7 +89,13 @@ const Navbar = ({ onMenuClick }: Props) => {
         <SelectLanguage anchor="right">
           {({ onClick }) => (
             <Tooltip title={<Trans>Choose book language</Trans>}>
-              <IconButton onClick={onClick} color="inherit">
+              <IconButton
+                color="inherit"
+                onClick={() => {
+                  logEvent('Navigation', 'Language', 'Globe icon');
+                  onClick();
+                }}
+              >
                 <LanguageIcon />
                 <SrOnly>
                   <Trans>Choose book language</Trans>

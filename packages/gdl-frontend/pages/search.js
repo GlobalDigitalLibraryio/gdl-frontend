@@ -11,6 +11,7 @@ import { Trans, Plural } from '@lingui/react';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 
+import { logEvent } from '../lib/analytics';
 import type { Book, Context } from '../types';
 import { Router } from '../routes';
 import {
@@ -124,6 +125,9 @@ class SearchPage extends React.Component<Props, State> {
 
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
+
+    logEvent('Navigation', 'More - Search', this.state.searchQuery);
+
     // Fixes flow warnings
     if (!this.state.searchResult) return;
 

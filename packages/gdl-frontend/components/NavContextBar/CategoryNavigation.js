@@ -11,6 +11,7 @@ import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { withTheme } from '@material-ui/core/styles';
 
+import { logEvent } from '../../lib/analytics';
 import type { Category } from '../../types';
 import SrOnly from '../../components/SrOnly';
 import { fonts } from '../../style/theme';
@@ -49,6 +50,7 @@ class CategoryNavigation extends React.Component<Props> {
           <Tab
             isSelected={category === 'library_books'}
             linkProps={{ route: 'library', params: { lang: languageCode } }}
+            onClick={() => logEvent('Navigation', 'Category', 'Classroom')}
           >
             <Trans>Library books</Trans>
           </Tab>
@@ -57,6 +59,7 @@ class CategoryNavigation extends React.Component<Props> {
           <Tab
             isSelected={category === 'classroom_books'}
             linkProps={{ route: 'classroom', params: { lang: languageCode } }}
+            onClick={() => logEvent('Navigation', 'Category', 'Library')}
           >
             <Trans>Classroom books</Trans>
           </Tab>

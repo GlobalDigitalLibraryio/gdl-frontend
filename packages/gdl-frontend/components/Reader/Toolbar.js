@@ -16,6 +16,7 @@ import {
   FavoriteBorder as FavoriteOutlineIcon
 } from '@material-ui/icons';
 
+import { logEvent } from '../../lib/analytics';
 import type { BookDetails, ChapterSummary } from '../../types';
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
@@ -88,7 +89,14 @@ class FavButton extends React.Component<{ book: BookDetails }> {
             }
           >
             <IconButton
-              onClick={onClick}
+              onClick={() => {
+                onClick();
+                logEvent(
+                  'Books',
+                  isFav ? 'Unfavorited' : 'Favorited',
+                  this.props.book.title
+                );
+              }}
               style={isFav ? { color: 'red' } : null}
             >
               {isFav ? <FavoriteIcon /> : <FavoriteOutlineIcon />}

@@ -61,7 +61,7 @@
     "react": "16.4.2",
     "react-dom": "16.4.2",
     "react-emotion": "9.2.6",
-    "react-ga": "^2.5.2",
+    "react-ga": "2.5.3",
     "react-icons": "^2.2.7",
     "react-swipeable": "^4.3.0",
     "styled-system": "^2.2.5",

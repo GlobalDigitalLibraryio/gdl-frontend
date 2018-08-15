@@ -11,6 +11,7 @@ import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
 
+import { logEvent } from '../../lib/analytics';
 import { withI18n } from '../../hocs';
 import type { I18n } from '../../types';
 import { A, Container } from '../../elements';
@@ -46,14 +47,20 @@ const LoginPage = ({ i18n }: Props) => (
         <EqualWidthButtonsWrapper>
           <Button
             variant="outlined"
-            onClick={() => loginSocialMedia('google-oauth2')}
+            onClick={() => {
+              logEvent('User', 'Login', 'Google');
+              loginSocialMedia('google-oauth2');
+            }}
             css={{ color: googleColor }}
           >
             <Trans>Sign in using Google</Trans>
           </Button>
           <Button
             variant="outlined"
-            onClick={() => loginSocialMedia('facebook')}
+            onClick={() => {
+              logEvent('User', 'Login', 'Facebook');
+              loginSocialMedia('facebook');
+            }}
             css={{ color: facebookColor }}
           >
             <Trans>Sign in using Facebook</Trans>
