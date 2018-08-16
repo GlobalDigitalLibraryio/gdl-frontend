@@ -83,6 +83,7 @@ const Navbar = ({ onMenuClick }: Props) => {
                 color="inherit"
                 onClick={onShowClick}
                 css={media.tablet`display: none;`}
+                focusRipple={false}
               >
                 <SearchIcon />
                 <SrOnly>
