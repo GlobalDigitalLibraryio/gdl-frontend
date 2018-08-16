@@ -42,7 +42,7 @@ const Toolbar = ({
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     <Buttons>
-      {!userHasEditAccess && (
+      {userHasEditAccess && (
         <Link
           href={{
             pathname: '/admin/edit',
