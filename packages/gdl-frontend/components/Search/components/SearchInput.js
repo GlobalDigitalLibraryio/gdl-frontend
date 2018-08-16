@@ -74,6 +74,7 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
     <I18n>
       {({ i18n }) => (
         <>
+          {/* We use an adjacent sibling selector, se be careful when moving stuff around here. See Form */}
           <Input
             aria-label={i18n.t`Search for books`}
             autoComplete="off"
@@ -98,16 +99,15 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
   </Form>
 );
 
+// NB, adjacent sibling selector here. See SearchInput
 const Form = styled('form')`
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   flex: 1;
-  :not(:focus-within) {
-    button {
-      color: #fff;
-    }
+  input:focus + button {
+    color: rgba(0, 0, 0, 0.54);
   }
 `;
 
@@ -147,5 +147,6 @@ const styles = {
     width: 40px;
     height: 40px;
     margin-left: 5px;
+    color: #fff;
   `
 };

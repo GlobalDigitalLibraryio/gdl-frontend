@@ -29,12 +29,10 @@ type Props = {
   onMenuClick(): void
 };
 
-// The tiny bit of padding here prevents the 'A' in 'Beta' from getting smooshed
 const BrandLink = styled('a')`
   margin-right: auto;
   svg {
     margin-top: 2px;
-    padding-right: 2px;
     height: 36px;
     width: 100px;
     ${media.tablet`
