@@ -8,12 +8,7 @@
 const TABLET_BREAKPOINT = 768;
 
 const misc = {
-  iconSize: 24,
-  radius: '4px',
   breakpoints: [`${TABLET_BREAKPOINT}px`],
-  inputs: {
-    padding: '10px'
-  },
   containers: {
     large: '1024px',
     small: '738px'
