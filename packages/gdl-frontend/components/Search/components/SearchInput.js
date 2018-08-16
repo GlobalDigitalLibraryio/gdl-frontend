@@ -30,15 +30,18 @@ type Props = {
   }
 };
 
-class SmartSearch extends React.Component<Props, { searchQuery: string }> {
-  state = {
-    searchQuery: ''
-  };
+class RouteAwareSearch extends React.Component<Props, { searchQuery: string }> {
+  constructor(props) {
+    super(props);
 
-  componentDidMount() {
+    let q = '';
     if (this.props.router.pathname === '/search' && this.props.router.query.q) {
-      this.setState({ searchQuery: this.props.router.query.q });
+      q = this.props.router.query.q;
     }
+
+    this.state = {
+      searchQuery: q
+    };
   }
 
   handleSubmit = event => {
@@ -66,7 +69,7 @@ class SmartSearch extends React.Component<Props, { searchQuery: string }> {
   }
 }
 
-export default withRouter(SmartSearch);
+export default withRouter(RouteAwareSearch);
 
 const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
   /* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/
