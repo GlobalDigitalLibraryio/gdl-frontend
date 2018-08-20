@@ -22,10 +22,8 @@ import config from '../config';
 import injectGlobalStyles from '../style/globalStyles';
 
 const favIcon = require('../static/img/favicon-32x32.png');
-const precomposed57 = require('../static/img/apple-icon-57x57-precomposed.png');
-const precomposed72 = require('../static/img/apple-icon-72x72-precomposed.png');
-const precomposed114 = require('../static/img/apple-icon-114x114-precomposed.png');
-const precomposed144 = require('../static/img/apple-icon-144x144-precomposed.png');
+const icon192x192 = require('../static/img/icon-192x192.png');
+const appleTouchIcon192x192 = require('../static/img/apple-touch-icon-192x192.png');
 
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
@@ -94,27 +92,13 @@ export default class Document extends NextDocument {
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="Global Digital Library" />
 
-          <link rel="icon" type="image/png" href={favIcon} />
+          <link rel="icon" href={favIcon} type="image/png" />
           <link
-            rel="apple-touch-icon-precomposed"
-            sizes="57x57"
-            href={precomposed57}
+            rel="apple-touch-icon"
+            sizes="192x192"
+            href={appleTouchIcon192x192}
           />
-          <link
-            rel="apple-touch-icon-precomposed"
-            sizes="72x72"
-            href={precomposed72}
-          />
-          <link
-            rel="apple-touch-icon-precomposed"
-            sizes="114x114"
-            href={precomposed114}
-          />
-          <link
-            rel="apple-touch-icon-precomposed"
-            sizes="144x144"
-            href={precomposed144}
-          />
+          <link rel="icon" sizes="192x192" href={icon192x192} />
           <link
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
