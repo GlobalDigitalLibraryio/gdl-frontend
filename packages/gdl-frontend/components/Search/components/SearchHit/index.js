@@ -11,10 +11,11 @@ import { Typography } from '@material-ui/core';
 
 import type { Book } from '../../../../types';
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
+import { spacing } from '../../../../style/theme';
 import { Link } from '../../../../routes';
 import BookCover from '../../../BookCover';
 import A from '../../../../elements/A';
-import { BookTitle, BookDescription, Wrapper, Div, Divider } from './styled';
+import { BookTitle, BookDescription, Wrapper, Divider } from './styled';
 
 function renderTitle(book) {
   if (book.highlightTitle) {
@@ -57,17 +58,19 @@ const SearchHit = ({ book }: { book: Book }) => {
           />
         </a>
       </Link>
-      <Div>
+
+      {/* Hide overflow so book language / level elements gets truncated */}
+      <div css={{ overflow: 'hidden', marginLeft: spacing.small }}>
         <Link route={bookRoute} passHref>
           <A>{renderTitle(book)}</A>
         </Link>
         {renderBookDescription(book)}
-        <Typography variant="caption" component="div">
+        <Typography variant="caption" component="div" noWrap>
           {book.language.name}
           <Divider ariaHidden />
           <ReadingLevelTrans readingLevel={book.readingLevel} />
         </Typography>
-      </Div>
+      </div>
     </Wrapper>
   );
 };

@@ -49,10 +49,6 @@ export const Wrapper = styled('div')`
   `};
 `;
 
-export const Div = styled('div')`
-  margin-left: 15px;
-`;
-
 export const Divider = styled('span')`
   margin-left: 0.5rem;
   margin-right: 0.5rem;
