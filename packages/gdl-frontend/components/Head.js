@@ -11,7 +11,7 @@ import NextHead from 'next/head';
 import { withI18n } from '@lingui/react';
 import type { I18n } from '../types';
 
-const fallBackImgSrc = require('../static/img/icon-192x192.png');
+const fallBackImgSrc = require('../static/img/apple-touch-icon-192x192.png');
 
 type Props = {|
   description?: string,
@@ -36,9 +36,6 @@ const Head = ({ title, description, i18n, image, children }: Props) => {
 
       <meta property="og:title" content={actualTitle} />
       <meta property="og:description" content={actualDescription} />
-
-      <meta property="twitter:title" content={actualTitle} />
-      <meta property="twitter:description" content={actualDescription} />
 
       <meta property="og:image" content={image || fallBackImgSrc} />
       {!image && (
