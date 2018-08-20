@@ -7,13 +7,14 @@
  */
 
 import * as React from 'react';
+import { Typography } from '@material-ui/core';
 
 import type { Book } from '../../../../types';
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { Link } from '../../../../routes';
 import BookCover from '../../../BookCover';
 import A from '../../../../elements/A';
-import { BookTitle, BookDescription, BookLevel, Wrapper, Div } from './styled';
+import { BookTitle, BookDescription, Wrapper, Div, Divider } from './styled';
 
 function renderTitle(book) {
   if (book.highlightTitle) {
@@ -60,10 +61,12 @@ const SearchHit = ({ book }: { book: Book }) => {
         <Link route={bookRoute} passHref>
           <A>{renderTitle(book)}</A>
         </Link>
-        <BookLevel>
-          <ReadingLevelTrans readingLevel={book.readingLevel} />
-        </BookLevel>
         {renderBookDescription(book)}
+        <Typography variant="caption" component="div">
+          {book.language.name}
+          <Divider ariaHidden />
+          <ReadingLevelTrans readingLevel={book.readingLevel} />
+        </Typography>
       </Div>
     </Wrapper>
   );
