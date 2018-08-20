@@ -26,6 +26,7 @@ export const BookDescription = styled('p')`
   margin: 0;
   em {
     font-weight: ${fonts.weight.bold};
+    font-style: normal;
   }
 `;
 
