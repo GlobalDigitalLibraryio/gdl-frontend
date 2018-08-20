@@ -13,6 +13,7 @@ import media from '../../../../style/media';
 export const BookTitle = styled('h2')`
   font-size: 1.1rem;
   margin: 0;
+  margin-bottom: 0.35rem;
   font-weight: ${fonts.weight.medium};
   em {
     font-weight: ${fonts.weight.bold};
@@ -24,16 +25,11 @@ export const BookDescription = styled('p')`
   font-size: 0.9rem;
   line-height: 1.3rem;
   margin: 0;
+  margin-bottom: 0.35rem;
   em {
     font-weight: ${fonts.weight.bold};
+    font-style: normal;
   }
-`;
-
-export const BookLevel = styled('span')`
-  display: block;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  font-weight: ${fonts.weight.medium};
 `;
 
 export const Wrapper = styled('div')`
@@ -53,6 +49,11 @@ export const Wrapper = styled('div')`
   `};
 `;
 
-export const Div = styled('div')`
-  margin-left: 15px;
+export const Divider = styled('span')`
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  border-left-width: 1px;
+  border-left-style: solid;
+  border-color: currentColor;
 `;
