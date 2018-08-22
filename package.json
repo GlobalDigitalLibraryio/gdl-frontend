@@ -74,7 +74,7 @@
     "emotion-theming": "9.2.6",
     "express": "^4.16.3",
     "express-request-language": "^1.1.15",
-    "final-form": "^4.8.3",
+    "final-form": "4.9.1",
     "glob": "^7.1.2",
     "helmet": "^3.12.1",
     "invariant": "^2.2.4",
