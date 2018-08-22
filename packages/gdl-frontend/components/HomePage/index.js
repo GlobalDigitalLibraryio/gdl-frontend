@@ -11,6 +11,7 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
+import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
   Book,
@@ -126,6 +127,7 @@ export default class HomePage extends React.Component<
           {featured.description}
         </Typography>
         <Button
+          onClick={() => logEvent('Navigation', 'Featured', featured.title)}
           href={featured.link}
           variant="raised"
           color="primary"

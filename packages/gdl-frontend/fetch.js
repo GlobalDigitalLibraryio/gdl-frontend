@@ -26,7 +26,9 @@ import { getAuthToken } from 'gdl-auth';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
-const bookApiUrl =
+// NB! Must be a function, don't pull it out into a constant here.
+// bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
+const bookApiUrl = () =>
   serverRuntimeConfig.bookApiUrl || publicRuntimeConfig.bookApiUrl;
 
 // Because the backend model and business logic for categories doesn't play nice together
@@ -98,20 +100,20 @@ type Options = {
 };
 
 export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
-  return doFetch(`${bookApiUrl}/languages`);
+  return doFetch(`${bookApiUrl()}/languages`);
 }
 
 export function fetchFeaturedContent(
   language: ?string
 ): Promise<RemoteData<Array<FeaturedContent>>> {
-  return doFetch(`${bookApiUrl}/featured/${language || ''}`);
+  return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
 export async function fetchBook(
   id: string | number,
   language: string
 ): Promise<RemoteData<BookDetails>> {
-  const result = await doFetch(`${bookApiUrl}/books/${language}/${id}`);
+  const result = await doFetch(`${bookApiUrl()}/books/${language}/${id}`);
 
   if (result.isOk) {
     result.data = bookCategoryMapper(result.data);
@@ -127,7 +129,7 @@ export async function fetchChapter(
   language: string
 ): Promise<RemoteData<Chapter>> {
   const result = await doFetch(
-    `${bookApiUrl}/books/${language}/${bookId}/chapters/${chapterId}`
+    `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
   );
 
   return result;
@@ -138,7 +140,7 @@ export async function fetchSimilarBooks(
   language: string
 ): Promise<RemoteData<{ results: Array<Book> }>> {
   const result = await doFetch(
-    `${bookApiUrl}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
+    `${bookApiUrl()}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
   );
 
   if (result.isOk) {
@@ -159,7 +161,7 @@ export async function fetchBooks(
   }>
 > {
   const result = await doFetch(
-    `${bookApiUrl}/books/${language || ''}?page=${options.page ||
+    `${bookApiUrl()}/books/${language || ''}?page=${options.page ||
       1}&sort=${options.sort || '-arrivaldate'}&page-size=${options.pageSize ||
       PAGE_SIZE}${options.level ? `&reading-level=${options.level}` : ''}${
       options.category ? `&category=${options.category}` : ''
@@ -175,11 +177,11 @@ export async function fetchBooks(
 export function fetchSupportedLanguages(): Promise<
   RemoteData<Array<Language>>
 > {
-  return doFetch(`${bookApiUrl}/translations/supported-languages`);
+  return doFetch(`${bookApiUrl()}/translations/supported-languages`);
 }
 
 export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
-  return doFetch(`${bookApiUrl}/books/mine`);
+  return doFetch(`${bookApiUrl()}/books/mine`);
 }
 
 export function sendToTranslation(
@@ -187,7 +189,7 @@ export function sendToTranslation(
   fromLanguage: string,
   toLanguage: string
 ): Promise<RemoteData<Translation>> {
-  return doFetch(`${bookApiUrl}/translations`, {
+  return doFetch(`${bookApiUrl()}/translations`, {
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   });
@@ -205,7 +207,7 @@ export async function search(
 > {
   const result = await doFetch(
     encodeURI(
-      `${bookApiUrl}/search?query=${query}&page-size=${options.pageSize ||
+      `${bookApiUrl()}/search?query=${query}&page-size=${options.pageSize ||
         PAGE_SIZE}&page=${options.page || 1}`
     )
   );
@@ -225,7 +227,7 @@ export async function fetchCategories(
     library_books?: Array<ReadingLevel>
   |}>
 > {
-  const result = await doFetch(`${bookApiUrl}/categories/${language || ''}`);
+  const result = await doFetch(`${bookApiUrl()}/categories/${language || ''}`);
 
   // Sort the reading levels and move the data one level up
   if (result.isOk) {

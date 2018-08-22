@@ -11,6 +11,7 @@ import { Trans } from '@lingui/react';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 
+import { logEvent } from '../../lib/analytics';
 import withI18n from '../../hocs/withI18n';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context, I18n } from '../../types';
@@ -100,6 +101,7 @@ class BrowsePage extends React.Component<Props, State> {
   handleLoadMore = async () => {
     this.setState({ isLoadingMore: true });
     const { query } = this.props.router;
+    logEvent('Navigation', 'More - Browse', query.readingLevel);
 
     const booksRes = await fetchBooks(query.lang, {
       level: query.readingLevel,
