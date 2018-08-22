@@ -6,27 +6,18 @@ import Button from '@material-ui/core/Button/Button';
 import InputLabel from '@material-ui/core/InputLabel/InputLabel';
 import FormControl from '@material-ui/core/FormControl/FormControl';
 import Typography from '@material-ui/core/Typography';
+
 import Container from '../../components/Container';
-
 import type { Language } from '../../types';
-import { fetchLanguages, exportBooks } from '../../lib/fetch';
+import { fetchLanguages, fetchSources, exportBooks } from '../../lib/fetch';
 import Layout from '../../components/Layout';
-
-// Current book sources. Currently there's no endpoint to get these, so hardcode here for now
-const sources = [
-  { code: 'all', name: 'All' },
-  { code: 'african_storybook', name: 'African Storybook Project' },
-  { code: 'bookdash', name: 'Bookdash' },
-  { code: 'ew', name: 'EW' },
-  { code: 'storyweaver', name: 'Storyweaver' },
-  { code: 'taf', name: 'Taf' },
-  { code: 'usaid', name: 'USAID' }
-];
+import getSourceName from '../../data/sources';
+import Row from '../../components/Row';
 
 type State = {
   selectedLanguage: string,
   selectedSource: string,
-  sources: Array<{ code: string, name: string }>
+  sources: Array<{ source: string, count: number }>
 };
 
 class Export extends React.Component<{ languages: Array<Language> }, State> {
@@ -41,13 +32,31 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
   state = {
     selectedLanguage: '',
     selectedSource: 'all', // Default value
-    sources: sources
+    sources: []
   };
 
-  handleLanguageChange = (event: SyntheticInputEvent<EventTarget>) => {
+  handleLanguageChange = async (event: SyntheticInputEvent<EventTarget>) => {
+    const languageCode = event.target.value;
     this.setState({
-      selectedLanguage: event.target.value
+      selectedLanguage: languageCode
     });
+
+    const sourcesResult = await fetchSources(languageCode);
+    if (sourcesResult.isOk) {
+      this.setState(state => {
+        const sourcesForLanguage = sourcesResult.data;
+
+        /* This logic keeps the source selection if the language choice includes the same source,
+           otherwise we reset to ALL */
+        const selectedSource = sourcesForLanguage.find(
+          s => s.source === state.selectedSource
+        )
+          ? state.selectedSource
+          : 'all';
+
+        return { sources: sourcesResult.data, selectedSource };
+      });
+    }
   };
 
   handleSourceChange = (event: SyntheticInputEvent<EventTarget>) => {
@@ -91,9 +100,9 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
     return (
       <Layout>
         <Container>
-          <Typography variant="headline">Export books as CSV</Typography>
-          <div>
-            <FormControl margin="normal">
+          <Row autoFlow="row">
+            <Typography variant="headline">Export books as CSV</Typography>
+            <FormControl>
               <InputLabel htmlFor="language-select">Select language</InputLabel>
               <Select
                 native
@@ -112,9 +121,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 ;
               </Select>
             </FormControl>
-          </div>
-          <div>
-            <FormControl margin="normal">
+            <FormControl>
               <InputLabel htmlFor="source-select">Select source</InputLabel>
 
               <Select
@@ -123,24 +130,27 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 onChange={this.handleSourceChange}
                 native
               >
+                <option key="all" value="All">
+                  All
+                </option>
                 {this.state.sources.map(source => (
-                  <option key={source.code} value={source.code}>
-                    {source.name}
+                  <option key={source.source} value={source.source}>
+                    {getSourceName(source.source)} ({source.count})
                   </option>
                 ))}
                 ;
               </Select>
             </FormControl>
-          </div>
-          <Button
-            color="primary"
-            disabled={Boolean(
-              !this.state.selectedSource || !this.state.selectedLanguage
-            )}
-            onClick={this.handleExportButtonClick}
-          >
-            Export books
-          </Button>
+            <Button
+              color="primary"
+              disabled={Boolean(
+                !this.state.selectedSource || !this.state.selectedLanguage
+              )}
+              onClick={this.handleExportButtonClick}
+            >
+              Export books
+            </Button>
+          </Row>
         </Container>
       </Layout>
     );

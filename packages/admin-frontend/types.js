@@ -33,7 +33,7 @@ export type Contributor = {
 };
 
 export type License = {
-  +name: string,
+  +license: string,
   +description: string,
   +url: string
 };
@@ -61,7 +61,8 @@ export type RemoteData<T> = Success<T> | Failed;
 
 export type CoverImageInfo = {
   url: string,
-  alttext?: string
+  alttext?: string,
+  imageId: string
 };
 
 export type Translation = {
@@ -150,20 +151,19 @@ export type I18n = {
   t: (Array<string>) => string
 };
 
+export type Copyright = {
+  license: License,
+  origin: string,
+  creators: [],
+  processors: [],
+  rightsholders: []
+};
+
 export type NewImageMetadata = {
   externalId: string,
   title: string,
   alttext: string,
-  copyright: {
-    license: {
-      license: string,
-      description: string
-    },
-    origin: string,
-    creators: [],
-    processors: [],
-    rightsholders: []
-  },
+  copyright: Copyright,
   tags: [],
   caption: string,
   language: string
@@ -184,16 +184,7 @@ export type ImageMetadata = {
   imageUrl: string,
   size: number,
   contentType: string,
-  copyright: {
-    licence: {
-      licence: string,
-      description: string
-    },
-    origin: string,
-    creators: [string],
-    processors: [string],
-    rightsholders: [string]
-  },
+  copyright: Copyright,
   tags: {
     tags: [string],
     language: string

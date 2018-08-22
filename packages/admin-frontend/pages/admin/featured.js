@@ -17,7 +17,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-import CropImageViewer from '../../components/CropImageViewer';
+import CropImageViewer from '../../components/ImageCropper/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -25,9 +25,11 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../../lib/fetch';
-import FileDialog from '../../components/FileDialog';
+import UploadFileDialog from '../../components/UploadFileDialog';
 import Layout from '../../components/Layout';
+import Row from '../../components/Row';
 import Container from '../../components/Container';
+import isEmptyString from '../../lib/isEmptyString';
 import type { FeaturedContent, ImageParameters, Language } from '../../types';
 
 type Props = {
@@ -187,7 +189,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
             Edit featured content
           </Typography>
 
-          <FormControl>
+          <FormControl fullWidth>
             <InputLabel htmlFor="language-select">Select language</InputLabel>
 
             <Select
@@ -216,40 +218,28 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                 <Field
                   name="title"
                   render={({ input, meta }) => (
-                    <>
-                      <TextField
-                        fullWidth
-                        error={meta.error && meta.touched}
-                        margin="normal"
-                        disabled={selectedLanguage === ''}
-                        label="Title"
-                        {...input}
-                      />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
-                    </>
+                    <TextField
+                      fullWidth
+                      error={meta.error && meta.touched}
+                      margin="normal"
+                      disabled={selectedLanguage === ''}
+                      label="Title"
+                      {...input}
+                    />
                   )}
                 />
                 <Field
                   name="description"
                   render={({ input, meta }) => (
-                    <>
-                      <TextField
-                        fullWidth
-                        margin="normal"
-                        error={meta.error && meta.touched}
-                        disabled={selectedLanguage === ''}
-                        label="Description"
-                        {...input}
-                        multiline
-                      />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
-                    </>
+                    <TextField
+                      fullWidth
+                      margin="normal"
+                      error={meta.error && meta.touched}
+                      disabled={selectedLanguage === ''}
+                      label="Description"
+                      {...input}
+                      multiline
+                    />
                   )}
                 />
                 <Field
@@ -273,14 +263,11 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                   )}
                 />
 
-                <div
-                  css={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    alignItems: 'center'
-                  }}
+                <Row
+                  alignItems="center"
+                  gridTemplateColumns="auto min-content min-content"
                 >
-                  <div css={{ flex: 1 }}>
+                  <div>
                     <Field
                       name="imageUrl"
                       render={({ input, meta }) => (
@@ -305,27 +292,26 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     />
                   </div>
 
-                  <div css={{ margin: '20px' }}>or</div>
+                  <span>or</span>
 
-                  <div css={{ align: 'center' }}>
-                    <input
-                      disabled={this.state.selectedLanguage === ''}
-                      type="file"
-                      accept="image/*"
-                      value=""
-                      onChange={event => this.handleFileChosen(event)}
+                  <input
+                    disabled={this.state.selectedLanguage === ''}
+                    type="file"
+                    accept="image/*"
+                    value=""
+                    onChange={event => this.handleFileChosen(event)}
+                  />
+
+                  {this.state.file && (
+                    <UploadFileDialog
+                      language={selectedLanguage}
+                      selectedFile={this.state.file}
+                      objectURL={URL.createObjectURL(this.state.file)}
+                      onCancel={this.handleOnCancel}
+                      onUpload={url => this.handleOnUpload(url, form.change)}
                     />
-
-                    {this.state.file && (
-                      <FileDialog
-                        selectedFile={this.state.file}
-                        objectURL={URL.createObjectURL(this.state.file)}
-                        onCancel={() => this.handleOnCancel()}
-                        onUpload={url => this.handleOnUpload(url, form.change)}
-                      />
-                    )}
-                  </div>
-                </div>
+                  )}
+                </Row>
 
                 <FormSpy
                   render={({ values }) => (
@@ -384,31 +370,22 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 function handleValidate(values) {
   const errors = {};
 
-  if (values.title === undefined || values.title.trim() === '') {
-    errors.title = 'You have to enter a title';
+  if (isEmptyString(values.title)) {
+    errors.title = 'Required';
   }
 
-  if (values.description === undefined || values.description.trim() === '') {
-    errors.description = 'You have to enter a description';
+  if (isEmptyString(values.description)) {
+    errors.description = 'Required';
   }
 
   const regex = /http(s)?:\/\/.*/;
-  if (
-    values.link === undefined ||
-    values.link.trim() === '' ||
-    !values.link.match(regex)
-  ) {
-    errors.link =
-      'You have to enter a valid url e.g "https://www.digitallibrary.io"';
+  if (isEmptyString(values.link) || !values.link.match(regex)) {
+    errors.link = 'Must be a valid URL e.g "https://digitallibrary.io"';
   }
 
-  if (
-    values.imageUrl === undefined ||
-    values.imageUrl.trim() === '' ||
-    !values.imageUrl.match(regex)
-  ) {
+  if (isEmptyString(values.imageUrl) || !values.imageUrl.match(regex)) {
     errors.imageUrl =
-      'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
+      'Must be a valid URL image url e.g "https://images.digitallibrary.io/imageId.png';
   }
 
   return errors;

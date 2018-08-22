@@ -9,7 +9,7 @@ import {
   DialogActions,
   Button
 } from '@material-ui/core/';
-import type { ImageParameters } from '../types';
+import type { ImageParameters } from '../../types';
 import Crop from './Crop';
 
 type Props = {

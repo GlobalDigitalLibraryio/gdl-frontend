@@ -19,7 +19,8 @@ import type {
   Book,
   StoredParameters,
   NewImageMetadata,
-  ImageMetadata
+  ImageMetadata,
+  License
 } from '../types';
 
 const {
@@ -58,7 +59,7 @@ const bookCategoryMapper = book => {
 async function doFetch(
   url: string,
   options: ?{
-    method: 'POST' | 'GET' | 'PUT' | 'DELETE',
+    method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH',
     body?: any
   }
 ): Promise<RemoteData<any>> {
@@ -131,6 +132,28 @@ export async function fetchStoredParameters(
   return result;
 }
 
+export async function fetchImageMetadata(
+  imageId: string
+): Promise<RemoteData<ImageMetadata>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+    method: 'GET',
+    body: null
+  });
+  return result;
+}
+
+export async function patchImageMetadata(
+  imageId: string,
+  data: Object
+): Promise<RemoteData<{}>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(data)
+  });
+
+  return result;
+}
+
 export async function fetchChapter(
   bookId: string | number,
   chapterId: string | number,
@@ -177,6 +200,12 @@ export async function fetchFlaggedBooks(
 
 export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
   return doFetch(`${bookApiUrl}/languages`);
+}
+
+export function fetchSources(
+  languageCode: string
+): Promise<RemoteData<Array<any>>> {
+  return doFetch(`${bookApiUrl}/sources/${languageCode}`);
 }
 
 export function fetchFeaturedContent(
@@ -267,4 +296,13 @@ export async function uploadNewImage(
     body: formData
   });
   return result;
+}
+
+export async function fetchLicenses(): Promise<RemoteData<Array<License>>> {
+  const url = `${imageApiUrl}/images/licenses`;
+
+  return await doFetch(url, {
+    method: 'GET',
+    body: null
+  });
 }

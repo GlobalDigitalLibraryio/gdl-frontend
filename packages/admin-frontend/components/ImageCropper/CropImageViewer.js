@@ -3,8 +3,8 @@
 import React from 'react';
 import { Crop as CropIcon } from '@material-ui/icons';
 import CropDialog from './CropDialog';
-import { EditIconButton } from '../style/icons';
-import type { ImageParameters } from '../types';
+import { EditIconButton } from '../../style/icons';
+import type { ImageParameters } from '../../types';
 
 type State = {
   imageError: boolean,

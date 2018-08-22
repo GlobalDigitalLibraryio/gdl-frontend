@@ -6,16 +6,17 @@ import {
   Button,
   TextField,
   Typography,
-  Select,
-  FormHelperText
+  Select
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
 import { Form, Field } from 'react-final-form';
 
+import isEmptyString from '../../lib/isEmptyString';
 import { saveBook } from '../../lib/fetch';
 import type { BookDetails } from '../../types';
 import Container from '../Container';
+import Row from '../Row';
 import EditBookImage from './EditBookImage';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
@@ -58,120 +59,110 @@ export default class EditBookForm extends React.Component<Props, State> {
             </Link>
           </Typography>
         )}
-        <div css={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Row gridTemplateColumns="min-content auto">
           <EditBookImage book={book} />
           <Form
             initialValues={book}
             onSubmit={this.handleSubmit}
-            validate={handleValidate}
+            validate={validateForm}
             render={({ handleSubmit, pristine, form, invalid }) => (
               <form>
-                <Field
-                  name="title"
-                  render={({ input, meta }) => (
-                    <>
+                <Row autoFlow="row">
+                  <Field
+                    name="title"
+                    render={({ input, meta }) => (
                       <TextField
                         fullWidth
                         label="Title"
                         {...input}
-                        margin="normal"
+                        error={meta.error && meta.touched}
                       />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
-                    </>
-                  )}
-                />
+                    )}
+                  />
 
-                <Field
-                  name="description"
-                  render={({ input, meta }) => (
-                    <>
+                  <Field
+                    name="description"
+                    render={({ input, meta }) => (
                       <TextField
                         fullWidth
                         label="Description"
                         {...input}
+                        error={meta.error && meta.touched}
                         multiline
-                        margin="normal"
                       />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
-                    </>
-                  )}
-                />
-                <div>
-                  <Field
-                    label="Page orientation"
-                    name="pageOrientation"
-                    render={({ input }) => (
-                      <FormControl margin="normal">
-                        <InputLabel>Page orientation</InputLabel>
-                        <Select fullWidth {...input} native>
-                          {PAGE_ORIENTATIONS.map(orientation => (
-                            <option key={orientation} value={orientation}>
-                              {orientation}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
                     )}
                   />
-                </div>
-                <div>
-                  <Field
-                    name="publishingStatus"
-                    label="Publishing status"
-                    render={({ input }) => (
-                      <FormControl margin="normal">
-                        <InputLabel>Publishing status</InputLabel>
-                        <Select {...input} native>
-                          {PUBLISHING_STATUS.map(status => (
-                            <option key={status} value={status}>
-                              {status}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    )}
-                  />
-                </div>
-                <Button
-                  color="secondary"
-                  disabled={pristine}
-                  onClick={form.reset}
-                >
-                  Discard changes
-                </Button>
+                  <Row>
+                    <Field
+                      label="Page orientation"
+                      name="pageOrientation"
+                      render={({ input }) => (
+                        <FormControl>
+                          <InputLabel>Page orientation</InputLabel>
+                          <Select fullWidth {...input} native>
+                            {PAGE_ORIENTATIONS.map(orientation => (
+                              <option key={orientation} value={orientation}>
+                                {orientation}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                    <Field
+                      name="publishingStatus"
+                      label="Publishing status"
+                      render={({ input }) => (
+                        <FormControl>
+                          <InputLabel>Publishing status</InputLabel>
+                          <Select fullWidth {...input} native>
+                            {PUBLISHING_STATUS.map(status => (
+                              <option key={status} value={status}>
+                                {status}
+                              </option>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      )}
+                    />
+                  </Row>
+                  <div>
+                    <Button
+                      color="secondary"
+                      disabled={pristine}
+                      onClick={form.reset}
+                    >
+                      Discard changes
+                    </Button>
 
-                <Button
-                  color="primary"
-                  onClick={handleSubmit}
-                  type="submit"
-                  disabled={pristine || invalid}
-                >
-                  Save book
-                </Button>
+                    <Button
+                      color="primary"
+                      onClick={handleSubmit}
+                      type="submit"
+                      disabled={pristine || invalid}
+                    >
+                      Save book
+                    </Button>
+                  </div>
+                </Row>
               </form>
             )}
           />
-        </div>
+        </Row>
       </Container>
     );
   }
 }
 
-function handleValidate(values) {
+function validateForm(values) {
   const errors = {};
 
-  if (values.title === undefined || values.title.trim() === '') {
-    errors.title = 'You have to enter a title';
+  if (isEmptyString(values.title)) {
+    errors.title = 'Required';
   }
 
-  if (values.description === undefined || values.description.trim() === '') {
-    errors.description = 'You have to enter a description';
+  if (isEmptyString(values.description)) {
+    errors.description = 'Required';
   }
 
   return errors;

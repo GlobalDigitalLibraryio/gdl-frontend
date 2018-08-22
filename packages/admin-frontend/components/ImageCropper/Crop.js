@@ -3,18 +3,24 @@
 import React, { Component } from 'react';
 import Cropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
-import { parseQuery } from '../lib/parseQuery';
-import type { ImageParameters } from '../types';
+import { parseQuery } from '../../lib/parseQuery';
+import type { ImageParameters } from '../../types';
 
 type Props = {
   imageUrl: string,
   ratio: number,
-  onCrop: (croppedParameters: ImageParameters) => void
+  onCrop: (croppedParameters: ImageParameters) => void,
+  existingImageParameters: ?ImageParameters
 };
 
 export default class Crop extends Component<Props> {
+  static defaultProps = {
+    existingImageParameters: null
+  };
+
   // Cheat here so Flow doesn't complain. Will use ref API once we upgrade Flow anyways
   cropper: any;
+  firstCrop: boolean = true;
 
   toPercentages = (cropper: any) => {
     const data = cropper.getData();
@@ -44,6 +50,12 @@ export default class Crop extends Component<Props> {
   };
 
   crop = () => {
+    // We skip the callback if it is the first time we crop because the cropper-data (this.cropper.getData()) will be off by a tiny fraction of the input values we set in onReady().
+    if (this.firstCrop) {
+      this.firstCrop = false;
+      return;
+    }
+
     const croppedParametersInPercent = this.toPercentages(this.cropper);
     this.props.onCrop(croppedParametersInPercent);
   };
@@ -76,6 +88,13 @@ export default class Crop extends Component<Props> {
         if (data) {
           this.cropper.setData(data);
         }
+      }
+    } else {
+      const data =
+        this.props.existingImageParameters &&
+        this.existingParametersToCropData(this.props.existingImageParameters);
+      if (data) {
+        this.cropper.setData(data);
       }
     }
   };
