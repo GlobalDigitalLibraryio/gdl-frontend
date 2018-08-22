@@ -25,9 +25,8 @@ import type {
   License,
   StoredParameters
 } from '../types';
-import Crop from './Crop';
-import MetadataFormFields from './MetadataFormFields';
-import { handleValidate } from './metadataValidator';
+import Crop from './ImageCropper/Crop';
+import ImageMetadataForm, { validateForm } from './ImageMetadataForm';
 
 type Props = {
   onClose: () => void,
@@ -177,7 +176,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
         <DialogTitle>Edit image and metadata</DialogTitle>
         <Form
           initialValues={initialMetadata}
-          validate={handleValidate}
+          validate={validateForm}
           onSubmit={this.handleSave}
           render={({ handleSubmit, pristine }) => (
             <div>
@@ -199,7 +198,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     ratio={0.81}
                   />
                 )}
-                <MetadataFormFields licenses={this.state.licenses} />
+                <ImageMetadataForm licenses={this.state.licenses} />
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.props.onClose} color="secondary">

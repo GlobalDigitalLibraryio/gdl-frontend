@@ -17,7 +17,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-import CropImageViewer from '../../components/CropImageViewer';
+import CropImageViewer from '../../components/ImageCropper/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -28,7 +28,7 @@ import {
 import UploadFileDialog from '../../components/UploadFileDialog';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
-import { inputStringEmpty } from '../../lib/inputStringEmpty';
+import isEmptyString from '../../lib/isEmptyString';
 import type { FeaturedContent, ImageParameters, Language } from '../../types';
 
 type Props = {
@@ -386,21 +386,21 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 function handleValidate(values) {
   const errors = {};
 
-  if (inputStringEmpty(values.title)) {
+  if (isEmptyString(values.title)) {
     errors.title = 'You have to enter a title';
   }
 
-  if (inputStringEmpty(values.description)) {
+  if (isEmptyString(values.description)) {
     errors.description = 'You have to enter a description';
   }
 
   const regex = /http(s)?:\/\/.*/;
-  if (inputStringEmpty(values.link) || !values.link.match(regex)) {
+  if (isEmptyString(values.link) || !values.link.match(regex)) {
     errors.link =
       'You have to enter a valid url e.g "https://www.digitallibrary.io"';
   }
 
-  if (inputStringEmpty(values.imageUrl) || !values.imageUrl.match(regex)) {
+  if (isEmptyString(values.imageUrl) || !values.imageUrl.match(regex)) {
     errors.imageUrl =
       'You have to enter a valid image url e.g "https://images.digitallibrary.io/imageId.png?cropStartX=72&cropEndX=100&cropStartY=72&cropEndY=100';
   }

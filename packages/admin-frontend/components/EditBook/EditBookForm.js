@@ -12,6 +12,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { Form, Field } from 'react-final-form';
 
+import isEmptyString from '../../lib/isEmptyString';
 import { saveBook } from '../../lib/fetch';
 import type { BookDetails } from '../../types';
 import Container from '../Container';
@@ -153,18 +154,14 @@ export default class EditBookForm extends React.Component<Props, State> {
   }
 }
 
-function nonEmpty(value) {
-  return value != null && value.trim() !== '';
-}
-
 function validateForm(values) {
   const errors = {};
 
-  if (!nonEmpty(values.title)) {
+  if (isEmptyString(values.title)) {
     errors.title = 'Required';
   }
 
-  if (!nonEmpty(values.description)) {
+  if (isEmptyString(values.description)) {
     errors.description = 'Required';
   }
 

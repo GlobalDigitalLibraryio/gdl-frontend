@@ -11,8 +11,7 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { fetchLicenses, uploadNewImage } from '../lib/fetch';
 import type { License } from '../types';
-import MetadataFormFields from './MetadataFormFields';
-import { handleValidate } from './metadataValidator';
+import ImageMetadataForm, { validateForm } from './ImageMetadataForm';
 
 type Props = {
   onUpload: (imageUrl: string) => void,
@@ -94,7 +93,7 @@ export default class UploadFileDialog extends React.Component<Props, State> {
       <Dialog open onClose={this.closeDialog}>
         <DialogTitle>Upload image</DialogTitle>
         <Form
-          validate={handleValidate}
+          validate={validateForm}
           initialValues={initialMetadata}
           onSubmit={this.handleFileUpload}
           render={({ handleSubmit, pristine, invalid }) => (
@@ -108,7 +107,7 @@ export default class UploadFileDialog extends React.Component<Props, State> {
                   alt="Uploaded"
                   width="100%"
                 />
-                <MetadataFormFields licenses={this.state.licenses} />
+                <ImageMetadataForm licenses={this.state.licenses} />
               </DialogContent>
               <DialogActions>
                 <Button onClick={this.closeDialog} color="secondary">
