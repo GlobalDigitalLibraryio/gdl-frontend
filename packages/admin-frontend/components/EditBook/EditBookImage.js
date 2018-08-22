@@ -1,8 +1,7 @@
 // @flow
-
 import * as React from 'react';
-import { Edit as EditIcon } from '@material-ui/icons';
-import { EditIconButton } from '../../style/icons';
+import { ImageOutlined as ImageIcon } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 import type { BookDetails } from '../../types';
 import EditImageDialog from '../EditImageDialog';
 
@@ -30,14 +29,8 @@ export default class EditBookImage extends React.Component<Props, State> {
   render() {
     const book = this.props.book;
     return (
-      <div>
-        <div
-          css={{
-            display: 'inline-block',
-            position: 'relative',
-            marginRight: 16
-          }}
-        >
+      <>
+        <div css={{ textAlign: 'center' }}>
           <img
             src={
               // Adds the storedRatio parameter to get the latest crop-parameters of the cover image.
@@ -49,18 +42,17 @@ export default class EditBookImage extends React.Component<Props, State> {
             height={365}
           />
 
-          <EditIconButton title="Edit cover image" onClick={this.handleOpen}>
-            <EditIcon />
-          </EditIconButton>
+          <Button onClick={this.handleOpen} size="small">
+            <ImageIcon /> Edit book cover
+          </Button>
         </div>
-
         {this.state.dialogOpen && (
           <EditImageDialog
             onClose={this.handleOnCancel}
             book={this.props.book}
           />
         )}
-      </div>
+      </>
     );
   }
 }
