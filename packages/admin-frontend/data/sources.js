@@ -1,12 +1,15 @@
 // @flow
 
-// Current book sources. Currently there's no endpoint to get these, so hardcode here for now
-export const SOURCES = [
-  { code: '', name: '' },
-  { code: 'african_storybook', name: 'African Storybook Project' },
-  { code: 'bookdash', name: 'Bookdash' },
-  { code: 'ew', name: 'EW' },
-  { code: 'storyweaver', name: 'Storyweaver' },
-  { code: 'taf', name: 'Taf' },
-  { code: 'usaid', name: 'USAID' }
-];
+const nameMap = {
+  african_storybook: 'African Storybook Project',
+  bookdash: 'Book Dash',
+  ew: 'Enabling Writers',
+  storyweaver: 'StoryWeaver',
+  taf: 'The Asia Foundation',
+  usaid: 'USAID'
+};
+
+export default function getSourceName(sourceId: string): string {
+  // Fallback to the input argument if we haven't defined a name
+  return nameMap[sourceId] || sourceId;
+}

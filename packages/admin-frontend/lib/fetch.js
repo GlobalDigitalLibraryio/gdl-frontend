@@ -202,6 +202,12 @@ export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
   return doFetch(`${bookApiUrl}/languages`);
 }
 
+export function fetchSources(
+  languageCode: string
+): Promise<RemoteData<Array<any>>> {
+  return doFetch(`${bookApiUrl}/sources/${languageCode}`);
+}
+
 export function fetchFeaturedContent(
   language: ?string
 ): Promise<RemoteData<Array<FeaturedContent>>> {
