@@ -26,6 +26,10 @@ export default class EditPage extends React.Component<
   State
 > {
   static async getInitialProps({ query }: Context) {
+    if (!query.id) {
+      return {};
+    }
+
     const bookRes = await fetchBook(query.id, query.lang);
     const chapterId = query.chapterId;
 
@@ -54,35 +58,39 @@ export default class EditPage extends React.Component<
       return (
         <Layout>
           <Container>
-            <p>Search for a book to edit it</p>
+            <Typography
+              align="center"
+              variant="subheading"
+              css={{ marginTop: 40 }}
+            >
+              Search for a book to edit it.
+            </Typography>
           </Container>
         </Layout>
       );
     } else {
       return (
         <Layout shouldAddPadding={false}>
-          <div>
-            <AppBar position="static" color="default">
-              <Tabs
-                centered={true}
-                value={selectedTab}
-                onChange={this.handleChange}
-              >
-                <Tab label="Edit Book" />
-                <Tab label="Edit Chapters" />
-              </Tabs>
-            </AppBar>
-            {selectedTab === 0 && (
-              <TabContainer>
-                <EditBookForm book={book} />
-              </TabContainer>
-            )}
-            {selectedTab === 1 && (
-              <TabContainer>
-                <EditChapterForm book={book} chapterId={chapterId} />
-              </TabContainer>
-            )}
-          </div>
+          <AppBar position="static" color="default">
+            <Tabs
+              centered={true}
+              value={selectedTab}
+              onChange={this.handleChange}
+            >
+              <Tab label="Edit Book" />
+              <Tab label="Edit Chapters" />
+            </Tabs>
+          </AppBar>
+          {selectedTab === 0 && (
+            <TabContainer>
+              <EditBookForm book={book} />
+            </TabContainer>
+          )}
+          {selectedTab === 1 && (
+            <TabContainer>
+              <EditChapterForm book={book} chapterId={chapterId} />
+            </TabContainer>
+          )}
         </Layout>
       );
     }
