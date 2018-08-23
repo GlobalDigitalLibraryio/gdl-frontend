@@ -14,7 +14,6 @@ import { ContributorTypes, type BookDetails } from '../../types';
 import A from '../../elements/A';
 import Ribbon from './LevelRibbon';
 import { colors, fonts, spacing } from '../../style/theme';
-import media from '../../style/media';
 
 type Props = {
   book: BookDetails
@@ -88,9 +87,6 @@ const BookMeta = ({ book }: Props) => {
 
 const Div = styled('div')`
   color: ${colors.text.subtle};
-  ${media.tablet`
-    padding-left: ${spacing.medium};
-  `};
 `;
 
 export default BookMeta;

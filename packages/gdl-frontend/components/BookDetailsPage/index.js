@@ -8,3 +8,4 @@
 
 export { default as BookJsonLd } from './BookJsonLd';
 export { default as Metadata } from './Metadata';
+export { default as BookHero } from './BookHero';
