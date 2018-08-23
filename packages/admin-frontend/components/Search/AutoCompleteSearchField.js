@@ -3,7 +3,13 @@
 import React from 'react';
 import Router from 'next/router';
 import Downshift from 'downshift';
-import { Avatar, ListItemText, ListItem, Paper } from '@material-ui/core';
+import {
+  Avatar,
+  ListItemText,
+  ListItem,
+  Paper,
+  Typography
+} from '@material-ui/core';
 
 import { search } from '../../lib/fetch';
 import colors from '../../style/colors';
@@ -83,34 +89,37 @@ export default class AutoCompleteSearchField extends React.Component<
             {isOpen ? (
               <Paper css={{ position: 'absolute', maxWidth: '960px' }}>
                 {result && result.results.length > 0 ? (
-                  result.results.map((book, index) => {
-                    return (
-                      <ListItem
-                        {...getItemProps({
-                          key: book.id,
-                          item: book,
-                          index,
-                          style: {
-                            backgroundColor:
-                              highlightedIndex === index
-                                ? colors.base.grayLight
-                                : 'inherit'
-                          }
-                        })}
-                        button
-                      >
-                        {book.coverImage && (
-                          <Avatar src={book.coverImage.url} />
-                        )}
-                        <ListItemText
-                          primary={book.title}
-                          secondary={book.description}
-                          primaryTypographyProps={{ noWrap: true }}
-                          secondaryTypographyProps={{ noWrap: true }}
-                        />
-                      </ListItem>
-                    );
-                  })
+                  result.results.map((book, index) => (
+                    <ListItem
+                      {...getItemProps({
+                        key: book.id,
+                        item: book,
+                        index,
+                        style: {
+                          backgroundColor:
+                            highlightedIndex === index
+                              ? colors.base.grayLight
+                              : 'inherit'
+                        }
+                      })}
+                      button
+                    >
+                      {book.coverImage && <Avatar src={book.coverImage.url} />}
+                      <ListItemText
+                        primary={
+                          <div>
+                            {book.title}
+                            <Typography variant="caption">
+                              {book.language.name}
+                            </Typography>
+                          </div>
+                        }
+                        secondary={book.description}
+                        primaryTypographyProps={{ noWrap: true }}
+                        secondaryTypographyProps={{ noWrap: true }}
+                      />
+                    </ListItem>
+                  ))
                 ) : this.state.currentInput !== '' ? (
                   <Paper
                     css={{

@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
+import Router from 'next/router';
 import { Form, Field } from 'react-final-form';
 
 import isEmptyString from '../../lib/isEmptyString';
@@ -26,15 +27,7 @@ type Props = {
   book: BookDetails
 };
 
-type State = {
-  book: BookDetails
-};
-
-export default class EditBookForm extends React.Component<Props, State> {
-  state = {
-    book: this.props.book
-  };
-
+export default class EditBookForm extends React.Component<Props> {
   handleSubmit = (content: BookDetails) => {
     this.updateBook(content);
   };
@@ -42,12 +35,16 @@ export default class EditBookForm extends React.Component<Props, State> {
   updateBook = async (content: BookDetails) => {
     const result = await saveBook(content);
     if (result.isOk) {
-      this.setState({ book: content });
+      // Simplest way to update the data is to run getInitialProps again :]
+      Router.push({
+        pathname: '/admin/edit',
+        query: { id: this.props.book.id, lang: this.props.book.language.code }
+      });
     }
   };
 
   render() {
-    const book = this.state.book;
+    const book = this.props.book;
     return (
       <Container>
         {' '}
@@ -78,6 +75,13 @@ export default class EditBookForm extends React.Component<Props, State> {
                         error={meta.error && meta.touched}
                       />
                     )}
+                  />
+
+                  <TextField
+                    fullWidth
+                    label="Language"
+                    value={book.language.name}
+                    disabled
                   />
 
                   <Field
