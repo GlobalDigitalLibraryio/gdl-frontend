@@ -80,6 +80,13 @@ export default class EditBookForm extends React.Component<Props, State> {
                     )}
                   />
 
+                  <TextField
+                    fullWidth
+                    label="Language"
+                    value={book.language.name}
+                    disabled
+                  />
+
                   <Field
                     name="description"
                     render={({ input, meta }) => (
