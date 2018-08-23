@@ -67,6 +67,7 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          <link rel="manifest" href="/static/manifest/manifest.json" />
           {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
           <meta
