@@ -14,10 +14,11 @@ import { Typography } from '@material-ui/core';
 import { logEvent } from '../lib/analytics';
 import type { Book, Context } from '../types';
 import { SearchHit, Placeholder, NoResults } from '../components/Search';
-import Layout, { Main } from '../components/Layout';
+import Layout from '../components/Layout';
+import Main from '../components/Layout/Main';
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
-import { spacing, colors } from '../style/theme';
+import { spacing } from '../style/theme';
 import { search } from '../fetch';
 import { errorPage } from '../hocs';
 
@@ -153,8 +154,8 @@ class SearchPage extends React.Component<Props, State> {
     return (
       <Layout wrapWithMain={false}>
         <Head title="Search" />
-        <Main>
-          <Container my={spacing.medium}>
+        <Main background="white">
+          <Container my={spacing.large}>
             {/* 
               Important that the div with the aria-live is present when the search page first loads
               cause screen readers doesn't recognize that content has been added
@@ -190,15 +191,7 @@ class SearchPage extends React.Component<Props, State> {
             </div>
           </Container>
 
-          <Container
-            mt={spacing.medium}
-            py={spacing.medium}
-            style={{
-              background: colors.base.white,
-              minHeight: '-webkit-fill-available',
-              boxShadow: '0 2px 4px 0 rgba(0,0,0,0.1)'
-            }}
-          >
+          <Container pb={spacing.large}>
             {searchResult ? (
               searchResult.results.length === 0 ? (
                 <NoResults />

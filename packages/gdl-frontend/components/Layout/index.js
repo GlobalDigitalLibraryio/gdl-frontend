@@ -9,23 +9,13 @@
 import React, { type Node } from 'react';
 import styled from 'react-emotion';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { Paper } from '@material-ui/core';
 
 import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
+import Main from './Main';
 import Footer from './Footer';
-import { misc, colors } from '../../style/theme';
 import { classRoomTheme } from '../../getPageContext';
-
-const Main = styled(Paper)`
-  background: ${colors.container.background};
-  flex: 1 0 auto;
-  width: 100%;
-  max-width: ${misc.containers.large};
-  margin-left: auto;
-  margin-right: auto;
-`;
 
 // Use height instead of min-height to fix flexbox issue in IE (https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/)
 const PageWrapper = styled('div')`
@@ -69,13 +59,7 @@ class Layout extends React.Component<Props, State> {
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
         />
-        {wrapWithMain ? (
-          <Main square component="main">
-            {children}
-          </Main>
-        ) : (
-          children
-        )}
+        {wrapWithMain ? <Main>{children}</Main> : children}
         <Footer />
       </PageWrapper>
     );
@@ -83,4 +67,3 @@ class Layout extends React.Component<Props, State> {
 }
 
 export default Layout;
-export { Main };
