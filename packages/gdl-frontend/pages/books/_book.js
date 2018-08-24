@@ -61,7 +61,7 @@ type Props = {
 const CoverWrap = styled('div')`
   ${media.mobile`
     position: absolute;
-    top: -120px;
+    top: ${spacing.medium};
     z-index: 10;
     left: 50%;
     transform: translateX(-50%);
@@ -147,8 +147,10 @@ class BookPage extends React.Component<
           <BookJsonLd book={book} />
         </Head>
         <Layout category={book.category}>
-          <Container>
-            <View flexDirection="row" mt={['135px', spacing.medium]}>
+          <Container
+            css={media.mobile({ paddingRight: '0px', paddingLeft: '0px' })}
+          >
+            <View flexDirection="row" mt={['0px', spacing.medium]}>
               <CoverWrap>
                 <View>
                   <BookCover
@@ -168,7 +170,7 @@ class BookPage extends React.Component<
               >
                 <CardContent
                   css={[
-                    media.mobile({ paddingTop: '70px' }),
+                    media.mobile({ paddingTop: '220px' }),
                     media.tablet({
                       display: 'flex',
                       flexDirection: 'column',
