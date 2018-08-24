@@ -20,7 +20,8 @@ import type {
   ReadingLevel,
   Category
 } from '../../types';
-import Layout, { Main } from '../../components/Layout';
+import Layout from '../../components/Layout';
+import Main from '../../components/Layout/Main';
 import { Container, View } from '../../elements';
 import {
   NavContextBar,
