@@ -93,7 +93,11 @@ const Navbar = ({ onMenuClick }: Props) => {
             )}
           </SearchDrawer>
           <Link route="books" passHref>
-            <IconButton color="inherit" component="a">
+            <IconButton
+              color="inherit"
+              component="a"
+              onClick={() => logEvent('Navigation', 'Home', 'House icon')}
+            >
               <HomeIcon />
               <SrOnly>
                 <Trans>Home</Trans>
