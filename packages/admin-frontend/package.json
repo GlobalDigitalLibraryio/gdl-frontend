@@ -8,8 +8,8 @@
     "start": "NODE_ENV=production node server"
   },
   "dependencies": {
-    "@material-ui/core": "1.5.0",
-    "@material-ui/icons": "2.0.2",
+    "@material-ui/core": "3.0.1",
+    "@material-ui/icons": "3.0.1",
     "cookie-parser": "^1.4.3",
     "emotion": "9.2.6",
     "express": "^4.16.3",
