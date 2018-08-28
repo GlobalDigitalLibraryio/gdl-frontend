@@ -68,8 +68,8 @@
     "universal-cookie": "^2.1.5"
   },
   "devDependencies": {
-    "@lingui/babel-preset-react": "2.3.0",
-    "@lingui/cli": "2.3.0",
+    "@lingui/babel-preset-react": "2.6.0",
+    "@lingui/cli": "2.6.0",
     "@weco/next-plugin-transpile-modules": "^0.0.2",
     "babel-plugin-emotion": "9.2.6",
     "babel-plugin-polished": "^1.1.0",

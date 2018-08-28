@@ -148,7 +148,3 @@ export type Context = {
   res?: $Response,
   req?: $Request
 };
-
-export type I18n = {
-  t: (Array<string>) => string
-};

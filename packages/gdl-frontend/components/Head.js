@@ -8,8 +8,6 @@
 
 import * as React from 'react';
 import NextHead from 'next/head';
-import { withI18n } from '@lingui/react';
-import type { I18n } from '../types';
 
 const fallBackImgSrc = require('../static/img/apple-touch-icon-192x192.png');
 
@@ -17,24 +15,22 @@ type Props = {|
   description?: string,
   title?: string,
   image?: ?string,
-  children?: React.Node,
-  i18n: I18n
+  children?: React.Node
 |};
 
 export const DEFAULT_TITLE = 'Global Digital Library';
 
-const Head = ({ title, description, i18n, image, children }: Props) => {
+const Head = ({ title, description, image, children }: Props) => {
   const actualTitle = title ? `${title} | ${DEFAULT_TITLE}` : DEFAULT_TITLE;
   const actualDescription =
     description ||
-    i18n.t`Enjoy free reading resources. Available for everyone. Forever`;
+    'Enjoy free reading resources. Available for everyone. Forever';
 
   return (
     <NextHead>
       <title>{actualTitle}</title>
-      <meta name="description" content={actualDescription} />
-
       <meta property="og:title" content={actualTitle} />
+      <meta name="description" content={actualDescription} />
       <meta property="og:description" content={actualDescription} />
 
       <meta property="og:image" content={image || fallBackImgSrc} />
@@ -50,4 +46,4 @@ const Head = ({ title, description, i18n, image, children }: Props) => {
   );
 };
 
-export default withI18n()(Head);
+export default Head;

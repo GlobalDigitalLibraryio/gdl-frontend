@@ -8,12 +8,10 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { Trans } from '@lingui/react';
+import { Trans, I18n } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
-import { withI18n } from '../../hocs';
-import type { I18n } from '../../types';
 import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
@@ -22,10 +20,6 @@ import { spacing } from '../../style/theme';
 
 const googleColor = '#db3236';
 const facebookColor = '#3b5998';
-
-type Props = {
-  i18n: I18n
-};
 
 const EqualWidthButtonsWrapper = styled('div')`
   display: inline-block;
@@ -36,9 +30,9 @@ const EqualWidthButtonsWrapper = styled('div')`
   }
 `;
 
-const LoginPage = ({ i18n }: Props) => (
+const LoginPage = () => (
   <Layout>
-    <Head title={i18n.t`Sign in`} />
+    <I18n>{({ i18n }) => <Head title={i18n.t`Sign in`} />}</I18n>
     <Container alignItems="center">
       <Typography variant="headline" css={{ marginTop: spacing.large }}>
         <Trans>Sign in to continue</Trans>
@@ -82,4 +76,4 @@ const LoginPage = ({ i18n }: Props) => (
   </Layout>
 );
 
-export default withI18n(LoginPage);
+export default LoginPage;

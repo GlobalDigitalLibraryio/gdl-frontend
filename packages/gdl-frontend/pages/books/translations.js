@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { Trans, I18n } from '@lingui/react';
 import {
   Button,
   Card,
@@ -22,8 +22,8 @@ import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
-import type { Translation, I18n } from '../../types';
-import { securePage, withI18n } from '../../hocs';
+import type { Translation } from '../../types';
+import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
@@ -122,16 +122,12 @@ class TranslationCard extends React.Component<
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 
-type Props = {
-  i18n: I18n
-};
-
 type State = {
   translations: Array<Translation>,
   loadingState: LoadingState
 };
 
-class MyTranslationsPage extends React.Component<Props, State> {
+class MyTranslationsPage extends React.Component<{}, State> {
   state = {
     translations: [],
     loadingState: 'LOADING'
@@ -183,12 +179,11 @@ class MyTranslationsPage extends React.Component<Props, State> {
   };
 
   render() {
-    const { i18n } = this.props;
     const { loadingState } = this.state;
 
     return (
       <Layout>
-        <Head title={i18n.t`My translations`} />
+        <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
         <Container
           css={{ marginTop: spacing.large, marginBottom: spacing.large }}
         >
@@ -223,4 +218,4 @@ class MyTranslationsPage extends React.Component<Props, State> {
   }
 }
 
-export default securePage(withI18n(MyTranslationsPage));
+export default securePage(MyTranslationsPage);
