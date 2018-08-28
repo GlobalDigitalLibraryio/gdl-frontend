@@ -7,14 +7,13 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { Trans, I18n } from '@lingui/react';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
-import withI18n from '../../hocs/withI18n';
 import { fetchBooks } from '../../fetch';
-import type { Book, Language, Category, Context, I18n } from '../../types';
+import type { Book, Language, Category, Context } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import { errorPage } from '../../hocs';
 import Layout from '../../components/Layout';
@@ -40,8 +39,7 @@ type Props = {
       sort?: string
     }
   },
-  category: Category,
-  i18n: I18n
+  category: Category
 };
 
 type State = {
@@ -142,7 +140,7 @@ class BrowsePage extends React.Component<Props, State> {
   };
 
   render() {
-    const { i18n, category } = this.props;
+    const { category } = this.props;
     const { readingLevel } = this.props.router.query;
     const { books } = this.state;
 
@@ -151,7 +149,7 @@ class BrowsePage extends React.Component<Props, State> {
 
     return (
       <Layout category={category}>
-        <Head title={i18n.t`Browse books`} />
+        <I18n>{({ i18n }) => <Head title={i18n.t`Browse books`} />}</I18n>
         <Container>
           <Typography
             variant="display1"
@@ -192,4 +190,4 @@ class BrowsePage extends React.Component<Props, State> {
   }
 }
 
-export default errorPage(withRouter(withI18n(BrowsePage)));
+export default errorPage(withRouter(BrowsePage));

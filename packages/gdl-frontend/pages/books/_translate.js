@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { Trans, I18n } from '@lingui/react';
 import { css } from 'react-emotion';
 import {
   ArrowForward as ArrowForwardIcon,
@@ -28,15 +28,9 @@ import {
   fetchSupportedLanguages,
   sendToTranslation
 } from '../../fetch';
-import type {
-  BookDetails,
-  Language,
-  Translation,
-  I18n,
-  Context
-} from '../../types';
+import type { BookDetails, Language, Translation, Context } from '../../types';
 import { Link, Router } from '../../routes';
-import { securePage, errorPage, withI18n } from '../../hocs/';
+import { securePage, errorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import { A, LoadingButton } from '../../elements';
@@ -48,8 +42,7 @@ import { spacing } from '../../style/theme';
 type Props = {
   book: BookDetails,
   statusCode?: number,
-  supportedLanguages: Array<Language>,
-  i18n: I18n
+  supportedLanguages: Array<Language>
 };
 
 const translationStates = {
@@ -145,16 +138,20 @@ class TranslatePage extends React.Component<Props, State> {
     });
 
   render() {
-    const { book, supportedLanguages, i18n } = this.props;
+    const { book, supportedLanguages } = this.props;
     const { selectedLanguage, translationState } = this.state;
 
     return (
       <Layout category={book.category}>
-        <Head
-          title={i18n.t`Translate: ${book.title}`}
-          description={book.description}
-          image={book.coverImage && book.coverImage.url}
-        />
+        <I18n>
+          {({ i18n }) => (
+            <Head
+              title={i18n.t`Translate: ${book.title}`}
+              description={book.description}
+              image={book.coverImage && book.coverImage.url}
+            />
+          )}
+        </I18n>
         <Container
           css={{ marginTop: spacing.large, marginBottom: spacing.large }}
         >
@@ -337,4 +334,4 @@ const styles = {
   `
 };
 
-export default securePage(errorPage(withI18n(TranslatePage)));
+export default securePage(errorPage(TranslatePage));

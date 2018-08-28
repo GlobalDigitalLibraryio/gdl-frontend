@@ -147,10 +147,6 @@ export type Context = {
   req?: $Request
 };
 
-export type I18n = {
-  t: (Array<string>) => string
-};
-
 export type Copyright = {
   license: License,
   origin: string,
