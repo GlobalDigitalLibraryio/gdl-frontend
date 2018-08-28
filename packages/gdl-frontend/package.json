@@ -46,7 +46,7 @@
     "gdl-auth": "^0.0.0",
     "gdl-config": "^0.0.0",
     "glob": "^7.1.2",
-    "helmet": "^3.12.1",
+    "helmet": "3.13.0",
     "invariant": "^2.2.4",
     "isomorphic-unfetch": "2.1.1",
     "jwt-decode": "^2.2.0",
