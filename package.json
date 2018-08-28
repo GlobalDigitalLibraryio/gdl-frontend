@@ -66,7 +66,7 @@
     "@material-ui/icons": "3.0.1",
     "@zeit/next-css": "^0.2.0",
     "@zeit/next-source-maps": "^0.0.2",
-    "auth0-js": "9.7.2",
+    "auth0-js": "9.7.3",
     "cookie-parser": "^1.4.3",
     "downshift": "2.0.10",
     "emotion": "9.2.6",
