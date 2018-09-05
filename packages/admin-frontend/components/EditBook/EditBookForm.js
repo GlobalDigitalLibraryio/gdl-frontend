@@ -96,6 +96,18 @@ export default class EditBookForm extends React.Component<Props> {
                       />
                     )}
                   />
+                  <Field
+                    name="additionalInformation"
+                    render={({ input, meta }) => (
+                      <TextField
+                        fullWidth
+                        label="Additional information"
+                        {...input}
+                        error={meta.error && meta.touched}
+                        multiline
+                      />
+                    )}
+                  />
                   <Row>
                     <Field
                       label="Page orientation"
