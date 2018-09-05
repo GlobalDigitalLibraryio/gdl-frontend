@@ -35,7 +35,7 @@ import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import { A, LoadingButton } from '../../elements';
 import Head from '../../components/Head';
-import BookCover from '../../components/BookCover';
+import CoverImage from '../../components/CoverImage';
 import LanguageMenu from '../../components/LanguageMenu';
 import { spacing } from '../../style/theme';
 
@@ -172,10 +172,9 @@ class TranslatePage extends React.Component<Props, State> {
                     params={{ lang: book.language.code, id: book.id }}
                   >
                     <a>
-                      <BookCover
-                        coverImage={book.coverImage}
-                        w={[75, 120]}
-                        h={[100, 150]}
+                      <CoverImage
+                        src={book.coverImage && book.coverImage.url}
+                        size="small"
                       />
                     </a>
                   </Link>
