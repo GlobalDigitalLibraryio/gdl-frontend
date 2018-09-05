@@ -12,9 +12,6 @@ const misc = {
   containers: {
     large: '1024px',
     small: '738px'
-  },
-  boxShadows: {
-    small: '0 2px 4px rgba(0, 0, 0, 0.1)'
   }
 };
 

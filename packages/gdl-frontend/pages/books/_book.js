@@ -44,7 +44,7 @@ import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
-import { colors, spacing, misc } from '../../style/theme';
+import { colors, spacing } from '../../style/theme';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import Favorite from '../../components/Favorite';
 
@@ -151,7 +151,6 @@ class BookPage extends React.Component<
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>
                 <CoverImage
-                  css={{ boxShadow: misc.boxShadows.small }}
                   src={book.coverImage && book.coverImage.url}
                   size="large"
                 />
