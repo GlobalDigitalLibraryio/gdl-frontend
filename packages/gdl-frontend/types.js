@@ -122,6 +122,7 @@ export type BookDetails = $ReadOnly<{|
   publisher: Publisher,
   license: License,
   supportsTranslation: boolean,
+  additionalInformation?: string,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
   chapters: Array<ChapterSummary>,

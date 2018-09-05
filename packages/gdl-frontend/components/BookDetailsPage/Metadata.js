@@ -7,8 +7,10 @@
  */
 
 import React, { Fragment } from 'react';
+import { IconButton, Collapse } from '@material-ui/core';
+import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
-import styled from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
 import A from '../../elements/A';
@@ -82,6 +84,11 @@ const BookMeta = ({ book }: Props) => {
         <Trans>License</Trans>
       </Heading>
       <A href={book.license.url}>{book.license.description}</A>
+      {book.additionalInformation && (
+        <AdditionalInformation
+          additionalInformation={book.additionalInformation}
+        />
+      )}
     </Div>
   );
 };
@@ -92,5 +99,69 @@ const Div = styled('div')`
     padding-left: ${spacing.medium};
   `};
 `;
+
+class AdditionalInformation extends React.Component<
+  { additionalInformation: string },
+  { isExpanded: boolean }
+> {
+  state = {
+    isExpanded: false
+  };
+
+  render() {
+    return (
+      <div className={expansionStyles.wrapper}>
+        <div
+          className={expansionStyles.button}
+          role="button"
+          tabIndex="0"
+          aria-expanded={this.state.isExpanded}
+          onClick={() =>
+            this.setState(state => ({ isExpanded: !state.isExpanded }))
+          }
+        >
+          <Heading>
+            <Trans>Additional information</Trans>
+          </Heading>
+          <IconButton
+            className={cx(expansionStyles.iconButton, {
+              [expansionStyles.iconButtonExpanded]: this.state.isExpanded
+            })}
+            tabIndex={-1}
+            aria-hidden
+            component="div"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </div>
+        <Collapse in={this.state.isExpanded}>
+          {this.props.additionalInformation}
+        </Collapse>
+      </div>
+    );
+  }
+}
+
+const expansionStyles = {
+  // We want the wrapper to be the relative parent of the absolutely positioned IconButton.
+  // This is because the focus outline of the button (not the iconbutton) won't have a
+  // weird shape because it includes the size of the iconbutton.
+  wrapper: css`
+    position: relative;
+  `,
+  button: css`
+    user-select: none;
+  `,
+  iconButton: css`
+    position: absolute;
+    top: 10px;
+    right: 8px;
+    transform: translateY(-50%) rotate(0deg);
+    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  `,
+  iconButtonExpanded: css`
+    transform: translateY(-50%) rotate(180deg);
+  `
+};
 
 export default BookMeta;
