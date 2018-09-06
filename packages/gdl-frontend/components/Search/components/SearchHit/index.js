@@ -13,7 +13,7 @@ import type { Book } from '../../../../types';
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { spacing } from '../../../../style/theme';
 import { Link } from '../../../../routes';
-import BookCover from '../../../BookCover';
+import CoverImage from '../../../CoverImage';
 import A from '../../../../elements/A';
 import { BookTitle, BookDescription, Wrapper, Divider } from './styled';
 
@@ -51,10 +51,9 @@ const SearchHit = ({ book }: { book: Book }) => {
     <Wrapper>
       <Link route={bookRoute} passHref>
         <a title={book.title} tabIndex="-1" aria-hidden>
-          <BookCover
-            w={[80, 115]}
-            h={[108, 155]}
-            coverImage={book.coverImage}
+          <CoverImage
+            src={book.coverImage && book.coverImage.url}
+            size="small"
           />
         </a>
       </Link>

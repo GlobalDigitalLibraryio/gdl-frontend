@@ -7,8 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
-import { width } from 'styled-system';
-import height from '../style/height';
+import mq from '../style/mq';
 
 // Base on gatbsy-image Kyle Mathews
 // See https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby-image/src/index.js
@@ -59,29 +58,14 @@ const listenToIntersections = (el, cb) => {
   listeners.push([el, cb]);
 };
 
-const Img = styled('img')`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: opacity 0.5s;
-`;
-
-const ImageWrapper = styled('div')`
-  overflow: hidden;
-  ${width};
-  ${height};
-`;
-
 type Props = {
   ariaHidden: boolean,
   className?: string,
+  responsiveWidth: [string, string],
+  responsiveHeight: [string, string],
   src: string,
   srcSet?: string,
-  h: Array<string | number>,
-  w: Array<string | number>,
-  // If source elements are provided, the img will we wrapped in a picture element
-  children?: React.ChildrenArray<React.Element<'source'>>
+  sizes?: string
 };
 
 type State = { isVisible: boolean, imgLoaded: boolean, IOSupported: boolean };
@@ -131,11 +115,12 @@ export default class Image extends React.Component<Props, State> {
   };
 
   renderImg() {
-    const { src, srcSet } = this.props;
+    const { src, srcSet, sizes } = this.props;
     return (
       <Img
         src={src}
         srcSet={srcSet}
+        sizes={sizes}
         alt=""
         style={{
           opacity: this.state.imgLoaded ? 1 : 0
@@ -148,25 +133,39 @@ export default class Image extends React.Component<Props, State> {
   }
 
   render() {
-    const { className, h, w, ariaHidden } = this.props;
+    const {
+      className,
+      responsiveHeight,
+      responsiveWidth,
+      ariaHidden
+    } = this.props;
     return (
       <ImageWrapper
         className={className}
-        h={h}
-        w={w}
+        responsiveHeight={responsiveHeight}
+        responsiveWidth={responsiveWidth}
         innerRef={this.handleRef}
         aria-hidden={ariaHidden}
       >
-        {this.state.isVisible &&
-          (this.props.children ? (
-            <picture>
-              {this.props.children}
-              {this.renderImg()}
-            </picture>
-          ) : (
-            this.renderImg()
-          ))}
+        {this.state.isVisible && this.renderImg()}
       </ImageWrapper>
     );
   }
 }
+
+const Img = styled('img')`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.5s;
+`;
+
+const ImageWrapper = styled('div')`
+  overflow: hidden;
+  ${p =>
+    mq({
+      height: p.responsiveHeight,
+      width: p.responsiveWidth
+    })};
+`;

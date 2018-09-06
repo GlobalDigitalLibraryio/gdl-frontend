@@ -27,7 +27,7 @@ import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../components/Container';
 import Head from '../../components/Head';
-import BookCover from '../../components/BookCover';
+import CoverImage from '../../components/CoverImage';
 import { spacing } from '../../style/theme';
 
 class TranslationCard extends React.Component<
@@ -65,10 +65,9 @@ class TranslationCard extends React.Component<
               }}
             >
               <a>
-                <BookCover
-                  w={[75, 120]}
-                  h={[100, 150]}
-                  coverImage={translation.coverImage}
+                <CoverImage
+                  src={translation.coverImage && translation.coverImage.url}
+                  size="small"
                 />
               </a>
             </Link>

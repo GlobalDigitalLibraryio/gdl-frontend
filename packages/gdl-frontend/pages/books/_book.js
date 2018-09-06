@@ -40,7 +40,7 @@ import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import { Center, View } from '../../elements';
 import Container from '../../elements/Container';
-import BookCover from '../../components/BookCover';
+import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
 import media from '../../style/media';
@@ -150,13 +150,10 @@ class BookPage extends React.Component<
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>
-                <View>
-                  <BookCover
-                    coverImage={book.coverImage}
-                    w={[130, 260]}
-                    h={[175, 365]}
-                  />
-                </View>
+                <CoverImage
+                  src={book.coverImage && book.coverImage.url}
+                  size="large"
+                />
               </CoverWrap>
 
               {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
