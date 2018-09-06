@@ -25,7 +25,7 @@ import { Link } from '../../routes';
 import type { Translation } from '../../types';
 import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
-import Container from '../../components/Container';
+import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
 import { spacing } from '../../style/theme';
@@ -183,9 +183,7 @@ class MyTranslationsPage extends React.Component<{}, State> {
     return (
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
-        <Container
-          css={{ marginTop: spacing.large, marginBottom: spacing.large }}
-        >
+        <Container>
           <Typography
             variant="display1"
             align="center"

@@ -14,7 +14,7 @@ import { fetchChapter } from '../../fetch';
 import type { BookDetails, Chapter, ChapterSummary } from '../../types';
 import { Backdrop, Page } from './styledReader';
 import Toolbar from './Toolbar';
-import Container from '../Container';
+import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import ButtonOverlay from './ButtonOverlay';
 import { Router } from '../../routes';
@@ -104,7 +104,7 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
     const disablePrev = chapterPointer.seqNo <= 1;
 
     return (
-      <Container px={0} size="large">
+      <Container size="large" css={{ padding: 0 }}>
         <Backdrop />
         <Card>
           <Toolbar
