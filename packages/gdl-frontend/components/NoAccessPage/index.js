@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 import { Typography } from '@material-ui/core';
 
 import Safe from './undraw_safe.svg';
-import Container from '../Container';
+import Container from '../../elements/Container';
 import A from '../../elements/A';
 import Head from '../Head';
 import Layout from '../Layout';

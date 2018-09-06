@@ -12,7 +12,7 @@ import Router from 'next/router';
 import { setAuthToken } from 'gdl-auth';
 
 import Layout from '../../components/Layout';
-import Container from '../../components/Container';
+import Container from '../../elements/Container';
 import { parseHash, getRedirectUrl } from '../../lib/auth';
 
 class Success extends React.Component<*> {

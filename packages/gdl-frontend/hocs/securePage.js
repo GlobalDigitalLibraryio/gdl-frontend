@@ -14,7 +14,7 @@ import { setRedirectUrl, hasClaim, getAuthToken } from 'gdl-auth';
 import type { Context } from '../types';
 import Layout from '../components/Layout';
 import NoAccessPage from '../components/NoAccessPage';
-import Container from '../components/Container';
+import Container from '../elements/Container';
 
 /**
  * A HoC that ensures users are authenticated before displaying content
