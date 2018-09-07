@@ -19,6 +19,7 @@ import { FeaturePolyfills } from '@engineerapart/nextscript';
  */
 export default [
   FeaturePolyfills.ARRAY_FIND,
+  FeaturePolyfills.ARRAY_FROM,
   FeaturePolyfills.ARRAY_INCLUDES,
   FeaturePolyfills.OBJECT_ASSIGN,
   {
