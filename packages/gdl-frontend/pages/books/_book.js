@@ -332,7 +332,7 @@ class BookPage extends React.Component<
           </Container>
 
           <Container mt={spacing.medium}>
-            <View ml={[0, 'auto']} w={['auto', 438]}>
+            <View ml={['0', 'auto']} width={['auto', '438px']}>
               <Metadata book={book} />
               {book.supportsTranslation && (
                 <View borderTop={BORDER_STYLE} mt={spacing.medium}>
@@ -353,7 +353,7 @@ class BookPage extends React.Component<
               )}
               <View
                 borderTop={BORDER_STYLE}
-                mt={book.supportsTranslation ? 0 : spacing.medium}
+                mt={book.supportsTranslation ? '0' : spacing.medium}
               >
                 <Button
                   color="primary"

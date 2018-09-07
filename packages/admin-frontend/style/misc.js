@@ -7,8 +7,6 @@
  */
 const TABLET_BREAKPOINT = 768;
 
-const misc = {
-  breakpoints: [`${TABLET_BREAKPOINT}px`]
-};
+const misc = {};
 
 export { misc as default, TABLET_BREAKPOINT };
