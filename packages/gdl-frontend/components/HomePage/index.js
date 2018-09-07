@@ -114,17 +114,26 @@ export default class HomePage extends React.Component<
         : featuredContent[0];
 
     const cardContent = (
-      <View alignItems="center">
+      // Specifying width here makes text in IE11 wrap
+      <View alignItems="center" style={{ width: '100%' }}>
         <Typography
           lang={featured.language.code}
           align="center"
           variant="headline"
           component="h2"
           gutterBottom
+          // Specifying width here makes text in IE11 wrap
+          style={{ width: '100%' }}
         >
           {featured.title}
         </Typography>
-        <Typography lang={featured.language.code} align="center" paragraph>
+        <Typography
+          lang={featured.language.code}
+          align="center"
+          paragraph
+          // Specifying width here makes text in IE11 wrap
+          style={{ width: '100%' }}
+        >
           {featured.description}
         </Typography>
         <Button
@@ -163,7 +172,8 @@ export default class HomePage extends React.Component<
               </Typography>
             </HeroCovertitle>
             <HeroCardTablet>
-              <CardContent>{cardContent}</CardContent>
+              {/* Specifying width here makes text in IE11 wrap*/}
+              <CardContent style={{ width: '100%' }}>{cardContent}</CardContent>
             </HeroCardTablet>
           </Banner>
           <HeroCardMobile>
