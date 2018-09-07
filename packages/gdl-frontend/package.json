@@ -65,7 +65,6 @@
     "react-ga": "2.5.3",
     "react-icons": "^2.2.7",
     "react-swipeable": "^4.3.0",
-    "styled-system": "^2.2.5",
     "universal-cookie": "^2.1.5"
   },
   "devDependencies": {

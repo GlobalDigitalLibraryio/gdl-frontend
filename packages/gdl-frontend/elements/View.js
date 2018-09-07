@@ -9,18 +9,10 @@
 import React, { type Node } from 'react';
 import styled from 'react-emotion';
 import invariant from 'invariant';
-import {
-  alignItems,
-  justifyContent,
-  space,
-  flexDirection,
-  maxWidth,
-  borders,
-  width
-} from 'styled-system';
+import mq from '../style/mq';
 
-type cssUnit = string | number;
-type ResponsiveProp = cssUnit | [cssUnit, cssUnit];
+type ResponsiveProp = string | [string, string];
+
 export type Props = {
   children: ?Node,
   className?: string,
@@ -28,7 +20,6 @@ export type Props = {
   justifyContent?: 'space-between' | 'center',
   flexDirection?: 'row' | 'column',
   width?: ResponsiveProp,
-  maxWidth?: ResponsiveProp,
   m?: ResponsiveProp,
   mt?: ResponsiveProp,
   mb?: ResponsiveProp,
@@ -71,13 +62,25 @@ const StyledView = styled('div')`
   /* fix flexbox bugs */
   min-height: 0;
   min-width: 0;
-  ${maxWidth};
-  ${alignItems};
-  ${justifyContent};
-  ${space};
-  ${flexDirection};
-  ${borders};
-  ${width};
+  ${p =>
+    mq({
+      width: p.width,
+      alignItems: p.alignItems,
+      justifyContent: p.justifyContent,
+      flexDirection: p.flexDirection,
+      margin: p.m,
+      marginTop: p.my || p.mt,
+      marginBottom: p.my || p.mb,
+      marginLeft: p.mx || p.ml,
+      marginRight: p.mx || p.mr,
+      padding: p.p,
+      paddingTop: p.py || p.pt,
+      paddingBottom: p.py || p.pb,
+      paddingLeft: p.px || p.pl,
+      paddingRight: p.px || p.pr,
+      borderTop: p.borderTop,
+      borderBottom: p.borderBottom
+    })};
 `;
 
 export { StyledView };

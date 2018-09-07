@@ -8,7 +8,6 @@
 const TABLET_BREAKPOINT = 768;
 
 const misc = {
-  breakpoints: [`${TABLET_BREAKPOINT}px`],
   containers: {
     large: '1024px',
     small: '738px'
