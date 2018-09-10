@@ -8,10 +8,10 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { withRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
 import { setAuthToken } from 'gdl-auth';
 
-import { Router } from '../../routes';
+import { Router as RoutesRouter } from '../../routes';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
 import { parseHash } from '../../lib/auth';
@@ -28,7 +28,14 @@ class Success extends React.Component<{
     if (authResult.accessToken) {
       setAuthToken(authResult);
 
-      Router.pushRoute(this.props.router.query.next || '/');
+      const redirectUri = this.props.router.query.next || '/';
+
+      // Sucks having 2 routers. But if we use the next-routes one for the admin stuff we get the 404 page :/
+      if (redirectUri.startsWith('/admin')) {
+        Router.push(redirectUri);
+      } else {
+        RoutesRouter.pushRoute(this.props.router.query.next || '/');
+      }
     }
   }
 
