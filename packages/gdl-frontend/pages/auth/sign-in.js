@@ -12,7 +12,6 @@ import { Trans, I18n } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'next/router';
 
-import { setRedirectUrl } from 'gdl-auth';
 import { logEvent } from '../../lib/analytics';
 import { A, Container } from '../../elements';
 import Layout from '../../components/Layout';
@@ -39,15 +38,6 @@ class LoginPage extends React.Component<{
     }
   }
 }> {
-  componentDidMount() {
-    // Read from the quer parameters which place we would like to go after we've authenticated.
-    // See securePage.js and signed-in.js
-    const next = this.props.router.query.next;
-    if (next) {
-      setRedirectUrl(next);
-    }
-  }
-
   render() {
     return (
       <Layout>
@@ -62,7 +52,10 @@ class LoginPage extends React.Component<{
                 variant="outlined"
                 onClick={() => {
                   logEvent('User', 'Login', 'Google');
-                  loginSocialMedia('google-oauth2');
+                  loginSocialMedia(
+                    'google-oauth2',
+                    this.props.router.query.next
+                  );
                 }}
                 css={{ color: googleColor }}
               >
@@ -72,7 +65,7 @@ class LoginPage extends React.Component<{
                 variant="outlined"
                 onClick={() => {
                   logEvent('User', 'Login', 'Facebook');
-                  loginSocialMedia('facebook');
+                  loginSocialMedia('facebook', this.props.router.query.next);
                 }}
                 css={{ color: facebookColor }}
               >

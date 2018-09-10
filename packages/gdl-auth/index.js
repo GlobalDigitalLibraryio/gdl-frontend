@@ -2,7 +2,6 @@
 import type { $Request } from 'express';
 import jwtDecode from 'jwt-decode';
 import UniversalCookie from 'universal-cookie';
-import lscache from 'lscache';
 
 export { default as claims } from './claims';
 
@@ -75,6 +74,3 @@ export function setAuthToken(token: {
     });
   }
 }
-
-export const setRedirectUrl = (path: string) =>
-  lscache.set('REDIRECT_AFTER_LOGIN', path, 5);

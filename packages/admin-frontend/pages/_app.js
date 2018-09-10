@@ -14,7 +14,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 
-import { hasClaim, claims, hasAuthToken, setRedirectUrl } from 'gdl-auth';
+import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import Router from 'next/router';
 import { Button } from '@material-ui/core';
 
@@ -72,8 +72,10 @@ class App extends NextApp {
   }
 
   handleLogInClick = () => {
-    setRedirectUrl(this.props.router.asPath);
-    Router.replace('/auth/sign-in');
+    Router.replace({
+      pathname: '/auth/sign-in',
+      query: { next: this.props.router.asPath }
+    });
   };
 
   render() {

@@ -8,20 +8,27 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import Router from 'next/router';
+import { withRouter } from 'next/router';
 import { setAuthToken } from 'gdl-auth';
 
+import { Router } from '../../routes';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
-import { parseHash, getRedirectUrl } from '../../lib/auth';
+import { parseHash } from '../../lib/auth';
 
-class Success extends React.Component<*> {
+class Success extends React.Component<{
+  router: {
+    query: {
+      next?: string
+    }
+  }
+}> {
   async componentDidMount() {
     const authResult = await parseHash();
     if (authResult.accessToken) {
       setAuthToken(authResult);
 
-      Router.push(getRedirectUrl() || '/');
+      Router.pushRoute(this.props.router.query.next || '/');
     }
   }
 
@@ -38,4 +45,4 @@ class Success extends React.Component<*> {
   }
 }
 
-export default Success;
+export default withRouter(Success);
