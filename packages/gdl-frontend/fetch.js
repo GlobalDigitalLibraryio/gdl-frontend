@@ -206,10 +206,9 @@ export async function search(
   |}>
 > {
   const result = await doFetch(
-    encodeURI(
-      `${bookApiUrl()}/search?query=${query}&page-size=${options.pageSize ||
-        PAGE_SIZE}&page=${options.page || 1}`
-    )
+    `${bookApiUrl()}/search?query=${encodeURIComponent(
+      query
+    )}&page-size=${options.pageSize || PAGE_SIZE}&page=${options.page || 1}`
   );
 
   if (result.isOk) {
