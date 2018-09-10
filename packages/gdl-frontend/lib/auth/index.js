@@ -6,7 +6,6 @@
  * See LICENSE
  */
 
-import lscache from 'lscache';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../../types';
 
@@ -17,9 +16,7 @@ const {
   publicRuntimeConfig: { AUTH0 }
 }: ConfigShape = getConfig();
 
-export const getRedirectUrl = () => lscache.get('REDIRECT_AFTER_LOGIN');
-
-const getAuth = async options => {
+const getAuth = async (options, redirectUri?: string) => {
   const auth = await auth0;
 
   return new auth.WebAuth({
@@ -28,7 +25,9 @@ const getAuth = async options => {
     domain: AUTH0.domain,
     responseType: 'token id_token',
     scope: 'openid profile',
-    redirectUri: `${getBaseUrl()}/auth/signed-in`,
+    redirectUri: redirectUri
+      ? `${getBaseUrl()}/auth/signed-in?next=${encodeURIComponent(redirectUri)}`
+      : `${getBaseUrl()}/auth/signed-in`,
     options
   });
 };
@@ -55,8 +54,11 @@ export async function parseHash(
 /**
  * Login using one of the social providers
  */
-export async function loginSocialMedia(type: 'facebook' | 'google-oauth2') {
-  (await getAuth()).authorize({
+export async function loginSocialMedia(
+  type: 'facebook' | 'google-oauth2',
+  redirectUri?: string
+) {
+  (await getAuth(null, redirectUri)).authorize({
     connection: type
   });
 }

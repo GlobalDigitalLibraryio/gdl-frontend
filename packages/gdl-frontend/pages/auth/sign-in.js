@@ -10,6 +10,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans, I18n } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
+import { withRouter } from 'next/router';
 
 import { logEvent } from '../../lib/analytics';
 import { A, Container } from '../../elements';
@@ -30,50 +31,68 @@ const EqualWidthButtonsWrapper = styled('div')`
   }
 `;
 
-const LoginPage = () => (
-  <Layout>
-    <I18n>{({ i18n }) => <Head title={i18n.t`Sign in`} />}</I18n>
-    <Container alignItems="center">
-      <Typography variant="headline" css={{ marginTop: spacing.large }}>
-        <Trans>Sign in to continue</Trans>
-      </Typography>
-      <div>
-        <EqualWidthButtonsWrapper>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              logEvent('User', 'Login', 'Google');
-              loginSocialMedia('google-oauth2');
-            }}
-            css={{ color: googleColor }}
+class LoginPage extends React.Component<{
+  router: {
+    query: {
+      next?: string
+    }
+  }
+}> {
+  render() {
+    return (
+      <Layout>
+        <I18n>{({ i18n }) => <Head title={i18n.t`Sign in`} />}</I18n>
+        <Container alignItems="center">
+          <Typography variant="headline" css={{ marginTop: spacing.large }}>
+            <Trans>Sign in to continue</Trans>
+          </Typography>
+          <div>
+            <EqualWidthButtonsWrapper>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  logEvent('User', 'Login', 'Google');
+                  loginSocialMedia(
+                    'google-oauth2',
+                    this.props.router.query.next
+                  );
+                }}
+                css={{ color: googleColor }}
+              >
+                <Trans>Sign in using Google</Trans>
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  logEvent('User', 'Login', 'Facebook');
+                  loginSocialMedia('facebook', this.props.router.query.next);
+                }}
+                css={{ color: facebookColor }}
+              >
+                <Trans>Sign in using Facebook</Trans>
+              </Button>
+            </EqualWidthButtonsWrapper>
+          </div>
+          <Typography
+            align="center"
+            css={{ marginTop: spacing.xxlarge }}
+            paragraph
           >
-            <Trans>Sign in using Google</Trans>
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => {
-              logEvent('User', 'Login', 'Facebook');
-              loginSocialMedia('facebook');
-            }}
-            css={{ color: facebookColor }}
-          >
-            <Trans>Sign in using Facebook</Trans>
-          </Button>
-        </EqualWidthButtonsWrapper>
-      </div>
-      <Typography align="center" css={{ marginTop: spacing.xxlarge }} paragraph>
-        By signing in to this service I am hereby accepting the principles in
-        the GDL{' '}
-        <A
-          href="https://home.digitallibrary.io/privacy/"
-          css={{ display: 'inline' }}
-        >
-          privacy policy
-        </A>
-        , and I am giving my consent to GDL’s use of my personal information.
-      </Typography>
-    </Container>
-  </Layout>
-);
+            By signing in to this service I am hereby accepting the principles
+            in the GDL{' '}
+            <A
+              href="https://home.digitallibrary.io/privacy/"
+              css={{ display: 'inline' }}
+            >
+              privacy policy
+            </A>
+            , and I am giving my consent to GDL’s use of my personal
+            information.
+          </Typography>
+        </Container>
+      </Layout>
+    );
+  }
+}
 
-export default LoginPage;
+export default withRouter(LoginPage);

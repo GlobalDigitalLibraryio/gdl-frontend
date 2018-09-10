@@ -7,86 +7,49 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
-import Router, { withRouter } from 'next/router';
+import Router from 'next/router';
 
-import { setRedirectUrl, hasClaim, getAuthToken } from 'gdl-auth';
+import { getAuthToken } from 'gdl-auth';
 import type { Context } from '../types';
-import Layout from '../components/Layout';
-import NoAccessPage from '../components/NoAccessPage';
-import Container from '../elements/Container';
 
 /**
- * A HoC that ensures users are authenticated before displaying content
+ * A HoC that ensures users are authenticated
  */
-const securePageHoc = (Page, options) => {
-  const { claim } = options;
-
+const securePageHoc = Page => {
   return class SecurePage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
-      const token = getAuthToken(ctx.req);
-      const isAuthenticated = Boolean(token);
+      const isAuthenticated = Boolean(getAuthToken(ctx.req));
 
-      const hasAccess = claim
-        ? isAuthenticated && hasClaim(claim, ctx.req)
-        : true;
-
-      // If we're on the server, is authenticated and don't have access, we return 403
-      if (ctx.res != null && isAuthenticated && !hasAccess) {
-        ctx.res.statusCode = 403;
-      }
-
-      // Evaluate the composed component's getInitialProps()
-      let composedInitialProps;
-      // Check if it actually is a next page
-      // $FlowFixMe: Next static method on the React component type
-      if (typeof Page.getInitialProps === 'function') {
-        composedInitialProps = await Page.getInitialProps(ctx);
-      }
-
-      return {
-        isAuthenticated,
-        hasAccess,
-        ...composedInitialProps
-      };
-    }
-
-    /**
-     * If we aren't authenticated, automatically redirect to the login page on mount
-     */
-    componentDidMount() {
-      if (!this.props.isAuthenticated) {
-        setRedirectUrl({
-          pathname: this.props.router.pathname,
-          asPath: this.props.router.asPath,
-          query: this.props.router.query
-        });
-        Router.replace('/auth/sign-in');
+      // If we aren't authenticated we redirect to the login page
+      if (!isAuthenticated) {
+        // We have different ways of redirecting on the server and on the client...
+        // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+        if (ctx.res) {
+          ctx.res.writeHead(302, {
+            Location: `/auth/sign-in?next=${encodeURIComponent(ctx.asPath)}`
+          });
+          // $FlowFixMe: We quickly end the response without any data
+          ctx.res.end();
+        } else {
+          Router.replace({
+            pathname: '/auth/sign-in',
+            query: { next: ctx.asPath }
+          });
+        }
+        return {};
+      } else {
+        return (
+          // $FlowFixMe Flow doesn't approve of this method on the React component type
+          typeof Page.getInitialProps === 'function' &&
+          Page.getInitialProps(ctx)
+        );
       }
     }
 
     render() {
-      if (!this.props.isAuthenticated) {
-        return (
-          <Layout>
-            <Container pt={50}>
-              <div css={{ textAlign: 'center' }}>
-                <Trans>
-                  Login required. Please wait while we redirect you.
-                </Trans>
-              </div>
-            </Container>
-          </Layout>
-        );
-      } else if (!this.props.hasAccess) {
-        return <NoAccessPage />;
-      }
       return <Page {...this.props} />;
     }
   };
 };
 
-export default (
-  Page: React.ComponentType<any>,
-  options: { claim?: string } = {}
-) => withRouter(securePageHoc(Page, options));
+export default (Page: React.ComponentType<any>) => securePageHoc(Page);

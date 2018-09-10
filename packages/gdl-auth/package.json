@@ -7,7 +7,6 @@
   "dependencies": {
     "gdl-config": "^0.0.0",
     "jwt-decode": "^2.2.0",
-    "lscache": "1.2.0",
     "universal-cookie": "^2.1.5"
   },
   "devDependencies": {
