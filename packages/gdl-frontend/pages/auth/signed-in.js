@@ -10,8 +10,8 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router, { withRouter } from 'next/router';
 import { CircularProgress, Typography } from '@material-ui/core';
+import * as Sentry from '@sentry/browser';
 
-import Raven from '../../lib/raven';
 import { Router as RoutesRouter } from '../../routes';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
@@ -44,7 +44,7 @@ class Success extends React.Component<
       }
     } catch (err) {
       this.setState({ authFailed: true });
-      Raven.captureException(err);
+      Sentry.captureException(err);
     }
   }
 

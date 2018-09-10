@@ -14,9 +14,10 @@ import Router from 'next/router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
+import * as Sentry from '@sentry/browser';
 
 import getPageContext from '../getPageContext';
-import Raven from '../lib/raven';
+import initSentry from '../lib/initSentry';
 import type { Context } from '../types';
 import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
@@ -29,6 +30,9 @@ import { register as registerServiceWorker } from '../registerServiceWorker';
 if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
   hydrate(window.__NEXT_DATA__.ids);
 }
+
+// We want to do this as soon as possible so if the site crashes during rehydration we get the event
+initSentry();
 
 class App extends NextApp {
   static async getInitialProps({
@@ -52,9 +56,13 @@ class App extends NextApp {
     this.pageContext = getPageContext();
   }
 
-  // componentDidCatch works only in the client, not on the server
   componentDidCatch(error: *, errorInfo: *) {
-    Raven.captureException(error, { extra: errorInfo });
+    Sentry.configureScope(scope => {
+      Object.keys(errorInfo).forEach(key => {
+        scope.setExtra(key, errorInfo[key]);
+      });
+    });
+    Sentry.captureException(error);
     // This is needed to render errors correctly in development / production
     super.componentDidCatch(error, errorInfo);
   }
