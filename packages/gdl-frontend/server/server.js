@@ -7,6 +7,7 @@
  */
 
 const express = require('express');
+const Sentry = require('@sentry/node');
 const helmet = require('helmet');
 const next = require('next');
 const requestLanguage = require('express-request-language');
@@ -19,7 +20,7 @@ const { join } = require('path');
 const routes = require('../routes');
 
 const {
-  publicRuntimeConfig: { REPORT_ERRORS },
+  publicRuntimeConfig: { REPORT_ERRORS, SENTRY_PUBLIC_KEY, SENTRY_PROJECT_ID },
   serverRuntimeConfig: { port }
 } = require('../config');
 
@@ -51,6 +52,16 @@ async function setup() {
   if (isDev) {
     app.setAssetPrefix(`http://localhost:${port}`);
   } else {
+    if (REPORT_ERRORS) {
+      Sentry.init({
+        dsn: `https://${SENTRY_PUBLIC_KEY}@sentry.io/${SENTRY_PROJECT_ID}`,
+        environment: GDL_ENVIRONMENT
+      });
+      // The request handler must be the first middleware on the app
+      server.use(Sentry.Handlers.requestHandler());
+      // The error handler must be before any other error middleware
+      server.use(Sentry.Handlers.errorHandler());
+    }
     // Security setup if we're not running in development mode
     server.use(
       helmet({

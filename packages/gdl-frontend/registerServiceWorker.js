@@ -1,5 +1,5 @@
 // @flow
-import Raven from './lib/raven';
+import * as Sentry from '@sentry/browser';
 
 export function register() {
   if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
@@ -11,7 +11,7 @@ export function register() {
           console.log('SW registered: ', registration);
         })
         .catch(function(registrationError) {
-          Raven.captureException(registrationError);
+          Sentry.captureException(registrationError);
           console.log('SW registration failed: ', registrationError);
         });
     });
