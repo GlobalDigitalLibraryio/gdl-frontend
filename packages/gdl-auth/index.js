@@ -76,5 +76,5 @@ export function setAuthToken(token: {
   }
 }
 
-export const setRedirectUrl = (path: { asPath: string, pathname: string }) =>
+export const setRedirectUrl = (path: string) =>
   lscache.set('REDIRECT_AFTER_LOGIN', path, 5);
