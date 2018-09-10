@@ -10,32 +10,18 @@ import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router, { withRouter } from 'next/router';
 
-import { setRedirectUrl, hasClaim, getAuthToken } from 'gdl-auth';
+import { setRedirectUrl, getAuthToken } from 'gdl-auth';
 import type { Context } from '../types';
 import Layout from '../components/Layout';
-import NoAccessPage from '../components/NoAccessPage';
 import Container from '../elements/Container';
 
 /**
  * A HoC that ensures users are authenticated before displaying content
  */
-const securePageHoc = (Page, options) => {
-  const { claim } = options;
-
+const securePageHoc = Page => {
   return class SecurePage extends React.Component<any> {
     static async getInitialProps(ctx: Context) {
-      const token = getAuthToken(ctx.req);
-      const isAuthenticated = Boolean(token);
-
-      const hasAccess = claim
-        ? isAuthenticated && hasClaim(claim, ctx.req)
-        : true;
-
-      // If we're on the server, is authenticated and don't have access, we return 403
-      if (ctx.res != null && isAuthenticated && !hasAccess) {
-        ctx.res.statusCode = 403;
-      }
-
+      const isAuthenticated = Boolean(getAuthToken(ctx.req));
       // Evaluate the composed component's getInitialProps()
       let composedInitialProps;
       // Check if it actually is a next page
@@ -46,7 +32,6 @@ const securePageHoc = (Page, options) => {
 
       return {
         isAuthenticated,
-        hasAccess,
         ...composedInitialProps
       };
     }
@@ -78,15 +63,11 @@ const securePageHoc = (Page, options) => {
             </Container>
           </Layout>
         );
-      } else if (!this.props.hasAccess) {
-        return <NoAccessPage />;
       }
       return <Page {...this.props} />;
     }
   };
 };
 
-export default (
-  Page: React.ComponentType<any>,
-  options: { claim?: string } = {}
-) => withRouter(securePageHoc(Page, options));
+export default (Page: React.ComponentType<any>) =>
+  withRouter(securePageHoc(Page));
