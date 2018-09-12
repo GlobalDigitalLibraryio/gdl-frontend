@@ -126,11 +126,14 @@ class BookPage extends React.Component<
 
   handleShareClick = () => {
     if (navigator.share) {
-      navigator.share({
-        title: this.props.book.title,
-        text: this.props.book.description,
-        url: window.location.href
-      });
+      navigator
+        .share({
+          title: this.props.book.title,
+          text: this.props.book.description,
+          url: window.location.href
+        })
+        .then(() => logEvent('Books', 'Shared', this.props.book.title))
+        .catch(() => {}); // Ignore here because we don't care if people cancel sharing
     }
   };
 

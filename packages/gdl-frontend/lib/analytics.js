@@ -36,6 +36,7 @@ type Action =
   | 'Downloaded ePub'
   | 'Translate'
   | 'Report'
+  | 'Shared'
   // Navigation
   | 'Home'
   | 'Category'
