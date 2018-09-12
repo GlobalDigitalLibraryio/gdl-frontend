@@ -70,6 +70,7 @@ export default class Document extends NextDocument {
           <meta name="theme-color" content={colors.default} />
           <link rel="manifest" href="/static/manifest/manifest.json" />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
+          <link rel="manifest" href="/static/manifest/manifest.json" />
           {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
           <meta
