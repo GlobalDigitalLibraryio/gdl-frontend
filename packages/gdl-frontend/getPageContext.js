@@ -25,14 +25,6 @@ const theme = createMuiTheme({
   }
 });
 
-const classRoomTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: colors.alternate
-    }
-  }
-});
-
 function createPageContext() {
   // We need to define our own custom JSS preset to specify an insertion point for the client
   // This is because CSS-in-JS libs always want to insert styles at the bottom of the <head />, but we want Emotion's styles
@@ -70,5 +62,3 @@ export default function getPageContext() {
 
   return global.__INIT_MATERIAL_UI__;
 }
-
-export { classRoomTheme };

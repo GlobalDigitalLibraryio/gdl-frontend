@@ -9,8 +9,8 @@
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { withTheme } from '@material-ui/core/styles';
 
+import { colors } from '../../style/theme';
 import { logEvent } from '../../lib/analytics';
 import type { Category } from '../../types';
 import SrOnly from '../../components/SrOnly';
@@ -31,7 +31,7 @@ const A = styled('a')`
     p.isSelected &&
     css`
       font-weight: ${fonts.weight.medium};
-      border-bottom: 3px solid ${p.hightLightColor};
+      border-bottom: 3px solid ${colors.default};
     `};
 `;
 
@@ -69,23 +69,17 @@ class CategoryNavigation extends React.Component<Props> {
   }
 }
 
-const Tab = withTheme()(
-  ({ isSelected, theme, children, linkProps, ...props }) => (
-    <Link passHref {...linkProps}>
-      <A
-        isSelected={isSelected}
-        hightLightColor={theme.palette.primary.main}
-        {...props}
-      >
-        {isSelected && (
-          <SrOnly>
-            <Trans>Selected: </Trans>
-          </SrOnly>
-        )}
-        {children}
-      </A>
-    </Link>
-  )
+const Tab = ({ isSelected, theme, children, linkProps, ...props }) => (
+  <Link passHref {...linkProps}>
+    <A isSelected={isSelected} {...props}>
+      {isSelected && (
+        <SrOnly>
+          <Trans>Selected: </Trans>
+        </SrOnly>
+      )}
+      {children}
+    </A>
+  </Link>
 );
 
 export default CategoryNavigation;

@@ -141,7 +141,7 @@ class TranslatePage extends React.Component<Props, State> {
     const { selectedLanguage, translationState } = this.state;
 
     return (
-      <Layout category={book.category}>
+      <Layout>
         <I18n>
           {({ i18n }) => (
             <Head

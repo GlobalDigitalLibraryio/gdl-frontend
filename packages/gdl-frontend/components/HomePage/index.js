@@ -151,7 +151,7 @@ export default class HomePage extends React.Component<
     const languageCode = newArrivals.language.code;
 
     return (
-      <Layout category={category} wrapWithMain={false}>
+      <Layout wrapWithMain={false}>
         <Head image={featured.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
