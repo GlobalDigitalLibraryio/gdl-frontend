@@ -75,8 +75,7 @@ class BrowsePage extends React.Component<Props, State> {
     }
 
     return {
-      books: booksRes.data,
-      category
+      books: booksRes.data
     };
   }
 
@@ -140,7 +139,6 @@ class BrowsePage extends React.Component<Props, State> {
   };
 
   render() {
-    const { category } = this.props;
     const { readingLevel } = this.props.router.query;
     const { books } = this.state;
 
@@ -148,7 +146,7 @@ class BrowsePage extends React.Component<Props, State> {
       this.state.books.totalCount > this.state.books.results.length;
 
     return (
-      <Layout category={category}>
+      <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`Browse books`} />}</I18n>
         <Container>
           <Typography

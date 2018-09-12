@@ -146,7 +146,7 @@ class BookPage extends React.Component<
         >
           <BookJsonLd book={book} />
         </Head>
-        <Layout category={book.category}>
+        <Layout>
           <Container>
             <View flexDirection="row" mt={['135px', spacing.medium]}>
               <CoverWrap>

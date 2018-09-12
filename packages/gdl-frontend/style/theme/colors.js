@@ -22,8 +22,7 @@ const colors = {
     default: '#444',
     subtle: '#666'
   },
-  default: '#0277bd',
-  alternate: '#2e7d32'
+  default: '#0277bd'
 };
 
 export default colors;

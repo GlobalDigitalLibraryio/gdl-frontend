@@ -8,14 +8,11 @@
 
 import React, { type Node } from 'react';
 import styled from 'react-emotion';
-import { MuiThemeProvider } from '@material-ui/core/styles';
 
-import type { Category } from '../../types';
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';
 import Main from './Main';
 import Footer from './Footer';
-import { classRoomTheme } from '../../getPageContext';
 
 // Use height instead of min-height to fix flexbox issue in IE (https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/)
 const PageWrapper = styled('div')`
@@ -26,7 +23,6 @@ const PageWrapper = styled('div')`
 
 type Props = {|
   children: Node,
-  category?: ?Category,
   wrapWithMain: boolean
 |};
 
@@ -43,16 +39,9 @@ class Layout extends React.Component<Props, State> {
     drawerIsOpen: false
   };
 
-  wrapWithCategoryTheme(node: Node) {
-    if (this.props.category === 'classroom_books') {
-      return <MuiThemeProvider theme={classRoomTheme}>{node}</MuiThemeProvider>;
-    }
-    return node;
-  }
-
   render() {
     const { children, wrapWithMain } = this.props;
-    return this.wrapWithCategoryTheme(
+    return (
       <PageWrapper>
         <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
         <GlobalMenu
