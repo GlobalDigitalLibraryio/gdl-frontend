@@ -21,7 +21,8 @@ import type { Context } from '../types';
 import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
-import { logPageView, initGA } from '../lib/analytics';
+import { logPageView, logEvent, initGA } from '../lib/analytics';
+import { register as registerServiceWorker } from '../registerServiceWorker';
 
 // Adds server generated styles to the emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -72,6 +73,19 @@ class App extends NextApp {
     initGA();
     logPageView();
     Router.router.events.on('routeChangeComplete', logPageView);
+
+    // This fires when a user is prompted to add the app to their homescreen
+    // We use it to track it happening in Google Analytics so we have those sweet metrics
+    window.addEventListener('beforeinstallprompt', e => {
+      logEvent('PWA', 'Prompted');
+      e.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === 'dismissed') {
+          logEvent('PWA', 'Dismissed');
+        } else {
+          logEvent('PWA', 'Added');
+        }
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -120,5 +134,8 @@ class App extends NextApp {
     );
   }
 }
+
+// Register service worker for clients that support it
+registerServiceWorker();
 
 export default App;

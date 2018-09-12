@@ -24,7 +24,7 @@ export function logPageView() {
 }
 
 // Define all allowed categories here, so we are able to group all datapoints correctly
-type Category = 'Books' | 'User' | 'Navigation';
+type Category = 'Books' | 'User' | 'Navigation' | 'PWA';
 type Action =
   // User
   | 'Login'
@@ -43,7 +43,11 @@ type Action =
   | 'Language'
   | 'Featured'
   | 'More - Search'
-  | 'More - Browse';
+  | 'More - Browse'
+  // PWA
+  | 'Prompted'
+  | 'Added'
+  | 'Dismissed';
 
 /**
  * See https://github.com/react-ga/react-ga#reactgaeventargs
