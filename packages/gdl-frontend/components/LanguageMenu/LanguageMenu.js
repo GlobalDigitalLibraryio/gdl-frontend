@@ -24,7 +24,6 @@ import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import type { Language } from '../../types';
 import { spacing, colors } from '../../style/theme';
-import media from '../../style/media';
 
 type Props = {
   anchor: 'left' | 'right',
@@ -94,9 +93,6 @@ export default class LanguageMenu extends React.Component<Props> {
     return (
       <Drawer anchor={anchor} open onClose={onClose}>
         <List
-          // Add some padding bottom so we can select the bottom alternative in mobile safari
-          // otherwise the option gets hidden behind browser chrome
-          css={media.mobile({ paddingBottom: '100px' })}
           onClose={onClose}
           subheader={
             <ListSubheader component="div">
