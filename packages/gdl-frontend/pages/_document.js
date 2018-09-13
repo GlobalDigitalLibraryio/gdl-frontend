@@ -68,7 +68,11 @@ export default class Document extends NextDocument {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <meta name="theme-color" content={colors.default} />
-          <link rel="manifest" href="/static/manifest/manifest.json" />
+          <link
+            id="theManifest"
+            rel="manifest"
+            href="/static/manifest/manifest.json"
+          />
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
@@ -107,10 +111,16 @@ export default class Document extends NextDocument {
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
 
-          {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
+          {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration
+          TODO: Remove the manifest removal hack once Safari plays nicer with PWA
+          https://github.com/GlobalDigitalLibraryio/issues/issues/469
+          */}
           <script
             dangerouslySetInnerHTML={{
-              __html: `window.${globalVarName} = '${GDL_ENVIRONMENT}';`
+              __html: `window.${globalVarName} = '${GDL_ENVIRONMENT}';
+if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
+  document.head.removeChild(document.getElementById('theManifest'))
+}`
             }}
           />
 
