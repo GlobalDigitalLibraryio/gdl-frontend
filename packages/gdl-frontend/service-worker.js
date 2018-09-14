@@ -27,3 +27,34 @@ workbox.routing.registerRoute(
     ]
   })
 );
+
+// // Cache the Google Fonts webfont files with a cache first strategy for 1 year.
+// urlPattern: /^https:\/\/images\.(.+)\.digitallibrary\.io/,
+// handler: 'cacheFirst',
+// options: {
+//   cacheName: 'gdl-images',
+//   expiration: {
+//     maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+//     maxEntries: 60
+//     // this should probably be true?
+//     // purgeOnQuotaError: true
+//   },
+//   // cacheableResponse: {
+//   //   statuses: [0, 200]
+//   // },
+//   // fetchOptions: {
+//   //   mode: 'no-cors',
+//   // },
+//   matchOptions: {
+//     ignoreSearch: false
+//   }
+
+// Offline testing
+// urlPattern: /^\/offline/,
+// handler: 'cacheFirst',
+// options: {
+//   cacheName: 'gdl-offline',
+//   expiration: {
+//     maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+//   }
+// }

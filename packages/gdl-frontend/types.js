@@ -74,7 +74,8 @@ export type Chapter = {|
 
 export type ChapterSummary = {|
   id: number,
-  seqNo: number
+  seqNo: number,
+  url: string
 |};
 
 // Disjoint union
