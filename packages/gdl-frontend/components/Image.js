@@ -118,6 +118,7 @@ export default class Image extends React.Component<Props, State> {
     const { src, srcSet, sizes } = this.props;
     return (
       <Img
+        crossOrigin="anonymous"
         src={src}
         srcSet={srcSet}
         sizes={sizes}
