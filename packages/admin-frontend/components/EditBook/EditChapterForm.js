@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Link from 'next/link';
+import Editor from 'gdl-editor';
 import Container from '../Container';
 
 import ChapterPreview from './ChapterPreview';
@@ -156,6 +157,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
                 >
                   Discard changes
                 </Button>
+                <Editor html={currentChapter && currentChapter.content} />
 
                 {currentChapter && (
                   <div css={{ paddingTop: '16px' }}>

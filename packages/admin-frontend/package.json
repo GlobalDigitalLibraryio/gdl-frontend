@@ -17,6 +17,7 @@
     "final-form": "4.9.1",
     "gdl-auth": "^0.0.0",
     "gdl-config": "^0.0.0",
+    "gdl-editor": "^0.0.0",
     "gdl-image": "^0.0.0",
     "isomorphic-unfetch": "3.0.0",
     "next": "6.1.2",

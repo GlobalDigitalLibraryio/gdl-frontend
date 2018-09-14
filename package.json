@@ -81,8 +81,10 @@
     "final-form": "4.9.1",
     "glob": "^7.1.2",
     "helmet": "3.14.0",
+    "immutable": "3.8.2",
     "invariant": "^2.2.4",
     "isomorphic-unfetch": "3.0.0",
+    "is-hotkey": "0.1.4",
     "jwt-decode": "^2.2.0",
     "lru-cache": "^4.1.3",
     "lscache": "1.2.0",
@@ -99,6 +101,10 @@
     "react-ga": "2.5.3",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
+    "slate": "0.43.6",
+    "slate-html-serializer": "0.7.22",
+    "slate-react": "0.21.1",
+    "slate-soft-break": "0.9.0",
     "universal-cookie": "3.0.4"
   },
   "engines": {

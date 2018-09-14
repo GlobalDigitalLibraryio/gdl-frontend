@@ -7,7 +7,7 @@ const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
 const nextConfig = {
   serverRuntimeConfig,
   publicRuntimeConfig,
-  transpileModules: ['gdl-auth', 'gdl-image']
+  transpileModules: ['gdl-auth', 'gdl-image', 'gdl-editor']
 };
 
 module.exports = withCSS(withTM(nextConfig));
