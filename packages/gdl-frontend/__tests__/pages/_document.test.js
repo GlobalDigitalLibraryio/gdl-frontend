@@ -11,14 +11,16 @@ import * as React from 'react';
 import Document from '../../pages/_document';
 import getPageContext from '../../getPageContext';
 
-test("Sets global GDL environment variable, defaults to 'test'", () => {
+test("Sets global GDL environment variable, defaults to 'dev'", () => {
   const tree = shallow(<Document pageContext={getPageContext()} />);
   expect(
     tree
       .find('script')
       .first()
       .html()
-  ).toEqual("<script>window.__GDL_ENVIRONMENT__ = 'dev';</script>");
+  ).toEqual(
+    expect.stringContaining("<script>window.__GDL_ENVIRONMENT__ = 'dev';")
+  );
 });
 
 test('Has the no robots meta tag', async () => {
