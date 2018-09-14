@@ -6,6 +6,7 @@
  * See LICENSE
  */
 
+import { setAuthToken } from 'gdl-auth';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../../types';
 
@@ -32,17 +33,17 @@ const getAuth = async (options, redirectUri?: string) => {
   });
 };
 
-/**
- * If hash not provided, window.location.hash will be used by default
- */
-export async function parseHash(
-  hash: ?string
-): Promise<{ accessToken: string, idToken: string, expiresIn: number }> {
+export async function handleAuthentication(): Promise<{
+  accessToken: string,
+  idToken: string,
+  expiresIn: number
+}> {
   const auth0 = await getAuth();
 
   return new Promise((resolve, reject) => {
-    auth0.parseHash({ hash }, (err, authResult) => {
-      if (!err) {
+    auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        setAuthToken(authResult);
         resolve(authResult);
       } else {
         reject(err);

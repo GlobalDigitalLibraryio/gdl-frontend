@@ -9,25 +9,31 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import Router, { withRouter } from 'next/router';
-import { setAuthToken } from 'gdl-auth';
+import { CircularProgress, Typography } from '@material-ui/core';
 
+import Raven from '../../lib/raven';
 import { Router as RoutesRouter } from '../../routes';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
-import { parseHash } from '../../lib/auth';
+import Center from '../../elements/Center';
+import { handleAuthentication } from '../../lib/auth';
 
-class Success extends React.Component<{
-  router: {
-    query: {
-      next?: string
+class Success extends React.Component<
+  {
+    router: {
+      query: {
+        next?: string
+      }
     }
-  }
-}> {
+  },
+  { authFailed: boolean }
+> {
+  state = {
+    authFailed: false
+  };
   async componentDidMount() {
-    const authResult = await parseHash();
-    if (authResult.accessToken) {
-      setAuthToken(authResult);
-
+    try {
+      await handleAuthentication();
       const redirectUri = this.props.router.query.next || '/';
 
       // Sucks having 2 routers. But if we use the next-routes one for the admin stuff we get the 404 page :/
@@ -36,16 +42,38 @@ class Success extends React.Component<{
       } else {
         RoutesRouter.pushRoute(this.props.router.query.next || '/');
       }
+    } catch (err) {
+      this.setState({ authFailed: true });
+      Raven.captureException(err);
     }
   }
 
   render() {
     return (
       <Layout>
-        <Container pt={50}>
-          <div css={{ textAlign: 'center' }}>
-            <Trans>Logged in, please wait while we redirect you!</Trans>
-          </div>
+        <Container mt="35px">
+          {this.state.authFailed ? (
+            <>
+              <Typography
+                align="center"
+                variant="headline"
+                paragraph
+                component="h1"
+              >
+                <Trans>Oops, there was a problem signing you in.</Trans>
+              </Typography>
+              <Typography align="center">
+                <Trans>
+                  The error has been reported. Please feel free to try signing
+                  in again.
+                </Trans>
+              </Typography>
+            </>
+          ) : (
+            <Center>
+              <CircularProgress />
+            </Center>
+          )}
         </Container>
       </Layout>
     );
