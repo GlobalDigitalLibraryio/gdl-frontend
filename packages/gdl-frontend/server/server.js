@@ -67,7 +67,7 @@ async function setup() {
     res.status(200).json({ status: 200, text: 'Health check ok' });
   });
 
-  // Serve serice worker from root of site so it applies to all pages
+  // Serve service worker from root of site so it applies to all pages
   // We have different CSP directives for the service worker, sicne a service worker is essentially a script
   // See https://qubyte.codes/blog/content-security-policy-and-service-workers
   // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
@@ -79,6 +79,13 @@ async function setup() {
       res.sendFile(filePath);
     }
   );
+
+  // Serve the generated precache manifest for the service worker
+  // $FlowFixMe: https://github.com/flowtype/flow-typed/issues/1120
+  server.get('/precache-manifest.:buildId.js', (req, res) => {
+    const filePath = join(app.distDir, req.url);
+    res.sendFile(filePath);
+  });
 
   // Setup the cookie parsing for express
   server.use(cookieParser());
