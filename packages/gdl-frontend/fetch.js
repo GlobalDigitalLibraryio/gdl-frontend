@@ -23,7 +23,7 @@ import type {
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
 import { getAuthToken } from 'gdl-auth';
-import { getOfflineChapter } from './offline';
+//import { getOfflineChapter } from './offline';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
@@ -99,28 +99,28 @@ async function doFetch(
 // See https://github.com/babel/babel/issues/3786
 export default doFetch;
 
-async function check(response) {
-  let result;
-  if (response.headers.get('Content-Type').includes('application/json')) {
-    result = await response.json();
-  } else {
-    result = await response.text();
-  }
+// async function check(response) {
+//   let result;
+//   if (response.headers.get('Content-Type').includes('application/json')) {
+//     result = await response.json();
+//   } else {
+//     result = await response.text();
+//   }
 
-  if (response.ok) {
-    return {
-      data: result,
-      isOk: true,
-      statusCode: response.status
-    };
-  }
+//   if (response.ok) {
+//     return {
+//       data: result,
+//       isOk: true,
+//       statusCode: response.status
+//     };
+//   }
 
-  return {
-    error: result,
-    isOk: false,
-    statusCode: response.status
-  };
-}
+//   return {
+//     error: result,
+//     isOk: false,
+//     statusCode: response.status
+//   };
+// }
 
 // Default page size
 const PAGE_SIZE = 5;
@@ -162,14 +162,9 @@ export async function fetchChapter(
   chapterId: string | number,
   language: string
 ): Promise<RemoteData<Chapter>> {
-  const url = `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`;
-
-  const offlined = await getOfflineChapter(url);
-  return offlined
-    ? check(offlined)
-    : doFetch(
-        `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
-      );
+  const result = await doFetch(
+    `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
+  );
 
   return result;
 }
