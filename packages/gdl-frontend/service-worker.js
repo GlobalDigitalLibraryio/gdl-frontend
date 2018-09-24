@@ -29,7 +29,7 @@ workbox.routing.registerRoute(
 );
 
 // workbox.routing.registerRoute(
-//   /^https:\/\/images\.(.+)\.digitallibrary\.io/,
+//   /^https:\/\/images\.(.+)\.digitallibrary\.io/
 //   workbox.strategies.cacheFirst({
 //     cacheName: 'gdl-images',
 //     plugins: [
@@ -49,10 +49,25 @@ workbox.routing.registerRoute(
 //   })
 // );
 
+self.addEventListener('fetch', event => {
+  if (event.request.mode === 'navigate') {
+    return event.respondWith(
+      fetch(event.request).catch(() => caches.match('/offline'))
+    );
+  }
+});
+
+// workbox.routing.registerRoute(({ url, event }) => {
+//  if (event.request.mode !== 'navigate') {
+//      return false;
+//    }
+//    const pathnameAndSearch = url.pathname + url.search;
+//  }, );
+
 workbox.routing.registerRoute(
   ({ url, event }) => {
     console.log(url, event);
-    return url.href.includes('/chapters/');
+    return url.href.includes('/chapters/') && url.searchParams.has('offline');
     //return false;
   },
   workbox.strategies.cacheFirst({

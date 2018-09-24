@@ -79,6 +79,9 @@ class ManifestTransform {
               !entry.url.includes('translations.js')
           );
 
+        // Add the offline html to the precache so we can use if navigation events times out
+        manifest.push({ url: '/offline', revision: this.opts.buildId });
+
         // Replace the old manifest with our transformed one and write it to the file
         const newManifest = `self.__precacheManifest = ${JSON.stringify(
           manifest,
