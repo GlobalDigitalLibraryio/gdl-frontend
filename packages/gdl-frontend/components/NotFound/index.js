@@ -21,7 +21,7 @@ import { spacing } from '../../style/theme/';
 const NotFound = () => (
   <Layout>
     <Head title="Page not found" />
-    <Container>
+    <Container my="30px">
       <Typography component="h1" align="center" variant="headline" gutterBottom>
         <Trans>Oh no!</Trans>
       </Typography>
