@@ -1,4 +1,4 @@
-/* global self, workbox */
+/* global workbox */
 workbox.core.setCacheNameDetails({ prefix: 'gdl' });
 
 workbox.precaching.suppressWarnings();
@@ -57,17 +57,14 @@ self.addEventListener('fetch', event => {
   }
 });
 
-// workbox.routing.registerRoute(({ url, event }) => {
-//  if (event.request.mode !== 'navigate') {
-//      return false;
-//    }
-//    const pathnameAndSearch = url.pathname + url.search;
-//  }, );
-
 workbox.routing.registerRoute(
   ({ url, event }) => {
-    console.log(url, event);
-    return url.href.includes('/chapters/') && url.searchParams.has('offline');
+    return (
+      url.href.match(/^https:\/\/images\.(.+)\.digitallibrary\.io/) ||
+      url.href.match(/\/books\/[\w-]+\/\d+$/) ||
+      url.href.match(/\/books\/[\w-]+\/\d+\/chapters\/\d+$/)
+    );
+    //return url.href.includes('/chapters/') && url.searchParams.has('offline');
     //return false;
   },
   workbox.strategies.cacheFirst({
@@ -75,7 +72,17 @@ workbox.routing.registerRoute(
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-      })
+      }),
+      {
+        // Only add to the cache if this was offlined already
+        // cacheWillUpdate: async ({ request, response, event }) () => {
+        //   return null;
+        //   // const cache = await self.caches.open('gdl-offline');
+        //   // return (await cache.match(request)) ? response : null;
+        // }
+        // We never add to cache. Adding to cache is explictily done by the user by making a book available offline
+        cacheWillUpdate: () => null
+      }
     ]
   })
 );
@@ -99,13 +106,3 @@ workbox.routing.registerRoute(
 //   matchOptions: {
 //     ignoreSearch: false
 //   }
-
-// Offline testing
-// urlPattern: /^\/offline/,
-// handler: 'cacheFirst',
-// options: {
-//   cacheName: 'gdl-offline',
-//   expiration: {
-//     maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-//   }
-// }

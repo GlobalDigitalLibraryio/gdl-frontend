@@ -163,7 +163,7 @@ export async function fetchChapter(
   language: string
 ): Promise<RemoteData<Chapter>> {
   const result = await doFetch(
-    `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}?offline=1`
+    `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
   );
 
   return result;

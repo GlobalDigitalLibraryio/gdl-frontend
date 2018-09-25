@@ -14,6 +14,8 @@ import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import { imageUrl } from 'gdl-image';
 import {
+  Portal,
+  Backdrop,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -34,7 +36,11 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
-import { makeAvailableOffline } from '../../offline';
+import {
+  makeAvailableOffline,
+  isAvailableOffline,
+  removeFromAvailableOffline
+} from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';

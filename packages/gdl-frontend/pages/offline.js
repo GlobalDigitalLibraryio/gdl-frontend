@@ -7,14 +7,15 @@
  */
 
 import * as React from 'react';
-import type { Book } from '../types';
+import type { BookDetails } from '../types';
 import { Trans } from '@lingui/react';
-import { Typography } from '@material-ui/core';
+import { Button, CircularProgress, Typography } from '@material-ui/core';
+import Link from 'next/link';
 
-import { getOfflineBooks } from '../offline';
+import { getOfflineBooks } from '../lib/offline';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
-import { Container } from '../elements';
+import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import BookGrid from '../components/BookGrid';
 
@@ -24,7 +25,7 @@ import BookGrid from '../components/BookGrid';
  */
 
 type State = {
-  books: Array<Book>,
+  books: Array<BookDetails>,
   loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR'
 };
 
@@ -46,26 +47,74 @@ class OfflinePage extends React.Component<{}, State> {
   }
 
   render() {
+    const { loadingStatus, books } = this.state;
     return (
       <>
-        <Head title="Offline" />
+        <Head title="Available offline" />
         <Layout>
           <Container
             css={{ marginTop: spacing.large, marginBottom: spacing.large }}
           >
-            <Typography
-              variant="headline"
-              align="center"
-              css={{ marginBottom: spacing.large }}
-            >
-              <Trans>You appear to be offline</Trans>
-            </Typography>
-            <BookGrid books={this.state.books} />
+            {loadingStatus === 'LOADING' && (
+              <Center>
+                <CircularProgress />
+              </Center>
+            )}
+
+            {loadingStatus === 'SUCCESS' && (
+              <>
+                {books.length > 0 ? (
+                  <OfflineBooks books={books} />
+                ) : (
+                  <NoOfflineBooks />
+                )}
+              </>
+            )}
           </Container>
         </Layout>
       </>
     );
   }
 }
+
+const OfflineBooks = ({ books }) => (
+  <>
+    <Typography
+      variant="headline"
+      align="center"
+      css={{ marginBottom: spacing.medium }}
+    >
+      <Trans>Available offline</Trans>
+    </Typography>
+    <Typography align="center" css={{ marginBottom: spacing.large }}>
+      <Trans>
+        You appear to be offline. The following books are available for you to
+        read.
+      </Trans>
+    </Typography>
+    <BookGrid books={books} />
+  </>
+);
+
+const NoOfflineBooks = () => (
+  <Center>
+    <Typography
+      align="center"
+      variant="headline"
+      css={{ marginBottom: spacing.medium }}
+    >
+      No books offline yet...
+    </Typography>
+    <Typography align="center" css={{ marginBottom: spacing.medium }}>
+      Making books available even you're offline is a great way to make sure you
+      always have something to read.
+    </Typography>
+    <Link passHref href="/">
+      <Button variant="outlined">
+        <Trans>Find something to read</Trans>
+      </Button>
+    </Link>
+  </Center>
+);
 
 export default OfflinePage;
