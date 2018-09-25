@@ -314,7 +314,7 @@ class BookPage extends React.Component<
                         logEvent('Books', 'Downloaded ePub', book.title);
                       }}
                     >
-                      <Trans>E-book (ePub)</Trans>
+                      <Trans>E-book (EPUB)</Trans>
                     </MenuItem>
                   )}
                   {book.downloads.pdf && (
