@@ -18,9 +18,11 @@ export async function makeAvailableOffline(book: BookDetails) {
     await cache.addAll(bookUrls);
     imageUrls = await getUniqueChapterImageUrls(book);
     await cache.addAll(imageUrls);
+    return true;
   } catch (error) {
     // If something went wrong when offlining the book, cleanup after ourselves
     bookUrls.concat(imageUrls).forEach(url => cache.delete(url));
+    return false;
   }
 }
 
@@ -55,7 +57,6 @@ export async function getOfflineBooks(): Promise<Array<BookDetails>> {
   const bookResponses = await Promise.all(
     bookRequests.map(r => cache.match(r))
   );
-
   return await Promise.all(bookResponses.map(res => res.json()));
 }
 

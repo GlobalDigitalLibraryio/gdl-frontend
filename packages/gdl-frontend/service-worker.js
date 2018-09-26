@@ -1,6 +1,9 @@
 /* global workbox */
 workbox.core.setCacheNameDetails({ prefix: 'gdl' });
 
+workbox.skipWaiting();
+workbox.clientsClaim();
+
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {}); // eslint-disable-line
 
@@ -64,8 +67,6 @@ workbox.routing.registerRoute(
       url.href.match(/\/books\/[\w-]+\/\d+$/) ||
       url.href.match(/\/books\/[\w-]+\/\d+\/chapters\/\d+$/)
     );
-    //return url.href.includes('/chapters/') && url.searchParams.has('offline');
-    //return false;
   },
   workbox.strategies.cacheFirst({
     cacheName: 'gdl-offline',

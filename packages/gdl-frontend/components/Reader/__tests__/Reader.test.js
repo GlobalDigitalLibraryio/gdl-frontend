@@ -64,10 +64,10 @@ const book: BookDetails = {
   },
   bookFormat: 'HTML',
   chapters: [
-    { id: 128, seqNo: 1 },
-    { id: 129, seqNo: 2 },
-    { id: 130, seqNo: 3 },
-    { id: 131, seqNo: 4 }
+    { id: 128, seqNo: 1, url: '' },
+    { id: 129, seqNo: 2, url: '' },
+    { id: 130, seqNo: 3, url: '' },
+    { id: 131, seqNo: 4, url: '' }
   ],
   downloads: {
     epub: '',

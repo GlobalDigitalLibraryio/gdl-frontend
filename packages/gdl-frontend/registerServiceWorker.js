@@ -3,11 +3,11 @@ import * as Sentry from '@sentry/browser';
 
 export function register() {
   if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
+    window.addEventListener('load', () => {
       navigator.serviceWorker
         // $FlowFixMe: Flow's own type definitions aren't complete for SWs
         .register('/service-worker.js')
-        .then(function(registration) {
+        .then(registration => {
           console.log('SW registered: ', registration);
         })
         .catch(function(registrationError) {
