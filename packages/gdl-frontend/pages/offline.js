@@ -88,8 +88,8 @@ const OfflineBooks = ({ books }) => (
     </Typography>
     <Typography align="center" css={{ marginBottom: spacing.large }}>
       <Trans>
-        You appear to be offline. The following books are available for you to
-        read.
+        You appear to be offline. The following books are sooooo available for
+        you to read.
       </Trans>
     </Typography>
     <BookGrid books={books} />
@@ -106,7 +106,7 @@ const NoOfflineBooks = () => (
       No books offline yet...
     </Typography>
     <Typography align="center" css={{ marginBottom: spacing.medium }}>
-      Making books available even you're offline is a great way to make sure you
+      Having books available even you're offline is a great way to make sure you
       always have something to read.
     </Typography>
     <Link passHref href="/">

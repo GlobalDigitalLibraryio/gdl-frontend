@@ -14,8 +14,7 @@ import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import { imageUrl } from 'gdl-image';
 import {
-  Portal,
-  Backdrop,
+  Snackbar,
   Menu,
   MenuItem,
   ListItemIcon,

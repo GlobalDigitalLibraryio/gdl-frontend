@@ -64,8 +64,8 @@ workbox.routing.registerRoute(
   ({ url, event }) => {
     return (
       url.href.match(/^https:\/\/images\.(.+)\.digitallibrary\.io/) ||
-      url.href.match(/\/books\/[\w-]+\/\d+$/) ||
-      url.href.match(/\/books\/[\w-]+\/\d+\/chapters\/\d+$/)
+      url.href.match(/\/book-api\/v1\/books\/[\w-]+\/\d+$/) ||
+      url.href.match(/\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/)
     );
   },
   workbox.strategies.cacheFirst({
