@@ -32,7 +32,13 @@ const directives = {
     'https://fonts.googleapis.com',
     'https://fonts.gstatic.com'
   ],
-  imgSrc: ["'self'", 'data:', 'https://*.digitallibrary.io', googleAnalytics],
+  imgSrc: [
+    "'self'",
+    'data:',
+    'https://*.digitallibrary.io',
+    'https://res.cloudinary.com',
+    googleAnalytics
+  ],
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
