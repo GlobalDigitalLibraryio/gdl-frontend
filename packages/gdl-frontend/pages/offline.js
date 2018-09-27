@@ -10,12 +10,14 @@ import * as React from 'react';
 import type { BookDetails } from '../types';
 import { Trans } from '@lingui/react';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
+import { withRouter } from 'next/router';
 import Link from 'next/link';
+import { Link as RouteLink } from '../routes';
 
 import { getOfflineBooks } from '../lib/offline';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
-import { Container, Center } from '../elements';
+import { A, Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import BookGrid from '../components/BookGrid';
 
@@ -77,7 +79,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = ({ books }) => (
+const OfflineBooks = withRouter(({ books }) => (
   <>
     <Typography
       variant="headline"
@@ -87,14 +89,15 @@ const OfflineBooks = ({ books }) => (
       <Trans>Available offline</Trans>
     </Typography>
     <Typography align="center" css={{ marginBottom: spacing.large }}>
-      <Trans>
-        You appear to be offline. The following books are sooooo available for
-        you to read.
-      </Trans>
+      You are shown this page because you appear to be offline. If that is not
+      the case, you can{' '}
+      <RouteLink href="/" passHref>
+        <A>here</A>
+      </RouteLink>
     </Typography>
     <BookGrid books={books} />
   </>
-);
+));
 
 const NoOfflineBooks = () => (
   <Center>

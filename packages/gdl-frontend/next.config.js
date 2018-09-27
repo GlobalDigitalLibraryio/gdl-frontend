@@ -20,6 +20,7 @@ const nextConfig = {
   publicRuntimeConfig,
   transpileModules: ['gdl-auth', 'gdl-image'],
   webpack(config, options) {
+    // If we are running in dev mode, add a dummy service worker
     if (options.dev) {
       config.plugins.push(
         new CopyWebpackPlugin([

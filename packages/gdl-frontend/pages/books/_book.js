@@ -38,7 +38,8 @@ import { FacebookIcon, TwitterIcon } from '../../components/icons';
 import {
   makeAvailableOffline,
   isAvailableOffline,
-  removeFromAvailableOffline
+  removeFromAvailableOffline,
+  getTimestamp
 } from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';

@@ -76,6 +76,21 @@ export async function removeFromAvailableOffline(book: BookDetails) {
   }
 }
 
+export async function getTimestamp(book: BookDetails) {
+  const cache = await openOfflineCache();
+  const response = await cache.match(
+    `https://api.test.digitallibrary.io/book-api/v1/books/${
+      book.language.code
+    }/${book.id}`
+  );
+
+  console.log(response);
+
+  response.headers.forEach(h => console.log(h));
+  // JS is extremely lenient, so it should be able to parse the date header value
+  return response ? new Date(response.headers.get('Date')) : null;
+}
+
 /**
  * Get the URLs for a book (exlcuded images in chapters)
  */
