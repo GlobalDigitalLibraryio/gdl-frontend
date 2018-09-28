@@ -143,6 +143,13 @@ export function fetchFeaturedContent(
   return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
+/**
+ * Used for offline functionality. Placed here so if the endpoint for books changes we can make all the changes in this file
+ */
+export function getBookUrl(book: BookDetails) {
+  return `${bookApiUrl()}/books/${book.language.code}/${book.id}`;
+}
+
 export async function fetchBook(
   id: string | number,
   language: string

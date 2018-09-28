@@ -79,7 +79,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = withRouter(({ books }) => (
+const OfflineBooks = withRouter(({ books, router }) => (
   <>
     <Typography
       variant="headline"
@@ -88,13 +88,15 @@ const OfflineBooks = withRouter(({ books }) => (
     >
       <Trans>Available offline</Trans>
     </Typography>
-    <Typography align="center" css={{ marginBottom: spacing.large }}>
-      You are shown this page because you appear to be offline. If that is not
-      the case, you can{' '}
-      <RouteLink href="/" passHref>
-        <A>here</A>
-      </RouteLink>
-    </Typography>
+    {router.asPath !== '/offline' && (
+      <Typography align="center" css={{ marginBottom: spacing.large }}>
+        You are shown this page because you appear to be offline. If that is not
+        the case, you can click{' '}
+        <RouteLink href={router.asPath} passHref>
+          <A>here.</A>
+        </RouteLink>
+      </Typography>
+    )}
     <BookGrid books={books} />
   </>
 ));

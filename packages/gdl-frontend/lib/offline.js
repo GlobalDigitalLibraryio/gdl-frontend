@@ -1,5 +1,6 @@
 // @flow
 import type { BookDetails } from '../types';
+import { getBookUrl } from '../fetch';
 
 const openOfflineCache = () => window.caches.open('gdl-offline');
 
@@ -32,15 +33,8 @@ export async function makeAvailableOffline(book: BookDetails) {
 export async function isAvailableOffline(book: BookDetails) {
   const cache = await openOfflineCache();
   const requests = await cache.keys();
-  return Boolean(
-    requests.find(
-      r =>
-        r.url ===
-        `https://api.test.digitallibrary.io/book-api/v1/books/${
-          book.language.code
-        }/${book.id}`
-    )
-  );
+  const bookUrl = getBookUrl(book);
+  return Boolean(requests.find(r => r.url === bookUrl));
 }
 
 /**
@@ -78,11 +72,7 @@ export async function removeFromAvailableOffline(book: BookDetails) {
 
 export async function getTimestamp(book: BookDetails) {
   const cache = await openOfflineCache();
-  const response = await cache.match(
-    `https://api.test.digitallibrary.io/book-api/v1/books/${
-      book.language.code
-    }/${book.id}`
-  );
+  const response = await cache.match(getBookUrl(book));
 
   console.log(response);
 
@@ -95,12 +85,7 @@ export async function getTimestamp(book: BookDetails) {
  * Get the URLs for a book (exlcuded images in chapters)
  */
 function getUrlsForBook(book: BookDetails) {
-  const urls = [
-    `https://api.test.digitallibrary.io/book-api/v1/books/${
-      book.language.code
-    }/${book.id}`,
-    ...book.chapters.map(c => c.url)
-  ];
+  const urls = [getBookUrl(book), ...book.chapters.map(c => c.url)];
 
   if (book.coverImage) {
     urls.push(book.coverImage.url);
