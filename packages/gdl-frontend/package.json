@@ -36,7 +36,7 @@
     "@material-ui/core": "3.0.1",
     "@material-ui/icons": "3.0.1",
     "@zeit/next-source-maps": "^0.0.2",
-    "auth0-js": "9.7.3",
+    "auth0-js": "9.8.0",
     "cookie-parser": "^1.4.3",
     "emotion": "9.2.12",
     "emotion-server": "9.2.12",
