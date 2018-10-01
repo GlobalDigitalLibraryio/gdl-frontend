@@ -59,8 +59,8 @@
     "prop-types": "15.6.2",
     "raven": "2.6.3",
     "raven-js": "3.26.4",
-    "react": "16.5.0",
-    "react-dom": "16.5.0",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
     "react-emotion": "9.2.8",
     "react-ga": "2.5.3",
     "react-icons": "^2.2.7",
@@ -81,7 +81,7 @@
     "enzyme-to-json": "^3.3.4",
     "jest-emotion": "9.2.7",
     "nock": "^9.2.6",
-    "react-test-renderer": "16.4.2",
+    "react-test-renderer": "16.5.2",
     "webpack-bundle-analyzer": "^2.8.2",
     "workbox-webpack-plugin": "3.5.0"
   }
