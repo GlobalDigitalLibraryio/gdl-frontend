@@ -81,7 +81,7 @@
     "jest-emotion": "9.2.7",
     "nock": "^9.2.6",
     "react-test-renderer": "16.5.2",
-    "webpack-bundle-analyzer": "^2.8.2",
+    "webpack-bundle-analyzer": "3.0.2",
     "workbox-webpack-plugin": "3.5.0"
   }
 }
