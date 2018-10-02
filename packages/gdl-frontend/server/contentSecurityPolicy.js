@@ -49,7 +49,7 @@ const directives = {
   reportUri: `https://sentry.io/api/${SENTRY_PROJECT_ID}/csp-report/?sentry_key=${SENTRY_PUBLIC_KEY}`
 };
 
-// We have a different connect directive for the service worker, sicne a service worker is essentially a script
+// We have a different connect directive for the service worker, since a service worker is essentially a script
 // See https://qubyte.codes/blog/content-security-policy-and-service-workers
 const serviceWorkerDirectives = { ...directives, connectSrc: ['*'] };
 
