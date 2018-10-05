@@ -25,6 +25,16 @@ const theme = createMuiTheme({
   palette: {
     primary: {
       main: colors.default
+    },
+    secondary: {
+      main: '#32A2E5'
+    }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: '20px'
+      }
     }
   }
 });

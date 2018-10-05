@@ -237,6 +237,18 @@ class BookPage extends React.Component<
                       </>
                     )}
                   </Center>
+                  <Button
+                    aria-owns={
+                      this.state.anchorEl ? 'download-book-menu' : null
+                    }
+                    variant="raised"
+                    color="secondary"
+                    aria-haspopup="true"
+                    onClick={this.handleDownloadClick}
+                  >
+                    <CloudDownloadIcon />
+                    <Trans>Download</Trans>
+                  </Button>
 
                   {this.props.userHasEditAccess && (
                     <NextLink
@@ -280,16 +292,6 @@ class BookPage extends React.Component<
                       />
                     )}
                   </Favorite>
-
-                  <TabButton
-                    icon={<CloudDownloadIcon />}
-                    label={<Trans>Download</Trans>}
-                    aria-owns={
-                      this.state.anchorEl ? 'download-book-menu' : null
-                    }
-                    aria-haspopup="true"
-                    onClick={this.handleDownloadClick}
-                  />
 
                   {this.state.supportsNavigatorShare && (
                     <TabButton
