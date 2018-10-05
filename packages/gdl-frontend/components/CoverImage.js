@@ -21,8 +21,8 @@ const sizesMap = {
     height: ['130px', '160px']
   },
   large: {
-    width: ['130px', '260px'],
-    height: ['175px', '365px']
+    width: ['180px', '310px'],
+    height: ['220px', '380px']
   }
 };
 

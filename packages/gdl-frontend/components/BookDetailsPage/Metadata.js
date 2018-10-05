@@ -7,32 +7,17 @@
  */
 
 import React, { Fragment } from 'react';
-import { IconButton, Collapse } from '@material-ui/core';
+import { IconButton, Collapse, Typography } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
-import styled, { css, cx } from 'react-emotion';
+import { css, cx } from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
 import A from '../../elements/A';
-import Ribbon from './LevelRibbon';
-import { colors, fonts, spacing } from '../../style/theme';
-import media from '../../style/media';
 
 type Props = {
   book: BookDetails
 };
-
-// NB! The margin top selector here is kinda brittle. The readingLevel ribbon must be the only element before the first heading
-const Heading = styled('div')`
-  &:not(:nth-child(2)) {
-    margin-top: ${spacing.medium};
-  }
-
-  font-weight: ${fonts.weight.medium};
-  color: ${colors.text.default};
-
-  margin-bottom: ${spacing.xsmall};
-`;
 
 function headingText(type, value) {
   // NB! This should really use <Plural />, but after an update it suddenly implicitly depends on the Intl API. Which causes it to thow exceptions in some browsers
@@ -61,10 +46,12 @@ function listContributors(contributorType, contributors) {
     return (
       // $FlowFixMe this is a string...
       <Fragment key={contributorType}>
-        <Heading>
+        <Typography variant="subtitle2" component="span">
           {headingText(contributorType, contributorsOfType.length)}
-        </Heading>
-        {contributorsOfType.map(contributor => contributor.name).join(', ')}
+        </Typography>
+        <Typography component="span" paragraph>
+          {contributorsOfType.map(contributor => contributor.name).join(', ')}
+        </Typography>
       </Fragment>
     );
   }
@@ -73,32 +60,25 @@ function listContributors(contributorType, contributors) {
 
 const BookMeta = ({ book }: Props) => {
   return (
-    <Div>
-      <Ribbon level={book.readingLevel} />
-
+    <>
       {Object.values(ContributorTypes).map(type =>
         listContributors(type, book.contributors)
       )}
 
-      <Heading>
+      <Typography variant="subtitle2" component="span">
         <Trans>License</Trans>
-      </Heading>
-      <A href={book.license.url}>{book.license.description}</A>
+      </Typography>
+      <A href={book.license.url} paragraph>
+        {book.license.description}
+      </A>
       {book.additionalInformation && (
         <AdditionalInformation
           additionalInformation={book.additionalInformation}
         />
       )}
-    </Div>
+    </>
   );
 };
-
-const Div = styled('div')`
-  color: ${colors.text.subtle};
-  ${media.tablet`
-    padding-left: ${spacing.medium};
-  `};
-`;
 
 class AdditionalInformation extends React.Component<
   { additionalInformation: string },
@@ -120,9 +100,9 @@ class AdditionalInformation extends React.Component<
             this.setState(state => ({ isExpanded: !state.isExpanded }))
           }
         >
-          <Heading>
+          <Typography variant="subtitle2" component="span">
             <Trans>Additional information</Trans>
-          </Heading>
+          </Typography>
           <IconButton
             className={cx(expansionStyles.iconButton, {
               [expansionStyles.iconButtonExpanded]: this.state.isExpanded
@@ -135,7 +115,7 @@ class AdditionalInformation extends React.Component<
           </IconButton>
         </div>
         <Collapse in={this.state.isExpanded}>
-          {this.props.additionalInformation}
+          <Typography>{this.props.additionalInformation}</Typography>
         </Collapse>
       </div>
     );

@@ -11,4 +11,5 @@ export { default as View } from './View';
 export { default as Container } from './Container';
 export { default as LoadingButton } from './LoadingButton';
 export { default as DelayedLoading } from './DelayedLoading';
+export { default as CustomButton } from './CustomButton';
 export { default as Center } from './Center';

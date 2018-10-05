@@ -12,49 +12,53 @@ import { triangle } from 'polished';
 
 import type { ReadingLevel } from '../../types';
 import ReadingLevelTrans from '../ReadingLevelTrans';
-import media from '../../style/media';
-import { colors, fonts, spacing } from '../../style/theme';
+import { fonts } from '../../style/theme';
 
 const HEIGHT = '30px';
 
+const colorMap = {
+  '1': '#5DD0C1',
+  '2': '#84CB65',
+  '3': '#F1C528',
+  '4': '#FA9F28',
+  'read-aloud': '#F56324',
+  decodable: '#AB86CD'
+};
+
 /**
- * Currently this component is specially tailored for use on the metadata card on the book page
- * Ie. this is not a reusable component at the moment
+ * This component is specially tailored to align perfectly on the book details page.
+ * So this is not a resuable component at the moment.
  */
 const Ribbon = styled('div')`
   display: inline-flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  background-color: ${colors.base.white};
-  color: ${colors.text.default};
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-  padding-left: 20px;
-  padding-right: 10px;
+  text-transform: uppercase;
+  background-color: ${p => colorMap[p.readingLevel]};
+  color: black;
+  padding-right: 20px;
+  padding-left: 30px;
+  margin-left: -30px;
   font-weight: ${fonts.weight.bold};
   font-size: 14px;
   position: relative;
   height: ${HEIGHT};
-  float: right;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  ${media.mobile`
-    position: absolute;
-    right: 0;
-    margin-right: -${spacing.medium};
-  `};
-  &:before {
+  &:after {
     content: '';
     display: block;
     position: absolute;
-    left: -1px;
+    right: -15px;
     top: 0;
     bottom: 0;
-    ${triangle({
-      pointingDirection: 'right',
-      width: '15px',
-      height: HEIGHT,
-      foregroundColor: colors.container.background
-    })};
+    ${p =>
+      triangle({
+        pointingDirection: 'left',
+        width: '15px',
+        height: HEIGHT,
+        backgroundColor: colorMap[p.readingLevel],
+        foregroundColor: 'transparent'
+      })};
   }
 `;
 
@@ -63,7 +67,7 @@ type Props = {
 };
 
 export default ({ level }: Props) => (
-  <Ribbon>
+  <Ribbon readingLevel={level}>
     <ReadingLevelTrans readingLevel={level} />
   </Ribbon>
 );
