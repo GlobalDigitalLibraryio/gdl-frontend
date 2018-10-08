@@ -49,7 +49,7 @@ export default class EditBookForm extends React.Component<Props> {
       <Container>
         {' '}
         {book && (
-          <Typography variant="headline" component="h1" gutterBottom>
+          <Typography variant="h5" component="h1" gutterBottom>
             Editing book:{' '}
             <Link href={`/${book.language.code}/books/details/${book.id}`}>
               <a>{book.title}</a>

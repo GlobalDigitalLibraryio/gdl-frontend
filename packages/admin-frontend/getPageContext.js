@@ -14,7 +14,12 @@ import {
   jssPreset
 } from '@material-ui/core/styles';
 
-const theme = createMuiTheme();
+const theme = createMuiTheme({
+  // Opt in to the typography v2 components. Remove this when we're on Material UI v4
+  typography: {
+    useNextVariants: true
+  }
+});
 
 function createPageContext() {
   // We need to define our own custom JSS preset to specify an insertion point for the client

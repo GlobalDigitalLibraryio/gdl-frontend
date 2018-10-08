@@ -81,7 +81,8 @@ class FavoritesPage extends React.Component<{}, State> {
             css={{ marginTop: spacing.large, marginBottom: spacing.large }}
           >
             <Typography
-              variant="headline"
+              variant="h4"
+              component="h1"
               align="center"
               css={{ marginBottom: spacing.large }}
             >

@@ -54,12 +54,7 @@ class Success extends React.Component<
         <Container mt="35px">
           {this.state.authFailed ? (
             <>
-              <Typography
-                align="center"
-                variant="headline"
-                paragraph
-                component="h1"
-              >
+              <Typography align="center" variant="h4" paragraph component="h1">
                 <Trans>Oops, there was a problem signing you in.</Trans>
               </Typography>
               <Typography align="center">

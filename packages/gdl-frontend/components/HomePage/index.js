@@ -119,7 +119,7 @@ export default class HomePage extends React.Component<
         <Typography
           lang={featured.language.code}
           align="center"
-          variant="headline"
+          variant="h5"
           component="h2"
           gutterBottom
           // Specifying width here makes text in IE11 wrap
@@ -139,7 +139,7 @@ export default class HomePage extends React.Component<
         <Button
           onClick={() => logEvent('Navigation', 'Featured', featured.title)}
           href={featured.link}
-          variant="raised"
+          variant="contained"
           color="primary"
           size="large"
         >
@@ -165,7 +165,7 @@ export default class HomePage extends React.Component<
             <HeroCovertitle>
               <Typography
                 component="h1"
-                variant="title"
+                variant="h6"
                 css={{ color: colors.base.white }}
               >
                 <Trans>Featured</Trans>

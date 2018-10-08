@@ -155,7 +155,7 @@ class TranslatePage extends React.Component<Props, State> {
           css={{ marginTop: spacing.large, marginBottom: spacing.large }}
         >
           <Typography
-            variant="display1"
+            variant="h4"
             component="h1"
             align="center"
             css={{ marginBottom: spacing.large }}
@@ -179,11 +179,15 @@ class TranslatePage extends React.Component<Props, State> {
                   </Link>
                 </Grid>
                 <Grid item xs>
-                  <Typography lang={book.language.code} variant="headline">
+                  <Typography
+                    lang={book.language.code}
+                    variant="h5"
+                    component="h2"
+                  >
                     {book.title}
                   </Typography>
 
-                  <Typography paragraph variant="subheading">
+                  <Typography paragraph variant="subtitle1">
                     <Trans>from {book.publisher.name}</Trans>
                   </Typography>
 

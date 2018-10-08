@@ -83,11 +83,11 @@ class Flagged extends React.Component<Props, State> {
     return (
       <Layout>
         <Container>
-          <Typography variant="headline" component="h1" gutterBottom>
+          <Typography variant="h4" component="h1" gutterBottom>
             Flagged books
           </Typography>
           {totalCount === 0 && (
-            <Typography variant="subheading" align="center">
+            <Typography variant="subtitle1" align="center">
               Could not find any flagged books.
             </Typography>
           )}

@@ -18,6 +18,10 @@ import { colors } from './style/theme';
 // A theme with custom primary and secondary color.
 // It's optional.
 const theme = createMuiTheme({
+  // Opt in to the typography v2 components. Remove this when we're on Material UI v4
+  typography: {
+    useNextVariants: true
+  },
   palette: {
     primary: {
       main: colors.default

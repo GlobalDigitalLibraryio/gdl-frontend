@@ -185,7 +185,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     return (
       <Layout>
         <Container>
-          <Typography variant="headline" component="h1" gutterBottom>
+          <Typography variant="h5" component="h1" gutterBottom>
             Edit featured content
           </Typography>
 

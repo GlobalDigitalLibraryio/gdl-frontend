@@ -43,7 +43,12 @@ class LoginPage extends React.Component<{
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`Sign in`} />}</I18n>
         <Container alignItems="center">
-          <Typography variant="headline" css={{ marginTop: spacing.large }}>
+          <Typography
+            variant="h4"
+            component="h1"
+            align="center"
+            css={{ marginTop: spacing.large }}
+          >
             <Trans>Sign in to continue</Trans>
           </Typography>
           <div>

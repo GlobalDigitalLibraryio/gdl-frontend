@@ -178,7 +178,8 @@ class BookPage extends React.Component<
                 >
                   <Typography
                     lang={book.language.code}
-                    variant="headline"
+                    variant="h5"
+                    component="h1"
                     css={media.mobile`text-align: center`}
                   >
                     {book.title}
@@ -186,7 +187,7 @@ class BookPage extends React.Component<
 
                   <Typography
                     paragraph
-                    variant="subheading"
+                    variant="subtitle1"
                     css={media.mobile`text-align: center`}
                   >
                     <Trans>from {book.publisher.name}</Trans>
@@ -212,7 +213,7 @@ class BookPage extends React.Component<
                         prefetch
                       >
                         <Button
-                          variant="raised"
+                          variant="contained"
                           color="primary"
                           size="large"
                           onClick={() =>
