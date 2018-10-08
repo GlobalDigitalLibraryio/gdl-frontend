@@ -132,9 +132,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 onChange={this.handleSourceChange}
                 native
               >
-                <option key="all" value="All">
-                  All
-                </option>
+                <option value="all">All</option>
                 {this.state.sources.map(source => (
                   <option key={source.source} value={source.source}>
                     {getSourceName(source.source)} ({source.count})
