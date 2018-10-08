@@ -10,7 +10,7 @@ import {
   Button
 } from '@material-ui/core/';
 import type { ImageParameters } from '../../types';
-import Crop from './Crop';
+import Crop from './Cropper';
 
 type Props = {
   imageUrl: string,
