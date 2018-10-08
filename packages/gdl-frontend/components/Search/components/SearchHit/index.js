@@ -64,7 +64,12 @@ const SearchHit = ({ book }: { book: Book }) => {
           <A>{renderTitle(book)}</A>
         </Link>
         {renderBookDescription(book)}
-        <Typography variant="caption" component="div" noWrap>
+        <Typography
+          variant="caption"
+          component="div"
+          noWrap
+          color="textSecondary"
+        >
           {book.language.name}
           <Divider ariaHidden />
           <ReadingLevelTrans readingLevel={book.readingLevel} />

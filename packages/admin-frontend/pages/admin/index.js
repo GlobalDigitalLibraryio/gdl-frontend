@@ -7,13 +7,14 @@
  */
 
 import * as React from 'react';
+import Typography from '@material-ui/core/Typography/Typography';
 import Layout from '../../components/Layout';
 
 class IndexPage extends React.Component<{}> {
   render() {
     return (
       <Layout>
-        <p>this page is intentionally left blank</p>
+        <Typography>this page is intentionally left blank</Typography>
         {/* find something to put on index page */}
       </Layout>
     );

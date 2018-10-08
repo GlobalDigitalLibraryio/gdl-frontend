@@ -85,7 +85,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
     return (
       <Container>
         <div css={{ width: '100%' }}>
-          <Typography variant="headline" component="h1" gutterBottom>
+          <Typography variant="h5" component="h1" gutterBottom>
             Edit chapter:{' '}
             <Link
               href={`/${book.language.code}/books/read/${book.id}/${
@@ -159,7 +159,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
 
                 {currentChapter && (
                   <div css={{ paddingTop: '16px' }}>
-                    <Typography variant="headline" component="h2" gutterBottom>
+                    <Typography variant="h5" component="h2" gutterBottom>
                       Preview
                     </Typography>
 

@@ -84,7 +84,7 @@ class Layout extends React.Component<
           }}
         >
           <Toolbar>
-            <Typography variant="title" color="inherit" noWrap>
+            <Typography variant="h6" component="h1" color="inherit" noWrap>
               <strong>GDL Admin</strong>
             </Typography>
 
@@ -164,7 +164,7 @@ const ProfileMenu = ({
         }}
       >
         <AccountBox color="secondary" css={{ margin: '4px', fontSize: 36 }} />
-        <Typography variant="subheading" css={{ margin: '4px' }}>
+        <Typography variant="subtitle1" css={{ margin: '4px' }}>
           {userName}
         </Typography>
         <ExpandMore css={{ alignItems: 'flex-end', fontSize: 18 }} />

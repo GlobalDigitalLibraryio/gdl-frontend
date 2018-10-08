@@ -162,7 +162,7 @@ class SearchPage extends React.Component<Props, State> {
             */}
             <div aria-live="polite" aria-atomic="true">
               {searchResult && (
-                <Typography component="h1" align="center" variant="subheading">
+                <Typography component="h1" align="center" variant="subtitle1">
                   {searchResult.results.length > 0 ? (
                     <Fragment>
                       <Plural

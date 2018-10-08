@@ -74,8 +74,10 @@ class TranslationCard extends React.Component<
           </Grid>
           <Grid item xs>
             <CardContent>
-              <Typography variant="headline">{translation.title}</Typography>
-              <Typography variant="subheading">
+              <Typography variant="h5" component="h2">
+                {translation.title}
+              </Typography>
+              <Typography variant="subtitle1">
                 <Trans>from {translation.publisher.name}</Trans>
               </Typography>
             </CardContent>
@@ -161,6 +163,7 @@ class MyTranslationsPage extends React.Component<{}, State> {
         <Typography
           align="center"
           paragraph
+          variant="body1"
           css={{ marginTop: spacing.medium }}
         >
           <Trans>You have not translated any books yet.</Trans>
@@ -185,7 +188,8 @@ class MyTranslationsPage extends React.Component<{}, State> {
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
         <Container>
           <Typography
-            variant="display1"
+            variant="h4"
+            component="h1"
             align="center"
             paragraph
             css={{ marginTop: spacing.large }}
@@ -205,7 +209,7 @@ class MyTranslationsPage extends React.Component<{}, State> {
           )}
           {loadingState === 'SUCCESS' && this.renderTranslations()}
           {loadingState === 'ERROR' && (
-            <Typography align="center" color="error">
+            <Typography align="center" color="error" variant="body1">
               <Trans>An error has occurred. Please try again.</Trans>
             </Typography>
           )}

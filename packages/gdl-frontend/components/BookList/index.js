@@ -32,7 +32,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       justifyContent="space-between"
       mb={spacing.small}
     >
-      <Typography component="h1" variant="headline">
+      <Typography component="h1" variant="h5">
         {heading}
       </Typography>
       {browseLinkProps && (

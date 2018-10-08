@@ -22,13 +22,13 @@ const NotFound = () => (
   <Layout>
     <Head title="Page not found" />
     <Container my="30px">
-      <Typography component="h1" align="center" variant="headline" gutterBottom>
+      <Typography component="h1" align="center" variant="h4" gutterBottom>
         <Trans>Oh no!</Trans>
       </Typography>
       <Typography
         component="h2"
         align="center"
-        variant="subheading"
+        variant="subtitle1"
         gutterBottom
       >
         <Trans>The page you were looking for was taken by a 404.</Trans>

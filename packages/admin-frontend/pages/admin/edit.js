@@ -60,7 +60,7 @@ export default class EditPage extends React.Component<
           <Container>
             <Typography
               align="center"
-              variant="subheading"
+              variant="subtitle1"
               css={{ marginTop: 40 }}
             >
               Search for a book to edit it.

@@ -101,7 +101,9 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
       <Layout>
         <Container>
           <Row autoFlow="row">
-            <Typography variant="headline">Export books as CSV</Typography>
+            <Typography variant="h5" component="h1">
+              Export books as CSV
+            </Typography>
             <FormControl>
               <InputLabel htmlFor="language-select">Select language</InputLabel>
               <Select
