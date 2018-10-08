@@ -14,18 +14,17 @@ import {
 import {
   fetchImageMetadata,
   fetchLicenses,
-  fetchStoredParameters,
-  patchImageMetadata,
-  postStoredParameters
+  getImageCropCoordinates,
+  saveImageCropCoordinates,
+  patchImageMetadata
 } from '../lib/fetch';
 import type {
   BookDetails,
   ImageMetadata,
-  ImageParameters,
-  License,
-  StoredParameters
+  ImageCropCoordinates,
+  License
 } from '../types';
-import Crop from './ImageCropper/Crop';
+import Cropper from './ImageCropper/Cropper';
 import ImageMetadataForm, { validateForm } from './ImageMetadataForm';
 
 type Props = {
@@ -34,31 +33,28 @@ type Props = {
 };
 
 type State = {
-  croppedParameters: ?ImageParameters,
-  existingStoredParameters: ?StoredParameters,
-  existingStoredParametersLoaded: boolean,
+  cropCoordinates: ?{ [string]: ImageCropCoordinates },
+  alteredCropCoordinates: ?ImageCropCoordinates,
   imageMetadata: ?ImageMetadata,
   licenses: ?Array<License>
 };
 
+const BOOK_COVER_ASPECT_RATIO = '0.81';
+const BOOK_COVER_ASPECT_RATIO_FLOAT = 0.81;
+
 export default class EditImageDialog extends React.Component<Props, State> {
   state = {
-    croppedParameters: null,
-    existingStoredParameters: null,
-    existingStoredParametersLoaded: false,
     imageMetadata: null,
+    cropCoordinates: null,
+    alteredCropCoordinates: null,
     licenses: null
   };
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    this.fetchImageVariants();
+    this.fetchImageMetadata();
+    this.fetchLicenses();
   }
-
-  fetchData = async () => {
-    await this.fetchStoredParameters();
-    await this.fetchImageMetadata();
-    await this.fetchLicenses();
-  };
 
   fetchLicenses = async () => {
     const result = await fetchLicenses();
@@ -77,29 +73,19 @@ export default class EditImageDialog extends React.Component<Props, State> {
     }
   }
 
-  async fetchStoredParameters() {
-    const storedParameters = await fetchStoredParameters(
-      this.props.book.coverImage.url.substring(
-        this.props.book.coverImage.url.lastIndexOf('/')
-      )
+  async fetchImageVariants() {
+    const cropCoordinatesResult = await getImageCropCoordinates(
+      this.props.book.coverImage.imageId
     );
 
-    if (storedParameters.isOk) {
-      this.setState({
-        existingStoredParameters: storedParameters.data[0],
-        existingStoredParametersLoaded: true
-      });
-    } else {
-      this.setState({
-        existingStoredParameters: null,
-        existingStoredParametersLoaded: true
-      });
+    if (cropCoordinatesResult.isOk) {
+      this.setState({ cropCoordinates: cropCoordinatesResult.data });
     }
   }
 
   handleSave = async (values: Object, form: FormApi) => {
-    if (this.state.croppedParameters) {
-      await this.postCroppedImage(this.state.croppedParameters);
+    if (this.state.alteredCropCoordinates) {
+      await this.saveCroppedImage();
     }
 
     if (form.getState().dirty) {
@@ -124,30 +110,21 @@ export default class EditImageDialog extends React.Component<Props, State> {
     await patchImageMetadata(imageId, values);
   }
 
-  async postCroppedImage(croppedParameters: ImageParameters) {
-    const imageApiBody = {
-      rawImageQueryParameters: croppedParameters,
-      forRatio: '0.81',
-      revision: this.state.existingStoredParameters
-        ? this.state.existingStoredParameters.revision
-        : 1,
-      imageUrl: this.props.book.coverImage.url.substring(
-        this.props.book.coverImage.url.lastIndexOf('/')
-      )
-    };
-
-    const result = await postStoredParameters(imageApiBody);
-    if (result.isOk) {
-      this.setState({ existingStoredParameters: result.data });
+  async saveCroppedImage() {
+    if (this.state.alteredCropCoordinates) {
+      return saveImageCropCoordinates(
+        this.props.book.coverImage.imageId,
+        this.state.alteredCropCoordinates
+      );
     }
   }
 
-  handleCroppedParametersReceived = (croppedParameters: ImageParameters) => {
-    this.setState({ croppedParameters: croppedParameters });
+  handleCrop = (data: ImageCropCoordinates) => {
+    this.setState({ alteredCropCoordinates: data });
   };
 
   render() {
-    const isImageCropped = !(this.state.croppedParameters === null);
+    const isImageCropped = this.state.alteredCropCoordinates != null;
 
     const metadata = this.state.imageMetadata;
 
@@ -184,18 +161,14 @@ export default class EditImageDialog extends React.Component<Props, State> {
                 style={{ paddingTop: '0px', paddingBottom: '0px' }}
               >
                 {/* We don't want to render the cropper until we have fetched the stored parameters. The cropper uses the stored parameters to show the current cropped area on the image. */}
-                {this.state.existingStoredParametersLoaded && (
-                  <Crop
-                    existingImageParameters={
-                      this.state.existingStoredParameters &&
-                      this.state.existingStoredParameters
-                        .rawImageQueryParameters
+                {this.state.cropCoordinates && (
+                  <Cropper
+                    cropCoordinates={
+                      this.state.cropCoordinates[BOOK_COVER_ASPECT_RATIO]
                     }
-                    onCrop={croppedParameters =>
-                      this.handleCroppedParametersReceived(croppedParameters)
-                    }
+                    onCrop={this.handleCrop}
                     imageUrl={this.props.book.coverImage.url}
-                    ratio={0.81}
+                    aspectRatio={BOOK_COVER_ASPECT_RATIO_FLOAT}
                   />
                 )}
                 <ImageMetadataForm licenses={this.state.licenses} />

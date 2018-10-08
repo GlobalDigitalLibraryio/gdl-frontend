@@ -17,7 +17,7 @@ import type {
   Language,
   FeaturedContent,
   Book,
-  StoredParameters,
+  ImageCropCoordinates,
   NewImageMetadata,
   ImageMetadata,
   License
@@ -108,44 +108,35 @@ export async function saveBook(
   return result;
 }
 
-export async function postStoredParameters(
-  imageApiBody: StoredParameters
-): Promise<RemoteData<StoredParameters>> {
-  const result = await doFetch(`${imageApiUrl}/images/stored-parameters`, {
-    method: 'POST',
-    body: JSON.stringify(imageApiBody)
-  });
-
+export async function getImageCropCoordinates(
+  imageId: string
+): Promise<RemoteData<{ [string]: ImageCropCoordinates }>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}/variants`);
   return result;
 }
 
-export async function fetchStoredParameters(
-  imageUrl: string
-): Promise<RemoteData<StoredParameters>> {
-  const result = await doFetch(
-    `${imageApiUrl}/images/stored-parameters${imageUrl}`,
-    {
-      method: 'GET',
-      body: null
-    }
-  );
+export async function saveImageCropCoordinates(
+  imageId: string,
+  data: ImageCropCoordinates
+): Promise<RemoteData<void>> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}/variants`, {
+    method: 'POST',
+    body: JSON.stringify(data)
+  });
   return result;
 }
 
 export async function fetchImageMetadata(
   imageId: string
 ): Promise<RemoteData<ImageMetadata>> {
-  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
-    method: 'GET',
-    body: null
-  });
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`);
   return result;
 }
 
 export async function patchImageMetadata(
   imageId: string,
   data: Object
-): Promise<RemoteData<{}>> {
+): Promise<RemoteData<void>> {
   const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
     method: 'PATCH',
     body: JSON.stringify(data)

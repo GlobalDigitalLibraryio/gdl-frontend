@@ -33,8 +33,6 @@ export default class EditBookImage extends React.Component<Props, State> {
         <div css={{ textAlign: 'center' }}>
           <img
             src={
-              // Adds the storedRatio parameter to get the latest crop-parameters of the cover image.
-              // The timestamp parameter needs to be added to cache bust the CDN.
               book.coverImage.url +
               '?storedRatio=0.81&focalX=50&focalY=50&ratio=0.81&timestamp=' +
               Date.now()

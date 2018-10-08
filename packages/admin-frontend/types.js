@@ -116,18 +116,13 @@ export type BookDetails = $ReadOnly<{|
   }
 |}>;
 
-export type ImageParameters = {
-  cropStartX: number,
-  cropEndX: number,
-  cropStartY: number,
-  cropEndY: number
-};
-
-export type StoredParameters = {
-  imageUrl: string,
-  revision: number,
-  forRatio: string,
-  rawImageQueryParameters: ImageParameters
+export type ImageCropCoordinates = {
+  topLeftX: number,
+  height: number,
+  topLeftY: number,
+  width: number,
+  ratio: string,
+  revision: number
 };
 
 export type FeaturedContent = $ReadOnly<{
