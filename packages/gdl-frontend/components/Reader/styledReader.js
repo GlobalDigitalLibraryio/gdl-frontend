@@ -9,7 +9,7 @@ import styled from 'react-emotion';
 import { fonts } from '../../style/theme';
 import media from '../../style/media';
 
-export const Page = styled.div`
+export const Page = styled('div')`
   color: #000;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -37,10 +37,17 @@ export const Page = styled.div`
     margin-top: 0;
   }
   overflow-y: auto;
+
+  padding: 20px 40px;
+  flex: 1 auto;
+  ${media.tablet`
+    padding-left: 120px;
+    padding-right: 120px;
+  `};
 `;
 
 // A grey backdrop that's only visible on tablets/desktops
-export const Backdrop = styled.div`
+export const Backdrop = styled('div')`
   bottom: 0;
   left: 0;
   right: 0;

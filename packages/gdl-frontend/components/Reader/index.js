@@ -7,7 +7,6 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
-import Swipeable from 'react-swipeable';
 
 import Head from '../Head';
 import { fetchChapter } from '../../fetch';
@@ -16,10 +15,9 @@ import { Backdrop, Page } from './styledReader';
 import Toolbar from './Toolbar';
 import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
-import ButtonOverlay from './ButtonOverlay';
+import PageNavigation from './PageNavigation';
 import { Router } from '../../routes';
 import { colors } from '../../style/theme';
-import media from '../../style/media';
 
 function createMarkup(chapter: Chapter) {
   return { __html: chapter.content };
@@ -33,75 +31,27 @@ const Card = styled.div`
   flex-direction: column;
 `;
 
-const Div = styled('div')`
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-bottom: 20px;
-  flex: 1 auto;
-  ${media.tablet`
-    padding-left: 120px;
-    padding-right: 120px;
-  `};
-`;
-
 type ReaderProps = {|
   book: BookDetails,
   onRequestClose(): void,
   chapterWithContent: ?Chapter,
   chapterPointer: ChapterSummary,
-  onRequestNext(): void,
-  onRequestPrevious(): void,
+  onRequestNextChapter(): void,
+  onRequestPreviousChapter(): void,
   userHasEditAccess?: boolean
 |};
 
-type ReaderState = {
-  showOverlay: boolean
-};
-
-const OVERLAY_TIMEOUT = 3000; // 3 seconds
-
-class Reader extends React.PureComponent<ReaderProps, ReaderState> {
-  state = {
-    showOverlay: false
-  };
-
-  componentWillUnmount() {
-    // Make sure we clean up after ourselves so we don't try to setState after we've unmounted
-    if (this.timerId) {
-      window.clearTimeout(this.timerId);
-    }
-  }
-
-  onTap = (event: SyntheticTouchEvent<HTMLElement>) => {
-    // If we clicked a button, ignore the tap
-    // $FlowFixMe: Not sure why Flow complains here
-    if (event.target.type === 'button') {
-      return;
-    }
-
-    // Toggle the overlay and clear/set timer accordingly
-    this.setState(
-      state => ({ showOverlay: !state.showOverlay }),
-      () => {
-        if (this.state.showOverlay) {
-          this.timerId = window.setTimeout(
-            () => this.setState({ showOverlay: false }),
-            OVERLAY_TIMEOUT
-          );
-        } else {
-          window.clearTimeout(this.timerId);
-        }
-      }
-    );
-  };
-
-  timerId: number;
-
+class Reader extends React.PureComponent<ReaderProps> {
   render() {
-    const { book, chapterWithContent, chapterPointer } = this.props;
+    const {
+      book,
+      chapterWithContent,
+      chapterPointer,
+      onRequestNextChapter,
+      onRequestPreviousChapter
+    } = this.props;
 
-    const disableNext = chapterPointer.seqNo >= book.chapters.length;
-    const disablePrev = chapterPointer.seqNo <= 1;
+    const isRtlLanguage = !!book.language.isRTL;
 
     return (
       <Container size="large" css={{ padding: 0 }}>
@@ -114,46 +64,34 @@ class Reader extends React.PureComponent<ReaderProps, ReaderState> {
             onRequestClose={this.props.onRequestClose}
           />
           {/*
-            We don't want the swiping/touch presses to trigger on the toolbar. So we wrap with Swipable here instead of around the entire Card.
-            It is important that Swipable includes the Buttons, so we can start swiping all the way from edge of the screens
+            We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.
           */}
-          <Swipeable
-            onSwipedLeft={this.props.onRequestNext}
-            onSwipedRight={this.props.onRequestPrevious}
-            onTap={this.onTap}
-            css={{ flex: 1, paddingTop: '20px' }}
+          <PageNavigation
+            css={{ flex: 1 }}
+            isRtlLanguage={isRtlLanguage}
+            onRequestNextChapter={onRequestNextChapter}
+            onRequestPreviousChapter={onRequestPreviousChapter}
+            disableNext={chapterPointer.seqNo >= book.chapters.length}
+            disablePrevious={chapterPointer.seqNo <= 1}
           >
-            <Div lang={book.language.code}>
-              {chapterWithContent && (
-                <Page
-                  dangerouslySetInnerHTML={createMarkup(chapterWithContent)}
-                />
-              )}
-            </Div>
-            <ButtonOverlay
-              showOnMobile={this.state.showOverlay}
-              onRequestNext={this.props.onRequestNext}
-              onRequestPrev={this.props.onRequestPrevious}
-              disableNext={disableNext}
-              disablePrev={disablePrev}
+            <Page
+              lang={book.language.code}
+              dir={isRtlLanguage ? 'rtl' : 'ltr'}
+              dangerouslySetInnerHTML={
+                chapterWithContent ? createMarkup(chapterWithContent) : null
+              }
             />
-          </Swipeable>
+          </PageNavigation>
         </Card>
-        <KeyDown
-          when="ArrowRight"
-          then={this.props.onRequestNext}
-          disabled={disableNext}
-        />
         <KeyDown when="Escape" then={this.props.onRequestClose} />
-        <KeyDown
-          when="ArrowLeft"
-          then={this.props.onRequestPrevious}
-          disabled={disablePrev}
-        />
       </Container>
     );
   }
 }
+
+/**
+ * The container has state and logic for switching/fetching chapters
+ */
 
 type ReaderContainerState = {
   chapters: { [number]: Chapter },
@@ -279,7 +217,7 @@ export default class ReaderContainer extends React.Component<
     const prev = this.getPreviousChapterPointer();
     const { book } = this.props;
     return (
-      <React.Fragment>
+      <>
         <Head
           title={`Read: ${book.title} (${this.state.chapterPointer.seqNo}/${
             this.props.book.chapters.length
@@ -304,12 +242,12 @@ export default class ReaderContainer extends React.Component<
           book={this.props.book}
           chapterWithContent={this.state.chapters[this.state.chapterPointer.id]}
           chapterPointer={this.state.chapterPointer}
-          onRequestNext={this.handleRequestNextChapter}
-          onRequestPrevious={this.handleRequestPreviousChapter}
+          onRequestNextChapter={this.handleRequestNextChapter}
+          onRequestPreviousChapter={this.handleRequestPreviousChapter}
           onRequestClose={this.handleRequestCloseBook}
           userHasEditAccess={this.props.userHasEditAccess}
         />
-      </React.Fragment>
+      </>
     );
   }
 }
