@@ -13,7 +13,8 @@ export type Publisher = {
 
 export type Language = {
   +code: string,
-  +name: string
+  +name: string,
+  +isRTL?: boolean
 };
 
 export type ConfigShape = {
