@@ -49,7 +49,7 @@ function listContributors(contributorType, contributors) {
         <Typography variant="subtitle2" component="span">
           {headingText(contributorType, contributorsOfType.length)}
         </Typography>
-        <Typography component="span" paragraph>
+        <Typography component="span" paragraph className={noMarginForLastChild}>
           {contributorsOfType.map(contributor => contributor.name).join(', ')}
         </Typography>
       </Fragment>
@@ -68,7 +68,7 @@ const BookMeta = ({ book }: Props) => {
       <Typography variant="subtitle2" component="span">
         <Trans>License</Trans>
       </Typography>
-      <A href={book.license.url} paragraph>
+      <A href={book.license.url} paragraph className={noMarginForLastChild}>
         {book.license.description}
       </A>
       {book.additionalInformation && (
@@ -121,6 +121,12 @@ class AdditionalInformation extends React.Component<
     );
   }
 }
+
+const noMarginForLastChild = css`
+  &:last-child {
+    margin-bottom: 0;
+  }
+`;
 
 const expansionStyles = {
   // We want the wrapper to be the relative parent of the absolutely positioned IconButton.

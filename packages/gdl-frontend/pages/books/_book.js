@@ -176,19 +176,25 @@ class BookPage extends React.Component<Props> {
                     </Typography>
                   </>
                 )}
-
                 <BookActions1 book={book} />
-
                 <Divider />
 
-                <Metadata book={book} />
-                <Hidden only="mobile">
-                  <Divider />
-                </Hidden>
-                <BookActions2
-                  book={book}
-                  userHasEditAccess={this.props.userHasEditAccess}
-                />
+                <MyGrid>
+                  <MyGridItem>
+                    <Metadata book={book} />
+                  </MyGridItem>
+                  <Hidden only="mobile">
+                    <MyGridItem>
+                      <Divider />
+                    </MyGridItem>
+                  </Hidden>
+                  <MyGridItem>
+                    <BookActions2
+                      book={book}
+                      userHasEditAccess={this.props.userHasEditAccess}
+                    />
+                  </MyGridItem>
+                </MyGrid>
 
                 <Divider />
                 <View mb={spacing.medium}>
