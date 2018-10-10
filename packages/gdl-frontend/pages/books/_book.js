@@ -37,12 +37,13 @@ import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
-import { CustomButton, View } from '../../elements';
+import { CustomButton, Hidden, View } from '../../elements';
 import Container from '../../elements/Container';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
 import { spacing } from '../../style/theme';
+import mq from '../../style/mq';
 import {
   BookJsonLd,
   Metadata,
@@ -62,6 +63,19 @@ type Props = {
 
 const Divider = styled(MuiDivider)`
   margin: 25px 0;
+`;
+
+const MyGrid = styled('div')`
+  display: flex;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
+  ${mq({ flexDirection: ['column', 'row'] })};
+`;
+
+const MyGridItem = styled('div')`
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 class BookPage extends React.Component<Props> {
@@ -99,7 +113,14 @@ class BookPage extends React.Component<Props> {
         </Head>
         <Layout wrapWithMain={false}>
           <Main background="white">
-            <Container css={{ paddingLeft: '30px', paddingRight: '30px' }}>
+            <Container
+              css={{
+                paddingLeft: '30px',
+                paddingRight: '30px',
+                marginTop: '30px'
+              }}
+              size="large"
+            >
               <div>
                 <CoverImage
                   css={{ marginLeft: 'auto' }}
@@ -161,7 +182,9 @@ class BookPage extends React.Component<Props> {
                 <Divider />
 
                 <Metadata book={book} />
-                <Divider />
+                <Hidden only="mobile">
+                  <Divider />
+                </Hidden>
                 <BookActions2
                   book={book}
                   userHasEditAccess={this.props.userHasEditAccess}
@@ -330,7 +353,7 @@ class BookActions2 extends React.Component<
           rel="noopener noreferrer"
           onClick={() => logEvent('Books', 'Report', book.title)}
         >
-          <WarningIcon /> <Trans>Report a problem with this book</Trans>
+          <WarningIcon /> <Trans>Report book</Trans>
         </Button>
 
         <Menu
