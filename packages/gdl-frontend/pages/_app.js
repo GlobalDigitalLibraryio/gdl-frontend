@@ -99,6 +99,7 @@ class App extends NextApp {
   componentWillUnmount() {
     // Stop listening to logout events
     window.removeEventListener('storage', this.logout, false);
+    Router.router.events.off('routeChangeComplete', logPageView);
   }
 
   /**
