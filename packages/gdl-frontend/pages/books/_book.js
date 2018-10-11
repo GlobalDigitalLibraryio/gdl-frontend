@@ -117,12 +117,10 @@ class BookPage extends React.Component<Props> {
         <Layout wrapWithMain={false}>
           <Main background="white">
             <Container
+              stickToEdgeOnLargeScreens
               css={{
-                paddingLeft: '30px',
-                paddingRight: '30px',
                 marginTop: '30px'
               }}
-              size="large"
             >
               <div>
                 <MyGrid>

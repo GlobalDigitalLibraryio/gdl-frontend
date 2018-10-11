@@ -9,8 +9,8 @@ const TABLET_BREAKPOINT = 768;
 
 const misc = {
   containers: {
-    large: '1024px',
-    small: '738px'
+    large: '1060px',
+    small: '810px'
   }
 };
 
