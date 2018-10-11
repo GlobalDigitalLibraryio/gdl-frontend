@@ -20,6 +20,7 @@ import media from '../style/media';
  */
 const cardCss = css`
   position: relative;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
   &:hover {
     img {
       transition: 1s opacity linear;
