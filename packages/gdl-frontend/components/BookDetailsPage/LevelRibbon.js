@@ -13,6 +13,7 @@ import { triangle } from 'polished';
 import type { ReadingLevel } from '../../types';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts } from '../../style/theme';
+import mq from '../../style/mq';
 
 const HEIGHT = '30px';
 
@@ -38,8 +39,10 @@ const Ribbon = styled('div')`
   background-color: ${p => colorMap[p.readingLevel]};
   color: black;
   padding-right: 20px;
-  padding-left: 30px;
-  margin-left: -30px;
+  ${mq({
+    paddingLeft: ['30px', '40px'],
+    marginLeft: ['-30px', '-40px']
+  })}
   font-weight: ${fonts.weight.bold};
   font-size: 14px;
   position: relative;

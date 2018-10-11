@@ -132,6 +132,9 @@ class BookPage extends React.Component<Props> {
                       src={book.coverImage && book.coverImage.url}
                       size="large"
                     />
+                    <Hidden only="tablet" css={{ marginTop: '40px' }}>
+                      <ReadBookLink book={book} />
+                    </Hidden>
                     <Hidden only="mobile">
                       <LevelRibbon level={book.readingLevel} />
                     </Hidden>
@@ -155,39 +158,9 @@ class BookPage extends React.Component<Props> {
                     <Typography lang={book.language.code} paragraph>
                       {book.description}
                     </Typography>
-
-                    {book.bookFormat === 'HTML' ? (
-                      <Link
-                        route="read"
-                        passHref
-                        params={{ id: book.id, lang: book.language.code }}
-                        prefetch
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          fullWidth
-                          onClick={() =>
-                            logEvent('Books', 'Read', this.props.book.title)
-                          }
-                        >
-                          <Trans>Read book</Trans>
-                        </Button>
-                      </Link>
-                    ) : (
-                      <>
-                        <Button size="large" variant="raised" disabled>
-                          <Trans>Read book</Trans>
-                        </Button>
-                        <Typography
-                          align="center"
-                          css={{ marginTop: spacing.small }}
-                        >
-                          This book is only available for download.
-                        </Typography>
-                      </>
-                    )}
+                    <Hidden only="mobile">
+                      <ReadBookLink book={book} />
+                    </Hidden>
                   </MyGridItem>
                 </MyGrid>
                 <BookActions1 book={book} />
@@ -227,6 +200,35 @@ class BookPage extends React.Component<Props> {
     );
   }
 }
+
+const ReadBookLink = ({ book }) =>
+  book.bookFormat === 'HTML' ? (
+    <Link
+      route="read"
+      passHref
+      params={{ id: book.id, lang: book.language.code }}
+      prefetch
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
+        onClick={() => logEvent('Books', 'Read', book.title)}
+      >
+        <Trans>Read book</Trans>
+      </Button>
+    </Link>
+  ) : (
+    <>
+      <Button size="large" variant="raised" disabled>
+        <Trans>Read book</Trans>
+      </Button>
+      <Typography align="center" css={{ marginTop: spacing.small }}>
+        This book is only available for download.
+      </Typography>
+    </>
+  );
 
 /**
  * Favorite, share, offline
@@ -329,52 +331,61 @@ class BookActions2 extends React.Component<
     const { book, userHasEditAccess } = this.props;
     return (
       <>
-        <Button
-          aria-owns={this.state.anchorEl ? 'download-book-menu' : null}
-          color="primary"
-          aria-haspopup="true"
-          onClick={this.handleDownloadClick}
-        >
-          <SaveAltIcon />
-          <Trans>Download</Trans>
-        </Button>
-        {book.supportsTranslation && (
-          <Link
-            route="translate"
-            passHref
-            params={{ id: book.id, lang: book.language.code }}
+        <div>
+          <Button
+            aria-owns={this.state.anchorEl ? 'download-book-menu' : null}
+            color="primary"
+            aria-haspopup="true"
+            onClick={this.handleDownloadClick}
           >
-            <Button
-              onClick={() => logEvent('Books', 'Translate', book.title)}
-              color="primary"
+            <SaveAltIcon />
+            <Trans>Download</Trans>
+          </Button>
+        </div>
+
+        {book.supportsTranslation && (
+          <div>
+            <Link
+              route="translate"
+              passHref
+              params={{ id: book.id, lang: book.language.code }}
             >
-              <TranslateIcon /> <Trans>Translate this book</Trans>
-            </Button>
-          </Link>
+              <Button
+                onClick={() => logEvent('Books', 'Translate', book.title)}
+                color="primary"
+              >
+                <TranslateIcon /> <Trans>Translate this book</Trans>
+              </Button>
+            </Link>
+          </div>
         )}
         {userHasEditAccess && (
-          <NextLink
-            href={{
-              pathname: '/admin/edit',
-              query: { id: book.id, lang: book.language.code }
-            }}
-            passHref
-          >
-            <Button color="primary">
-              <EditIcon />
-              Edit book
-            </Button>
-          </NextLink>
+          <div>
+            <NextLink
+              href={{
+                pathname: '/admin/edit',
+                query: { id: book.id, lang: book.language.code }
+              }}
+              passHref
+            >
+              <Button color="primary">
+                <EditIcon />
+                Edit
+              </Button>
+            </NextLink>
+          </div>
         )}
-        <Button
-          color="primary"
-          href={zendeskUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => logEvent('Books', 'Report', book.title)}
-        >
-          <WarningIcon /> <Trans>Report book</Trans>
-        </Button>
+        <div>
+          <Button
+            color="primary"
+            href={zendeskUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => logEvent('Books', 'Report', book.title)}
+          >
+            <WarningIcon /> <Trans>Report a problem</Trans>
+          </Button>
+        </div>
 
         <Menu
           id="download-book-menu"
