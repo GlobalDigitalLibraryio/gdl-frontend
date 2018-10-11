@@ -74,6 +74,9 @@ const MyGrid = styled('div')`
 `;
 
 const MyGridItem = styled('div')`
+  &:first-child  {
+    ${mq({ flexBasis: [null, '350px'] })};
+  }
   padding-left: 20px;
   padding-right: 20px;
 `;
@@ -122,60 +125,71 @@ class BookPage extends React.Component<Props> {
               size="large"
             >
               <div>
-                <CoverImage
-                  css={{ marginLeft: 'auto' }}
-                  src={book.coverImage && book.coverImage.url}
-                  size="large"
-                />
-                <LevelRibbon level={book.readingLevel} />
-                <Typography
-                  lang={book.language.code}
-                  variant="h5"
-                  component="h1"
-                >
-                  {book.title}
-                </Typography>
-
-                <Typography paragraph variant="subtitle1">
-                  <Trans>from {book.publisher.name}</Trans>
-                </Typography>
-
-                <Typography lang={book.language.code} paragraph>
-                  {book.description}
-                </Typography>
-
-                {book.bookFormat === 'HTML' ? (
-                  <Link
-                    route="read"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                    prefetch
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
+                <MyGrid>
+                  <MyGridItem>
+                    <CoverImage
+                      css={{ marginLeft: 'auto' }}
+                      src={book.coverImage && book.coverImage.url}
                       size="large"
-                      fullWidth
-                      onClick={() =>
-                        logEvent('Books', 'Read', this.props.book.title)
-                      }
-                    >
-                      <Trans>Read book</Trans>
-                    </Button>
-                  </Link>
-                ) : (
-                  <>
-                    <Button size="large" variant="raised" disabled>
-                      <Trans>Read book</Trans>
-                    </Button>
+                    />
+                    <Hidden only="mobile">
+                      <LevelRibbon level={book.readingLevel} />
+                    </Hidden>
+                  </MyGridItem>
+                  <MyGridItem>
+                    <Hidden only="tablet">
+                      <LevelRibbon level={book.readingLevel} />
+                    </Hidden>
                     <Typography
-                      align="center"
-                      css={{ marginTop: spacing.small }}
+                      lang={book.language.code}
+                      variant="h5"
+                      component="h1"
                     >
-                      This book is only available for download.
+                      {book.title}
                     </Typography>
-                  </>
-                )}
+
+                    <Typography paragraph variant="subtitle1">
+                      <Trans>from {book.publisher.name}</Trans>
+                    </Typography>
+
+                    <Typography lang={book.language.code} paragraph>
+                      {book.description}
+                    </Typography>
+
+                    {book.bookFormat === 'HTML' ? (
+                      <Link
+                        route="read"
+                        passHref
+                        params={{ id: book.id, lang: book.language.code }}
+                        prefetch
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="large"
+                          fullWidth
+                          onClick={() =>
+                            logEvent('Books', 'Read', this.props.book.title)
+                          }
+                        >
+                          <Trans>Read book</Trans>
+                        </Button>
+                      </Link>
+                    ) : (
+                      <>
+                        <Button size="large" variant="raised" disabled>
+                          <Trans>Read book</Trans>
+                        </Button>
+                        <Typography
+                          align="center"
+                          css={{ marginTop: spacing.small }}
+                        >
+                          This book is only available for download.
+                        </Typography>
+                      </>
+                    )}
+                  </MyGridItem>
+                </MyGrid>
                 <BookActions1 book={book} />
                 <Divider />
 

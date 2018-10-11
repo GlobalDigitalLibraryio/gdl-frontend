@@ -16,7 +16,7 @@ type Props = {
 };
 
 const mobile = css(mq({ display: [null, 'none'] }));
-const tablet = css(mq({ display: ['none', null] }));
+const tablet = css(mq({ display: ['none', 'unset'] }));
 
 /**
  * Only render on the given type
