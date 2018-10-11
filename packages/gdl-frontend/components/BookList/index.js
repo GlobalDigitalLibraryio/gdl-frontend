@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment, type Element } from 'react';
+import React, { type Element } from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
@@ -25,7 +25,7 @@ type Props = {
 
 // Add a wrapper around each book list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 const BookList = ({ books, heading, browseLinkProps }: Props) => (
-  <Fragment>
+  <>
     <View
       flexDirection="row"
       alignItems="center"
@@ -53,7 +53,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
         ))}
       </ScrollDiv>
     </NegativeMarginDiv>
-  </Fragment>
+  </>
 );
 
 const NegativeMarginDiv = styled('div')`
