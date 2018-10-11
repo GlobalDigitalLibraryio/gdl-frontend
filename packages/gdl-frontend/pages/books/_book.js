@@ -37,8 +37,7 @@ import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
-import { CustomButton, Hidden, View } from '../../elements';
-import Container from '../../elements/Container';
+import { Container, CustomButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
@@ -117,7 +116,6 @@ class BookPage extends React.Component<Props> {
         <Layout wrapWithMain={false}>
           <Main background="white">
             <Container
-              stickToEdgeOnLargeScreens
               css={{
                 marginTop: '30px'
               }}

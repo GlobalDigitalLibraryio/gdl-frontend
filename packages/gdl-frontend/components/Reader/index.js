@@ -54,7 +54,7 @@ class Reader extends React.PureComponent<ReaderProps> {
     const isRtlLanguage = !!book.language.isRTL;
 
     return (
-      <Container size="large" css={{ padding: 0 }}>
+      <Container size="large" gutter={false}>
         <Backdrop />
         <Card>
           <Toolbar

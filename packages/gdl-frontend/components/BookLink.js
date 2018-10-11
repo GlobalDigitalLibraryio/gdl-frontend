@@ -15,6 +15,11 @@ import type { Book } from '../types';
 import CoverImage from './CoverImage';
 import media from '../style/media';
 
+export const coverWidths = {
+  small: '105px',
+  large: '130px'
+};
+
 /**
  * Add small brightness effect to book cover when hovered
  */
@@ -28,9 +33,9 @@ const cardCss = css`
       filter: opacity(0.9);
     }
   }
-  width: 105px;
+  width: ${coverWidths.small};
   ${media.tablet`
-   width: 130px;
+    width: ${coverWidths.large};
   `};
 `;
 

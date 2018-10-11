@@ -12,9 +12,10 @@ import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
-import { spacing } from '../../style/theme/';
+import { spacing, misc } from '../../style/theme/';
+import media from '../../style/media';
 import type { Book } from '../../types';
-import BookLink from '../BookLink';
+import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 
 type Props = {
@@ -38,44 +39,65 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
           {/* Negative margin to align the link against the edge of the container */}
-          <Button color="primary" css={{ marginRight: '-16px' }}>
+          <Button color="primary" variant="outlined">
             <Trans>More</Trans>
           </Button>
         </BrowseLink>
       )}
     </View>
-    <NegativeMarginDiv>
-      <ScrollDiv>
-        {books.map(book => (
-          <CoverDiv key={book.id}>
-            <BookLink key={book.id} book={book} />
-          </CoverDiv>
-        ))}
-      </ScrollDiv>
-    </NegativeMarginDiv>
+    <Scroller>
+      {books.map(book => (
+        <CoverItem key={book.id}>
+          <BookLink book={book} />
+        </CoverItem>
+      ))}
+    </Scroller>
   </>
 );
 
-const NegativeMarginDiv = styled('div')`
-  margin: 0 -${spacing.medium};
+/**
+ * For browsers that doesn't support grid we add some spacing around the book covers
+ */
+const CoverItem = styled('div')`
+  display: inline-block;
+  &:not(:last-child) {
+    margin-right: 15px;
+  }
+  @supports (display: grid) {
+    margin-right: 0 !important;
+  }
 `;
 
-const ScrollDiv = styled('div')`
+/**
+ * We use CSS grid for browsers that support it.
+ * So we get the nice fluid/dynamic spacing between the items (down the minimum value set the as the column gap)
+ *
+ * Currently this is coded to show at the most 5 book covers (so the spacing is the same between the items even if there are fewer than 5 books)
+ */
+const Scroller = styled('div')`
   overflow-x: auto;
   /* Fixes problem with scrolling in Safari all over the place */
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  white-space: nowrap;
   ::-webkit-scrollbar {
     display: none;
   }
-  white-space: nowrap;
-  padding: 0 ${spacing.medium};
-`;
 
-const CoverDiv = styled('div')`
-  display: inline-block;
-  &:not(:last-child) {
-    margin-right: 11px;
+  /* Ensure the box-shadow isn't cut off and allows us to "scroll" on the edges/across the gutters  */
+  margin: 0 -${misc.gutter}px -${misc.gutter}px;
+  padding: 0 ${misc.gutter}px ${misc.gutter}px;
+
+  @supports (display: grid) {
+    display: grid;
+    justify-content: space-between;
+    column-gap: 15px;
+    grid-auto-flow: column;
+
+    grid-template-columns: repeat(5, ${coverWidths.small});
+    ${media.tablet`
+      grid-template-columns: repeat(5, ${coverWidths.large});
+    `};
   }
 `;
 

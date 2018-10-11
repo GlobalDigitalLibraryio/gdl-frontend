@@ -20,7 +20,6 @@ const NavContextBar = (props: Props) => (
     <Container
       size="large"
       width="100%"
-      stickToEdgeOnLargeScreens
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"

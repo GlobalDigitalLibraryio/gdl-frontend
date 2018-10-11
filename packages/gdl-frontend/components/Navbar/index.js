@@ -137,7 +137,7 @@ const Left = styled('div')`
 const Center = styled('div')`
   display: flex;
   align-items: center;
-  max-width: ${misc.containers.large};
+  max-width: ${misc.containers.large}px;
   display: flex;
   align-items: center;
   flex: 1 25%;

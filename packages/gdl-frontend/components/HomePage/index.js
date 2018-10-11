@@ -71,8 +71,8 @@ const HeroCardMobile = styled(Card)`
   ${flexCenter};
   position: relative;
   margin-top: -50px;
-  margin-left: 15px;
-  margin-right: 15px;
+  margin-left: ${spacing.large};
+  margin-right: ${spacing.large};
   ${media.tablet`
     display: none;
   `};
