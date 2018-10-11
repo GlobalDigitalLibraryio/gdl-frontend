@@ -36,6 +36,11 @@ const theme = createMuiTheme({
       contained: {
         boxShadow: 'none'
       }
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: 0
+      }
     }
   }
 });

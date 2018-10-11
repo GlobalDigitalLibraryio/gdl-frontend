@@ -34,7 +34,6 @@ type Props = {
 
 const Main = ({ background, className, ...props }: Props) => (
   <Paper
-    square
     className={cx(
       styles.default,
       { [styles.white]: background === 'white' },

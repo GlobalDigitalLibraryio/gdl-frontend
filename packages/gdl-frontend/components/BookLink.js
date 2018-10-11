@@ -46,7 +46,7 @@ const ClickTarget = styled('a')`
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
 export default ({ book }: { book: Book }) => (
-  <Card className={cardCss} square>
+  <Card className={cardCss}>
     <Link
       route="book"
       params={{ id: book.id, lang: book.language.code }}
