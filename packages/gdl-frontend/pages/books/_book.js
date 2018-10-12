@@ -43,6 +43,7 @@ import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
 import { spacing } from '../../style/theme';
 import mq from '../../style/mq';
+import media from '../../style/media';
 import {
   BookJsonLd,
   Metadata,
@@ -61,7 +62,10 @@ type Props = {
 };
 
 const Divider = styled(MuiDivider)`
-  margin: 25px 0;
+  margin: ${spacing.large} 0;
+  ${media.tablet`
+  margin: ${spacing.xxlarge} 0;
+  `};
 `;
 
 const MyGrid = styled('div')`
@@ -114,12 +118,8 @@ class BookPage extends React.Component<Props> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
-          <Main background="white">
-            <Container
-              css={{
-                marginTop: '30px'
-              }}
-            >
+          <Main background="white" css={mq({ marginTop: ['200px', '100px'] })}>
+            <Container css={mq({ marginTop: ['-160', '-54px'] })}>
               <div>
                 <MyGrid>
                   <MyGridItem>
@@ -128,16 +128,31 @@ class BookPage extends React.Component<Props> {
                       src={book.coverImage && book.coverImage.url}
                       size="large"
                     />
-                    <Hidden only="tablet" css={{ marginTop: '40px' }}>
+                    <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
                       <ReadBookLink book={book} />
                     </Hidden>
-                    <Hidden only="mobile">
+                    <Hidden
+                      only="mobile"
+                      css={{ marginTop: '-20px', marginBottom: spacing.medium }}
+                    >
                       <LevelRibbon level={book.readingLevel} />
                     </Hidden>
                   </MyGridItem>
                   <MyGridItem>
-                    <Hidden only="tablet">
-                      <LevelRibbon level={book.readingLevel} />
+                    <Hidden
+                      only="tablet"
+                      css={{ marginTop: '130px', marginBottom: '45px' }}
+                    >
+                      <div
+                        css={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          width: '100%'
+                        }}
+                      >
+                        <LevelRibbon level={book.readingLevel} />
+                        <BookActions1 book={book} />
+                      </div>
                     </Hidden>
                     <Typography
                       lang={book.language.code}
@@ -159,7 +174,9 @@ class BookPage extends React.Component<Props> {
                     </Hidden>
                   </MyGridItem>
                 </MyGrid>
-                <BookActions1 book={book} />
+                <Hidden only="mobile" css={{ marginTop: spacing.large }}>
+                  <BookActions1 book={book} />
+                </Hidden>
                 <Divider />
 
                 <MyGrid>
@@ -261,7 +278,7 @@ class BookActions1 extends React.Component<
         css={{
           display: 'flex',
           justifyContent: 'space-around',
-          marginTop: '25px'
+          width: '100%'
         }}
       >
         <Favorite
