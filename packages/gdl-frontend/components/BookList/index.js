@@ -39,7 +39,7 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
           {/* Negative margin to align the link against the edge of the container */}
-          <Button color="primary" variant="outlined">
+          <Button color="primary" size="small" variant="outlined">
             <Trans>More</Trans>
           </Button>
         </BrowseLink>
