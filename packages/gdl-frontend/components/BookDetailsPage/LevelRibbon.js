@@ -41,6 +41,7 @@ const Ribbon = styled('div')`
     paddingLeft: [misc.gutter, 40],
     paddingRight: [20, 25],
     marginLeft: [-misc.gutter, -40],
+    marginRight: [0, 20],
     height: [30, 40],
     fontSize: [14, 20]
   })}

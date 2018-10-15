@@ -12,14 +12,11 @@ import { Trans } from '@lingui/react';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../../types';
 
+import { FacebookIcon, TwitterIcon, YoutubeIcon } from '../../components/icons';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
-
-import FaFacebookSquare from 'react-icons/lib/fa/facebook-square';
-import FaTwitterSquare from 'react-icons/lib/fa/twitter-square';
-import FaYoutubeSquare from 'react-icons/lib/fa/youtube-square';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -71,8 +68,10 @@ const SocialMediaIcons = styled('div')`
   justify-content: space-between;
   flex-grow: 1;
   margin: 14px 36px 20px 36px;
-  a {
+  svg {
     font-size: 2.25rem;
+  }
+  a {
     color: ${colors.text.subtle};
     &:hover {
       color: ${colors.default};
@@ -169,21 +168,21 @@ const Footer = () => {
             aria-label="Facebook"
             href="https://www.facebook.com/globaldigitallibrary/"
           >
-            <FaFacebookSquare />
+            <FacebookIcon />
           </a>
           <a
             title="Twitter"
             aria-label="Twitter"
             href="https://twitter.com/gdigitallibrary"
           >
-            <FaTwitterSquare />
+            <TwitterIcon />
           </a>
           <a
             title="YouTube"
             aria-label="YouTube"
             href="https://www.youtube.com/channel/UCN5RyDXS_aKA37YwIPzQPTg"
           >
-            <FaYoutubeSquare />
+            <YoutubeIcon />
           </a>
         </SocialMediaIcons>
       </FooterStyle>

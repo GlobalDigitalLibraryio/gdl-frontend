@@ -14,6 +14,8 @@ import styled from 'react-emotion';
 import {
   Menu,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
   Button,
   Typography,
   Divider as MuiDivider
@@ -28,6 +30,7 @@ import {
   Share as ShareIcon,
   CheckCircle as CheckCircleIcon
 } from '@material-ui/icons';
+import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
@@ -140,7 +143,7 @@ class BookPage extends React.Component<Props> {
                     </Hidden>
                     <Hidden
                       only="mobile"
-                      css={{ marginTop: '-20px', marginBottom: spacing.medium }}
+                      css={{ marginTop: -20, marginBottom: spacing.medium }}
                     >
                       <LevelRibbon level={book.readingLevel} />
                     </Hidden>
@@ -258,17 +261,18 @@ const ReadBookLink = ({ book }) =>
  */
 class BookActions1 extends React.Component<
   { book: BookDetails },
-  { supportsNavigatorShare: boolean }
+  { anchorEl: ?HTMLElement }
 > {
   state = {
-    supportsNavigatorShare: false
+    anchorEl: null
   };
 
-  componentDidMount() {
-    this.setState({ supportsNavigatorShare: Boolean(!navigator.share) }); // FIXME: Making sure the icon shows now during development. Remember to remove this later
-  }
+  closeShareMenu = () => this.setState({ anchorEl: null });
 
-  handleShareClick = () => {
+  handleShareClick = event => {
+    /**
+     * If the browser supports the web share api, we use that instead of displaying a dropdown
+     */
     if (navigator.share) {
       navigator
         .share({
@@ -278,58 +282,95 @@ class BookActions1 extends React.Component<
         })
         .then(() => logEvent('Books', 'Shared', this.props.book.title))
         .catch(() => {}); // Ignore here because we don't care if people cancel sharing
+    } else {
+      this.setState({ anchorEl: event.currentTarget });
     }
   };
 
   render() {
     const { book } = this.props;
     return (
-      <div
-        css={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          width: '100%'
-        }}
-      >
-        <Favorite
-          id={this.props.book.id}
-          language={this.props.book.language.code}
+      <>
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            width: '100%'
+          }}
         >
-          {({ onClick, isFav }) => (
-            <CustomButton
-              onClick={() => {
-                onClick();
-                logEvent(
-                  'Books',
-                  isFav ? 'Unfavorited' : 'Favorited',
-                  book.title
-                );
-              }}
-              icon={
-                isFav ? (
-                  <FavoriteIcon style={isFav ? { color: 'red' } : null} />
-                ) : (
-                  <FavoriteOutlineIcon />
-                )
-              }
-              label={<Trans>Favorite</Trans>}
-            />
-          )}
-        </Favorite>
+          <Favorite
+            id={this.props.book.id}
+            language={this.props.book.language.code}
+          >
+            {({ onClick, isFav }) => (
+              <CustomButton
+                onClick={() => {
+                  onClick();
+                  logEvent(
+                    'Books',
+                    isFav ? 'Unfavorited' : 'Favorited',
+                    book.title
+                  );
+                }}
+                icon={
+                  isFav ? (
+                    <FavoriteIcon style={isFav ? { color: 'red' } : null} />
+                  ) : (
+                    <FavoriteOutlineIcon />
+                  )
+                }
+                label={<Trans>Favorite</Trans>}
+              />
+            )}
+          </Favorite>
 
-        <CustomButton
-          icon={<CheckCircleIcon />}
-          label={<Trans>Save offline</Trans>}
-        />
+          <CustomButton
+            icon={<CheckCircleIcon />}
+            label={<Trans>Save offline</Trans>}
+          />
 
-        {this.state.supportsNavigatorShare && (
           <CustomButton
             icon={<ShareIcon />}
             label={<Trans>Share</Trans>}
             onClick={this.handleShareClick}
           />
-        )}
-      </div>
+        </div>
+        <Menu
+          id="share-book-menu"
+          onClose={this.closeShareMenu}
+          anchorEl={this.state.anchorEl}
+          open={Boolean(this.state.anchorEl)}
+        >
+          <MenuItem
+            rel="noopener noreferrer"
+            target="_blank"
+            href={`https://www.facebook.com/sharer.php?u=${
+              typeof window !== 'undefined' ? window.location.href : ''
+            }`}
+            component="a"
+            onClick={this.closeShareMenu}
+          >
+            <ListItemIcon>
+              <FacebookIcon />
+            </ListItemIcon>
+            <ListItemText>Facebook</ListItemText>
+          </MenuItem>
+          <MenuItem
+            rel="noopener noreferrer"
+            target="_blank"
+            href={`https://twitter.com/intent/tweet?url=${
+              typeof window !== 'undefined' ? window.location.href : ''
+            }`}
+            component="a"
+            onClick={this.closeShareMenu}
+          >
+            <ListItemIcon>
+              <TwitterIcon />
+            </ListItemIcon>
+            <ListItemText>Twitter</ListItemText>
+          </MenuItem>
+        </Menu>
+      </>
     );
   }
 }
