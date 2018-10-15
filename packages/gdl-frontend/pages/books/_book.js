@@ -68,21 +68,28 @@ const Divider = styled(MuiDivider)`
   `};
 `;
 
-const MyGrid = styled('div')`
-  display: flex;
-  width: calc(100% + 40px);
-  margin-left: -20px;
-  margin-right: -20px;
-  ${mq({ flexDirection: ['column', 'row'] })};
-`;
+const Grid = styled('div')(
+  media.tablet`
+    display: flex;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+  `
+);
 
-const MyGridItem = styled('div')`
+const GridItem = styled('div')(
+  media.tablet`
   &:first-child  {
-    ${mq({ flexBasis: [null, '350px'] })};
+    flex-basis: 350px;
   }
+  &:last-child  {
+    flex-grow: 1;
+  }
+  flex-grow: 0;
   padding-left: 20px;
   padding-right: 20px;
-`;
+ `
+);
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req }: Context) {
@@ -118,11 +125,11 @@ class BookPage extends React.Component<Props> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
-          <Main background="white" css={mq({ marginTop: ['200px', '100px'] })}>
-            <Container css={mq({ marginTop: ['-160', '-54px'] })}>
+          <Main background="white" css={mq({ marginTop: [200, 100] })}>
+            <Container css={mq({ marginTop: [-160, -54] })}>
               <div>
-                <MyGrid>
-                  <MyGridItem>
+                <Grid>
+                  <GridItem>
                     <CoverImage
                       css={{ marginLeft: 'auto' }}
                       src={book.coverImage && book.coverImage.url}
@@ -137,11 +144,14 @@ class BookPage extends React.Component<Props> {
                     >
                       <LevelRibbon level={book.readingLevel} />
                     </Hidden>
-                  </MyGridItem>
-                  <MyGridItem>
+                  </GridItem>
+                  <GridItem>
                     <Hidden
                       only="tablet"
-                      css={{ marginTop: '130px', marginBottom: '45px' }}
+                      css={{
+                        marginTop: 120,
+                        marginBottom: 45
+                      }}
                     >
                       <div
                         css={{
@@ -172,29 +182,29 @@ class BookPage extends React.Component<Props> {
                     <Hidden only="mobile">
                       <ReadBookLink book={book} />
                     </Hidden>
-                  </MyGridItem>
-                </MyGrid>
+                  </GridItem>
+                </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
                   <BookActions1 book={book} />
                 </Hidden>
                 <Divider />
 
-                <MyGrid>
-                  <MyGridItem>
+                <Grid>
+                  <GridItem>
                     <Metadata book={book} />
-                  </MyGridItem>
+                  </GridItem>
                   <Hidden only="mobile">
-                    <MyGridItem>
+                    <GridItem>
                       <Divider />
-                    </MyGridItem>
+                    </GridItem>
                   </Hidden>
-                  <MyGridItem>
+                  <GridItem>
                     <BookActions2
                       book={book}
                       userHasEditAccess={this.props.userHasEditAccess}
                     />
-                  </MyGridItem>
-                </MyGrid>
+                  </GridItem>
+                </Grid>
 
                 <Divider />
                 <View mb={spacing.medium}>

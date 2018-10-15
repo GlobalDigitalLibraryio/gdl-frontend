@@ -13,9 +13,8 @@ import { triangle } from 'polished';
 import type { ReadingLevel } from '../../types';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts, misc } from '../../style/theme';
+import media from '../../style/media';
 import mq from '../../style/mq';
-
-const HEIGHT = '30px';
 
 const colorMap = {
   '1': '#5DD0C1',
@@ -38,15 +37,15 @@ const Ribbon = styled('div')`
   text-transform: uppercase;
   background-color: ${p => colorMap[p.readingLevel]};
   color: black;
-  padding-right: 20px;
   ${mq({
-    paddingLeft: [`${misc.gutter}px`, '40px'],
-    marginLeft: [`-${misc.gutter}px`, '-40px']
+    paddingLeft: [misc.gutter, 40],
+    paddingRight: [20, 25],
+    marginLeft: [-misc.gutter, -40],
+    height: [30, 40],
+    fontSize: [14, 20]
   })}
   font-weight: ${fonts.weight.bold};
-  font-size: 14px;
   position: relative;
-  height: ${HEIGHT};
   &:after {
     content: '';
     display: block;
@@ -58,10 +57,13 @@ const Ribbon = styled('div')`
       triangle({
         pointingDirection: 'left',
         width: '15px',
-        height: HEIGHT,
+        height: '30px',
         backgroundColor: colorMap[p.readingLevel],
         foregroundColor: 'transparent'
       })};
+    ${media.tablet`
+      border-width: 20px 15px 20px 0;
+    `}
   }
 `;
 
