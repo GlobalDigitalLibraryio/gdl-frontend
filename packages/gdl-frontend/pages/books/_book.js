@@ -82,13 +82,11 @@ const Grid = styled('div')(
 
 const GridItem = styled('div')(
   media.tablet`
-  &:first-child  {
+  &:first-child {
     flex-basis: 350px;
+    flex-grow: 0;
   }
-  &:last-child  {
-    flex-grow: 1;
-  }
-  flex-grow: 0;
+  flex-grow: 1;
   padding-left: 20px;
   padding-right: 20px;
  `
@@ -193,7 +191,7 @@ class BookPage extends React.Component<Props> {
                 <Divider />
 
                 <Grid>
-                  <GridItem>
+                  <GridItem css={media.tablet`flex-basis: auto; flex-grow: 1;`}>
                     <Metadata book={book} />
                   </GridItem>
                   <Hidden only="mobile">
@@ -201,7 +199,9 @@ class BookPage extends React.Component<Props> {
                       <Divider />
                     </GridItem>
                   </Hidden>
-                  <GridItem>
+                  <GridItem
+                    css={media.tablet`order: -1; flex-basis: 350px; flex-grow: 0;`}
+                  >
                     <BookActions2
                       book={book}
                       userHasEditAccess={this.props.userHasEditAccess}
@@ -304,6 +304,8 @@ class BookActions1 extends React.Component<
           >
             {({ onClick, isFav }) => (
               <CustomButton
+                // FIXME: Don't this. only for demo purposes now
+                css={media.mobile`position: absolute; left: 0; top: 0; margin-left: 20px`}
                 onClick={() => {
                   onClick();
                   logEvent(
