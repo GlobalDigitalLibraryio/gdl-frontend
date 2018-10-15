@@ -16,8 +16,8 @@ import CoverImage from './CoverImage';
 import media from '../style/media';
 
 export const coverWidths = {
-  small: '105px',
-  large: '130px'
+  small: 105,
+  large: 130
 };
 
 /**
@@ -33,9 +33,9 @@ const cardCss = css`
       filter: opacity(0.9);
     }
   }
-  width: ${coverWidths.small};
+  width: ${coverWidths.small}px;
   ${media.tablet`
-    width: ${coverWidths.large};
+    width: ${coverWidths.large}px;
   `};
 `;
 

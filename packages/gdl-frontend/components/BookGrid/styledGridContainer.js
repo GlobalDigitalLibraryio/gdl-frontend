@@ -7,6 +7,7 @@
  */
 
 import styled from 'react-emotion';
+import { coverWidths } from '../BookLink';
 import media from '../../style/media';
 
 /**
@@ -21,12 +22,12 @@ const GridContainer = styled('div')`
 
   @supports (display: grid) {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 105px);
+    grid-template-columns: repeat(auto-fill, ${coverWidths.small}px);
     justify-content: center;
     grid-gap: 15px;
     ${media.tablet`
-      grid-template-columns: repeat(auto-fill, 130px);
-      grid-gap: 20px;
+      grid-template-columns: repeat(auto-fill, ${coverWidths.large}px);
+      grid-gap: 30px;
     `};
 
     > div {

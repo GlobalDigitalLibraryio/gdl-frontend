@@ -404,7 +404,7 @@ class BookActions2 extends React.Component<
             aria-haspopup="true"
             onClick={this.handleDownloadClick}
           >
-            <SaveAltIcon />
+            <SaveAltIcon css={{ marginRight: spacing.xsmall }} />
             <Trans>Download</Trans>
           </Button>
         </div>
@@ -420,7 +420,8 @@ class BookActions2 extends React.Component<
                 onClick={() => logEvent('Books', 'Translate', book.title)}
                 color="primary"
               >
-                <TranslateIcon /> <Trans>Translate this book</Trans>
+                <TranslateIcon css={{ marginRight: spacing.xsmall }} />{' '}
+                <Trans>Translate this book</Trans>
               </Button>
             </Link>
           </div>
@@ -435,7 +436,7 @@ class BookActions2 extends React.Component<
               passHref
             >
               <Button color="primary">
-                <EditIcon />
+                <EditIcon css={{ marginRight: spacing.xsmall }} />
                 Edit
               </Button>
             </NextLink>
@@ -449,7 +450,8 @@ class BookActions2 extends React.Component<
             rel="noopener noreferrer"
             onClick={() => logEvent('Books', 'Report', book.title)}
           >
-            <WarningIcon /> <Trans>Report a problem</Trans>
+            <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}
+            <Trans>Report a problem</Trans>
           </Button>
         </div>
 

@@ -74,6 +74,8 @@ const CoverItem = styled('div')`
  *
  * Currently this is coded to show at the most 5 book covers (so the spacing is the same between the items even if there are fewer than 5 books)
  */
+
+const COLUMN_GAP = 15;
 const Scroller = styled('div')`
   overflow-x: auto;
   /* Fixes problem with scrolling in Safari all over the place */
@@ -91,12 +93,21 @@ const Scroller = styled('div')`
   @supports (display: grid) {
     display: grid;
     justify-content: space-between;
-    column-gap: 15px;
+    column-gap: ${COLUMN_GAP}px;
     grid-auto-flow: column;
 
-    grid-template-columns: repeat(5, ${coverWidths.small});
+    grid-template-columns: repeat(5, ${coverWidths.small}px);
+
+    /* This carefully calcluated value allows us to "scroll" across gutter on devices that require it */
+    @media (max-width: ${COLUMN_GAP * 4 +
+        coverWidths.small * 5 +
+        misc.gutter * 2}px) {
+      grid-template-columns: repeat(4, ${coverWidths.small}px) ${coverWidths.small +
+          misc.gutter}px;
+    }
+
     ${media.tablet`
-      grid-template-columns: repeat(5, ${coverWidths.large});
+      grid-template-columns: repeat(5, ${coverWidths.large}px);
     `};
   }
 `;
