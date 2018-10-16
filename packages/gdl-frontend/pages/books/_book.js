@@ -82,10 +82,6 @@ const Grid = styled('div')(
 
 const GridItem = styled('div')(
   media.tablet`
-  &:first-child {
-    flex-basis: 350px;
-    flex-grow: 0;
-  }
   flex-grow: 1;
   padding-left: 20px;
   padding-right: 20px;
@@ -130,7 +126,7 @@ class BookPage extends React.Component<Props> {
             <Container css={mq({ marginTop: [-160, -54] })}>
               <div>
                 <Grid>
-                  <GridItem>
+                  <GridItem css={media.tablet`flex: 0 0 310px;`}>
                     <CoverImage
                       css={{ marginLeft: 'auto' }}
                       src={book.coverImage && book.coverImage.url}
@@ -191,7 +187,7 @@ class BookPage extends React.Component<Props> {
                 <Divider />
 
                 <Grid>
-                  <GridItem css={media.tablet`flex-basis: auto; flex-grow: 1;`}>
+                  <GridItem>
                     <Metadata book={book} />
                   </GridItem>
                   <Hidden only="mobile">
@@ -199,9 +195,7 @@ class BookPage extends React.Component<Props> {
                       <Divider />
                     </GridItem>
                   </Hidden>
-                  <GridItem
-                    css={media.tablet`order: -1; flex-basis: 350px; flex-grow: 0;`}
-                  >
+                  <GridItem css={media.tablet`flex: 0 0 310px; order: -1;`}>
                     <BookActions2
                       book={book}
                       userHasEditAccess={this.props.userHasEditAccess}
