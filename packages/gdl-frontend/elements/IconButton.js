@@ -10,7 +10,12 @@ import * as React from 'react';
 import { ButtonBase, Typography } from '@material-ui/core';
 import { css, cx } from 'react-emotion';
 
-type Props = {};
+type Props = {
+  className?: string,
+  label: React.Node,
+  icon: React.Node,
+  onClick?: (event: SyntheticEvent<HTMLButtonElement>) => void
+};
 
 const CustomButton = ({
   className,
@@ -22,23 +27,17 @@ const CustomButton = ({
   ...props
 }: Props) => {
   return (
-    <ButtonBase
-      focusRipple
-      className={cx(styles.base, className)}
-      onClick={onClick}
-    >
+    <ButtonBase focusRipple className={cx(styles, className)} onClick={onClick}>
       {icon}
       <Typography variant="body1">{label}</Typography>
     </ButtonBase>
   );
 };
 
-const styles = {
-  base: css`
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-  `
-};
+const styles = css`
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default CustomButton;

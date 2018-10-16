@@ -40,7 +40,7 @@ import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
-import { Container, CustomButton, Hidden, View } from '../../elements';
+import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
@@ -303,7 +303,7 @@ class BookActions1 extends React.Component<
             language={this.props.book.language.code}
           >
             {({ onClick, isFav }) => (
-              <CustomButton
+              <IconButton
                 // FIXME: Don't this. only for demo purposes now
                 css={media.mobile`position: absolute; left: 0; top: 0; margin-left: 20px`}
                 onClick={() => {
@@ -326,12 +326,12 @@ class BookActions1 extends React.Component<
             )}
           </Favorite>
 
-          <CustomButton
+          <IconButton
             icon={<CheckCircleIcon />}
             label={<Trans>Save offline</Trans>}
           />
 
-          <CustomButton
+          <IconButton
             icon={<ShareIcon />}
             label={<Trans>Share</Trans>}
             onClick={this.handleShareClick}
