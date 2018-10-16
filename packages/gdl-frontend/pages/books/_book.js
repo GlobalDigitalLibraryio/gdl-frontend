@@ -247,10 +247,14 @@ const ReadBookLink = ({ book }) =>
     </Link>
   ) : (
     <>
-      <Button size="large" variant="raised" disabled>
+      <Button size="large" variant="raised" disabled fullWidth>
         <Trans>Read book</Trans>
       </Button>
-      <Typography align="center" css={{ marginTop: spacing.small }}>
+      <Typography
+        align="center"
+        css={{ marginTop: spacing.small }}
+        variant="caption"
+      >
         This book is only available for download.
       </Typography>
     </>
