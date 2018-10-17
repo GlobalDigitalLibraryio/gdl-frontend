@@ -1,0 +1,8 @@
+{
+  "name": "gdl-image",
+  "version": "0.0.0",
+  "license": "GPL-3.0",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {}
+}

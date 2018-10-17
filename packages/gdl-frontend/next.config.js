@@ -18,7 +18,7 @@ const workboxOpts = {
 const nextConfig = {
   serverRuntimeConfig,
   publicRuntimeConfig,
-  transpileModules: ['gdl-auth'],
+  transpileModules: ['gdl-auth', 'gdl-image'],
   webpack(config, options) {
     if (options.dev) {
       config.plugins.push(

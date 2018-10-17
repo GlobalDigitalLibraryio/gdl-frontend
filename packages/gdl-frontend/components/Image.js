@@ -61,8 +61,8 @@ const listenToIntersections = (el, cb) => {
 type Props = {
   ariaHidden: boolean,
   className?: string,
-  responsiveWidth: [string, string],
-  responsiveHeight: [string, string],
+  responsiveWidth: [string | number, string | number],
+  responsiveHeight: [string | number, string | number],
   src: string,
   srcSet?: string,
   sizes?: string
