@@ -20,9 +20,6 @@ type Props = {
 };
 
 function headingText(type, value) {
-  // NB! This should really use <Plural />, but after an update it suddenly implicitly depends on the Intl API. Which causes it to thow exceptions in some browsers
-  // Since we currently have no other langauge than English, we skip the polyfill for now because it is quite huge.
-  // See issue here: https://github.com/GlobalDigitalLibraryio/issues/issues/437
   switch (type) {
     case ContributorTypes.AUTHOR:
       return <Plural one="Author" other="Authors" value={value} />;
