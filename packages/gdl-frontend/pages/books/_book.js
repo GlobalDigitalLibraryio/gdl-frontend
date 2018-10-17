@@ -11,6 +11,7 @@ import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
+import copyToClipboard from 'copy-to-clipboard';
 import {
   Menu,
   MenuItem,
@@ -28,7 +29,8 @@ import {
   FavoriteBorder as FavoriteOutlineIcon,
   SaveAlt as SaveAltIcon,
   Share as ShareIcon,
-  CheckCircle as CheckCircleIcon
+  CheckCircle as CheckCircleIcon,
+  Link as LinkIcon
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
@@ -302,7 +304,7 @@ class BookActions1 extends React.Component<
           >
             {({ onClick, isFav }) => (
               <IconButton
-                // FIXME: Don't this. only for demo purposes now
+                // Moving the fav button up top on mobile
                 css={media.mobile`position: absolute; top: 0; left: ${
                   misc.gutter
                 }px;`}
@@ -370,6 +372,20 @@ class BookActions1 extends React.Component<
               <TwitterIcon />
             </ListItemIcon>
             <ListItemText>Twitter</ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              copyToClipboard(window.location.href);
+              this.closeShareMenu();
+            }}
+            component="button"
+          >
+            <ListItemIcon>
+              <LinkIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <Trans>Copy URL</Trans>
+            </ListItemText>
           </MenuItem>
         </Menu>
       </>

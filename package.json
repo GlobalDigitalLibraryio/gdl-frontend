@@ -71,6 +71,7 @@
     "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "9.8.0",
     "cookie-parser": "^1.4.3",
+    "copy-to-clipboard": "3.0.8",
     "downshift": "2.0.10",
     "emotion": "9.2.12",
     "emotion-server": "9.2.12",
