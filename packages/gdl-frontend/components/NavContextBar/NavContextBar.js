@@ -16,11 +16,10 @@ type Props = {|
 |};
 
 const NavContextBar = (props: Props) => (
-  <Paper square css={{ zIndex: 10 }}>
+  <Paper css={{ zIndex: 10 }}>
     <Container
       size="large"
       width="100%"
-      stickToEdgeOnLargeScreens
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"

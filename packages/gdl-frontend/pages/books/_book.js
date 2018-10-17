@@ -11,25 +11,27 @@ import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
+import copyToClipboard from 'copy-to-clipboard';
 import {
   Menu,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
   Button,
-  Card,
-  CardContent,
   Typography,
-  Divider,
-  Tab
+  Divider as MuiDivider
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
-  CloudDownload as CloudDownloadIcon,
   Translate as TranslateIcon,
   Warning as WarningIcon,
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteOutlineIcon,
-  Share as ShareIcon
+  SaveAlt as SaveAltIcon,
+  Share as ShareIcon,
+  Link as LinkIcon
 } from '@material-ui/icons';
+import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
@@ -37,15 +39,20 @@ import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { errorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
+import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
-import { Center, View } from '../../elements';
-import Container from '../../elements/Container';
+import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
 import { hasClaim, claims } from 'gdl-auth';
+import { spacing, misc } from '../../style/theme';
+import mq from '../../style/mq';
 import media from '../../style/media';
-import { colors, spacing } from '../../style/theme';
-import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+import {
+  BookJsonLd,
+  Metadata,
+  LevelRibbon
+} from '../../components/BookDetailsPage';
 import Favorite from '../../components/Favorite';
 
 const {
@@ -58,43 +65,31 @@ type Props = {
   userHasEditAccess: boolean
 };
 
-const CoverWrap = styled('div')`
-  ${media.mobile`
-    position: absolute;
-    top: -120px;
-    z-index: 10;
-    left: 50%;
-    transform: translateX(-50%);
-  `} ${media.tablet`
-    flex: 0 0 260px;
-    margin-right: 20px;
+const Divider = styled(MuiDivider)`
+  margin: ${spacing.large} 0;
+  ${media.tablet`
+  margin: ${spacing.xxlarge} 0;
   `};
 `;
 
-const EditBookLink = styled('a')`
-  color: ${colors.base.white};
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 5px;
-  transition: all 0.3s ease;
-  background: rgba(0, 0, 0, 0.5);
-  &:hover {
-    background: rgba(0, 0, 0, 0.6);
-  }
-`;
+const Grid = styled('div')(
+  media.tablet`
+    display: flex;
+    width: calc(100% + 40px);
+    margin-left: -20px;
+    margin-right: -20px;
+  `
+);
 
-const BORDER_STYLE = `1px solid ${colors.base.grayLight}`;
+const GridItem = styled('div')(
+  media.tablet`
+  flex-grow: 1;
+  padding-left: 20px;
+  padding-right: 20px;
+ `
+);
 
-class BookPage extends React.Component<
-  Props,
-  { anchorEl: ?HTMLElement, supportsNavigatorShare: boolean }
-> {
-  state = {
-    anchorEl: null,
-    supportsNavigatorShare: false
-  };
-
+class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req }: Context) {
     const [bookRes, similarRes] = await Promise.all([
       fetchBook(query.id, query.lang),
@@ -115,28 +110,6 @@ class BookPage extends React.Component<
     };
   }
 
-  componentDidMount() {
-    this.setState({ supportsNavigatorShare: Boolean(navigator.share) });
-  }
-
-  handleDownloadClick = event =>
-    this.setState({ anchorEl: event.currentTarget });
-
-  closeDownloadMenu = () => this.setState({ anchorEl: null });
-
-  handleShareClick = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: this.props.book.title,
-          text: this.props.book.description,
-          url: window.location.href
-        })
-        .then(() => logEvent('Books', 'Shared', this.props.book.title))
-        .catch(() => {}); // Ignore here because we don't care if people cancel sharing
-    }
-  };
-
   render() {
     const { similarBooks, book } = this.props;
 
@@ -149,259 +122,383 @@ class BookPage extends React.Component<
         >
           <BookJsonLd book={book} />
         </Head>
-        <Layout>
-          <Container>
-            <View flexDirection="row" mt={['135px', spacing.medium]}>
-              <CoverWrap>
-                <CoverImage
-                  src={book.coverImage && book.coverImage.url}
-                  size="large"
-                />
-              </CoverWrap>
-
-              {/* All this flexing on => tablet is because we want to push the buttons down in the card*/}
-              <Card
-                css={[
-                  { width: '100%' },
-                  media.tablet({ display: 'flex', flexDirection: 'column' })
-                ]}
-              >
-                <CardContent
-                  css={[
-                    media.mobile({ paddingTop: '70px' }),
-                    media.tablet({
-                      display: 'flex',
-                      flexDirection: 'column',
-                      flex: '1'
-                    })
-                  ]}
-                >
-                  <Typography
-                    lang={book.language.code}
-                    variant="h5"
-                    component="h1"
-                    css={media.mobile`text-align: center`}
-                  >
-                    {book.title}
-                  </Typography>
-
-                  <Typography
-                    paragraph
-                    variant="subtitle1"
-                    css={media.mobile`text-align: center`}
-                  >
-                    <Trans>from {book.publisher.name}</Trans>
-                  </Typography>
-
-                  <Typography
-                    lang={book.language.code}
-                    paragraph
-                    css={[
-                      media.mobile`text-align: center`,
-                      media.tablet({ flex: 1 })
-                    ]}
-                  >
-                    {book.description}
-                  </Typography>
-
-                  <Center>
-                    {book.bookFormat === 'HTML' ? (
-                      <Link
-                        route="read"
-                        passHref
-                        params={{ id: book.id, lang: book.language.code }}
-                        prefetch
-                      >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="large"
-                          onClick={() =>
-                            logEvent('Books', 'Read', this.props.book.title)
-                          }
-                        >
-                          <Trans>Read book</Trans>
-                        </Button>
-                      </Link>
-                    ) : (
-                      <>
-                        <Button size="large" variant="raised" disabled>
-                          <Trans>Read book</Trans>
-                        </Button>
-                        <Typography
-                          align="center"
-                          css={{ marginTop: spacing.small }}
-                        >
-                          This book is only available for download.
-                        </Typography>
-                      </>
-                    )}
-                  </Center>
-
-                  {this.props.userHasEditAccess && (
-                    <NextLink
-                      href={{
-                        pathname: '/admin/edit',
-                        query: { id: book.id, lang: book.language.code }
-                      }}
-                      passHref
+        <Layout wrapWithMain={false}>
+          <Main background="white" css={mq({ marginTop: [200, 100] })}>
+            <Container css={mq({ marginTop: [-160, -54] })}>
+              <div>
+                <Grid>
+                  <GridItem css={media.tablet`flex: 0 0 310px;`}>
+                    <CoverImage
+                      css={{ marginLeft: 'auto' }}
+                      src={book.coverImage && book.coverImage.url}
+                      size="large"
+                    />
+                    <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
+                      <ReadBookLink book={book} />
+                    </Hidden>
+                    <Hidden
+                      only="mobile"
+                      css={{ marginTop: -20, marginBottom: spacing.medium }}
                     >
-                      <EditBookLink title="Edit book">
-                        <EditIcon />
-                      </EditBookLink>
-                    </NextLink>
-                  )}
-                </CardContent>
-                <div css={{ display: 'flex' }}>
-                  <Favorite
-                    id={this.props.book.id}
-                    language={this.props.book.language.code}
-                  >
-                    {({ onClick, isFav }) => (
-                      <TabButton
-                        onClick={() => {
-                          onClick();
-                          logEvent(
-                            'Books',
-                            isFav ? 'Unfavorited' : 'Favorited',
-                            book.title
-                          );
+                      <LevelRibbon level={book.readingLevel} />
+                    </Hidden>
+                  </GridItem>
+                  <GridItem>
+                    <Hidden
+                      only="tablet"
+                      css={{
+                        marginTop: 120,
+                        marginBottom: 45
+                      }}
+                    >
+                      <div
+                        css={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          width: '100%'
                         }}
-                        icon={
-                          isFav ? (
-                            <FavoriteIcon
-                              style={isFav ? { color: 'red' } : null}
-                            />
-                          ) : (
-                            <FavoriteOutlineIcon />
-                          )
-                        }
-                        label={<Trans>Favorite</Trans>}
-                      />
-                    )}
-                  </Favorite>
+                      >
+                        <LevelRibbon level={book.readingLevel} />
+                        <BookActions1 book={book} />
+                      </div>
+                    </Hidden>
+                    <Typography
+                      lang={book.language.code}
+                      variant="h5"
+                      component="h1"
+                    >
+                      {book.title}
+                    </Typography>
 
-                  <TabButton
-                    icon={<CloudDownloadIcon />}
-                    label={<Trans>Download</Trans>}
-                    aria-owns={
-                      this.state.anchorEl ? 'download-book-menu' : null
-                    }
-                    aria-haspopup="true"
-                    onClick={this.handleDownloadClick}
-                  />
+                    <Typography paragraph variant="subtitle1">
+                      <Trans>from {book.publisher.name}</Trans>
+                    </Typography>
 
-                  {this.state.supportsNavigatorShare && (
-                    <TabButton
-                      icon={<ShareIcon />}
-                      label={<Trans>Share</Trans>}
-                      onClick={this.handleShareClick}
+                    <Typography lang={book.language.code} paragraph>
+                      {book.description}
+                    </Typography>
+                    <Hidden only="mobile">
+                      <ReadBookLink book={book} />
+                    </Hidden>
+                  </GridItem>
+                </Grid>
+                <Hidden only="mobile" css={{ marginTop: spacing.large }}>
+                  <BookActions1 book={book} />
+                </Hidden>
+                <Divider />
+
+                <Grid>
+                  <GridItem>
+                    <Metadata book={book} />
+                  </GridItem>
+                  <Hidden only="mobile">
+                    <GridItem>
+                      <Divider />
+                    </GridItem>
+                  </Hidden>
+                  <GridItem css={media.tablet`flex: 0 0 310px; order: -1;`}>
+                    <BookActions2
+                      book={book}
+                      userHasEditAccess={this.props.userHasEditAccess}
+                    />
+                  </GridItem>
+                </Grid>
+
+                <Divider />
+                <View mb={spacing.medium}>
+                  {similarBooks.length > 0 && (
+                    <BookList
+                      heading={<Trans>Similar</Trans>}
+                      books={similarBooks}
                     />
                   )}
-                </div>
-
-                <Menu
-                  id="download-book-menu"
-                  onClose={this.closeDownloadMenu}
-                  anchorEl={this.state.anchorEl}
-                  open={Boolean(this.state.anchorEl)}
-                >
-                  {book.downloads.epub && (
-                    <MenuItem
-                      href={book.downloads.epub}
-                      component="a"
-                      onClick={() => {
-                        this.closeDownloadMenu();
-                        logEvent('Books', 'Downloaded ePub', book.title);
-                      }}
-                    >
-                      <Trans>E-book (EPUB)</Trans>
-                    </MenuItem>
-                  )}
-                  {book.downloads.pdf && (
-                    <MenuItem
-                      href={book.downloads.pdf}
-                      component="a"
-                      onClick={() => {
-                        this.closeDownloadMenu();
-                        logEvent('Books', 'Downloaded PDF', book.title);
-                      }}
-                    >
-                      <Trans>Printable book (PDF)</Trans>
-                    </MenuItem>
-                  )}
-                </Menu>
-              </Card>
-            </View>
-          </Container>
-
-          <Container mt={spacing.medium}>
-            <View ml={['0', 'auto']} width={['auto', '438px']}>
-              <Metadata book={book} />
-              {book.supportsTranslation && (
-                <View borderTop={BORDER_STYLE} mt={spacing.medium}>
-                  <Link
-                    route="translate"
-                    passHref
-                    params={{ id: book.id, lang: book.language.code }}
-                  >
-                    <Button
-                      onClick={() => logEvent('Books', 'Translate', book.title)}
-                      color="primary"
-                      css={{ margin: `${spacing.medium} 0` }}
-                    >
-                      <TranslateIcon /> <Trans>Translate this book</Trans>
-                    </Button>
-                  </Link>
                 </View>
-              )}
-              <View
-                borderTop={BORDER_STYLE}
-                mt={book.supportsTranslation ? '0' : spacing.medium}
-              >
-                <Button
-                  color="primary"
-                  css={{ margin: `${spacing.medium} 0` }}
-                  href={zendeskUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => logEvent('Books', 'Report', book.title)}
-                >
-                  <WarningIcon /> <Trans>Report a problem with this book</Trans>
-                </Button>
-              </View>
-            </View>
-          </Container>
-
-          <Container>
-            <Divider />
-            <View mb={spacing.medium} pt={spacing.medium}>
-              {similarBooks.length > 0 && (
-                <BookList
-                  heading={<Trans>Similar</Trans>}
-                  books={similarBooks}
-                />
-              )}
-            </View>
-          </Container>
+              </div>
+            </Container>
+          </Main>
         </Layout>
       </Fragment>
     );
   }
 }
 
-const TabButton = props => (
-  <Tab
-    role="button"
-    css={`
-      flex-grow: 1;
-      flex-shrink: 1;
-      ${media.tablet`
-        min-width: 72px;
-      `};
-    `}
-    {...props}
-  />
-);
+const ReadBookLink = ({ book }) =>
+  book.bookFormat === 'HTML' ? (
+    <Link
+      route="read"
+      passHref
+      params={{ id: book.id, lang: book.language.code }}
+      prefetch
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        fullWidth
+        onClick={() => logEvent('Books', 'Read', book.title)}
+      >
+        <Trans>Read book</Trans>
+      </Button>
+    </Link>
+  ) : (
+    <>
+      <Button size="large" variant="raised" disabled fullWidth>
+        <Trans>Read book</Trans>
+      </Button>
+      <Typography
+        align="center"
+        css={{ marginTop: spacing.small }}
+        variant="caption"
+      >
+        This book is only available for download.
+      </Typography>
+    </>
+  );
+
+/**
+ * Favorite, share, offline
+ */
+class BookActions1 extends React.Component<
+  { book: BookDetails },
+  { anchorEl: ?HTMLElement }
+> {
+  state = {
+    anchorEl: null
+  };
+
+  closeShareMenu = () => this.setState({ anchorEl: null });
+
+  handleShareClick = event => {
+    /**
+     * If the browser supports the web share api, we use that instead of displaying a dropdown
+     */
+    if (navigator.share) {
+      navigator
+        .share({
+          title: this.props.book.title,
+          text: this.props.book.description,
+          url: window.location.href
+        })
+        .then(() => logEvent('Books', 'Shared', this.props.book.title))
+        .catch(() => {}); // Ignore here because we don't care if people cancel sharing
+    } else {
+      this.setState({ anchorEl: event.currentTarget });
+    }
+  };
+
+  render() {
+    const { book } = this.props;
+    return (
+      <>
+        <div
+          css={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            width: '100%'
+          }}
+        >
+          <Favorite
+            id={this.props.book.id}
+            language={this.props.book.language.code}
+          >
+            {({ onClick, isFav }) => (
+              <IconButton
+                // Moving the fav button up top on mobile
+                css={media.mobile`position: absolute; top: 0; left: ${
+                  misc.gutter
+                }px;`}
+                onClick={() => {
+                  onClick();
+                  logEvent(
+                    'Books',
+                    isFav ? 'Unfavorited' : 'Favorited',
+                    book.title
+                  );
+                }}
+                icon={
+                  isFav ? (
+                    <FavoriteIcon style={isFav ? { color: 'red' } : null} />
+                  ) : (
+                    <FavoriteOutlineIcon />
+                  )
+                }
+                label={<Trans>Favorite</Trans>}
+              />
+            )}
+          </Favorite>
+
+          <IconButton
+            icon={<ShareIcon />}
+            label={<Trans>Share</Trans>}
+            onClick={this.handleShareClick}
+          />
+        </div>
+        <Menu
+          id="share-book-menu"
+          onClose={this.closeShareMenu}
+          anchorEl={this.state.anchorEl}
+          open={Boolean(this.state.anchorEl)}
+        >
+          <MenuItem
+            rel="noopener noreferrer"
+            target="_blank"
+            href={`https://www.facebook.com/sharer.php?u=${
+              typeof window !== 'undefined' ? window.location.href : ''
+            }`}
+            component="a"
+            onClick={this.closeShareMenu}
+          >
+            <ListItemIcon>
+              <FacebookIcon />
+            </ListItemIcon>
+            <ListItemText>Facebook</ListItemText>
+          </MenuItem>
+          <MenuItem
+            rel="noopener noreferrer"
+            target="_blank"
+            href={`https://twitter.com/intent/tweet?url=${
+              typeof window !== 'undefined' ? window.location.href : ''
+            }`}
+            component="a"
+            onClick={this.closeShareMenu}
+          >
+            <ListItemIcon>
+              <TwitterIcon />
+            </ListItemIcon>
+            <ListItemText>Twitter</ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              copyToClipboard(window.location.href);
+              this.closeShareMenu();
+            }}
+            component="button"
+          >
+            <ListItemIcon>
+              <LinkIcon />
+            </ListItemIcon>
+            <ListItemText>
+              <Trans>Copy URL</Trans>
+            </ListItemText>
+          </MenuItem>
+        </Menu>
+      </>
+    );
+  }
+}
+
+/**
+ * Download, translate, report book
+ */
+class BookActions2 extends React.Component<
+  { book: BookDetails, userHasEditAccess: boolean },
+  { anchorEl: ?HTMLElement }
+> {
+  state = {
+    anchorEl: null
+  };
+
+  handleDownloadClick = event =>
+    this.setState({ anchorEl: event.currentTarget });
+
+  closeDownloadMenu = () => this.setState({ anchorEl: null });
+
+  render() {
+    const { book, userHasEditAccess } = this.props;
+    return (
+      <>
+        <div>
+          <Button
+            aria-owns={this.state.anchorEl ? 'download-book-menu' : null}
+            color="primary"
+            aria-haspopup="true"
+            onClick={this.handleDownloadClick}
+          >
+            <SaveAltIcon css={{ marginRight: spacing.xsmall }} />
+            <Trans>Download</Trans>
+          </Button>
+        </div>
+
+        {book.supportsTranslation && (
+          <div>
+            <Link
+              route="translate"
+              passHref
+              params={{ id: book.id, lang: book.language.code }}
+            >
+              <Button
+                onClick={() => logEvent('Books', 'Translate', book.title)}
+                color="primary"
+              >
+                <TranslateIcon css={{ marginRight: spacing.xsmall }} />{' '}
+                <Trans>Translate this book</Trans>
+              </Button>
+            </Link>
+          </div>
+        )}
+        {userHasEditAccess && (
+          <div>
+            <NextLink
+              href={{
+                pathname: '/admin/edit',
+                query: { id: book.id, lang: book.language.code }
+              }}
+              passHref
+            >
+              <Button color="primary">
+                <EditIcon css={{ marginRight: spacing.xsmall }} />
+                Edit
+              </Button>
+            </NextLink>
+          </div>
+        )}
+        <div>
+          <Button
+            color="primary"
+            href={zendeskUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => logEvent('Books', 'Report', book.title)}
+          >
+            <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}
+            <Trans>Report a problem</Trans>
+          </Button>
+        </div>
+
+        <Menu
+          id="download-book-menu"
+          onClose={this.closeDownloadMenu}
+          anchorEl={this.state.anchorEl}
+          open={Boolean(this.state.anchorEl)}
+        >
+          {book.downloads.epub && (
+            <MenuItem
+              href={book.downloads.epub}
+              component="a"
+              onClick={() => {
+                this.closeDownloadMenu();
+                logEvent('Books', 'Downloaded ePub', book.title);
+              }}
+            >
+              <Trans>E-book (EPUB)</Trans>
+            </MenuItem>
+          )}
+          {book.downloads.pdf && (
+            <MenuItem
+              href={book.downloads.pdf}
+              component="a"
+              onClick={() => {
+                this.closeDownloadMenu();
+                logEvent('Books', 'Downloaded PDF', book.title);
+              }}
+            >
+              <Trans>Printable book (PDF)</Trans>
+            </MenuItem>
+          )}
+        </Menu>
+      </>
+    );
+  }
+}
 
 export default errorPage(BookPage);

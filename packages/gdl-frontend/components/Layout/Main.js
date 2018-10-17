@@ -17,7 +17,7 @@ const styles = {
     background: ${colors.container.background};
     flex: 1 0 auto;
     width: 100%;
-    max-width: ${misc.containers.large};
+    max-width: ${misc.containers.large}px;
     margin-left: auto;
     margin-right: auto;
   `,
@@ -34,7 +34,6 @@ type Props = {
 
 const Main = ({ background, className, ...props }: Props) => (
   <Paper
-    square
     className={cx(
       styles.default,
       { [styles.white]: background === 'white' },

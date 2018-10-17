@@ -26,6 +26,22 @@ const theme = createMuiTheme({
     primary: {
       main: colors.default
     }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: '20px',
+        boxShadow: 'none'
+      },
+      contained: {
+        boxShadow: 'none'
+      }
+    },
+    MuiPaper: {
+      rounded: {
+        borderRadius: 0
+      }
+    }
   }
 });
 

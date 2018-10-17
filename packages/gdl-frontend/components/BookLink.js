@@ -15,11 +15,17 @@ import type { Book } from '../types';
 import CoverImage from './CoverImage';
 import media from '../style/media';
 
+export const coverWidths = {
+  small: 105,
+  large: 130
+};
+
 /**
  * Add small brightness effect to book cover when hovered
  */
 const cardCss = css`
   position: relative;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
   &:hover {
     img {
       transition: 1s opacity linear;
@@ -27,9 +33,9 @@ const cardCss = css`
       filter: opacity(0.9);
     }
   }
-  width: 105px;
+  width: ${coverWidths.small}px;
   ${media.tablet`
-   width: 130px;
+    width: ${coverWidths.large}px;
   `};
 `;
 

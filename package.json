@@ -35,7 +35,6 @@
     "babel-jest": "23.6.0",
     "babel-plugin-emotion": "9.2.11",
     "babel-plugin-inline-react-svg": "0.5.4",
-    "babel-plugin-polished": "1.1.0",
     "babel-plugin-transform-assets": "1.0.2",
     "babel-plugin-transform-imports": "^1.5.0",
     "copy-webpack-plugin": "4.5.3",
@@ -72,6 +71,7 @@
     "@zeit/next-source-maps": "^0.0.2",
     "auth0-js": "9.8.0",
     "cookie-parser": "^1.4.3",
+    "copy-to-clipboard": "3.0.8",
     "downshift": "2.0.10",
     "emotion": "9.2.12",
     "emotion-server": "9.2.12",
@@ -97,7 +97,6 @@
     "react-emotion": "9.2.12",
     "react-final-form": "3.6.5",
     "react-ga": "2.5.3",
-    "react-icons": "^2.2.7",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
     "universal-cookie": "^2.1.5"

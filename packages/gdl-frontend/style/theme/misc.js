@@ -9,9 +9,10 @@ const TABLET_BREAKPOINT = 768;
 
 const misc = {
   containers: {
-    large: '1024px',
-    small: '738px'
-  }
+    large: 1060,
+    small: 810
+  },
+  gutter: 28
 };
 
 export { misc as default, TABLET_BREAKPOINT };
