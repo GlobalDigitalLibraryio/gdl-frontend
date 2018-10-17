@@ -29,7 +29,6 @@ import {
   FavoriteBorder as FavoriteOutlineIcon,
   SaveAlt as SaveAltIcon,
   Share as ShareIcon,
-  CheckCircle as CheckCircleIcon,
   Link as LinkIcon
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
@@ -327,11 +326,6 @@ class BookActions1 extends React.Component<
               />
             )}
           </Favorite>
-
-          <IconButton
-            icon={<CheckCircleIcon />}
-            label={<Trans>Save offline</Trans>}
-          />
 
           <IconButton
             icon={<ShareIcon />}
