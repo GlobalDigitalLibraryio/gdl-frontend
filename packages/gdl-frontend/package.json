@@ -46,6 +46,7 @@
     "facepaint": "1.2.1",
     "gdl-auth": "^0.0.0",
     "gdl-config": "^0.0.0",
+    "gdl-image": "^0.0.0",
     "glob": "^7.1.2",
     "helmet": "3.13.0",
     "invariant": "^2.2.4",
