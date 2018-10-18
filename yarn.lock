@@ -3257,6 +3257,7 @@ dom-serializer@0, dom-serializer@~0.1.0:
 dom-urls@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/dom-urls/-/dom-urls-1.1.0.tgz#001ddf81628cd1e706125c7176f53ccec55d918e"
+  integrity sha1-AB3fgWKM0ecGElxxdvU8zsVdkY4=
   dependencies:
     urijs "^1.16.1"
 
@@ -8880,6 +8881,7 @@ serve-static@1.13.2:
 service-worker-mock@1.9.3:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/service-worker-mock/-/service-worker-mock-1.9.3.tgz#81fb7da8ab47e89376618fd591e2bf653905202f"
+  integrity sha512-M9yUzuhq+Odtx7Wc9at7yAgrVKbVsnGimU0Kh9H3i741eVyGqEP26LjG8gfPWVjZeTPpIzWNx9tHtEB06F1O2g==
   dependencies:
     dom-urls "^1.1.0"
 
@@ -9894,6 +9896,7 @@ uri-js@^4.2.2:
 urijs@^1.16.1:
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/urijs/-/urijs-1.19.1.tgz#5b0ff530c0cbde8386f6342235ba5ca6e995d25a"
+  integrity sha512-xVrGVi94ueCJNrBSTjWqjvtgvl3cyOTThp2zaMaFNGp3F542TR6sM3f2o8RqZl+AwteClSVmoCyt0ka4RjQOQg==
 
 urix@^0.1.0:
   version "0.1.0"

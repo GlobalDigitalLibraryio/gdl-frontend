@@ -31,15 +31,15 @@ import {
   FavoriteBorder as FavoriteOutlineIcon,
   SaveAlt as SaveAltIcon,
   Share as ShareIcon,
-  Link as LinkIcon
+  Link as LinkIcon,
+  CheckCircle as CheckCircleIcon
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import {
   makeAvailableOffline,
   isAvailableOffline,
-  removeFromAvailableOffline,
-  getTimestamp
+  removeFromAvailableOffline
 } from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
@@ -169,7 +169,7 @@ class BookPage extends React.Component<Props> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} />
+                        <BookActions1 book={book} key={book.uuid} />
                       </div>
                     </Hidden>
                     <Typography
@@ -193,7 +193,7 @@ class BookPage extends React.Component<Props> {
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} />
+                  <BookActions1 book={book} key={book.uuid} />
                 </Hidden>
                 <Divider />
 
@@ -267,14 +267,28 @@ const ReadBookLink = ({ book }) =>
 
 /**
  * Favorite, share, offline
+ * Remember to render this with a key prop, easier to just blow away the entire component than handling
+ * updated props
  */
 class BookActions1 extends React.Component<
   { book: BookDetails },
-  { anchorEl: ?HTMLElement }
+  {
+    anchorEl: ?HTMLElement,
+    isAvailableOffline: ?boolean,
+    snackbarMessage: ?string
+  }
 > {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    isAvailableOffline: null,
+    snackbarMessage: null
   };
+
+  async componentDidMount() {
+    this.setState({
+      isAvailableOffline: await isAvailableOffline(this.props.book)
+    });
+  }
 
   closeShareMenu = () => this.setState({ anchorEl: null });
 
@@ -293,6 +307,22 @@ class BookActions1 extends React.Component<
         .catch(() => {}); // Ignore here because we don't care if people cancel sharing
     } else {
       this.setState({ anchorEl: event.currentTarget });
+    }
+  };
+
+  handleOfflineClick = async () => {
+    if (this.state.isAvailableOffline) {
+      await removeFromAvailableOffline(this.props.book);
+      this.setState({
+        isAvailableOffline: false,
+        snackbarMessage: 'Book is removed from offline.'
+      });
+    } else {
+      await makeAvailableOffline(this.props.book);
+      this.setState({
+        isAvailableOffline: true,
+        snackbarMessage: 'Book is available offline.'
+      });
     }
   };
 
@@ -336,6 +366,18 @@ class BookActions1 extends React.Component<
               />
             )}
           </Favorite>
+
+          <IconButton
+            icon={
+              <CheckCircleIcon
+                style={
+                  this.state.isAvailableOffline ? { color: 'green' } : null
+                }
+              />
+            }
+            onClick={this.handleOfflineClick}
+            label={<Trans>Save offline</Trans>}
+          />
 
           <IconButton
             icon={<ShareIcon />}
@@ -392,6 +434,18 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
+        {/* Show offlined snackbar*/}
+        <Snackbar
+          autoHideDuration={3000}
+          open={Boolean(this.state.snackbarMessage)}
+          onClose={() => this.setState({ snackbarMessage: null })}
+          ContentProps={{
+            'aria-describedby': 'message-id'
+          }}
+          message={
+            <span id="snackbar-message">{this.state.snackbarMessage}</span>
+          }
+        />
       </>
     );
   }

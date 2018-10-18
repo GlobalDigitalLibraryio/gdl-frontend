@@ -82,9 +82,10 @@ class OfflinePage extends React.Component<{}, State> {
 const OfflineBooks = withRouter(({ books, router }) => (
   <>
     <Typography
-      variant="headline"
+      variant="h4"
+      component="h1"
       align="center"
-      css={{ marginBottom: spacing.medium }}
+      css={{ marginBottom: spacing.large }}
     >
       <Trans>Available offline</Trans>
     </Typography>
