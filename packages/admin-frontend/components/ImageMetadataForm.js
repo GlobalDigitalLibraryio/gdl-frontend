@@ -13,10 +13,11 @@ type Props = {
 
 export default class ImageMetadataForm extends React.Component<Props> {
   render() {
+    const { licenses } = this.props;
     return (
       <Row autoFlow="row">
         <Field
-          name="title"
+          name="title.title"
           render={({ input, meta }) => (
             <TextField
               fullWidth
@@ -28,7 +29,7 @@ export default class ImageMetadataForm extends React.Component<Props> {
         />
 
         <Field
-          name="alttext"
+          name="alttext.alttext"
           render={({ input, meta }) => (
             <TextField
               fullWidth
@@ -39,7 +40,7 @@ export default class ImageMetadataForm extends React.Component<Props> {
           )}
         />
         <Field
-          name="caption"
+          name="caption.caption"
           render={({ input, meta }) => (
             <TextField
               fullWidth
@@ -61,14 +62,25 @@ export default class ImageMetadataForm extends React.Component<Props> {
           )}
         />
         <Field
-          name="copyright.license.license"
+          name="copyright.license"
           render={({ input, meta }) => (
             <FormControl error={meta.error && meta.touched} fullWidth>
               <InputLabel>License</InputLabel>
-              <Select {...input} native>
+              <Select
+                {...input}
+                // Native select operates on value strings
+                value={input.value && input.value.license}
+                onChange={event =>
+                  input.onChange(
+                    licenses &&
+                      licenses.find(l => l.license === event.target.value)
+                  )
+                }
+                native
+              >
                 <option key="" value="" />
-                {this.props.licenses &&
-                  this.props.licenses.map((license: License) => (
+                {licenses &&
+                  licenses.map(license => (
                     <option key={license.license} value={license.license}>
                       {license.description}
                     </option>
@@ -85,22 +97,20 @@ export default class ImageMetadataForm extends React.Component<Props> {
 export function validateForm(values: Object) {
   const errors = {};
 
-  if (isEmptyString(values.title)) {
-    errors.title = 'You have to enter a title';
+  if (!values.title || isEmptyString(values.title.title)) {
+    errors.title = { title: true };
   }
 
-  if (isEmptyString(values.alttext)) {
-    errors.alttext = 'You have to enter an alternative text';
+  if (!values.alttext || isEmptyString(values.alttext.alttext)) {
+    errors.alttext = { alttext: true };
   }
 
-  if (isEmptyString(values.caption)) {
-    errors.caption = 'You have to enter a caption';
+  if (!values.caption || isEmptyString(values.caption.caption)) {
+    errors.caption = { caption: true };
   }
-
-  let originError, licenseError;
 
   if (values.copyright && isEmptyString(values.copyright.origin)) {
-    originError = 'You have to enter an origin';
+    errors.copyright = { origin: true };
   }
 
   if (
@@ -108,13 +118,11 @@ export function validateForm(values: Object) {
     values.copyright.license &&
     isEmptyString(values.copyright.license.license)
   ) {
-    licenseError = { license: 'You have to choose a license' };
+    errors.copyright = {
+      ...errors.copyright,
+      license: { license: true }
+    };
   }
-
-  errors.copyright = {
-    origin: originError,
-    license: licenseError
-  };
 
   return errors;
 }

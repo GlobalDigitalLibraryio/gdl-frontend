@@ -130,7 +130,7 @@ class BookPage extends React.Component<Props> {
                   <GridItem css={media.tablet`flex: 0 0 310px;`}>
                     <CoverImage
                       css={{ marginLeft: 'auto' }}
-                      src={book.coverImage && book.coverImage.url}
+                      coverImage={book.coverImage}
                       size="large"
                     />
                     <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>

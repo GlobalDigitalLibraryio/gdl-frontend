@@ -171,10 +171,7 @@ class TranslatePage extends React.Component<Props, State> {
                     params={{ lang: book.language.code, id: book.id }}
                   >
                     <a>
-                      <CoverImage
-                        src={book.coverImage && book.coverImage.url}
-                        size="small"
-                      />
+                      <CoverImage coverImage={book.coverImage} size="small" />
                     </a>
                   </Link>
                 </Grid>

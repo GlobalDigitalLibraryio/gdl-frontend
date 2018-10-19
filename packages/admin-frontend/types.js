@@ -59,23 +59,20 @@ type Success<T> = { isOk: true, data: T, statusCode: number };
 type Failed = { isOk: false, error: any, statusCode: number };
 export type RemoteData<T> = Success<T> | Failed;
 
-export type CoverImageInfo = {
-  url: string,
-  alttext?: string,
-  imageId: string
+export type ImageCropCoordinates = {
+  x: number,
+  height: number,
+  y: number,
+  width: number,
+  ratio: string,
+  revision: number
 };
 
-export type Translation = {
-  translatedFrom: Language,
-  translatedTo: Language,
-  id: number,
-  crowdinUrl: string,
-  synchronizeUrl: string,
-  title: string,
-  publisher: {
-    name: string
-  },
-  coverImage?: CoverImageInfo
+export type CoverImage = {
+  url: string,
+  alttext?: string,
+  imageId: string,
+  variants?: { [string]: ImageCropCoordinates }
 };
 
 export type Category = 'library_books' | 'classroom_books';
@@ -94,7 +91,7 @@ export type Book = $ReadOnly<{|
   highlightDescription?: string,
   readingLevel: ReadingLevel,
   language: Language,
-  coverImage?: CoverImageInfo
+  coverImage?: CoverImage
 |}>;
 
 export type BookDetails = $ReadOnly<{|
@@ -103,7 +100,7 @@ export type BookDetails = $ReadOnly<{|
   datePublished?: string,
   publisher: Publisher,
   license: License,
-  coverImage: CoverImageInfo,
+  coverImage?: CoverImage,
   additionalInformation?: string,
   supportsTranslation: boolean,
   contributors: Array<Contributor>,
@@ -115,15 +112,6 @@ export type BookDetails = $ReadOnly<{|
     pdf?: string
   }
 |}>;
-
-export type ImageCropCoordinates = {
-  topLeftX: number,
-  height: number,
-  topLeftY: number,
-  width: number,
-  ratio: string,
-  revision: number
-};
 
 export type FeaturedContent = $ReadOnly<{
   id: number,
@@ -185,5 +173,6 @@ export type ImageMetadata = {
     caption: string,
     language: string
   },
-  supportedLanguages: [string]
+  supportedLanguages: [string],
+  imageVariants?: { [string]: ImageCropCoordinates }
 };

@@ -65,10 +65,7 @@ class TranslationCard extends React.Component<
               }}
             >
               <a>
-                <CoverImage
-                  src={translation.coverImage && translation.coverImage.url}
-                  size="small"
-                />
+                <CoverImage coverImage={translation.coverImage} size="small" />
               </a>
             </Link>
           </Grid>

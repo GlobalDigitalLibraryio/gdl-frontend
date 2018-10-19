@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React from 'react';
 import ReactCropper from 'react-cropper';
 import 'cropperjs/dist/cropper.css';
 import type { ImageCropCoordinates } from '../../types';
@@ -12,51 +12,75 @@ type Props = {
   cropCoordinates: ?ImageCropCoordinates
 };
 
-export default class Cropper extends Component<Props> {
-  cropper = React.createRef();
-
-  handleCrop = () => {
-    const cropData = this.cropper.current.getData(true /* rounded values*/);
-    this.props.onCrop({
-      topLeftX: cropData.x,
-      topLeftY: cropData.y,
-      width: cropData.width,
-      height: cropData.height,
-      ratio: this.props.aspectRatio.toString(),
-      revision: this.props.cropCoordinates
-        ? this.props.cropCoordinates.revision
-        : 1
-    });
+export default class Cropper extends React.Component<Props> {
+  cropper: { current: any } = React.createRef();
+  cropData: ?{
+    x: number,
+    y: number,
+    width: number,
+    height: number
   };
+  ready = false;
 
-  handleReady = () => {
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.cropCoordinates !== this.props.cropCoordinates) {
+      this.setCropData();
+    }
+  }
+
+  setCropData = () => {
     const { cropCoordinates } = this.props;
 
-    if (cropCoordinates) {
+    if (this.ready && cropCoordinates) {
       this.cropper.current.setData({
-        x: cropCoordinates.topLeftX,
-        y: cropCoordinates.topLeftY,
+        x: cropCoordinates.x,
+        y: cropCoordinates.y,
         width: cropCoordinates.width,
         height: cropCoordinates.height
       });
     }
   };
 
-  render() {
-    const imageUrl = this.props.imageUrl;
+  /**
+   * We only want to fire this after we've done cropping instead of continusously
+   * So we store the value on the instance
+   */
+  handleCrop = () => {
+    this.cropData = this.cropper.current.getData(true /* rounded values*/);
+  };
 
+  handleCropEnd = () => {
+    const cropData = this.cropData;
+    cropData &&
+      this.props.onCrop({
+        x: cropData.x,
+        y: cropData.y,
+        width: cropData.width,
+        height: cropData.height,
+        ratio: this.props.aspectRatio.toString(),
+        revision: this.props.cropCoordinates
+          ? this.props.cropCoordinates.revision
+          : 1
+      });
+  };
+
+  render() {
     return (
       <ReactCropper
         ref={this.cropper}
         style={{ height: 400, width: '100%' }}
-        src={imageUrl}
+        src={this.props.imageUrl}
         aspectRatio={this.props.aspectRatio}
         guides={false}
         viewMode={2}
         zoomable={false}
-        dragMode={'move'}
+        dragMode="move"
         crop={this.handleCrop}
-        ready={this.handleReady}
+        cropend={this.handleCropEnd}
+        ready={() => {
+          this.ready = true;
+          this.setCropData();
+        }}
       />
     );
   }

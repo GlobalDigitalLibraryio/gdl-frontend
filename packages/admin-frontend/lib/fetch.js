@@ -108,13 +108,6 @@ export async function saveBook(
   return result;
 }
 
-export async function getImageCropCoordinates(
-  imageId: string
-): Promise<RemoteData<{ [string]: ImageCropCoordinates }>> {
-  const result = await doFetch(`${imageApiUrl}/images/${imageId}/variants`);
-  return result;
-}
-
 export async function saveImageCropCoordinates(
   imageId: string,
   data: ImageCropCoordinates
@@ -133,11 +126,20 @@ export async function fetchImageMetadata(
   return result;
 }
 
-export async function patchImageMetadata(
-  imageId: string,
-  data: Object
+export async function updateImageMetadata(
+  imageMetadata: ImageMetadata
 ): Promise<RemoteData<void>> {
-  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+  const data = {
+    id: imageMetadata.id,
+    language: imageMetadata.alttext.language,
+    alttext: imageMetadata.alttext.alttext,
+    caption: imageMetadata.caption.caption,
+    title: imageMetadata.title.title,
+    copyright: imageMetadata.copyright,
+    tags: imageMetadata.tags.tags
+  };
+
+  const result = await doFetch(`${imageApiUrl}/images/${data.id}`, {
     method: 'PATCH',
     body: JSON.stringify(data)
   });

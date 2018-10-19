@@ -1,9 +1,10 @@
 // @flow
 import * as React from 'react';
 import { ImageOutlined as ImageIcon } from '@material-ui/icons';
-import { Button } from '@material-ui/core';
+import { imageUrl } from 'gdl-image';
+import { Button, Typography } from '@material-ui/core';
 import type { BookDetails } from '../../types';
-import EditImageDialog from '../EditImageDialog';
+import EditBookCoverDialog from './EditBookCoverDialog';
 
 type Props = {
   book: BookDetails
@@ -27,29 +28,35 @@ export default class EditBookImage extends React.Component<Props, State> {
   };
 
   render() {
-    const book = this.props.book;
+    const coverImage = this.props.book.coverImage;
+
+    if (!coverImage) return null;
+
     return (
       <>
         <div css={{ textAlign: 'center' }}>
           <img
-            src={
-              book.coverImage.url +
-              '?storedRatio=0.81&focalX=50&focalY=50&ratio=0.81&timestamp=' +
-              Date.now()
-            }
-            alt="Cover"
-            width={260}
-            height={365}
+            src={imageUrl(coverImage, { aspectRatio: 0.81 })}
+            css={{
+              width: 310,
+              height: 380,
+              objectFit: 'cover',
+              objectPosition: 'center center'
+            }}
+            alt={coverImage.alttext}
           />
+          <Typography variant="caption" gutterBottom>
+            Alt: {coverImage.alttext && <em>{coverImage.alttext}</em>}
+          </Typography>
 
           <Button onClick={this.handleOpen} size="small">
             <ImageIcon /> Edit book cover
           </Button>
         </div>
         {this.state.dialogOpen && (
-          <EditImageDialog
+          <EditBookCoverDialog
             onClose={this.handleOnCancel}
-            book={this.props.book}
+            coverImage={coverImage}
           />
         )}
       </>
