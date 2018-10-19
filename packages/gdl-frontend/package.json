@@ -32,7 +32,7 @@
   "dependencies": {
     "@engineerapart/nextscript": "0.0.8",
     "@lingui/react": "2.6.1",
-    "@material-ui/core": "3.2.0",
+    "@material-ui/core": "3.2.2",
     "@material-ui/icons": "3.0.1",
     "@sentry/browser": "4.1.1",
     "@sentry/node": "4.1.1",
@@ -42,7 +42,7 @@
     "copy-to-clipboard": "3.0.8",
     "emotion": "9.2.12",
     "emotion-server": "9.2.12",
-    "express": "^4.16.3",
+    "express": "4.16.4",
     "express-request-language": "^1.1.15",
     "facepaint": "1.2.1",
     "gdl-auth": "^0.0.0",
@@ -73,7 +73,7 @@
     "@weco/next-plugin-transpile-modules": "^0.0.2",
     "babel-plugin-emotion": "9.2.11",
     "babel-plugin-transform-assets": "1.0.2",
-    "copy-webpack-plugin": "4.5.3",
+    "copy-webpack-plugin": "4.5.4",
     "cross-env": "^5.0.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
@@ -81,7 +81,7 @@
     "jest-emotion": "9.2.11",
     "nock": "^9.2.6",
     "react-test-renderer": "16.5.2",
-    "webpack-bundle-analyzer": "3.0.2",
+    "webpack-bundle-analyzer": "3.0.3",
     "workbox-webpack-plugin": "3.6.2"
   }
 }
