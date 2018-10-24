@@ -59,8 +59,8 @@
     "next-routes": "^1.4.2",
     "polished": "2.2.0",
     "prop-types": "15.6.2",
-    "react": "16.5.2",
-    "react-dom": "16.5.2",
+    "react": "16.6.0",
+    "react-dom": "16.6.0",
     "react-emotion": "9.2.12",
     "react-ga": "2.5.3",
     "react-jss": "8.6.1",
@@ -80,7 +80,7 @@
     "enzyme-to-json": "^3.3.4",
     "jest-emotion": "9.2.11",
     "nock": "^9.2.6",
-    "react-test-renderer": "16.5.2",
+    "react-test-renderer": "16.6.0",
     "webpack-bundle-analyzer": "3.0.3",
     "workbox-webpack-plugin": "3.6.2"
   }
