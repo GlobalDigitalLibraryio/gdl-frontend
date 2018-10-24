@@ -60,7 +60,7 @@
     "react-test-renderer": "16.6.0",
     "service-worker-mock": "1.9.3",
     "webpack-bundle-analyzer": "3.0.3",
-    "workbox-webpack-plugin": "3.6.2"
+    "workbox-webpack-plugin": "3.6.3"
   },
   "dependencies": {
     "@engineerapart/nextscript": "0.0.8",
