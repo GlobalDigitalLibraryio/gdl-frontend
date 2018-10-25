@@ -70,7 +70,8 @@ export default class EditPage extends React.Component<
       );
     } else {
       return (
-        <Layout shouldAddPadding={false}>
+        // blow away the components using key so we don't have to handle updating stuff
+        <Layout key={book.uuid} shouldAddPadding={false}>
           <AppBar position="static" color="default">
             <Tabs
               centered={true}
