@@ -111,7 +111,16 @@ export async function saveBook(
 export async function saveImageCropCoordinates(
   imageId: string,
   data: ImageCropCoordinates
-): Promise<RemoteData<void>> {
+): Promise<
+  RemoteData<{
+    ratio: string,
+    revision: number,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  }>
+> {
   const result = await doFetch(`${imageApiUrl}/images/${imageId}/variants`, {
     method: 'POST',
     body: JSON.stringify(data)

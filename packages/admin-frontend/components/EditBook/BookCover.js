@@ -3,7 +3,8 @@ import * as React from 'react';
 import { ImageOutlined as ImageIcon } from '@material-ui/icons';
 import { imageUrl } from 'gdl-image';
 import { Button, Typography } from '@material-ui/core';
-import type { BookDetails } from '../../types';
+import { fetchImageMetadata } from '../../lib/fetch';
+import type { BookDetails, ImageMetadata } from '../../types';
 import EditBookCoverDialog from './EditBookCoverDialog';
 
 type Props = {
@@ -11,26 +12,57 @@ type Props = {
 };
 
 type State = {
-  dialogOpen: boolean
+  dialogOpen: boolean,
+  imageMetadata: ?ImageMetadata
 };
 
 export default class EditBookImage extends React.Component<Props, State> {
   state = {
-    dialogOpen: false
+    dialogOpen: false,
+    imageMetadata: null
   };
 
-  handleOnCancel = () => {
+  componentDidMount() {
+    this.getImageData();
+  }
+
+  async getImageData() {
+    if (!this.props.book.coverImage) return;
+
+    const result = await fetchImageMetadata(this.props.book.coverImage.imageId);
+
+    if (result.isOk) {
+      this.setState({ imageMetadata: result.data });
+    }
+  }
+
+  handleSave = () => {
+    this.getImageData();
     this.setState({ dialogOpen: false });
   };
 
-  handleOpen = () => {
-    this.setState({ dialogOpen: true });
-  };
+  handleCancel = () => this.setState({ dialogOpen: false });
 
   render() {
-    const coverImage = this.props.book.coverImage;
+    if (!this.props.book.coverImage) {
+      return null;
+    }
 
-    if (!coverImage) return null;
+    const { imageMetadata } = this.state;
+
+    // While we're waiting for the imageApi to respond with the metadata, we use the stuff we know from the book object
+    const altText = imageMetadata
+      ? imageMetadata.alttext.alttext
+      : this.props.book.coverImage.alttext;
+
+    const coverImage = imageMetadata
+      ? {
+          url: imageMetadata.imageUrl,
+          imageId: imageMetadata.id,
+          variants: imageMetadata.imageVariants,
+          alttext: altText
+        }
+      : this.props.book.coverImage;
 
     return (
       <>
@@ -43,22 +75,27 @@ export default class EditBookImage extends React.Component<Props, State> {
               objectFit: 'cover',
               objectPosition: 'center center'
             }}
-            alt={coverImage.alttext}
+            alt={altText}
           />
           <Typography variant="caption" gutterBottom>
-            Alt: {coverImage.alttext && <em>{coverImage.alttext}</em>}
+            Alt: {altText && <em>{altText}</em>}
           </Typography>
 
-          <Button onClick={this.handleOpen} size="small">
+          <Button
+            onClick={() => this.setState({ dialogOpen: true })}
+            size="small"
+          >
             <ImageIcon /> Edit book cover
           </Button>
         </div>
-        {this.state.dialogOpen && (
-          <EditBookCoverDialog
-            onClose={this.handleOnCancel}
-            coverImage={coverImage}
-          />
-        )}
+        {this.state.dialogOpen &&
+          imageMetadata && (
+            <EditBookCoverDialog
+              onCancel={this.handleCancel}
+              onSave={this.handleSave}
+              imageMetadata={imageMetadata}
+            />
+          )}
       </>
     );
   }

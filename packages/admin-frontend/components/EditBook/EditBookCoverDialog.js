@@ -12,28 +12,22 @@ import {
 } from '@material-ui/core';
 
 import {
-  fetchImageMetadata,
   fetchLicenses,
   saveImageCropCoordinates,
   updateImageMetadata
 } from '../../lib/fetch';
-import type {
-  CoverImage,
-  ImageMetadata,
-  ImageCropCoordinates,
-  License
-} from '../../types';
+import type { ImageMetadata, ImageCropCoordinates, License } from '../../types';
 import Cropper from '../ImageCropper/Cropper';
 import ImageMetadataForm, { validateForm } from '../ImageMetadataForm';
 
 type Props = {
-  onClose: () => void,
-  coverImage: CoverImage
+  onCancel: () => void,
+  onSave: () => void,
+  imageMetadata: ImageMetadata
 };
 
 type State = {
   alteredCropCoordinates: ?ImageCropCoordinates,
-  imageMetadata: ?ImageMetadata,
   licenses: ?Array<License>
 };
 
@@ -42,13 +36,11 @@ const BOOK_COVER_ASPECT_RATIO_FLOAT = 0.81;
 
 export default class EditImageDialog extends React.Component<Props, State> {
   state = {
-    imageMetadata: null,
     alteredCropCoordinates: null,
     licenses: null
   };
 
   async componentDidMount() {
-    this.fetchImageMetadata();
     this.fetchLicenses();
   }
 
@@ -57,14 +49,6 @@ export default class EditImageDialog extends React.Component<Props, State> {
 
     if (result.isOk) {
       this.setState({ licenses: result.data });
-    }
-  }
-
-  async fetchImageMetadata() {
-    const result = await fetchImageMetadata(this.props.coverImage.imageId);
-
-    if (result.isOk) {
-      this.setState({ imageMetadata: result.data });
     }
   }
 
@@ -77,7 +61,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
       await this.saveImageMetadata(values);
     }
 
-    this.props.onClose();
+    this.props.onSave();
   };
 
   async saveImageMetadata(values: ImageMetadata) {
@@ -87,7 +71,7 @@ export default class EditImageDialog extends React.Component<Props, State> {
   async saveCroppedImage() {
     if (this.state.alteredCropCoordinates) {
       return saveImageCropCoordinates(
-        this.props.coverImage.imageId,
+        this.props.imageMetadata.id,
         this.state.alteredCropCoordinates
       );
     }
@@ -100,10 +84,10 @@ export default class EditImageDialog extends React.Component<Props, State> {
   render() {
     const isImageCropped = this.state.alteredCropCoordinates != null;
 
-    const { imageMetadata } = this.state;
+    const { imageMetadata } = this.props;
 
     return (
-      <Dialog open onClose={this.props.onClose}>
+      <Dialog open onClose={this.props.onCancel}>
         <DialogTitle>Edit image and metadata</DialogTitle>
         <Form
           initialValues={imageMetadata || undefined}
@@ -121,13 +105,13 @@ export default class EditImageDialog extends React.Component<Props, State> {
                     imageMetadata.imageVariants[BOOK_COVER_ASPECT_RATIO]
                   }
                   onCrop={this.handleCrop}
-                  imageUrl={this.props.coverImage.url}
+                  imageUrl={imageMetadata.imageUrl}
                   aspectRatio={BOOK_COVER_ASPECT_RATIO_FLOAT}
                 />
                 <ImageMetadataForm licenses={this.state.licenses} />
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.props.onClose} color="secondary">
+                <Button onClick={this.props.onCancel} color="secondary">
                   Cancel
                 </Button>
                 <Button
