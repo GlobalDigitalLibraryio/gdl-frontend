@@ -63,13 +63,18 @@ self.addEventListener('fetch', event => {
 workbox.routing.registerRoute(
   ({ url, event }) => {
     return (
-      url.href.match(/^https:\/\/images\.(.+)\.digitallibrary\.io/) ||
-      url.href.match(/\/book-api\/v1\/books\/[\w-]+\/\d+$/) ||
-      url.href.match(/\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/)
+      /^https:\/\/res\.cloudinary\.com/.test(url.href) ||
+      //url.href.match(/^https:\/\/res\.(.+)\.digitallibrary\.io/) ||
+      /\/book-api\/v1\/books\/[\w-]+\/\d+$/.test(url.href) ||
+      /\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/.test(url.href)
     );
   },
   workbox.strategies.cacheFirst({
     cacheName: 'gdl-offline',
+    // fetchOptions: {
+    //   credentials: 'omit'
+    //   //mode: 'cors'
+    // },
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days

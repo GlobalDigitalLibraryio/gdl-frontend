@@ -74,6 +74,7 @@ const CoverImage = ({
     <Image
       ariaHidden
       className={cn}
+      crossOrigin="anonymous"
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}
       src={imageUrl(coverImage, {

@@ -61,6 +61,7 @@ const listenToIntersections = (el, cb) => {
 type Props = {
   ariaHidden: boolean,
   className?: string,
+  crossOrigin?: 'anonymous',
   responsiveWidth: [string | number, string | number],
   responsiveHeight: [string | number, string | number],
   src: string,
@@ -115,9 +116,10 @@ export default class Image extends React.Component<Props, State> {
   };
 
   renderImg() {
-    const { src, srcSet, sizes } = this.props;
+    const { crossOrigin, src, srcSet, sizes } = this.props;
     return (
       <Img
+        crossOrigin={crossOrigin}
         src={src}
         srcSet={srcSet}
         sizes={sizes}

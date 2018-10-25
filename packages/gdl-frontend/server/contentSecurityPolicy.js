@@ -42,6 +42,7 @@ const directives = {
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
+    'https://res.cloudinary.com',
     'https://digitallibrary.eu.auth0.com',
     `https://sentry.io/api/${SENTRY_PROJECT_ID}/store/`,
     googleAnalytics
