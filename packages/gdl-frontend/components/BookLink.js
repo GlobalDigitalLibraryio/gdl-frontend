@@ -60,11 +60,7 @@ export default ({ book }: { book: Book }) => (
     >
       <ClickTarget aria-hidden tabIndex="-1" />
     </Link>
-    <CoverImage
-      size="small"
-      src={book.coverImage && book.coverImage.url}
-      noShadow
-    />
+    <CoverImage size="small" coverImage={book.coverImage} noShadow />
     <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>
       <Link
         route="book"

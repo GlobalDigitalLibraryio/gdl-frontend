@@ -10,6 +10,7 @@ import * as React from 'react';
 import { css, cx } from 'react-emotion';
 import { imageUrl } from 'gdl-image';
 
+import type { CoverImage as CoverImageType } from '../types';
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
@@ -31,7 +32,7 @@ type Props = {
   noShadow?: boolean,
   // By using predetermined sizes for the book covers, we make sure to take advantage of the client's browser cache to not redownload the image in lots of different sizes on different pages
   size: 'small' | 'large',
-  src: ?string
+  coverImage: ?CoverImageType
 };
 
 /**
@@ -41,10 +42,15 @@ type Props = {
  * We hide the cover image from screen readers, as the title of the book should be enough
  */
 
-const CoverImage = ({ src, size, className, noShadow = false }: Props) => {
+const CoverImage = ({
+  coverImage,
+  size,
+  className,
+  noShadow = false
+}: Props) => {
   const cn = cx({ [shadowStyle]: !noShadow }, className);
 
-  if (src == null) {
+  if (coverImage == null) {
     return (
       <Image
         ariaHidden
@@ -70,7 +76,7 @@ const CoverImage = ({ src, size, className, noShadow = false }: Props) => {
       className={cn}
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}
-      src={imageUrl(src, {
+      src={imageUrl(coverImage, {
         aspectRatio: 0.81
       })}
       sizes={sizes}

@@ -17,7 +17,7 @@ import type {
   Language,
   FeaturedContent,
   Book,
-  StoredParameters,
+  ImageCropCoordinates,
   NewImageMetadata,
   ImageMetadata,
   License
@@ -108,45 +108,47 @@ export async function saveBook(
   return result;
 }
 
-export async function postStoredParameters(
-  imageApiBody: StoredParameters
-): Promise<RemoteData<StoredParameters>> {
-  const result = await doFetch(`${imageApiUrl}/images/stored-parameters`, {
+export async function saveImageCropCoordinates(
+  imageId: string,
+  data: ImageCropCoordinates
+): Promise<
+  RemoteData<{
+    ratio: string,
+    revision: number,
+    x: number,
+    y: number,
+    width: number,
+    height: number
+  }>
+> {
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}/variants`, {
     method: 'POST',
-    body: JSON.stringify(imageApiBody)
+    body: JSON.stringify(data)
   });
-
-  return result;
-}
-
-export async function fetchStoredParameters(
-  imageUrl: string
-): Promise<RemoteData<StoredParameters>> {
-  const result = await doFetch(
-    `${imageApiUrl}/images/stored-parameters${imageUrl}`,
-    {
-      method: 'GET',
-      body: null
-    }
-  );
   return result;
 }
 
 export async function fetchImageMetadata(
   imageId: string
 ): Promise<RemoteData<ImageMetadata>> {
-  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
-    method: 'GET',
-    body: null
-  });
+  const result = await doFetch(`${imageApiUrl}/images/${imageId}`);
   return result;
 }
 
-export async function patchImageMetadata(
-  imageId: string,
-  data: Object
-): Promise<RemoteData<{}>> {
-  const result = await doFetch(`${imageApiUrl}/images/${imageId}`, {
+export async function updateImageMetadata(
+  imageMetadata: ImageMetadata
+): Promise<RemoteData<void>> {
+  const data = {
+    id: imageMetadata.id,
+    language: imageMetadata.alttext.language,
+    alttext: imageMetadata.alttext.alttext,
+    caption: imageMetadata.caption.caption,
+    title: imageMetadata.title.title,
+    copyright: imageMetadata.copyright,
+    tags: imageMetadata.tags.tags
+  };
+
+  const result = await doFetch(`${imageApiUrl}/images/${data.id}`, {
     method: 'PATCH',
     body: JSON.stringify(data)
   });

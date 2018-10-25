@@ -17,7 +17,6 @@ import {
   Typography
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
-import CropImageViewer from '../../components/ImageCropper/CropImageViewer';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -26,11 +25,12 @@ import {
   deleteFeaturedContent
 } from '../../lib/fetch';
 import UploadFileDialog from '../../components/UploadFileDialog';
+import FeaturedImage from '../../components/FeaturedImage';
 import Layout from '../../components/Layout';
 import Row from '../../components/Row';
 import Container from '../../components/Container';
 import isEmptyString from '../../lib/isEmptyString';
-import type { FeaturedContent, ImageParameters, Language } from '../../types';
+import type { FeaturedContent, Language } from '../../types';
 
 type Props = {
   languages: Array<Language>
@@ -39,7 +39,6 @@ type Props = {
 type State = {
   featuredContent: ?FeaturedContent,
   selectedLanguage: string,
-  croppedParameters: ?ImageParameters,
   file: ?File
 };
 
@@ -121,34 +120,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
       this.deleteFeaturedContent(this.state.featuredContent.id);
       this.setState({ featuredContent: null });
     }
-  };
-
-  handleCroppedParametersReceived = (
-    croppedParameters: ImageParameters,
-    change: (name: string, value: any) => void,
-    imageUrl: string
-  ) => {
-    const baseUrl =
-      imageUrl && imageUrl.includes('?')
-        ? imageUrl.substring(0, imageUrl.indexOf('?'))
-        : imageUrl;
-
-    if (croppedParameters) {
-      change(
-        'imageUrl',
-        baseUrl +
-          '?cropStartX=' +
-          croppedParameters.cropStartX +
-          '&cropEndX=' +
-          croppedParameters.cropEndX +
-          '&cropStartY=' +
-          croppedParameters.cropStartY +
-          '&cropEndY=' +
-          croppedParameters.cropEndY
-      );
-    }
-
-    this.setState({ croppedParameters: croppedParameters });
   };
 
   handleOnUpload = (
@@ -314,25 +285,13 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                 </Row>
 
                 <FormSpy
-                  render={({ values }) => (
-                    <div>
-                      {/*$FlowFixMe*/}
-                      {values.imageUrl && (
-                        <CropImageViewer
-                          ratio={2.63}
-                          imageUrl={values.imageUrl}
-                          onDialogOk={croppedParameters => {
-                            this.handleCroppedParametersReceived(
-                              croppedParameters,
-                              form.change,
-                              /*$FlowFixMe*/
-                              values.imageUrl
-                            );
-                          }}
-                        />
-                      )}
-                    </div>
-                  )}
+                  // $FlowFixMe
+                  render={({ values }) =>
+                    // $FlowFixMe
+                    values.imageUrl ? (
+                      <FeaturedImage imageUrl={values.imageUrl} />
+                    ) : null
+                  }
                 />
 
                 <Button

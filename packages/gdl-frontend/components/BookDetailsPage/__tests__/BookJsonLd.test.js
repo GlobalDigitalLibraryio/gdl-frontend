@@ -59,6 +59,7 @@ test('With coverImage', () => {
   const book = {
     ...bookBase,
     coverImage: {
+      imageId: '',
       url:
         'http://test-proxy-1865761686.eu-central-1.elb.amazonaws.com/image-api/v1/raw/2-smile-please-image_1.jpg',
       alttext: 'Some alt text'

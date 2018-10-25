@@ -82,9 +82,20 @@ type Success<T> = { isOk: true, data: T, statusCode: number };
 type Failed = { isOk: false, error: any, statusCode: number };
 export type RemoteData<T> = Success<T> | Failed;
 
-export type CoverImageInfo = {
+export type ImageCropCoordinates = {
+  x: number,
+  height: number,
+  y: number,
+  width: number,
+  ratio: string,
+  revision: number
+};
+
+export type CoverImage = {
   url: string,
-  alttext?: string
+  alttext?: string,
+  imageId: string,
+  variants?: { [string]: ImageCropCoordinates }
 };
 
 export type Translation = {
@@ -97,7 +108,7 @@ export type Translation = {
   publisher: {
     name: string
   },
-  coverImage?: CoverImageInfo
+  coverImage?: CoverImage
 };
 
 export type Category = 'library_books' | 'classroom_books';
@@ -114,7 +125,7 @@ export type Book = $ReadOnly<{|
   highlightDescription?: string,
   readingLevel: ReadingLevel,
   language: Language,
-  coverImage?: CoverImageInfo
+  coverImage?: CoverImage
 |}>;
 
 export type BookDetails = $ReadOnly<{|

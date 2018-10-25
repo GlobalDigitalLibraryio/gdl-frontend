@@ -18,7 +18,7 @@ import { saveBook } from '../../lib/fetch';
 import type { BookDetails } from '../../types';
 import Container from '../Container';
 import Row from '../Row';
-import EditBookImage from './EditBookImage';
+import BookCover from './BookCover';
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
@@ -57,7 +57,7 @@ export default class EditBookForm extends React.Component<Props> {
           </Typography>
         )}
         <Row gridTemplateColumns="min-content auto">
-          <EditBookImage book={book} />
+          <BookCover book={book} />
           <Form
             initialValues={book}
             onSubmit={this.handleSubmit}

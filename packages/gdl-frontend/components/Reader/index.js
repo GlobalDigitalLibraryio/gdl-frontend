@@ -7,6 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
+import { imageUrl } from 'gdl-image';
 
 import Head from '../Head';
 import { fetchChapter } from '../../fetch';
@@ -223,7 +224,9 @@ export default class ReaderContainer extends React.Component<
             this.props.book.chapters.length
           })`}
           description={book.description}
-          image={book.coverImage && book.coverImage.url}
+          image={
+            book.coverImage && imageUrl(book.coverImage, { aspectRatio: 0.81 })
+          }
         >
           {prev && (
             <link

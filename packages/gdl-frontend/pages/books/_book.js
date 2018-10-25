@@ -12,6 +12,7 @@ import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
+import { imageUrl } from 'gdl-image';
 import {
   Menu,
   MenuItem,
@@ -118,7 +119,9 @@ class BookPage extends React.Component<Props> {
         <Head
           description={book.description}
           title={book.title}
-          image={book.coverImage && book.coverImage.url}
+          image={
+            book.coverImage && imageUrl(book.coverImage, { aspectRatio: 0.81 })
+          }
         >
           <BookJsonLd book={book} />
         </Head>
@@ -130,7 +133,7 @@ class BookPage extends React.Component<Props> {
                   <GridItem css={media.tablet`flex: 0 0 310px;`}>
                     <CoverImage
                       css={{ marginLeft: 'auto' }}
-                      src={book.coverImage && book.coverImage.url}
+                      coverImage={book.coverImage}
                       size="large"
                     />
                     <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>

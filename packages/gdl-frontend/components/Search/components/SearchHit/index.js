@@ -51,10 +51,7 @@ const SearchHit = ({ book }: { book: Book }) => {
     <Wrapper>
       <Link route={bookRoute} passHref>
         <a title={book.title} tabIndex="-1" aria-hidden>
-          <CoverImage
-            src={book.coverImage && book.coverImage.url}
-            size="small"
-          />
+          <CoverImage coverImage={book.coverImage} size="small" />
         </a>
       </Link>
 
