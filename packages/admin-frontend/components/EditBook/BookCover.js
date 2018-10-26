@@ -3,7 +3,7 @@ import * as React from 'react';
 import { ImageOutlined as ImageIcon } from '@material-ui/icons';
 import { imageUrl } from 'gdl-image';
 import { Button, Typography } from '@material-ui/core';
-import { fetchImageMetadata } from '../../lib/fetch';
+import { fetchImageMetadata, saveBook } from '../../lib/fetch';
 import type { BookDetails, ImageMetadata } from '../../types';
 import EditBookCoverDialog from './EditBookCoverDialog';
 
@@ -39,6 +39,11 @@ export default class EditBookImage extends React.Component<Props, State> {
   handleSave = () => {
     this.getImageData();
     this.setState({ dialogOpen: false });
+    /**
+     * Whenever we update the image we need to force the backend to reindex the book.
+     * We just call save with on the book here, but don't really care about the result.
+     */
+    saveBook(this.props.book);
   };
 
   handleCancel = () => this.setState({ dialogOpen: false });
