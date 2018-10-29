@@ -1,8 +1,21 @@
 // @flow
+import { coverImageUrl } from 'gdl-image';
 import type { BookDetails } from '../types';
 import { getBookUrl } from '../fetch';
 
+/**
+ * Returns a promise that resolves to the cache object.
+ * If the cache doesn't exist, the cache is created and the promise resolves
+ * to this new cache object instead.
+ */
 const openOfflineCache = () => window.caches.open('gdl-offline');
+
+/**
+ * Returns a promise that resolves to true if the cache exists and deletes it.
+ */
+export function purgeOfflineBooks() {
+  return window.caches.delete('gdl-offline');
+}
 
 export const supportsOffline = () =>
   typeof window !== 'undefined' && 'serviceWorker' in navigator;
@@ -19,6 +32,7 @@ export async function makeAvailableOffline(book: BookDetails) {
     await cache.addAll(bookUrls);
     imageUrls = await getUniqueChapterImageUrls(book);
     await cache.addAll(imageUrls);
+
     return true;
   } catch (error) {
     // If something went wrong when offlining the book, cleanup after ourselves
@@ -88,7 +102,7 @@ function getUrlsForBook(book: BookDetails) {
   const urls = [getBookUrl(book), ...book.chapters.map(c => c.url)];
 
   if (book.coverImage) {
-    urls.push(book.coverImage.url);
+    urls.push(coverImageUrl(book.coverImage));
   }
   return urls;
 }
@@ -98,11 +112,11 @@ function getUrlsForBook(book: BookDetails) {
  * we read from the cache.
  */
 async function getUniqueChapterImageUrls(book) {
-  let imageUrls = [];
   const cache = await openOfflineCache();
 
   const chapterUrls = book.chapters.map(c => c.url);
 
+  let imageUrls = [];
   for (const url of chapterUrls) {
     const response = await cache.match(url);
     if (!response) continue;
@@ -110,6 +124,6 @@ async function getUniqueChapterImageUrls(book) {
     imageUrls = imageUrls.concat(chapter.images);
   }
 
-  // Remove duplicates
+  // Remove duplicates, some chapters use the same image, like the pubisher logo
   return [...new Set(imageUrls)];
 }

@@ -60,21 +60,31 @@ self.addEventListener('fetch', event => {
   }
 });
 
+const imageRegExp = /^https:\/\/res\.cloudinary\.com/;
+const bookDetailsRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+$/;
+const chapterRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/;
+
+// workbox.routing.registerRoute(imageRegExp, async ({ url, event }) => {
+//   console.log(url);
+//   console.log(event);
+//   const cache = await self.caches.open('gdl-offline');
+//   return cache.match(url.href);
+//   //return new Response('Test');
+// });
+
 workbox.routing.registerRoute(
   ({ url, event }) => {
     return (
-      /^https:\/\/res\.cloudinary\.com/.test(url.href) ||
-      //url.href.match(/^https:\/\/res\.(.+)\.digitallibrary\.io/) ||
-      /\/book-api\/v1\/books\/[\w-]+\/\d+$/.test(url.href) ||
-      /\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/.test(url.href)
+      imageRegExp.test(url.href) ||
+      bookDetailsRegExp.test(url.href) ||
+      chapterRegExp.test(url.href)
     );
   },
   workbox.strategies.cacheFirst({
     cacheName: 'gdl-offline',
-    // fetchOptions: {
-    //   credentials: 'omit'
-    //   //mode: 'cors'
-    // },
+    matchOptions: {
+      ignoreVary: true
+    },
     plugins: [
       new workbox.expiration.Plugin({
         maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days

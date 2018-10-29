@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import { ImageOutlined as ImageIcon } from '@material-ui/icons';
-import { imageUrl } from 'gdl-image';
+import { coverImageUrl } from 'gdl-image';
 import { Button, Typography } from '@material-ui/core';
 import { fetchImageMetadata, saveBook } from '../../lib/fetch';
 import type { BookDetails, ImageMetadata } from '../../types';
@@ -73,7 +73,7 @@ export default class EditBookImage extends React.Component<Props, State> {
       <>
         <div css={{ textAlign: 'center' }}>
           <img
-            src={imageUrl(coverImage, { aspectRatio: 0.81 })}
+            src={coverImageUrl(coverImage)}
             css={{
               width: 310,
               height: 380,

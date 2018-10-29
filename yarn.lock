@@ -8878,10 +8878,10 @@ serve-static@1.13.2:
     parseurl "~1.3.2"
     send "0.16.2"
 
-service-worker-mock@1.9.3:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/service-worker-mock/-/service-worker-mock-1.9.3.tgz#81fb7da8ab47e89376618fd591e2bf653905202f"
-  integrity sha512-M9yUzuhq+Odtx7Wc9at7yAgrVKbVsnGimU0Kh9H3i741eVyGqEP26LjG8gfPWVjZeTPpIzWNx9tHtEB06F1O2g==
+service-worker-mock@1.10.0:
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/service-worker-mock/-/service-worker-mock-1.10.0.tgz#cdbd710baa4b2dfe009517c4b3dd7aa5086bbed4"
+  integrity sha512-qd1BMvncHVKn6UipBUP2w7FPJCIuvi3znQlf+nZ9O9E7HIDHw9NqAf1LAND1o3rJjrNqu05ntlgFKT0cHC6taw==
   dependencies:
     dom-urls "^1.1.0"
 

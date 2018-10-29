@@ -12,7 +12,7 @@ import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
-import { imageUrl } from 'gdl-image';
+import { coverImageUrl } from 'gdl-image';
 import {
   Snackbar,
   Menu,
@@ -126,9 +126,7 @@ class BookPage extends React.Component<Props> {
         <Head
           description={book.description}
           title={book.title}
-          image={
-            book.coverImage && imageUrl(book.coverImage, { aspectRatio: 0.81 })
-          }
+          image={book.coverImage && coverImageUrl(book.coverImage)}
         >
           <BookJsonLd book={book} />
         </Head>

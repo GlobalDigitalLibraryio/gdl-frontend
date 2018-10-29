@@ -14,7 +14,7 @@ import { withRouter } from 'next/router';
 import Link from 'next/link';
 import { Link as RouteLink } from '../routes';
 
-import { getOfflineBooks } from '../lib/offline';
+import { getOfflineBooks, purgeOfflineBooks } from '../lib/offline';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { A, Container, Center } from '../elements';
@@ -48,6 +48,15 @@ class OfflinePage extends React.Component<{}, State> {
     }
   }
 
+  handlePurge = async () => {
+    try {
+      await purgeOfflineBooks();
+      this.setState({ books: [] });
+    } catch (error) {
+      this.setState({ loadingStatus: 'ERROR' });
+    }
+  };
+
   render() {
     const { loadingStatus, books } = this.state;
     return (
@@ -66,7 +75,7 @@ class OfflinePage extends React.Component<{}, State> {
             {loadingStatus === 'SUCCESS' && (
               <>
                 {books.length > 0 ? (
-                  <OfflineBooks books={books} />
+                  <OfflineBooks books={books} onPurge={this.handlePurge} />
                 ) : (
                   <NoOfflineBooks />
                 )}
@@ -79,7 +88,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = withRouter(({ books, router }) => (
+const OfflineBooks = withRouter(({ books, onPurge, router }) => (
   <>
     <Typography
       variant="h4"
@@ -99,6 +108,16 @@ const OfflineBooks = withRouter(({ books, router }) => (
       </Typography>
     )}
     <BookGrid books={books} />
+    <Center>
+      <Button
+        onClick={onPurge}
+        css={{ marginTop: spacing.large }}
+        variant="outlined"
+        size="small"
+      >
+        <Trans>Remove all books</Trans>
+      </Button>
+    </Center>
   </>
 ));
 

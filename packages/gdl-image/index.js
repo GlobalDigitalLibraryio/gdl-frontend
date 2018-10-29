@@ -1,7 +1,6 @@
 // @flow
 
 type TransformationOptions = {
-  aspectRatio?: number,
   width?: number
 };
 
@@ -48,10 +47,12 @@ function fixedCoordinatesCropping(c: ImageCropCoordinates) {
  */
 const defaultTransformations = 'f_auto,q_auto,dpr_auto,c_scale,w_auto';
 
+const COVER_RATIO = 0.81;
+
 /**
  * Builds up a cloudinary URL with parameters
  */
-export function imageUrl(
+export function coverImageUrl(
   coverImage: $ReadOnly<CoverImage>,
   options: TransformationOptions = {}
 ): string {
@@ -60,7 +61,12 @@ export function imageUrl(
     return coverImage.url;
   }
 
-  const transformations = Object.entries(options)
+  const optionsWithCoverRatio = {
+    aspectRatio: COVER_RATIO,
+    ...options
+  };
+
+  const transformations = Object.entries(optionsWithCoverRatio)
     .map(([key, value]) => transformationsMap[key](value, coverImage.variants))
     .join(',');
 
