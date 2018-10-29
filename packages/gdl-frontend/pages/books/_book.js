@@ -272,7 +272,7 @@ class BookActions1 extends React.Component<
   { book: BookDetails },
   {
     anchorEl: ?HTMLElement,
-    isAvailableOffline: ?boolean,
+    isAvailableOffline: 'NO' | 'YES' | 'DOWNLOADING',
     snackbarMessage: ?string
   }
 > {
@@ -284,7 +284,9 @@ class BookActions1 extends React.Component<
 
   async componentDidMount() {
     this.setState({
-      isAvailableOffline: await isAvailableOffline(this.props.book)
+      isAvailableOffline: (await isAvailableOffline(this.props.book))
+        ? 'YES'
+        : 'NO'
     });
   }
 
@@ -309,16 +311,18 @@ class BookActions1 extends React.Component<
   };
 
   handleOfflineClick = async () => {
-    if (this.state.isAvailableOffline) {
+    this.setState({ isAvailableOffline: 'DOWNLOADING' });
+
+    if (this.state.isAvailableOffline === 'YES') {
       await removeFromAvailableOffline(this.props.book);
       this.setState({
-        isAvailableOffline: false,
+        isAvailableOffline: 'NO',
         snackbarMessage: 'Book is removed from offline.'
       });
     } else {
       const offlinedBook = await makeAvailableOffline(this.props.book);
       this.setState({
-        isAvailableOffline: offlinedBook,
+        isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
           ? 'Book is available offline.'
           : 'Something went wrong while adding the book.'
@@ -368,10 +372,13 @@ class BookActions1 extends React.Component<
           </Favorite>
 
           <IconButton
+            isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
             icon={
               <CheckCircleIcon
                 style={
-                  this.state.isAvailableOffline ? { color: 'green' } : null
+                  this.state.isAvailableOffline === 'YES'
+                    ? { color: 'green' }
+                    : null
                 }
               />
             }

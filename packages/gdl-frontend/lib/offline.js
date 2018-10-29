@@ -20,6 +20,9 @@ export function purgeOfflineBooks() {
 export const supportsOffline = () =>
   typeof window !== 'undefined' && 'serviceWorker' in navigator;
 
+export const runsServiceWorker = async () =>
+  Boolean(await window.navigator.serviceWorker.getRegistration('/'));
+
 /**
  * Fetches the book and the chapter via the service worker and adds them to the offline cache
  */

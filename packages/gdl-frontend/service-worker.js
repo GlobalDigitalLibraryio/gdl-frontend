@@ -31,27 +31,6 @@ workbox.routing.registerRoute(
   })
 );
 
-// workbox.routing.registerRoute(
-//   /^https:\/\/images\.(.+)\.digitallibrary\.io/
-//   workbox.strategies.cacheFirst({
-//     cacheName: 'gdl-images',
-//     plugins: [
-//       new workbox.expiration.Plugin({
-//         maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
-//         maxEntries: 100,
-//         purgeOnQuotaError: true
-//       })
-//       //new workbox.cacheableResponse.Plugin({ statuses: [0, 200] })
-//     ],
-//     fetchOptions: {
-//       mode: 'cors'
-//     },
-//     matchOptions: {
-//       ignoreSearch: true
-//     }
-//   })
-// );
-
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     return event.respondWith(
@@ -63,14 +42,6 @@ self.addEventListener('fetch', event => {
 const imageRegExp = /^https:\/\/res\.cloudinary\.com/;
 const bookDetailsRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+$/;
 const chapterRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/;
-
-// workbox.routing.registerRoute(imageRegExp, async ({ url, event }) => {
-//   console.log(url);
-//   console.log(event);
-//   const cache = await self.caches.open('gdl-offline');
-//   return cache.match(url.href);
-//   //return new Response('Test');
-// });
 
 workbox.routing.registerRoute(
   ({ url, event }) => {
