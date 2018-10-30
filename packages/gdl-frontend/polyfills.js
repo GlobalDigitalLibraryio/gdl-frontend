@@ -31,6 +31,10 @@ export default [
     feature: 'String.prototype.includes'
   },
   {
+    test: `('startsWith' in String.prototype)`,
+    feature: 'String.prototype.startsWith'
+  },
+  {
     test: `('values' in Object)`,
     feature: 'Object.values'
   },
