@@ -14,7 +14,7 @@ import getConfig from 'next/config';
 import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from 'gdl-auth';
 import type { ConfigShape, BookDetails, Chapter, Context } from '../../types';
-import { errorPage } from '../../hocs';
+import { withErrorPage } from '../../hocs';
 import Reader from '../../components/Reader';
 
 const {
@@ -88,4 +88,4 @@ class Read extends React.Component<Props> {
   }
 }
 
-export default errorPage(withRouter(Read));
+export default withErrorPage(withRouter(Read));

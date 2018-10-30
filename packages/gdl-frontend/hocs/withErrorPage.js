@@ -9,18 +9,17 @@ export default (Page: React.ComponentType<*>) =>
       // $FlowFixMe This is okay, we're only wrapping other pages
       const props = await Page.getInitialProps(ctx);
 
-      // On the server, get the status code from the response
-      const resStatusCode = ctx.res && ctx.res.statusCode;
+      // On the server we get the statusCode from either the wrapped page's props or the response object
+      const statusCode = ctx.res
+        ? props.statusCode || ctx.res.statusCode
+        : props.statusCode;
 
-      // Get the statusCode from the wrapped page
-      const { statusCode } = props;
-
-      // If we're on the server, and the response status code doesn't match that of the wrapped component, we set it
-      if (ctx.res && statusCode && ctx.res.statusCode !== statusCode) {
+      // If we're on the server make sure the statusCode is the one set in a wrapped page
+      if (ctx.res) {
         ctx.res.statusCode = statusCode;
       }
 
-      return { statusCode: resStatusCode, ...props };
+      return { ...props, statusCode };
     }
 
     render() {
