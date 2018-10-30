@@ -174,10 +174,12 @@ export async function fetchBooks(
   return result;
 }
 
-export function fetchSupportedLanguages(): Promise<
-  RemoteData<Array<Language>>
-> {
-  return doFetch(`${bookApiUrl()}/translations/supported-languages`);
+export function fetchSupportedLanguages(
+  language: string
+): Promise<RemoteData<Array<Language>>> {
+  return doFetch(
+    `${bookApiUrl()}/translations/${language}/supported-languages`
+  );
 }
 
 export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {

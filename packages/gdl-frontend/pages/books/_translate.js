@@ -63,7 +63,7 @@ class TranslatePage extends React.Component<Props, State> {
   static async getInitialProps({ query }: Context) {
     const [bookRes, supportedLanguagesRes] = await Promise.all([
       fetchBook(query.id, query.lang),
-      fetchSupportedLanguages()
+      fetchSupportedLanguages(query.lang)
     ]);
 
     if (!bookRes.isOk || !supportedLanguagesRes.isOk) {
