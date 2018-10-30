@@ -15,7 +15,7 @@ import { logEvent } from '../../lib/analytics';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context } from '../../types';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import { errorPage } from '../../hocs';
+import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
@@ -189,4 +189,4 @@ class BrowsePage extends React.Component<Props, State> {
   }
 }
 
-export default errorPage(withRouter(BrowsePage));
+export default withErrorPage(withRouter(BrowsePage));

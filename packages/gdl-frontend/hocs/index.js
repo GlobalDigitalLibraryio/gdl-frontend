@@ -6,5 +6,5 @@
  * See LICENSE
  */
 
-export { default as errorPage } from './errorPage';
+export { default as withErrorPage } from './withErrorPage';
 export { default as securePage } from './securePage';

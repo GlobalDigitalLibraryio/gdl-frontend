@@ -37,7 +37,7 @@ import { FacebookIcon, TwitterIcon } from '../../components/icons';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
-import { errorPage } from '../../hocs';
+import { withErrorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
@@ -504,4 +504,4 @@ class BookActions2 extends React.Component<
   }
 }
 
-export default errorPage(BookPage);
+export default withErrorPage(BookPage);

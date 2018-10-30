@@ -30,7 +30,7 @@ import {
 } from '../../fetch';
 import type { BookDetails, Language, Translation, Context } from '../../types';
 import { Link, Router } from '../../routes';
-import { securePage, errorPage } from '../../hocs/';
+import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
 import { A, LoadingButton, Container } from '../../elements';
 import Head from '../../components/Head';
@@ -333,4 +333,4 @@ const styles = {
   `
 };
 
-export default securePage(errorPage(TranslatePage));
+export default securePage(withErrorPage(TranslatePage));

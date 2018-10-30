@@ -20,7 +20,7 @@ import type {
   Category,
   ReadingLevel
 } from '../types';
-import { errorPage } from '../hocs';
+import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
   setBookLanguageAndCategory,
@@ -177,4 +177,4 @@ class IndexPage extends React.Component<Props> {
   }
 }
 
-export default errorPage(IndexPage);
+export default withErrorPage(IndexPage);

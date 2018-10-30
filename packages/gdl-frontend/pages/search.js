@@ -20,7 +20,7 @@ import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing } from '../style/theme';
 import { search } from '../fetch';
-import { errorPage } from '../hocs';
+import { withErrorPage } from '../hocs';
 
 const QUERY_PARAM = 'q';
 const SEARCH_PAGE_SIZE = 10;
@@ -227,4 +227,4 @@ class SearchPage extends React.Component<Props, State> {
   }
 }
 
-export default errorPage(withRouter(SearchPage));
+export default withErrorPage(withRouter(SearchPage));
