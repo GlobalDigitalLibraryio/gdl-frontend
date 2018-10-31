@@ -22,7 +22,7 @@ import type { Context } from '../types';
 import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
-import { initGA, logPageView, logEvent } from '../lib/analytics';
+import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 
 // Adds server generated styles to the emotion cache.
@@ -77,7 +77,7 @@ class App extends NextApp {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    // Log the current page in analytics and again on route changes
+    // Setup Google Analytics to log the current page and subsequent other pages
     initGA();
     logPageView();
     Router.router.events.on('routeChangeComplete', logPageView);
