@@ -21,7 +21,8 @@ import {
   ListItemText,
   Button,
   Typography,
-  Divider as MuiDivider
+  Divider as MuiDivider,
+  NoSsr
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
@@ -37,9 +38,10 @@ import {
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import {
-  makeAvailableOffline,
-  isAvailableOffline,
-  removeFromAvailableOffline
+  makeBookAvailableOffline,
+  removeBookAvailableOffline,
+  isBookAvailableOffline,
+  clientSupportsOffline
 } from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
@@ -272,7 +274,7 @@ class BookActions1 extends React.Component<
   { book: BookDetails },
   {
     anchorEl: ?HTMLElement,
-    isAvailableOffline: 'NO' | 'YES' | 'DOWNLOADING',
+    isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
     snackbarMessage: ?string
   }
 > {
@@ -284,7 +286,7 @@ class BookActions1 extends React.Component<
 
   async componentDidMount() {
     this.setState({
-      isAvailableOffline: (await isAvailableOffline(this.props.book))
+      isAvailableOffline: (await isBookAvailableOffline(this.props.book))
         ? 'YES'
         : 'NO'
     });
@@ -314,18 +316,18 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await removeFromAvailableOffline(this.props.book);
+      await removeBookAvailableOffline(this.props.book);
       this.setState({
         isAvailableOffline: 'NO',
-        snackbarMessage: 'Book is removed from offline.'
+        snackbarMessage: 'Book is no longer available while offline.'
       });
     } else {
-      const offlinedBook = await makeAvailableOffline(this.props.book);
+      const offlinedBook = await makeBookAvailableOffline(this.props.book);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
-          ? 'Book is available offline.'
-          : 'Something went wrong while adding the book.'
+          ? 'Book is available while offline.'
+          : 'Something went wrong while saving the book.'
       });
     }
   };
@@ -371,20 +373,24 @@ class BookActions1 extends React.Component<
             )}
           </Favorite>
 
-          <IconButton
-            isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
-            icon={
-              <CheckCircleIcon
-                style={
-                  this.state.isAvailableOffline === 'YES'
-                    ? { color: 'green' }
-                    : null
+          <NoSsr>
+            {clientSupportsOffline() && (
+              <IconButton
+                isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
+                icon={
+                  <CheckCircleIcon
+                    style={
+                      this.state.isAvailableOffline === 'YES'
+                        ? { color: 'green' }
+                        : null
+                    }
+                  />
                 }
+                onClick={this.handleOfflineClick}
+                label={<Trans>Save offline</Trans>}
               />
-            }
-            onClick={this.handleOfflineClick}
-            label={<Trans>Save offline</Trans>}
-          />
+            )}
+          </NoSsr>
 
           <IconButton
             icon={<ShareIcon />}

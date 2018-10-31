@@ -8,10 +8,9 @@
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
 import {
-  supportsOffline,
-  isAvailableOffline,
-  getOfflineBooks,
-  makeAvailableOffline
+  clientSupportsOffline,
+  isBookAvailableOffline,
+  getOfflineBooks
 } from '../offline';
 
 beforeEach(() => {
@@ -48,7 +47,7 @@ const book = {
 
 test('it can check offline support', () => {
   // Since the "browser" in this case is JSDom, it is false here
-  expect(supportsOffline()).toBeFalsy();
+  expect(clientSupportsOffline()).toBeFalsy();
 });
 
 test('it returns empty list if no books are offlined', async () => {
@@ -56,5 +55,5 @@ test('it returns empty list if no books are offlined', async () => {
 });
 
 test('it returns false if the book is not offlined', async () => {
-  expect(await isAvailableOffline(book)).toBeFalsy();
+  expect(await isBookAvailableOffline(book)).toBeFalsy();
 });

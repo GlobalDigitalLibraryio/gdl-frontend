@@ -17,16 +17,22 @@ export function purgeOfflineBooks() {
   return window.caches.delete('gdl-offline');
 }
 
-export const supportsOffline = () =>
+export const clientIsOffline = () =>
+  typeof window !== 'undefined' && !window.navigator.onLine;
+
+export const clientSupportsOffline = () =>
   typeof window !== 'undefined' && 'serviceWorker' in navigator;
 
+/**
+ * Make sure we're running a service worker in the top scope
+ */
 export const runsServiceWorker = async () =>
   Boolean(await window.navigator.serviceWorker.getRegistration('/'));
 
 /**
- * Fetches the book and the chapter via the service worker and adds them to the offline cache
+ * Fetches the book, the chapters and the images and adds them to the offline cache
  */
-export async function makeAvailableOffline(book: BookDetails) {
+export async function makeBookAvailableOffline(book: BookDetails) {
   let bookUrls = [];
   let imageUrls = [];
   const cache = await openOfflineCache();
@@ -45,9 +51,25 @@ export async function makeAvailableOffline(book: BookDetails) {
 }
 
 /**
+ * Remove book from offline availability
+ */
+export async function removeBookAvailableOffline(book: BookDetails) {
+  const cache = await openOfflineCache();
+  const urls = getUrlsForBook(book).concat(
+    await getUniqueChapterImageUrls(book)
+  );
+
+  for (const request of await cache.keys()) {
+    if (urls.includes(request.url)) {
+      cache.delete(request);
+    }
+  }
+}
+
+/**
  * Check if the book is already in the offline cache
  */
-export async function isAvailableOffline(book: BookDetails) {
+export async function isBookAvailableOffline(book: BookDetails) {
   const cache = await openOfflineCache();
   const requests = await cache.keys();
   const bookUrl = getBookUrl(book);
@@ -69,22 +91,6 @@ export async function getOfflineBooks(): Promise<Array<BookDetails>> {
     bookRequests.map(r => cache.match(r))
   );
   return await Promise.all(bookResponses.map(res => res.json()));
-}
-
-/**
- * Remove book from offline availability
- */
-export async function removeFromAvailableOffline(book: BookDetails) {
-  const cache = await openOfflineCache();
-  const urls = getUrlsForBook(book).concat(
-    await getUniqueChapterImageUrls(book)
-  );
-
-  for (const request of await cache.keys()) {
-    if (urls.includes(request.url)) {
-      cache.delete(request);
-    }
-  }
 }
 
 export async function getTimestamp(book: BookDetails) {

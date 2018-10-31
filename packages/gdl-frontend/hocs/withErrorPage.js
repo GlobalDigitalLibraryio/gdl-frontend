@@ -1,7 +1,13 @@
 // @flow
 import * as React from 'react';
+import dynamic from 'next/dynamic';
+import { clientIsOffline, clientSupportsOffline } from '../lib/offline';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
+
+const OfflinePage = dynamic(import('../pages/offline'), {
+  ssr: false
+});
 
 export default (Page: React.ComponentType<*>) =>
   class extends React.Component<*> {
@@ -25,7 +31,13 @@ export default (Page: React.ComponentType<*>) =>
     render() {
       const { statusCode } = this.props;
       if (statusCode && statusCode !== 200) {
-        return <ErrorPage statusCode={statusCode} />;
+        return clientSupportsOffline() &&
+          clientIsOffline() &&
+          statusCode !== 404 ? (
+          <OfflinePage />
+        ) : (
+          <ErrorPage statusCode={statusCode} />
+        );
       }
       return <Page {...this.props} />;
     }

@@ -31,7 +31,7 @@ import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import { Link as RouteLink } from '../../routes';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
-import { supportsOffline } from '../../lib/offline';
+import { clientSupportsOffline } from '../../lib/offline';
 
 type Props = {|
   onClose(): void,
@@ -106,7 +106,7 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           </RouteLink>
-          {supportsOffline() && (
+          {clientSupportsOffline() && (
             <RouteLink passHref route="offline">
               <ListItem button component="a">
                 <ListItemIcon>
