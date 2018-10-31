@@ -1,5 +1,5 @@
 // @flow
-import ReactGA from 'react-ga';
+import GAnalytics from 'ganalytics';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../types';
 
@@ -7,20 +7,16 @@ const {
   publicRuntimeConfig: { googleAnalyticsId }
 }: ConfigShape = getConfig();
 
-let GA_INITIALIZED = false;
+let ga;
 
 export function initGA() {
-  if (googleAnalyticsId && !GA_INITIALIZED) {
-    ReactGA.initialize(googleAnalyticsId);
-    GA_INITIALIZED = true;
+  if (googleAnalyticsId && !ga) {
+    ga = new GAnalytics(googleAnalyticsId, {}, true); // a pageview event will NOT be sent immediately upon initialization
   }
 }
 
 export function logPageView() {
-  if (GA_INITIALIZED) {
-    ReactGA.set({ page: window.location.pathname });
-    ReactGA.pageview(window.location.pathname);
-  }
+  ga && ga.send('pageview');
 }
 
 // Define all allowed categories here, so we are able to group all datapoints correctly
@@ -49,12 +45,7 @@ type Action =
   | 'Added'
   | 'Dismissed';
 
-/**
- * See https://github.com/react-ga/react-ga#reactgaeventargs
- * See https://support.google.com/analytics/answer/1033068?hl=en
- */
 export function logEvent(category: Category, action: Action, label?: string) {
-  if (GA_INITIALIZED) {
-    ReactGA.event({ category, action, label });
-  }
+  // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#events
+  ga && ga.send('event', { ec: category, ea: action, el: label });
 }

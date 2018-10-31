@@ -79,6 +79,7 @@
     "express-request-language": "^1.1.15",
     "facepaint": "1.2.1",
     "final-form": "4.9.1",
+    "ganalytics": "3.1.1",
     "glob": "^7.1.2",
     "helmet": "3.14.0",
     "invariant": "^2.2.4",
@@ -96,7 +97,6 @@
     "react-dom": "16.6.0",
     "react-emotion": "9.2.12",
     "react-final-form": "3.6.5",
-    "react-ga": "2.5.3",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
     "universal-cookie": "^2.1.5"
