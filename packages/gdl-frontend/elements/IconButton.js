@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { ButtonBase, CircularProgress, Typography } from '@material-ui/core';
 import { css, cx } from 'react-emotion';
-import DelayedLoading from './DelayedLoading';
 
 type Props = {
   className?: string,
@@ -36,9 +35,7 @@ const CustomButton = ({
       className={cx(styles, className)}
       onClick={onClick}
     >
-      <DelayedLoading loading={isLoading}>
-        {({ loading }) => (loading ? <CircularProgress size={24} /> : icon)}
-      </DelayedLoading>
+      {isLoading ? <CircularProgress size={24} /> : icon}
       <Typography variant="body1" component="span">
         {label}
       </Typography>
