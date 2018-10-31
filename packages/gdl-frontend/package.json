@@ -45,6 +45,7 @@
     "express": "4.16.4",
     "express-request-language": "^1.1.15",
     "facepaint": "1.2.1",
+    "ganalytics": "3.1.1",
     "gdl-auth": "^0.0.0",
     "gdl-config": "^0.0.0",
     "gdl-image": "^0.0.0",
@@ -62,7 +63,6 @@
     "react": "16.6.0",
     "react-dom": "16.6.0",
     "react-emotion": "9.2.12",
-    "react-ga": "2.5.3",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
     "universal-cookie": "^2.1.5"
