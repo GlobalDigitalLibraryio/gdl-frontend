@@ -55,33 +55,43 @@ async function doFetch(
 ): Promise<RemoteData<any>> {
   const token = typeof window !== 'undefined' ? getAuthToken() : undefined;
 
-  const response = await fetch(url, {
-    headers: {
-      Authorization: token ? `Bearer ${token}` : null
-    },
-    ...options
-  });
+  try {
+    const response = await fetch(url, {
+      headers: {
+        Authorization: token ? `Bearer ${token}` : null
+      },
+      ...options
+    });
 
-  let result;
-  if (response.headers.get('Content-Type').includes('application/json')) {
-    result = await response.json();
-  } else {
-    result = await response.text();
-  }
+    let result;
+    if (response.headers.get('Content-Type').includes('application/json')) {
+      result = await response.json();
+    } else {
+      result = await response.text();
+    }
 
-  if (response.ok) {
+    if (response.ok) {
+      return {
+        data: result,
+        isOk: true,
+        statusCode: response.status
+      };
+    }
+
     return {
-      data: result,
-      isOk: true,
+      error: result,
+      isOk: false,
       statusCode: response.status
     };
+  } catch (error) {
+    // Make sure we always return something. So we don't have to catch exceptions in our components
+    // Usually we should only get here if the network is down or times out
+    return {
+      error,
+      isOk: false,
+      statusCode: 500 // other code
+    };
   }
-
-  return {
-    error: result,
-    isOk: false,
-    statusCode: response.status
-  };
 }
 
 // DO NOT declare doFetch and export it as default as the same time

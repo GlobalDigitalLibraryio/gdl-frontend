@@ -8,14 +8,20 @@
 
 import * as React from 'react';
 import styled from 'react-emotion';
-import { AppBar, Toolbar, IconButton, Tooltip } from '@material-ui/core';
+import {
+  AppBar,
+  CircularProgress,
+  Toolbar,
+  IconButton,
+  Tooltip
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import LanguageIcon from '@material-ui/icons/Language';
 import HomeIcon from '@material-ui/icons/Home';
 import { Trans } from '@lingui/react';
-import SelectLanguage from '../LanguageMenu/SelectLanguage';
 
+import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
 import { logEvent } from '../../lib/analytics';
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
@@ -104,8 +110,8 @@ const Navbar = ({ onMenuClick }: Props) => {
               </SrOnly>
             </IconButton>
           </Link>
-          <SelectLanguage anchor="right">
-            {({ onClick }) => (
+          <SelectBookLanguage anchor="right">
+            {({ onClick, loading }) => (
               <Tooltip title={<Trans>Choose book language</Trans>}>
                 <IconButton
                   onClick={() => {
@@ -114,14 +120,18 @@ const Navbar = ({ onMenuClick }: Props) => {
                   }}
                   color="inherit"
                 >
-                  <LanguageIcon />
+                  {loading ? (
+                    <CircularProgress color="inherit" size={24} />
+                  ) : (
+                    <LanguageIcon />
+                  )}
                   <SrOnly>
                     <Trans>Choose book language</Trans>
                   </SrOnly>
                 </IconButton>
               </Tooltip>
             )}
-          </SelectLanguage>
+          </SelectBookLanguage>
         </Right>
       </Toolbar>
     </AppBar>

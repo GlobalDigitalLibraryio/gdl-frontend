@@ -16,6 +16,7 @@ import {
 import {
   Card,
   CardContent,
+  Drawer,
   Typography,
   Hidden,
   Grid,
@@ -35,7 +36,7 @@ import Layout from '../../components/Layout';
 import { A, LoadingButton, Container } from '../../elements';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
-import LanguageMenu from '../../components/LanguageMenu';
+import LanguageList from '../../components/LanguageList';
 import { spacing } from '../../style/theme';
 
 type Props = {
@@ -251,14 +252,17 @@ class TranslatePage extends React.Component<Props, State> {
             </Grid>
           </Grid>
 
-          {this.state.showLanguageMenu && (
-            <LanguageMenu
+          <Drawer
+            open={this.state.showLanguageMenu}
+            onClose={this.toggleLanguageMenu}
+            anchor="right"
+          >
+            <LanguageList
               languages={supportedLanguages}
               selectedLanguageCode={selectedLanguage && selectedLanguage.code}
               onSelectLanguage={this.handleChangeLanguage}
-              onClose={this.toggleLanguageMenu}
             />
-          )}
+          </Drawer>
 
           <div css={{ textAlign: 'center' }}>
             {translationState === translationStates.SUCCESS ? (

@@ -15,7 +15,8 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemIcon
+  ListItemIcon,
+  CircularProgress
 } from '@material-ui/core';
 import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
@@ -25,11 +26,9 @@ import {
   Favorite as FavoriteIcon
 } from '@material-ui/icons';
 
-import type { Language } from '../../types';
 import { Link as RouteLink } from '../../routes';
 import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
-import { getBookLanguage } from '../../lib/storage';
-import { SelectLanguage } from '../LanguageMenu';
+import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
 
 type Props = {|
@@ -38,25 +37,13 @@ type Props = {|
 |};
 
 type State = {
-  language: Language,
   userHasAdminPrivileges: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    language: getBookLanguage(),
     userHasAdminPrivileges: false
   };
-
-  // Makes sure we always show the correct language as selected when the menu is opened
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (!prevProps.isOpen && this.props.isOpen) {
-      const language = getBookLanguage();
-      if (language !== prevState.language) {
-        this.setState({ language });
-      }
-    }
-  }
 
   componentDidMount() {
     this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
@@ -68,26 +55,31 @@ class GlobalMenu extends React.Component<Props, State> {
     return (
       <Drawer open={this.props.isOpen} onClose={onClose}>
         <List>
-          <SelectLanguage onSelectLanguage={onClose}>
-            {({ onClick }) => (
+          <SelectBookLanguage onSelectLanguage={onClose}>
+            {({ onClick, loading }) => (
               <ListItem button onClick={onClick}>
                 <ListItemText>
                   <Trans>Book language</Trans>
                 </ListItemText>
-                <KeyboardArrowRightIcon />
+                {loading ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  <KeyboardArrowRightIcon />
+                )}
               </ListItem>
             )}
-          </SelectLanguage>
-          <CategoriesMenu
-            onSelectCategory={onClose}
-            languageCode={this.state.language.code}
-          >
-            {({ onClick }) => (
+          </SelectBookLanguage>
+          <CategoriesMenu onSelectCategory={onClose}>
+            {({ onClick, loading }) => (
               <ListItem button onClick={onClick}>
                 <ListItemText>
                   <Trans>Categories</Trans>
                 </ListItemText>
-                <KeyboardArrowRightIcon />
+                {loading ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  <KeyboardArrowRightIcon />
+                )}
               </ListItem>
             )}
           </CategoriesMenu>
