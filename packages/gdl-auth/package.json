@@ -7,7 +7,7 @@
   "dependencies": {
     "gdl-config": "^0.0.0",
     "jwt-decode": "^2.2.0",
-    "universal-cookie": "^2.1.5"
+    "universal-cookie": "3.0.4"
   },
   "devDependencies": {
     "jsonwebtoken": "^8.3.0"

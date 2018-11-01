@@ -8,7 +8,6 @@
 
 import type { $Request, $Response } from 'express';
 import UniversalCookie from 'universal-cookie';
-import lscache from 'lscache';
 import getConfig from 'next/config';
 
 import type { Category, Language, ConfigShape } from '../types';
@@ -45,7 +44,6 @@ export function setBookLanguageAndCategory(
     // Client
     const c = cookies();
     c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
-    lscache.set(BOOK_LANGUAGE_KEY, language, oneMonthsInSeconds / 60);
     c.set(BOOK_CATEGORY_KEY, category, OPTIONS);
   }
 }
@@ -59,7 +57,6 @@ export function getBookCategory(req?: $Request) {
 export function setBookLanguage(language: Language) {
   const c = cookies();
   c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
-  lscache.set(BOOK_LANGUAGE_KEY, language, oneMonthsInSeconds / 60);
 }
 
 /**
@@ -71,11 +68,4 @@ export function getBookLanguageCode(req?: $Request): string {
     : cookies().get(BOOK_LANGUAGE_KEY, { doNotParse: true });
 
   return language || DEFAULT_LANGUAGE.code;
-}
-
-/**
- * Client only
- */
-export function getBookLanguage(): Language {
-  return lscache.get(BOOK_LANGUAGE_KEY) || DEFAULT_LANGUAGE;
 }
