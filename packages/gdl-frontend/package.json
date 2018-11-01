@@ -65,7 +65,7 @@
     "react-ga": "2.5.3",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
-    "universal-cookie": "^2.1.5"
+    "universal-cookie": "3.0.4"
   },
   "devDependencies": {
     "@lingui/babel-preset-react": "2.6.1",

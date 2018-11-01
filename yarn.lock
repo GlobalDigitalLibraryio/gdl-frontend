@@ -1046,6 +1046,11 @@
   dependencies:
     "@sentry/types" "4.2.3"
 
+"@types/cookie@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@types/cookie/-/cookie-0.3.1.tgz#720a756ea8e760a258708b52441bd341f1ef4296"
+  integrity sha512-64Uv+8bTRVZHlbB8eXQgMP9HguxPgnOOIYrQpwHWrtLDrtcG/lILKhUl7bV65NSOIJ9dXGYD7skQFXzhL8tk1A==
+
 "@types/jest@^23.0.2":
   version "23.3.5"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.5.tgz#870a1434208b60603745bfd214fc3fc675142364"
@@ -1063,6 +1068,11 @@
   version "10.12.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.0.tgz#ea6dcbddbc5b584c83f06c60e82736d8fbb0c235"
   integrity sha512-3TUHC3jsBAB7qVRGxT6lWyYo2v96BMmD2PTcl47H25Lu7UXtFH/2qqmKiVrnel6Ne//0TFYf6uvNX+HW2FRkLQ==
+
+"@types/object-assign@^4.0.30":
+  version "4.0.30"
+  resolved "https://registry.yarnpkg.com/@types/object-assign/-/object-assign-4.0.30.tgz#8949371d5a99f4381ee0f1df0a9b7a187e07e652"
+  integrity sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
 
 "@types/prop-types@*":
   version "15.5.6"
@@ -9821,11 +9831,13 @@ unique-slug@^2.0.0:
   dependencies:
     imurmurhash "^0.1.4"
 
-universal-cookie@^2.1.5:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-2.2.0.tgz#328dc3883cf0ebd5b4904902033ad4dfdb907ed2"
-  integrity sha512-weEuvQvnMs74WGwqKSbeapCRv/7ATHDCqrfZtj579r3fQCxcwtoXYMoaZ8YOCQga/ctQTYy20xMOH1u7cAAU6w==
+universal-cookie@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/universal-cookie/-/universal-cookie-3.0.4.tgz#22c1a0dca6bb9e72da20d9e331d9d8f93d95e9dc"
+  integrity sha512-3rhx6RAIuRmCWJttnbgzMrp2TbHhUmgQ2GrpY/US03Siv5T28iXr2qYw1m3YqmluBxEyrvZaloVemkLSId+Oyg==
   dependencies:
+    "@types/cookie" "^0.3.1"
+    "@types/object-assign" "^4.0.30"
     cookie "^0.3.1"
     object-assign "^4.1.0"
 
