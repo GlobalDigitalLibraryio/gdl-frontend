@@ -1,4 +1,4 @@
-FROM node:8.11.4-alpine
+FROM node:10.13.0-alpine
 
 ARG MODULE
 RUN test -n "$MODULE"
