@@ -29,7 +29,8 @@ const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 // NB! Must be a function, don't pull it out into a constant here.
 // bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
 const bookApiUrl = () =>
-  serverRuntimeConfig.bookApiUrl || publicRuntimeConfig.bookApiUrl;
+  (serverRuntimeConfig && serverRuntimeConfig.bookApiUrl) ||
+  publicRuntimeConfig.bookApiUrl;
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {
