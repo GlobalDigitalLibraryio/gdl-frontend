@@ -72,12 +72,6 @@ export type Chapter = {|
   seqNo: number
 |};
 
-export type ChapterSummary = {|
-  id: number,
-  seqNo: number,
-  url: string
-|};
-
 // Disjoint union
 type Success<T> = { isOk: true, data: T, statusCode: number };
 type Failed = { isOk: false, error: any, statusCode: number };
@@ -138,7 +132,11 @@ export type BookDetails = $ReadOnly<{|
   additionalInformation?: string,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
-  chapters: Array<ChapterSummary>,
+  chapters: Array<{
+    id: number,
+    seqNo: number,
+    url: string
+  }>,
   bookFormat: 'PDF' | 'HTML',
   downloads: {
     epub?: string,

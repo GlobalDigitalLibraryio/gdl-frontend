@@ -1,5 +1,6 @@
 // @flow
 import { coverImageUrl } from 'gdl-image';
+
 import type { BookDetails } from '../types';
 import { getBookUrl } from '../fetch';
 

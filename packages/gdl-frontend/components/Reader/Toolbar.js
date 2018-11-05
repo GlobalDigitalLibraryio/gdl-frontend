@@ -17,7 +17,7 @@ import {
 } from '@material-ui/icons';
 
 import { logEvent } from '../../lib/analytics';
-import type { BookDetails, ChapterSummary } from '../../types';
+import type { BookDetails } from '../../types';
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
@@ -29,7 +29,7 @@ type Props = {
   book: BookDetails,
   onRequestClose(): void,
   userHasEditAccess?: boolean,
-  chapter: ChapterSummary
+  chapter: { id: number, seqNo: number }
 };
 
 const Toolbar = ({

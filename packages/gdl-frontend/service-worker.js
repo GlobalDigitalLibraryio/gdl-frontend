@@ -31,6 +31,7 @@ workbox.routing.registerRoute(
   })
 );
 
+// eslint-disable-next-line no-restricted-globals
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     return event.respondWith(
