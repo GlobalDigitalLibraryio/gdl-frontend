@@ -319,15 +319,15 @@ class BookActions1 extends React.Component<
       await removeBookAvailableOffline(this.props.book);
       this.setState({
         isAvailableOffline: 'NO',
-        snackbarMessage: 'Book is no longer available while offline.'
+        snackbarMessage: 'Removed book from your offline collection.'
       });
     } else {
       const offlinedBook = await makeBookAvailableOffline(this.props.book);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
-          ? 'Book is available while offline.'
-          : 'Something went wrong while saving the book.'
+          ? 'Added book to your offline collection.'
+          : 'An error occurred while adding this book to your offline collection.'
       });
     }
   };

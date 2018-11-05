@@ -100,7 +100,7 @@ const OfflineBooks = withRouter(({ books, onPurge, router }) => (
     </Typography>
     {router.asPath !== '/offline' && (
       <Typography align="center" css={{ marginBottom: spacing.large }}>
-        You are shown this page because you appear to be offline. If that is not
+        This page is displayed because you appear to be offline. If that is not
         the case, you can click{' '}
         <RouteLink href={router.asPath} passHref>
           <A>here.</A>
@@ -126,13 +126,14 @@ const NoOfflineBooks = () => (
     <Typography
       align="center"
       variant="headline"
-      css={{ marginBottom: spacing.medium }}
+      component="h1"
+      css={{ marginBottom: spacing.large }}
     >
-      No books offline yet...
+      No books offline yet
     </Typography>
-    <Typography align="center" css={{ marginBottom: spacing.medium }}>
-      Having books available even you're offline is a great way to make sure you
-      always have something to read.
+    <Typography align="center" css={{ marginBottom: spacing.large }}>
+      Having books available even when you are offline is a great way to make
+      sure you always have something to read.
     </Typography>
     <Link passHref href="/">
       <Button variant="outlined">
