@@ -321,6 +321,7 @@ class BookActions1 extends React.Component<
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline collection.'
       });
+      logEvent('Books', 'Remove offline', this.props.book.title);
     } else {
       const offlinedBook = await makeBookAvailableOffline(this.props.book);
       this.setState({
@@ -329,6 +330,7 @@ class BookActions1 extends React.Component<
           ? 'Added book to your offline collection.'
           : 'An error occurred while adding this book to your offline collection.'
       });
+      logEvent('Books', 'Available offline', this.props.book.title);
     }
   };
 

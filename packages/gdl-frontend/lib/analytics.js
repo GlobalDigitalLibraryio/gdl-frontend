@@ -32,6 +32,8 @@ type Action =
   | 'Read'
   | 'Favorited'
   | 'Unfavorited'
+  | 'Available offline'
+  | 'Remove offline'
   | 'Downloaded PDF'
   | 'Downloaded ePub'
   | 'Translate'
