@@ -11,13 +11,18 @@ import {
   clientIsOffline,
   clientSupportsOffline,
   isBookAvailableOffline,
-  getOfflineBooks
+  getOfflineBooks,
+  purgeOfflineBooks
 } from '../offline';
+
+/* eslint no-restricted-globals: 1 */
 
 beforeEach(() => {
   Object.assign(global, makeFetchMock(), makeServiceWorkerEnv());
   jest.resetModules();
 });
+
+const CACHE_NAME = 'gdl-offline';
 
 const book = {
   id: 123,
@@ -62,4 +67,13 @@ test('it returns empty list if no books are offlined', async () => {
 
 test('it returns false if the book is not offlined', async () => {
   expect(await isBookAvailableOffline(book)).toBeFalsy();
+});
+
+test('it can purge the cache', async () => {
+  // Othe cache to make sure it exists for the purpose of this test.
+  await self.caches.open(CACHE_NAME);
+  expect(self.snapshot().caches[CACHE_NAME]).toBeDefined();
+
+  await purgeOfflineBooks();
+  expect(self.snapshot().caches[CACHE_NAME]).toBeUndefined();
 });
