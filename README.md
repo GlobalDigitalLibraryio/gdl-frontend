@@ -8,8 +8,8 @@ This is the front-end for http://digitallibrary.io/
 
 #### Before you start
 
-* [node](https://nodejs.org/) version should be 8 or above (to check `node -v`) or use [nvm](https://github.com/creationix/nvm).
-* [yarn](https://yarnpkg.com/) should be installed globally.
+- [node](https://nodejs.org/) version should be 10 or above (to check `node -v`) or use [nvm](https://github.com/creationix/nvm).
+- [yarn](https://yarnpkg.com/) should be installed globally.
 
 #### Install
 

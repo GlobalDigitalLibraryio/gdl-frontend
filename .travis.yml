@@ -1,12 +1,12 @@
 language: node_js
 node_js:
-- '8'
+  - '10'
 before_install:
-- yarn global add bolt
+  - yarn global add bolt
 install:
-- bolt
+  - bolt
 script:
-- yarn run ci
+  - yarn run ci
 cache: yarn
 notifications:
   slack:
