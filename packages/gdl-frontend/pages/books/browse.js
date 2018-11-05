@@ -86,7 +86,7 @@ class BrowsePage extends React.Component<Props, State> {
     isLoadingMore: false
   };
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps: Props) {
     if (nextProps.books !== this.props.books) {
       this.setState({ books: nextProps.books });
     }
