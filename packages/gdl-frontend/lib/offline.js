@@ -18,9 +18,15 @@ export function purgeOfflineBooks() {
   return window.caches.delete('gdl-offline');
 }
 
+/**
+ * Check if the client is offline
+ */
 export const clientIsOffline = () =>
   typeof window !== 'undefined' && !window.navigator.onLine;
 
+/**
+ * Check if the client supports serviceworkers
+ */
 export const clientSupportsOffline = () =>
   typeof window !== 'undefined' && 'serviceWorker' in navigator;
 
