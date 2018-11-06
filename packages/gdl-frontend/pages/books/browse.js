@@ -86,9 +86,9 @@ class BrowsePage extends React.Component<Props, State> {
     isLoadingMore: false
   };
 
-  componentDidUpdate(nextProps: Props) {
-    if (nextProps.books !== this.props.books) {
-      this.setState({ books: nextProps.books });
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.books !== this.props.books) {
+      this.setState({ books: this.props.books });
     }
   }
 
