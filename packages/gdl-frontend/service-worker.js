@@ -12,7 +12,10 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {}); // eslint-disa
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   workbox.strategies.staleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets'
+    cacheName: 'google-fonts-stylesheets',
+    fetchOptions: {
+      mode: 'cors'
+    }
   })
 );
 

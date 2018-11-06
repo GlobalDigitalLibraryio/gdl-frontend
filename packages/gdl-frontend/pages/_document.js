@@ -112,6 +112,7 @@ export default class Document extends NextDocument {
           <link rel="icon" sizes="192x192" href={icon192x192} />
           <link
             rel="stylesheet"
+            crossOrigin="anonymous"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
           />
 
