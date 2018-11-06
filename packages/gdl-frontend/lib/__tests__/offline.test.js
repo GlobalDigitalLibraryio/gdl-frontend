@@ -65,10 +65,6 @@ test('it returns empty list if no books are offlined', async () => {
   expect(await getOfflineBooks()).toEqual([]);
 });
 
-test('it returns false if the book is not offlined', async () => {
-  expect(await isBookAvailableOffline(book)).toBeFalsy();
-});
-
 test('it can purge the cache', async () => {
   // Othe cache to make sure it exists for the purpose of this test.
   await self.caches.open(CACHE_NAME);
@@ -76,4 +72,8 @@ test('it can purge the cache', async () => {
 
   await purgeOfflineBooks();
   expect(self.snapshot().caches[CACHE_NAME]).toBeUndefined();
+});
+
+test('it returns false if the book is not offlined', async () => {
+  expect(await isBookAvailableOffline(book)).toBeFalsy();
 });

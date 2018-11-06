@@ -69,7 +69,8 @@ export type License = {
 export type Chapter = {|
   id: number,
   content: string,
-  seqNo: number
+  seqNo: number,
+  images: Array<string>
 |};
 
 // Disjoint union

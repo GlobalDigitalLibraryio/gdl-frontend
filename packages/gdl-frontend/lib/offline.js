@@ -1,8 +1,107 @@
 // @flow
 import { coverImageUrl } from 'gdl-image';
+import localForage from 'localforage';
 
-import type { BookDetails } from '../types';
-import { getBookUrl } from '../fetch';
+import type { BookDetails, Chapter } from '../types';
+import { getBookUrl, fetchChapter } from '../fetch';
+
+function keyForBook(book) {
+  return `${book.id}-${book.language.code}`;
+}
+
+const CACHE_NAME = 'gdl-offline';
+function openCache() {
+  return window.caches.open(CACHE_NAME);
+}
+
+//function getAllChapters(book) {}
+
+export class OfflineCollection {
+  bookStore = localForage.createInstance({
+    name: 'offline',
+    storeName: 'books'
+  });
+
+  chapterStore = localForage.createInstance({
+    name: 'offline',
+    storeName: 'chapters'
+  });
+
+  _addChapter = async (chapter: Chapter) => {
+    return this.chapterStore.setItem(chapter.id, chapter);
+  };
+
+  _addImages = async (book: BookDetails, chapters: Array<Chapter>) => {
+    let imageUrls = chapters.reduce(
+      (images, chapter) => images.concat(chapter.images),
+      []
+    );
+    // Remove duplicates. Some chapters use the same image. The publisher logo, for instance, is often repeated in the chapters
+    imageUrls = [...new Set(imageUrls)];
+
+    const cache = await openCache();
+    await cache.addAll(imageUrls);
+  };
+
+  /**
+   * Check if the book is available offline
+   */
+  async isBookAvailableOffline(book: BookDetails) {
+    const value = await this.bookStore.getItem(keyForBook(book));
+    return Boolean(value);
+  }
+
+  /**
+   * Get all books in offline collection
+   */
+  async getOfflineBooks(): Promise<Array<BookDetails>> {
+    const books = [];
+
+    await this.bookStore.iterate(value => {
+      books.push(value);
+      return;
+    });
+
+    return books;
+  }
+
+  /**
+   * Clears whole offline collection
+   */
+  async purgeOfflineBooks() {
+    return Promise.all([
+      this.bookStore.clear(),
+      this.chapterStore.clear(),
+      window.caches.delete(CACHE_NAME)
+    ]);
+  }
+
+  async removeBookAvailableOffline(book: BookDetails) {
+    const result = await this.bookStore.removeItem(keyForBook(book));
+    return Boolean(result);
+  }
+
+  async makeBookAvailableOffline(book: BookDetails) {
+    try {
+      const chapterResults = await Promise.all(
+        book.chapters.map(chapter =>
+          fetchChapter(book.id, chapter.id, book.language.code)
+        )
+      );
+
+      const chapters = chapterResults.map(c => c.data);
+      await Promise.all(chapters.map(this._addChapter));
+      await this._addImages(book, chapters);
+      await this.bookStore.setItem(keyForBook(book), book);
+      return true;
+    } catch (error) {
+      console.error(error);
+      // If something went wrong when offlining the book, cleanup after ourselves
+      this.removeBookAvailableOffline(book);
+      return false;
+    }
+  }
+}
 
 /**
  * Returns a promise that resolves to the cache object.
@@ -80,6 +179,7 @@ export async function isBookAvailableOffline(book: BookDetails) {
   const cache = await openOfflineCache();
   const requests = await cache.keys();
   const bookUrl = getBookUrl(book);
+  getTimestamp(book);
   return Boolean(requests.find(r => r.url === bookUrl));
 }
 
@@ -106,7 +206,7 @@ export async function getTimestamp(book: BookDetails) {
 
   console.log(response);
 
-  response.headers.forEach(h => console.log(h));
+  response && response.headers.forEach(h => console.log(h));
   // JS is extremely lenient, so it should be able to parse the date header value
   return response ? new Date(response.headers.get('Date')) : null;
 }

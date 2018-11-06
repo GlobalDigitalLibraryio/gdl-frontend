@@ -38,6 +38,7 @@ import {
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import {
+  OfflineCollection,
   makeBookAvailableOffline,
   removeBookAvailableOffline,
   isBookAvailableOffline,
@@ -98,6 +99,8 @@ const GridItem = styled('div')(
   padding-right: 20px;
  `
 );
+
+const offlineCollection = new OfflineCollection();
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req }: Context) {
@@ -286,7 +289,9 @@ class BookActions1 extends React.Component<
 
   async componentDidMount() {
     this.setState({
-      isAvailableOffline: (await isBookAvailableOffline(this.props.book))
+      isAvailableOffline: (await offlineCollection.isBookAvailableOffline(
+        this.props.book
+      ))
         ? 'YES'
         : 'NO'
     });
@@ -316,14 +321,16 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await removeBookAvailableOffline(this.props.book);
+      await offlineCollection.removeBookAvailableOffline(this.props.book);
       this.setState({
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline collection.'
       });
       logEvent('Books', 'Remove offline', this.props.book.title);
     } else {
-      const offlinedBook = await makeBookAvailableOffline(this.props.book);
+      const offlinedBook = await offlineCollection.makeBookAvailableOffline(
+        this.props.book
+      );
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook

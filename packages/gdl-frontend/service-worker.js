@@ -48,35 +48,58 @@ const bookDetailsRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+$/;
 const chapterRegExp = /\/book-api\/v1\/books\/[\w-]+\/\d+\/chapters\/\d+$/;
 
 workbox.routing.registerRoute(
-  ({ url, event }) => {
-    return (
-      imageRegExp.test(url.href) ||
-      bookDetailsRegExp.test(url.href) ||
-      chapterRegExp.test(url.href)
-    );
-  },
-  workbox.strategies.cacheFirst({
-    cacheName: 'gdl-offline',
-    matchOptions: {
-      ignoreVary: true
-    },
-    plugins: [
-      new workbox.expiration.Plugin({
-        maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-      }),
-      {
-        // Only add to the cache if this was offlined already
-        // cacheWillUpdate: async ({ request, response, event }) () => {
-        //   return null;
-        //   // const cache = await self.caches.open('gdl-offline');
-        //   // return (await cache.match(request)) ? response : null;
-        // }
-        // We never add to cache. Adding to cache is explictily done by the user by making a book available offline
-        cacheWillUpdate: () => null
-      }
-    ]
-  })
+  imageRegExp,
+  ({ event }) =>
+    event.respondWith(
+      caches.match(event.request, { ignoreVary: true }).then(response => {
+        return response || fetch(event.request);
+      })
+    ),
+  'GET'
 );
+
+// workbox.routing.registerRoute(imageRegExp, ({ url, event }) =>
+//   event
+//     .respondWith(caches.match(event.request, { ignoreVary: true }))
+//     .then(response => {
+//       return response || fetch(event.request);
+//     })
+// );
+
+//   caches.match(url, { ignoreVary: true })
+// );
+
+// workbox.routing.registerRoute(
+//   ({ url, event }) => {
+//     return (
+//       imageRegExp.test(url.href) ||
+//       bookDetailsRegExp.test(url.href) ||
+//       chapterRegExp.test(url.href)
+//     );
+//   },
+//   workbox.strategies.cacheFirst({
+//     cacheName: 'gdl-offline',
+//     matchOptions: {
+//       ignoreVary: true
+//     },
+//     plugins: [
+//       new workbox.expiration.Plugin({
+//         maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+//       }),
+//       {
+//         // Only add to the cache if this was offlined already
+//         // cacheWillUpdate: async ({ request, response, event }) () => {
+//         //   return null;
+//         //   // const cache = await self.caches.open('gdl-offline');
+//         //   // return (await cache.match(request)) ? response : null;
+//         // }
+//         // This is called before a response is used to update a cache.
+//         // We never add to cache, so return null here. Adding to cache is explicitly  done by the user by making a book available offline
+//         cacheWillUpdate: () => null
+//       }
+//     ]
+//   })
+// );
 
 // urlPattern: /^https:\/\/images\.(.+)\.digitallibrary\.io/,
 // handler: 'cacheFirst',
