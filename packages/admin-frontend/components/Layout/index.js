@@ -119,7 +119,7 @@ class Layout extends React.Component<
                 <ListItemText primary="Export books" />
               </ListItem>
             </Link>
-            <Link prefetch href="/admin/edit">
+            <Link prefetch href="/admin/edit/book">
               <ListItem button component="a">
                 <ListItemText primary="Edit book" />
               </ListItem>

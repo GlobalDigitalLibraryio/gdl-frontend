@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button/Button';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import TextField from '@material-ui/core/TextField';
 import Link from 'next/link';
+import Router from 'next/router';
 import Container from '../Container';
 
 import ChapterPreview from './ChapterPreview';
@@ -49,6 +50,18 @@ export default class EditChapterForm extends React.Component<Props, State> {
     }
   };
 
+  changeChapterInUrl = () => {
+    Router.push({
+      pathname: '/admin/edit/chapter',
+      query: {
+        id: this.props.book.id,
+        chapterId: this.state.currentChapterId,
+        lang: this.props.book.language.code
+      },
+      shallow: true
+    });
+  };
+
   fetchSelectedChapter = async (chapterId: ?string) => {
     let result;
     if (chapterId) {
@@ -58,7 +71,9 @@ export default class EditChapterForm extends React.Component<Props, State> {
         this.props.book.language.code
       );
       if (result.isOk) {
-        this.setState({ currentChapter: result.data });
+        this.setState({ currentChapter: result.data }, () =>
+          this.changeChapterInUrl()
+        );
       }
     } else {
       this.setState({ currentChapter: null });

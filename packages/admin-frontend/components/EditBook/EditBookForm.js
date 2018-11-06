@@ -37,7 +37,7 @@ export default class EditBookForm extends React.Component<Props> {
     if (result.isOk) {
       // Simplest way to update the data is to run getInitialProps again :]
       Router.push({
-        pathname: '/admin/edit',
+        pathname: '/admin/edit/book',
         query: { id: this.props.book.id, lang: this.props.book.language.code }
       });
     }
