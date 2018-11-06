@@ -36,7 +36,7 @@ const directives = {
     "'self'",
     'data:',
     'https://*.digitallibrary.io',
-    'https://res.cloudinary.com',
+    'https://*.cloudinary.com',
     googleAnalytics
   ],
   connectSrc: [
