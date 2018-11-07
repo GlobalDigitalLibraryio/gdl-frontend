@@ -42,7 +42,7 @@ class OfflinePage extends React.Component<{}, State> {
   async componentDidMount() {
     try {
       this.setState({
-        books: await offlineCollection.getOfflineBooks(),
+        books: await offlineCollection.getBooks(),
         loadingStatus: 'SUCCESS'
       });
     } catch (error) {
@@ -52,7 +52,7 @@ class OfflinePage extends React.Component<{}, State> {
 
   handlePurge = async () => {
     try {
-      await offlineCollection.purgeOfflineBooks();
+      await offlineCollection.clear();
       this.setState({ books: [] });
     } catch (error) {
       this.setState({ loadingStatus: 'ERROR' });

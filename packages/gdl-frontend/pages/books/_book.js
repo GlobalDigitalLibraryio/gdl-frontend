@@ -37,13 +37,7 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
-import {
-  OfflineCollection,
-  makeBookAvailableOffline,
-  removeBookAvailableOffline,
-  isBookAvailableOffline,
-  clientSupportsOffline
-} from '../../lib/offline';
+import { OfflineCollection, clientSupportsOffline } from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
@@ -288,10 +282,11 @@ class BookActions1 extends React.Component<
   };
 
   async componentDidMount() {
+    const { book } = this.props;
     this.setState({
-      isAvailableOffline: (await offlineCollection.isBookAvailableOffline(
-        this.props.book
-      ))
+      isAvailableOffline: Boolean(
+        await offlineCollection.getBook(book.id, book.language.code)
+      )
         ? 'YES'
         : 'NO'
     });
@@ -321,16 +316,14 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await offlineCollection.removeBookAvailableOffline(this.props.book);
+      await offlineCollection.deleteBook(this.props.book);
       this.setState({
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline collection.'
       });
       logEvent('Books', 'Remove offline', this.props.book.title);
     } else {
-      const offlinedBook = await offlineCollection.makeBookAvailableOffline(
-        this.props.book
-      );
+      const offlinedBook = await offlineCollection.addBook(this.props.book);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook

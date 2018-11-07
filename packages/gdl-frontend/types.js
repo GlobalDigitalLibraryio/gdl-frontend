@@ -133,11 +133,11 @@ export type BookDetails = $ReadOnly<{|
   additionalInformation?: string,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
-  chapters: Array<{
+  chapters: Array<{|
     id: number,
     seqNo: number,
     url: string
-  }>,
+  |}>,
   bookFormat: 'PDF' | 'HTML',
   downloads: {
     epub?: string,

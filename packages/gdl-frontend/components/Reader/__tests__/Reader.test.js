@@ -75,7 +75,7 @@ const book: BookDetails = {
   }
 };
 
-const chapter: Chapter = { id: 128, seqNo: 1, content: '</br>' };
+const chapter: Chapter = { id: 128, seqNo: 1, content: '</br>', images: [] };
 
 beforeAll(() => {
   nock('http://www.example.no')
@@ -100,7 +100,7 @@ test('Loads the following chapter when going forward', () => {
 });
 
 test('Loads the preceding chapter when going back', () => {
-  const chapter: Chapter = { id: 131, seqNo: 4, content: '</br>' };
+  const chapter: Chapter = { id: 131, seqNo: 4, content: '</br>', images: [] };
   const tree = shallow(<Reader book={book} chapter={chapter} />);
   const loadChapterMock = jest.fn();
   tree.instance().loadChapter = loadChapterMock;
