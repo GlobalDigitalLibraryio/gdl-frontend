@@ -8,6 +8,8 @@
 
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
+import { getAuthToken } from 'gdl-auth';
+
 import type {
   ConfigShape,
   RemoteData,
@@ -20,11 +22,15 @@ import type {
   Chapter,
   ReadingLevel
 } from './types';
+
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-import { getAuthToken } from 'gdl-auth';
+import { OfflineLibrary, clientSupportsOffline } from './lib/offline';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
+
+const offlineLibrary = clientSupportsOffline() && new OfflineLibrary();
+console.log(offlineLibrary);
 
 // NB! Must be a function, don't pull it out into a constant here.
 // bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
@@ -131,6 +137,15 @@ export async function fetchBook(
   id: string | number,
   language: string
 ): Promise<RemoteData<BookDetails>> {
+  console.log(offlineLibrary);
+  const offlineBook =
+    offlineLibrary && (await offlineLibrary.getBook(id, language));
+  console.log(offlineBook);
+  if (offlineBook) {
+    // Fake it til you make it
+    return { data: offlineBook, isOk: true, statusCode: 200 };
+  }
+
   const result = await doFetch(`${bookApiUrl()}/books/${language}/${id}`);
 
   if (result.isOk) {
@@ -146,6 +161,14 @@ export async function fetchChapter(
   chapterId: string | number,
   language: string
 ): Promise<RemoteData<Chapter>> {
+  const offlineChapter =
+    offlineLibrary &&
+    (await offlineLibrary.getChapter(bookId, chapterId, language));
+  if (offlineChapter) {
+    // Fake it til you make it
+    return { data: offlineChapter, isOk: true, statusCode: 200 };
+  }
+
   const result = await doFetch(
     `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
   );

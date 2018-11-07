@@ -7,50 +7,43 @@ import { fetchChapter } from '../fetch';
 
 const DB_VERSION = 1;
 const CACHE_NAME = 'gdl-offline';
-
-function keyForBook(
-  bookOrId: string | number | BookDetails,
-  language?: string
-) {
-  return arguments.length > 1
-    ? // $FlowFixMe
-      `${bookOrId}-${language}`
-    : // $FlowFixMe
-      `${bookOrId.id}-${bookOrId.language.code}`;
-}
+// 7 days
+const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 
 function openCache() {
   return window.caches.open(CACHE_NAME);
 }
 
-function getImageUrls(book: BookDetails, chapters: Array<Chapter>) {
-  let imageUrls = chapters.reduce(
-    (images, chapter) => images.concat(chapter.images),
-    []
-  );
-  // Remove duplicates. Some chapters use the same image. The publisher logo, for instance, is often repeated in the chapters
-  imageUrls = [...new Set(imageUrls)];
-
-  if (book.coverImage) {
-    imageUrls.push(coverImageUrl(book.coverImage));
-  }
-  return imageUrls;
-}
-
-export class OfflineCollection {
-  bookStore = localForage.createInstance({
-    name: CACHE_NAME,
-    storeName: 'books',
-    version: DB_VERSION
-  });
-
+/**
+ * We keep track of when the book was offlined, so we can expire it after a certain time has passed
+ */
+class TimestampModel {
   timestampStore = localForage.createInstance({
     name: CACHE_NAME,
     storeName: 'timestamp',
     version: DB_VERSION
   });
 
-  _addImages = async (book: BookDetails, chapters: Array<Chapter>) => {
+  getTimestamp = async (id: number | string, language: string) =>
+    this.timestampStore.getItem(keyForBook(id, language));
+
+  setTimestamp = async (id: number | string, language: string) =>
+    this.timestampStore.setItem(keyForBook(id, language), Date.now());
+
+  deleteTimestamp = async (id: number | string, language: string) =>
+    this.timestampStore.removeItem(keyForBook(id, language));
+}
+
+export class OfflineLibrary {
+  bookStore = localForage.createInstance({
+    name: CACHE_NAME,
+    storeName: 'books',
+    version: DB_VERSION
+  });
+
+  timestampModel = new TimestampModel();
+
+  _addImagesToCache = async (book: BookDetails, chapters: Array<Chapter>) => {
     const imageUrls = getImageUrls(book, chapters);
     const cache = await openCache();
     await cache.addAll(imageUrls);
@@ -61,8 +54,8 @@ export class OfflineCollection {
    * This is because if you were to use a book object fetched from the network, it's images could have changed,
    * and then we would be left with stale images
    */
-  _deleteImages = async (id: number, language: string) => {
-    const book = await this.getBook(id, language);
+  _deleteImagesFromCache = async (id: number, language: string) => {
+    const book = await this._getBookIgnoreCache(id, language);
     if (!book) return;
 
     const imageUrls = getImageUrls(book, book.chapters);
@@ -75,12 +68,42 @@ export class OfflineCollection {
     }
   };
 
-  async getBook(id: string | number, language: string): Promise<?BookDetails> {
+  async _getBookIgnoreCache(
+    id: string | number,
+    language: string
+  ): Promise<?BookDetails> {
     return this.bookStore.getItem(keyForBook(id, language));
+  }
+
+  async getBook(id: string | number, language: string): Promise<?BookDetails> {
+    const book = await this._getBookIgnoreCache(id, language);
+    console.log(book);
+    if (!book) return;
+
+    const timestamp = await this.timestampModel.getTimestamp(id, language);
+    // Unable to make sense of timestamp. Assume we're okay
+    if (!timestamp) {
+      // But attempt to rectify it by setting one
+      this.timestampModel.setTimestamp(id, language);
+      return book;
+    }
+
+    // If we have a valid timestamp, then our offlined data is fresh if the
+    // timestamp plus maxAgeMs is greater than the current time.
+    const now = Date.now();
+
+    const isFresh = timestamp >= now - MAX_AGE_MS;
+
+    if (isFresh) {
+      return book;
+    }
+    this.deleteBook(book);
   }
 
   /**
    * Get all books in offline collection
+   *
+   * TODO: Get rid of the books that are expired
    */
   async getBooks(): Promise<Array<BookDetails>> {
     const books = [];
@@ -115,11 +138,11 @@ export class OfflineCollection {
   }
 
   async deleteBook(book: BookDetails) {
-    await this._deleteImages(book.id, book.language.code);
+    await this._deleteImagesFromCache(book.id, book.language.code);
 
     // NB! Must be last, the other methods depends on the book being in in IndexedDB.
     const result = await this.bookStore.removeItem(keyForBook(book));
-    this.timestampStore.removeItem(keyForBook(book));
+    this.timestampModel.deleteTimestamp(book.id, book.language.code);
     return Boolean(result);
   }
 
@@ -131,14 +154,15 @@ export class OfflineCollection {
           fetchChapter(book.id, chapter.id, book.language.code)
         )
       );
-
       const chapters = chapterResults.map(c => c.data);
-      book.chapters = chapters;
 
       // Add all the images in the cache
-      await this._addImages(book, chapters);
+      await this._addImagesToCache(book, chapters);
 
-      await this.timestampStore.setItem(keyForBook(book), Date.now());
+      book.chapters = chapters;
+
+      // Update
+      await this.timestampModel.setTimestamp(book.id, book.language.code);
       await this.bookStore.setItem(keyForBook(book), book);
       return true;
     } catch (error) {
@@ -148,6 +172,37 @@ export class OfflineCollection {
       return false;
     }
   }
+}
+
+/**
+ * Book ids aren't unique. So we make a composite key together with the language
+ */
+function keyForBook(
+  bookOrId: string | number | BookDetails,
+  language?: string
+) {
+  return arguments.length > 1
+    ? // $FlowFixMe
+      `${bookOrId}-${language}`
+    : // $FlowFixMe
+      `${bookOrId.id}-${bookOrId.language.code}`;
+}
+
+/**
+ * Get all unique image URLs in a book and it's chapters
+ */
+function getImageUrls(book: BookDetails, chapters: Array<Chapter>) {
+  let imageUrls = chapters.reduce(
+    (images, chapter) => images.concat(chapter.images),
+    []
+  );
+  // Remove duplicates. Some chapters use the same image. The publisher logo, for instance, is often repeated in the chapters
+  imageUrls = [...new Set(imageUrls)];
+
+  if (book.coverImage) {
+    imageUrls.push(coverImageUrl(book.coverImage));
+  }
+  return imageUrls;
 }
 
 /**

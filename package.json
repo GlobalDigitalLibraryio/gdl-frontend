@@ -83,6 +83,7 @@
     "final-form": "4.9.1",
     "glob": "^7.1.2",
     "helmet": "3.14.0",
+    "idb-keyval": "3.1.0",
     "invariant": "^2.2.4",
     "isomorphic-unfetch": "3.0.0",
     "jwt-decode": "^2.2.0",

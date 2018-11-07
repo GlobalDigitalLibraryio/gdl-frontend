@@ -37,7 +37,7 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
-import { OfflineCollection, clientSupportsOffline } from '../../lib/offline';
+import { OfflineLibrary, clientSupportsOffline } from '../../lib/offline';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
@@ -63,6 +63,8 @@ import Favorite from '../../components/Favorite';
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
+
+const offlineLibrary = clientSupportsOffline() && new OfflineLibrary();
 
 type Props = {
   book: BookDetails,
@@ -93,8 +95,6 @@ const GridItem = styled('div')(
   padding-right: 20px;
  `
 );
-
-const offlineCollection = new OfflineCollection();
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req }: Context) {
@@ -285,7 +285,7 @@ class BookActions1 extends React.Component<
     const { book } = this.props;
     this.setState({
       isAvailableOffline: Boolean(
-        await offlineCollection.getBook(book.id, book.language.code)
+        await offlineLibrary.getBook(book.id, book.language.code)
       )
         ? 'YES'
         : 'NO'
@@ -316,14 +316,14 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await offlineCollection.deleteBook(this.props.book);
+      await offlineLibrary.deleteBook(this.props.book);
       this.setState({
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline collection.'
       });
       logEvent('Books', 'Remove offline', this.props.book.title);
     } else {
-      const offlinedBook = await offlineCollection.addBook(this.props.book);
+      const offlinedBook = await offlineLibrary.addBook(this.props.book);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
