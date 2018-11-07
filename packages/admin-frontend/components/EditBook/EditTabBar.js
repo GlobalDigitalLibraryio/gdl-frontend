@@ -33,14 +33,15 @@ class RouteAwareTabBar extends React.Component<Props, State> {
     selectedTab: this.props.chapterId ? 'chapter' : 'book'
   };
 
-  handleChange = (event: Event, selectedTab: 'chapter' | 'book') =>
-    this.setState({ selectedTab });
-
-  render() {
+  handleChange = (event: Event, selectedTab: 'chapter' | 'book') => {
     const {
       router: { query }
     } = this.props;
+    this.setState({ selectedTab });
+    Router.push({ pathname: `/admin/edit/${selectedTab}`, query });
+  };
 
+  render() {
     return (
       <AppBar position="static" color="default">
         <Tabs
@@ -48,18 +49,8 @@ class RouteAwareTabBar extends React.Component<Props, State> {
           centered={true}
           onChange={this.handleChange}
         >
-          <Tab
-            label="Edit Book"
-            value="book"
-            onClick={() => Router.push({ pathname: '/admin/edit/book', query })}
-          />
-          <Tab
-            label="Edit Chapters"
-            value="chapter"
-            onClick={() =>
-              Router.push({ pathname: '/admin/edit/chapter', query })
-            }
-          />
+          <Tab label="Edit Book" value="book" />
+          <Tab label="Edit Chapters" value="chapter" />
         </Tabs>
       </AppBar>
     );
