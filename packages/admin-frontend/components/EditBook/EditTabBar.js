@@ -23,32 +23,23 @@ type Props = {
   }
 };
 
-type State = {
-  selectedTab: 'chapter' | 'book'
-};
-
-class RouteAwareTabBar extends React.Component<Props, State> {
-  state = {
-    // If the chapter id is provided in the url the default tab will be the chapters tab
-    selectedTab: this.props.chapterId ? 'chapter' : 'book'
-  };
-
+class RouteAwareTabBar extends React.PureComponent<Props> {
   handleChange = (event: Event, selectedTab: 'chapter' | 'book') => {
     const {
       router: { query }
     } = this.props;
-    this.setState({ selectedTab });
     Router.push({ pathname: `/admin/edit/${selectedTab}`, query });
   };
 
   render() {
+    const {
+      router: { pathname }
+    } = this.props;
+    const value = pathname === '/admin/edit/book' ? 'book' : 'chapter';
+
     return (
       <AppBar position="static" color="default">
-        <Tabs
-          value={this.state.selectedTab}
-          centered={true}
-          onChange={this.handleChange}
-        >
+        <Tabs value={value} centered={true} onChange={this.handleChange}>
           <Tab label="Edit Book" value="book" />
           <Tab label="Edit Chapters" value="chapter" />
         </Tabs>
