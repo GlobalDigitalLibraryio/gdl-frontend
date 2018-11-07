@@ -6,22 +6,19 @@
  * See LICENSE
  */
 import * as React from 'react';
-import AppBar from '@material-ui/core/AppBar/AppBar';
-import Tab from '@material-ui/core/Tab/Tab';
-import Tabs from '@material-ui/core/Tabs/Tabs';
 import Typography from '@material-ui/core/Typography/Typography';
-import Container from '../../components/Container';
-import EditBookForm from '../../components/EditBook/EditBookForm';
-import EditChapterForm from '../../components/EditBook/EditChapterForm';
-import { fetchBook } from '../../lib/fetch';
-import Layout from '../../components/Layout';
-import type { BookDetails, Context } from '../../types';
+import Container from '../../../components/Container';
+import EditChapterForm from '../../../components/EditBook/EditChapterForm';
+import EditTabBar from '../../../components/EditBook/EditTabBar';
+import { fetchBook } from '../../../lib/fetch';
+import Layout from '../../../components/Layout';
+import type { BookDetails, Context } from '../../../types';
 
 type State = {
   selectedTab: number
 };
 
-export default class EditPage extends React.Component<
+export default class EditChapterPage extends React.Component<
   { book: ?BookDetails, chapterId: string },
   State
 > {
@@ -72,26 +69,10 @@ export default class EditPage extends React.Component<
       return (
         // blow away the components using key so we don't have to handle updating stuff
         <Layout key={book.uuid} shouldAddPadding={false}>
-          <AppBar position="static" color="default">
-            <Tabs
-              centered={true}
-              value={selectedTab}
-              onChange={this.handleChange}
-            >
-              <Tab label="Edit Book" />
-              <Tab label="Edit Chapters" />
-            </Tabs>
-          </AppBar>
-          {selectedTab === 0 && (
-            <TabContainer>
-              <EditBookForm book={book} />
-            </TabContainer>
-          )}
-          {selectedTab === 1 && (
-            <TabContainer>
-              <EditChapterForm book={book} chapterId={chapterId} />
-            </TabContainer>
-          )}
+          <EditTabBar selectedTab={selectedTab} onChange={this.handleChange} />
+          <TabContainer>
+            <EditChapterForm book={book} chapterId={chapterId} />
+          </TabContainer>
         </Layout>
       );
     }

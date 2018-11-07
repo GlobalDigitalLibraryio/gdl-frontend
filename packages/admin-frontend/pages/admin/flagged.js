@@ -132,7 +132,7 @@ const FlaggedTable = ({
               <TableCell>
                 <NextLink
                   href={{
-                    pathname: '/admin/edit',
+                    pathname: '/admin/edit/book',
                     query: { id: book.id, lang: book.language.code }
                   }}
                   passHref

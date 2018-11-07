@@ -36,7 +36,7 @@ export default class AutoCompleteSearchField extends React.Component<
 
   handleSelection = (selectedBook: Book) => {
     Router.push({
-      pathname: '/admin/edit',
+      pathname: '/admin/edit/book',
       query: { id: selectedBook.id, lang: selectedBook.language.code }
     });
   };
