@@ -71,9 +71,7 @@ export default class EditChapterForm extends React.Component<Props, State> {
         this.props.book.language.code
       );
       if (result.isOk) {
-        this.setState({ currentChapter: result.data }, () =>
-          this.changeChapterInUrl()
-        );
+        this.setState({ currentChapter: result.data }, this.changeChapterInUrl);
       }
     } else {
       this.setState({ currentChapter: null });

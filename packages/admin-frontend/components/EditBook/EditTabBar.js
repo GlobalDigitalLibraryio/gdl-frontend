@@ -13,6 +13,7 @@ import Tab from '@material-ui/core/Tab/Tab';
 import Tabs from '@material-ui/core/Tabs/Tabs';
 
 type Props = {
+  chapterId: string,
   router: {
     pathname: string,
     query: {
@@ -22,38 +23,43 @@ type Props = {
   }
 };
 
-type State = {};
+type State = {
+  selectedTab: 'chapter' | 'book'
+};
 
 class RouteAwareTabBar extends React.Component<Props, State> {
-  handleChange = (event: Event, selectedTab: number) => {
+  state = {
+    // If the chapter id is provided in the url the default tab will be the chapters tab
+    selectedTab: this.props.chapterId ? 'chapter' : 'book'
+  };
+
+  handleChange = (event: Event, selectedTab: 'chapter' | 'book') =>
+    this.setState({ selectedTab });
+
+  render() {
     const {
       router: { query }
     } = this.props;
 
-    const editChapterSelected = selectedTab === 1;
-    const pathname = `/admin/edit/${editChapterSelected ? 'chapter' : 'book'}`;
-
-    Router.push({ pathname, query: { id: query.id, lang: query.lang } });
-  };
-
-  selectedTab = () => {
-    const {
-      router: { pathname }
-    } = this.props;
-    if (pathname === '/admin/edit/book') return 0;
-    else if (pathname === '/admin/edit/chapter') return 1;
-  };
-
-  render() {
     return (
       <AppBar position="static" color="default">
         <Tabs
+          value={this.state.selectedTab}
           centered={true}
-          value={this.selectedTab()}
           onChange={this.handleChange}
         >
-          <Tab label="Edit Book" />
-          <Tab label="Edit Chapters" />
+          <Tab
+            label="Edit Book"
+            value="book"
+            onClick={() => Router.push({ pathname: '/admin/edit/book', query })}
+          />
+          <Tab
+            label="Edit Chapters"
+            value="chapter"
+            onClick={() =>
+              Router.push({ pathname: '/admin/edit/chapter', query })
+            }
+          />
         </Tabs>
       </AppBar>
     );

@@ -14,14 +14,12 @@ import { fetchBook } from '../../../lib/fetch';
 import Layout from '../../../components/Layout';
 import type { BookDetails, Context } from '../../../types';
 
-type State = {
-  selectedTab: number
+type Props = {
+  book: ?BookDetails,
+  chapterId: string
 };
 
-export default class EditBookPage extends React.Component<
-  { book: ?BookDetails, chapterId: string },
-  State
-> {
+export default class EditBookPage extends React.Component<Props> {
   static async getInitialProps({ query }: Context) {
     if (!query.id) {
       return {};
@@ -38,18 +36,8 @@ export default class EditBookPage extends React.Component<
     return { book, chapterId };
   }
 
-  state = {
-    // If the chapter id is provided in the url the default tab will be the chapters tab
-    selectedTab: this.props.chapterId ? 1 : 0
-  };
-
-  handleChange = (event: Event, selectedTab: number) => {
-    this.setState({ selectedTab });
-  };
-
   render() {
-    const { book } = this.props;
-    const selectedTab = this.state.selectedTab;
+    const { book, chapterId } = this.props;
 
     if (!book) {
       return (
@@ -69,7 +57,7 @@ export default class EditBookPage extends React.Component<
       return (
         // blow away the components using key so we don't have to handle updating stuff
         <Layout key={book.uuid} shouldAddPadding={false}>
-          <EditTabBar selectedTab={selectedTab} onChange={this.handleChange} />
+          <EditTabBar chapterId={chapterId} />
           <TabContainer>
             <EditBookForm book={book} />
           </TabContainer>
