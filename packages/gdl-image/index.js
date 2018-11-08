@@ -67,7 +67,7 @@ export function imageUrl(
   // Since we only receive a whole URL from the backend, we use this trickery to split the url into two parts that we later combine with our transformations
   const [urlPrefix, urlSuffix] = coverImage.url.split(/\/f_auto,q_auto\//);
 
-  return `${urlPrefix}/${defaultTransformations}/${
-    transformations.length ? transformations + '/' : ''
-  }${urlSuffix}`;
+  return `${urlPrefix}/${
+    transformations ? transformations + '/' : ''
+  }${defaultTransformations}/${urlSuffix}`;
 }

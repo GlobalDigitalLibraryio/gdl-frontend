@@ -19,6 +19,7 @@
     "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
     "typecheck": "flow check",
     "test": "jest",
+    "test:watch": "jest --watch",
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
