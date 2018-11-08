@@ -34,7 +34,7 @@ class TimestampModel {
     this.timestampStore.removeItem(keyForBook(id, language));
 }
 
-export class OfflineLibrary {
+class OfflineLibrary {
   bookStore = localForage.createInstance({
     name: CACHE_NAME,
     storeName: 'books',
@@ -58,6 +58,7 @@ export class OfflineLibrary {
     const book = await this._getBookIgnoreCache(id, language);
     if (!book) return;
 
+    // $FlowFixMe
     const imageUrls = getImageUrls(book, book.chapters);
 
     const cache = await openCache();
@@ -77,7 +78,6 @@ export class OfflineLibrary {
 
   async getBook(id: string | number, language: string): Promise<?BookDetails> {
     const book = await this._getBookIgnoreCache(id, language);
-    console.log(book);
     if (!book) return;
 
     const timestamp = await this.timestampModel.getTimestamp(id, language);
@@ -101,7 +101,7 @@ export class OfflineLibrary {
   }
 
   /**
-   * Get all books in offline collection
+   * Get all books in the offline library
    *
    * TODO: Get rid of the books that are expired
    */
@@ -123,12 +123,13 @@ export class OfflineLibrary {
   ): Promise<?Chapter> {
     const book = await this.getBook(bookId, language);
 
-    // Yes. we are comparing number to string 😱
-    return book ? book.chapters.find(c => c.id == chapterId) : undefined;
+    // Yes. we are comparing a number to string, yolo 😱
+    // $FlowFixMe
+    return book ? book.chapters.find(c => c.id == chapterId) : undefined; // eslint-disable-line eqeqeq
   }
 
   /**
-   * Clears whole offline collection
+   * Clears whole library
    */
   async clear() {
     return Promise.all([
@@ -149,30 +150,50 @@ export class OfflineLibrary {
   async addBook(book: BookDetails) {
     try {
       // Get all the chapters for the book, and ensure we fetched them okay.
-      const chapterResults = await Promise.all(
-        book.chapters.map(chapter =>
-          fetchChapter(book.id, chapter.id, book.language.code)
-        )
+      const chapters = await Promise.all(
+        book.chapters.map(async chapter => {
+          const result = await fetchChapter(
+            book.id,
+            chapter.id,
+            book.language.code
+          );
+          if (!result.isOk) throw new Error();
+          return result.data;
+        })
       );
-      const chapters = chapterResults.map(c => c.data);
 
-      // Add all the images in the cache
+      // Add all the images to the cache
       await this._addImagesToCache(book, chapters);
 
-      book.chapters = chapters;
+      /**
+       * We cheat a bit here. The book details object from the API
+       * doesn't have chapters with content. Since we don't want to keep track of each chapter
+       * individually we add it to the the book and store that.
+       * So that means that book we store actually have an extra property on each chapter, the content!
+       */
+      const bookWithFullChapters = { ...book, chapters };
 
-      // Update
       await this.timestampModel.setTimestamp(book.id, book.language.code);
-      await this.bookStore.setItem(keyForBook(book), book);
+      await this.bookStore.setItem(keyForBook(book), bookWithFullChapters);
+
       return true;
     } catch (error) {
-      console.error(error);
       // If something went wrong when offlining the book, cleanup after ourselves
       this.deleteBook(book);
       return false;
     }
   }
 }
+
+/**
+ * Singleton that is null unless the client has offline support
+ */
+const offlineLibrary =
+  typeof window !== 'undefined' && 'serviceWorker' in navigator
+    ? new OfflineLibrary()
+    : null;
+
+export default offlineLibrary;
 
 /**
  * Book ids aren't unique. So we make a composite key together with the language

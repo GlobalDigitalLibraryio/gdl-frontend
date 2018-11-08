@@ -37,7 +37,7 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
-import { OfflineLibrary, clientSupportsOffline } from '../../lib/offline';
+import offlineLibrary from '../../lib/offlineLibrary';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
@@ -63,8 +63,6 @@ import Favorite from '../../components/Favorite';
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
-
-const offlineLibrary = clientSupportsOffline() && new OfflineLibrary();
 
 type Props = {
   book: BookDetails,
@@ -282,13 +280,15 @@ class BookActions1 extends React.Component<
   };
 
   async componentDidMount() {
-    const { book } = this.props;
+    if (!offlineLibrary) return;
+
+    const offlineBook = await offlineLibrary.getBook(
+      this.props.book.id,
+      this.props.book.language.code
+    );
+
     this.setState({
-      isAvailableOffline: Boolean(
-        await offlineLibrary.getBook(book.id, book.language.code)
-      )
-        ? 'YES'
-        : 'NO'
+      isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
     });
   }
 
@@ -313,6 +313,8 @@ class BookActions1 extends React.Component<
   };
 
   handleOfflineClick = async () => {
+    if (!offlineLibrary) return;
+
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
@@ -376,7 +378,7 @@ class BookActions1 extends React.Component<
           </Favorite>
 
           <NoSsr>
-            {clientSupportsOffline() && (
+            {offlineLibrary && (
               <IconButton
                 isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
                 icon={

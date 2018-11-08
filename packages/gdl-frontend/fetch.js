@@ -25,12 +25,9 @@ import type {
 
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-import { OfflineLibrary, clientSupportsOffline } from './lib/offline';
+import offlineLibrary from './lib/offlineLibrary';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
-
-const offlineLibrary = clientSupportsOffline() && new OfflineLibrary();
-console.log(offlineLibrary);
 
 // NB! Must be a function, don't pull it out into a constant here.
 // bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
@@ -137,12 +134,11 @@ export async function fetchBook(
   id: string | number,
   language: string
 ): Promise<RemoteData<BookDetails>> {
-  console.log(offlineLibrary);
   const offlineBook =
     offlineLibrary && (await offlineLibrary.getBook(id, language));
-  console.log(offlineBook);
+
   if (offlineBook) {
-    // Fake it til you make it
+    // Fake the response here.
     return { data: offlineBook, isOk: true, statusCode: 200 };
   }
 
@@ -164,8 +160,9 @@ export async function fetchChapter(
   const offlineChapter =
     offlineLibrary &&
     (await offlineLibrary.getChapter(bookId, chapterId, language));
+
   if (offlineChapter) {
-    // Fake it til you make it
+    // Fake the response here.
     return { data: offlineChapter, isOk: true, statusCode: 200 };
   }
 

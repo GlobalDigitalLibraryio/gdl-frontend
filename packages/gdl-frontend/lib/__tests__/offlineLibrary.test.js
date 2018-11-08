@@ -7,13 +7,10 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import {
+import offlineLibrary, {
   clientIsOffline,
-  clientSupportsOffline,
-  isBookAvailableOffline,
-  getOfflineBooks,
-  purgeOfflineBooks
-} from '../offline';
+  clientSupportsOffline
+} from '../offlineLibrary';
 
 /* eslint no-restricted-globals: 1 */
 
@@ -62,18 +59,18 @@ test('it can check if the client is offline', () => {
 });
 
 test('it returns empty list if no books are offlined', async () => {
-  expect(await getOfflineBooks()).toEqual([]);
+  expect(await offlineLibrary.getBooks()).toEqual([]);
 });
 
-test('it can purge the cache', async () => {
+test('it can clear the library', async () => {
   // Othe cache to make sure it exists for the purpose of this test.
   await self.caches.open(CACHE_NAME);
   expect(self.snapshot().caches[CACHE_NAME]).toBeDefined();
 
-  await purgeOfflineBooks();
+  await offlineLibrary.clear();
   expect(self.snapshot().caches[CACHE_NAME]).toBeUndefined();
 });
 
 test('it returns false if the book is not offlined', async () => {
-  expect(await isBookAvailableOffline(book)).toBeFalsy();
+  expect(await offlineLibrary.getBook(book.id, book.language.code)).toBeFalsy();
 });

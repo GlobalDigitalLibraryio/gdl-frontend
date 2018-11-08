@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { clientIsOffline, clientSupportsOffline } from '../lib/offline';
+import { clientIsOffline, clientSupportsOffline } from '../lib/offlineLibrary';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
 

@@ -31,7 +31,7 @@ import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import { Link as RouteLink } from '../../routes';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
-import { clientSupportsOffline } from '../../lib/offline';
+import { clientSupportsOffline } from '../../lib/offlineLibrary';
 
 type Props = {|
   onClose(): void,

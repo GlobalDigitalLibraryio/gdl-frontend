@@ -14,7 +14,7 @@ import { withRouter } from 'next/router';
 import Link from 'next/link';
 import { Link as RouteLink } from '../routes';
 
-import { OfflineLibrary } from '../lib/offline';
+import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { A, Container, Center } from '../elements';
@@ -31,8 +31,6 @@ type State = {
   loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR'
 };
 
-const offlineLibrary = new OfflineLibrary();
-
 class OfflinePage extends React.Component<{}, State> {
   state = {
     books: [],
@@ -40,6 +38,8 @@ class OfflinePage extends React.Component<{}, State> {
   };
 
   async componentDidMount() {
+    if (!offlineLibrary) return;
+
     try {
       this.setState({
         books: await offlineLibrary.getBooks(),
@@ -50,7 +50,9 @@ class OfflinePage extends React.Component<{}, State> {
     }
   }
 
-  handlePurge = async () => {
+  handleClear = async () => {
+    if (!offlineLibrary) return;
+
     try {
       await offlineLibrary.clear();
       this.setState({ books: [] });
@@ -77,7 +79,7 @@ class OfflinePage extends React.Component<{}, State> {
             {loadingStatus === 'SUCCESS' && (
               <>
                 {books.length > 0 ? (
-                  <OfflineBooks books={books} onPurge={this.handlePurge} />
+                  <OfflineBooks books={books} onPurge={this.handleClear} />
                 ) : (
                   <NoOfflineBooks />
                 )}
