@@ -1,7 +1,9 @@
 // @flow
 import * as React from 'react';
 import dynamic from 'next/dynamic';
-import { clientIsOffline, clientSupportsOffline } from '../lib/offlineLibrary';
+
+import OnlineStatus from '../components/OnlineStatus';
+import { clientSupportsOffline } from '../lib/offlineLibrary';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
 
@@ -30,15 +32,25 @@ export default (Page: React.ComponentType<*>) =>
 
     render() {
       const { statusCode } = this.props;
-      if (statusCode && statusCode !== 200) {
-        return clientSupportsOffline() &&
-          clientIsOffline() &&
-          statusCode !== 404 ? (
-          <OfflinePage />
-        ) : (
-          <ErrorPage statusCode={statusCode} />
-        );
+
+      if (!statusCode || statusCode === 200) {
+        return <Page {...this.props} />;
+      } else if (statusCode === 404) {
+        return <ErrorPage statusCode={statusCode} />;
       }
-      return <Page {...this.props} />;
+
+      const offlineSupport = clientSupportsOffline();
+
+      return (
+        <OnlineStatus>
+          {online =>
+            !online && offlineSupport ? (
+              <OfflinePage />
+            ) : (
+              <ErrorPage statusCode={statusCode} />
+            )
+          }
+        </OnlineStatus>
+      );
     }
   };

@@ -7,10 +7,7 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import offlineLibrary, {
-  clientIsOffline,
-  clientSupportsOffline
-} from '../offlineLibrary';
+import offlineLibrary, { clientSupportsOffline } from '../offlineLibrary';
 
 /* eslint no-restricted-globals: 1 */
 
@@ -18,6 +15,9 @@ beforeEach(() => {
   Object.assign(global, makeFetchMock(), makeServiceWorkerEnv());
   jest.resetModules();
 });
+
+// So Flow doesn't scream in every test
+if (!offlineLibrary) throw new Error('Offline library not defined');
 
 const CACHE_NAME = 'gdl-offline';
 
@@ -53,16 +53,11 @@ test('it can check if the client has offline support', () => {
   expect(clientSupportsOffline()).toBeFalsy();
 });
 
-test('it can check if the client is offline', () => {
-  // Since the "browser" in this case is JSDom, it is false here
-  expect(clientIsOffline()).toBeFalsy();
-});
-
 test('it returns empty list if no books are offlined', async () => {
   expect(await offlineLibrary.getBooks()).toEqual([]);
 });
 
-test('it can clear the library', async () => {
+test('it can clear the offline library', async () => {
   // Othe cache to make sure it exists for the purpose of this test.
   await self.caches.open(CACHE_NAME);
   expect(self.snapshot().caches[CACHE_NAME]).toBeDefined();

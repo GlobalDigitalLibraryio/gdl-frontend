@@ -315,24 +315,26 @@ class BookActions1 extends React.Component<
   handleOfflineClick = async () => {
     if (!offlineLibrary) return;
 
+    const { book } = this.props;
+
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await offlineLibrary.deleteBook(this.props.book);
+      await offlineLibrary.deleteBook(book.id, book.language.code);
       this.setState({
         isAvailableOffline: 'NO',
-        snackbarMessage: 'Removed book from your offline collection.'
+        snackbarMessage: 'Removed book from your offline library.'
       });
-      logEvent('Books', 'Remove offline', this.props.book.title);
+      logEvent('Books', 'Remove offline', book.title);
     } else {
-      const offlinedBook = await offlineLibrary.addBook(this.props.book);
+      const offlinedBook = await offlineLibrary.addBook(book);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
-          ? 'Added book to your offline collection.'
-          : 'An error occurred while adding this book to your offline collection.'
+          ? 'Added book to your offline library.'
+          : 'An error occurred while adding this book to your offline library.'
       });
-      logEvent('Books', 'Available offline', this.props.book.title);
+      logEvent('Books', 'Available offline', book.title);
     }
   };
 

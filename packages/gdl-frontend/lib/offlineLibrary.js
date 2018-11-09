@@ -5,7 +5,6 @@ import localForage from 'localforage';
 import type { BookDetails, Chapter } from '../types';
 import { fetchChapter } from '../fetch';
 
-const DB_VERSION = 1;
 const CACHE_NAME = 'gdl-offline';
 // 7 days
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -20,8 +19,7 @@ function openCache() {
 class TimestampModel {
   timestampStore = localForage.createInstance({
     name: CACHE_NAME,
-    storeName: 'timestamp',
-    version: DB_VERSION
+    storeName: 'timestamp'
   });
 
   getTimestamp = async (id: number | string, language: string) =>
@@ -32,13 +30,28 @@ class TimestampModel {
 
   deleteTimestamp = async (id: number | string, language: string) =>
     this.timestampStore.removeItem(keyForBook(id, language));
+
+  getTimeStamps = async () => {
+    const timestamps = [];
+
+    await this.timestampStore.iterate(
+      (timestamp: number, compositeId: string) => {
+        // Extract the id and language code from the composite id
+        const [id, language] = compositeId.split(/-(.+)/);
+        timestamps.push({ id, timestamp, language });
+      }
+    );
+
+    return timestamps;
+  };
+
+  clear = () => this.timestampStore.clear();
 }
 
 class OfflineLibrary {
   bookStore = localForage.createInstance({
     name: CACHE_NAME,
-    storeName: 'books',
-    version: DB_VERSION
+    storeName: 'books'
   });
 
   timestampModel = new TimestampModel();
@@ -54,8 +67,8 @@ class OfflineLibrary {
    * This is because if you were to use a book object fetched from the network, it's images could have changed,
    * and then we would be left with stale images
    */
-  _deleteImagesFromCache = async (id: number, language: string) => {
-    const book = await this._getBookIgnoreCache(id, language);
+  _deleteImagesFromCache = async (id: number | string, language: string) => {
+    const book = await this._getBookWithoutExpiration(id, language);
     if (!book) return;
 
     // $FlowFixMe
@@ -69,7 +82,22 @@ class OfflineLibrary {
     }
   };
 
-  async _getBookIgnoreCache(
+  /**
+   * Expires entries older than the given timestamp
+   */
+  async _expireEntries(expireOlderThanTimestamp: number) {
+    const entries = await this.timestampModel.getTimeStamps();
+
+    const oldEntries = entries.filter(
+      entry => entry.timestamp < expireOlderThanTimestamp
+    );
+
+    await Promise.all(
+      oldEntries.map(entry => this.deleteBook(entry.id, entry.language))
+    );
+  }
+
+  async _getBookWithoutExpiration(
     id: string | number,
     language: string
   ): Promise<?BookDetails> {
@@ -77,7 +105,7 @@ class OfflineLibrary {
   }
 
   async getBook(id: string | number, language: string): Promise<?BookDetails> {
-    const book = await this._getBookIgnoreCache(id, language);
+    const book = await this._getBookWithoutExpiration(id, language);
     if (!book) return;
 
     const timestamp = await this.timestampModel.getTimestamp(id, language);
@@ -97,15 +125,16 @@ class OfflineLibrary {
     if (isFresh) {
       return book;
     }
-    this.deleteBook(book);
+    this.deleteBook(book.id, book.language.code);
   }
 
   /**
    * Get all books in the offline library
    *
-   * TODO: Get rid of the books that are expired
    */
   async getBooks(): Promise<Array<BookDetails>> {
+    await this._expireEntries(Date.now() - MAX_AGE_MS);
+
     const books = [];
 
     await this.bookStore.iterate(value => {
@@ -133,17 +162,18 @@ class OfflineLibrary {
    */
   async clear() {
     return Promise.all([
+      this.timestampModel.clear(),
       this.bookStore.clear(),
       window.caches.delete(CACHE_NAME)
     ]);
   }
 
-  async deleteBook(book: BookDetails) {
-    await this._deleteImagesFromCache(book.id, book.language.code);
+  async deleteBook(id: number | string, language: string) {
+    await this._deleteImagesFromCache(id, language);
 
+    this.timestampModel.deleteTimestamp(id, language);
     // NB! Must be last, the other methods depends on the book being in in IndexedDB.
-    const result = await this.bookStore.removeItem(keyForBook(book));
-    this.timestampModel.deleteTimestamp(book.id, book.language.code);
+    const result = await this.bookStore.removeItem(keyForBook(id, language));
     return Boolean(result);
   }
 
@@ -179,7 +209,7 @@ class OfflineLibrary {
       return true;
     } catch (error) {
       // If something went wrong when offlining the book, cleanup after ourselves
-      this.deleteBook(book);
+      this.deleteBook(book.id, book.language.code);
       return false;
     }
   }
@@ -225,12 +255,6 @@ function getImageUrls(book: BookDetails, chapters: Array<Chapter>) {
   }
   return imageUrls;
 }
-
-/**
- * Check if the client is offline
- */
-export const clientIsOffline = () =>
-  typeof window !== 'undefined' && !window.navigator.onLine;
 
 /**
  * Check if the client supports serviceworkers

@@ -113,7 +113,7 @@ class GlobalMenu extends React.Component<Props, State> {
                   <CheckCircleIcon />
                 </ListItemIcon>
                 <ListItemText>
-                  <Trans>Offline books</Trans>
+                  <Trans>Offline library</Trans>
                 </ListItemText>
               </ListItem>
             </RouteLink>

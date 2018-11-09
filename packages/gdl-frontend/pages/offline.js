@@ -79,7 +79,7 @@ class OfflinePage extends React.Component<{}, State> {
             {loadingStatus === 'SUCCESS' && (
               <>
                 {books.length > 0 ? (
-                  <OfflineBooks books={books} onPurge={this.handleClear} />
+                  <OfflineBooks books={books} onClear={this.handleClear} />
                 ) : (
                   <NoOfflineBooks />
                 )}
@@ -92,7 +92,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = withRouter(({ books, onPurge, router }) => (
+const OfflineBooks = withRouter(({ books, onClear, router }) => (
   <>
     <Typography
       variant="h4"
@@ -100,7 +100,7 @@ const OfflineBooks = withRouter(({ books, onPurge, router }) => (
       align="center"
       css={{ marginBottom: spacing.large }}
     >
-      <Trans>Available offline</Trans>
+      <Trans>Offline library</Trans>
     </Typography>
     {router.asPath !== '/offline' && (
       <Typography align="center" css={{ marginBottom: spacing.large }}>
@@ -114,7 +114,7 @@ const OfflineBooks = withRouter(({ books, onPurge, router }) => (
     <BookGrid books={books} />
     <Center>
       <Button
-        onClick={onPurge}
+        onClick={onClear}
         css={{ marginTop: spacing.large }}
         variant="outlined"
         size="small"
