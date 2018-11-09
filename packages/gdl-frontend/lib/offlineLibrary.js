@@ -48,7 +48,7 @@ class TimestampModel {
   clear = () => this.timestampStore.clear();
 }
 
-class OfflineLibrary {
+export class OfflineLibrary {
   bookStore = localForage.createInstance({
     name: CACHE_NAME,
     storeName: 'books'
@@ -173,8 +173,7 @@ class OfflineLibrary {
 
     this.timestampModel.deleteTimestamp(id, language);
     // NB! Must be last, the other methods depends on the book being in in IndexedDB.
-    const result = await this.bookStore.removeItem(keyForBook(id, language));
-    return Boolean(result);
+    return await this.bookStore.removeItem(keyForBook(id, language));
   }
 
   async addBook(book: BookDetails) {

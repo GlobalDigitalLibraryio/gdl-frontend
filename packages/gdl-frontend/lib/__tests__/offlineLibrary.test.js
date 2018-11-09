@@ -7,17 +7,18 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import offlineLibrary, { clientSupportsOffline } from '../offlineLibrary';
+import { clientSupportsOffline, OfflineLibrary } from '../offlineLibrary';
 
 /* eslint no-restricted-globals: 1 */
 
+let offlineLibrary;
 beforeEach(() => {
   Object.assign(global, makeFetchMock(), makeServiceWorkerEnv());
+  offlineLibrary = new OfflineLibrary();
   jest.resetModules();
 });
 
-// So Flow doesn't scream in every test
-if (!offlineLibrary) throw new Error('Offline library not defined');
+afterEach(() => offlineLibrary.clear());
 
 const CACHE_NAME = 'gdl-offline';
 
@@ -53,19 +54,46 @@ test('it can check if the client has offline support', () => {
   expect(clientSupportsOffline()).toBeFalsy();
 });
 
-test('it returns empty list if no books are offlined', async () => {
+test('it can add and retrieve a book from the library', async () => {
+  await offlineLibrary.addBook(book);
+  const fromLib = await offlineLibrary.getBook(book.id, book.language.code);
+  expect(fromLib).toEqual(book);
+});
+
+test('it returns undefined if the book isnt in the library', async () => {
+  expect(await offlineLibrary.getBook('no-such', 'book')).toBeUndefined();
+});
+
+test('it can delete a book from the library', async () => {
+  await offlineLibrary.addBook(book);
+
+  await offlineLibrary.deleteBook(book.id, book.language.code);
+
+  expect(
+    await offlineLibrary.getBook(book.id, book.language.code)
+  ).toBeUndefined();
+});
+
+test('it returns the offline library', async () => {
   expect(await offlineLibrary.getBooks()).toEqual([]);
+
+  const book1 = { ...book, id: 123 };
+  const book2 = { ...book, id: 456 };
+
+  await offlineLibrary.addBook(book1);
+  await offlineLibrary.addBook(book2);
+
+  expect(await offlineLibrary.getBooks()).toEqual([book1, book2]);
 });
 
 test('it can clear the offline library', async () => {
+  await offlineLibrary.addBook(book);
+
   // Othe cache to make sure it exists for the purpose of this test.
   await self.caches.open(CACHE_NAME);
   expect(self.snapshot().caches[CACHE_NAME]).toBeDefined();
 
   await offlineLibrary.clear();
   expect(self.snapshot().caches[CACHE_NAME]).toBeUndefined();
-});
-
-test('it returns false if the book is not offlined', async () => {
-  expect(await offlineLibrary.getBook(book.id, book.language.code)).toBeFalsy();
+  expect(await offlineLibrary.getBooks()).toEqual([]);
 });
