@@ -1,15 +1,11 @@
 // @flow
 import * as React from 'react';
-import dynamic from 'next/dynamic';
 
 import OnlineStatus from '../components/OnlineStatus';
 import offlineLibrary from '../lib/offlineLibrary';
+import OfflinePage from '../pages/offline';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
-
-const OfflinePage = dynamic(import('../pages/offline'), {
-  ssr: false
-});
 
 export default (Page: React.ComponentType<*>) =>
   class extends React.Component<*> {
@@ -38,6 +34,12 @@ export default (Page: React.ComponentType<*>) =>
       } else if (statusCode === 404) {
         return <ErrorPage statusCode={statusCode} />;
       }
+
+      /**
+       * If we're here, and we are on the client, we check if we are offline and then render the offline page instead.
+       * As long as the error code wasn't a 404 (handled in previous check) it is likely that the network was down
+       * or something similar, which triggers a string of errors and we end up here.
+       */
 
       return (
         <OnlineStatus>
