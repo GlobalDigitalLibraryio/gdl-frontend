@@ -218,7 +218,9 @@ export class OfflineLibrary {
  * Singleton that is null unless the client has offline support
  */
 const offlineLibrary =
-  typeof window !== 'undefined' && 'serviceWorker' in navigator
+  typeof window !== 'undefined' &&
+  'serviceWorker' in navigator &&
+  typeof navigator.onLine === 'boolean'
     ? new OfflineLibrary()
     : null;
 
@@ -254,12 +256,6 @@ function getImageUrls(book: BookDetails, chapters: Array<Chapter>) {
   }
   return imageUrls;
 }
-
-/**
- * Check if the client supports serviceworkers
- */
-export const clientSupportsOffline = () =>
-  typeof window !== 'undefined' && 'serviceWorker' in navigator;
 
 /**
  * Make sure we're running a service worker in the top scope

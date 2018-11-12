@@ -7,7 +7,7 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import { clientSupportsOffline, OfflineLibrary } from '../offlineLibrary';
+import { OfflineLibrary } from '../offlineLibrary';
 
 /* eslint no-restricted-globals: 1 */
 
@@ -48,11 +48,6 @@ const book = {
     url: ''
   }
 };
-
-test('it can check if the client has offline support', () => {
-  // Since the "browser" in this case is JSDom, it is false here
-  expect(clientSupportsOffline()).toBeFalsy();
-});
 
 test('it can add and retrieve a book from the library', async () => {
   await offlineLibrary.addBook(book);

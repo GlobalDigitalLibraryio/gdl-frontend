@@ -3,7 +3,7 @@ import * as React from 'react';
 import dynamic from 'next/dynamic';
 
 import OnlineStatus from '../components/OnlineStatus';
-import { clientSupportsOffline } from '../lib/offlineLibrary';
+import offlineLibrary from '../lib/offlineLibrary';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
 
@@ -39,12 +39,10 @@ export default (Page: React.ComponentType<*>) =>
         return <ErrorPage statusCode={statusCode} />;
       }
 
-      const offlineSupport = clientSupportsOffline();
-
       return (
         <OnlineStatus>
           {online =>
-            !online && offlineSupport ? (
+            !online && offlineLibrary ? (
               <OfflinePage />
             ) : (
               <ErrorPage statusCode={statusCode} />
