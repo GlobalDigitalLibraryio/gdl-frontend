@@ -7,7 +7,9 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import { OfflineLibrary, TimestampModel } from '../offlineLibrary';
+import OfflineLibrary from '../OfflineLibrary';
+import TimestampModel from '../TimestampModel';
+import { keyForBook, CACHE_NAME } from '../';
 
 /* eslint no-restricted-globals: 1 */
 
@@ -19,8 +21,6 @@ beforeEach(() => {
 });
 
 afterEach(() => offlineLibrary.clear());
-
-const CACHE_NAME = 'gdl-offline';
 
 const book = {
   id: 123,
@@ -123,8 +123,5 @@ test('it removes expired books', async () => {
 
 async function setExpirationTimestamp(book, timestamp: number) {
   const timestampModel = new TimestampModel();
-  await timestampModel.timestampStore.setItem(
-    `${book.id}-${book.language.code}`,
-    timestamp
-  );
+  await timestampModel.timestampStore.setItem(keyForBook(book), timestamp);
 }
