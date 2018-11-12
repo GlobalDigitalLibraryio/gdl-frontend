@@ -7,7 +7,7 @@
  */
 import makeServiceWorkerEnv from 'service-worker-mock';
 import makeFetchMock from 'service-worker-mock/fetch';
-import { OfflineLibrary } from '../offlineLibrary';
+import { OfflineLibrary, TimestampModel } from '../offlineLibrary';
 
 /* eslint no-restricted-globals: 1 */
 
@@ -92,3 +92,39 @@ test('it can clear the offline library', async () => {
   expect(self.snapshot().caches[CACHE_NAME]).toBeUndefined();
   expect(await offlineLibrary.getBooks()).toEqual([]);
 });
+
+test('it removes the book when we try to get an expired one', async () => {
+  await offlineLibrary.addBook(book);
+
+  await setExpirationTimestamp(book, new Date(314159265359).getTime());
+
+  expect(
+    await offlineLibrary.getBook(book.id, book.language.code)
+  ).toBeUndefined();
+});
+
+test('it removes expired books', async () => {
+  expect(await offlineLibrary.getBooks()).toEqual([]);
+
+  const book1 = { ...book, id: 123 };
+  const book2 = { ...book, id: 456 };
+
+  await offlineLibrary.addBook(book1);
+  await offlineLibrary.addBook(book2);
+
+  await setExpirationTimestamp(book1, new Date(314159265359).getTime());
+
+  expect(await offlineLibrary.getBooks()).toEqual([book2]);
+
+  expect(
+    await offlineLibrary.getBook(book.id, book.language.code)
+  ).toBeUndefined();
+});
+
+async function setExpirationTimestamp(book, timestamp: number) {
+  const timestampModel = new TimestampModel();
+  await timestampModel.timestampStore.setItem(
+    `${book.id}-${book.language.code}`,
+    timestamp
+  );
+}

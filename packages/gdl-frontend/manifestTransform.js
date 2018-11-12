@@ -63,7 +63,7 @@ class ManifestTransform {
         });
 
         // We don't want to precache everything. Filter stuff here
-        // Don't vare for the next build manifest, so remove that
+        // Don't care for the next build manifest, so remove that
         manifest = manifest
           .filter(entry => entry.url !== 'build-manifest.json')
           // Don't include auth pages. Just a fraction of our users actually log in

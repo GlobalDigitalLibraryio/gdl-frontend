@@ -135,8 +135,7 @@ export type BookDetails = $ReadOnly<{|
   availableLanguages: Array<Language>,
   chapters: Array<{|
     id: number,
-    seqNo: number,
-    url: string
+    seqNo: number
   |}>,
   bookFormat: 'PDF' | 'HTML',
   downloads: {

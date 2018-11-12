@@ -16,7 +16,7 @@ function openCache() {
 /**
  * We keep track of when the book was offlined, so we can expire it after a certain time has passed
  */
-class TimestampModel {
+export class TimestampModel {
   timestampStore = localForage.createInstance({
     name: CACHE_NAME,
     storeName: 'timestamp'
