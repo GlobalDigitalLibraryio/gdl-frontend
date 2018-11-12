@@ -7,14 +7,16 @@
  */
 
 import * as React from 'react';
-import { ButtonBase, Typography } from '@material-ui/core';
+import { ButtonBase, CircularProgress, Typography } from '@material-ui/core';
 import { css, cx } from 'react-emotion';
 
 type Props = {
   className?: string,
+  disabled?: boolean,
+  isLoading?: boolean,
   label: React.Node,
   icon: React.Node,
-  onClick?: (event: SyntheticEvent<HTMLButtonElement>) => void
+  onClick?: (event: SyntheticEvent<HTMLButtonElement>) => void | Promise<void>
 };
 
 const CustomButton = ({
@@ -27,9 +29,16 @@ const CustomButton = ({
   ...props
 }: Props) => {
   return (
-    <ButtonBase focusRipple className={cx(styles, className)} onClick={onClick}>
-      {icon}
-      <Typography variant="body1">{label}</Typography>
+    <ButtonBase
+      disabled={disabled || isLoading}
+      focusRipple
+      className={cx(styles, className)}
+      onClick={onClick}
+    >
+      {isLoading ? <CircularProgress size={24} /> : icon}
+      <Typography variant="body1" component="span">
+        {label}
+      </Typography>
     </ButtonBase>
   );
 };

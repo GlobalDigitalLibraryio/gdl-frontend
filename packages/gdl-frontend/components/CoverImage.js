@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { css, cx } from 'react-emotion';
-import { imageUrl } from 'gdl-image';
+import { coverImageUrl } from 'gdl-image';
 
 import type { CoverImage as CoverImageType } from '../types';
 import Image from './Image';
@@ -74,11 +74,10 @@ const CoverImage = ({
     <Image
       ariaHidden
       className={cn}
+      crossOrigin="anonymous"
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}
-      src={imageUrl(coverImage, {
-        aspectRatio: 0.81
-      })}
+      src={coverImageUrl(coverImage)}
       sizes={sizes}
     />
   );

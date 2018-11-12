@@ -12,15 +12,17 @@ import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
-import { imageUrl } from 'gdl-image';
+import { coverImageUrl } from 'gdl-image';
 import {
+  Snackbar,
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText,
   Button,
   Typography,
-  Divider as MuiDivider
+  Divider as MuiDivider,
+  NoSsr
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
@@ -30,10 +32,12 @@ import {
   FavoriteBorder as FavoriteOutlineIcon,
   SaveAlt as SaveAltIcon,
   Share as ShareIcon,
-  Link as LinkIcon
+  Link as LinkIcon,
+  CheckCircle as CheckCircleIcon
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import offlineLibrary from '../../lib/offlineLibrary';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
@@ -119,9 +123,7 @@ class BookPage extends React.Component<Props> {
         <Head
           description={book.description}
           title={book.title}
-          image={
-            book.coverImage && imageUrl(book.coverImage, { aspectRatio: 0.81 })
-          }
+          image={book.coverImage && coverImageUrl(book.coverImage)}
         >
           <BookJsonLd book={book} />
         </Head>
@@ -162,7 +164,7 @@ class BookPage extends React.Component<Props> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} />
+                        <BookActions1 book={book} key={book.uuid} />
                       </div>
                     </Hidden>
                     <Typography
@@ -186,7 +188,7 @@ class BookPage extends React.Component<Props> {
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} />
+                  <BookActions1 book={book} key={book.uuid} />
                 </Hidden>
                 <Divider />
 
@@ -260,14 +262,35 @@ const ReadBookLink = ({ book }) =>
 
 /**
  * Favorite, share, offline
+ * Remember to render this with a key prop, easier to just blow away the entire component than handling
+ * updated props
  */
 class BookActions1 extends React.Component<
   { book: BookDetails },
-  { anchorEl: ?HTMLElement }
+  {
+    anchorEl: ?HTMLElement,
+    isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
+    snackbarMessage: ?string
+  }
 > {
   state = {
-    anchorEl: null
+    anchorEl: null,
+    isAvailableOffline: null,
+    snackbarMessage: null
   };
+
+  async componentDidMount() {
+    if (!offlineLibrary) return;
+
+    const offlineBook = await offlineLibrary.getBook(
+      this.props.book.id,
+      this.props.book.language.code
+    );
+
+    this.setState({
+      isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
+    });
+  }
 
   closeShareMenu = () => this.setState({ anchorEl: null });
 
@@ -286,6 +309,32 @@ class BookActions1 extends React.Component<
         .catch(() => {}); // Ignore here because we don't care if people cancel sharing
     } else {
       this.setState({ anchorEl: event.currentTarget });
+    }
+  };
+
+  handleOfflineClick = async () => {
+    if (!offlineLibrary) return;
+
+    const { book } = this.props;
+
+    this.setState({ isAvailableOffline: 'DOWNLOADING' });
+
+    if (this.state.isAvailableOffline === 'YES') {
+      await offlineLibrary.deleteBook(book.id, book.language.code);
+      this.setState({
+        isAvailableOffline: 'NO',
+        snackbarMessage: 'Removed book from your offline library.'
+      });
+      logEvent('Books', 'Remove offline', book.title);
+    } else {
+      const offlinedBook = await offlineLibrary.addBook(book);
+      this.setState({
+        isAvailableOffline: offlinedBook ? 'YES' : 'NO',
+        snackbarMessage: offlinedBook
+          ? 'Added book to your offline library.'
+          : 'An error occurred while adding this book to your offline library.'
+      });
+      logEvent('Books', 'Available offline', book.title);
     }
   };
 
@@ -329,6 +378,25 @@ class BookActions1 extends React.Component<
               />
             )}
           </Favorite>
+
+          <NoSsr>
+            {offlineLibrary && (
+              <IconButton
+                isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
+                icon={
+                  <CheckCircleIcon
+                    style={
+                      this.state.isAvailableOffline === 'YES'
+                        ? { color: 'green' }
+                        : null
+                    }
+                  />
+                }
+                onClick={this.handleOfflineClick}
+                label={<Trans>Save offline</Trans>}
+              />
+            )}
+          </NoSsr>
 
           <IconButton
             icon={<ShareIcon />}
@@ -385,6 +453,18 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
+        {/* Show offlined snackbar*/}
+        <Snackbar
+          autoHideDuration={3000}
+          open={Boolean(this.state.snackbarMessage)}
+          onClose={() => this.setState({ snackbarMessage: null })}
+          ContentProps={{
+            'aria-describedby': 'message-id'
+          }}
+          message={
+            <span id="snackbar-message">{this.state.snackbarMessage}</span>
+          }
+        />
       </>
     );
   }

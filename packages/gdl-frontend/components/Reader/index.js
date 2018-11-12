@@ -7,11 +7,11 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
-import { imageUrl } from 'gdl-image';
+import { coverImageUrl } from 'gdl-image';
 
 import Head from '../Head';
 import { fetchChapter } from '../../fetch';
-import type { BookDetails, Chapter, ChapterSummary } from '../../types';
+import type { BookDetails, Chapter } from '../../types';
 import { Backdrop, Page } from './styledReader';
 import Toolbar from './Toolbar';
 import Container from '../../elements/Container';
@@ -36,7 +36,7 @@ type ReaderProps = {|
   book: BookDetails,
   onRequestClose(): void,
   chapterWithContent: ?Chapter,
-  chapterPointer: ChapterSummary,
+  chapterPointer: { id: number, seqNo: number },
   onRequestNextChapter(): void,
   onRequestPreviousChapter(): void,
   userHasEditAccess?: boolean
@@ -96,7 +96,7 @@ class Reader extends React.PureComponent<ReaderProps> {
 
 type ReaderContainerState = {
   chapters: { [number]: Chapter },
-  chapterPointer: ChapterSummary
+  chapterPointer: { id: number, seqNo: number }
 };
 
 type ReaderContainerProps = {|
@@ -224,9 +224,7 @@ export default class ReaderContainer extends React.Component<
             this.props.book.chapters.length
           })`}
           description={book.description}
-          image={
-            book.coverImage && imageUrl(book.coverImage, { aspectRatio: 0.81 })
-          }
+          image={book.coverImage && coverImageUrl(book.coverImage)}
         >
           {prev && (
             <link

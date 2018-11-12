@@ -1,4 +1,4 @@
-import { imageUrl } from '../';
+import { coverImageUrl } from '../';
 
 /**
  * The order of the transformations matter! Chrome on Android sends request headers that
@@ -13,7 +13,7 @@ test('it should chain the transformations in the right order', () => {
     imageId: '1234'
   };
 
-  const url = imageUrl(coverImage, { aspectRatio: 0.81 });
+  const url = coverImageUrl(coverImage);
   const splits = url.split('/');
 
   // Get the array index of the splits

@@ -8,6 +8,8 @@
 
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
+import { getAuthToken } from 'gdl-auth';
+
 import type {
   ConfigShape,
   RemoteData,
@@ -20,16 +22,18 @@ import type {
   Chapter,
   ReadingLevel
 } from './types';
+
 import mapValues from './lib/mapValues';
 import sortReadingLevels from './lib/sortReadingLevels';
-import { getAuthToken } from 'gdl-auth';
+import offlineLibrary from './lib/offlineLibrary';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
 // NB! Must be a function, don't pull it out into a constant here.
 // bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
 const bookApiUrl = () =>
-  serverRuntimeConfig.bookApiUrl || publicRuntimeConfig.bookApiUrl;
+  (serverRuntimeConfig && serverRuntimeConfig.bookApiUrl) ||
+  publicRuntimeConfig.bookApiUrl;
 
 // Because the backend model and business logic for categories doesn't play nice together
 const bookCategoryMapper = book => {
@@ -95,7 +99,7 @@ async function doFetch(
 }
 
 // DO NOT declare doFetch and export it as default as the same time
-// See https://github.com/babel/babel/issues/3786
+// See https://github.com/babel/babel/issues/6262
 export default doFetch;
 
 // Default page size
@@ -123,6 +127,14 @@ export async function fetchBook(
   id: string | number,
   language: string
 ): Promise<RemoteData<BookDetails>> {
+  const offlineBook =
+    offlineLibrary && (await offlineLibrary.getBook(id, language));
+
+  if (offlineBook) {
+    // Fake the response here.
+    return { data: offlineBook, isOk: true, statusCode: 200 };
+  }
+
   const result = await doFetch(`${bookApiUrl()}/books/${language}/${id}`);
 
   if (result.isOk) {
@@ -138,6 +150,15 @@ export async function fetchChapter(
   chapterId: string | number,
   language: string
 ): Promise<RemoteData<Chapter>> {
+  const offlineChapter =
+    offlineLibrary &&
+    (await offlineLibrary.getChapter(bookId, chapterId, language));
+
+  if (offlineChapter) {
+    // Fake the response here.
+    return { data: offlineChapter, isOk: true, statusCode: 200 };
+  }
+
   const result = await doFetch(
     `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
   );

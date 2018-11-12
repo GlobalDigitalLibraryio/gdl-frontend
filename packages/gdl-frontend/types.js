@@ -69,12 +69,8 @@ export type License = {
 export type Chapter = {|
   id: number,
   content: string,
-  seqNo: number
-|};
-
-export type ChapterSummary = {|
-  id: number,
-  seqNo: number
+  seqNo: number,
+  images: Array<string>
 |};
 
 // Disjoint union
@@ -137,7 +133,10 @@ export type BookDetails = $ReadOnly<{|
   additionalInformation?: string,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
-  chapters: Array<ChapterSummary>,
+  chapters: Array<{|
+    id: number,
+    seqNo: number
+  |}>,
   bookFormat: 'PDF' | 'HTML',
   downloads: {
     epub?: string,

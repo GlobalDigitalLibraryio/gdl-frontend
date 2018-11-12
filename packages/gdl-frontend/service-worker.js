@@ -1,5 +1,8 @@
-/* global self, workbox */
+/* global workbox */
 workbox.core.setCacheNameDetails({ prefix: 'gdl' });
+
+workbox.skipWaiting();
+workbox.clientsClaim();
 
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {}); // eslint-disable-line
@@ -9,7 +12,10 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {}); // eslint-disa
 workbox.routing.registerRoute(
   /^https:\/\/fonts\.googleapis\.com/,
   workbox.strategies.staleWhileRevalidate({
-    cacheName: 'google-fonts-stylesheets'
+    cacheName: 'google-fonts-stylesheets',
+    fetchOptions: {
+      mode: 'cors'
+    }
   })
 );
 
@@ -26,4 +32,24 @@ workbox.routing.registerRoute(
       new workbox.cacheableResponse.Plugin({ statuses: [0, 200] })
     ]
   })
+);
+
+// eslint-disable-next-line no-restricted-globals
+self.addEventListener('fetch', event => {
+  if (event.request.mode === 'navigate') {
+    return event.respondWith(
+      fetch(event.request).catch(() => caches.match('/offline'))
+    );
+  }
+});
+
+workbox.routing.registerRoute(
+  /^https:\/\/res\.cloudinary\.com/,
+  ({ event }) =>
+    event.respondWith(
+      caches.match(event.request, { ignoreVary: true }).then(response => {
+        return response || fetch(event.request);
+      })
+    ),
+  'GET'
 );

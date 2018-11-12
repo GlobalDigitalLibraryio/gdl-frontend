@@ -23,13 +23,15 @@ import {
   ExitToApp as ExitToAppIcon,
   Translate as TranslateIcon,
   Edit as EditIcon,
-  Favorite as FavoriteIcon
+  Favorite as FavoriteIcon,
+  CheckCircle as CheckCircleIcon
 } from '@material-ui/icons';
 
-import { Link as RouteLink } from '../../routes';
 import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
+import { Link as RouteLink } from '../../routes';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
+import offlineLibrary from '../../lib/offlineLibrary';
 
 type Props = {|
   onClose(): void,
@@ -104,6 +106,18 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItemText>
             </ListItem>
           </RouteLink>
+          {offlineLibrary && (
+            <RouteLink passHref route="offline">
+              <ListItem button component="a">
+                <ListItemIcon>
+                  <CheckCircleIcon />
+                </ListItemIcon>
+                <ListItemText>
+                  <Trans>Offline library</Trans>
+                </ListItemText>
+              </ListItem>
+            </RouteLink>
+          )}
           <RouteLink passHref route="translations">
             <ListItem button component="a">
               <ListItemIcon>
