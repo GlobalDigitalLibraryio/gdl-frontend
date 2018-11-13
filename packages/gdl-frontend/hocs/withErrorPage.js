@@ -1,9 +1,6 @@
 // @flow
 import * as React from 'react';
 
-import OnlineStatus from '../components/OnlineStatus';
-import offlineLibrary from '../lib/offlineLibrary';
-import OfflinePage from '../pages/offline';
 import ErrorPage from '../pages/_error';
 import type { Context } from '../types';
 
@@ -29,28 +26,9 @@ export default (Page: React.ComponentType<*>) =>
     render() {
       const { statusCode } = this.props;
 
-      if (!statusCode || statusCode === 200) {
-        return <Page {...this.props} />;
-      } else if (statusCode === 404) {
+      if (statusCode && statusCode !== 200) {
         return <ErrorPage statusCode={statusCode} />;
       }
-
-      /**
-       * If we're here, and we are on the client, we check if we are offline and then render the offline page instead.
-       * As long as the error code wasn't a 404 (handled in previous check) it is likely that the network was down
-       * or something similar, which triggers a string of errors and we end up here.
-       */
-
-      return (
-        <OnlineStatus>
-          {online =>
-            !online && offlineLibrary ? (
-              <OfflinePage />
-            ) : (
-              <ErrorPage statusCode={statusCode} />
-            )
-          }
-        </OnlineStatus>
-      );
+      return <Page {...this.props} />;
     }
   };

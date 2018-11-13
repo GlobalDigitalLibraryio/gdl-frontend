@@ -16,6 +16,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import * as Sentry from '@sentry/browser';
 
+import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';
 import getPageContext from '../getPageContext';
 import initSentry from '../lib/initSentry';
 import type { Context } from '../types';
@@ -133,9 +134,11 @@ class App extends NextApp {
             >
               {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
               <CssBaseline />
-              {/* Pass pageContext to the _document though the renderPage enhancer
+              <OnlineStatusRedirectProvider>
+                {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-              <Component pageContext={this.pageContext} {...pageProps} />
+                <Component pageContext={this.pageContext} {...pageProps} />
+              </OnlineStatusRedirectProvider>
             </MuiThemeProvider>
           </JssProvider>
         </GdlI18nProvider>

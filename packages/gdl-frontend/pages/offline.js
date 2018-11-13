@@ -65,7 +65,7 @@ class OfflinePage extends React.Component<{}, State> {
     const { loadingStatus, books } = this.state;
     return (
       <>
-        <Head title="Available offline" />
+        <Head title="Offline Library" />
         <Layout>
           <Container
             css={{ marginTop: spacing.large, marginBottom: spacing.large }}
