@@ -1,5 +1,5 @@
 // @flow
-const withTM = require('@weco/next-plugin-transpile-modules');
+const withTM = require('next-plugin-transpile-modules');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 // Add source maps in production for Sentry

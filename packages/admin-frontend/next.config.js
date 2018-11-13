@@ -1,6 +1,6 @@
 // @flow
 const withCSS = require('@zeit/next-css');
-const withTM = require('@weco/next-plugin-transpile-modules');
+const withTM = require('next-plugin-transpile-modules');
 
 const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
 

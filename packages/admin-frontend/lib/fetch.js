@@ -54,8 +54,8 @@ const bookCategoryMapper = book => {
 };
 
 /*
-* Wrap fetch with some error handling and automatic json parsing
-*/
+ * Wrap fetch with some error handling and automatic json parsing
+ */
 async function doFetch(
   url: string,
   options: ?{

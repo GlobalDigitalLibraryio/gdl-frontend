@@ -89,15 +89,13 @@ export default class CategoriesMenu extends React.Component<
             </Typography>
           )}
 
-          {categories &&
-            categories !== 'LOADING' &&
-            categories !== 'ERROR' && (
-              <Categories
-                onSelectCategory={onSelectCategory}
-                categories={categories}
-                languageCode={languageCode}
-              />
-            )}
+          {categories && categories !== 'LOADING' && categories !== 'ERROR' && (
+            <Categories
+              onSelectCategory={onSelectCategory}
+              categories={categories}
+              languageCode={languageCode}
+            />
+          )}
         </Drawer>
       </>
     );

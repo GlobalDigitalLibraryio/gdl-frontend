@@ -14,7 +14,7 @@ import type { CoverImage as CoverImageType } from '../types';
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
-const NO_COVER_PLACEHOLDER_URL = require('../static/placeholder-cover.png');
+const NO_COVER_PLACEHOLDER_URL = '/static/placeholder-cover.png';
 
 const sizesMap = {
   small: {

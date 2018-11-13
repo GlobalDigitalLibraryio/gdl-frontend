@@ -9,7 +9,7 @@
 import * as React from 'react';
 import NextHead from 'next/head';
 
-const fallBackImgSrc = require('../static/img/apple-touch-icon-192x192.png');
+const fallBackImgSrc = '/static/img/apple-touch-icon-192x192.png';
 
 type Props = {|
   description?: string,
