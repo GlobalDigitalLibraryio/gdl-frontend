@@ -144,10 +144,9 @@ export default class EditChapterForm extends React.Component<Props, State> {
                         label="Chapter content"
                         {...input}
                       />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
+                      {meta.error && meta.touched && (
+                        <FormHelperText error>{meta.error}</FormHelperText>
+                      )}
                     </>
                   )}
                 />

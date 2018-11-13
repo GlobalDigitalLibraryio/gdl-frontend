@@ -93,14 +93,13 @@ export default class EditBookImage extends React.Component<Props, State> {
             <ImageIcon /> Edit book cover
           </Button>
         </div>
-        {this.state.dialogOpen &&
-          imageMetadata && (
-            <EditBookCoverDialog
-              onCancel={this.handleCancel}
-              onSave={this.handleSave}
-              imageMetadata={imageMetadata}
-            />
-          )}
+        {this.state.dialogOpen && imageMetadata && (
+          <EditBookCoverDialog
+            onCancel={this.handleCancel}
+            onSave={this.handleSave}
+            imageMetadata={imageMetadata}
+          />
+        )}
       </>
     );
   }

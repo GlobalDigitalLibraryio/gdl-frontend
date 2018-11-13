@@ -226,10 +226,9 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                         label="Link"
                         {...input}
                       />
-                      {meta.error &&
-                        meta.touched && (
-                          <FormHelperText error>{meta.error}</FormHelperText>
-                        )}
+                      {meta.error && meta.touched && (
+                        <FormHelperText error>{meta.error}</FormHelperText>
+                      )}
                     </>
                   )}
                 />
@@ -252,12 +251,9 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                             label="Image Url"
                             {...input}
                           />
-                          {meta.error &&
-                            meta.touched && (
-                              <FormHelperText error>
-                                {meta.error}
-                              </FormHelperText>
-                            )}
+                          {meta.error && meta.touched && (
+                            <FormHelperText error>{meta.error}</FormHelperText>
+                          )}
                         </>
                       )}
                     />

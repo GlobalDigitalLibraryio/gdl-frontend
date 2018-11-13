@@ -8,12 +8,6 @@ export default class Document extends NextDocument {
       <html>
         <Head>
           <title>Admin | Global Digital Library</title>
-          <link
-            rel="stylesheet"
-            href={`${
-              this.props.__NEXT_DATA__.assetPrefix
-            }/_next/static/style.css`}
-          />
 
           {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script

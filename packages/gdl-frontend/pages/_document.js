@@ -22,9 +22,9 @@ import config from '../config';
 // eslint-disable-next-line no-unused-vars
 import injectGlobalStyles from '../style/globalStyles';
 
-const favIcon = require('../static/img/favicon-32x32.png');
-const icon192x192 = require('../static/img/icon-192x192.png');
-const appleTouchIcon192x192 = require('../static/img/apple-touch-icon-192x192.png');
+const favIcon = '/static/img/favicon-32x32.png';
+const icon192x192 = '/static/img/icon-192x192.png';
+const appleTouchIcon192x192 = '/static/img/apple-touch-icon-192x192.png';
 
 export default class Document extends NextDocument {
   static getInitialProps({ renderPage, req }: Context & { renderPage: any }) {
