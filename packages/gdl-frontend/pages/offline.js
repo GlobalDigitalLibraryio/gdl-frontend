@@ -10,16 +10,15 @@ import * as React from 'react';
 import type { BookDetails } from '../types';
 import { Trans } from '@lingui/react';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
-import { withRouter } from 'next/router';
 import Link from 'next/link';
-import { Link as RouteLink } from '../routes';
 
 import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
-import { A, Container, Center } from '../elements';
+import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import BookGrid from '../components/BookGrid';
+import { withOnlineStatusContext } from '../components/OnlineStatusContext';
 
 /**
  * This is the page that we load if we suspect the user is offline (see service-worker.js).
@@ -92,7 +91,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = withRouter(({ books, onClear, router }) => (
+const OfflineBooks = ({ books, onClear, router }) => (
   <>
     <Typography
       variant="h4"
@@ -102,15 +101,6 @@ const OfflineBooks = withRouter(({ books, onClear, router }) => (
     >
       <Trans>Offline library</Trans>
     </Typography>
-    {router.asPath !== '/offline' && (
-      <Typography align="center" css={{ marginBottom: spacing.large }}>
-        This page is displayed because you appear to be offline. If that is not
-        the case, you can click{' '}
-        <RouteLink href={router.asPath} passHref>
-          <A>here.</A>
-        </RouteLink>
-      </Typography>
-    )}
     <BookGrid books={books} />
     <Center>
       <Button
@@ -123,9 +113,9 @@ const OfflineBooks = withRouter(({ books, onClear, router }) => (
       </Button>
     </Center>
   </>
-));
+);
 
-const NoOfflineBooks = () => (
+const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
   <Center>
     <Typography
       align="center"
@@ -139,12 +129,14 @@ const NoOfflineBooks = () => (
       Having books available even when you are offline is a great way to make
       sure you always have something to read.
     </Typography>
-    <Link passHref href="/">
-      <Button variant="outlined">
-        <Trans>Find something to read</Trans>
-      </Button>
-    </Link>
+    {online && (
+      <Link passHref href="/">
+        <Button variant="outlined">
+          <Trans>Find something to read</Trans>
+        </Button>
+      </Link>
+    )}
   </Center>
-);
+));
 
 export default OfflinePage;
