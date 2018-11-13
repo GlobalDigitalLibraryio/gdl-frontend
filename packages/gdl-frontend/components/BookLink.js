@@ -11,7 +11,7 @@ import styled, { css } from 'react-emotion';
 import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Link } from '../routes';
-import type { Book } from '../types';
+import type { Book, BookDetails } from '../types';
 import CoverImage from './CoverImage';
 import media from '../style/media';
 
@@ -51,7 +51,7 @@ const ClickTarget = styled('a')`
  * Adds an absolute anchor above the whole cover, so you can click anywhere.
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
-export default ({ book }: { book: Book }) => (
+export default ({ book }: { book: Book | BookDetails }) => (
   <Card className={cardCss}>
     <Link
       route="book"

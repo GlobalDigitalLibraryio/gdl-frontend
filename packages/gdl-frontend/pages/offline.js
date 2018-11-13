@@ -91,7 +91,7 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = ({ books, onClear, router }) => (
+const OfflineBooks = ({ books, onClear }) => (
   <>
     <Typography
       variant="h4"
@@ -101,6 +101,7 @@ const OfflineBooks = ({ books, onClear, router }) => (
     >
       <Trans>Offline library</Trans>
     </Typography>
+    {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />
     <Center>
       <Button

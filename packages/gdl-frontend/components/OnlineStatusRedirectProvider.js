@@ -1,6 +1,7 @@
 // @flow
 import * as React from 'react';
 import { withRouter } from 'next/router';
+import offlineLibrary from '../lib/offlineLibrary';
 import OnlineStatusContext from './OnlineStatusContext';
 
 /**
@@ -8,7 +9,14 @@ import OnlineStatusContext from './OnlineStatusContext';
  * Redirects to the offline library if deemed necessary
  */
 class OnlineStatusRedirectProvider extends React.Component<
-  { children: React.Node, router: { push: string => void, route: string } },
+  {
+    children: React.Node,
+    router: {
+      replace: string => void,
+      route: string,
+      query: { id?: string, lang?: string }
+    }
+  },
   { online: boolean }
 > {
   state = {
@@ -17,21 +25,28 @@ class OnlineStatusRedirectProvider extends React.Component<
 
   handleOnline = () => this.setState({ online: true });
 
-  handleOffline = () => {
+  /**
+   * When we go offline, we redirect to the offline library page (unless we are at a book that is already offlined)
+   */
+  handleOffline = async () => {
     this.setState({ online: false });
     const {
       router,
-      router: { route }
+      router: { route, query }
     } = this.props;
 
     if (
-      !(
-        route === '/books/_read' ||
-        route === '/books/_book' ||
-        route === '/offline'
-      )
+      (route === '/books/_read' || route === '/books/_book') &&
+      query.id &&
+      query.lang &&
+      offlineLibrary
     ) {
-      router.push('/offline');
+      const book = await offlineLibrary.getBook(query.id, query.lang);
+      if (!book) {
+        router.replace('/offline');
+      }
+    } else if (route !== '/offline') {
+      router.replace('/offline');
     }
   };
 
