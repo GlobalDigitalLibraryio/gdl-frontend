@@ -35,6 +35,7 @@
     "babel-plugin-emotion": "9.2.11",
     "babel-plugin-inline-react-svg": "1.0.1",
     "babel-plugin-transform-imports": "^1.5.0",
+    "clean-webpack-plugin": "1.0.0",
     "copy-webpack-plugin": "4.5.4",
     "cross-env": "^5.0.1",
     "enzyme": "3.7.0",
