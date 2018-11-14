@@ -114,22 +114,22 @@ class Layout extends React.Component<
           />
           <Divider />
           <List component="nav" css={{ width: drawerWidth }}>
-            <Link href="/admin/export">
+            <Link href="/admin/export" passHref>
               <ListItem button component="a">
                 <ListItemText primary="Export books" />
               </ListItem>
             </Link>
-            <Link prefetch href="/admin/edit/book">
+            <Link prefetch href="/admin/edit/book" passHref>
               <ListItem button component="a">
                 <ListItemText primary="Edit book" />
               </ListItem>
             </Link>
-            <Link prefetch href="/admin/featured">
+            <Link prefetch href="/admin/featured" passHref>
               <ListItem button component="a">
                 <ListItemText primary="Edit featured content" />
               </ListItem>
             </Link>
-            <Link href="/admin/flagged">
+            <Link href="/admin/flagged" passHref>
               <ListItem button component="a">
                 <ListItemText primary="Flagged books" />
               </ListItem>
