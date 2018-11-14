@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
+import Head from 'next/head';
 import Error from './_error';
 import type { $Request, $Response } from 'express';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -19,6 +20,9 @@ import Router from 'next/router';
 import { Button } from '@material-ui/core';
 
 import getPageContext from '../getPageContext';
+// Temp fix for page with CSS (edit book) not working doing client side navigation
+// See https://github.com/zeit/next.js/issues/5264#issuecomment-424000127
+import '../temp-fix.css';
 
 type Context = {
   req?: $Request,
@@ -118,7 +122,14 @@ class App extends NextApp {
       </Error>
     );
 
-    return <NextContainer>{Page}</NextContainer>;
+    return (
+      <>
+        <Head>
+          <title>Admin | Global Digital Library</title>
+        </Head>
+        <NextContainer>{Page}</NextContainer>
+      </>
+    );
   }
 }
 

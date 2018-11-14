@@ -7,8 +7,6 @@ export default class Document extends NextDocument {
     return (
       <html>
         <Head>
-          <title>Admin | Global Digital Library</title>
-
           {/* Since we use immutable deployments, we inject the environment variable so the client can lookup the correct configuration */}
           <script
             dangerouslySetInnerHTML={{
