@@ -67,6 +67,7 @@ module.exports = {
   publicRuntimeConfig: {
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
+    ENABLE_OFFLINE: false,
 
     DEFAULT_LANGUAGE: {
       code: 'en',
