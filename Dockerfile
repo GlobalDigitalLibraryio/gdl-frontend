@@ -18,9 +18,6 @@ COPY packages $APP_PATH/packages
 WORKDIR $APP_PATH
 RUN bolt
 
-# Copy necessary source files for server and client build
-COPY .babelrc $APP_PATH/
-
 # Build and start the correct frontend
 WORKDIR $APP_PATH/packages/$MODULE
 RUN yarn build
