@@ -30,7 +30,7 @@ type Props = {
 };
 
 type State = {
-  chapters: Map<number, Chapter>,
+  chapters: { [number]: Chapter },
   current: { id: number, seqNo: number }
 };
 
@@ -70,7 +70,7 @@ class Read extends React.Component<Props, State> {
     const { chapter, book } = props;
 
     // Init the chapters map with chapter we already have
-    const chapters = new Map<number, Chapter>([[chapter.id, chapter]]);
+    const chapters = { [chapter.id]: chapter };
 
     const current = book.chapters.find(c => c.id === chapter.id);
 
@@ -157,7 +157,7 @@ class Read extends React.Component<Props, State> {
 
   async loadChapter(chapterId: number) {
     // Make sure we haven't loaded the chapter already
-    if (this.state.chapters.has(chapterId)) return;
+    if (this.state.chapters[chapterId]) return;
 
     const result = await fetchChapter(
       this.props.book.id,
@@ -173,7 +173,7 @@ class Read extends React.Component<Props, State> {
     const chapter = result.data;
 
     this.setState(state => ({
-      chapters: state.chapters.set(chapter.id, chapter)
+      chapters: { ...state.chapters, [chapter.id]: chapter }
     }));
 
     preloadImages(chapter.images);
@@ -218,7 +218,7 @@ class Read extends React.Component<Props, State> {
 
         <Reader
           book={book}
-          chapterWithContent={chapters.get(current.id)}
+          chapterWithContent={chapters[current.id]}
           chapterPointer={current}
           onRequestNextChapter={this.handleNextChapter}
           onRequestPreviousChapter={this.handlePreviousChapter}
