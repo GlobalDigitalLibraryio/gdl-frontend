@@ -15,7 +15,7 @@ import { fetchBook, fetchChapter } from '../../fetch';
 import { hasClaim, claims } from 'gdl-auth';
 import type { ConfigShape, BookDetails, Chapter, Context } from '../../types';
 import { withErrorPage } from '../../hocs';
-import Reader from '../../components/Reader';
+import Reader from '../../components/Reader/ReaderContainer';
 
 const {
   publicRuntimeConfig: { canonicalUrl }
