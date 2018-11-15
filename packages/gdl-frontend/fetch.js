@@ -123,6 +123,21 @@ export function fetchFeaturedContent(
   return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
+export async function fetchCrowdinBook(
+  id: string | number,
+  language: string
+): Promise<RemoteData<*>> {
+  const crowdin = await doFetch(`${bookApiUrl()}/translations/${id}`);
+  if (crowdin.isOk) {
+    crowdin.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
+  }
+  return crowdin;
+}
+
+export async function fetchCrowdinChapter(chapter: any) {
+  return doFetch(chapter.url);
+}
+
 export async function fetchBook(
   id: string | number,
   language: string
