@@ -24,6 +24,7 @@ export type ConfigShape = {
     SENTRY_PROJECT_ID: string,
     SENTRY_PUBLIC_KEY: string,
     REPORT_ERRORS: boolean,
+    ENABLE_OFFLINE: boolean,
     AUTH0: {
       clientId: string,
       audience: string,
