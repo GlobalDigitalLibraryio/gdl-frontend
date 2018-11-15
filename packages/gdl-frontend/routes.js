@@ -39,13 +39,6 @@ routes.add('browse', `/${langParam}/books/browse`, 'books/browse');
 // Book details page
 routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
-// Edit book/chapter
-routes.add(
-  'edit',
-  `/${langParam}/books/edit/:id(\\d+)/:chapterId(\\d+)?`,
-  'books/_edit'
-);
-
 // Read book
 routes.add(
   'read',
