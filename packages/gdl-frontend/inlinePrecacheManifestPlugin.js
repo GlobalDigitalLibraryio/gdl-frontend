@@ -2,7 +2,6 @@ const { join } = require('path');
 const util = require('util');
 const fs = require('fs');
 const glob = require('glob');
-const config = require('./config');
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
@@ -40,9 +39,7 @@ class InlinePrecacheManifest {
         const newManifest = buildNextManifest(originalManifest, urlPrefix);
 
         // Add our offline page so we have some HTML to fall back on if we're offline. See service-worker.js
-        if (config.publicRuntimeConfig.ENABLE_OFFLINE) {
-          newManifest.push({ url: '/offline', revision: buildId });
-        }
+        newManifest.push({ url: '/offline', revision: buildId });
 
         await inlineManifest(newManifest, swFilePath);
       },
