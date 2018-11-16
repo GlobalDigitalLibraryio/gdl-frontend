@@ -532,7 +532,7 @@ class BookActions2 extends React.Component<
         {book.supportsTranslation && (
           <div>
             <Link
-              route="translate"
+              route="prepare_translate"
               passHref
               params={{ id: book.id, lang: book.language.code }}
             >

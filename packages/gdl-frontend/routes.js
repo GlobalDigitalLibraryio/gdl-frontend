@@ -13,10 +13,16 @@ const routes = nextRoutes();
 const langParam = `:lang([\\w-]+)`;
 
 routes.add(
+  'prepare_translate',
+  `/${langParam}/books/prepare_translate/:id(\\d+)`,
+  'books/_prepareTranslate'
+);
+routes.add(
   'translate',
   `/${langParam}/books/translate/:id(\\d+)`,
   'books/_translate'
 );
+
 routes.add({
   name: 'translations',
   pattern: '/books/translations',
