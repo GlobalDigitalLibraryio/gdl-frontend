@@ -107,14 +107,18 @@ class TranslationCard extends React.Component<
           >
             <Trans>Sync</Trans>
           </LoadingButton>
-          <Button
-            color="primary"
-            href={translation.crowdinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            passHref
+            route={`/en/books/translate/${translation.id}`}
+            params={{
+              id: translation.id,
+              lang: translation.translatedFrom.code
+            }}
           >
-            <Trans>Edit</Trans>
-          </Button>
+            <Button color="primary">
+              <Trans>Edit</Trans>
+            </Button>
+          </Link>
         </CardActions>
       </Card>
     );

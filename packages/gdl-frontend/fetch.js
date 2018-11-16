@@ -125,9 +125,11 @@ export function fetchFeaturedContent(
 
 export async function fetchCrowdinBook(
   id: string | number,
-  language: string
+  fromLanguage: string
 ): Promise<RemoteData<*>> {
-  const crowdin = await doFetch(`${bookApiUrl()}/translations/${id}`);
+  const crowdin = await doFetch(
+    `${bookApiUrl()}/translations/${fromLanguage}/${id}`
+  );
   if (crowdin.isOk) {
     crowdin.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
   }
