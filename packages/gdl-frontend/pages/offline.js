@@ -18,7 +18,9 @@ import Head from '../components/Head';
 import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import BookGrid from '../components/BookGrid';
-import { withOnlineStatusContext } from '../components/OnlineStatusContext';
+import OnlineStatusContext, {
+  withOnlineStatusContext
+} from '../components/OnlineStatusContext';
 
 /**
  * This is the page that we load if we suspect the user is offline (see service-worker.js).
@@ -60,32 +62,52 @@ class OfflinePage extends React.Component<{}, State> {
     }
   };
 
+  /**
+   * The server side renderer offline page HTML
+   * is cached on the client and used as a fallback for page navigation requests when the network can't connect.
+   * The default implementation of the OnlineStatusProvider is online=true on the server. The navbar search field
+   * is only shown when online. Since we use this page as a fallback when offline, we don't want to show the search field
+   * in the inital HTML. So therefore we wrap the content here on the server with a false value
+   */
+  wrapWithOfflineFromServer(children) {
+    if (typeof window !== 'undefined') {
+      return children;
+    }
+    return (
+      <OnlineStatusContext.Provider value={false}>
+        {children}
+      </OnlineStatusContext.Provider>
+    );
+  }
+
   render() {
     const { loadingStatus, books } = this.state;
     return (
       <>
         <Head title="Offline Library" />
-        <Layout>
-          <Container
-            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
-          >
-            {loadingStatus === 'LOADING' && (
-              <Center>
-                <CircularProgress />
-              </Center>
-            )}
+        {this.wrapWithOfflineFromServer(
+          <Layout>
+            <Container
+              css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+            >
+              {loadingStatus === 'LOADING' && (
+                <Center>
+                  <CircularProgress />
+                </Center>
+              )}
 
-            {loadingStatus === 'SUCCESS' && (
-              <>
-                {books.length > 0 ? (
-                  <OfflineBooks books={books} onClear={this.handleClear} />
-                ) : (
-                  <NoOfflineBooks />
-                )}
-              </>
-            )}
-          </Container>
-        </Layout>
+              {loadingStatus === 'SUCCESS' && (
+                <>
+                  {books.length > 0 ? (
+                    <OfflineBooks books={books} onClear={this.handleClear} />
+                  ) : (
+                    <NoOfflineBooks />
+                  )}
+                </>
+              )}
+            </Container>
+          </Layout>
+        )}
       </>
     );
   }
@@ -120,7 +142,7 @@ const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
   <Center>
     <Typography
       align="center"
-      variant="headline"
+      variant="h4"
       component="h1"
       css={{ marginBottom: spacing.large }}
     >
