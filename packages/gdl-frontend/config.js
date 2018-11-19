@@ -13,6 +13,21 @@ const dnsResolver = require('./lib/customResolver');
 
 const isDev = process.env.NODE_ENV !== 'production';
 
+const crowdinProject = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'gdl-test-en';
+    case 'staging':
+      return 'gdl-staging-en';
+    case 'prod':
+      return 'gdl-en';
+    case 'demo':
+      return 'gdl-demo-en';
+    default:
+      return null;
+  }
+};
+
 const bookApiUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
@@ -77,6 +92,7 @@ module.exports = {
   publicRuntimeConfig: {
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
+    crowdinProject: crowdinProject(),
     ENABLE_OFFLINE: enableOffline(),
 
     DEFAULT_LANGUAGE: {

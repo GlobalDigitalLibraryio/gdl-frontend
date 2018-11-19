@@ -20,7 +20,9 @@ import type {
   Translation,
   Category,
   Chapter,
-  ReadingLevel
+  ReadingLevel,
+  CrowdinBook,
+  ChapterSummary
 } from './types';
 
 import mapValues from './lib/mapValues';
@@ -126,7 +128,7 @@ export function fetchFeaturedContent(
 export async function fetchCrowdinBook(
   id: string | number,
   fromLanguage: string
-): Promise<RemoteData<*>> {
+): Promise<RemoteData<CrowdinBook>> {
   const crowdin = await doFetch(
     `${bookApiUrl()}/translations/${fromLanguage}/${id}`
   );
@@ -136,7 +138,7 @@ export async function fetchCrowdinBook(
   return crowdin;
 }
 
-export async function fetchCrowdinChapter(chapter: any) {
+export async function fetchCrowdinChapter(chapter: ChapterSummary) {
   return doFetch(chapter.url);
 }
 
