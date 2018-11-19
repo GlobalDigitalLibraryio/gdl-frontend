@@ -11,6 +11,21 @@ import type { ConfigShape } from './types';
 const { GDL_ENVIRONMENT } = require('gdl-config');
 const dnsResolver = require('./lib/customResolver');
 
+const crowdinProject = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'gdl-test-en';
+    case 'staging':
+      return 'gdl-staging-en';
+    case 'prod':
+      return 'gdl-en';
+    case 'demo':
+      return 'gdl-demo-en';
+    default:
+      return null;
+  }
+};
+
 const bookApiUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
@@ -77,6 +92,7 @@ module.exports = {
   publicRuntimeConfig: {
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
+    crowdinProject: crowdinProject(),
 
     DEFAULT_LANGUAGE: {
       code: 'en',

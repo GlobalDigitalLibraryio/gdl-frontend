@@ -21,7 +21,7 @@ import {
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
 import doFetch, { fetchMyTranslations } from '../../fetch';
-import { Link } from '../../routes';
+import { Link, Router } from '../../routes';
 import type { Translation } from '../../types';
 import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
@@ -107,18 +107,17 @@ class TranslationCard extends React.Component<
           >
             <Trans>Sync</Trans>
           </LoadingButton>
-          <Link
-            passHref
-            route={`/en/books/translate/${translation.id}`}
-            params={{
-              id: translation.id,
-              lang: translation.translatedFrom.code
-            }}
+          <Button
+            color="primary"
+            onClick={() =>
+              Router.pushRoute(`/en/books/translate/${translation.id}`, {
+                id: translation.id,
+                lang: translation.translatedFrom.code
+              })
+            }
           >
-            <Button color="primary">
-              <Trans>Edit</Trans>
-            </Button>
-          </Link>
+            <Trans>Edit</Trans>
+          </Button>
         </CardActions>
       </Card>
     );
