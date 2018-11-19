@@ -214,15 +214,14 @@ class BookPage extends React.Component<Props> {
                 </Grid>
 
                 <Divider />
-                {!offline &&
-                  similarBooks.length > 0 && (
-                    <View mb={spacing.medium}>
-                      <BookList
-                        heading={<Trans>Similar</Trans>}
-                        books={similarBooks}
-                      />
-                    </View>
-                  )}
+                {!offline && similarBooks.length > 0 && (
+                  <View mb={spacing.medium}>
+                    <BookList
+                      heading={<Trans>Similar</Trans>}
+                      books={similarBooks}
+                    />
+                  </View>
+                )}
               </div>
             </Container>
           </Main>
