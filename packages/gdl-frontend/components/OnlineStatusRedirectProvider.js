@@ -29,6 +29,11 @@ class OnlineStatusRedirectProvider extends React.Component<
    * When we go offline, we redirect to the offline library page (unless we are at a book that is already offlined)
    */
   handleOffline = async () => {
+    // Only redirect to the offline page if we have proper offline support (We don't want to redirect in IE for instance)
+    if (!offlineLibrary) {
+      return;
+    }
+
     this.setState({ online: false });
     const {
       router,
@@ -38,8 +43,7 @@ class OnlineStatusRedirectProvider extends React.Component<
     if (
       (route === '/books/_read' || route === '/books/_book') &&
       query.id &&
-      query.lang &&
-      offlineLibrary
+      query.lang
     ) {
       const book = await offlineLibrary.getBook(query.id, query.lang);
       if (!book) {
@@ -81,7 +85,9 @@ class OnlineStatusRedirectProvider extends React.Component<
  *
  */
 function getStatus() {
-  return typeof window !== 'undefined' && typeof navigator.onLine === 'boolean'
+  return typeof window !== 'undefined' &&
+    typeof navigator.onLine === 'boolean' &&
+    offlineLibrary
     ? navigator.onLine
     : true;
 }
