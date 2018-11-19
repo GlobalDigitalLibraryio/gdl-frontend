@@ -13,10 +13,12 @@ import { Trans, Plural } from '@lingui/react';
 import { css, cx } from 'react-emotion';
 
 import { ContributorTypes, type BookDetails } from '../../types';
+import { withOnlineStatusContext } from '../OnlineStatusContext';
 import A from '../../elements/A';
 
 type Props = {
-  book: BookDetails
+  book: BookDetails,
+  online: boolean
 };
 
 function headingText(type, value) {
@@ -55,7 +57,7 @@ function listContributors(contributorType, contributors) {
   return null;
 }
 
-const BookMeta = ({ book }: Props) => {
+const BookMeta = ({ book, online }: Props) => {
   return (
     <>
       {Object.values(ContributorTypes).map(type =>
@@ -65,9 +67,15 @@ const BookMeta = ({ book }: Props) => {
       <Typography variant="subtitle2" component="span">
         <Trans>License</Trans>
       </Typography>
-      <A href={book.license.url} paragraph className={noMarginForLastChild}>
-        {book.license.description}
-      </A>
+      {online ? (
+        <A href={book.license.url} paragraph className={noMarginForLastChild}>
+          {book.license.description}
+        </A>
+      ) : (
+        <Typography component="span" paragraph className={noMarginForLastChild}>
+          {book.license.description}
+        </Typography>
+      )}
       {book.additionalInformation && (
         <AdditionalInformation
           additionalInformation={book.additionalInformation}
@@ -147,4 +155,4 @@ const expansionStyles = {
   `
 };
 
-export default BookMeta;
+export default withOnlineStatusContext(BookMeta);

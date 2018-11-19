@@ -10,16 +10,17 @@ import * as React from 'react';
 import type { BookDetails } from '../types';
 import { Trans } from '@lingui/react';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
-import { withRouter } from 'next/router';
 import Link from 'next/link';
-import { Link as RouteLink } from '../routes';
 
 import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
-import { A, Container, Center } from '../elements';
+import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import BookGrid from '../components/BookGrid';
+import OnlineStatusContext, {
+  withOnlineStatusContext
+} from '../components/OnlineStatusContext';
 
 /**
  * This is the page that we load if we suspect the user is offline (see service-worker.js).
@@ -61,38 +62,58 @@ class OfflinePage extends React.Component<{}, State> {
     }
   };
 
+  /**
+   * The server side renderer offline page HTML
+   * is cached on the client and used as a fallback for page navigation requests when the network can't connect.
+   * The default implementation of the OnlineStatusProvider is online=true on the server. The navbar search field
+   * is only shown when online. Since we use this page as a fallback when offline, we don't want to show the search field
+   * in the inital HTML. So therefore we wrap the content here on the server with a false value
+   */
+  wrapWithOfflineFromServer(children) {
+    if (typeof window !== 'undefined') {
+      return children;
+    }
+    return (
+      <OnlineStatusContext.Provider value={false}>
+        {children}
+      </OnlineStatusContext.Provider>
+    );
+  }
+
   render() {
     const { loadingStatus, books } = this.state;
     return (
       <>
-        <Head title="Available offline" />
-        <Layout>
-          <Container
-            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
-          >
-            {loadingStatus === 'LOADING' && (
-              <Center>
-                <CircularProgress />
-              </Center>
-            )}
+        <Head title="Offline Library" />
+        {this.wrapWithOfflineFromServer(
+          <Layout>
+            <Container
+              css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+            >
+              {loadingStatus === 'LOADING' && (
+                <Center>
+                  <CircularProgress />
+                </Center>
+              )}
 
-            {loadingStatus === 'SUCCESS' && (
-              <>
-                {books.length > 0 ? (
-                  <OfflineBooks books={books} onClear={this.handleClear} />
-                ) : (
-                  <NoOfflineBooks />
-                )}
-              </>
-            )}
-          </Container>
-        </Layout>
+              {loadingStatus === 'SUCCESS' && (
+                <>
+                  {books.length > 0 ? (
+                    <OfflineBooks books={books} onClear={this.handleClear} />
+                  ) : (
+                    <NoOfflineBooks />
+                  )}
+                </>
+              )}
+            </Container>
+          </Layout>
+        )}
       </>
     );
   }
 }
 
-const OfflineBooks = withRouter(({ books, onClear, router }) => (
+const OfflineBooks = ({ books, onClear }) => (
   <>
     <Typography
       variant="h4"
@@ -102,15 +123,7 @@ const OfflineBooks = withRouter(({ books, onClear, router }) => (
     >
       <Trans>Offline library</Trans>
     </Typography>
-    {router.asPath !== '/offline' && (
-      <Typography align="center" css={{ marginBottom: spacing.large }}>
-        This page is displayed because you appear to be offline. If that is not
-        the case, you can click{' '}
-        <RouteLink href={router.asPath} passHref>
-          <A>here.</A>
-        </RouteLink>
-      </Typography>
-    )}
+    {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />
     <Center>
       <Button
@@ -123,13 +136,13 @@ const OfflineBooks = withRouter(({ books, onClear, router }) => (
       </Button>
     </Center>
   </>
-));
+);
 
-const NoOfflineBooks = () => (
+const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
   <Center>
     <Typography
       align="center"
-      variant="headline"
+      variant="h4"
       component="h1"
       css={{ marginBottom: spacing.large }}
     >
@@ -139,12 +152,14 @@ const NoOfflineBooks = () => (
       Having books available even when you are offline is a great way to make
       sure you always have something to read.
     </Typography>
-    <Link passHref href="/">
-      <Button variant="outlined">
-        <Trans>Find something to read</Trans>
-      </Button>
-    </Link>
+    {online && (
+      <Link passHref href="/">
+        <Button variant="outlined">
+          <Trans>Find something to read</Trans>
+        </Button>
+      </Link>
+    )}
   </Center>
-);
+));
 
 export default OfflinePage;

@@ -12,6 +12,7 @@ import { Trans } from '@lingui/react';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../../types';
 
+import { withOnlineStatusContext } from '../OnlineStatusContext';
 import { FacebookIcon, TwitterIcon, YoutubeIcon } from '../../components/icons';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
@@ -98,7 +99,8 @@ const CreativeCommons = styled('div')`
   `}
 `;
 
-const Footer = () => {
+const Footer = ({ online }) => {
+  if (!online) return null;
   return (
     <Container
       size="large"
@@ -190,4 +192,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default withOnlineStatusContext(Footer);

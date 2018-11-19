@@ -37,6 +37,7 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
 import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
@@ -115,8 +116,11 @@ class BookPage extends React.Component<Props> {
     };
   }
 
+  static contextType = OnlineContext;
+
   render() {
     const { similarBooks, book } = this.props;
+    const offline: boolean = !this.context;
 
     return (
       <Fragment>
@@ -210,14 +214,14 @@ class BookPage extends React.Component<Props> {
                 </Grid>
 
                 <Divider />
-                <View mb={spacing.medium}>
-                  {similarBooks.length > 0 && (
+                {!offline && similarBooks.length > 0 && (
+                  <View mb={spacing.medium}>
                     <BookList
                       heading={<Trans>Similar</Trans>}
                       books={similarBooks}
                     />
-                  )}
-                </View>
+                  </View>
+                )}
               </div>
             </Container>
           </Main>
@@ -278,6 +282,8 @@ class BookActions1 extends React.Component<
     isAvailableOffline: null,
     snackbarMessage: null
   };
+
+  static contextType = OnlineContext;
 
   async componentDidMount() {
     if (!offlineLibrary) return;
@@ -340,6 +346,7 @@ class BookActions1 extends React.Component<
 
   render() {
     const { book } = this.props;
+    const offline: boolean = !this.context;
     return (
       <>
         <div
@@ -398,11 +405,13 @@ class BookActions1 extends React.Component<
             )}
           </NoSsr>
 
-          <IconButton
-            icon={<ShareIcon />}
-            label={<Trans>Share</Trans>}
-            onClick={this.handleShareClick}
-          />
+          {!offline && (
+            <IconButton
+              icon={<ShareIcon />}
+              label={<Trans>Share</Trans>}
+              onClick={this.handleShareClick}
+            />
+          )}
         </div>
         <Menu
           id="share-book-menu"
@@ -481,6 +490,8 @@ class BookActions2 extends React.Component<
     anchorEl: null
   };
 
+  static contextType = OnlineContext;
+
   handleDownloadClick = event =>
     this.setState({ anchorEl: event.currentTarget });
 
@@ -488,6 +499,7 @@ class BookActions2 extends React.Component<
 
   render() {
     const { book, userHasEditAccess } = this.props;
+    const offline: boolean = !this.context;
     return (
       <>
         <div>
@@ -496,6 +508,7 @@ class BookActions2 extends React.Component<
             color="primary"
             aria-haspopup="true"
             onClick={this.handleDownloadClick}
+            disabled={offline}
           >
             <SaveAltIcon css={{ marginRight: spacing.xsmall }} />
             <Trans>Download</Trans>
@@ -512,6 +525,7 @@ class BookActions2 extends React.Component<
               <Button
                 onClick={() => logEvent('Books', 'Translate', book.title)}
                 color="primary"
+                disabled={offline}
               >
                 <TranslateIcon css={{ marginRight: spacing.xsmall }} />{' '}
                 <Trans>Translate this book</Trans>
@@ -528,7 +542,7 @@ class BookActions2 extends React.Component<
               }}
               passHref
             >
-              <Button color="primary">
+              <Button color="primary" disabled={offline}>
                 <EditIcon css={{ marginRight: spacing.xsmall }} />
                 Edit
               </Button>
@@ -541,6 +555,7 @@ class BookActions2 extends React.Component<
             href={zendeskUrl}
             target="_blank"
             rel="noopener noreferrer"
+            disabled={offline}
             onClick={() => logEvent('Books', 'Report', book.title)}
           >
             <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}

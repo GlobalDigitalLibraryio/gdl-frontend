@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import { withOnlineStatusContext } from '../OnlineStatusContext';
 import { colors } from '../../style/theme';
 
 const styles = {
@@ -39,18 +40,24 @@ const styles = {
 };
 
 // Using inline styles and no translation layer. Hopefully we'll always be able to show this page regardless of what thing throws an error
-const UnexpectedError = () => (
+const UnexpectedError = ({ online }) => (
   <div style={styles.container}>
     <div>
       <h1 style={styles.h1}>An unexpected error occurred!</h1>
       <h2 style={styles.h2}>
         We apologize and we will try our best to correct the issue.
       </h2>
-      <a href="/" style={styles.a}>
-        In the meantime, try going to the start page.
-      </a>
+      {online ? (
+        <a href="/" style={styles.a}>
+          In the meantime, try going to the start page.
+        </a>
+      ) : (
+        <a href="/offline" style={styles.a}>
+          View your offline library.
+        </a>
+      )}
     </div>
   </div>
 );
 
-export default UnexpectedError;
+export default withOnlineStatusContext(UnexpectedError);

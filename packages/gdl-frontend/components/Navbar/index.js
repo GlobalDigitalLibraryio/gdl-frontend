@@ -15,12 +15,16 @@ import {
   IconButton,
   Tooltip
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import LanguageIcon from '@material-ui/icons/Language';
-import HomeIcon from '@material-ui/icons/Home';
+import {
+  Menu as MenuIcon,
+  Search as SearchIcon,
+  Language as LanguageIcon,
+  Home as HomeIcon,
+  WifiOff as WifiOffIcon
+} from '@material-ui/icons';
 import { Trans } from '@lingui/react';
 
+import { withOnlineStatusContext } from '../OnlineStatusContext';
 import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
 import { logEvent } from '../../lib/analytics';
 import { Link } from '../../routes';
@@ -32,7 +36,8 @@ import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
 
 type Props = {
-  onMenuClick(): void
+  onMenuClick(): void,
+  online: boolean
 };
 
 const BrandLink = styled('a')`
@@ -48,9 +53,11 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick }: Props) => {
+const Navbar = ({ onMenuClick, online }: Props) => {
+  const offline = !online;
+
   const brandLink = (
-    <Link route="books" passHref>
+    <Link route={offline ? 'offline' : 'books'} passHref>
       <BrandLink
         aria-label="Global Digital Library"
         onClick={() => logEvent('Navigation', 'Home', 'Brand logo')}
@@ -78,60 +85,75 @@ const Navbar = ({ onMenuClick }: Props) => {
         </Left>
 
         {/* This component is not visibile on mobile */}
-        <Center>
-          <SearchInput />
-        </Center>
+        {!offline && (
+          <Center>
+            <SearchInput />
+          </Center>
+        )}
 
         <Right>
-          <SearchDrawer>
-            {({ onShowClick }) => (
-              <IconButton
-                color="inherit"
-                onClick={onShowClick}
-                css={media.tablet`display: none;`}
-                focusRipple={false}
-              >
-                <SearchIcon />
+          {offline ? (
+            <Link route="offline" passHref>
+              <IconButton color="inherit" component="a">
+                <WifiOffIcon />
                 <SrOnly>
-                  <Trans>Search</Trans>
+                  <Trans>Offline library</Trans>
                 </SrOnly>
               </IconButton>
-            )}
-          </SearchDrawer>
-          <Link route="books" passHref>
-            <IconButton
-              color="inherit"
-              component="a"
-              onClick={() => logEvent('Navigation', 'Home', 'House icon')}
-            >
-              <HomeIcon />
-              <SrOnly>
-                <Trans>Home</Trans>
-              </SrOnly>
-            </IconButton>
-          </Link>
-          <SelectBookLanguage anchor="right">
-            {({ onClick, loading }) => (
-              <Tooltip title={<Trans>Choose book language</Trans>}>
+            </Link>
+          ) : (
+            <>
+              <SearchDrawer>
+                {({ onShowClick }) => (
+                  <IconButton
+                    color="inherit"
+                    onClick={onShowClick}
+                    css={media.tablet`display: none;`}
+                    focusRipple={false}
+                  >
+                    <SearchIcon />
+                    <SrOnly>
+                      <Trans>Search</Trans>
+                    </SrOnly>
+                  </IconButton>
+                )}
+              </SearchDrawer>
+              <Link route="books" passHref>
                 <IconButton
-                  onClick={() => {
-                    logEvent('Navigation', 'Language', 'Globe icon');
-                    onClick();
-                  }}
                   color="inherit"
+                  component="a"
+                  onClick={() => logEvent('Navigation', 'Home', 'House icon')}
                 >
-                  {loading ? (
-                    <CircularProgress color="inherit" size={24} />
-                  ) : (
-                    <LanguageIcon />
-                  )}
+                  <HomeIcon />
                   <SrOnly>
-                    <Trans>Choose book language</Trans>
+                    <Trans>Home</Trans>
                   </SrOnly>
                 </IconButton>
-              </Tooltip>
-            )}
-          </SelectBookLanguage>
+              </Link>
+              <SelectBookLanguage anchor="right">
+                {({ onClick, loading }) => (
+                  <Tooltip title={<Trans>Choose book language</Trans>}>
+                    <IconButton
+                      onClick={() => {
+                        logEvent('Navigation', 'Language', 'Globe icon');
+                        onClick();
+                      }}
+                      color="inherit"
+                    >
+                      {loading ? (
+                        <CircularProgress color="inherit" size={24} />
+                      ) : (
+                        <LanguageIcon />
+                      )}
+                      <SrOnly>
+                        <Trans>Choose book language</Trans>
+                      </SrOnly>
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </SelectBookLanguage>
+            </>
+          )}
         </Right>
       </Toolbar>
     </AppBar>
@@ -161,4 +183,4 @@ const Right = styled('div')`
   flex: 1;
 `;
 
-export default Navbar;
+export default withOnlineStatusContext(Navbar);
