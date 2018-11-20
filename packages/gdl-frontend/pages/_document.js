@@ -76,8 +76,9 @@ export default class Document extends NextDocument {
           <meta httpEquiv="x-ua-compatible" content="ie=edge" />
           {/* Enable client hints for response images for browsers that support it (Chrome mobile only for now).
             See https://cloudinary.com/blog/client_hints_and_responsive_images_what_changed_in_chrome_67
+            This causes trouble... Disabling for now
+            <meta httpEquiv="Accept-CH" content="DPR, Viewport-Width, Width" />
           */}
-          <meta httpEquiv="Accept-CH" content="DPR, Viewport-Width, Width" />
           {/* IE automatically looks for browserconfig.xml in the root directory of the server if this is not explictly turned off */}
           <meta name="msapplication-config" content="none" />
           <meta
