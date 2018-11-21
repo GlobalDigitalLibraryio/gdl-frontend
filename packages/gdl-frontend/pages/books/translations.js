@@ -116,7 +116,7 @@ class TranslationCard extends React.Component<
               })
             }
           >
-            <Trans>Edit</Trans>
+            <Trans>Translate</Trans>
           </Button>
         </CardActions>
       </Card>

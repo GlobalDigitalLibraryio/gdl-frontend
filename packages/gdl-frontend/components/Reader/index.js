@@ -25,7 +25,7 @@ type Props = {|
   book: BookDetails,
   onRequestClose(): void,
   hasFrontPage?: boolean,
-  chapterWithContent: FrontPageType | Chapter,
+  chapterWithContent: ?(FrontPageType | Chapter),
   chapterPointer: { id: number, seqNo: number },
   onRequestNextChapter(): void,
   onRequestPreviousChapter(): void,
@@ -67,7 +67,8 @@ const Reader = ({
             hasFrontPage ? chapterPointer.seqNo <= 0 : chapterPointer.seqNo <= 1
           }
         >
-          {chapterWithContent.chapterType === 'FrontPage' ? (
+          {chapterWithContent &&
+          chapterWithContent.chapterType === 'FrontPage' ? (
             <FrontPage
               dir={isRtlLanguage ? 'rtl' : 'ltr'}
               language={book.language.code}
@@ -77,7 +78,9 @@ const Reader = ({
             <Page
               lang={book.language.code}
               dir={isRtlLanguage ? 'rtl' : 'ltr'}
-              dangerouslySetInnerHTML={createMarkup(chapterWithContent)}
+              dangerouslySetInnerHTML={
+                chapterWithContent ? createMarkup(chapterWithContent) : null
+              }
             />
           )}
         </PageNavigation>
