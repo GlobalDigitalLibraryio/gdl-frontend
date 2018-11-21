@@ -33,7 +33,7 @@ import type { BookDetails, Language, Translation, Context } from '../../types';
 import { Link } from '../../routes';
 import { securePage, withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
-import { A, LoadingButton, Container } from '../../elements';
+import { LoadingButton, Container } from '../../elements';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
 import LanguageList from '../../components/LanguageList';
