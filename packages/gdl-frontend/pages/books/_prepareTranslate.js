@@ -262,34 +262,23 @@ class PrepareTranslatePage extends React.Component<Props, State> {
 
           <div css={{ textAlign: 'center' }}>
             {translationState === translationStates.SUCCESS ? (
-              <>
-                <Link
-                  passHref
-                  route={`/en/books/translate/${this.props.book.id}`}
-                  params={{
-                    id: this.props.book.id,
-                    lang: this.props.book.language.code
-                  }}
+              <Link
+                passHref
+                route={`/en/books/translate/${this.props.book.id}`}
+                params={{
+                  id: this.props.book.id,
+                  lang: this.props.book.language.code
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={styles.buttonSucccess}
                 >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="large"
-                    className={styles.buttonSucccess}
-                  >
-                    <Trans>Start translation</Trans>
-                  </Button>
-                </Link>
-                <Typography css={{ marginTop: spacing.medium }}>
-                  <Trans>
-                    Opens 3rd party site{' '}
-                    <A href="https://crowdin.com/" css={{ display: 'inline' }}>
-                      Crowdin
-                    </A>{' '}
-                    in a new window.
-                  </Trans>
-                </Typography>
-              </>
+                  <Trans>Start translation</Trans>
+                </Button>
+              </Link>
             ) : (
               <>
                 <LoadingButton
