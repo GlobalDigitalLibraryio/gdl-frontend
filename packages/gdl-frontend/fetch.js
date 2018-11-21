@@ -125,17 +125,21 @@ export function fetchFeaturedContent(
   return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
+export async function fetchTranslationProject() {
+  return doFetch(`${bookApiUrl()}/translations/translation-projects`);
+}
+
 export async function fetchCrowdinBook(
   id: string | number,
   fromLanguage: string
 ): Promise<RemoteData<CrowdinBook>> {
-  const crowdin = await doFetch(
+  const book = await doFetch(
     `${bookApiUrl()}/translations/${fromLanguage}/${id}`
   );
-  if (crowdin.isOk) {
-    crowdin.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
+  if (book.isOk) {
+    book.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
   }
-  return crowdin;
+  return book;
 }
 
 export async function fetchCrowdinChapter(chapter: ChapterSummary) {

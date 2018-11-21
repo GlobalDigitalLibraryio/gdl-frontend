@@ -13,7 +13,13 @@ import getConfig from 'next/config';
 
 import { Router } from '../../routes';
 import Reader from '../../components/Reader';
-import { fetchBook, fetchCrowdinBook, fetchCrowdinChapter } from '../../fetch';
+import InContextTranslation from '../../components/InContextTranslation';
+import {
+  fetchBook,
+  fetchCrowdinBook,
+  fetchCrowdinChapter,
+  fetchTranslationProject
+} from '../../fetch';
 import type {
   ConfigShape,
   BookDetails,
@@ -23,16 +29,16 @@ import type {
   ChapterSummary,
   Context
 } from '../../types';
-const jipt = '/static/jipt.js';
 
 const {
-  publicRuntimeConfig: { canonicalUrl, crowdinProject }
+  publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
 
 type Props = {
-  chapter: any,
   book: BookDetails,
-  crowdin: Array<ChapterSummary>,
+  initialChapter: FrontPage | Chapter,
+  crowdinProjectName: { en: string },
+  crowdinChapters: Array<ChapterSummary>,
   showCanonicalChapterUrl: boolean
 };
 
@@ -51,37 +57,49 @@ class TranslatePage extends React.Component<Props, State> {
     }
     const book = bookRes.data;
 
-    const crowdin = await fetchCrowdinBook(book.id, book.language.code);
-    if (!crowdin.isOk) return { statusCode: crowdin.statusCode };
+    const crowdinBook = await fetchCrowdinBook(book.id, book.language.code);
+    if (!crowdinBook.isOk) return { statusCode: crowdinBook.statusCode };
 
-    let chapter;
+    const crowdinProjectName = await fetchTranslationProject();
+    if (!crowdinProjectName.isOk)
+      return { statusCode: crowdinProjectName.statusCode };
+
+    let initialChapter;
+    const frontPage = createFrontPage(crowdinBook.data);
+
     if (query.chapterId) {
-      const chapterInfo =
-        crowdin.data.chapters.find(
-          chapter => chapter.id.toString() === query.chapterId
-        ) || crowdin.data.chapters[0];
+      const chapterInfo = crowdinBook.data.chapters.find(
+        chapter => chapter.id.toString() === query.chapterId
+      );
 
-      chapter = await fetchCrowdinChapter(chapterInfo);
+      // If no chapterInfo, it means the chapterId is invalid and we will show the user the frontpage
+      if (!chapterInfo) return;
+      initialChapter = await fetchCrowdinChapter(chapterInfo);
     }
-    if (chapter && !chapter.isOk) return { statusCode: chapter.statusCode };
+    if (initialChapter && !initialChapter.isOk)
+      return { statusCode: initialChapter.statusCode };
 
-    const frontPage = createFrontPage(crowdin.data);
     return {
       book,
-      crowdin: [frontPage, ...crowdin.data.chapters],
-      chapter: chapter ? chapter.data : frontPage,
-      showCanonicalChapterUrl: !query.chapterId
+      initialChapter: initialChapter ? initialChapter.data : frontPage,
+      showCanonicalChapterUrl: !query.chapterId,
+      crowdinProjectName: crowdinProjectName.data,
+      crowdinChapters: [frontPage, ...crowdinBook.data.chapters]
     };
   }
 
   constructor(props: Props) {
     super(props);
-    const { chapter, crowdin } = props;
-    // Init both frontPage and loaded chapter
-    const frontPage = crowdin[0];
-    const chapters = { [frontPage.id]: frontPage, [chapter.id]: chapter };
+    const { initialChapter, crowdinChapters } = props;
 
-    const current = crowdin.find(c => c.id === chapter.id);
+    // Init both frontPage and loaded chapter
+    const frontPage = crowdinChapters[0];
+    const chapters = {
+      [frontPage.id]: frontPage,
+      [initialChapter.id]: initialChapter
+    };
+
+    const current = crowdinChapters.find(c => c.id === initialChapter.id);
 
     if (!current) {
       throw new Error('Chapter not found in book');
@@ -107,23 +125,24 @@ class TranslatePage extends React.Component<Props, State> {
   }
 
   getNext() {
-    const { crowdin } = this.props;
-    const indexOfCurrent = crowdin.indexOf(this.state.current);
-    return crowdin[indexOfCurrent + 1];
+    const { crowdinChapters } = this.props;
+    const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
+    return crowdinChapters[indexOfCurrent + 1];
   }
 
   getPrevious() {
-    const { crowdin } = this.props;
-    const indexOfCurrent = crowdin.indexOf(this.state.current);
-    return crowdin[indexOfCurrent - 1];
+    const { crowdinChapters } = this.props;
+    const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
+    return crowdinChapters[indexOfCurrent - 1];
   }
 
   async loadChapter(chapterId: number) {
     // Make sure we haven't loaded the chapter already
     if (this.state.chapters[chapterId]) return;
-    const { crowdin } = this.props;
+    const { crowdinChapters } = this.props;
     const chapterInfo =
-      crowdin.find(chapter => chapter.id === chapterId) || crowdin[0];
+      crowdinChapters.find(chapter => chapter.id === chapterId) ||
+      crowdinChapters[0];
 
     const result = await fetchCrowdinChapter(chapterInfo);
 
@@ -207,12 +226,6 @@ class TranslatePage extends React.Component<Props, State> {
               }/${current.id}`}
             />
           )}
-          {typeof window !== 'undefined' && (
-            <>
-              <script src={jipt} />
-              {clearInContextCache()}
-            </>
-          )}
           {prev && (
             <link
               rel="prev"
@@ -230,16 +243,20 @@ class TranslatePage extends React.Component<Props, State> {
             />
           )}
         </Head>
-
-        <Reader
-          book={book}
-          hasFrontPage
-          chapterWithContent={chapters[current.id]}
-          chapterPointer={current}
-          onRequestNextChapter={this.handleNextChapter}
-          onRequestPreviousChapter={this.handlePreviousChapter}
-          onRequestClose={this.handleCloseBook}
-        />
+        <InContextTranslation
+          bookId={book.id.toString()}
+          project={this.props.crowdinProjectName}
+        >
+          <Reader
+            book={book}
+            hasFrontPage
+            chapterWithContent={chapters[current.id]}
+            chapterPointer={current}
+            onRequestNextChapter={this.handleNextChapter}
+            onRequestPreviousChapter={this.handlePreviousChapter}
+            onRequestClose={this.handleCloseBook}
+          />
+        </InContextTranslation>
       </>
     );
   }
@@ -264,20 +281,6 @@ function removeInContextBadge() {
   if (window.document.getElementById('crowdin-translation-badge')) {
     window.document.getElementById('crowdin-translation-badge').remove();
   }
-}
-
-/**
- * Removes crowdin items from localstorage, otherwise language selection doesn't get prompted
- * And initialize crowdin in-context
- */
-function clearInContextCache() {
-  window.localStorage.removeItem(`jipt_language_code_${crowdinProject}`);
-  window.localStorage.removeItem(`jipt_language_id_${crowdinProject}`);
-  window.localStorage.removeItem(`jipt_language_name_${crowdinProject}`);
-
-  window._jipt = [];
-  window._jipt.push(['preload_texts', true]);
-  window._jipt.push(['project', crowdinProject]);
 }
 
 /**
