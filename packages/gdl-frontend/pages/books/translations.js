@@ -29,6 +29,14 @@ import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
 import { spacing } from '../../style/theme';
+import styled from 'react-emotion';
+
+const LoadingLayout = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 70px;
+`;
 
 class TranslationCard extends React.Component<
   {
@@ -52,6 +60,7 @@ class TranslationCard extends React.Component<
 
   render() {
     const { translation } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Card key={translation.id} css={{ marginBottom: spacing.large }}>
@@ -97,13 +106,19 @@ class TranslationCard extends React.Component<
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            onClick={this.handleSynchronize}
-            disabled={this.state.isSynchronized}
-          >
-            <Trans>Sync</Trans>
-          </Button>
+          {isLoading ? (
+            <LoadingLayout>
+              <CircularProgress size={25} />
+            </LoadingLayout>
+          ) : (
+            <Button
+              color="primary"
+              onClick={this.handleSynchronize}
+              disabled={this.state.isSynchronized}
+            >
+              <Trans>Sync</Trans>
+            </Button>
+          )}
           <Button
             color="primary"
             href={translation.crowdinUrl}
