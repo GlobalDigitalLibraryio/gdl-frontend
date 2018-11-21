@@ -278,9 +278,10 @@ function createFrontPage(crowdin: CrowdinBook): FrontPage {
  * allows editing of text on previous page. This function removes the badge.
  */
 function removeInContextBadge() {
-  if (window.document.getElementById('crowdin-translation-badge')) {
-    window.document.getElementById('crowdin-translation-badge').remove();
-  }
+  const badge = window.document.getElementById('crowdin-translation-badge');
+  if (badge) badge.remove();
+  const dialog = window.document.getElementsByClassName('jipt-dialog-close')[0];
+  if (dialog) dialog.click();
 }
 
 /**
