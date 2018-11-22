@@ -28,6 +28,7 @@ import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
+import { LoadingButton } from '../../elements';
 import { spacing } from '../../style/theme';
 
 class TranslationCard extends React.Component<
@@ -52,6 +53,7 @@ class TranslationCard extends React.Component<
 
   render() {
     const { translation } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <Card key={translation.id} css={{ marginBottom: spacing.large }}>
@@ -97,13 +99,14 @@ class TranslationCard extends React.Component<
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            onClick={this.handleSynchronize}
+          <LoadingButton
+            isLoading={isLoading}
             disabled={this.state.isSynchronized}
+            onClick={this.handleSynchronize}
+            color="primary"
           >
             <Trans>Sync</Trans>
-          </Button>
+          </LoadingButton>
           <Button
             color="primary"
             href={translation.crowdinUrl}
