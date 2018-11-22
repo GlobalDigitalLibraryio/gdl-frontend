@@ -93,7 +93,7 @@ const Scroller = styled('div')`
   @supports (display: grid) {
     display: grid;
     justify-content: space-between;
-    column-gap: ${COLUMN_GAP}px;
+    grid-gap: ${COLUMN_GAP}px;
     grid-auto-flow: column;
 
     grid-template-columns: repeat(5, ${coverWidths.small}px);
