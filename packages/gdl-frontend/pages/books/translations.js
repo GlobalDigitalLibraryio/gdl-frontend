@@ -28,15 +28,8 @@ import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
+import { LoadingButton } from '../../elements';
 import { spacing } from '../../style/theme';
-import styled from 'react-emotion';
-
-const LoadingLayout = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 70px;
-`;
 
 class TranslationCard extends React.Component<
   {
@@ -106,19 +99,14 @@ class TranslationCard extends React.Component<
         </CardContent>
         <Divider />
         <CardActions>
-          {isLoading ? (
-            <LoadingLayout>
-              <CircularProgress size={25} />
-            </LoadingLayout>
-          ) : (
-            <Button
-              color="primary"
-              onClick={this.handleSynchronize}
-              disabled={this.state.isSynchronized}
-            >
-              <Trans>Sync</Trans>
-            </Button>
-          )}
+          <LoadingButton
+            isLoading={isLoading}
+            disabled={this.state.isSynchronized}
+            onClick={this.handleSynchronize}
+            color="primary"
+          >
+            <Trans>Sync</Trans>
+          </LoadingButton>
           <Button
             color="primary"
             href={translation.crowdinUrl}
