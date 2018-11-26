@@ -97,10 +97,7 @@ const GridItem = styled('div')(
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req }: Context) {
-    const [bookRes, similarRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSimilarBooks(query.id, query.lang)
-    ]);
+    const bookRes = await fetchBook(query.id, query.lang);
 
     if (!bookRes.isOk) {
       return {
@@ -110,16 +107,16 @@ class BookPage extends React.Component<Props> {
 
     return {
       book: bookRes.data,
-      userHasEditAccess: hasClaim(claims.writeBook, req),
+      userHasEditAccess: hasClaim(claims.writeBook, req)
       // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : []
+      //similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
   }
 
   static contextType = OnlineContext;
 
   render() {
-    const { similarBooks, book } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
 
     return (
@@ -214,14 +211,7 @@ class BookPage extends React.Component<Props> {
                 </Grid>
 
                 <Divider />
-                {!offline && similarBooks.length > 0 && (
-                  <View mb={spacing.medium}>
-                    <BookList
-                      heading={<Trans>Similar</Trans>}
-                      books={similarBooks}
-                    />
-                  </View>
-                )}
+                {!offline && <SimilarBooks key={book.uuid} book={book} />}
               </div>
             </Container>
           </Main>
@@ -263,6 +253,36 @@ const ReadBookLink = ({ book }) =>
       </Typography>
     </>
   );
+
+class SimilarBooks extends React.Component<
+  { book: BookDetails },
+  { similarBooks: Array<Book> }
+> {
+  state = {
+    similarBooks: []
+  };
+
+  async componentDidMount() {
+    const book = this.props.book;
+    const similarRes = await fetchSimilarBooks(book.id, book.language.code);
+
+    if (similarRes.isOk) {
+      this.setState({ similarBooks: similarRes.data.results });
+    }
+  }
+
+  render() {
+    const similarBooks = this.state.similarBooks;
+
+    if (similarBooks.length === 0) return null;
+
+    return (
+      <View mb={spacing.medium}>
+        <BookList heading={<Trans>Similar</Trans>} books={similarBooks} />
+      </View>
+    );
+  }
+}
 
 /**
  * Favorite, share, offline
