@@ -18,7 +18,7 @@ const directives = {
     "'self'",
     "'unsafe-inline'",
     googleAnalytics,
-    'https://cdn.crowdin.com',
+    'https://*.crowdin.com',
     'https://crowdin.com',
     'https://cdn.polyfill.io',
     'https://storage.googleapis.com', // Used by Workbox for PWA/service worker
@@ -27,7 +27,7 @@ const directives = {
   styleSrc: [
     "'self'",
     "'unsafe-inline'",
-    'https://cdn.crowdin.com',
+    'https://*.crowdin.com',
     'https://fonts.googleapis.com',
     'https://fonts.gstatic.com'
   ],
@@ -40,8 +40,7 @@ const directives = {
   imgSrc: [
     "'self'",
     'data:',
-    'https://cdn.crowdin.com',
-    'https://crowdin-static.downloads.crowdin.com',
+    'https://*.crowdin.com',
     'https://*.digitallibrary.io',
     'https://*.cloudinary.com',
     googleAnalytics,
