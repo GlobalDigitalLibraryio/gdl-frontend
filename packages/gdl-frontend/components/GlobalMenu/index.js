@@ -105,7 +105,7 @@ class GlobalMenu extends React.Component<Props, State> {
               <RouteLink passHref route="favorites">
                 <ListItem button component="a">
                   <ListItemIcon>
-                    <FavoriteIcon />
+                    <FavoriteIcon style={{ color: 'red' }} />
                   </ListItemIcon>
                   <ListItemText>
                     <Trans>Favorites</Trans>
@@ -118,7 +118,7 @@ class GlobalMenu extends React.Component<Props, State> {
             <RouteLink passHref route="offline">
               <ListItem button component="a">
                 <ListItemIcon>
-                  <CheckCircleIcon />
+                  <CheckCircleIcon style={{ color: 'green' }} />
                 </ListItemIcon>
                 <ListItemText>
                   <Trans>Offline library</Trans>
