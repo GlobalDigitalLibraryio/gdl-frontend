@@ -20,5 +20,5 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
   } else if (level === 'read-aloud') {
     return <Trans>Read aloud</Trans>;
   }
-  return <Trans>Level {level}</Trans>;
+  return <Trans>កម្រិតទី {level}</Trans>;
 }

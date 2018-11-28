@@ -212,7 +212,7 @@ class SearchPage extends React.Component<Props, State> {
                       onClick={this.handleLoadMore}
                       isLoading={this.state.isLoadingMore}
                     >
-                      <Trans>More books</Trans>
+                      <Trans>សៀវភៅច្រើនទៀត</Trans>
                     </LoadingButton>
                   </div>
                 </Fragment>

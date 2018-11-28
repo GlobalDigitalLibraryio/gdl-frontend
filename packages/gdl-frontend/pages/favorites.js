@@ -86,7 +86,7 @@ class FavoritesPage extends React.Component<{}, State> {
               align="center"
               css={{ marginBottom: spacing.large }}
             >
-              <Trans>Favorites</Trans>
+              <Trans>សំណព្វ</Trans>
             </Typography>
 
             {loadingStatus === 'LOADING' && (
@@ -107,7 +107,7 @@ class FavoritesPage extends React.Component<{}, State> {
                         variant="outlined"
                         size="small"
                       >
-                        <Trans>Clear all favorites</Trans>
+                        <Trans>ជម្រះចិត្តទាំងអស់</Trans>
                       </Button>
                     </Center>
                   </>

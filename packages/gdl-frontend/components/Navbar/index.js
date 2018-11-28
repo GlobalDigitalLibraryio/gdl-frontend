@@ -19,7 +19,6 @@ import {
   Menu as MenuIcon,
   Search as SearchIcon,
   Language as LanguageIcon,
-  Home as HomeIcon,
   WifiOff as WifiOffIcon
 } from '@material-ui/icons';
 import { Trans } from '@lingui/react';
@@ -118,18 +117,6 @@ const Navbar = ({ onMenuClick, online }: Props) => {
                   </IconButton>
                 )}
               </SearchDrawer>
-              <Link route="books" passHref>
-                <IconButton
-                  color="inherit"
-                  component="a"
-                  onClick={() => logEvent('Navigation', 'Home', 'House icon')}
-                >
-                  <HomeIcon />
-                  <SrOnly>
-                    <Trans>Home</Trans>
-                  </SrOnly>
-                </IconButton>
-              </Link>
               <SelectBookLanguage anchor="right">
                 {({ onClick, loading }) => (
                   <Tooltip title={<Trans>Choose book language</Trans>}>

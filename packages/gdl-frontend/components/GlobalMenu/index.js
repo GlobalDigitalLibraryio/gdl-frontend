@@ -24,7 +24,8 @@ import {
   Translate as TranslateIcon,
   Edit as EditIcon,
   Favorite as FavoriteIcon,
-  CheckCircle as CheckCircleIcon
+  CheckCircle as CheckCircleIcon,
+  Home as HomeIcon
 } from '@material-ui/icons';
 import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 
@@ -63,6 +64,17 @@ class GlobalMenu extends React.Component<Props, State> {
         <List>
           {online && (
             <>
+              <Link route="books" passHref>
+                <ListItem button component="a">
+                  <ListItemIcon>
+                    <HomeIcon />
+                  </ListItemIcon>
+                  <ListItemText>
+                    <Trans>ផ្ទះ</Trans>
+                  </ListItemText>
+                </ListItem>
+              </Link>
+              <Divider />
               <SelectBookLanguage onSelectLanguage={onClose}>
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
@@ -134,7 +146,7 @@ class GlobalMenu extends React.Component<Props, State> {
                     <TranslateIcon />
                   </ListItemIcon>
                   <ListItemText>
-                    <Trans>My translations</Trans>
+                    <Trans>ការបកប្រែរបស់ខ្ញុំ</Trans>
                   </ListItemText>
                 </ListItem>
               </RouteLink>
@@ -145,7 +157,7 @@ class GlobalMenu extends React.Component<Props, State> {
                       <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
                     </ListItemIcon>
                     <ListItemText>
-                      <Trans>Log in</Trans>
+                      <Trans>ចូល</Trans>
                     </ListItemText>
                   </ListItem>
                 </Link>

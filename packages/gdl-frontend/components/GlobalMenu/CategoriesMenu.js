@@ -132,7 +132,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         >
           <ListItem onClick={onSelectCategory} button component="a">
             <ListItemText inset>
-              <Trans>New arrivals</Trans>
+              <Trans>អ្នកមកថ្មី</Trans>
             </ListItemText>
           </ListItem>
         </Link>
@@ -145,7 +145,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
     {categories.library_books && (
       <>
         <ListSubheader component="div">
-          <Trans>Library books</Trans>
+          <Trans>សៀវភៅបណ្ណាល័យ</Trans>
         </ListSubheader>
         {categories.library_books.map(level => (
           <Link
@@ -164,7 +164,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         <Link category="library_books" lang={languageCode} sort="-arrivalDate">
           <ListItem button onClick={onSelectCategory}>
             <ListItemText inset>
-              <Trans>New arrivals</Trans>
+              <Trans>អ្នកមកថ្មី</Trans>
             </ListItemText>
           </ListItem>
         </Link>

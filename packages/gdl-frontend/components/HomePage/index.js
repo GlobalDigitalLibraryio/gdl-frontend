@@ -168,7 +168,7 @@ export default class HomePage extends React.Component<
                 variant="h6"
                 css={{ color: colors.base.white }}
               >
-                <Trans>Featured</Trans>
+                <Trans>លក្ខណៈពិសេស</Trans>
               </Typography>
             </HeroCovertitle>
             <HeroCardTablet>
@@ -199,7 +199,7 @@ export default class HomePage extends React.Component<
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
-                heading={<Trans>New arrivals</Trans>}
+                heading={<Trans>អ្នកមកថ្មី</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
                   sort: '-arrivalDate',

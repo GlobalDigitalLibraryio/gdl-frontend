@@ -81,7 +81,7 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
             aria-label={i18n.t`Search for books`}
             autoComplete="off"
             type="search"
-            placeholder={i18n.t`Search for books`}
+            placeholder={i18n.t`ស្វែងរកសៀវភៅ`}
             autoFocus={autoFocus}
             onChange={onChange}
             value={value}

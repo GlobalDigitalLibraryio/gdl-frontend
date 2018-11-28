@@ -160,7 +160,7 @@ class BrowsePage extends React.Component<Props, State> {
                 // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
                 <ReadingLevelTrans readingLevel={readingLevel} />
               ) : (
-                <Trans>New arrivals</Trans>
+                <Trans>អ្នកមកថ្មី</Trans>
               )
             ) : (
               <Trans>No books found</Trans>
@@ -180,7 +180,7 @@ class BrowsePage extends React.Component<Props, State> {
                 marginBottom: spacing.medium
               }}
             >
-              <Trans>More books</Trans>
+              <Trans>សៀវភៅច្រើនទៀត</Trans>
             </LoadingButton>
           </div>
         </Container>
