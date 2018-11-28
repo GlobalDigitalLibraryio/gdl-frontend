@@ -40,17 +40,6 @@ export default class ImageMetadataForm extends React.Component<Props> {
           )}
         />
         <Field
-          name="caption.caption"
-          render={({ input, meta }) => (
-            <TextField
-              fullWidth
-              error={meta.error && meta.touched}
-              label="Caption"
-              {...input}
-            />
-          )}
-        />
-        <Field
           name="copyright.origin"
           render={({ input, meta }) => (
             <TextField
@@ -103,10 +92,6 @@ export function validateForm(values: Object) {
 
   if (!values.alttext || isEmptyString(values.alttext.alttext)) {
     errors.alttext = { alttext: true };
-  }
-
-  if (!values.caption || isEmptyString(values.caption.caption)) {
-    errors.caption = { caption: true };
   }
 
   if (values.copyright && isEmptyString(values.copyright.origin)) {
