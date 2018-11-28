@@ -7,6 +7,7 @@
  */
 import * as React from 'react';
 import styled from 'react-emotion';
+import { CircularProgress } from '@material-ui/core';
 
 import type { BookDetails, Chapter } from '../../types';
 import { Backdrop, Page } from './styledReader';
@@ -18,6 +19,7 @@ import { colors } from '../../style/theme';
 
 type Props = {|
   book: BookDetails,
+  loading: boolean,
   onRequestClose(): void,
   chapterWithContent: ?Chapter,
   chapterPointer: { id: number, seqNo: number },
@@ -28,6 +30,7 @@ type Props = {|
 
 const Reader = ({
   book,
+  loading,
   chapterWithContent,
   chapterPointer,
   onRequestNextChapter,
@@ -58,19 +61,34 @@ const Reader = ({
           disableNext={chapterPointer.seqNo >= book.chapters.length}
           disablePrevious={chapterPointer.seqNo <= 1}
         >
-          <Page
-            lang={book.language.code}
-            dir={isRtlLanguage ? 'rtl' : 'ltr'}
-            dangerouslySetInnerHTML={
-              chapterWithContent ? createMarkup(chapterWithContent) : null
-            }
-          />
+          {loading ? (
+            <Layout>
+              <CircularProgress />
+            </Layout>
+          ) : (
+            <Page
+              lang={book.language.code}
+              dir={isRtlLanguage ? 'rtl' : 'ltr'}
+              dangerouslySetInnerHTML={
+                chapterWithContent ? createMarkup(chapterWithContent) : null
+              }
+            />
+          )}
         </PageNavigation>
       </Card>
       <KeyDown when="Escape" then={onRequestClose} />
     </Container>
   );
 };
+
+const Layout = styled('div')`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
 
 function createMarkup(chapter: Chapter) {
   return { __html: chapter.content };

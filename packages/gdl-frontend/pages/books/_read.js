@@ -31,7 +31,8 @@ type Props = {
 
 type State = {
   chapters: { [number]: Chapter },
-  current: { id: number, seqNo: number }
+  current: { id: number, seqNo: number },
+  loading: boolean
 };
 
 class Read extends React.Component<Props, State> {
@@ -80,7 +81,8 @@ class Read extends React.Component<Props, State> {
 
     this.state = {
       chapters,
-      current
+      current,
+      loading: false
     };
   }
 
@@ -112,7 +114,7 @@ class Read extends React.Component<Props, State> {
   handleNextChapter = () => {
     const next = this.getNext();
     if (next) {
-      this.loadChapter(next.id);
+      this.loadChapter(next.id, () => this.setState({ loading: true }));
       this.setState({ current: next }, () => {
         // Change the URL, and start preloading
         this.changeChapterInUrl();
@@ -125,7 +127,7 @@ class Read extends React.Component<Props, State> {
   handlePreviousChapter = () => {
     const prev = this.getPrevious();
     if (prev) {
-      this.loadChapter(prev.id);
+      this.loadChapter(prev.id, () => this.setState({ loading: true }));
       this.setState({ current: prev }, () => {
         // Change the URL, and start preloading
         this.changeChapterInUrl();
@@ -155,9 +157,10 @@ class Read extends React.Component<Props, State> {
       { shallow: true }
     );
 
-  async loadChapter(chapterId: number) {
+  async loadChapter(chapterId: number, setLoading?: () => void) {
     // Make sure we haven't loaded the chapter already
     if (this.state.chapters[chapterId]) return;
+    setLoading && setLoading();
 
     const result = await fetchChapter(
       this.props.book.id,
@@ -176,12 +179,15 @@ class Read extends React.Component<Props, State> {
       chapters: { ...state.chapters, [chapter.id]: chapter }
     }));
 
-    preloadImages(chapter.images);
+    preloadImages(
+      chapter.images,
+      () => setLoading && this.setState({ loading: false })
+    );
   }
 
   render() {
     const { book, userHasEditAccess, showCanonicalChapterUrl } = this.props;
-    const { chapters, current } = this.state;
+    const { chapters, current, loading } = this.state;
     const next = this.getNext();
     const prev = this.getPrevious();
 
@@ -218,6 +224,7 @@ class Read extends React.Component<Props, State> {
 
         <Reader
           book={book}
+          loading={loading}
           chapterWithContent={chapters[current.id]}
           chapterPointer={current}
           onRequestNextChapter={this.handleNextChapter}
@@ -233,10 +240,11 @@ class Read extends React.Component<Props, State> {
 /**
  * Used to force the browser the begin loading images
  */
-function preloadImages(urls) {
+function preloadImages(urls, callback) {
   urls.forEach(url => {
     const image = new Image();
     image.src = url;
+    image.onload = callback();
   });
 }
 
