@@ -67,7 +67,7 @@ class GlobalMenu extends React.Component<Props, State> {
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
-                      <Trans>Book language</Trans>
+                      <Trans>ភាសាសៀវភៅ</Trans>
                     </ListItemText>
                     {loading ? (
                       <CircularProgress size={24} />
@@ -81,7 +81,7 @@ class GlobalMenu extends React.Component<Props, State> {
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
-                      <Trans>Categories</Trans>
+                      <Trans>ប្រភេទ</Trans>
                     </ListItemText>
                     {loading ? (
                       <CircularProgress size={24} />
@@ -108,7 +108,7 @@ class GlobalMenu extends React.Component<Props, State> {
                     <FavoriteIcon style={{ color: 'red' }} />
                   </ListItemIcon>
                   <ListItemText>
-                    <Trans>Favorites</Trans>
+                    <Trans>សំណព្វ</Trans>
                   </ListItemText>
                 </ListItem>
               </RouteLink>
@@ -121,7 +121,7 @@ class GlobalMenu extends React.Component<Props, State> {
                   <CheckCircleIcon style={{ color: 'green' }} />
                 </ListItemIcon>
                 <ListItemText>
-                  <Trans>Offline library</Trans>
+                  <Trans>បណ្ណាល័យក្រៅបណ្តាញ</Trans>
                 </ListItemText>
               </ListItem>
             </RouteLink>

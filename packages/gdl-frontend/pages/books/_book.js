@@ -236,13 +236,13 @@ const ReadBookLink = ({ book }) =>
         fullWidth
         onClick={() => logEvent('Books', 'Read', book.title)}
       >
-        <Trans>Read book</Trans>
+        <Trans>អាន​សៀវភៅ</Trans>
       </Button>
     </Link>
   ) : (
     <>
       <Button size="large" variant="raised" disabled fullWidth>
-        <Trans>Read book</Trans>
+        <Trans>អាន​សៀវភៅ</Trans>
       </Button>
       <Typography
         align="center"
@@ -278,7 +278,7 @@ class SimilarBooks extends React.Component<
 
     return (
       <View mb={spacing.medium}>
-        <BookList heading={<Trans>Similar</Trans>} books={similarBooks} />
+        <BookList heading={<Trans>ស្រដៀងគ្នា</Trans>} books={similarBooks} />
       </View>
     );
   }
@@ -401,7 +401,7 @@ class BookActions1 extends React.Component<
                     <FavoriteOutlineIcon />
                   )
                 }
-                label={<Trans>Favorite</Trans>}
+                label={<Trans>សំណព្វ</Trans>}
               />
             )}
           </Favorite>
@@ -420,7 +420,7 @@ class BookActions1 extends React.Component<
                   />
                 }
                 onClick={this.handleOfflineClick}
-                label={<Trans>Save offline</Trans>}
+                label={<Trans>រក្សាទុកក្រៅបណ្ដាញ</Trans>}
               />
             )}
           </NoSsr>
@@ -428,7 +428,7 @@ class BookActions1 extends React.Component<
           {!offline && (
             <IconButton
               icon={<ShareIcon />}
-              label={<Trans>Share</Trans>}
+              label={<Trans>ចែករំលែក</Trans>}
               onClick={this.handleShareClick}
             />
           )}

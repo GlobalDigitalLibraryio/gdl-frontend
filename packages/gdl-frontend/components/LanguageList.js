@@ -48,7 +48,7 @@ const LanguageList = ({
       component="div"
       subheader={
         <ListSubheader component="div">
-          <Trans>Choose book language</Trans>
+          <Trans>ជ្រើសរើសភាសាសៀវភៅ</Trans>
         </ListSubheader>
       }
     >

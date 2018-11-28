@@ -121,7 +121,7 @@ const OfflineBooks = ({ books, onClear }) => (
       align="center"
       css={{ marginBottom: spacing.large }}
     >
-      <Trans>Offline library</Trans>
+      <Trans>បណ្ណាល័យក្រៅបណ្តាញ</Trans>
     </Typography>
     {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />

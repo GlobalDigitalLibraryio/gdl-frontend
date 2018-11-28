@@ -68,7 +68,7 @@ const Navbar = ({ onMenuClick, online }: Props) => {
   );
 
   return (
-    <AppBar position="static">
+    <AppBar>
       <Toolbar>
         <Left>
           <IconButton

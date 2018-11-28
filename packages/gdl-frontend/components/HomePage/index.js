@@ -143,7 +143,7 @@ export default class HomePage extends React.Component<
           color="primary"
           size="large"
         >
-          <Trans>More</Trans>
+          <Trans>ច្រើនទៀត</Trans>
         </Button>
       </View>
     );
