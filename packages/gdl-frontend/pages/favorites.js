@@ -106,6 +106,7 @@ class FavoritesPage extends React.Component<{}, State> {
                         css={{ marginTop: spacing.large }}
                         variant="outlined"
                         size="small"
+                        color="primary"
                       >
                         <Trans>ជម្រះចិត្តទាំងអស់</Trans>
                       </Button>
@@ -130,7 +131,7 @@ class FavoritesPage extends React.Component<{}, State> {
                       </Trans>
                     </Typography>
                     <Link passHref href="/">
-                      <Button variant="outlined">
+                      <Button variant="outlined" color="primary">
                         <Trans>រកឃើញអ្វីដែលត្រូវអាន</Trans>
                       </Button>
                     </Link>

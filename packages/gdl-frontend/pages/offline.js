@@ -131,6 +131,7 @@ const OfflineBooks = ({ books, onClear }) => (
         css={{ marginTop: spacing.large }}
         variant="outlined"
         size="small"
+        color="primary"
       >
         <Trans>យកសៀវភៅទាំងអស់ចេញ</Trans>
       </Button>
@@ -153,7 +154,7 @@ const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
     </Typography>
     {online && (
       <Link passHref href="/">
-        <Button variant="outlined">
+        <Button variant="outlined" color="primary">
           <Trans>រកឃើញអ្វីដែលត្រូវអាន</Trans>
         </Button>
       </Link>
