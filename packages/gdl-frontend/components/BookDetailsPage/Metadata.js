@@ -24,9 +24,9 @@ type Props = {
 function headingText(type, value) {
   switch (type) {
     case ContributorTypes.AUTHOR:
-      return <Plural one="Author" other="Authors" value={value} />;
+      return <Plural one="អ្នកនិពន្ធ" other="អ្នកនិពន្ធ" value={value} />;
     case ContributorTypes.ILLUSTRATOR:
-      return <Plural one="Illustrator" other="Illustrators" value={value} />;
+      return <Plural one="គំនូរ" other="គំនូរ" value={value} />;
     case ContributorTypes.TRANSLATOR:
       return <Plural one="Translator" other="Translators" value={value} />;
     case ContributorTypes.PHOTOGRAPHER:
@@ -65,7 +65,7 @@ const BookMeta = ({ book, online }: Props) => {
       )}
 
       <Typography variant="subtitle2" component="span">
-        <Trans>License</Trans>
+        <Trans>អាជ្ញាប័ណ្ណ</Trans>
       </Typography>
       {online ? (
         <A href={book.license.url} paragraph className={noMarginForLastChild}>

@@ -29,7 +29,7 @@ const NoResults = () => (
     <PlayfulCat className={svgStyle} />
     <span>
       <Trans>
-        <strong>Oh no!</strong> Please try searching for something else.
+        <strong>អូ​ទេ!</strong> សូមព្យាយាមស្វែងរកអ្វីផ្សេងទៀត
       </Trans>
     </span>
   </div>

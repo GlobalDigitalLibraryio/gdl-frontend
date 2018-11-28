@@ -132,7 +132,7 @@ const OfflineBooks = ({ books, onClear }) => (
         variant="outlined"
         size="small"
       >
-        <Trans>Remove all books</Trans>
+        <Trans>យកសៀវភៅទាំងអស់ចេញ</Trans>
       </Button>
     </Center>
   </>
@@ -146,16 +146,15 @@ const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
       component="h1"
       css={{ marginBottom: spacing.large }}
     >
-      No books offline yet
+      មិនមានសៀវភៅនៅក្រៅអ៊ីនធឺណិត
     </Typography>
     <Typography align="center" css={{ marginBottom: spacing.large }}>
-      Having books available even when you are offline is a great way to make
-      sure you always have something to read.
+      ការមានសៀវភៅដែលអាចរកបានសូម្បីតែពេលអ្នកនៅក្រៅអ៊ីនធឺណិតគឺជាមធ្យោបាយដ៏ល្អមួយដើម្បីប្រាកដថាអ្នកមានអ្វីដែលអ្នកត្រូវអានជានិច្ច។
     </Typography>
     {online && (
       <Link passHref href="/">
         <Button variant="outlined">
-          <Trans>Find something to read</Trans>
+          <Trans>រកឃើញអ្វីដែលត្រូវអាន</Trans>
         </Button>
       </Link>
     )}

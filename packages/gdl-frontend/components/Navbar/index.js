@@ -67,7 +67,7 @@ const Navbar = ({ onMenuClick, online }: Props) => {
   );
 
   return (
-    <AppBar>
+    <AppBar position="sticky">
       <Toolbar>
         <Left>
           <IconButton

@@ -177,7 +177,7 @@ class BookPage extends React.Component<Props> {
                     </Typography>
 
                     <Typography paragraph variant="subtitle1">
-                      <Trans>from {book.publisher.name}</Trans>
+                      <Trans>ពី {book.publisher.name}</Trans>
                     </Typography>
 
                     <Typography lang={book.language.code} paragraph>
@@ -349,7 +349,7 @@ class BookActions1 extends React.Component<
       await offlineLibrary.deleteBook(book.id, book.language.code);
       this.setState({
         isAvailableOffline: 'NO',
-        snackbarMessage: 'Removed book from your offline library.'
+        snackbarMessage: 'យកសៀវភៅចេញពីបណ្ណាល័យក្រៅបណ្ដាញរបស់អ្នក'
       });
       logEvent('Books', 'Remove offline', book.title);
     } else {
@@ -357,7 +357,7 @@ class BookActions1 extends React.Component<
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
-          ? 'Added book to your offline library.'
+          ? 'បានបន្ថែមសៀវភៅទៅបណ្ណាល័យក្រៅបណ្ដាញរបស់អ្នក'
           : 'An error occurred while adding this book to your offline library.'
       });
       logEvent('Books', 'Available offline', book.title);
@@ -531,7 +531,7 @@ class BookActions2 extends React.Component<
             disabled={offline}
           >
             <SaveAltIcon css={{ marginRight: spacing.xsmall }} />
-            <Trans>Download</Trans>
+            <Trans>ទាញយក</Trans>
           </Button>
         </div>
 
@@ -548,7 +548,7 @@ class BookActions2 extends React.Component<
                 disabled={offline}
               >
                 <TranslateIcon css={{ marginRight: spacing.xsmall }} />{' '}
-                <Trans>Translate this book</Trans>
+                <Trans>បកប្រែសៀវភៅនេះ</Trans>
               </Button>
             </Link>
           </div>
@@ -579,7 +579,7 @@ class BookActions2 extends React.Component<
             onClick={() => logEvent('Books', 'Report', book.title)}
           >
             <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}
-            <Trans>Report a problem</Trans>
+            <Trans>រាយការណ៍បញ្ហា</Trans>
           </Button>
         </div>
 

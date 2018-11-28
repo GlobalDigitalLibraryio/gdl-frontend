@@ -126,13 +126,12 @@ class FavoritesPage extends React.Component<{}, State> {
                       }}
                     >
                       <Trans>
-                        Add books to your favorites so you can easily find them
-                        later.
+                        បន្ថែមសៀវភៅទៅឱ្យអ្នកចូលចិត្តដូច្នេះអ្នកអាចស្វែងរកវាបានយ៉ាងងាយស្រួលនៅពេលក្រោយ។
                       </Trans>
                     </Typography>
                     <Link passHref href="/">
                       <Button variant="outlined">
-                        <Trans>Find something to read</Trans>
+                        <Trans>រកឃើញអ្វីដែលត្រូវអាន</Trans>
                       </Button>
                     </Link>
                   </Center>

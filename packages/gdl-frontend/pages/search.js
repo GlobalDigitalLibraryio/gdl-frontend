@@ -167,8 +167,8 @@ class SearchPage extends React.Component<Props, State> {
                     <Fragment>
                       <Plural
                         value={searchResult.totalCount}
-                        one="# result for"
-                        other="# results for"
+                        one="# លទ្ធផលសម្រាប់"
+                        other="# លទ្ធផលសម្រាប់"
                       />{' '}
                       <strong>
                         &quot;
@@ -178,7 +178,7 @@ class SearchPage extends React.Component<Props, State> {
                     </Fragment>
                   ) : (
                     <Trans>
-                      No results for{' '}
+                      គ្មានលទ្ធផលសម្រាប់{' '}
                       <strong>
                         &quot;
                         {this.state.lastSearchQuery}

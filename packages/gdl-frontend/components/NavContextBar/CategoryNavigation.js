@@ -52,7 +52,7 @@ class CategoryNavigation extends React.Component<Props> {
             linkProps={{ route: 'library', params: { lang: languageCode } }}
             onClick={() => logEvent('Navigation', 'Category', 'Classroom')}
           >
-            <Trans>Library books</Trans>
+            <Trans>សៀវភៅបណ្ណាល័យ</Trans>
           </Tab>
         )}
         {categories.includes('classroom_books') && (

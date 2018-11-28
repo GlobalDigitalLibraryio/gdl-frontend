@@ -64,7 +64,7 @@ class GlobalMenu extends React.Component<Props, State> {
         <List>
           {online && (
             <>
-              <Link route="books" passHref>
+              <RouteLink route="books" passHref>
                 <ListItem button component="a">
                   <ListItemIcon>
                     <HomeIcon />
@@ -73,7 +73,7 @@ class GlobalMenu extends React.Component<Props, State> {
                     <Trans>ផ្ទះ</Trans>
                   </ListItemText>
                 </ListItem>
-              </Link>
+              </RouteLink>
               <Divider />
               <SelectBookLanguage onSelectLanguage={onClose}>
                 {({ onClick, loading }) => (
