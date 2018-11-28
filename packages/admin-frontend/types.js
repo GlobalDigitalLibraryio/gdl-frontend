@@ -145,7 +145,6 @@ export type NewImageMetadata = {
   alttext: string,
   copyright: Copyright,
   tags: [],
-  caption: string,
   language: string
 };
 

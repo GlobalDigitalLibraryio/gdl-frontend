@@ -142,7 +142,6 @@ export async function updateImageMetadata(
     id: imageMetadata.id,
     language: imageMetadata.alttext.language,
     alttext: imageMetadata.alttext.alttext,
-    caption: imageMetadata.caption.caption,
     title: imageMetadata.title.title,
     copyright: imageMetadata.copyright,
     tags: imageMetadata.tags.tags
