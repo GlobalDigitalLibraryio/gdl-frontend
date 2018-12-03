@@ -29,7 +29,7 @@ import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
 import { logEvent } from '../../lib/analytics';
 import { Link } from '../../routes';
 import SrOnly from '../../components/SrOnly';
-import GlobalDigitalLibraryLogo from './beta-logo.svg';
+import GlobalDigitalLibraryLogo from './GDL-logo.svg';
 import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
