@@ -8,11 +8,13 @@
 
 import React from 'react';
 import { Trans } from '@lingui/react';
+import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import { coverImageUrl } from 'gdl-image';
+import gql from 'graphql-tag';
 import {
   Snackbar,
   Menu,
@@ -34,11 +36,13 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import type { Context, ConfigShape } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
+import { QueryIsAdmin } from '../../gql';
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
-import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
-import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { withErrorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
@@ -47,7 +51,6 @@ import Head from '../../components/Head';
 import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
-import { hasClaim, claims } from 'gdl-auth';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
@@ -62,12 +65,6 @@ import OfflineIcon from '../../components/OfflineIcon';
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
-
-type Props = {
-  book: BookDetails,
-  similarBooks: Array<Book>,
-  userHasEditAccess: boolean
-};
 
 const Divider = styled(MuiDivider)`
   margin: ${spacing.large} 0;
@@ -93,31 +90,81 @@ const GridItem = styled('div')(
  `
 );
 
-class BookPage extends React.Component<Props> {
-  static async getInitialProps({ query, req }: Context) {
-    const [bookRes, similarRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSimilarBooks(query.id, query.lang)
-    ]);
+const BOOK_QUERY = gql`
+  query book($id: ID!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      category
+      readingLevel
+      bookFormat
+      supportsTranslation
+      additionalInformation
+      downloads {
+        epub
+        pdf
+      }
+      license {
+        url
+        name
+      }
+      language {
+        code
+        name
+      }
+      coverImage {
+        url
+        variants {
+          height
+          width
+          x
+          y
+          ratio
+        }
+      }
+      publisher {
+        name
+      }
+      authors {
+        name
+      }
+      illustrators {
+        name
+      }
+      translators {
+        name
+      }
+      photographers {
+        name
+      }
+    }
+  }
+`;
 
-    if (!bookRes.isOk) {
+class BookPage extends React.Component<{ book: Book }> {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
+    const bookRes = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}` }
+    });
+
+    if (!bookRes.data.book) {
       return {
-        statusCode: bookRes.statusCode
+        statusCode: 404
       };
     }
 
     return {
-      book: bookRes.data,
-      userHasEditAccess: hasClaim(claims.writeBook, req),
-      // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : []
+      book: bookRes.data.book
     };
   }
 
   static contextType = OnlineContext;
 
   render() {
-    const { similarBooks, book } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
 
     return (
@@ -166,7 +213,7 @@ class BookPage extends React.Component<Props> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} key={book.uuid} />
+                        <BookActions1 book={book} key={book.id} />
                       </div>
                     </Hidden>
                     <Typography
@@ -190,7 +237,7 @@ class BookPage extends React.Component<Props> {
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} key={book.uuid} />
+                  <BookActions1 book={book} key={book.id} />
                 </Hidden>
                 <Divider />
 
@@ -204,22 +251,31 @@ class BookPage extends React.Component<Props> {
                     </GridItem>
                   </Hidden>
                   <GridItem css={media.tablet`flex: 0 0 310px; order: -1;`}>
-                    <BookActions2
-                      book={book}
-                      userHasEditAccess={this.props.userHasEditAccess}
-                    />
+                    <BookActions2 book={book} />
                   </GridItem>
                 </Grid>
 
                 <Divider />
-                {!offline && similarBooks.length > 0 && (
-                  <View mb={spacing.medium}>
-                    <BookList
-                      heading={<Trans>Similar</Trans>}
-                      books={similarBooks}
-                    />
-                  </View>
-                )}
+                <Query query={SIMILAR_BOOKS_QUERY} variables={{ id: book.id }}>
+                  {({ data, loading, error }) => {
+                    if (
+                      offline ||
+                      loading ||
+                      error ||
+                      data.book.similar.results.length < 1
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <View mb={spacing.medium}>
+                        <BookList
+                          heading={<Trans>Similar</Trans>}
+                          books={data.book.similar.results}
+                        />
+                      </View>
+                    );
+                  }}
+                </Query>
               </div>
             </Container>
           </Main>
@@ -234,7 +290,7 @@ const ReadBookLink = ({ book }) =>
     <Link
       route="read"
       passHref
-      params={{ id: book.id, lang: book.language.code }}
+      params={{ id: book.bookId, lang: book.language.code }}
       prefetch
     >
       <Button
@@ -268,7 +324,7 @@ const ReadBookLink = ({ book }) =>
  * updated props
  */
 class BookActions1 extends React.Component<
-  { book: BookDetails },
+  { book: Book },
   {
     anchorEl: ?HTMLElement,
     isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
@@ -286,10 +342,7 @@ class BookActions1 extends React.Component<
   async componentDidMount() {
     if (!offlineLibrary) return;
 
-    const offlineBook = await offlineLibrary.getBook(
-      this.props.book.id,
-      this.props.book.language.code
-    );
+    const offlineBook = await offlineLibrary.getBook(this.props.book.id);
 
     this.setState({
       isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
@@ -324,14 +377,14 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await offlineLibrary.deleteBook(book.id, book.language.code);
+      await offlineLibrary.deleteBook(book.id);
       this.setState({
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline library.'
       });
       logEvent('Books', 'Remove offline', book.title);
     } else {
-      const offlinedBook = await offlineLibrary.addBook(book);
+      const offlinedBook = await offlineLibrary.addBook(book.id);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
@@ -354,10 +407,7 @@ class BookActions1 extends React.Component<
             width: '100%'
           }}
         >
-          <Favorite
-            id={this.props.book.id}
-            language={this.props.book.language.code}
-          >
+          <Favorite id={book.bookId} language={book.language.code}>
             {({ onClick, isFav }) => (
               <IconButton
                 // Moving the fav button up top on mobile
@@ -471,7 +521,7 @@ class BookActions1 extends React.Component<
  * Download, translate, report book
  */
 class BookActions2 extends React.Component<
-  { book: BookDetails, userHasEditAccess: boolean },
+  { book: Book },
   { anchorEl: ?HTMLElement }
 > {
   state = {
@@ -486,7 +536,7 @@ class BookActions2 extends React.Component<
   closeDownloadMenu = () => this.setState({ anchorEl: null });
 
   render() {
-    const { book, userHasEditAccess } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -508,7 +558,7 @@ class BookActions2 extends React.Component<
             <Link
               route="translate"
               passHref
-              params={{ id: book.id, lang: book.language.code }}
+              params={{ id: book.bookId, lang: book.language.code }}
             >
               <Button
                 onClick={() => logEvent('Books', 'Translate', book.title)}
@@ -521,22 +571,26 @@ class BookActions2 extends React.Component<
             </Link>
           </div>
         )}
-        {userHasEditAccess && (
-          <div>
-            <NextLink
-              href={{
-                pathname: '/admin/edit/book',
-                query: { id: book.id, lang: book.language.code }
-              }}
-              passHref
-            >
-              <Button color="primary" disabled={offline}>
-                <EditIcon css={{ marginRight: spacing.xsmall }} />
-                Edit
-              </Button>
-            </NextLink>
-          </div>
-        )}
+        <QueryIsAdmin>
+          {({ isAdmin }) =>
+            isAdmin && (
+              <div>
+                <NextLink
+                  href={{
+                    pathname: '/admin/edit/book',
+                    query: { id: book.bookId, lang: book.language.code }
+                  }}
+                  passHref
+                >
+                  <Button color="primary" disabled={offline}>
+                    <EditIcon css={{ marginRight: spacing.xsmall }} />
+                    Edit
+                  </Button>
+                </NextLink>
+              </div>
+            )
+          }
+        </QueryIsAdmin>
         <div>
           <Button
             color="primary"
@@ -586,5 +640,33 @@ class BookActions2 extends React.Component<
     );
   }
 }
+
+const SIMILAR_BOOKS_QUERY = gql`
+  query similar($id: ID!) {
+    book(id: $id) {
+      id
+      similar {
+        results {
+          id
+          bookId
+          title
+          language {
+            code
+          }
+          coverImage {
+            url
+            variants {
+              height
+              width
+              x
+              y
+              ratio
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export default withErrorPage(BookPage);

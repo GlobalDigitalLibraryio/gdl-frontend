@@ -4,31 +4,28 @@ type TransformationOptions = {
   width?: number
 };
 
-type ImageCropCoordinates = {
+type ImageCropCoordinates = $ReadOnly<{
   x: number,
   height: number,
   y: number,
   width: number,
-  ratio: string,
-  revision: number
-};
+  ratio: string
+}>;
 
-type CoverImage = {
+export type CoverImage = $ReadOnly<{
   url: string,
-  variants?: {
-    [string]: ImageCropCoordinates
-  }
-};
+  variants: ?$ReadOnlyArray<ImageCropCoordinates>
+}>;
 
 const transformationsMap = {
   width: width => `w_${width}`,
   /**
    * If we have defined fixed coordinates for the aspect ratio, use that. Otherwise we fallback to cloudinarys aspect ratio
    */
-  aspectRatio: (ratio: number, variants) =>
-    Boolean(variants && variants[ratio])
-      ? fixedCoordinatesCropping(variants[ratio])
-      : `ar_${ratio},c_fill`
+  aspectRatio: (ratio: number, variants) => {
+    const variant = variants && variants.find(v => v.ratio == ratio); // eslint-disable-line eqeqeq
+    return variant ? fixedCoordinatesCropping(variant) : `ar_${ratio},c_fill`;
+  }
 };
 
 /**
@@ -53,7 +50,7 @@ const COVER_RATIO = 0.81;
  * Builds up a cloudinary URL with parameters
  */
 export function coverImageUrl(
-  coverImage: $ReadOnly<CoverImage>,
+  coverImage: CoverImage,
   options: TransformationOptions = {}
 ): string {
   // TODO: Remove this when all images in all environments are migrated to Cloudinary

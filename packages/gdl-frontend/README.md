@@ -10,6 +10,20 @@ Start node server with hot reloading middleware listening on port 3000.
 $ yarn run dev
 ```
 
+### Types
+
+Make sure you have [Apollo CLI](https://github.com/apollographql/apollo-tooling) installed.
+
+```
+$ yarn global add apollo
+```
+
+Then run
+
+```
+$ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components,lib}/**/*.js" --target flow --endpoint http://localhost:4000/graphql
+```
+
 ### Translations
 
 For i18n we use [lingui](https://github.com/lingui/js-lingui).

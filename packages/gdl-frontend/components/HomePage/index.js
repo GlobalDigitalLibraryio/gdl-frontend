@@ -11,15 +11,11 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
+import type { FeaturedContent, Category } from '../../types';
+import type { books as Books } from '../../gqlTypes';
+
 import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import type {
-  Book,
-  Language,
-  FeaturedContent,
-  ReadingLevel,
-  Category
-} from '../../types';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import { Container, View } from '../../elements';
@@ -32,15 +28,6 @@ import BookList from '../../components/BookList';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-
-type Props = {|
-  featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
-  levels: Array<ReadingLevel>,
-  booksByLevel: Array<{ results: Array<Book> }>,
-  categories: Array<Category>,
-  category: Category
-|};
 
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
@@ -86,22 +73,22 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-export default class HomePage extends React.Component<
-  Props,
-  { showLanguageMenu: boolean }
-> {
-  state = {
-    showLanguageMenu: false
-  };
+type Props = {|
+  bookSummaries: Books,
+  languageCode: string,
+  featuredContent: Array<FeaturedContent>,
+  categories: Array<Category>,
+  category: Category
+|};
 
+export default class HomePage extends React.Component<Props> {
   render() {
     const {
+      bookSummaries,
       category,
       featuredContent,
-      levels,
-      booksByLevel,
-      newArrivals,
-      categories
+      categories,
+      languageCode
     } = this.props;
 
     const featuredForChosenCategory = featuredContent.filter(
@@ -112,6 +99,8 @@ export default class HomePage extends React.Component<
       featuredForChosenCategory.length > 0
         ? featuredForChosenCategory[0]
         : featuredContent[0];
+
+    const { NewArrivals, ...readingLevels } = bookSummaries;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -147,8 +136,6 @@ export default class HomePage extends React.Component<
         </Button>
       </View>
     );
-
-    const languageCode = newArrivals.language.code;
 
     return (
       <Layout wrapWithMain={false}>
@@ -186,29 +173,31 @@ export default class HomePage extends React.Component<
                 heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
-                  sort: '-arrivalDate',
                   category: category
                 }}
-                books={newArrivals.results}
+                books={NewArrivals.results}
               />
             </Container>
           </View>
 
-          {levels.map((level, index) => (
-            <View {...bookListViewStyle} key={level}>
-              <Container width="100%">
-                <BookList
-                  heading={<ReadingLevelTrans readingLevel={level} />}
-                  browseLinkProps={{
-                    lang: languageCode,
-                    readingLevel: level,
-                    category: category
-                  }}
-                  books={booksByLevel[index].results}
-                />
-              </Container>
-            </View>
-          ))}
+          {Object.entries(readingLevels)
+            // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
+            .filter(([_, data]) => data.results && data.results.length > 0)
+            .map(([level, data]) => (
+              <View {...bookListViewStyle} key={level}>
+                <Container width="100%">
+                  <BookList
+                    heading={<ReadingLevelTrans readingLevel={level} />}
+                    browseLinkProps={{
+                      lang: languageCode,
+                      readingLevel: level,
+                      category: category
+                    }}
+                    books={bookSummaries[level].results}
+                  />
+                </Container>
+              </View>
+            ))}
         </Main>
       </Layout>
     );

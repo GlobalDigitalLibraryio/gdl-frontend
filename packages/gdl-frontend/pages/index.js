@@ -6,20 +6,15 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
+import gql from 'graphql-tag';
 
-import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
-import type {
-  ConfigShape,
-  Book,
-  Language,
-  FeaturedContent,
-  Context,
-  Category,
-  ReadingLevel
-} from '../types';
+import type { ConfigShape, FeaturedContent, Context, Category } from '../types';
+import type { books as Books } from '../gqlTypes';
+
+import { fetchFeaturedContent } from '../fetch';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -32,147 +27,206 @@ const {
   publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
 
+const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
+
+const CATEGORY_QUERY = gql`
+  query GetCategories($language: String!) {
+    categories(language: $language)
+  }
+`;
+
+const BOOK_QUERY = gql`
+  query books($language: String!, $pageSize: Int) {
+    Decodable: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Decodable
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level1: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level1
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level2: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level2
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level3: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level3
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level4: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level4
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    ReadAloud: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: ReadAloud
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    NewArrivals: bookSummaries(
+      language: $language
+      orderBy: arrivalDate_DESC
+      pageSize: $pageSize
+    ) {
+      ...fields
+    }
+  }
+
+  fragment fields on ResultItemConnection {
+    results {
+      id
+      bookId
+      title
+      coverImage {
+        url
+        variants {
+          height
+          width
+          x
+          y
+          ratio
+        }
+      }
+      language {
+        code
+      }
+    }
+  }
+`;
+
 type Props = {|
+  bookSummaries: Books,
+  languageCode: string,
   featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
-  levels: Array<ReadingLevel>,
-  booksByLevel: Array<{ results: Array<Book> }>,
   category: Category,
   categories: Array<Category>
 |};
 
 class IndexPage extends React.Component<Props> {
-  static async getInitialProps({ query, asPath, req, res }: Context) {
+  static async getInitialProps({
+    query,
+    asPath,
+    req,
+    res,
+    apolloClient
+  }: Context) {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
+    const bookSummaries = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: {
+        language: languageCode,
+        pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+      }
+    });
 
-    // $FlowFixMe: Don't know why flow doesn't like this
-    const categoriesRes = await fetchCategories(languageCode);
+    const categoriesRes = await apolloClient.query({
+      query: CATEGORY_QUERY,
+      variables: {
+        language: languageCode
+      }
+    });
 
-    if (!categoriesRes.isOk) {
-      const statusCode =
-        // If the categories endpoint doesn't get a valid language code, it throws with a VALIDATION error.
-        // Because of the way we structure the URLs in the frontend, this means we should render the 404 page
-        categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
-          ? 404
-          : categoriesRes.statusCode;
-
-      return {
-        statusCode
-      };
-    }
-
-    const categories = categoriesRes.data;
-
+    const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
-    let category: Category;
+
+    let category: string;
     if (asPath.includes('/classroom')) {
-      category = 'classroom_books';
+      category = 'Classroom';
     } else if (asPath.includes('/library')) {
-      category = 'library_books';
+      category = 'Library';
     } else if (categoryInCookie && categoryInCookie in categories) {
       // Small check to make sure the value in the cookie is something valid
       // $FlowFixMe: We know this is a valid category :/
       category = categoryInCookie;
     } else {
-      // Default to library_books
-      category =
-        'library_books' in categories ? 'library_books' : 'classroom_books';
+      // Default to Library
+      category = 'Library' in categories ? 'Library' : 'Classroom';
     }
 
-    // Make sure levels is a valid array for the upcoming `map`
-    const levels = categories[category] || [];
-
-    const results = await Promise.all([
-      fetchFeaturedContent(languageCode),
-      // $FlowFixMe: We know this is a valid category :/
-      fetchBooks(languageCode, { category: category }),
-      ...levels.map(level =>
-        fetchBooks(languageCode, {
-          level,
-          category,
-          sort: 'title'
-        })
-      )
-    ]);
-
-    if (!results.every(res => res.isOk)) {
+    const featuredContent = await fetchFeaturedContent(languageCode);
+    if (!featuredContent.isOk) {
       return {
-        statusCode: results.find(res => !res.isOk).statusCode
+        statusCode: featuredContent.statusCode
       };
     }
-
-    const [featuredContent, newArrivals, ...booksByLevel] = results.map(
-      result => result.data
-    );
-
     // $FlowFixMe: We know this is a valid category :/
-    setBookLanguageAndCategory(newArrivals.language, category, res);
+    setBookLanguageAndCategory(languageCode, category, res);
 
     return {
       category,
-      featuredContent,
-      newArrivals,
-      levels,
-      booksByLevel,
-      categories: Object.keys(categories)
+      categories,
+      languageCode,
+      featuredContent: featuredContent.data,
+      bookSummaries: bookSummaries.data
     };
   }
 
   // Ensure cookies are set, even if the rendered HTML came from the cache on the server
   componentDidMount() {
-    setBookLanguageAndCategory(
-      this.props.newArrivals.language,
-      this.props.category
-    );
+    setBookLanguageAndCategory(this.props.languageCode, this.props.category);
   }
 
   render() {
     const {
+      bookSummaries,
       category,
       featuredContent,
-      levels,
-      booksByLevel,
-      newArrivals,
-      categories
+      categories,
+      languageCode
     } = this.props;
 
-    const language = newArrivals.language;
-
     let categoryTypeForUrl;
-    if (category === 'library_books') {
+    if (category === 'Library') {
       categoryTypeForUrl = 'library';
-    } else if (category === 'classroom_books') {
+    } else if (category === 'Classroom') {
       categoryTypeForUrl = 'classroom';
     }
 
     return (
-      <Fragment>
+      <>
         {categoryTypeForUrl && (
           <Head>
             <link
               rel="canonical"
-              href={`${canonicalUrl}/${
-                language.code
-              }/books/category/${categoryTypeForUrl}`}
+              href={`${canonicalUrl}/${languageCode}/books/category/${categoryTypeForUrl}`}
             />
             <meta
               property="og:url"
-              content={`${canonicalUrl}/${
-                language.code
-              }/books/category/${categoryTypeForUrl}`}
+              content={`${canonicalUrl}/${languageCode}/books/category/${categoryTypeForUrl}`}
             />
           </Head>
         )}
         <HomePage
+          bookSummaries={bookSummaries}
           category={category}
           categories={categories}
-          levels={levels}
-          newArrivals={newArrivals}
-          booksByLevel={booksByLevel}
+          languageCode={languageCode}
           featuredContent={featuredContent}
         />
-      </Fragment>
+      </>
     );
   }
 }
