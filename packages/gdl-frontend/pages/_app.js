@@ -8,6 +8,7 @@
 
 import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
+import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
 import { hydrate } from 'react-emotion';
 import Router from 'next/router';
@@ -15,6 +16,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import * as Sentry from '@sentry/browser';
+import { withApollo } from 'gdl-apollo-client';
 
 import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';
 import getPageContext from '../getPageContext';
@@ -113,35 +115,37 @@ class App extends NextApp {
   };
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, apolloClient } = this.props;
     return (
       <NextContainer>
-        <Head>
-          <title>{DEFAULT_TITLE}</title>
-        </Head>
-        <GdlI18nProvider>
-          {/* Wrap every page in Jss and Theme providers */}
-          <JssProvider
-            jss={this.pageContext.jss}
-            registry={this.pageContext.sheetsRegistry}
-            generateClassName={this.pageContext.generateClassName}
-          >
-            {/* MuiThemeProvider makes the theme available down the React
-              tree thanks to React context. */}
-            <MuiThemeProvider
-              theme={this.pageContext.theme}
-              sheetsManager={this.pageContext.sheetsManager}
+        <ApolloProvider client={apolloClient}>
+          <Head>
+            <title>{DEFAULT_TITLE}</title>
+          </Head>
+          <GdlI18nProvider>
+            {/* Wrap every page in Jss and Theme providers */}
+            <JssProvider
+              jss={this.pageContext.jss}
+              registry={this.pageContext.sheetsRegistry}
+              generateClassName={this.pageContext.generateClassName}
             >
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              <OnlineStatusRedirectProvider>
-                {/* Pass pageContext to the _document though the renderPage enhancer
+              {/* MuiThemeProvider makes the theme available down the React
+              tree thanks to React context. */}
+              <MuiThemeProvider
+                theme={this.pageContext.theme}
+                sheetsManager={this.pageContext.sheetsManager}
+              >
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <OnlineStatusRedirectProvider>
+                  {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                <Component pageContext={this.pageContext} {...pageProps} />
-              </OnlineStatusRedirectProvider>
-            </MuiThemeProvider>
-          </JssProvider>
-        </GdlI18nProvider>
+                  <Component pageContext={this.pageContext} {...pageProps} />
+                </OnlineStatusRedirectProvider>
+              </MuiThemeProvider>
+            </JssProvider>
+          </GdlI18nProvider>
+        </ApolloProvider>
       </NextContainer>
     );
   }
@@ -150,4 +154,4 @@ class App extends NextApp {
 // Register service worker for clients that support it
 registerServiceWorker();
 
-export default App;
+export default withApollo(App);
