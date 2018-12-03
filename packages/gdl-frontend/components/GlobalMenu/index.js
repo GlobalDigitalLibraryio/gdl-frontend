@@ -22,12 +22,12 @@ import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
   ExitToApp as ExitToAppIcon,
   Translate as TranslateIcon,
-  Edit as EditIcon,
-  Favorite as FavoriteIcon,
-  CheckCircle as CheckCircleIcon
+  Edit as EditIcon
 } from '@material-ui/icons';
 import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 
+import { FavoriteIcon } from '../Favorite';
+import OfflineIcon from '../OfflineIcon';
 import { Link as RouteLink } from '../../routes';
 import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
@@ -105,7 +105,7 @@ class GlobalMenu extends React.Component<Props, State> {
               <RouteLink passHref route="favorites">
                 <ListItem button component="a">
                   <ListItemIcon>
-                    <FavoriteIcon />
+                    <FavoriteIcon filled />
                   </ListItemIcon>
                   <ListItemText>
                     <Trans>Favorites</Trans>
@@ -118,7 +118,7 @@ class GlobalMenu extends React.Component<Props, State> {
             <RouteLink passHref route="offline">
               <ListItem button component="a">
                 <ListItemIcon>
-                  <CheckCircleIcon />
+                  <OfflineIcon filled />
                 </ListItemIcon>
                 <ListItemText>
                   <Trans>Offline library</Trans>
