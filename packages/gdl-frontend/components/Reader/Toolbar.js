@@ -9,12 +9,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
-import {
-  Close as CloseIcon,
-  Edit as EditIcon,
-  Favorite as FavoriteIcon,
-  FavoriteBorder as FavoriteOutlineIcon
-} from '@material-ui/icons';
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 
 import { logEvent } from '../../lib/analytics';
 import type { BookDetails } from '../../types';
@@ -22,7 +17,7 @@ import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
-import Favorite from '../Favorite';
+import Favorite, { FavoriteIcon } from '../Favorite';
 import { flexCenter } from '../../style/flex';
 
 type Props = {
@@ -97,11 +92,9 @@ class FavButton extends React.Component<{ book: BookDetails }> {
                   this.props.book.title
                 );
               }}
-              style={isFav ? { color: 'red' } : null}
             >
-              {isFav ? <FavoriteIcon /> : <FavoriteOutlineIcon />}
+              <FavoriteIcon filled={isFav} />
               <SrOnly>
-                <Trans>Mark book as favorite</Trans>
                 {isFav ? (
                   <Trans>Remove from favorites</Trans>
                 ) : (

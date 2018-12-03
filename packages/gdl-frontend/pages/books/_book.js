@@ -28,12 +28,9 @@ import {
   Edit as EditIcon,
   Translate as TranslateIcon,
   Warning as WarningIcon,
-  Favorite as FavoriteIcon,
-  FavoriteBorder as FavoriteOutlineIcon,
   SaveAlt as SaveAltIcon,
   Share as ShareIcon,
-  Link as LinkIcon,
-  CheckCircle as CheckCircleIcon
+  Link as LinkIcon
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
@@ -59,7 +56,8 @@ import {
   Metadata,
   LevelRibbon
 } from '../../components/BookDetailsPage';
-import Favorite from '../../components/Favorite';
+import Favorite, { FavoriteIcon } from '../../components/Favorite';
+import OfflineIcon from '../../components/OfflineIcon';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -374,13 +372,7 @@ class BookActions1 extends React.Component<
                     book.title
                   );
                 }}
-                icon={
-                  isFav ? (
-                    <FavoriteIcon style={isFav ? { color: 'red' } : null} />
-                  ) : (
-                    <FavoriteOutlineIcon />
-                  )
-                }
+                icon={<FavoriteIcon filled={isFav} />}
                 label={<Trans>Favorite</Trans>}
               />
             )}
@@ -391,12 +383,8 @@ class BookActions1 extends React.Component<
               <IconButton
                 isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
                 icon={
-                  <CheckCircleIcon
-                    style={
-                      this.state.isAvailableOffline === 'YES'
-                        ? { color: 'green' }
-                        : null
-                    }
+                  <OfflineIcon
+                    filled={this.state.isAvailableOffline === 'YES'}
                   />
                 }
                 onClick={this.handleOfflineClick}

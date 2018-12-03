@@ -7,7 +7,11 @@
  */
 
 import * as React from 'react';
-import { markAsFavorite, removeAsFavorite, isFavorite } from '../lib/favorites';
+import {
+  markAsFavorite,
+  removeAsFavorite,
+  isFavorite
+} from '../../lib/favorites';
 
 type Props = {
   id: number,
