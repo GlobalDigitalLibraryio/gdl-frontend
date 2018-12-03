@@ -19,10 +19,11 @@ import {
   CircularProgress
 } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import doFetch, { fetchMyTranslations } from '../../fetch';
+import doFetch from '../../fetch';
 import { Link } from '../../routes';
-import type { Translation } from '../../types';
 import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
@@ -30,6 +31,48 @@ import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
 import { LoadingButton } from '../../elements';
 import { spacing } from '../../style/theme';
+
+import type {
+  MyBookTranslations,
+  MyBookTranslations_currentUser_translations as Translation
+} from '../../gqlTypes';
+
+const MY_TRANSLATION_QUERY = gql`
+  query MyBookTranslations {
+    currentUser {
+      translations {
+        crowdinUrl
+        synchronizeUrl
+        from {
+          language {
+            name
+          }
+        }
+        to {
+          bookId
+          title
+          publisher {
+            name
+          }
+          coverImage {
+            url
+            variants {
+              height
+              width
+              x
+              y
+              ratio
+            }
+          }
+          language {
+            name
+            code
+          }
+        }
+      }
+    }
+  }
+`;
 
 class TranslationCard extends React.Component<
   {
@@ -52,32 +95,34 @@ class TranslationCard extends React.Component<
   };
 
   render() {
-    const { translation } = this.props;
+    const {
+      translation: { to: translateTo, from: translateFrom, crowdinUrl }
+    } = this.props;
     const { isLoading } = this.state;
 
     return (
-      <Card key={translation.id} css={{ marginBottom: spacing.large }}>
+      <Card key={translateTo.bookId} css={{ marginBottom: spacing.large }}>
         <Grid container>
           <Grid item>
             <Link
               route="book"
               params={{
-                lang: translation.translatedTo.code,
-                id: translation.id
+                lang: translateTo.language.code,
+                id: translateTo.bookId
               }}
             >
               <a>
-                <CoverImage coverImage={translation.coverImage} size="small" />
+                <CoverImage coverImage={translateTo.coverImage} size="small" />
               </a>
             </Link>
           </Grid>
           <Grid item xs>
             <CardContent>
               <Typography variant="h5" component="h2">
-                {translation.title}
+                {translateTo.title}
               </Typography>
               <Typography variant="subtitle1">
-                <Trans>from {translation.publisher.name}</Trans>
+                <Trans>from {translateTo.publisher.name}</Trans>
               </Typography>
             </CardContent>
           </Grid>
@@ -85,14 +130,14 @@ class TranslationCard extends React.Component<
         <CardContent>
           <Grid container alignItems="center">
             <Grid item xs={4}>
-              <Typography>{translation.translatedFrom.name}</Typography>
+              <Typography>{translateFrom.language.name}</Typography>
             </Grid>
             <Grid item xs={4} css={{ textAlign: 'center' }}>
               <ArrowForwardIcon />
             </Grid>
             <Grid item xs={4}>
               <Typography align="right" variant="body2">
-                {translation.translatedTo.name}
+                {translateTo.language.name}
               </Typography>
             </Grid>
           </Grid>
@@ -109,7 +154,7 @@ class TranslationCard extends React.Component<
           </LoadingButton>
           <Button
             color="primary"
-            href={translation.crowdinUrl}
+            href={crowdinUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -121,68 +166,8 @@ class TranslationCard extends React.Component<
   }
 }
 
-type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
-
-type State = {
-  translations: Array<Translation>,
-  loadingState: LoadingState
-};
-
-class MyTranslationsPage extends React.Component<{}, State> {
-  state = {
-    translations: [],
-    loadingState: 'LOADING'
-  };
-
-  async componentDidMount() {
-    this.loadMyTranslations();
-  }
-
-  loadMyTranslations = async () => {
-    const translationsRes = await fetchMyTranslations();
-    if (translationsRes.isOk) {
-      this.setState({
-        translations: translationsRes.data,
-        loadingState: 'SUCCESS'
-      });
-    } else {
-      this.setState({
-        loadingState: 'ERROR'
-      });
-    }
-  };
-
-  handleSync = () => {
-    // Refreshes my translation cards when a card is synced
-    this.loadMyTranslations();
-  };
-
-  renderTranslations = () => {
-    if (this.state.translations.length === 0) {
-      return (
-        <Typography
-          align="center"
-          paragraph
-          variant="body1"
-          css={{ marginTop: spacing.medium }}
-        >
-          <Trans>You have not translated any books yet.</Trans>
-        </Typography>
-      );
-    }
-
-    return this.state.translations.map(translation => (
-      <TranslationCard
-        key={`${translation.id}-${translation.translatedTo.code}`}
-        translation={translation}
-        handleSync={this.handleSync}
-      />
-    ));
-  };
-
+class MyTranslationsPage extends React.Component<*> {
   render() {
-    const { loadingState } = this.state;
-
     return (
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
@@ -196,23 +181,57 @@ class MyTranslationsPage extends React.Component<{}, State> {
           >
             <Trans>My translations</Trans>
           </Typography>
+          <Query query={MY_TRANSLATION_QUERY}>
+            {({
+              loading,
+              error,
+              data,
+              refetch
+            }: {
+              loading: boolean,
+              error: *,
+              data: MyBookTranslations,
+              refetch: () => void
+            }) => {
+              if (loading)
+                return (
+                  <CircularProgress
+                    css={{
+                      marginTop: spacing.large,
+                      display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }}
+                  />
+                );
+              if (error || !data.currentUser)
+                return (
+                  <Typography align="center" color="error" variant="body1">
+                    <Trans>An error has occurred. Please try again.</Trans>
+                  </Typography>
+                );
+              const { translations } = data.currentUser;
 
-          {loadingState === 'LOADING' && (
-            <CircularProgress
-              css={{
-                marginTop: spacing.large,
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}
-            />
-          )}
-          {loadingState === 'SUCCESS' && this.renderTranslations()}
-          {loadingState === 'ERROR' && (
-            <Typography align="center" color="error" variant="body1">
-              <Trans>An error has occurred. Please try again.</Trans>
-            </Typography>
-          )}
+              return translations.length === 0 ? (
+                <Typography
+                  align="center"
+                  paragraph
+                  variant="body1"
+                  css={{ marginTop: spacing.medium }}
+                >
+                  <Trans>You have not translated any books yet.</Trans>
+                </Typography>
+              ) : (
+                translations.map(translation => (
+                  <TranslationCard
+                    key={translation.to.bookId}
+                    translation={translation}
+                    handleSync={refetch}
+                  />
+                ))
+              );
+            }}
+          </Query>
         </Container>
       </Layout>
     );

@@ -18,9 +18,9 @@ import {
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
 
+import type { languages_languages as Language } from '../gqlTypes';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
-import type { Language } from '../types';
 import { colors } from '../style/theme';
 
 type Props = {

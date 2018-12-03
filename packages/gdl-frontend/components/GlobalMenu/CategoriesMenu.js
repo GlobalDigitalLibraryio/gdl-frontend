@@ -17,10 +17,10 @@ import {
   ListItemText,
   Typography
 } from '@material-ui/core';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import { getBookLanguageCode } from '../../lib/storage';
-import type { ReadingLevel } from '../../types';
-import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 
@@ -29,41 +29,21 @@ type Props = {|
   onSelectCategory: () => void
 |};
 
-type CategoriesType = {
-  classroom_books?: Array<ReadingLevel>,
-  library_books?: Array<ReadingLevel>
-};
+const READINGLEVELS_BY_CATEGORIES = gql`
+  query catgoryReadingLevels($language: String!) {
+    classroom: readingLevels(language: $language, category: Classroom)
+    library: readingLevels(language: $language, category: Library)
+  }
+`;
 
 export default class CategoriesMenu extends React.Component<
   Props,
   {
-    showMenu: boolean,
-    categories: ?'LOADING' | 'ERROR' | CategoriesType,
-    languageCode: string
+    showMenu: boolean
   }
 > {
   state = {
-    showMenu: false,
-    categories: null,
-    languageCode: getBookLanguageCode()
-  };
-
-  /**
-   * We only load the categories if the menu is "open" and we're in an uninitialized state
-   */
-  componentDidUpdate() {
-    if (this.state.showMenu && this.state.categories == null) {
-      this.loadCategories();
-    }
-  }
-
-  loadCategories = async () => {
-    this.setState({ categories: 'LOADING' });
-    const result = await fetchCategories(this.state.languageCode);
-
-    this.setState({
-      categories: result.isOk ? result.data : 'ERROR'
-    });
+    showMenu: false
   };
 
   handleShowMenu = () => this.setState({ showMenu: true });
@@ -72,49 +52,64 @@ export default class CategoriesMenu extends React.Component<
 
   render() {
     const { children, onSelectCategory } = this.props;
-    const { categories, showMenu, languageCode } = this.state;
-    return (
-      <>
-        {children({
-          onClick: this.handleShowMenu,
-          loading: categories === 'LOADING'
-        })}
-        <Drawer
-          open={showMenu && categories !== 'LOADING'}
-          onClose={this.handleCloseMenu}
-        >
-          {categories === 'ERROR' && (
-            <Typography component="span" color="error" css={{ margin: '1rem' }}>
-              <Trans>Error loading data.</Trans>
-            </Typography>
-          )}
+    const { showMenu } = this.state;
+    const language = getBookLanguageCode();
 
-          {categories && categories !== 'LOADING' && categories !== 'ERROR' && (
-            <Categories
-              onSelectCategory={onSelectCategory}
-              categories={categories}
-              languageCode={languageCode}
-            />
-          )}
-        </Drawer>
-      </>
+    return (
+      <Query
+        query={READINGLEVELS_BY_CATEGORIES}
+        variables={{ language }}
+        skip={!showMenu}
+      >
+        {({ loading, error, data }) => (
+          <>
+            {children({
+              onClick: this.handleShowMenu,
+              loading
+            })}
+            <Drawer open={showMenu && !loading} onClose={this.handleCloseMenu}>
+              {error && (
+                <Typography
+                  component="span"
+                  color="error"
+                  css={{ margin: '1rem' }}
+                >
+                  <Trans>Error loading data.</Trans>
+                </Typography>
+              )}
+
+              {data && (
+                <Categories
+                  onSelectCategory={onSelectCategory}
+                  categories={data}
+                  languageCode={language}
+                />
+              )}
+            </Drawer>
+          </>
+        )}
+      </Query>
     );
   }
 }
 
-const Categories = ({ categories, onSelectCategory, languageCode }) => (
+const Categories = ({
+  categories: { classroom, library },
+  onSelectCategory,
+  languageCode
+}) => (
   <List component="nav">
-    {categories.classroom_books && (
+    {classroom.length > 0 && (
       <>
         <ListSubheader component="div">
           <Trans>Classroom books</Trans>
         </ListSubheader>
-        {categories.classroom_books.map(level => (
+        {classroom.map(level => (
           <Link
             key={level}
             lang={languageCode}
             readingLevel={level}
-            category="classroom_books"
+            category="Classroom"
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
@@ -125,7 +120,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
           </Link>
         ))}
         <Link
-          category="classroom_books"
+          category="Classroom"
           lang={languageCode}
           sort="-arrivalDate"
           passHref
@@ -139,20 +134,19 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
       </>
     )}
 
-    {Boolean(categories.library_books) &&
-      Boolean(categories.classroom_books) && <Divider />}
+    {library.length > 0 && classroom.length > 0 && <Divider />}
 
-    {categories.library_books && (
+    {library && (
       <>
         <ListSubheader component="div">
           <Trans>Library books</Trans>
         </ListSubheader>
-        {categories.library_books.map(level => (
+        {library.map(level => (
           <Link
             key={level}
             lang={languageCode}
             readingLevel={level}
-            category="library_books"
+            category="Library"
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
@@ -161,7 +155,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             </ListItem>
           </Link>
         ))}
-        <Link category="library_books" lang={languageCode} sort="-arrivalDate">
+        <Link category="Library" lang={languageCode} sort="-arrivalDate">
           <ListItem button onClick={onSelectCategory}>
             <ListItemText inset>
               <Trans>New arrivals</Trans>

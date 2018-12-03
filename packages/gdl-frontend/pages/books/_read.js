@@ -10,11 +10,19 @@ import * as React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
 import { coverImageUrl } from 'gdl-image';
+import gql from 'graphql-tag';
+import { Query, withApollo } from 'react-apollo';
+import type { ApolloClient } from 'react-apollo';
+
+import type {
+  Chapter,
+  ReadBook_book as Book,
+  ReadBook,
+  ReadBook_book_chapters
+} from '../../gqlTypes';
 
 import { Router } from '../../routes';
-import { fetchBook, fetchChapter } from '../../fetch';
-import { hasClaim, claims } from 'gdl-auth';
-import type { ConfigShape, BookDetails, Chapter, Context } from '../../types';
+import type { ConfigShape, Context } from '../../types';
 import { withErrorPage } from '../../hocs';
 import Reader from '../../components/Reader';
 
@@ -23,84 +31,81 @@ const {
 }: ConfigShape = getConfig();
 
 type Props = {
-  book: BookDetails,
-  chapter: Chapter,
+  book: Book,
+  chapterId: string,
+  client: ApolloClient, // Apollo Client instance
   userHasEditAccess: boolean,
   showCanonicalChapterUrl: boolean
 };
 
-type State = {
-  chapters: { [number]: Chapter },
-  current: { id: number, seqNo: number }
-};
+class Read extends React.Component<Props, { current: ReadBook_book_chapters }> {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
+    const { data }: { data: ReadBook } = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}` }
+    });
 
-class Read extends React.Component<Props, State> {
-  static async getInitialProps({ query, req }: Context) {
-    const bookRes = await fetchBook(query.id, query.lang);
-
-    if (!bookRes.isOk) {
+    if (!data.book) {
       return {
-        statusCode: bookRes.statusCode
+        statusCode: 404
       };
     }
 
-    const book = bookRes.data;
+    const book = data.book;
 
     // If no chapter is specified, we get the first one
-    const chapterId = query.chapterId ? query.chapterId : book.chapters[0].id;
+    let chapterId;
+    if (query.chapterId) {
+      const chapter = book.chapters.find(
+        c => c.chapterId.toString() === query.chapterId
+      );
+      chapterId = chapter ? chapter.id : book.chapters[0].id;
+    } else {
+      chapterId = book.chapters[0].id;
+    }
 
-    const chapterRes = await fetchChapter(query.id, chapterId, query.lang);
+    const chapterRes = await apolloClient.query({
+      query: CHAPTER_QUERY,
+      variables: { id: chapterId }
+    });
 
-    if (!chapterRes.isOk) {
+    if (!chapterRes.data.chapter) {
       return {
-        statusCode: chapterRes.statusCode
+        statusCode: 404
       };
     }
 
     return {
-      userHasEditAccess: hasClaim(claims.writeBook, req),
-      chapter: chapterRes.data,
       book,
-      showCanonical: !query.chapterId
+      chapterId,
+      showCachnonical: !query.chapterId
     };
   }
 
   constructor(props: Props) {
     super(props);
-    const { chapter, book } = props;
+    const { chapterId, book } = props;
 
-    // Init the chapters map with chapter we already have
-    const chapters = { [chapter.id]: chapter };
-
-    const current = book.chapters.find(c => c.id === chapter.id);
+    const current = book.chapters.find(c => c.id === chapterId);
 
     if (!current) {
       throw new Error('Chapter not found in book');
     }
 
     this.state = {
-      chapters,
       current
     };
   }
 
-  // Preload the next and previous chapters, so we are ready when the user navigates
   componentDidMount() {
     const next = this.getNext();
-    if (next) {
-      this.loadChapter(next.id);
-    }
-
-    const prev = this.getPrevious();
-    if (prev) {
-      this.loadChapter(prev.id);
-    }
+    next && this.preload(next);
   }
 
-  getNext() {
+  getNext(offset = 1) {
     const { book } = this.props;
     const indexOfCurrent = book.chapters.indexOf(this.state.current);
-    return book.chapters[indexOfCurrent + 1];
+    return book.chapters[indexOfCurrent + offset];
   }
 
   getPrevious() {
@@ -111,38 +116,53 @@ class Read extends React.Component<Props, State> {
 
   handleNextChapter = () => {
     const next = this.getNext();
-    if (next) {
-      this.loadChapter(next.id);
-      this.setState({ current: next }, () => {
-        // Change the URL, and start preloading
-        this.changeChapterInUrl();
-        const newNext = this.getNext();
-        newNext && this.loadChapter(newNext.id);
+    next && this.changeChapter(next);
+
+    const nexter = this.getNext(2);
+    nexter && this.preload(nexter);
+  };
+
+  preload = async chapter => {
+    const result = await this.props.client.query({
+      query: CHAPTER_QUERY,
+      variables: { id: chapter.id }
+    });
+
+    /**
+     * Preload all images
+     */
+    if (result.data.chapter) {
+      result.data.chapter.imageUrls.forEach(url => {
+        const image = new Image();
+        image.src = url;
       });
     }
+  };
+
+  changeChapter = chapter => {
+    this.setState({ current: chapter });
+    Router.replaceRoute(
+      'read',
+      {
+        id: this.props.book.bookId,
+        lang: this.props.book.language.code,
+        chapterId: chapter.chapterId
+      },
+      { shallow: true }
+    );
   };
 
   handlePreviousChapter = () => {
     const prev = this.getPrevious();
-    if (prev) {
-      this.loadChapter(prev.id);
-      this.setState({ current: prev }, () => {
-        // Change the URL, and start preloading
-        this.changeChapterInUrl();
-        const newPrev = this.getPrevious();
-        newPrev && this.loadChapter(newPrev.id);
-      });
-    }
+    prev && this.changeChapter(prev);
   };
 
   // Go back to the book details when closing the reader
-  handleCloseBook = () => {
-    const { book } = this.props;
+  handleCloseBook = () =>
     Router.replaceRoute('book', {
-      id: book.id,
-      lang: book.language.code
+      id: this.props.book.bookId,
+      lang: this.props.book.language.code
     });
-  };
 
   changeChapterInUrl = () =>
     Router.replaceRoute(
@@ -155,33 +175,9 @@ class Read extends React.Component<Props, State> {
       { shallow: true }
     );
 
-  async loadChapter(chapterId: number) {
-    // Make sure we haven't loaded the chapter already
-    if (this.state.chapters[chapterId]) return;
-
-    const result = await fetchChapter(
-      this.props.book.id,
-      chapterId,
-      this.props.book.language.code
-    );
-
-    // TODO: Notify user of error
-    if (!result.isOk) {
-      return;
-    }
-
-    const chapter = result.data;
-
-    this.setState(state => ({
-      chapters: { ...state.chapters, [chapter.id]: chapter }
-    }));
-
-    preloadImages(chapter.images);
-  }
-
   render() {
-    const { book, userHasEditAccess, showCanonicalChapterUrl } = this.props;
-    const { chapters, current } = this.state;
+    const { book, showCanonicalChapterUrl } = this.props;
+    const { current } = this.state;
     const next = this.getNext();
     const prev = this.getPrevious();
 
@@ -216,28 +212,63 @@ class Read extends React.Component<Props, State> {
           )}
         </Head>
 
-        <Reader
-          book={book}
-          chapterWithContent={chapters[current.id]}
-          chapterPointer={current}
-          onRequestNextChapter={this.handleNextChapter}
-          onRequestPreviousChapter={this.handlePreviousChapter}
-          onRequestClose={this.handleCloseBook}
-          userHasEditAccess={userHasEditAccess}
-        />
+        <Query query={CHAPTER_QUERY} variables={{ id: current.id }}>
+          {({ data, loading, error }: { data: Chapter }) => (
+            <Reader
+              book={book}
+              chapterWithContent={data.chapter}
+              chapterPointer={current}
+              onRequestNextChapter={this.handleNextChapter}
+              onRequestPreviousChapter={this.handlePreviousChapter}
+              onRequestClose={this.handleCloseBook}
+            />
+          )}
+        </Query>
       </>
     );
   }
 }
 
-/**
- * Used to force the browser the begin loading images
- */
-function preloadImages(urls) {
-  urls.forEach(url => {
-    const image = new Image();
-    image.src = url;
-  });
-}
+const BOOK_QUERY = gql`
+  query ReadBook($id: ID!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      language {
+        isRTL
+        code
+      }
+      chapters {
+        id
+        seqNo
+        chapterId
+      }
+      coverImage {
+        url
+        variants {
+          height
+          width
+          x
+          y
+          ratio
+        }
+      }
+    }
+  }
+`;
 
-export default withErrorPage(Read);
+const CHAPTER_QUERY = gql`
+  query Chapter($id: ID!) {
+    chapter(id: $id) {
+      id
+      seqNo
+      chapterId
+      content
+      imageUrls
+    }
+  }
+`;
+
+export default withErrorPage(withApollo(Read));

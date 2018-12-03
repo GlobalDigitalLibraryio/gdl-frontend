@@ -8,12 +8,32 @@
 
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
+import { Query } from 'react-apollo';
 import { Drawer, Typography } from '@material-ui/core';
+import gql from 'graphql-tag';
 
-import type { Language } from '../../types';
-import { fetchLanguages } from '../../fetch';
+import type {
+  languages,
+  languages_languages as Language
+} from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
+
+function linkProps(language) {
+  return {
+    route: 'books',
+    params: { lang: language.code }
+  };
+}
+
+const LANGUAGES_QUERY = gql`
+  query languages {
+    languages {
+      code
+      name
+    }
+  }
+`;
 
 type Props = {
   anchor?: 'left' | 'right',
@@ -23,37 +43,16 @@ type Props = {
 
 type State = {
   showMenu: boolean,
-  languages: ?'LOADING' | 'ERROR' | Array<Language>,
   selectedLanguage: string
 };
 
-function linkProps(language) {
-  return {
-    route: 'books',
-    params: { lang: language.code }
-  };
-}
-
-/**
- * We cache the results of the successful API call, since this doesn't really change
- */
-let cache = undefined;
-
-export default class SelectBookLanguage extends React.Component<Props, State> {
+class SelectBookLanguage extends React.Component<Props, State> {
   state = {
     showMenu: false,
-    languages: cache,
     selectedLanguage: getBookLanguageCode()
   };
 
-  /**
-   * We only load the book languages if the menu is "open" and we're in an uninitialized state
-   */
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (this.state.showMenu && this.state.languages == null) {
-      this.loadLanguages();
-    }
-
+  componentDidUpdate() {
     // Makes sure we always show the correct language as selected when the menu is opened
     // When React Hooks arrive this will be so much nicer
     const selectedLanguage = getBookLanguageCode();
@@ -61,20 +60,6 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
       this.setState({
         selectedLanguage
       });
-    }
-  }
-
-  async loadLanguages() {
-    this.setState({ languages: 'LOADING' });
-    const result = await fetchLanguages();
-
-    if (result.isOk) {
-      this.setState({
-        languages: result.data
-      });
-      cache = result.data;
-    } else {
-      this.setState({ languages: 'ERROR' });
     }
   }
 
@@ -89,33 +74,48 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
 
   render() {
     const { children, anchor } = this.props;
-    const { showMenu, languages, selectedLanguage } = this.state;
+    const { showMenu, selectedLanguage } = this.state;
     return (
-      <>
-        {children({
-          onClick: this.handleShowMenu,
-          loading: languages === 'LOADING'
-        })}
-        <Drawer
-          onClose={this.handleCloseMenu}
-          open={showMenu && !!languages && languages !== 'LOADING'}
-          anchor={anchor}
-        >
-          {languages === 'ERROR' && (
-            <Typography component="span" color="error" css={{ margin: '1rem' }}>
-              <Trans>Error loading data.</Trans>
-            </Typography>
-          )}
-          {Array.isArray(languages) && (
-            <LanguageList
-              onSelectLanguage={this.handleSelectLanguage}
-              selectedLanguageCode={selectedLanguage}
-              linkProps={linkProps}
-              languages={languages}
-            />
-          )}
-        </Drawer>
-      </>
+      <Query query={LANGUAGES_QUERY} skip={!showMenu}>
+        {({
+          loading,
+          error,
+          data
+        }: {
+          loading: boolean,
+          data: ?languages,
+          error: any
+        }) => (
+          <>
+            {children({ onClick: this.handleShowMenu, loading })}
+            <Drawer
+              onClose={this.handleCloseMenu}
+              open={showMenu && !loading}
+              anchor={anchor}
+            >
+              {error && (
+                <Typography
+                  component="span"
+                  color="error"
+                  css={{ margin: '1rem' }}
+                >
+                  <Trans>Error loading data.</Trans>
+                </Typography>
+              )}
+              {data && (
+                <LanguageList
+                  onSelectLanguage={this.handleSelectLanguage}
+                  selectedLanguageCode={selectedLanguage}
+                  linkProps={linkProps}
+                  languages={data.languages}
+                />
+              )}
+            </Drawer>
+          </>
+        )}
+      </Query>
     );
   }
 }
+
+export default SelectBookLanguage;

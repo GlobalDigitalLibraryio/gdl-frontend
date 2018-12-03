@@ -10,9 +10,9 @@ import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
+import { QueryIsAdmin } from '../../gql';
 
 import { logEvent } from '../../lib/analytics';
-import type { BookDetails } from '../../types';
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
@@ -20,39 +20,43 @@ import media from '../../style/media';
 import Favorite, { FavoriteIcon } from '../Favorite';
 import { flexCenter } from '../../style/flex';
 
+export type Book = $ReadOnly<{
+  bookId: number,
+  language: { +code: string, isRTL: boolean },
+  title: string,
+  chapters: $ReadOnlyArray<any>
+}>;
 type Props = {
-  book: BookDetails,
   onRequestClose(): void,
-  userHasEditAccess?: boolean,
-  chapter: { id: number, seqNo: number }
+  book: Book,
+  chapter: $ReadOnly<{ chapterId: number, seqNo: number }>
 };
 
-const Toolbar = ({
-  book,
-  chapter,
-  userHasEditAccess,
-  onRequestClose
-}: Props) => (
+const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
   <Div>
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     <Buttons>
-      {userHasEditAccess && (
-        <Link
-          href={{
-            pathname: '/admin/edit/book',
-            query: {
-              id: book.id,
-              lang: book.language.code,
-              chapterId: chapter.id
-            }
-          }}
-        >
-          <IconButton title="Edit book">
-            <EditIcon />
-          </IconButton>
-        </Link>
-      )}
+      <QueryIsAdmin>
+        {({ isAdmin }) =>
+          isAdmin && (
+            <Link
+              href={{
+                pathname: '/admin/edit/book',
+                query: {
+                  id: book.bookId,
+                  lang: book.language.code,
+                  chapterId: chapter.chapterId
+                }
+              }}
+            >
+              <IconButton title="Edit book">
+                <EditIcon />
+              </IconButton>
+            </Link>
+          )
+        }
+      </QueryIsAdmin>
       <FavButton book={book} />
       <IconButton onClick={onRequestClose}>
         <CloseIcon />
@@ -64,11 +68,11 @@ const Toolbar = ({
   </Div>
 );
 
-class FavButton extends React.Component<{ book: BookDetails }> {
+class FavButton extends React.Component<{ book: Book }> {
   render() {
     return (
       <Favorite
-        id={this.props.book.id}
+        id={this.props.book.bookId}
         language={this.props.book.language.code}
       >
         {({ isFav, onClick }) => (

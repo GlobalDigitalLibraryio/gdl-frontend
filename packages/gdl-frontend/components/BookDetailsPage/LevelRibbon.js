@@ -10,19 +10,19 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { triangle } from 'polished';
 
-import type { ReadingLevel } from '../../types';
+import type { ReadingLevel } from '../../gqlTypes';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts, misc } from '../../style/theme';
 import media from '../../style/media';
 import mq from '../../style/mq';
 
 const colorMap = {
-  '1': '#5DD0C1',
-  '2': '#84CB65',
-  '3': '#F1C528',
-  '4': '#FA9F28',
-  'read-aloud': '#F56324',
-  decodable: '#AB86CD'
+  Level1: '#5DD0C1',
+  Level2: '#84CB65',
+  Level3: '#F1C528',
+  Level4: '#FA9F28',
+  ReadAloud: '#F56324',
+  Decodable: '#AB86CD'
 };
 
 /**
