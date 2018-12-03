@@ -9,7 +9,9 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
 
-import type { Book } from '../../../../types';
+import type { CoverImage as CoverImageType } from 'gdl-image';
+import type { ReadingLevel } from '../../../../gqlTypes';
+
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { spacing } from '../../../../style/theme';
 import { Link } from '../../../../routes';
@@ -17,6 +19,21 @@ import CoverImage from '../../../CoverImage';
 import A from '../../../../elements/A';
 import { BookTitle, BookDescription, Wrapper, Divider } from './styled';
 import CircleLabel from '../../../GlobalMenu/CircleLabel';
+
+type Book = $ReadOnly<{
+  id: string,
+  bookId: number,
+  title: string,
+  highlightTitle: ?string,
+  description: string,
+  highlightDescription: ?string,
+  readingLevel: ReadingLevel,
+  language: {
+    name: string,
+    code: string
+  },
+  coverImage: ?CoverImageType
+}>;
 
 function renderTitle(book) {
   if (book.highlightTitle) {
@@ -47,7 +64,8 @@ function renderBookDescription(book) {
 }
 
 const SearchHit = ({ book }: { book: Book }) => {
-  const bookRoute = `/${book.language.code}/books/details/${book.id}`;
+  const bookRoute = `/${book.language.code}/books/details/${book.bookId}`;
+
   return (
     <Wrapper>
       <Link route={bookRoute} passHref>

@@ -45,7 +45,7 @@ class OnlineStatusRedirectProvider extends React.Component<
       query.id &&
       query.lang
     ) {
-      const book = await offlineLibrary.getBook(query.id, query.lang);
+      const book = await offlineLibrary.getBook(`${query.id}-${query.lang}`);
       if (!book) {
         router.replace('/offline');
       }

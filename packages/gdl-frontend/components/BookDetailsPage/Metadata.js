@@ -12,78 +12,64 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
 import { css, cx } from 'react-emotion';
 
-import { ContributorTypes, type BookDetails } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import A from '../../elements/A';
 
 type Props = {
-  book: BookDetails,
+  book: Book,
   online: boolean
 };
 
-function headingText(type, value) {
-  switch (type) {
-    case ContributorTypes.AUTHOR:
-      return <Plural one="Author" other="Authors" value={value} />;
-    case ContributorTypes.ILLUSTRATOR:
-      return <Plural one="Illustrator" other="Illustrators" value={value} />;
-    case ContributorTypes.TRANSLATOR:
-      return <Plural one="Translator" other="Translators" value={value} />;
-    case ContributorTypes.PHOTOGRAPHER:
-      return <Plural one="Photographer" other="Photographers" value={value} />;
-    default:
-      return <Plural one="Contributor" other="Contributors" value={value} />;
-  }
-}
+const Contributor = ({ contributorType, values }) => (
+  <Fragment>
+    <Typography variant="subtitle2" component="span">
+      <Plural
+        one={contributorType}
+        other={`${contributorType}s`}
+        value={values.length}
+      />
+    </Typography>
+    <Typography component="span" paragraph className={noMarginForLastChild}>
+      {values.map(contributor => contributor.name).join(', ')}
+    </Typography>
+  </Fragment>
+);
 
-function listContributors(contributorType, contributors) {
-  const contributorsOfType = contributors.filter(
-    c => c.type === contributorType
-  );
-
-  if (contributorsOfType.length > 0) {
-    return (
-      // $FlowFixMe this is a string...
-      <Fragment key={contributorType}>
-        <Typography variant="subtitle2" component="span">
-          {headingText(contributorType, contributorsOfType.length)}
-        </Typography>
-        <Typography component="span" paragraph className={noMarginForLastChild}>
-          {contributorsOfType.map(contributor => contributor.name).join(', ')}
-        </Typography>
-      </Fragment>
-    );
-  }
-  return null;
-}
-
-const BookMeta = ({ book, online }: Props) => {
-  return (
-    <>
-      {Object.values(ContributorTypes).map(type =>
-        listContributors(type, book.contributors)
-      )}
-
-      <Typography variant="subtitle2" component="span">
-        <Trans>License</Trans>
+const BookMeta = ({ book, online }: Props) => (
+  <>
+    {book.authors && (
+      <Contributor contributorType="Author" values={book.authors} />
+    )}
+    {book.illustrators && (
+      <Contributor contributorType="Illustrator" values={book.illustrators} />
+    )}
+    {book.photographers && (
+      <Contributor contributorType="Photographer" values={book.photographers} />
+    )}
+    {book.translators && (
+      <Contributor contributorType="Translator" values={book.translators} />
+    )}
+    <Typography variant="subtitle2" component="span">
+      <Trans>License</Trans>
+    </Typography>
+    {online ? (
+      <A href={book.license.url} paragraph className={noMarginForLastChild}>
+        {book.license.name}
+      </A>
+    ) : (
+      <Typography component="span" paragraph className={noMarginForLastChild}>
+        {book.license.name}
       </Typography>
-      {online ? (
-        <A href={book.license.url} paragraph className={noMarginForLastChild}>
-          {book.license.description}
-        </A>
-      ) : (
-        <Typography component="span" paragraph className={noMarginForLastChild}>
-          {book.license.description}
-        </Typography>
-      )}
-      {book.additionalInformation && (
-        <AdditionalInformation
-          additionalInformation={book.additionalInformation}
-        />
-      )}
-    </>
-  );
-};
+    )}
+    {book.additionalInformation && (
+      <AdditionalInformation
+        additionalInformation={book.additionalInformation}
+      />
+    )}
+  </>
+);
 
 class AdditionalInformation extends React.Component<
   { additionalInformation: string },

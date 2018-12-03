@@ -8,13 +8,15 @@
 
 import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
+import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
-import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import * as Sentry from '@sentry/browser';
+import { withApollo } from 'gdl-apollo-client';
+import type { ApolloClient } from 'react-apollo';
 
 import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';
 import getPageContext from '../getPageContext';
@@ -26,14 +28,10 @@ import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
+import OfflineLibrary from '../lib/offlineLibrary';
+import GlobalStyles from '../components/GlobalStyles';
 import { DimensionProvider } from '../context/DimensionContext';
 import { TutorialProvider } from '../context/TutorialContext';
-
-// Adds server generated styles to the emotion cache.
-// '__NEXT_DATA__.ids' is set in '_document.js'
-if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
-  hydrate(window.__NEXT_DATA__.ids);
-}
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
@@ -55,9 +53,14 @@ class App extends NextApp {
     return { pageProps };
   }
 
-  constructor(props: {}) {
+  constructor(props: { apolloClient: ApolloClient }) {
     super(props);
     this.pageContext = getPageContext();
+    // Pass off the apollo client instance to the offline library so it can
+    // put all the offlined books in the cache
+    if (process.browser && OfflineLibrary && props.apolloClient) {
+      OfflineLibrary.populateApolloCache(props.apolloClient);
+    }
   }
 
   componentDidCatch(error: *, errorInfo: *) {
@@ -127,39 +130,45 @@ class App extends NextApp {
   };
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, apolloClient } = this.props;
     return (
       <NextContainer>
-        <Head>
-          <title>{DEFAULT_TITLE}</title>
-        </Head>
-        <GdlI18nProvider>
-          {/* Wrap every page in Jss and Theme providers */}
-          <JssProvider
-            jss={this.pageContext.jss}
-            registry={this.pageContext.sheetsRegistry}
-            generateClassName={this.pageContext.generateClassName}
-          >
-            {/* MuiThemeProvider makes the theme available down the React
-              tree thanks to React context. */}
-            <MuiThemeProvider
-              theme={this.pageContext.theme}
-              sheetsManager={this.pageContext.sheetsManager}
+        <GlobalStyles />
+        <ApolloProvider client={apolloClient}>
+          <Head>
+            <title>{DEFAULT_TITLE}</title>
+          </Head>
+          <GdlI18nProvider>
+            {/* Wrap every page in Jss and Theme providers */}
+            <JssProvider
+              jss={this.pageContext.jss}
+              registry={this.pageContext.sheetsRegistry}
+              generateClassName={this.pageContext.generateClassName}
             >
-              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-              <CssBaseline />
-              <OnlineStatusRedirectProvider>
-                {/* Pass pageContext to the _document though the renderPage enhancer
+              {/* MuiThemeProvider makes the theme available down the React
+              tree thanks to React context. */}
+              <MuiThemeProvider
+                theme={this.pageContext.theme}
+                sheetsManager={this.pageContext.sheetsManager}
+              >
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <OnlineStatusRedirectProvider>
+                  <DimensionProvider>
+                    <TutorialProvider>
+                      {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                <DimensionProvider>
-                  <TutorialProvider>
-                    <Component pageContext={this.pageContext} {...pageProps} />
-                  </TutorialProvider>
-                </DimensionProvider>
-              </OnlineStatusRedirectProvider>
-            </MuiThemeProvider>
-          </JssProvider>
-        </GdlI18nProvider>
+                      <Component
+                        pageContext={this.pageContext}
+                        {...pageProps}
+                      />
+                    </TutorialProvider>
+                  </DimensionProvider>
+                </OnlineStatusRedirectProvider>
+              </MuiThemeProvider>
+            </JssProvider>
+          </GdlI18nProvider>
+        </ApolloProvider>
       </NextContainer>
     );
   }
@@ -168,4 +177,4 @@ class App extends NextApp {
 // Register service worker for clients that support it
 registerServiceWorker();
 
-export default App;
+export default withApollo(App);

@@ -10,7 +10,8 @@ import type { $Request, $Response } from 'express';
 import UniversalCookie from 'universal-cookie';
 import getConfig from 'next/config';
 
-import type { Category, Language, ConfigShape } from '../types';
+import type { ConfigShape } from '../types';
+import type { Category } from '../gqlTypes';
 
 const {
   publicRuntimeConfig: { DEFAULT_LANGUAGE }
@@ -40,18 +41,18 @@ const SIX_MONTHS_OPTIONS = {
  * Set book language and category
  */
 export function setBookLanguageAndCategory(
-  language: Language,
+  languageCode: string,
   category: Category,
   res?: $Response
 ) {
   // Server
   if (res) {
-    res.cookie(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
+    res.cookie(BOOK_LANGUAGE_KEY, languageCode, ONE_MONTH_OPTIONS);
     res.cookie(BOOK_CATEGORY_KEY, category, ONE_MONTH_OPTIONS);
   } else {
     // Client
     const c = cookies();
-    c.set(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
+    c.set(BOOK_LANGUAGE_KEY, languageCode, ONE_MONTH_OPTIONS);
     c.set(BOOK_CATEGORY_KEY, category, ONE_MONTH_OPTIONS);
   }
 }
@@ -60,11 +61,6 @@ export function getBookCategory(req?: $Request) {
   return req
     ? req.cookies[BOOK_CATEGORY_KEY]
     : cookies().get(BOOK_CATEGORY_KEY, { doNotParse: true });
-}
-
-export function setBookLanguage(language: Language) {
-  const c = cookies();
-  c.set(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
 }
 
 /**

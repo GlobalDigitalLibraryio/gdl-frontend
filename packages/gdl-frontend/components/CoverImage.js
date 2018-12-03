@@ -8,9 +8,8 @@
 
 import * as React from 'react';
 import { css, cx } from 'react-emotion';
-import { coverImageUrl } from 'gdl-image';
+import { coverImageUrl, type CoverImage as CoverImageType } from 'gdl-image';
 
-import type { CoverImage as CoverImageType } from '../types';
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
 

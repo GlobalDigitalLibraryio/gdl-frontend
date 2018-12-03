@@ -60,7 +60,7 @@ export default class EditBookImage extends React.Component<Props, State> {
       ? imageMetadata.alttext.alttext
       : this.props.book.coverImage.alttext;
 
-    const coverImage = imageMetadata
+    let coverImage = imageMetadata
       ? {
           url: imageMetadata.imageUrl,
           imageId: imageMetadata.id,
@@ -69,10 +69,16 @@ export default class EditBookImage extends React.Component<Props, State> {
         }
       : this.props.book.coverImage;
 
+    coverImage = {
+      ...coverImage,
+      variants: Object.values(coverImage.variants)
+    };
+
     return (
       <>
         <div css={{ textAlign: 'center' }}>
           <img
+            // $FlowFixMe:
             src={coverImageUrl(coverImage)}
             css={{
               width: 310,

@@ -6,30 +6,26 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Typography } from '@material-ui/core';
 
-import type {
-  BookDetails,
-  Chapter,
-  FrontPage as FrontPageType
-} from '../../types';
 import { Backdrop, Page } from './styledReader';
-import Toolbar from './Toolbar';
+import Toolbar, { type Book } from './Toolbar';
 import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import PageNavigation from './PageNavigation';
 import { colors } from '../../style/theme';
+import { type CrowdinBook_crowdinBook_frontPage as FrontPageType } from '../../gqlTypes';
+import type { ChapterContent, ChapterPointer } from '../../types';
 
 type Props = {|
-  book: BookDetails,
+  book: Book,
   onRequestClose(): void,
+  chapterPointer: ChapterPointer,
   hasFrontPage?: boolean,
-  chapterWithContent: ?(FrontPageType | Chapter),
-  chapterPointer: { id: number, seqNo: number },
+  chapterWithContent: ?(FrontPageType | ChapterContent),
   onRequestNextChapter(): void,
-  onRequestPreviousChapter(): void,
-  userHasEditAccess?: boolean
+  onRequestPreviousChapter(): void
 |};
 
 const Reader = ({
@@ -39,10 +35,9 @@ const Reader = ({
   chapterPointer,
   onRequestNextChapter,
   onRequestPreviousChapter,
-  onRequestClose,
-  userHasEditAccess
+  onRequestClose
 }: Props) => {
-  const isRtlLanguage = !!book.language.isRTL;
+  const isRtlLanguage = book.language.isRTL;
 
   return (
     <Container size="large" gutter={false}>
@@ -51,7 +46,6 @@ const Reader = ({
         <Toolbar
           book={book}
           chapter={chapterPointer}
-          userHasEditAccess={userHasEditAccess}
           onRequestClose={onRequestClose}
         />
         {/*
@@ -90,7 +84,7 @@ const Reader = ({
   );
 };
 
-const FrontPage = ({ content, language, dir }) => (
+const FrontPage = ({ content, language, dir }: any) => (
   <Page dir={dir} lang={language}>
     <img src={content.images[0]} alt="" />
     <Typography style={{ marginBottom: 30 }} variant="h3">
@@ -100,8 +94,8 @@ const FrontPage = ({ content, language, dir }) => (
   </Page>
 );
 
-function createMarkup(chapter: Chapter) {
-  return { __html: chapter.content };
+function createMarkup(chapter: FrontPageType | ChapterContent) {
+  return { __html: chapter.content && chapter.content };
 }
 
 const Card = styled.div`
