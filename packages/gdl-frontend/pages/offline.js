@@ -7,11 +7,11 @@
  */
 
 import * as React from 'react';
-import type { BookDetails } from '../types';
 import { Trans } from '@lingui/react';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import Link from 'next/link';
 
+import type { OfflineBook_book as Book } from '../gqlTypes';
 import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
@@ -28,7 +28,7 @@ import OnlineStatusContext, {
  */
 
 type State = {
-  books: Array<BookDetails>,
+  books: Array<Book>,
   loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR'
 };
 

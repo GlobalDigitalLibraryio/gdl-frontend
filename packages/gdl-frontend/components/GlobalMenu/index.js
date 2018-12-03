@@ -5,7 +5,6 @@
  *
  * See LICENSE
  */
-
 import React from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
@@ -25,11 +24,12 @@ import {
   Edit as EditIcon,
   Help as HelpIcon
 } from '@material-ui/icons';
-import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
 import { withRouter } from 'next/router';
 
 import { FavoriteIcon } from '../Favorite';
-import OfflineIcon from '../OfflineIcon';
+import { OfflineIcon } from '../Offline';
+import { hasAuthToken } from 'gdl-auth';
+import { QueryIsAdmin } from '../../gql';
 import { Link as RouteLink } from '../../routes';
 import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
@@ -43,21 +43,15 @@ type Props = {|
 |};
 
 type State = {
-  swipeDisabled: boolean,
-  userHasAdminPrivileges: boolean
+  swipeDisabled: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
-    swipeDisabled: false,
-    userHasAdminPrivileges: false
+    swipeDisabled: false
   };
 
   static contextType = OnlineStatusContext;
-
-  componentDidMount() {
-    this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
-  }
 
   disableSwipe = () => this.setState({ swipeDisabled: true });
   enableSwipe = () => this.setState({ swipeDisabled: false });
@@ -121,16 +115,6 @@ class GlobalMenu extends React.Component<Props, State> {
                 )}
               </CategoriesMenu>
               <Divider />
-              {this.state.userHasAdminPrivileges && (
-                <ListItem component="a" href="/admin" button>
-                  <ListItemIcon>
-                    <EditIcon />
-                  </ListItemIcon>
-                  <ListItemText>
-                    <Trans>GDL Admin</Trans>
-                  </ListItemText>
-                </ListItem>
-              )}
               <RouteLink passHref route="favorites">
                 <ListItem
                   button
@@ -180,7 +164,32 @@ class GlobalMenu extends React.Component<Props, State> {
                   </ListItemText>
                 </ListItem>
               </RouteLink>
-              {!hasAuthToken() ? (
+              <QueryIsAdmin skip={!this.props.isOpen}>
+                {({ isAdmin }) =>
+                  isAdmin && (
+                    <ListItem component="a" href="/admin" button>
+                      <ListItemIcon>
+                        <EditIcon />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Trans>GDL Admin</Trans>
+                      </ListItemText>
+                    </ListItem>
+                  )
+                }
+              </QueryIsAdmin>
+              {hasAuthToken() ? (
+                <Link passHref href="/auth/sign-off">
+                  <ListItem button component="a">
+                    <ListItemIcon>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Trans>Log out</Trans>
+                    </ListItemText>
+                  </ListItem>
+                </Link>
+              ) : (
                 <Link passHref href="/auth/sign-in">
                   <ListItem
                     button
@@ -192,17 +201,6 @@ class GlobalMenu extends React.Component<Props, State> {
                     </ListItemIcon>
                     <ListItemText>
                       <Trans>Log in</Trans>
-                    </ListItemText>
-                  </ListItem>
-                </Link>
-              ) : (
-                <Link passHref href="/auth/sign-off">
-                  <ListItem button component="a">
-                    <ListItemIcon>
-                      <ExitToAppIcon />
-                    </ListItemIcon>
-                    <ListItemText>
-                      <Trans>Log out</Trans>
                     </ListItemText>
                   </ListItem>
                 </Link>

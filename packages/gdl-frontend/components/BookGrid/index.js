@@ -8,11 +8,10 @@
 
 import * as React from 'react';
 import GridContainer from './styledGridContainer';
-import type { Book } from '../../types';
-import BookLink from './../BookLink';
+import BookLink, { type Book } from './../BookLink';
 
 type Props = {
-  books: Array<Book>
+  books: $ReadOnlyArray<Book>
 };
 
 const BookGrid = ({ books }: Props) => (

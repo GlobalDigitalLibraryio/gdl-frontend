@@ -6,20 +6,20 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
+import gql from 'graphql-tag';
+import Router from 'next/router';
 
-import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
+import type { ConfigShape, Context } from '../types';
 import type {
-  ConfigShape,
-  Book,
-  Language,
-  FeaturedContent,
-  Context,
   Category,
-  ReadingLevel
-} from '../types';
+  BooksAndFeatured,
+  BooksAndFeatured_featuredContent as FeaturedContent,
+  GetCategories as Categories
+} from '../gqlTypes';
+
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -30,158 +30,253 @@ import {
 import { getHomeTutorialStatus } from '../lib/storage';
 
 const {
-  publicRuntimeConfig: { canonicalUrl }
+  publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
 }: ConfigShape = getConfig();
+
+const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   homeTutorialStatus: boolean,
-  featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
-  levels: Array<ReadingLevel>,
-  booksByLevel: Array<{ results: Array<Book> }>,
   category: Category,
-  categories: Array<Category>
+  categories: Array<Category>,
+  languageCode: string,
+  featuredContent: FeaturedContent,
+  bookSummaries: $Diff<
+    BooksAndFeatured,
+    { featuredContent: Array<FeaturedContent> }
+  >
 |};
 
 class IndexPage extends React.Component<Props> {
-  static async getInitialProps({ query, asPath, req, res }: Context) {
+  static async getInitialProps({
+    query,
+    asPath,
+    req,
+    res,
+    apolloClient
+  }: Context) {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
 
-    // $FlowFixMe: Don't know why flow doesn't like this
-    const categoriesRes = await fetchCategories(languageCode);
+    const categoriesRes: { data: Categories } = await apolloClient.query({
+      query: CATEGORIES_QUERY,
+      variables: {
+        language: languageCode
+      }
+    });
 
-    if (!categoriesRes.isOk) {
-      const statusCode =
-        // If the categories endpoint doesn't get a valid language code, it throws with a VALIDATION error.
-        // Because of the way we structure the URLs in the frontend, this means we should render the 404 page
-        categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
-          ? 404
-          : categoriesRes.statusCode;
-
-      return {
-        statusCode
-      };
+    /**
+     * Some valid languages does not have content and will eventually return empty categories.
+     * Fallback/redirect to default language (english).
+     */
+    if (categoriesRes.data.categories.length === 0) {
+      // We have different ways of redirecting on the server and on the client...
+      // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
+      if (res) {
+        res.writeHead(302, { Location: redirectUrl });
+        res.end();
+      } else {
+        Router.push(redirectUrl);
+      }
+      return {};
     }
-
-    const categories = categoriesRes.data;
-
+    const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
-    let category: Category;
+
+    let category: string;
     if (asPath.includes('/classroom')) {
-      category = 'classroom_books';
+      category = 'Classroom';
     } else if (asPath.includes('/library')) {
-      category = 'library_books';
-    } else if (categoryInCookie && categoryInCookie in categories) {
+      category = 'Library';
+    } else if (categoryInCookie && categories.includes(categoryInCookie)) {
       // Small check to make sure the value in the cookie is something valid
       // $FlowFixMe: We know this is a valid category :/
       category = categoryInCookie;
     } else {
-      // Default to library_books
-      category =
-        'library_books' in categories ? 'library_books' : 'classroom_books';
+      // Default to Library
+      category = categories.includes('Library') ? 'Library' : categories[0];
     }
 
-    // Make sure levels is a valid array for the upcoming `map`
-    const levels = categories[category] || [];
-
-    const results = await Promise.all([
-      fetchFeaturedContent(languageCode),
-      // $FlowFixMe: We know this is a valid category :/
-      fetchBooks(languageCode, { category: category }),
-      ...levels.map(level =>
-        fetchBooks(languageCode, {
-          level,
-          category,
-          sort: 'title'
-        })
-      )
-    ]);
-
-    if (!results.every(res => res.isOk)) {
-      return {
-        statusCode: results.find(res => !res.isOk).statusCode
-      };
-    }
-
-    const [featuredContent, newArrivals, ...booksByLevel] = results.map(
-      result => result.data
-    );
+    const booksAndFeatured: {
+      data: BooksAndFeatured
+    } = await apolloClient.query({
+      query: BOOKS_AND_FEATURED_QUERY,
+      variables: {
+        category,
+        language: languageCode,
+        pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+      }
+    });
 
     // $FlowFixMe: We know this is a valid category :/
-    setBookLanguageAndCategory(newArrivals.language, category, res);
+    setBookLanguageAndCategory(languageCode, category, res);
+
+    const {
+      data: { featuredContent, ...bookSummaries }
+    } = booksAndFeatured;
 
     const homeTutorialStatus = getHomeTutorialStatus(req);
 
     return {
       homeTutorialStatus,
       category,
-      featuredContent,
-      newArrivals,
-      levels,
-      booksByLevel,
-      categories: Object.keys(categories)
+      categories,
+      languageCode,
+      // Currently the UI only supports one featured content, not an array
+      featuredContent: featuredContent[0],
+      bookSummaries
     };
   }
 
   // Ensure cookies are set, even if the rendered HTML came from the cache on the server
   componentDidMount() {
-    setBookLanguageAndCategory(
-      this.props.newArrivals.language,
-      this.props.category
-    );
+    setBookLanguageAndCategory(this.props.languageCode, this.props.category);
   }
 
   render() {
     const {
+      bookSummaries,
       homeTutorialStatus,
       category,
       featuredContent,
-      levels,
-      booksByLevel,
-      newArrivals,
-      categories
+      categories,
+      languageCode
     } = this.props;
 
-    const language = newArrivals.language;
-
     let categoryTypeForUrl;
-    if (category === 'library_books') {
+    if (category === 'Library') {
       categoryTypeForUrl = 'library';
-    } else if (category === 'classroom_books') {
+    } else if (category === 'Classroom') {
       categoryTypeForUrl = 'classroom';
     }
 
     return (
-      <Fragment>
+      <>
         {categoryTypeForUrl && (
           <Head>
             <link
               rel="canonical"
-              href={`${canonicalUrl}/${
-                language.code
-              }/books/category/${categoryTypeForUrl}`}
+              href={`${canonicalUrl}/${languageCode}/books/category/${categoryTypeForUrl}`}
             />
             <meta
               property="og:url"
-              content={`${canonicalUrl}/${
-                language.code
-              }/books/category/${categoryTypeForUrl}`}
+              content={`${canonicalUrl}/${languageCode}/books/category/${categoryTypeForUrl}`}
             />
           </Head>
         )}
         <HomePage
+          bookSummaries={bookSummaries}
           homeTutorialStatus={homeTutorialStatus}
           category={category}
           categories={categories}
-          levels={levels}
-          newArrivals={newArrivals}
-          booksByLevel={booksByLevel}
+          languageCode={languageCode}
           featuredContent={featuredContent}
         />
-      </Fragment>
+      </>
     );
   }
 }
 
 export default withErrorPage(IndexPage);
+
+const CATEGORIES_QUERY = gql`
+  query GetCategories($language: String!) {
+    categories(language: $language)
+  }
+`;
+
+const BOOKS_AND_FEATURED_QUERY = gql`
+  query BooksAndFeatured(
+    $language: String!
+    $category: Category!
+    $pageSize: Int
+  ) {
+    featuredContent(language: $language) {
+      id
+      title
+      description
+      link
+      imageUrl
+      language {
+        code
+      }
+    }
+    NewArrivals: bookSummaries(
+      language: $language
+      category: $category
+      orderBy: arrivalDate_DESC
+      pageSize: $pageSize
+    ) {
+      ...fields
+    }
+    Decodable: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Decodable
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level1: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level1
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level2: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level2
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level3: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level3
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level4: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Level4
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    ReadAloud: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: ReadAloud
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+  }
+
+  fragment fields on ResultItemConnection {
+    results {
+      id
+      bookId
+      title
+      coverImage {
+        url
+      }
+      language {
+        code
+      }
+    }
+  }
+`;

@@ -20,12 +20,14 @@ import {
   Sync as SyncIcon,
   Translate as TranslateIcon
 } from '@material-ui/icons';
-import styled, { css } from 'react-emotion';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import facepaint from 'facepaint';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 
-import doFetch, { fetchMyTranslations } from '../../fetch';
+import doFetch from '../../fetch';
 import { Link } from '../../routes';
-import type { Translation } from '../../types';
 import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
@@ -38,6 +40,11 @@ import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 
+import type {
+  MyBookTranslations,
+  MyBookTranslations_currentUser_translations as Translation
+} from '../../gqlTypes';
+
 /**
  * There is a breakpoint interval between 768-865px in width
  * that breaks the UI for the translate dropdown. Which is why
@@ -47,6 +54,38 @@ const customMedia = facepaint([
   `@media(min-width: ${TABLET_BREAKPOINT}px)`,
   `@media(min-width: 866px)`
 ]);
+
+const MY_TRANSLATION_QUERY = gql`
+  query MyBookTranslations {
+    currentUser {
+      translations {
+        readingLevel
+        crowdinUrl
+        synchronizeUrl
+        from {
+          language {
+            name
+          }
+        }
+        to {
+          id
+          bookId
+          title
+          publisher {
+            name
+          }
+          coverImage {
+            url
+          }
+          language {
+            name
+            code
+          }
+        }
+      }
+    }
+  }
+`;
 
 class TranslationCard extends React.Component<
   {
@@ -85,12 +124,18 @@ class TranslationCard extends React.Component<
   };
 
   render() {
-    const { translation } = this.props;
+    const {
+      translation: {
+        to: translateTo,
+        from: translateFrom,
+        crowdinUrl,
+        readingLevel
+      }
+    } = this.props;
     const { isLoading, menuIsOpen } = this.state;
 
     return (
       <Card
-        key={translation.id}
         css={mq({
           marginTop: spacing.xlarge,
           marginBottom: [spacing.xxlarge, spacing.medium],
@@ -110,12 +155,12 @@ class TranslationCard extends React.Component<
             <Link
               route="book"
               params={{
-                lang: translation.translatedTo.code,
-                id: translation.id
+                lang: translateTo.language.code,
+                id: translateTo.bookId
               }}
             >
               <a>
-                <CoverImage coverImage={translation.coverImage} size="medium" />
+                <CoverImage coverImage={translateTo.coverImage} size="medium" />
               </a>
             </Link>
           </Grid>
@@ -133,8 +178,13 @@ class TranslationCard extends React.Component<
               })}
             >
               <SyncIcon
-                className={isLoading ? spin : null}
-                css={mq({ fontSize: [24, 30, 30] })}
+                css={
+                  isLoading
+                    ? spin
+                    : mq({
+                        fontSize: [24, 30, 30]
+                      })
+                }
               />
               <Trans>Sync</Trans>
             </Button>
@@ -159,9 +209,9 @@ class TranslationCard extends React.Component<
 
             <TranslateDropdown
               ref={this.anchorEl}
-              bookId={translation.id}
-              crowdinUrl={translation.crowdinUrl}
-              translatedTo={translation.translatedTo.code}
+              bookId={translateTo.bookId}
+              crowdinUrl={crowdinUrl}
+              translatedTo={translateTo.language.code}
               onClose={this.closeMenu}
               menuIsOpen={menuIsOpen}
               popperStyle={css`
@@ -181,19 +231,19 @@ class TranslationCard extends React.Component<
             })}
           >
             <Grid item>
-              <Typography variant="h5">{translation.title}</Typography>
+              <Typography variant="h5">{translateTo.title}</Typography>
               <Typography variant="body1" component="span">
-                <Trans>From {translation.publisher.name}</Trans>
+                <Trans>From {translateTo.publisher.name}</Trans>
                 {', '}
                 <CircleLabel
-                  level={translation.readingLevel}
+                  level={readingLevel}
                   style={{
                     marginBottom: '-5px',
                     marginRight: '4px',
                     fontSize: 22
                   }}
                 />
-                <ReadingLevelTrans readingLevel={translation.readingLevel} />
+                <ReadingLevelTrans readingLevel={readingLevel} />
               </Typography>
             </Grid>
 
@@ -204,7 +254,7 @@ class TranslationCard extends React.Component<
                     <Trans>From</Trans>:
                   </Typography>
                   <Typography variant="h6">
-                    {translation.translatedFrom.name}
+                    {translateFrom.language.name}
                   </Typography>
                 </Grid>
                 <Grid
@@ -221,7 +271,7 @@ class TranslationCard extends React.Component<
                 <Grid item>
                   <Typography variant="body1">To:</Typography>
                   <Typography variant="h6">
-                    {translation.translatedTo.name}
+                    {translateTo.language.name}
                   </Typography>
                 </Grid>
               </Grid>
@@ -234,12 +284,13 @@ class TranslationCard extends React.Component<
 }
 
 const spin = css`
-  font-size: 30px;
   animation-name: spin;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   transform-origin: 50% 50%;
   display: inline-block;
+
+  ${mq({ fontSize: [24, 30, 30] })}
 
   @keyframes spin {
     from {
@@ -275,68 +326,8 @@ const CustomGrid = styled('div')`
   }
 `;
 
-type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
-
-type State = {
-  translations: Array<Translation>,
-  loadingState: LoadingState
-};
-
-class MyTranslationsPage extends React.Component<{}, State> {
-  state = {
-    translations: [],
-    loadingState: 'LOADING'
-  };
-
-  async componentDidMount() {
-    this.loadMyTranslations();
-  }
-
-  loadMyTranslations = async () => {
-    const translationsRes = await fetchMyTranslations();
-    if (translationsRes.isOk) {
-      this.setState({
-        translations: translationsRes.data,
-        loadingState: 'SUCCESS'
-      });
-    } else {
-      this.setState({
-        loadingState: 'ERROR'
-      });
-    }
-  };
-
-  handleSync = () => {
-    // Refreshes my translation cards when a card is synced
-    this.loadMyTranslations();
-  };
-
-  renderTranslations = () => {
-    if (this.state.translations.length === 0) {
-      return (
-        <Typography
-          align="center"
-          paragraph
-          variant="body1"
-          css={{ marginTop: spacing.medium }}
-        >
-          <Trans>You have not translated any books yet.</Trans>
-        </Typography>
-      );
-    }
-
-    return this.state.translations.map(translation => (
-      <TranslationCard
-        key={`${translation.id}-${translation.translatedTo.code}`}
-        translation={translation}
-        handleSync={this.handleSync}
-      />
-    ));
-  };
-
+class MyTranslationsPage extends React.PureComponent<{}> {
   render() {
-    const { loadingState } = this.state;
-
     return (
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
@@ -349,24 +340,58 @@ class MyTranslationsPage extends React.Component<{}, State> {
           >
             <Trans>My translations</Trans>
           </Typography>
-
-          {loadingState === 'LOADING' && (
-            <CircularProgress
-              css={{
-                marginTop: spacing.large,
-                marginBottom: spacing.large,
-                display: 'block',
-                marginLeft: 'auto',
-                marginRight: 'auto'
-              }}
-            />
-          )}
-          {loadingState === 'SUCCESS' && this.renderTranslations()}
-          {loadingState === 'ERROR' && (
-            <Typography align="center" color="error" variant="body1">
-              <Trans>An error has occurred. Please try again.</Trans>
-            </Typography>
-          )}
+          <Query query={MY_TRANSLATION_QUERY}>
+            {({
+              loading,
+              error,
+              data,
+              refetch
+            }: {
+              loading: boolean,
+              error: *,
+              data: MyBookTranslations,
+              refetch: () => void
+            }) => {
+              if (loading)
+                return (
+                  <CircularProgress
+                    css={{
+                      marginTop: spacing.large,
+                      marginBottom: spacing.large,
+                      display: 'block',
+                      marginLeft: 'auto',
+                      marginRight: 'auto'
+                    }}
+                  />
+                );
+              if (error) throw new Error(error);
+              if (!data.currentUser)
+                return (
+                  <Typography align="center" color="error" variant="body1">
+                    <Trans>An error has occurred. Please try again.</Trans>
+                  </Typography>
+                );
+              const { translations } = data.currentUser;
+              return translations.length === 0 ? (
+                <Typography
+                  align="center"
+                  paragraph
+                  variant="body1"
+                  css={{ marginTop: spacing.medium }}
+                >
+                  <Trans>You have not translated any books yet.</Trans>
+                </Typography>
+              ) : (
+                translations.map(translation => (
+                  <TranslationCard
+                    key={translation.to.id}
+                    translation={translation}
+                    handleSync={refetch}
+                  />
+                ))
+              );
+            }}
+          </Query>
         </Container>
       </Layout>
     );

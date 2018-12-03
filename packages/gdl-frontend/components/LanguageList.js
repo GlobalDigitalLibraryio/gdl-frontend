@@ -22,9 +22,9 @@ import { Check as CheckIcon } from '@material-ui/icons';
 import { css } from 'react-emotion';
 import { I18n } from '@lingui/react';
 
+import type { languages_languages as Language } from '../gqlTypes';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
-import type { Language } from '../types';
 import { colors } from '../style/theme';
 
 type Props = {

@@ -7,21 +7,25 @@
  */
 
 import React, { type Element } from 'react';
-import styled, { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import type { Book, ReadingLevel } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
 import Shimmer from './Shimmer';
+import type {
+  ReadingLevel,
+  BooksAndFeatured_Level1_results as Book
+} from '../../gqlTypes';
 
 type Props = {
-  books: Array<Book>,
+  books: $ReadOnlyArray<Book>,
   heading: Element<typeof Trans>,
   browseLinkProps?: BrowseLinkProps,
   loading?: boolean,
@@ -47,6 +51,9 @@ const BookList = ({
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
+      style={{
+        visibility: !loading && books.length === 0 ? 'hidden' : 'visible'
+      }}
     >
       <Typography component="h1" variant="h5" style={{ textAlign: 'left' }}>
         {heading}
@@ -72,7 +79,7 @@ const BookList = ({
     <Scroller>
       {loading
         ? [...Array(5).keys()].map(index => (
-            <div className={cx(itemStyle, shimmerStyle)} key={index}>
+            <div css={[itemStyle, shimmerStyle]} key={index}>
               <Shimmer className={shimmerStyle} />
             </div>
           ))

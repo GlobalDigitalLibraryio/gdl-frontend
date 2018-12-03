@@ -1,7 +1,7 @@
 // @flow
 import localForage from 'localforage';
 
-import { CACHE_NAME, keyForBook } from './index';
+import { CACHE_NAME } from './index';
 
 /**
  * We keep track of when the book was offlined, so we can expire it after a certain time has passed
@@ -12,28 +12,25 @@ export default class TimestampModel {
     storeName: 'timestamp'
   });
 
-  getTimestamp = async (id: number | string, language: string) =>
-    this.timestampStore.getItem(keyForBook(id, language));
+  getTimestamp = async (id: string): Promise<?number> =>
+    this.timestampStore.getItem(id);
 
-  setTimestamp = async (id: number | string, language: string) =>
-    this.timestampStore.setItem(keyForBook(id, language), Date.now());
+  setTimestamp = async (id: string): Promise<void> =>
+    this.timestampStore.setItem(id, Date.now());
 
-  deleteTimestamp = async (id: number | string, language: string) =>
-    this.timestampStore.removeItem(keyForBook(id, language));
+  deleteTimestamp = async (id: string) => this.timestampStore.removeItem(id);
 
-  getTimeStamps = async () => {
+  getTimeStamps = async (): Promise<
+    Array<{ id: string, timestamp: number }>
+  > => {
     const timestamps = [];
 
-    await this.timestampStore.iterate(
-      (timestamp: number, compositeId: string) => {
-        // Extract the id and language code from the composite id
-        const [id, language] = compositeId.split(/-(.+)/);
-        timestamps.push({ id, timestamp, language });
-      }
-    );
+    await this.timestampStore.iterate((timestamp: number, id: string) => {
+      timestamps.push({ id, timestamp });
+    });
 
     return timestamps;
   };
 
-  clear = () => this.timestampStore.clear();
+  clear = (): Promise<void> => this.timestampStore.clear();
 }
