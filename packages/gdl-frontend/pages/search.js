@@ -15,7 +15,6 @@ import { logEvent } from '../lib/analytics';
 import type { Book, Context } from '../types';
 import { SearchHit, Placeholder, NoResults } from '../components/Search';
 import Layout from '../components/Layout';
-import Main from '../components/Layout/Main';
 import Head from '../components/Head';
 import { Container, LoadingButton } from '../elements';
 import { spacing } from '../style/theme';
@@ -152,9 +151,9 @@ class SearchPage extends React.Component<Props, State> {
     const { searchResult } = this.state;
 
     return (
-      <Layout wrapWithMain={false}>
+      <>
         <Head title="Search" />
-        <Main background="white">
+        <Layout containerBackground="white">
           <Container my={spacing.large}>
             {/* 
               Important that the div with the aria-live is present when the search page first loads
@@ -221,8 +220,8 @@ class SearchPage extends React.Component<Props, State> {
               <Placeholder />
             )}
           </Container>
-        </Main>
-      </Layout>
+        </Layout>
+      </>
     );
   }
 }

@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Trans } from '@lingui/react';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
@@ -121,7 +121,7 @@ class BookPage extends React.Component<Props> {
     const offline: boolean = !this.context;
 
     return (
-      <Fragment>
+      <>
         <Head
           description={book.description}
           title={book.title}
@@ -224,7 +224,7 @@ class BookPage extends React.Component<Props> {
             </Container>
           </Main>
         </Layout>
-      </Fragment>
+      </>
     );
   }
 }

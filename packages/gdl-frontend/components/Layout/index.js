@@ -15,15 +15,26 @@ import Main from './Main';
 import Footer from './Footer';
 
 // Use height instead of min-height to fix flexbox issue in IE (https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/)
+// Top padding for fixed appbar/nav
+// The padding here is copied from MUIs toolbar. Copied for convenience, so will probably break in the future
+// https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/styles/createMixins.js
 const PageWrapper = styled('div')`
   height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 56px;
+  @media (min-width: 0px) and (orientation: landscape) {
+    padding-top: 48px;
+  }
+  @media (min-width: 600px) {
+    padding-top: 64px;
+  }
 `;
 
 type Props = {|
   children: Node,
-  wrapWithMain: boolean
+  wrapWithMain: boolean,
+  containerBackground?: 'white' | 'gray'
 |};
 
 type State = {
@@ -40,7 +51,7 @@ class Layout extends React.Component<Props, State> {
   };
 
   render() {
-    const { children, wrapWithMain } = this.props;
+    const { children, wrapWithMain, containerBackground } = this.props;
     return (
       <PageWrapper>
         <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
@@ -48,7 +59,11 @@ class Layout extends React.Component<Props, State> {
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
         />
-        {wrapWithMain ? <Main>{children}</Main> : children}
+        {wrapWithMain ? (
+          <Main background={containerBackground}>{children}</Main>
+        ) : (
+          children
+        )}
         <Footer />
       </PageWrapper>
     );
