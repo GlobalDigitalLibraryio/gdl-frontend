@@ -13,6 +13,8 @@ import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import { coverImageUrl } from 'gdl-image';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import {
   Snackbar,
   Menu,
@@ -22,7 +24,8 @@ import {
   Button,
   Typography,
   Divider as MuiDivider,
-  NoSsr
+  NoSsr,
+  CircularProgress
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
@@ -39,7 +42,7 @@ import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
-import { fetchBook, fetchSimilarBooks } from '../../fetch';
+import { fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { withErrorPage } from '../../hocs';
@@ -50,7 +53,6 @@ import Head from '../../components/Head';
 import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
-import { hasClaim, claims } from 'gdl-auth';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
@@ -67,8 +69,7 @@ const {
 
 type Props = {
   book: BookDetails,
-  similarBooks: Array<Book>,
-  userHasEditAccess: boolean
+  similarBooks: Array<Book>
 };
 
 const Divider = styled(MuiDivider)`
@@ -95,22 +96,64 @@ const GridItem = styled('div')(
  `
 );
 
+const BOOK_QUERY = gql`
+  query book($id: ID!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      category
+      readingLevel
+      bookFormat
+      supportsTranslation
+      downloads {
+        epub
+        pdf
+      }
+      license {
+        url
+        name
+      }
+      language {
+        code
+        name
+      }
+      coverImage {
+        url
+        altText
+      }
+      publisher {
+        name
+      }
+      authors {
+        name
+      }
+      illustrators {
+        name
+      }
+      translators {
+        name
+      }
+      photographers {
+        name
+      }
+    }
+  }
+`;
+
 class BookPage extends React.Component<Props> {
-  static async getInitialProps({ query, req }: Context) {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
     const [bookRes, similarRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
+      apolloClient.query({
+        query: BOOK_QUERY,
+        variables: { id: `${query.id}-${query.lang}` }
+      }),
       fetchSimilarBooks(query.id, query.lang)
     ]);
 
-    if (!bookRes.isOk) {
-      return {
-        statusCode: bookRes.statusCode
-      };
-    }
-
     return {
-      book: bookRes.data,
-      userHasEditAccess: hasClaim(claims.writeBook, req),
+      book: bookRes.data.book,
       // Don't let similar books crash the page
       similarBooks: similarRes.isOk ? similarRes.data.results : []
     };
@@ -206,10 +249,7 @@ class BookPage extends React.Component<Props> {
                     </GridItem>
                   </Hidden>
                   <GridItem css={media.tablet`flex: 0 0 310px; order: -1;`}>
-                    <BookActions2
-                      book={book}
-                      userHasEditAccess={this.props.userHasEditAccess}
-                    />
+                    <BookActions2 book={book} />
                   </GridItem>
                 </Grid>
 
@@ -236,7 +276,7 @@ const ReadBookLink = ({ book }) =>
     <Link
       route="read"
       passHref
-      params={{ id: book.id, lang: book.language.code }}
+      params={{ id: book.bookId, lang: book.language.code }}
       prefetch
     >
       <Button
@@ -356,10 +396,7 @@ class BookActions1 extends React.Component<
             width: '100%'
           }}
         >
-          <Favorite
-            id={this.props.book.id}
-            language={this.props.book.language.code}
-          >
+          <Favorite id={book.bookId} language={book.language.code}>
             {({ onClick, isFav }) => (
               <IconButton
                 // Moving the fav button up top on mobile
@@ -479,11 +516,19 @@ class BookActions1 extends React.Component<
   }
 }
 
+const QUERY_IS_ADMIN = gql`
+  query currentUser {
+    currentUser {
+      isAdmin
+    }
+  }
+`;
+
 /**
  * Download, translate, report book
  */
 class BookActions2 extends React.Component<
-  { book: BookDetails, userHasEditAccess: boolean },
+  { book: BookDetails },
   { anchorEl: ?HTMLElement }
 > {
   state = {
@@ -498,7 +543,7 @@ class BookActions2 extends React.Component<
   closeDownloadMenu = () => this.setState({ anchorEl: null });
 
   render() {
-    const { book, userHasEditAccess } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -520,7 +565,7 @@ class BookActions2 extends React.Component<
             <Link
               route="translate"
               passHref
-              params={{ id: book.id, lang: book.language.code }}
+              params={{ id: book.bookId, lang: book.language.code }}
             >
               <Button
                 onClick={() => logEvent('Books', 'Translate', book.title)}
@@ -533,22 +578,33 @@ class BookActions2 extends React.Component<
             </Link>
           </div>
         )}
-        {userHasEditAccess && (
-          <div>
-            <NextLink
-              href={{
-                pathname: '/admin/edit/book',
-                query: { id: book.id, lang: book.language.code }
-              }}
-              passHref
-            >
-              <Button color="primary" disabled={offline}>
-                <EditIcon css={{ marginRight: spacing.xsmall }} />
-                Edit
-              </Button>
-            </NextLink>
-          </div>
-        )}
+        <Query query={QUERY_IS_ADMIN}>
+          {({ loading, error, data }) => {
+            if (loading) return <CircularProgress size={24} />;
+
+            const isAdmin =
+              data && data.currentUser && data.currentUser.isAdmin;
+
+            return (
+              isAdmin && (
+                <div>
+                  <NextLink
+                    href={{
+                      pathname: '/admin/edit/book',
+                      query: { id: book.bookId, lang: book.language.code }
+                    }}
+                    passHref
+                  >
+                    <Button color="primary" disabled={offline}>
+                      <EditIcon css={{ marginRight: spacing.xsmall }} />
+                      Edit
+                    </Button>
+                  </NextLink>
+                </div>
+              )
+            );
+          }}
+        </Query>
         <div>
           <Button
             color="primary"

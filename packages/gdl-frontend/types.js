@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import type { $Request, $Response } from 'express';
+import type { ApolloClient } from 'react-apollo';
 
 export type Publisher = {
   +name: string
@@ -114,6 +115,7 @@ export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
 export type Book = $ReadOnly<{|
   id: number,
+  bookId: number,
   uuid: string,
   title: string,
   description: string,
@@ -122,7 +124,11 @@ export type Book = $ReadOnly<{|
   highlightDescription?: string,
   readingLevel: ReadingLevel,
   language: Language,
-  coverImage?: CoverImage
+  coverImage?: CoverImage,
+  authors: ?Array<*>,
+  illustrators: ?Array<*>,
+  translators: ?Array<*>,
+  photographers: ?Array<*>
 |}>;
 
 export type BookDetails = $ReadOnly<{|
@@ -159,5 +165,6 @@ export type Context = {
   query: { [string]: string },
   err?: Error | { statusCode: number },
   res?: $Response,
-  req?: $Request
+  req?: $Request,
+  apolloClient: ApolloClient
 };
