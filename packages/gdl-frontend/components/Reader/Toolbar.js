@@ -15,6 +15,7 @@ import {
   Favorite as FavoriteIcon,
   FavoriteBorder as FavoriteOutlineIcon
 } from '@material-ui/icons';
+import { QueryIsAdmin } from '../../gql';
 
 import { logEvent } from '../../lib/analytics';
 import type { BookDetails } from '../../types';
@@ -28,36 +29,34 @@ import { flexCenter } from '../../style/flex';
 type Props = {
   book: BookDetails,
   onRequestClose(): void,
-  userHasEditAccess?: boolean,
   chapter: { id: number, seqNo: number }
 };
 
-const Toolbar = ({
-  book,
-  chapter,
-  userHasEditAccess,
-  onRequestClose
-}: Props) => (
+const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
   <Div>
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
     <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
     <Buttons>
-      {userHasEditAccess && (
-        <Link
-          href={{
-            pathname: '/admin/edit/book',
-            query: {
-              id: book.id,
-              lang: book.language.code,
-              chapterId: chapter.id
-            }
-          }}
-        >
-          <IconButton title="Edit book">
-            <EditIcon />
-          </IconButton>
-        </Link>
-      )}
+      <QueryIsAdmin>
+        {({ isAdmin }) =>
+          isAdmin && (
+            <Link
+              href={{
+                pathname: '/admin/edit/book',
+                query: {
+                  id: book.id,
+                  lang: book.language.code,
+                  chapterId: chapter.id
+                }
+              }}
+            >
+              <IconButton title="Edit book">
+                <EditIcon />
+              </IconButton>
+            </Link>
+          )
+        }
+      </QueryIsAdmin>
       <FavButton book={book} />
       <IconButton onClick={onRequestClose}>
         <CloseIcon />

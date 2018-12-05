@@ -13,7 +13,6 @@ import { coverImageUrl } from 'gdl-image';
 
 import { Router } from '../../routes';
 import { fetchBook, fetchChapter } from '../../fetch';
-import { hasClaim, claims } from 'gdl-auth';
 import type { ConfigShape, BookDetails, Chapter, Context } from '../../types';
 import { withErrorPage } from '../../hocs';
 import Reader from '../../components/Reader';
@@ -35,7 +34,7 @@ type State = {
 };
 
 class Read extends React.Component<Props, State> {
-  static async getInitialProps({ query, req }: Context) {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
 
     if (!bookRes.isOk) {
@@ -58,7 +57,6 @@ class Read extends React.Component<Props, State> {
     }
 
     return {
-      userHasEditAccess: hasClaim(claims.writeBook, req),
       chapter: chapterRes.data,
       book,
       showCanonical: !query.chapterId
@@ -180,7 +178,7 @@ class Read extends React.Component<Props, State> {
   }
 
   render() {
-    const { book, userHasEditAccess, showCanonicalChapterUrl } = this.props;
+    const { book, showCanonicalChapterUrl } = this.props;
     const { chapters, current } = this.state;
     const next = this.getNext();
     const prev = this.getPrevious();
@@ -223,7 +221,6 @@ class Read extends React.Component<Props, State> {
           onRequestNextChapter={this.handleNextChapter}
           onRequestPreviousChapter={this.handlePreviousChapter}
           onRequestClose={this.handleCloseBook}
-          userHasEditAccess={userHasEditAccess}
         />
       </>
     );

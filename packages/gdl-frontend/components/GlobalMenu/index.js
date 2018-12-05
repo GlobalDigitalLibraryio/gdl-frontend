@@ -8,8 +8,6 @@
 
 import React from 'react';
 import { Trans } from '@lingui/react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import Link from 'next/link';
 import {
   Drawer,
@@ -29,19 +27,13 @@ import {
   CheckCircle as CheckCircleIcon
 } from '@material-ui/icons';
 
+import { hasAuthToken } from 'gdl-auth';
+import { QueryIsAdmin } from '../../gql';
 import { Link as RouteLink } from '../../routes';
 import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
 import offlineLibrary from '../../lib/offlineLibrary';
-
-const QUERY = gql`
-  query currentUser {
-    currentUser {
-      isAdmin
-    }
-  }
-`;
 
 type Props = {|
   onClose(): void,
@@ -124,55 +116,43 @@ class GlobalMenu extends React.Component<Props> {
                   </ListItemText>
                 </ListItem>
               </RouteLink>
-              <Query query={QUERY} skip={!this.props.isOpen}>
-                {({ loading, error, data }) => {
-                  if (loading)
-                    return (
-                      <ListItem>
-                        <CircularProgress size={24} />
-                      </ListItem>
-                    );
-
-                  const isAdmin =
-                    data && data.currentUser && data.currentUser.isAdmin;
-
-                  return isAdmin ? (
-                    <>
-                      <ListItem component="a" href="/admin" button>
-                        <ListItemIcon>
-                          <EditIcon />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Trans>GDL Admin</Trans>
-                        </ListItemText>
-                      </ListItem>
-                      <Link passHref href="/auth/sign-off">
-                        <ListItem button component="a">
-                          <ListItemIcon>
-                            <ExitToAppIcon />
-                          </ListItemIcon>
-                          <ListItemText>
-                            <Trans>Log out</Trans>
-                          </ListItemText>
-                        </ListItem>
-                      </Link>
-                    </>
-                  ) : (
-                    <Link passHref href="/auth/sign-in">
-                      <ListItem button component="a">
-                        <ListItemIcon>
-                          <ExitToAppIcon
-                            css={{ transform: 'rotate(180deg)' }}
-                          />
-                        </ListItemIcon>
-                        <ListItemText>
-                          <Trans>Log in</Trans>
-                        </ListItemText>
-                      </ListItem>
-                    </Link>
-                  );
-                }}
-              </Query>
+              <QueryIsAdmin skip={!this.props.isOpen}>
+                {({ isAdmin }) =>
+                  isAdmin && (
+                    <ListItem component="a" href="/admin" button>
+                      <ListItemIcon>
+                        <EditIcon />
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Trans>GDL Admin</Trans>
+                      </ListItemText>
+                    </ListItem>
+                  )
+                }
+              </QueryIsAdmin>
+              {hasAuthToken() ? (
+                <Link passHref href="/auth/sign-off">
+                  <ListItem button component="a">
+                    <ListItemIcon>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Trans>Log out</Trans>
+                    </ListItemText>
+                  </ListItem>
+                </Link>
+              ) : (
+                <Link passHref href="/auth/sign-in">
+                  <ListItem button component="a">
+                    <ListItemIcon>
+                      <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Trans>Log in</Trans>
+                    </ListItemText>
+                  </ListItem>
+                </Link>
+              )}
             </>
           )}
         </List>

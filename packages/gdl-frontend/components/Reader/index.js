@@ -22,8 +22,7 @@ type Props = {|
   chapterWithContent: ?Chapter,
   chapterPointer: { id: number, seqNo: number },
   onRequestNextChapter(): void,
-  onRequestPreviousChapter(): void,
-  userHasEditAccess?: boolean
+  onRequestPreviousChapter(): void
 |};
 
 const Reader = ({
@@ -32,8 +31,7 @@ const Reader = ({
   chapterPointer,
   onRequestNextChapter,
   onRequestPreviousChapter,
-  onRequestClose,
-  userHasEditAccess
+  onRequestClose
 }: Props) => {
   const isRtlLanguage = !!book.language.isRTL;
 
@@ -44,7 +42,6 @@ const Reader = ({
         <Toolbar
           book={book}
           chapter={chapterPointer}
-          userHasEditAccess={userHasEditAccess}
           onRequestClose={onRequestClose}
         />
         {/*

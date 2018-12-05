@@ -24,8 +24,7 @@ import {
   Button,
   Typography,
   Divider as MuiDivider,
-  NoSsr,
-  CircularProgress
+  NoSsr
 } from '@material-ui/core';
 import {
   Edit as EditIcon,
@@ -40,6 +39,7 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import { QueryIsAdmin } from '../../gql';
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
 import { fetchSimilarBooks } from '../../fetch';
@@ -151,6 +151,12 @@ class BookPage extends React.Component<Props> {
       }),
       fetchSimilarBooks(query.id, query.lang)
     ]);
+
+    if (!bookRes.data.book) {
+      return {
+        statusCode: 404
+      };
+    }
 
     return {
       book: bookRes.data.book,
@@ -516,14 +522,6 @@ class BookActions1 extends React.Component<
   }
 }
 
-const QUERY_IS_ADMIN = gql`
-  query currentUser {
-    currentUser {
-      isAdmin
-    }
-  }
-`;
-
 /**
  * Download, translate, report book
  */
@@ -578,33 +576,26 @@ class BookActions2 extends React.Component<
             </Link>
           </div>
         )}
-        <Query query={QUERY_IS_ADMIN}>
-          {({ loading, error, data }) => {
-            if (loading) return <CircularProgress size={24} />;
-
-            const isAdmin =
-              data && data.currentUser && data.currentUser.isAdmin;
-
-            return (
-              isAdmin && (
-                <div>
-                  <NextLink
-                    href={{
-                      pathname: '/admin/edit/book',
-                      query: { id: book.bookId, lang: book.language.code }
-                    }}
-                    passHref
-                  >
-                    <Button color="primary" disabled={offline}>
-                      <EditIcon css={{ marginRight: spacing.xsmall }} />
-                      Edit
-                    </Button>
-                  </NextLink>
-                </div>
-              )
-            );
-          }}
-        </Query>
+        <QueryIsAdmin>
+          {({ isAdmin }) =>
+            isAdmin && (
+              <div>
+                <NextLink
+                  href={{
+                    pathname: '/admin/edit/book',
+                    query: { id: book.bookId, lang: book.language.code }
+                  }}
+                  passHref
+                >
+                  <Button color="primary" disabled={offline}>
+                    <EditIcon css={{ marginRight: spacing.xsmall }} />
+                    Edit
+                  </Button>
+                </NextLink>
+              </div>
+            )
+          }
+        </QueryIsAdmin>
         <div>
           <Button
             color="primary"
