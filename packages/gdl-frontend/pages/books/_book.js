@@ -41,7 +41,6 @@ import { FacebookIcon, TwitterIcon } from '../../components/icons';
 import { QueryIsAdmin } from '../../gql';
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
-import { fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
 import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { withErrorPage } from '../../hocs';
@@ -106,6 +105,19 @@ const BOOK_QUERY = gql`
       readingLevel
       bookFormat
       supportsTranslation
+      similar {
+        results {
+          id
+          bookId
+          title
+          language {
+            code
+          }
+          coverImage {
+            url
+          }
+        }
+      }
       downloads {
         epub
         pdf
@@ -143,13 +155,10 @@ const BOOK_QUERY = gql`
 
 class BookPage extends React.Component<Props> {
   static async getInitialProps({ query, req, apolloClient }: Context) {
-    const [bookRes, similarRes] = await Promise.all([
-      apolloClient.query({
-        query: BOOK_QUERY,
-        variables: { id: `${query.id}-${query.lang}` }
-      }),
-      fetchSimilarBooks(query.id, query.lang)
-    ]);
+    const bookRes = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}` }
+    });
 
     if (!bookRes.data.book) {
       return {
@@ -160,7 +169,7 @@ class BookPage extends React.Component<Props> {
     return {
       book: bookRes.data.book,
       // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : []
+      similarBooks: bookRes.data.book.similar.results
     };
   }
 

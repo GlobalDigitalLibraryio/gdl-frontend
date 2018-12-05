@@ -166,20 +166,6 @@ export async function fetchChapter(
   return result;
 }
 
-export async function fetchSimilarBooks(
-  id: string | number,
-  language: string
-): Promise<RemoteData<{ results: Array<Book> }>> {
-  const result = await doFetch(
-    `${bookApiUrl()}/books/${language}/similar/${id}?sort=-arrivaldate&page-size=${PAGE_SIZE}`
-  );
-
-  if (result.isOk) {
-    result.data.results = result.data.results.map(bookCategoryMapper);
-  }
-  return result;
-}
-
 export async function fetchBooks(
   language: ?string,
   options: Options = {}
