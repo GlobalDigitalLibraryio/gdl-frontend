@@ -13,7 +13,6 @@ import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import { coverImageUrl } from 'gdl-image';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import {
   Snackbar,
