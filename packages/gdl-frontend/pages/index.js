@@ -11,15 +11,14 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 
-import { fetchFeaturedContent, fetchCategories, fetchBooks } from '../fetch';
+import { fetchFeaturedContent, fetchCategories } from '../fetch';
 import type {
   ConfigShape,
   Book,
   Language,
   FeaturedContent,
   Context,
-  Category,
-  ReadingLevel
+  Category
 } from '../types';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
@@ -35,10 +34,19 @@ const {
 
 const QUERY = gql`
   query books($language: String!, $pageSize: Int) {
+    Decodable: books(
+      language: $language
+      pageSize: $pageSize
+      readingLevel: Decodable
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
     Level1: books(
       language: $language
       pageSize: $pageSize
       readingLevel: Level1
+      orderBy: title_ASC
     ) {
       ...fields
     }
@@ -46,6 +54,7 @@ const QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level2
+      orderBy: title_ASC
     ) {
       ...fields
     }
@@ -53,6 +62,7 @@ const QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level3
+      orderBy: title_ASC
     ) {
       ...fields
     }
@@ -60,6 +70,7 @@ const QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level4
+      orderBy: title_ASC
     ) {
       ...fields
     }
@@ -67,20 +78,14 @@ const QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: ReadAloud
-    ) {
-      ...fields
-    }
-    Decodable: books(
-      language: $language
-      pageSize: $pageSize
-      readingLevel: Decodable
+      orderBy: title_ASC
     ) {
       ...fields
     }
     NewArrivals: books(
       language: $language
-      pageSize: $pageSize
       orderBy: arrivalDate_DESC
+      pageSize: $pageSize
     ) {
       ...fields
     }
