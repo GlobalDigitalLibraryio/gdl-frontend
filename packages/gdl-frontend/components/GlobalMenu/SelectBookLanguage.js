@@ -102,7 +102,7 @@ class SelectBookLanguage extends React.Component<Props, State> {
                   <Trans>Error loading data.</Trans>
                 </Typography>
               )}
-              {data && data.languages && (
+              {data && (
                 <LanguageList
                   onSelectLanguage={this.handleSelectLanguage}
                   selectedLanguageCode={selectedLanguage}
