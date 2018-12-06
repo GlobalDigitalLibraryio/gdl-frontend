@@ -73,7 +73,7 @@ class SelectBookLanguage extends React.Component<Props, State> {
     const { children, anchor } = this.props;
     const { showMenu, selectedLanguage } = this.state;
     return (
-      <Query query={QUERY} skip={!this.state.showMenu}>
+      <Query query={QUERY} skip={!showMenu}>
         {({ loading, error, data }) => (
           <>
             {children({ onClick: this.handleShowMenu, loading })}
