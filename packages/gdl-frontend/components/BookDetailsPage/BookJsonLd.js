@@ -6,43 +6,35 @@
  * See LICENSE
  */
 import React from 'react';
-import { ContributorTypes, type BookDetails } from '../../types';
 
 type Props = {|
-  book: BookDetails
+  book: $ReadOnly<{
+    id: string,
+    title: string,
+    language: {
+      code: string
+    },
+    coverImage: ?{
+      url: string
+    },
+    description: string,
+    publisher: { name: string },
+    authors: ?Array<{ name: string }>,
+    illustrators: ?Array<{ name: string }>,
+    translators: ?Array<{ name: string }>,
+    photographers: ?Array<{ name: string }>,
+    license: { url: string }
+  }>
 |};
 
 export default function BookJsonLd({ book }: Props) {
-  // Filter away empty strings
-  // const cleanedContributors = book.contributors.filter(c => c.name);
-
-  // const authors = cleanedContributors
-  //   .filter(c => c.type === ContributorTypes.AUTHOR)
-  //   .map(c => c.name);
-
-  // const illustrators = cleanedContributors
-  //   .filter(c => c.type === ContributorTypes.ILLUSTRATOR)
-  //   .map(c => c.name);
-
-  // const translators = cleanedContributors
-  //   .filter(c => c.type === ContributorTypes.TRANSLATOR)
-  //   .map(c => c.name);
-
-  // // Photograpgher isn't part of the schema for books, so lump them together with other contributors
-  // const contributors = cleanedContributors
-  //   .filter(
-  //     c =>
-  //       c.type === ContributorTypes.CONTRIBUTOR ||
-  //       c.type === ContributorTypes.PHOTOGRAPHER
-  //   )
-  //   .map(c => c.name);
-
   // Use 'undefined' instead of 'null' here, as undefined fields are removed by json stringify
+
   const data = {
     '@context': 'http://schema.org/',
     '@type': 'WebPage',
     mainEntity: {
-      '@id': book.uuid,
+      '@id': book.id,
       '@type': 'Book',
       isFamilyFriendly: true,
       bookFormat: 'EBook',
@@ -53,11 +45,11 @@ export default function BookJsonLd({ book }: Props) {
       publisher: book.publisher.name,
       license: book.license.url,
       image: book.coverImage ? book.coverImage.url : undefined,
-      author: book.authors,
-      illustrator: book.illustrators,
-      translator: book.translators,
+      author: transformContributors(book.authors),
+      illustrator: transformContributors(book.illustrators),
+      translator: transformContributors(book.translators),
       // Photograpgher isn't part of the schema for books, so lump them together with other contributors
-      contributor: book.photographers
+      contributor: transformContributors(book.photographers)
     }
   };
 
@@ -67,4 +59,17 @@ export default function BookJsonLd({ book }: Props) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
+}
+
+function transformContributors(
+  contributors: ?Array<{ name: string }>
+): Array<string> | string | void {
+  if (contributors) {
+    const mapped = contributors.map(c => c.name);
+    if (mapped.length === 1) {
+      return mapped[0];
+    }
+    return mapped;
+  }
+  return undefined;
 }

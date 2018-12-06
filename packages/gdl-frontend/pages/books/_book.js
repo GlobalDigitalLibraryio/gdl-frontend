@@ -38,11 +38,13 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import type { Context, ConfigShape } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
 import { QueryIsAdmin } from '../../gql';
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
 import { logEvent } from '../../lib/analytics';
-import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { withErrorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
@@ -64,11 +66,6 @@ import Favorite from '../../components/Favorite';
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
-
-type Props = {
-  book: BookDetails,
-  similarBooks: Array<Book>
-};
 
 const Divider = styled(MuiDivider)`
   margin: ${spacing.large} 0;
@@ -153,7 +150,7 @@ const BOOK_QUERY = gql`
   }
 `;
 
-class BookPage extends React.Component<Props> {
+class BookPage extends React.Component<{ book: Book }> {
   static async getInitialProps({ query, req, apolloClient }: Context) {
     const bookRes = await apolloClient.query({
       query: BOOK_QUERY,
@@ -167,16 +164,14 @@ class BookPage extends React.Component<Props> {
     }
 
     return {
-      book: bookRes.data.book,
-      // Don't let similar books crash the page
-      similarBooks: bookRes.data.book.similar.results
+      book: bookRes.data.book
     };
   }
 
   static contextType = OnlineContext;
 
   render() {
-    const { similarBooks, book } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
 
     return (
@@ -225,7 +220,7 @@ class BookPage extends React.Component<Props> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} key={book.uuid} />
+                        <BookActions1 book={book} key={book.id} />
                       </div>
                     </Hidden>
                     <Typography
@@ -249,7 +244,7 @@ class BookPage extends React.Component<Props> {
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} key={book.uuid} />
+                  <BookActions1 book={book} key={book.id} />
                 </Hidden>
                 <Divider />
 
@@ -268,11 +263,11 @@ class BookPage extends React.Component<Props> {
                 </Grid>
 
                 <Divider />
-                {!offline && similarBooks.length > 0 && (
+                {!offline && book.similar.results.length > 0 && (
                   <View mb={spacing.medium}>
                     <BookList
                       heading={<Trans>Similar</Trans>}
-                      books={similarBooks}
+                      books={book.similar.results}
                     />
                   </View>
                 )}
@@ -324,7 +319,7 @@ const ReadBookLink = ({ book }) =>
  * updated props
  */
 class BookActions1 extends React.Component<
-  { book: BookDetails },
+  { book: Book },
   {
     anchorEl: ?HTMLElement,
     isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
@@ -534,7 +529,7 @@ class BookActions1 extends React.Component<
  * Download, translate, report book
  */
 class BookActions2 extends React.Component<
-  { book: BookDetails },
+  { book: Book },
   { anchorEl: ?HTMLElement }
 > {
   state = {
