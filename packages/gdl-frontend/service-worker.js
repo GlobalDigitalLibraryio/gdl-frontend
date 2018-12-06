@@ -14,7 +14,8 @@ workbox.routing.registerRoute(
   workbox.strategies.staleWhileRevalidate({
     cacheName: 'google-fonts-stylesheets',
     fetchOptions: {
-      mode: 'cors'
+      mode: 'cors',
+      credentials: 'omit'
     }
   })
 );
