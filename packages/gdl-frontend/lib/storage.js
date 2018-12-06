@@ -10,7 +10,7 @@ import type { $Request, $Response } from 'express';
 import UniversalCookie from 'universal-cookie';
 import getConfig from 'next/config';
 
-import type { Category, Language, ConfigShape } from '../types';
+import type { Category, ConfigShape } from '../types';
 
 const {
   publicRuntimeConfig: { DEFAULT_LANGUAGE }
@@ -52,11 +52,6 @@ export function getBookCategory(req?: $Request) {
   return req
     ? req.cookies[BOOK_CATEGORY_KEY]
     : cookies().get(BOOK_CATEGORY_KEY, { doNotParse: true });
-}
-
-export function setBookLanguage(language: Language) {
-  const c = cookies();
-  c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
 }
 
 /**

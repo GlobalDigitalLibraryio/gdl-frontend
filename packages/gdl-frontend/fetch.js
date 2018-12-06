@@ -19,12 +19,9 @@ import type {
   FeaturedContent,
   Translation,
   Category,
-  Chapter,
-  ReadingLevel
+  Chapter
 } from './types';
 
-import mapValues from './lib/mapValues';
-import sortReadingLevels from './lib/sortReadingLevels';
 import offlineLibrary from './lib/offlineLibrary';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
@@ -112,10 +109,6 @@ type Options = {
   sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
   page?: number
 };
-
-export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
-  return doFetch(`${bookApiUrl()}/languages`);
-}
 
 export function fetchFeaturedContent(
   language: ?string
@@ -241,18 +234,11 @@ export async function fetchCategories(
   language: ?string
 ): Promise<
   RemoteData<{|
-    classroom_books?: Array<ReadingLevel>,
-    library_books?: Array<ReadingLevel>
+    classroom_books?: any,
+    library_books?: any
   |}>
 > {
   const result = await doFetch(`${bookApiUrl()}/categories/${language || ''}`);
-
-  // Sort the reading levels and move the data one level up
-  if (result.isOk) {
-    result.data = mapValues(result.data, c =>
-      sortReadingLevels(c.readingLevels)
-    );
-  }
 
   return result;
 }

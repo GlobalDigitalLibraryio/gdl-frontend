@@ -6,20 +6,13 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 
 import { fetchFeaturedContent, fetchCategories } from '../fetch';
-import type {
-  ConfigShape,
-  Book,
-  Language,
-  FeaturedContent,
-  Context,
-  Category
-} from '../types';
+import type { ConfigShape, FeaturedContent, Context, Category } from '../types';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -31,6 +24,8 @@ import {
 const {
   publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
+
+const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 const QUERY = gql`
   query books($language: String!, $pageSize: Int) {
@@ -92,10 +87,6 @@ const QUERY = gql`
   }
 
   fragment fields on ResultItemConnection {
-    totalCount
-    pageInfo {
-      pageCount
-    }
     results {
       id
       bookId
@@ -110,13 +101,10 @@ const QUERY = gql`
   }
 `;
 
-const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
-
 type Props = {|
   bookSummaries: any,
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
   category: Category,
   categories: Array<Category>
 |};
@@ -213,7 +201,7 @@ class IndexPage extends React.Component<Props> {
     }
 
     return (
-      <Fragment>
+      <>
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -233,7 +221,7 @@ class IndexPage extends React.Component<Props> {
           languageCode={languageCode}
           featuredContent={featuredContent}
         />
-      </Fragment>
+      </>
     );
   }
 }

@@ -13,13 +13,7 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import type {
-  Book,
-  Language,
-  FeaturedContent,
-  ReadingLevel,
-  Category
-} from '../../types';
+import type { FeaturedContent, Category } from '../../types';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import { Container, View } from '../../elements';
@@ -85,14 +79,7 @@ type Props = {|
   category: Category
 |};
 
-export default class HomePage extends React.Component<
-  Props,
-  { showLanguageMenu: boolean }
-> {
-  state = {
-    showLanguageMenu: false
-  };
-
+export default class HomePage extends React.Component<Props> {
   render() {
     const {
       bookSummaries,
@@ -102,15 +89,6 @@ export default class HomePage extends React.Component<
       languageCode
     } = this.props;
 
-    // Filter book levels with empty result and the NewArrivals category is not part of reading levels
-    const readingLevels = Object.keys(bookSummaries).filter(
-      readingLevel =>
-        bookSummaries[readingLevel].results.length > 0 &&
-        readingLevel !== 'NewArrivals'
-    );
-
-    const { NewArrivals } = bookSummaries;
-
     const featuredForChosenCategory = featuredContent.filter(
       // $FlowFixMe...
       f => f.category && f.category.name === category
@@ -119,6 +97,8 @@ export default class HomePage extends React.Component<
       featuredForChosenCategory.length > 0
         ? featuredForChosenCategory[0]
         : featuredContent[0];
+
+    const { NewArrivals, ...readingLevels } = bookSummaries;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -185,21 +165,23 @@ export default class HomePage extends React.Component<
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
-          {readingLevels.map(level => (
-            <View {...bookListViewStyle} key={level}>
-              <Container width="100%">
-                <BookList
-                  heading={<ReadingLevelTrans readingLevel={level} />}
-                  browseLinkProps={{
-                    lang: languageCode,
-                    readingLevel: level,
-                    category: category
-                  }}
-                  books={bookSummaries[level].results}
-                />
-              </Container>
-            </View>
-          ))}
+          {Object.entries(readingLevels)
+            .filter(([_, data]) => data.results.length > 0)
+            .map(([level, data]) => (
+              <View {...bookListViewStyle} key={level}>
+                <Container width="100%">
+                  <BookList
+                    heading={<ReadingLevelTrans readingLevel={level} />}
+                    browseLinkProps={{
+                      lang: languageCode,
+                      readingLevel: level,
+                      category: category
+                    }}
+                    books={bookSummaries[level].results}
+                  />
+                </Container>
+              </View>
+            ))}
 
           <View {...bookListViewStyle}>
             <Container width="100%">
