@@ -33,15 +33,6 @@ import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
-type Props = {|
-  featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
-  levels: Array<ReadingLevel>,
-  booksByLevel: Array<{ results: Array<Book> }>,
-  categories: Array<Category>,
-  category: Category
-|};
-
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
@@ -86,6 +77,14 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
+type Props = {|
+  bookSummaries: any,
+  languageCode: string,
+  featuredContent: Array<FeaturedContent>,
+  categories: Array<Category>,
+  category: Category
+|};
+
 export default class HomePage extends React.Component<
   Props,
   { showLanguageMenu: boolean }
@@ -96,13 +95,21 @@ export default class HomePage extends React.Component<
 
   render() {
     const {
+      bookSummaries,
       category,
       featuredContent,
-      levels,
-      booksByLevel,
-      newArrivals,
-      categories
+      categories,
+      languageCode
     } = this.props;
+
+    // Filter book levels with empty result and the NewArrivals category is not part of reading levels
+    const readingLevels = Object.keys(bookSummaries).filter(
+      readingLevel =>
+        bookSummaries[readingLevel].results.length > 0 &&
+        readingLevel !== 'NewArrivals'
+    );
+
+    const { NewArrivals } = bookSummaries;
 
     const featuredForChosenCategory = featuredContent.filter(
       // $FlowFixMe...
@@ -148,8 +155,6 @@ export default class HomePage extends React.Component<
       </View>
     );
 
-    const languageCode = newArrivals.language.code;
-
     return (
       <Layout wrapWithMain={false}>
         <Head image={featured.imageUrl} />
@@ -180,7 +185,7 @@ export default class HomePage extends React.Component<
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
-          {levels.map((level, index) => (
+          {readingLevels.map(level => (
             <View {...bookListViewStyle} key={level}>
               <Container width="100%">
                 <BookList
@@ -190,7 +195,7 @@ export default class HomePage extends React.Component<
                     readingLevel: level,
                     category: category
                   }}
-                  books={booksByLevel[index].results}
+                  books={bookSummaries[level].results}
                 />
               </Container>
             </View>
@@ -202,10 +207,9 @@ export default class HomePage extends React.Component<
                 heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
-                  sort: '-arrivalDate',
                   category: category
                 }}
-                books={newArrivals.results}
+                books={NewArrivals.results}
               />
             </Container>
           </View>

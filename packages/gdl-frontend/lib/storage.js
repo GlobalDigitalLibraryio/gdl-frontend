@@ -32,18 +32,18 @@ const OPTIONS = {
  * Set book language and category
  */
 export function setBookLanguageAndCategory(
-  language: Language,
+  languageCode: string,
   category: Category,
   res?: $Response
 ) {
   // Server
   if (res) {
-    res.cookie(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
+    res.cookie(BOOK_LANGUAGE_KEY, languageCode, OPTIONS);
     res.cookie(BOOK_CATEGORY_KEY, category, OPTIONS);
   } else {
     // Client
     const c = cookies();
-    c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
+    c.set(BOOK_LANGUAGE_KEY, languageCode, OPTIONS);
     c.set(BOOK_CATEGORY_KEY, category, OPTIONS);
   }
 }
