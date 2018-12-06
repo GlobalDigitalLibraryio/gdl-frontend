@@ -12,7 +12,10 @@ import { Query } from 'react-apollo';
 import { Drawer, Typography } from '@material-ui/core';
 import gql from 'graphql-tag';
 
-import type { Language } from '../../types';
+import type {
+  languages,
+  languages_languages as Language
+} from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
 
@@ -23,7 +26,7 @@ function linkProps(language) {
   };
 }
 
-const QUERY = gql`
+const LANGUAGES_QUERY = gql`
   query languages {
     languages {
       code
@@ -73,8 +76,16 @@ class SelectBookLanguage extends React.Component<Props, State> {
     const { children, anchor } = this.props;
     const { showMenu, selectedLanguage } = this.state;
     return (
-      <Query query={QUERY} skip={!showMenu}>
-        {({ loading, error, data }) => (
+      <Query query={LANGUAGES_QUERY} skip={!showMenu}>
+        {({
+          loading,
+          error,
+          data
+        }: {
+          loading: boolean,
+          data: ?languages,
+          error: any
+        }) => (
           <>
             {children({ onClick: this.handleShowMenu, loading })}
             <Drawer

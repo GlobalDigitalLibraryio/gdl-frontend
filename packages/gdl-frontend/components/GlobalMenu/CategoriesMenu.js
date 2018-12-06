@@ -30,7 +30,7 @@ type Props = {|
 |};
 
 const READINGLEVELS_BY_CATEGORIES = gql`
-  query($language: String!) {
+  query catgoryReadingLevels($language: String!) {
     classroom: readingLevels(language: $language, category: Classroom)
     library: readingLevels(language: $language, category: Library)
   }

@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { Trans } from '@lingui/react';
-import type { ReadingLevel } from '../types';
+import type { ReadingLevel } from '../gqlTypes';
 
 type Props = {|
   readingLevel: ReadingLevel
