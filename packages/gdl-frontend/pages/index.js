@@ -11,8 +11,10 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 
-import { fetchFeaturedContent, fetchCategories } from '../fetch';
 import type { ConfigShape, FeaturedContent, Context, Category } from '../types';
+import type { books as Books } from '../gqlTypes';
+
+import { fetchFeaturedContent, fetchCategories } from '../fetch';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -109,7 +111,7 @@ const QUERY = gql`
 `;
 
 type Props = {|
-  bookSummaries: any,
+  bookSummaries: Books,
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
   category: Category,

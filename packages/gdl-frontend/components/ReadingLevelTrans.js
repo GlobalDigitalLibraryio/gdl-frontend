@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 import type { ReadingLevel } from '../gqlTypes';
 
 type Props = {|
-  readingLevel: ReadingLevel
+  readingLevel: ReadingLevel | string
 |};
 
 export default function ReadingLevelTrans({ readingLevel: level }: Props) {

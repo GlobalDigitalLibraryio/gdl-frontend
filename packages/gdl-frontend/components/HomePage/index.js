@@ -11,9 +11,11 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
+import type { FeaturedContent, Category } from '../../types';
+import type { books as Books } from '../../gqlTypes';
+
 import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
-import type { FeaturedContent, Category } from '../../types';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import { Container, View } from '../../elements';
@@ -72,7 +74,7 @@ const HeroCardTablet = styled(Card)`
 `;
 
 type Props = {|
-  bookSummaries: any,
+  bookSummaries: Books,
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
   categories: Array<Category>,
@@ -166,6 +168,7 @@ export default class HomePage extends React.Component<Props> {
           </HeroCardMobile>
 
           {Object.entries(readingLevels)
+            // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
             .filter(([_, data]) => data.results.length > 0)
             .map(([level, data]) => (
               <View {...bookListViewStyle} key={level}>

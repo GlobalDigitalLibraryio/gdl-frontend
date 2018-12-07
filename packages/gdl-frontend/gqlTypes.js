@@ -177,9 +177,19 @@ export type bookVariables = {
 // GraphQL query operation: books
 // ====================================================
 
+export type books_Decodable_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_Decodable_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_Decodable_results_coverImage_variants>,
 };
 
 export type books_Decodable_results_language = {
@@ -201,9 +211,19 @@ export type books_Decodable = {
   results: Array<books_Decodable_results>,
 };
 
+export type books_Level1_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_Level1_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_Level1_results_coverImage_variants>,
 };
 
 export type books_Level1_results_language = {
@@ -225,9 +245,19 @@ export type books_Level1 = {
   results: Array<books_Level1_results>,
 };
 
+export type books_Level2_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_Level2_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_Level2_results_coverImage_variants>,
 };
 
 export type books_Level2_results_language = {
@@ -249,9 +279,19 @@ export type books_Level2 = {
   results: Array<books_Level2_results>,
 };
 
+export type books_Level3_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_Level3_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_Level3_results_coverImage_variants>,
 };
 
 export type books_Level3_results_language = {
@@ -273,9 +313,19 @@ export type books_Level3 = {
   results: Array<books_Level3_results>,
 };
 
+export type books_Level4_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_Level4_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_Level4_results_coverImage_variants>,
 };
 
 export type books_Level4_results_language = {
@@ -297,9 +347,19 @@ export type books_Level4 = {
   results: Array<books_Level4_results>,
 };
 
+export type books_ReadAloud_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_ReadAloud_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_ReadAloud_results_coverImage_variants>,
 };
 
 export type books_ReadAloud_results_language = {
@@ -321,9 +381,19 @@ export type books_ReadAloud = {
   results: Array<books_ReadAloud_results>,
 };
 
+export type books_NewArrivals_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type books_NewArrivals_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<books_NewArrivals_results_coverImage_variants>,
 };
 
 export type books_NewArrivals_results_language = {
@@ -369,9 +439,19 @@ export type booksVariables = {
 // GraphQL fragment: fields
 // ====================================================
 
+export type fields_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type fields_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<fields_results_coverImage_variants>,
 };
 
 export type fields_results_language = {
