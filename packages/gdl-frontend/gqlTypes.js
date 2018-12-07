@@ -174,6 +174,69 @@ export type bookVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: BrowseBooks
+// ====================================================
+
+export type BrowseBooks_books_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type BrowseBooks_books_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<BrowseBooks_books_results_coverImage_variants>,
+};
+
+export type BrowseBooks_books_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type BrowseBooks_books_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?BrowseBooks_books_results_coverImage,
+  language: BrowseBooks_books_results_language,
+};
+
+export type BrowseBooks_books_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  hasNextPage: boolean,
+};
+
+export type BrowseBooks_books = {
+  __typename: "ResultItemConnection",
+  results: Array<BrowseBooks_books_results>,
+  pageInfo: BrowseBooks_books_pageInfo,
+};
+
+export type BrowseBooks = {
+  books: BrowseBooks_books
+};
+
+export type BrowseBooksVariables = {
+  language: string,
+  pageSize?: ?number,
+  readingLevel?: ?ReadingLevel,
+  category?: ?Category,
+  orderBy?: ?OrderBy,
+  page?: ?number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: books
 // ====================================================
 
@@ -495,6 +558,11 @@ export type Category = "Classroom" | "Library";
  * 
  */
 export type BookFormat = "HTML" | "PDF";
+
+/**
+ * 
+ */
+export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
 
 //==============================================================
 // END Enums and Input Objects
