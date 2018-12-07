@@ -23,13 +23,10 @@ import {
   Button
 } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
+import gql from 'graphql-tag';
 
-import {
-  fetchBook,
-  fetchSupportedLanguages,
-  sendToTranslation
-} from '../../fetch';
-import type { BookDetails, Language, Translation, Context } from '../../types';
+import { fetchSupportedLanguages, sendToTranslation } from '../../fetch';
+import type { Language, Translation, Context } from '../../types';
 import { Link, Router } from '../../routes';
 import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
@@ -39,17 +36,47 @@ import CoverImage from '../../components/CoverImage';
 import LanguageList from '../../components/LanguageList';
 import { spacing } from '../../style/theme';
 
-type Props = {
-  book: BookDetails,
-  statusCode?: number,
-  supportedLanguages: Array<Language>
-};
+import type { TranslateBook_book } from '../../gqlTypes';
 
 const translationStates = {
   SELECT: 'SELECT',
   PREPARING: 'PREPARING',
   SUCCESS: 'SUCCESS',
   ERROR: 'ERROR'
+};
+
+const BOOK_QUERY = gql`
+  query TranslateBook($id: ID!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      publisher {
+        name
+      }
+      language {
+        code
+        name
+      }
+      coverImage {
+        url
+        variants {
+          height
+          width
+          x
+          y
+          ratio
+        }
+      }
+    }
+  }
+`;
+
+type Props = {
+  book: TranslateBook_book,
+  statusCode?: number,
+  supportedLanguages: Array<Language>
 };
 
 type State = {
@@ -61,30 +88,30 @@ type State = {
 };
 
 class TranslatePage extends React.Component<Props, State> {
-  static async getInitialProps({ query }: Context) {
-    const [bookRes, supportedLanguagesRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSupportedLanguages(query.lang)
-    ]);
+  static async getInitialProps({ query, apolloClient }: Context) {
+    const bookRes = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}` }
+    });
+    const supportedLanguagesRes = await fetchSupportedLanguages(query.lang);
 
-    if (!bookRes.isOk || !supportedLanguagesRes.isOk) {
+    if (!bookRes.data.book) {
       return {
-        statusCode: bookRes.isOk
-          ? bookRes.statusCode
-          : supportedLanguagesRes.statusCode
+        statusCode: 404
       };
     }
 
-    const bookLanguages = bookRes.data.availableLanguages.map(
-      lang => lang.code
-    );
+    if (!supportedLanguagesRes.isOk) {
+      return {
+        statusCode: supportedLanguagesRes.statusCode
+      };
+    }
 
     const filteredLanguages = supportedLanguagesRes.data.filter(
-      lang => !bookLanguages.includes(lang.code)
+      lang => lang !== bookRes.data.book.language.code
     );
-
     return {
-      book: bookRes.data,
+      book: bookRes.data.book,
       supportedLanguages: filteredLanguages
     };
   }
@@ -169,7 +196,7 @@ class TranslatePage extends React.Component<Props, State> {
                 <Grid item>
                   <Link
                     route="book"
-                    params={{ lang: book.language.code, id: book.id }}
+                    params={{ lang: book.language.code, id: book.bookId }}
                   >
                     <a>
                       <CoverImage coverImage={book.coverImage} size="small" />

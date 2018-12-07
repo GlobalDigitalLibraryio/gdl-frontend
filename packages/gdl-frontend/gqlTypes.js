@@ -174,6 +174,60 @@ export type bookVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: TranslateBook
+// ====================================================
+
+export type TranslateBook_book_publisher = {
+  __typename: "Publisher",
+  name: string,
+};
+
+export type TranslateBook_book_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+};
+
+export type TranslateBook_book_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type TranslateBook_book_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<TranslateBook_book_coverImage_variants>,
+};
+
+export type TranslateBook_book = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  description: string,
+  publisher: TranslateBook_book_publisher,
+  language: TranslateBook_book_language,
+  coverImage: ?TranslateBook_book_coverImage,
+};
+
+export type TranslateBook = {
+  book: ?TranslateBook_book
+};
+
+export type TranslateBookVariables = {
+  id: string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: BrowseBooks
 // ====================================================
 
@@ -224,11 +278,11 @@ export type BrowseBooks = {
 
 export type BrowseBooksVariables = {
   language: string,
-  pageSize?: ?number,
   readingLevel?: ?ReadingLevel,
   category?: ?Category,
   orderBy?: ?OrderBy,
-  page?: ?number,
+  pageSize?: ?number,
+  page: number,
 };
 
 
