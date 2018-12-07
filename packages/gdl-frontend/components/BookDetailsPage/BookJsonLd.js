@@ -7,27 +7,25 @@
  */
 import React from 'react';
 
-type Props = {|
-  book: $ReadOnly<{
-    id: string,
-    title: string,
-    language: {
-      code: string
-    },
-    coverImage: ?{
-      url: string
-    },
-    description: string,
-    publisher: { name: string },
-    authors: ?Array<{ name: string }>,
-    illustrators: ?Array<{ name: string }>,
-    translators: ?Array<{ name: string }>,
-    photographers: ?Array<{ name: string }>,
-    license: { url: string }
-  }>
-|};
+type Book = $ReadOnly<{
+  id: string,
+  title: string,
+  language: {
+    code: string
+  },
+  coverImage: ?{
+    url: string
+  },
+  description: string,
+  publisher: { name: string },
+  authors: ?$ReadOnlyArray<{ name: string }>,
+  illustrators: ?$ReadOnlyArray<{ name: string }>,
+  translators: ?$ReadOnlyArray<{ name: string }>,
+  photographers: ?$ReadOnlyArray<{ name: string }>,
+  license: { url: string }
+}>;
 
-export default function BookJsonLd({ book }: Props) {
+export default function BookJsonLd({ book }: { book: Book }) {
   // Use 'undefined' instead of 'null' here, as undefined fields are removed by json stringify
 
   const data = {
@@ -62,7 +60,7 @@ export default function BookJsonLd({ book }: Props) {
 }
 
 function transformContributors(
-  contributors: ?Array<{ name: string }>
+  contributors: ?$ReadOnlyArray<{ name: string }>
 ): Array<string> | string | void {
   if (contributors) {
     const mapped = contributors.map(c => c.name);
