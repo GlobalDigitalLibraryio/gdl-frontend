@@ -177,7 +177,7 @@ export type bookVariables = {
 // GraphQL query operation: BrowseBooks
 // ====================================================
 
-export type BrowseBooks_books_results_coverImage_variants = {
+export type BrowseBooks_bookSummaries_results_coverImage_variants = {
   __typename: "ImageCropCoordinates",
   height: number,
   width: number,
@@ -186,49 +186,95 @@ export type BrowseBooks_books_results_coverImage_variants = {
   ratio: string,
 };
 
-export type BrowseBooks_books_results_coverImage = {
+export type BrowseBooks_bookSummaries_results_coverImage = {
   __typename: "CoverImage",
   url: string,
-  variants: ?Array<BrowseBooks_books_results_coverImage_variants>,
+  variants: ?Array<BrowseBooks_bookSummaries_results_coverImage_variants>,
 };
 
-export type BrowseBooks_books_results_language = {
+export type BrowseBooks_bookSummaries_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type BrowseBooks_books_results = {
+export type BrowseBooks_bookSummaries_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?BrowseBooks_books_results_coverImage,
-  language: BrowseBooks_books_results_language,
+  coverImage: ?BrowseBooks_bookSummaries_results_coverImage,
+  language: BrowseBooks_bookSummaries_results_language,
 };
 
-export type BrowseBooks_books_pageInfo = {
+export type BrowseBooks_bookSummaries_pageInfo = {
   __typename: "PageInfo",
   page: number,
   hasNextPage: boolean,
 };
 
-export type BrowseBooks_books = {
+export type BrowseBooks_bookSummaries = {
   __typename: "ResultItemConnection",
-  results: Array<BrowseBooks_books_results>,
-  pageInfo: BrowseBooks_books_pageInfo,
+  results: Array<BrowseBooks_bookSummaries_results>,
+  pageInfo: BrowseBooks_bookSummaries_pageInfo,
 };
 
 export type BrowseBooks = {
-  books: BrowseBooks_books
+  bookSummaries: BrowseBooks_bookSummaries
 };
 
 export type BrowseBooksVariables = {
   language: string,
-  pageSize?: ?number,
   readingLevel?: ?ReadingLevel,
   category?: ?Category,
   orderBy?: ?OrderBy,
-  page?: ?number,
+  pageSize?: ?number,
+  page: number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: Favorites
+// ====================================================
+
+export type Favorites_books_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type Favorites_books_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type Favorites_books_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<Favorites_books_coverImage_variants>,
+};
+
+export type Favorites_books = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  language: Favorites_books_language,
+  coverImage: ?Favorites_books_coverImage,
+};
+
+export type Favorites = {
+  books: Array<?Favorites_books>
+};
+
+export type FavoritesVariables = {
+  ids: Array<string>
 };
 
 

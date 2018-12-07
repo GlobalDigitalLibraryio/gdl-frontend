@@ -37,7 +37,7 @@ const QUERY = gql`
     $pageSize: Int
     $page: Int!
   ) {
-    books(
+    bookSummaries(
       language: $language
       pageSize: $pageSize
       category: $category
@@ -133,7 +133,7 @@ class BrowsePage extends React.Component<Props> {
       ) => {
         if (!fetchMoreResult) return prev;
         // Focus the first book of the extra books we're loading
-        const toFocus = fetchMoreResult.books.results[0];
+        const toFocus = fetchMoreResult.bookSummaries.results[0];
         // Use a query selector to find the book we want to focus.
         const bookAnchor = document.querySelectorAll(
           `[href='/${toFocus.language.code}/books/details/${toFocus.bookId}']`
@@ -141,10 +141,13 @@ class BrowsePage extends React.Component<Props> {
         bookAnchor && bookAnchor.focus();
 
         return Object.assign({}, prev, {
-          books: {
-            ...prev.books,
-            pageInfo: fetchMoreResult.books.pageInfo,
-            results: [...prev.books.results, ...fetchMoreResult.books.results]
+          bookSummaries: {
+            ...prev.bookSummaries,
+            pageInfo: fetchMoreResult.bookSummaries.pageInfo,
+            results: [
+              ...prev.bookSummaries.results,
+              ...fetchMoreResult.bookSummaries.results
+            ]
           }
         });
       }
@@ -185,7 +188,7 @@ class BrowsePage extends React.Component<Props> {
           fetchMore: () => void
         }) => {
           const {
-            books: { pageInfo, results }
+            bookSummaries: { pageInfo, results }
           } = data;
 
           return (

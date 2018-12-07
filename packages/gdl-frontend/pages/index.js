@@ -31,7 +31,7 @@ const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 const QUERY = gql`
   query books($language: String!, $pageSize: Int) {
-    Decodable: books(
+    Decodable: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Decodable
@@ -39,7 +39,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    Level1: books(
+    Level1: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Level1
@@ -47,7 +47,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    Level2: books(
+    Level2: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Level2
@@ -55,7 +55,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    Level3: books(
+    Level3: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Level3
@@ -63,7 +63,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    Level4: books(
+    Level4: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Level4
@@ -71,7 +71,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    ReadAloud: books(
+    ReadAloud: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: ReadAloud
@@ -79,7 +79,7 @@ const QUERY = gql`
     ) {
       ...fields
     }
-    NewArrivals: books(
+    NewArrivals: bookSummaries(
       language: $language
       orderBy: arrivalDate_DESC
       pageSize: $pageSize
