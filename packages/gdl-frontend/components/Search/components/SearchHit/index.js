@@ -9,6 +9,7 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
 
+import { type CoverImage as CoverImageType } from 'gdl-image';
 import type { Book } from '../../../../types';
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { spacing } from '../../../../style/theme';
@@ -47,11 +48,24 @@ function renderBookDescription(book) {
 
 const SearchHit = ({ book }: { book: Book }) => {
   const bookRoute = `/${book.language.code}/books/details/${book.id}`;
+
+  // TODO: This is only temporarliy until we get searches via GQL
+  let coverImage;
+  if (book.coverImage) {
+    coverImage = {
+      ...book.coverImage,
+      variants: book.coverImage.variants
+        ? Object.values(book.coverImage.variants)
+        : null
+    };
+  }
+
   return (
     <Wrapper>
       <Link route={bookRoute} passHref>
         <a title={book.title} tabIndex="-1" aria-hidden>
-          <CoverImage coverImage={book.coverImage} size="small" />
+          {/* $FlowFixMe: Remove this when we get search results via gql */}
+          <CoverImage coverImage={coverImage} size="small" />
         </a>
       </Link>
 
