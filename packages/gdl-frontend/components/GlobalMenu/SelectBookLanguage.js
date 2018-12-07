@@ -98,7 +98,7 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
         })}
         <Drawer
           onClose={this.handleCloseMenu}
-          open={showMenu && languages !== 'LOADING'}
+          open={showMenu && !!languages && languages !== 'LOADING'}
           anchor={anchor}
         >
           {languages === 'ERROR' && (
