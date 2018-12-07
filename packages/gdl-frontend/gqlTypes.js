@@ -545,6 +545,72 @@ export type booksVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: Search
+// ====================================================
+
+export type Search_search_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type Search_search_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<Search_search_results_coverImage_variants>,
+};
+
+export type Search_search_results_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+};
+
+export type Search_search_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  highlightTitle: ?string,
+  description: string,
+  highlightDescription: ?string,
+  readingLevel: ReadingLevel,
+  coverImage: ?Search_search_results_coverImage,
+  language: Search_search_results_language,
+};
+
+export type Search_search_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  hasNextPage: boolean,
+};
+
+export type Search_search = {
+  __typename: "ResultItemConnection",
+  results: Array<Search_search_results>,
+  totalCount: number,
+  pageInfo: Search_search_pageInfo,
+};
+
+export type Search = {
+  search: Search_search
+};
+
+export type SearchVariables = {
+  query: string,
+  pageSize?: ?number,
+  page: number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL fragment: fields
 // ====================================================
 

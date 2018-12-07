@@ -14,7 +14,6 @@ import type {
   ConfigShape,
   RemoteData,
   Language,
-  Book,
   BookDetails,
   FeaturedContent,
   Translation,
@@ -99,17 +98,6 @@ async function doFetch(
 // See https://github.com/babel/babel/issues/6262
 export default doFetch;
 
-// Default page size
-const PAGE_SIZE = 5;
-
-type Options = {
-  pageSize?: number,
-  level?: string,
-  category?: Category,
-  sort?: 'arrivaldate' | '-arrivaldate' | 'id' | '-id' | 'title' | '-title',
-  page?: number
-};
-
 export function fetchFeaturedContent(
   language: ?string
 ): Promise<RemoteData<Array<FeaturedContent>>> {
@@ -159,31 +147,6 @@ export async function fetchChapter(
   return result;
 }
 
-export async function fetchBooks(
-  language: ?string,
-  options: Options = {}
-): Promise<
-  RemoteData<{
-    results: Array<Book>,
-    language: Language,
-    page: number,
-    totalCount: number
-  }>
-> {
-  const result = await doFetch(
-    `${bookApiUrl()}/books/${language || ''}?page=${options.page ||
-      1}&sort=${options.sort || '-arrivaldate'}&page-size=${options.pageSize ||
-      PAGE_SIZE}${options.level ? `&reading-level=${options.level}` : ''}${
-      options.category ? `&category=${options.category}` : ''
-    }`
-  );
-
-  if (result.isOk) {
-    result.data.results = result.data.results.map(bookCategoryMapper);
-  }
-  return result;
-}
-
 export function fetchSupportedLanguages(
   language: string
 ): Promise<RemoteData<Array<Language>>> {
@@ -205,29 +168,6 @@ export function sendToTranslation(
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   });
-}
-
-export async function search(
-  query: string,
-  options: Options = {}
-): Promise<
-  RemoteData<{|
-    page: number,
-    totalCount: number,
-    results: Array<Book>
-  |}>
-> {
-  const result = await doFetch(
-    `${bookApiUrl()}/search?query=${encodeURIComponent(
-      query
-    )}&page-size=${options.pageSize || PAGE_SIZE}&page=${options.page || 1}`
-  );
-
-  if (result.isOk) {
-    result.data.results = result.data.results.map(bookCategoryMapper);
-  }
-
-  return result;
 }
 
 export async function fetchCategories(

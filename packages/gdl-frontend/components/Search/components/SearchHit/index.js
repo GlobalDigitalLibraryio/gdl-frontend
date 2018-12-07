@@ -9,14 +9,30 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
 
-import { type CoverImage as CoverImageType } from 'gdl-image';
-import type { Book } from '../../../../types';
+import type { CoverImage as CoverImageType } from 'gdl-image';
+import type { ReadingLevel } from '../../../../gqlTypes';
+
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
 import { spacing } from '../../../../style/theme';
 import { Link } from '../../../../routes';
 import CoverImage from '../../../CoverImage';
 import A from '../../../../elements/A';
 import { BookTitle, BookDescription, Wrapper, Divider } from './styled';
+
+type Book = $ReadOnly<{
+  id: string,
+  bookId: number,
+  title: string,
+  highlightTitle: ?string,
+  description: string,
+  highlightDescription: ?string,
+  readingLevel: ReadingLevel,
+  language: {
+    name: string,
+    code: string
+  },
+  coverImage: ?CoverImageType
+}>;
 
 function renderTitle(book) {
   if (book.highlightTitle) {
@@ -47,25 +63,13 @@ function renderBookDescription(book) {
 }
 
 const SearchHit = ({ book }: { book: Book }) => {
-  const bookRoute = `/${book.language.code}/books/details/${book.id}`;
-
-  // TODO: This is only temporarliy until we get searches via GQL
-  let coverImage;
-  if (book.coverImage) {
-    coverImage = {
-      ...book.coverImage,
-      variants: book.coverImage.variants
-        ? Object.values(book.coverImage.variants)
-        : null
-    };
-  }
+  const bookRoute = `/${book.language.code}/books/details/${book.bookId}`;
 
   return (
     <Wrapper>
       <Link route={bookRoute} passHref>
         <a title={book.title} tabIndex="-1" aria-hidden>
-          {/* $FlowFixMe: Remove this when we get search results via gql */}
-          <CoverImage coverImage={coverImage} size="small" />
+          <CoverImage coverImage={book.coverImage} size="small" />
         </a>
       </Link>
 
