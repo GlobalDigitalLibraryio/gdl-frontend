@@ -12,12 +12,13 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
 import { css, cx } from 'react-emotion';
 
-import { type BookDetails } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import A from '../../elements/A';
 
 type Props = {
-  book: BookDetails,
+  book: Book,
   online: boolean
 };
 
@@ -44,8 +45,8 @@ const BookMeta = ({ book, online }: Props) => (
     {book.illustrators && (
       <Contributor contributorType="Illustrator" values={book.illustrators} />
     )}
-    {book.contributors && (
-      <Contributor contributorType="Author" values={book.contributors} />
+    {book.photographers && (
+      <Contributor contributorType="Photographer" values={book.photographers} />
     )}
     {book.translators && (
       <Contributor contributorType="Translator" values={book.translators} />

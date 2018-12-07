@@ -102,6 +102,7 @@ const BOOK_QUERY = gql`
       readingLevel
       bookFormat
       supportsTranslation
+      additionalInformation
       similar {
         results {
           id
@@ -112,6 +113,13 @@ const BOOK_QUERY = gql`
           }
           coverImage {
             url
+            variants {
+              height
+              width
+              x
+              y
+              ratio
+            }
           }
         }
       }
@@ -129,7 +137,13 @@ const BOOK_QUERY = gql`
       }
       coverImage {
         url
-        altText
+        variants {
+          height
+          width
+          x
+          y
+          ratio
+        }
       }
       publisher {
         name

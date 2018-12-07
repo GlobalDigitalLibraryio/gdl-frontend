@@ -9,9 +9,9 @@
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { Card, CardContent, Typography } from '@material-ui/core';
+import { type CoverImage as CoverImageType } from 'gdl-image';
 
 import { Link } from '../routes';
-import type { Book, BookDetails } from '../types';
 import CoverImage from './CoverImage';
 import media from '../style/media';
 
@@ -20,38 +20,21 @@ export const coverWidths = {
   large: 130
 };
 
-/**
- * Add small brightness effect to book cover when hovered
- */
-const cardCss = css`
-  position: relative;
-  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
-  &:hover {
-    img {
-      transition: 1s opacity linear;
-      pointer-events: none;
-      filter: opacity(0.9);
-    }
-  }
-  width: ${coverWidths.small}px;
-  ${media.tablet`
-    width: ${coverWidths.large}px;
-  `};
-`;
-
-const ClickTarget = styled('a')`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;
+export type Book = $ReadOnly<{
+  id: string,
+  bookId: number,
+  title: string,
+  language: {
+    code: string
+  },
+  coverImage: ?CoverImageType
+}>;
 
 /**
  * Adds an absolute anchor above the whole cover, so you can click anywhere.
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
-export default ({ book }: { book: Book | BookDetails }) => (
+export default ({ book }: { book: Book }) => (
   <Card className={cardCss}>
     <Link
       route="book"
@@ -80,3 +63,30 @@ export default ({ book }: { book: Book | BookDetails }) => (
     </CardContent>
   </Card>
 );
+
+/**
+ * Add small brightness effect to book cover when hovered
+ */
+const cardCss = css`
+  position: relative;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
+  &:hover {
+    img {
+      transition: 1s opacity linear;
+      pointer-events: none;
+      filter: opacity(0.9);
+    }
+  }
+  width: ${coverWidths.small}px;
+  ${media.tablet`
+    width: ${coverWidths.large}px;
+  `};
+`;
+
+const ClickTarget = styled('a')`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+`;

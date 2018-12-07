@@ -14,12 +14,11 @@ import { Typography, Button } from '@material-ui/core';
 import View from '../../elements/View';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import type { Book } from '../../types';
-import BookLink, { coverWidths } from '../BookLink';
+import BookLink, { coverWidths, type Book } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 
 type Props = {
-  books: Array<Book>,
+  books: $ReadOnlyArray<Book>,
   heading: Element<typeof Trans>,
   browseLinkProps?: BrowseLinkProps
 };

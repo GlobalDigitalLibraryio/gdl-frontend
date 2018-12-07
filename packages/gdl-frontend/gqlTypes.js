@@ -50,9 +50,19 @@ export type book_book_similar_results_language = {
   code: string,
 };
 
+export type book_book_similar_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type book_book_similar_results_coverImage = {
   __typename: "CoverImage",
   url: string,
+  variants: ?Array<book_book_similar_results_coverImage_variants>,
 };
 
 export type book_book_similar_results = {
@@ -87,10 +97,19 @@ export type book_book_language = {
   name: string,
 };
 
+export type book_book_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
 export type book_book_coverImage = {
   __typename: "CoverImage",
   url: string,
-  altText: ?string,
+  variants: ?Array<book_book_coverImage_variants>,
 };
 
 export type book_book_publisher = {
@@ -128,6 +147,7 @@ export type book_book = {
   readingLevel: ReadingLevel,
   bookFormat: BookFormat,
   supportsTranslation: boolean,
+  additionalInformation: ?string,
   similar: book_book_similar,
   downloads: book_book_downloads,
   license: book_book_license,
