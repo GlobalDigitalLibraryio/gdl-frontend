@@ -1,7 +1,7 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
@@ -22,6 +22,7 @@ const colorMap = {
   '3': '#F1C528',
   '4': '#FA9F28',
   'read-aloud': '#F56324',
+  'new-arrivals':'#D3D3D3',
   decodable: '#AB86CD'
 };
 
@@ -37,15 +38,15 @@ const Ribbon = styled('div')`
   text-transform: uppercase;
   background-color: ${p => colorMap[p.readingLevel]};
   color: black;
-  ${mq({
+  ${p => mq({
     paddingLeft: [misc.gutter, 40],
-    paddingRight: [20, 25],
-    marginLeft: [-misc.gutter, -40],
+    paddingRight: [20, p.homePage ? 100 : 40],
+    marginLeft: [-misc.gutter, p.homePage ? -125 : -40],
     marginRight: [0, 20],
     height: [30, 40],
     fontSize: [14, 20]
   })}
-  font-weight: ${fonts.weight.bold};
+  font-weight: ${fonts.weight.medium};
   position: relative;
   &:after {
     content: '';
@@ -69,11 +70,18 @@ const Ribbon = styled('div')`
 `;
 
 type Props = {
-  level: ReadingLevel
+  level: ReadingLevel,
+  homePage: ?boolean
 };
 
-export default ({ level }: Props) => (
-  <Ribbon readingLevel={level}>
-    <ReadingLevelTrans readingLevel={level} />
-  </Ribbon>
-);
+export default ({ level, homePage }: Props) => {
+  return homePage ? (
+    <Ribbon readingLevel={level} homePage>
+      <ReadingLevelTrans readingLevel={level} />
+    </Ribbon>
+  ) : (
+    <Ribbon readingLevel={level}>
+      <ReadingLevelTrans readingLevel={level} />
+    </Ribbon>
+  );
+}

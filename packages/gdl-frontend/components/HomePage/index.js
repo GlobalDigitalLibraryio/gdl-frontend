@@ -12,7 +12,6 @@ import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
   Book,
   Language,
@@ -29,6 +28,7 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
+import LevelRibbon from '../Level/LevelRibbon';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -184,7 +184,7 @@ export default class HomePage extends React.Component<
             <View {...bookListViewStyle} key={level}>
               <Container width="100%">
                 <BookList
-                  heading={<ReadingLevelTrans readingLevel={level} />}
+                  heading={<LevelRibbon level={level} homePage/>}
                   browseLinkProps={{
                     lang: languageCode,
                     readingLevel: level,
@@ -199,7 +199,7 @@ export default class HomePage extends React.Component<
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
-                heading={<Trans>New arrivals</Trans>}
+                heading={<LevelRibbon level={'new-arrivals'} homePage/>}
                 browseLinkProps={{
                   lang: languageCode,
                   sort: '-arrivalDate',

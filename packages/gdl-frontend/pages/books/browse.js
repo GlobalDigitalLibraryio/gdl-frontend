@@ -14,7 +14,7 @@ import { Typography } from '@material-ui/core';
 import { logEvent } from '../../lib/analytics';
 import { fetchBooks } from '../../fetch';
 import type { Book, Language, Category, Context } from '../../types';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import LevelBanner from '../../components/Level/LevelBanner';
 import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
@@ -158,9 +158,10 @@ class BrowsePage extends React.Component<Props, State> {
             {books.results.length > 0 ? (
               readingLevel ? (
                 // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-                <ReadingLevelTrans readingLevel={readingLevel} />
+                <LevelBanner level={readingLevel} fullWidth/>
               ) : (
-                <Trans>New arrivals</Trans>
+                // Made 'new-arrivals' a "level" in order to have similar look when listing the books
+                <LevelBanner level={'new-arrivals'} fullWidth/>
               )
             ) : (
               <Trans>No books found</Trans>

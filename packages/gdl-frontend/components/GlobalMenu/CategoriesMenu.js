@@ -22,7 +22,7 @@ import { getBookLanguageCode } from '../../lib/storage';
 import type { ReadingLevel } from '../../types';
 import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
-import ReadingLevelTrans from '../ReadingLevelTrans';
+import LevelLabel from './LevelLabel';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
@@ -119,7 +119,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
-                <ReadingLevelTrans readingLevel={level} />
+                <LevelLabel level={level} />
               </ListItemText>
             </ListItem>
           </Link>
@@ -155,16 +155,16 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             category="library_books"
           >
             <ListItem onClick={onSelectCategory} button component="a">
-              <ListItemText inset>
-                <ReadingLevelTrans readingLevel={level} />
+              <ListItemText>
+                <LevelLabel level={level} />
               </ListItemText>
             </ListItem>
           </Link>
         ))}
         <Link category="library_books" lang={languageCode} sort="-arrivalDate">
           <ListItem button onClick={onSelectCategory}>
-            <ListItemText inset>
-              <Trans>New arrivals</Trans>
+            <ListItemText>
+              <LevelLabel level='new-arrivals'/>
             </ListItemText>
           </ListItem>
         </Link>

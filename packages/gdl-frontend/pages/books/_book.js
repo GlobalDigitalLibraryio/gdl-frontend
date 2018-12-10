@@ -54,9 +54,9 @@ import media from '../../style/media';
 import {
   BookJsonLd,
   Metadata,
-  LevelRibbon
 } from '../../components/BookDetailsPage';
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
+import LevelRibbon from '../../components/Level/LevelRibbon';
 import OfflineIcon from '../../components/OfflineIcon';
 
 const {

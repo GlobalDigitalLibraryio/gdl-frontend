@@ -19,6 +19,8 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
     return <Trans>Decodable</Trans>;
   } else if (level === 'read-aloud') {
     return <Trans>Read aloud</Trans>;
+  } else if (level === 'new-arrivals') {
+    return <Trans>New Arrivals</Trans>;
   }
-  return <Trans>Level {level}</Trans>;
+  return <Trans> Level {level}</Trans>;
 }
