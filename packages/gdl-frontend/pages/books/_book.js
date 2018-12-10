@@ -93,12 +93,13 @@ const GridItem = styled('div')(
  `
 );
 
-class BookPage extends React.Component<Props> {
+type State = {
+  similarBooks: Book
+};
+
+class BookPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
-    const [bookRes, similarRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSimilarBooks(query.id, query.lang)
-    ]);
+    const bookRes = await fetchBook(query.id, query.lang);
 
     if (!bookRes.isOk) {
       return {
@@ -108,16 +109,36 @@ class BookPage extends React.Component<Props> {
 
     return {
       book: bookRes.data,
-      userHasEditAccess: hasClaim(claims.writeBook, req),
-      // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : []
+      userHasEditAccess: hasClaim(claims.writeBook, req)
     };
   }
 
   static contextType = OnlineContext;
 
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      similarBooks: []
+    };
+  }
+
+  componentDidMount() {
+    const { book } = this.props;
+    this.loadSimilarBooks(book);
+  }
+
+  async loadSimilarBooks(book: Book) {
+    const similarRes = await fetchSimilarBooks(book.id, book.language.code);
+    this.setState({
+      // Don't let similar books crash the page
+      similarBooks: similarRes.isOk ? similarRes.data.results : []
+    });
+  }
+
   render() {
-    const { similarBooks, book } = this.props;
+    const { book } = this.props;
+    const { similarBooks } = this.state;
     const offline: boolean = !this.context;
 
     return (
