@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
 import { css } from 'react-emotion';
+import { I18n } from '@lingui/react';
 
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
@@ -26,6 +27,7 @@ import type { Language } from '../types';
 import { colors } from '../style/theme';
 
 type Props = {
+  enableSearch?: boolean,
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
@@ -39,12 +41,20 @@ type State = {
 class LanguageList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    const selectedLanguage = this.getSelectedLangauge();
+    const selectedLanguage = this.getSelectedLanguage();
     const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
 
     this.state = {
       searchResult: filteredLanguages
     };
+  }
+
+  componentDidMount() {
+    const container = document.getElementById('listContainer');
+    if (container) {
+      const width = container.offsetWidth;
+      container.style.width = `${width}px`;
+    }
   }
 
   searchLanguage = (
@@ -53,13 +63,13 @@ class LanguageList extends React.Component<Props, State> {
   ) => {
     const input = value.target.value.toLowerCase();
 
-    const result = filteredLanguages.filter(element =>
-      element.name.toLowerCase().includes(input)
+    const result = filteredLanguages.filter(language =>
+      language.name.toLowerCase().includes(input)
     );
     this.setState({ searchResult: result });
   };
 
-  getSelectedLangauge = () =>
+  getSelectedLanguage = () =>
     this.props.languages.find(l => l.code === this.props.selectedLanguageCode);
 
   // Remove selected language so it wont display again as a selectable language
@@ -71,15 +81,16 @@ class LanguageList extends React.Component<Props, State> {
   };
 
   render() {
-    const { onSelectLanguage, linkProps } = this.props;
+    const { enableSearch, onSelectLanguage, linkProps } = this.props;
     const { searchResult } = this.state;
 
-    const selectedLanguage = this.getSelectedLangauge();
+    const selectedLanguage = this.getSelectedLanguage();
     const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
     const noResult = searchResult.length === 0;
 
     return (
       <List
+        id="listContainer"
         component="div"
         className={styles.visibleScrollbar}
         subheader={
@@ -88,11 +99,23 @@ class LanguageList extends React.Component<Props, State> {
           </ListSubheader>
         }
       >
-        <TextField
-          placeholder="Search here"
-          className={styles.textfield}
-          onChange={values => this.searchLanguage(values, filteredLanguages)}
-        />
+        {enableSearch && (
+          <I18n>
+            {({ i18n }) => (
+              <ListItem>
+                <ListItemText inset>
+                  <TextField
+                    className={styles.textfield}
+                    placeholder={i18n.t`Search`}
+                    onChange={values =>
+                      this.searchLanguage(values, filteredLanguages)
+                    }
+                  />
+                </ListItemText>
+              </ListItem>
+            )}
+          </I18n>
+        )}
 
         {selectedLanguage && (
           <>
@@ -130,14 +153,9 @@ class LanguageList extends React.Component<Props, State> {
 const styles = {
   visibleScrollbar: css`
     overflow-y: scroll;
-    width: 300px;
   `,
   textfield: css`
-    width: 300px;
-    padding: 0 16px;
-    @media (min-width: 600px) {
-      padding: 0 24px;
-    }
+    width: 100%;
   `
 };
 
