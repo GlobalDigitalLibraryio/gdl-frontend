@@ -115,13 +115,9 @@ class BookPage extends React.Component<Props, State> {
 
   static contextType = OnlineContext;
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      similarBooks: []
-    };
-  }
+  state = {
+    similarBooks: []
+  };
 
   componentDidMount() {
     const { book } = this.props;
