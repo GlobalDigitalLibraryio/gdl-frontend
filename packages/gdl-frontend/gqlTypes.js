@@ -292,6 +292,68 @@ export type BrowseBooksVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: MyBookTranslations
+// ====================================================
+
+export type MyBookTranslations_currentUser_myTranslations_publisher = {
+  __typename: 'Publisher',
+  name: string
+};
+
+export type MyBookTranslations_currentUser_myTranslations_fromLanguage = {
+  __typename: 'Language',
+  name: string,
+  code: string
+};
+
+export type MyBookTranslations_currentUser_myTranslations_toLanguage = {
+  __typename: 'Language',
+  name: string,
+  code: string
+};
+
+export type MyBookTranslations_currentUser_myTranslations_coverImage_variants = {
+  __typename: 'ImageCropCoordinates',
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string
+};
+
+export type MyBookTranslations_currentUser_myTranslations_coverImage = {
+  __typename: 'CoverImage',
+  url: string,
+  variants: ?Array<MyBookTranslations_currentUser_myTranslations_coverImage_variants>
+};
+
+export type MyBookTranslations_currentUser_myTranslations = {
+  __typename: 'TranslatedBook',
+  id: string,
+  title: string,
+  synchronizeUrl: string,
+  publisher: MyBookTranslations_currentUser_myTranslations_publisher,
+  fromLanguage: MyBookTranslations_currentUser_myTranslations_fromLanguage,
+  toLanguage: MyBookTranslations_currentUser_myTranslations_toLanguage,
+  coverImage: ?MyBookTranslations_currentUser_myTranslations_coverImage,
+  crowdinUrl: string
+};
+
+export type MyBookTranslations_currentUser = {
+  __typename: 'User',
+  id: string,
+  myTranslations: Array<MyBookTranslations_currentUser_myTranslations>
+};
+
+export type MyBookTranslations = {
+  currentUser: ?MyBookTranslations_currentUser
+};
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: Favorites
 // ====================================================
 

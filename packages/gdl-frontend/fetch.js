@@ -146,10 +146,6 @@ export async function fetchChapter(
   return result;
 }
 
-export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
-  return doFetch(`${bookApiUrl()}/books/mine`);
-}
-
 export function sendToTranslation(
   bookId: number | string,
   fromLanguage: string,
