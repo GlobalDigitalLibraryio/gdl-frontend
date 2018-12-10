@@ -109,7 +109,7 @@ const Categories = ({
             key={level}
             lang={languageCode}
             readingLevel={level}
-            category="classroom_books"
+            category="Classroom"
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
@@ -120,7 +120,7 @@ const Categories = ({
           </Link>
         ))}
         <Link
-          category="classroom_books"
+          category="Classroom"
           lang={languageCode}
           sort="-arrivalDate"
           passHref

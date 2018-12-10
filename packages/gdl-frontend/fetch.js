@@ -13,7 +13,6 @@ import { getAuthToken } from 'gdl-auth';
 import type {
   ConfigShape,
   RemoteData,
-  BookDetails,
   Language,
   FeaturedContent,
   Translation
@@ -88,18 +87,6 @@ export function fetchFeaturedContent(
   return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
-export function fetchSupportedLanguages(
-  language: string
-): Promise<RemoteData<Array<Language>>> {
-  return doFetch(
-    `${bookApiUrl()}/translations/${language}/supported-languages`
-  );
-}
-
-export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
-  return doFetch(`${bookApiUrl()}/books/mine`);
-}
-
 export function sendToTranslation(
   bookId: number | string,
   fromLanguage: string,
@@ -109,17 +96,4 @@ export function sendToTranslation(
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   });
-}
-
-export async function fetchCategories(
-  language: ?string
-): Promise<
-  RemoteData<{|
-    classroom_books?: any,
-    library_books?: any
-  |}>
-> {
-  const result = await doFetch(`${bookApiUrl()}/categories/${language || ''}`);
-
-  return result;
 }

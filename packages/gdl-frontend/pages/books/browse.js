@@ -86,7 +86,7 @@ type Props = {
 class BrowsePage extends React.Component<Props> {
   static async getInitialProps({ query, apolloClient }: Context) {
     let category: Category = 'Library'; // Default category
-    if (query.category === 'classroom_books') {
+    if (query.category === 'classroom') {
       category = 'Classroom';
     }
 

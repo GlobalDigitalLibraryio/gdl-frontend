@@ -109,7 +109,7 @@ export type Translation = {
   coverImage?: CoverImage
 };
 
-export type Category = 'library_books' | 'classroom_books';
+export type Category = 'Library' | 'Classroom';
 
 export type ReadingLevel =
   | 'Level1'
