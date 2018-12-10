@@ -8,7 +8,7 @@ import type { ApolloClient } from 'react-apollo';
 import initApollo from './initApollo';
 
 type Props = {
-  apolloState: ApolloClient
+  apolloState: any
 };
 
 export default (App: React.ComponentType<*>) => {
@@ -23,7 +23,8 @@ export default (App: React.ComponentType<*>) => {
       ctx.ctx.apolloClient = apollo;
 
       let appProps = {};
-      if (App.getInitialProps) {
+      // $FlowFixMe: Flow doesn't approve of this method method on the React component type
+      if (typeof App.getInitialProps === 'function') {
         appProps = await App.getInitialProps(ctx);
       }
 
@@ -66,6 +67,8 @@ export default (App: React.ComponentType<*>) => {
         apolloState
       };
     }
+
+    apolloClient: ApolloClient;
 
     constructor(props: Props) {
       super(props);
