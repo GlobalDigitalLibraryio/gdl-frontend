@@ -52,16 +52,6 @@ const googleAnalyticsId = () => {
   }
 };
 
-const enableOffline = () => {
-  switch (GDL_ENVIRONMENT) {
-    case 'staging':
-    case 'prod':
-      return false;
-    default:
-      return true;
-  }
-};
-
 module.exports = {
   serverRuntimeConfig: {
     port: process.env.GDL_FRONTEND_PORT || 3005,
@@ -77,7 +67,6 @@ module.exports = {
   publicRuntimeConfig: {
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
-    ENABLE_OFFLINE: enableOffline(),
 
     DEFAULT_LANGUAGE: {
       code: 'en',
