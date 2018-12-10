@@ -14,13 +14,10 @@ import type {
   ConfigShape,
   RemoteData,
   BookDetails,
+  Language,
   FeaturedContent,
-  Translation,
-  Category,
-  Chapter
+  Translation
 } from './types';
-
-import offlineLibrary from './lib/offlineLibrary';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
@@ -29,18 +26,6 @@ const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 const bookApiUrl = () =>
   (serverRuntimeConfig && serverRuntimeConfig.bookApiUrl) ||
   publicRuntimeConfig.bookApiUrl;
-
-// Because the backend model and business logic for categories doesn't play nice together
-const bookCategoryMapper = book => {
-  const category: Category = book.categories.find(
-    c => c.name === 'classroom_books'
-  )
-    ? 'classroom_books'
-    : 'library_books';
-
-  book.category = category;
-  return book;
-};
 
 /*
  * Wrap fetch with some error handling and automatic json parsing
@@ -103,47 +88,16 @@ export function fetchFeaturedContent(
   return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
 }
 
-export async function fetchBook(
-  id: string | number,
+export function fetchSupportedLanguages(
   language: string
-): Promise<RemoteData<BookDetails>> {
-  const offlineBook =
-    offlineLibrary && (await offlineLibrary.getBook(id, language));
-
-  if (offlineBook) {
-    // Fake the response here.
-    return { data: offlineBook, isOk: true, statusCode: 200 };
-  }
-
-  const result = await doFetch(`${bookApiUrl()}/books/${language}/${id}`);
-
-  if (result.isOk) {
-    result.data = bookCategoryMapper(result.data);
-    // Make sure the chapters are sorted by the chapter numbers
-    result.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
-  }
-  return result;
+): Promise<RemoteData<Array<Language>>> {
+  return doFetch(
+    `${bookApiUrl()}/translations/${language}/supported-languages`
+  );
 }
 
-export async function fetchChapter(
-  bookId: string | number,
-  chapterId: string | number,
-  language: string
-): Promise<RemoteData<Chapter>> {
-  const offlineChapter =
-    offlineLibrary &&
-    (await offlineLibrary.getChapter(bookId, chapterId, language));
-
-  if (offlineChapter) {
-    // Fake the response here.
-    return { data: offlineChapter, isOk: true, statusCode: 200 };
-  }
-
-  const result = await doFetch(
-    `${bookApiUrl()}/books/${language}/${bookId}/chapters/${chapterId}`
-  );
-
-  return result;
+export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
+  return doFetch(`${bookApiUrl()}/books/mine`);
 }
 
 export function sendToTranslation(
