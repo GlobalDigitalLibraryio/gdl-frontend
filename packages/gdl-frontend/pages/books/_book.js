@@ -94,7 +94,7 @@ const GridItem = styled('div')(
 );
 
 type State = {
-  similarBooks: Book
+  similarBooks: Array<Book>
 };
 
 class BookPage extends React.Component<Props, State> {
@@ -128,7 +128,7 @@ class BookPage extends React.Component<Props, State> {
     this.loadSimilarBooks(book);
   }
 
-  async loadSimilarBooks(book: Book) {
+  async loadSimilarBooks(book: BookDetails) {
     const similarRes = await fetchSimilarBooks(book.id, book.language.code);
     this.setState({
       // Don't let similar books crash the page
