@@ -18,7 +18,6 @@ import {
 import { QueryIsAdmin } from '../../gql';
 
 import { logEvent } from '../../lib/analytics';
-import type { BookDetails } from '../../types';
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
@@ -26,10 +25,16 @@ import media from '../../style/media';
 import Favorite from '../Favorite';
 import { flexCenter } from '../../style/flex';
 
+export type Book = $ReadOnly<{
+  bookId: number,
+  language: { +code: string, isRTL: boolean },
+  title: string,
+  chapters: $ReadOnlyArray<any>
+}>;
 type Props = {
-  book: BookDetails,
   onRequestClose(): void,
-  chapter: { id: number, seqNo: number }
+  book: Book,
+  chapter: $ReadOnly<{ chapterId: number, seqNo: number }>
 };
 
 const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
@@ -44,9 +49,9 @@ const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
               href={{
                 pathname: '/admin/edit/book',
                 query: {
-                  id: book.id,
+                  id: book.bookId,
                   lang: book.language.code,
-                  chapterId: chapter.id
+                  chapterId: chapter.chapterId
                 }
               }}
             >
@@ -68,11 +73,11 @@ const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
   </Div>
 );
 
-class FavButton extends React.Component<{ book: BookDetails }> {
+class FavButton extends React.Component<{ book: Book }> {
   render() {
     return (
       <Favorite
-        id={this.props.book.id}
+        id={this.props.book.bookId}
         language={this.props.book.language.code}
       >
         {({ isFav, onClick }) => (

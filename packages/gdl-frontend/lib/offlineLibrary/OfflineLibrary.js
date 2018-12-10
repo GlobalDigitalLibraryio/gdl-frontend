@@ -5,7 +5,6 @@ import localForage from 'localforage';
 import type { BookDetails, Chapter } from '../../types';
 import TimestampModel from './TimestampModel';
 import { keyForBook, CACHE_NAME } from './index';
-import { fetchChapter } from '../../fetch';
 
 // 7 days
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;

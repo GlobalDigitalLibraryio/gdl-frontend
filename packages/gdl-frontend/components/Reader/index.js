@@ -8,19 +8,19 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 
-import type { BookDetails, Chapter } from '../../types';
 import { Backdrop, Page } from './styledReader';
-import Toolbar from './Toolbar';
+import Toolbar, { type Book } from './Toolbar';
 import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import PageNavigation from './PageNavigation';
 import { colors } from '../../style/theme';
 
+type Chapter = $ReadOnly<{ content: string }>;
 type Props = {|
-  book: BookDetails,
+  book: Book,
   onRequestClose(): void,
   chapterWithContent: ?Chapter,
-  chapterPointer: { id: number, seqNo: number },
+  chapterPointer: $ReadOnly<{ id: string, chapterId: number, seqNo: number }>,
   onRequestNextChapter(): void,
   onRequestPreviousChapter(): void
 |};
@@ -33,7 +33,7 @@ const Reader = ({
   onRequestPreviousChapter,
   onRequestClose
 }: Props) => {
-  const isRtlLanguage = !!book.language.isRTL;
+  const isRtlLanguage = book.language.isRTL;
 
   return (
     <Container size="large" gutter={false}>
