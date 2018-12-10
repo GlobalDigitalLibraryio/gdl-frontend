@@ -440,19 +440,19 @@ export type TranslateBook_book = {
 };
 
 export type TranslateBook_translationLanguages = {
-  __typename: 'Language',
+  __typename: "Language",
   code: string,
-  name: string
+  name: string,
 };
 
 export type TranslateBook = {
   book: ?TranslateBook_book,
-  translationLanguages: Array<TranslateBook_translationLanguages>
+  translationLanguages: Array<TranslateBook_translationLanguages>,
 };
 
 export type TranslateBookVariables = {
   id: string,
-  languageCode: string
+  languageCode: string,
 };
 
 
@@ -527,59 +527,95 @@ export type BrowseBooksVariables = {
 // GraphQL query operation: MyBookTranslations
 // ====================================================
 
-export type MyBookTranslations_currentUser_myTranslations_publisher = {
-  __typename: 'Publisher',
-  name: string
-};
-
-export type MyBookTranslations_currentUser_myTranslations_fromLanguage = {
-  __typename: 'Language',
+export type MyBookTranslations_currentUser_translations_to_publisher = {
+  __typename: "Publisher",
   name: string,
-  code: string
 };
 
-export type MyBookTranslations_currentUser_myTranslations_toLanguage = {
-  __typename: 'Language',
-  name: string,
-  code: string
-};
-
-export type MyBookTranslations_currentUser_myTranslations_coverImage_variants = {
-  __typename: 'ImageCropCoordinates',
+export type MyBookTranslations_currentUser_translations_to_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string
+  ratio: string,
 };
 
-export type MyBookTranslations_currentUser_myTranslations_coverImage = {
-  __typename: 'CoverImage',
+export type MyBookTranslations_currentUser_translations_to_coverImage = {
+  __typename: "CoverImage",
   url: string,
-  variants: ?Array<MyBookTranslations_currentUser_myTranslations_coverImage_variants>
+  variants: ?Array<MyBookTranslations_currentUser_translations_to_coverImage_variants>,
 };
 
-export type MyBookTranslations_currentUser_myTranslations = {
-  __typename: 'TranslatedBook',
+export type MyBookTranslations_currentUser_translations_to_language = {
+  __typename: "Language",
+  name: string,
+  code: string,
+};
+
+export type MyBookTranslations_currentUser_translations_to = {
+  __typename: "BookDetails",
   id: string,
+  bookId: number,
   title: string,
+  publisher: MyBookTranslations_currentUser_translations_to_publisher,
+  coverImage: ?MyBookTranslations_currentUser_translations_to_coverImage,
+  language: MyBookTranslations_currentUser_translations_to_language,
+};
+
+export type MyBookTranslations_currentUser_translations_from_publisher = {
+  __typename: "Publisher",
+  name: string,
+};
+
+export type MyBookTranslations_currentUser_translations_from_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type MyBookTranslations_currentUser_translations_from_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<MyBookTranslations_currentUser_translations_from_coverImage_variants>,
+};
+
+export type MyBookTranslations_currentUser_translations_from_language = {
+  __typename: "Language",
+  name: string,
+  code: string,
+};
+
+export type MyBookTranslations_currentUser_translations_from = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  publisher: MyBookTranslations_currentUser_translations_from_publisher,
+  coverImage: ?MyBookTranslations_currentUser_translations_from_coverImage,
+  language: MyBookTranslations_currentUser_translations_from_language,
+};
+
+export type MyBookTranslations_currentUser_translations = {
+  __typename: "Translation",
+  crowdinUrl: string,
   synchronizeUrl: string,
-  publisher: MyBookTranslations_currentUser_myTranslations_publisher,
-  fromLanguage: MyBookTranslations_currentUser_myTranslations_fromLanguage,
-  toLanguage: MyBookTranslations_currentUser_myTranslations_toLanguage,
-  coverImage: ?MyBookTranslations_currentUser_myTranslations_coverImage,
-  crowdinUrl: string
+  to: MyBookTranslations_currentUser_translations_to,
+  from: MyBookTranslations_currentUser_translations_from,
 };
 
 export type MyBookTranslations_currentUser = {
-  __typename: 'User',
-  id: string,
-  myTranslations: Array<MyBookTranslations_currentUser_myTranslations>
+  __typename: "User",
+  translations: Array<MyBookTranslations_currentUser_translations>,
 };
 
 export type MyBookTranslations = {
   currentUser: ?MyBookTranslations_currentUser
 };
+
 
 /* @flow */
 /* eslint-disable */
@@ -624,6 +660,23 @@ export type Favorites = {
 
 export type FavoritesVariables = {
   ids: Array<string>
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GetCategories
+// ====================================================
+
+export type GetCategories = {
+  categories: Array<Category>
+};
+
+export type GetCategoriesVariables = {
+  language: string
 };
 
 
@@ -952,6 +1005,51 @@ export type SearchVariables = {
   query: string,
   pageSize?: ?number,
   page: number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: TranslationFields
+// ====================================================
+
+export type TranslationFields_publisher = {
+  __typename: "Publisher",
+  name: string,
+};
+
+export type TranslationFields_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type TranslationFields_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<TranslationFields_coverImage_variants>,
+};
+
+export type TranslationFields_language = {
+  __typename: "Language",
+  name: string,
+  code: string,
+};
+
+export type TranslationFields = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  publisher: TranslationFields_publisher,
+  coverImage: ?TranslationFields_coverImage,
+  language: TranslationFields_language,
 };
 
 

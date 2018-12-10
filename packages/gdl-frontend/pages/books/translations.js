@@ -34,40 +34,45 @@ import { spacing } from '../../style/theme';
 
 import type {
   MyBookTranslations,
-  MyBookTranslations_currentUser_myTranslations as Translation
+  MyBookTranslations_currentUser_translations as Translation
 } from '../../gqlTypes';
 
 const MY_TRANSLATION_QUERY = gql`
   query MyBookTranslations {
     currentUser {
-      id
-      myTranslations {
-        id
-        title
-        synchronizeUrl
-        publisher {
-          name
-        }
-        fromLanguage {
-          name
-          code
-        }
-        toLanguage {
-          name
-          code
-        }
-        coverImage {
-          url
-          variants {
-            height
-            width
-            x
-            y
-            ratio
-          }
-        }
+      translations {
         crowdinUrl
+        synchronizeUrl
+        to {
+          ...TranslationFields
+        }
+        from {
+          ...TranslationFields
+        }
       }
+    }
+  }
+
+  fragment TranslationFields on BookDetails {
+    id
+    bookId
+    title
+    publisher {
+      name
+    }
+    coverImage {
+      url
+      variants {
+        height
+        width
+        x
+        y
+        ratio
+      }
+    }
+    language {
+      name
+      code
     }
   }
 `;
@@ -93,32 +98,34 @@ class TranslationCard extends React.Component<
   };
 
   render() {
-    const { translation } = this.props;
+    const {
+      translation: { to: translateTo, from: translateFrom, crowdinUrl }
+    } = this.props;
     const { isLoading } = this.state;
 
     return (
-      <Card key={translation.id} css={{ marginBottom: spacing.large }}>
+      <Card key={translateFrom.bookId} css={{ marginBottom: spacing.large }}>
         <Grid container>
           <Grid item>
             <Link
               route="book"
               params={{
-                lang: translation.fromLanguage.code,
-                id: translation.id
+                lang: translateTo.language.code,
+                id: translateTo.bookId
               }}
             >
               <a>
-                <CoverImage coverImage={translation.coverImage} size="small" />
+                <CoverImage coverImage={translateTo.coverImage} size="small" />
               </a>
             </Link>
           </Grid>
           <Grid item xs>
             <CardContent>
               <Typography variant="h5" component="h2">
-                {translation.title}
+                {translateTo.title}
               </Typography>
               <Typography variant="subtitle1">
-                <Trans>from {translation.publisher.name}</Trans>
+                <Trans>from {translateTo.publisher.name}</Trans>
               </Typography>
             </CardContent>
           </Grid>
@@ -126,14 +133,14 @@ class TranslationCard extends React.Component<
         <CardContent>
           <Grid container alignItems="center">
             <Grid item xs={4}>
-              <Typography>{translation.fromLanguage.name}</Typography>
+              <Typography>{translateFrom.language.name}</Typography>
             </Grid>
             <Grid item xs={4} css={{ textAlign: 'center' }}>
               <ArrowForwardIcon />
             </Grid>
             <Grid item xs={4}>
               <Typography align="right" variant="body2">
-                {translation.fromLanguage.name}
+                {translateTo.language.name}
               </Typography>
             </Grid>
           </Grid>
@@ -150,7 +157,7 @@ class TranslationCard extends React.Component<
           </LoadingButton>
           <Button
             color="primary"
-            href={translation.crowdinUrl}
+            href={crowdinUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -206,10 +213,9 @@ class MyTranslationsPage extends React.Component<*> {
                     <Trans>An error has occurred. Please try again.</Trans>
                   </Typography>
                 );
+              const { translations } = data.currentUser;
 
-              const { myTranslations } = data.currentUser;
-
-              return myTranslations.length === 0 ? (
+              return translations.length === 0 ? (
                 <Typography
                   align="center"
                   paragraph
@@ -219,9 +225,9 @@ class MyTranslationsPage extends React.Component<*> {
                   <Trans>You have not translated any books yet.</Trans>
                 </Typography>
               ) : (
-                myTranslations.map(translation => (
+                translations.map(translation => (
                   <TranslationCard
-                    key={`${translation.id}-${translation.fromLanguage.code}`}
+                    key={translation.from.id}
                     translation={translation}
                     handleSync={refetch}
                   />
