@@ -73,7 +73,6 @@ const QUERY = gql`
 
 type Props = {
   category: Category,
-  books: BrowseBooks,
   router: {
     query: {
       lang: string,
@@ -86,14 +85,12 @@ type Props = {
 
 class BrowsePage extends React.Component<Props> {
   static async getInitialProps({ query, apolloClient }: Context) {
-    let category: Category;
+    let category: Category = 'Library'; // Default category
     if (query.category === 'classroom_books') {
       category = 'Classroom';
-    } else {
-      category = 'Library'; // Default category
     }
 
-    const result = await apolloClient.query({
+    await apolloClient.query({
       query: QUERY,
       variables: {
         page: INITIAL_PAGE_NUMBER,
@@ -106,18 +103,14 @@ class BrowsePage extends React.Component<Props> {
     });
 
     return {
-      category,
-      books: result.data.books
+      category
     };
   }
 
   /**
    * Load more books when demanded
    */
-  handleLoadMore = async (
-    currentPage: number,
-    fetchMore: (options: *) => void
-  ) => {
+  handleFetchMore = (currentPage: number, fetchMore) => {
     const {
       router: { query }
     } = this.props;
@@ -156,14 +149,9 @@ class BrowsePage extends React.Component<Props> {
 
   render() {
     const {
-      router: { query }
+      router: { query },
+      category
     } = this.props;
-    let category: Category;
-    if (query.category === 'classroom_books') {
-      category = 'Classroom';
-    } else {
-      category = 'Library'; // Default category
-    }
 
     return (
       <Query
@@ -185,7 +173,8 @@ class BrowsePage extends React.Component<Props> {
         }: {
           data: BrowseBooks,
           loading: boolean,
-          fetchMore: () => void
+          error: any,
+          fetchMore: ({}) => void
         }) => {
           const {
             bookSummaries: { pageInfo, results }
@@ -220,7 +209,7 @@ class BrowsePage extends React.Component<Props> {
                   <LoadingButton
                     disabled={!pageInfo.hasNextPage}
                     onClick={() =>
-                      this.handleLoadMore(pageInfo.page, fetchMore)
+                      this.handleFetchMore(pageInfo.page, fetchMore)
                     }
                     isLoading={loading}
                     color="primary"
