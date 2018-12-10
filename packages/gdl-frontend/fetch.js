@@ -13,7 +13,6 @@ import { getAuthToken } from 'gdl-auth';
 import type {
   ConfigShape,
   RemoteData,
-  Language,
   BookDetails,
   FeaturedContent,
   Translation,
@@ -145,14 +144,6 @@ export async function fetchChapter(
   );
 
   return result;
-}
-
-export function fetchSupportedLanguages(
-  language: string
-): Promise<RemoteData<Array<Language>>> {
-  return doFetch(
-    `${bookApiUrl()}/translations/${language}/supported-languages`
-  );
 }
 
 export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {

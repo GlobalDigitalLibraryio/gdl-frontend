@@ -209,12 +209,20 @@ export type TranslateBook_book = {
   coverImage: ?TranslateBook_book_coverImage
 };
 
+export type TranslateBook_translationLanguages = {
+  __typename: 'Language',
+  code: string,
+  name: string
+};
+
 export type TranslateBook = {
-  book: ?TranslateBook_book
+  book: ?TranslateBook_book,
+  translationLanguages: Array<TranslateBook_translationLanguages>
 };
 
 export type TranslateBookVariables = {
-  id: string
+  id: string,
+  languageCode: string
 };
 
 /* @flow */
