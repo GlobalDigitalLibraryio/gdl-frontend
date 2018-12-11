@@ -25,8 +25,8 @@ import {
 import green from '@material-ui/core/colors/green';
 import gql from 'graphql-tag';
 
-import { fetchSupportedLanguages, sendToTranslation } from '../../fetch';
-import type { Language, Translation, Context } from '../../types';
+import { sendToTranslation } from '../../fetch';
+import type { Translation, Context } from '../../types';
 import { Link, Router } from '../../routes';
 import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
@@ -36,7 +36,10 @@ import CoverImage from '../../components/CoverImage';
 import LanguageList from '../../components/LanguageList';
 import { spacing } from '../../style/theme';
 
-import type { TranslateBook_book } from '../../gqlTypes';
+import type {
+  TranslateBook_book,
+  TranslateBook_translationLanguages as Language
+} from '../../gqlTypes';
 
 const translationStates = {
   SELECT: 'SELECT',
@@ -46,7 +49,7 @@ const translationStates = {
 };
 
 const BOOK_QUERY = gql`
-  query TranslateBook($id: ID!) {
+  query TranslateBook($id: ID!, $languageCode: String!) {
     book(id: $id) {
       id
       bookId
@@ -70,6 +73,10 @@ const BOOK_QUERY = gql`
         }
       }
     }
+    translationLanguages(languageCode: $languageCode) {
+      code
+      name
+    }
   }
 `;
 
@@ -91,9 +98,8 @@ class TranslatePage extends React.Component<Props, State> {
   static async getInitialProps({ query, apolloClient }: Context) {
     const bookRes = await apolloClient.query({
       query: BOOK_QUERY,
-      variables: { id: `${query.id}-${query.lang}` }
+      variables: { id: `${query.id}-${query.lang}`, languageCode: query.lang }
     });
-    const supportedLanguagesRes = await fetchSupportedLanguages(query.lang);
 
     if (!bookRes.data.book) {
       return {
@@ -101,18 +107,9 @@ class TranslatePage extends React.Component<Props, State> {
       };
     }
 
-    if (!supportedLanguagesRes.isOk) {
-      return {
-        statusCode: supportedLanguagesRes.statusCode
-      };
-    }
-
-    const filteredLanguages = supportedLanguagesRes.data.filter(
-      lang => lang !== bookRes.data.book.language.code
-    );
     return {
       book: bookRes.data.book,
-      supportedLanguages: filteredLanguages
+      supportedLanguages: bookRes.data.translationLanguages
     };
   }
 

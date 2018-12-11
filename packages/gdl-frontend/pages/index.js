@@ -14,7 +14,7 @@ import gql from 'graphql-tag';
 import type { ConfigShape, FeaturedContent, Context, Category } from '../types';
 import type { books as Books } from '../gqlTypes';
 
-import { fetchFeaturedContent, fetchCategories } from '../fetch';
+import { fetchFeaturedContent } from '../fetch';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -29,7 +29,13 @@ const {
 
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
-const QUERY = gql`
+const CATEGORY_QUERY = gql`
+  query GetCategories($language: String!) {
+    categories(language: $language)
+  }
+`;
+
+const BOOK_QUERY = gql`
   query books($language: String!, $pageSize: Int) {
     Decodable: bookSummaries(
       language: $language
@@ -129,45 +135,35 @@ class IndexPage extends React.Component<Props> {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
     const bookSummaries = await apolloClient.query({
-      query: QUERY,
+      query: BOOK_QUERY,
       variables: {
         language: languageCode,
         pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
       }
     });
 
-    // $FlowFixMe: Don't know why flow doesn't like this
-    const categoriesRes = await fetchCategories(languageCode);
+    const categoriesRes = await apolloClient.query({
+      query: CATEGORY_QUERY,
+      variables: {
+        language: languageCode
+      }
+    });
 
-    if (!categoriesRes.isOk) {
-      const statusCode =
-        // If the categories endpoint doesn't get a valid language code, it throws with a VALIDATION error.
-        // Because of the way we structure the URLs in the frontend, this means we should render the 404 page
-        categoriesRes.error && categoriesRes.error.code === 'VALIDATION'
-          ? 404
-          : categoriesRes.statusCode;
-
-      return {
-        statusCode
-      };
-    }
-
-    const categories = categoriesRes.data;
+    const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
 
     let category: string;
     if (asPath.includes('/classroom')) {
-      category = 'classroom_books';
+      category = 'Classroom';
     } else if (asPath.includes('/library')) {
-      category = 'library_books';
+      category = 'Library';
     } else if (categoryInCookie && categoryInCookie in categories) {
       // Small check to make sure the value in the cookie is something valid
       // $FlowFixMe: We know this is a valid category :/
       category = categoryInCookie;
     } else {
-      // Default to library_books
-      category =
-        'library_books' in categories ? 'library_books' : 'classroom_books';
+      // Default to Library
+      category = 'Library' in categories ? 'Library' : 'Classroom';
     }
 
     const featuredContent = await fetchFeaturedContent(languageCode);
@@ -181,10 +177,10 @@ class IndexPage extends React.Component<Props> {
 
     return {
       category,
+      categories,
       languageCode,
       featuredContent: featuredContent.data,
-      bookSummaries: bookSummaries.data,
-      categories: Object.keys(categories)
+      bookSummaries: bookSummaries.data
     };
   }
 
@@ -203,9 +199,9 @@ class IndexPage extends React.Component<Props> {
     } = this.props;
 
     let categoryTypeForUrl;
-    if (category === 'library_books') {
+    if (category === 'Library') {
       categoryTypeForUrl = 'library';
-    } else if (category === 'classroom_books') {
+    } else if (category === 'Classroom') {
       categoryTypeForUrl = 'classroom';
     }
 

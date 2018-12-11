@@ -169,7 +169,7 @@ export default class HomePage extends React.Component<Props> {
 
           {Object.entries(readingLevels)
             // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
-            .filter(([_, data]) => data.results.length > 0)
+            .filter(([_, data]) => data.results && data.results.length > 0)
             .map(([level, data]) => (
               <View {...bookListViewStyle} key={level}>
                 <Container width="100%">

@@ -12,6 +12,7 @@ import getConfig from 'next/config';
 import { coverImageUrl } from 'gdl-image';
 import gql from 'graphql-tag';
 import { Query, withApollo } from 'react-apollo';
+import type { ApolloClient } from 'react-apollo';
 
 import type {
   Chapter,
@@ -32,7 +33,7 @@ const {
 type Props = {
   book: Book,
   chapterId: string,
-  client: any, // Apollo Client instance
+  client: ApolloClient, // Apollo Client instance
   userHasEditAccess: boolean,
   showCanonicalChapterUrl: boolean
 };
@@ -58,7 +59,7 @@ class Read extends React.Component<Props, { current: ReadBook_book_chapters }> {
       const chapter = book.chapters.find(
         c => c.chapterId.toString() === query.chapterId
       );
-      chapterId = chapter.id;
+      chapterId = chapter ? chapter.id : book.chapters[0].id;
     } else {
       chapterId = book.chapters[0].id;
     }
