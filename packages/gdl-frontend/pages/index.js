@@ -11,10 +11,12 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 
-import type { ConfigShape, FeaturedContent, Context, Category } from '../types';
-import type { books as Books } from '../gqlTypes';
+import type { ConfigShape, Context, Category } from '../types';
+import type {
+  books as Books,
+  FeaturedContent_featuredContent as FeaturedContent
+} from '../gqlTypes';
 
-import { fetchFeaturedContent } from '../fetch';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -28,6 +30,22 @@ const {
 }: ConfigShape = getConfig();
 
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
+
+const FEATURED_CONTENT_QUERY = gql`
+  query FeaturedContent($language: String) {
+    featuredContent(language: $language) {
+      id
+      title
+      description
+      link
+      imageUrl
+      language {
+        code
+        name
+      }
+    }
+  }
+`;
 
 const CATEGORY_QUERY = gql`
   query GetCategories($language: String!) {
@@ -166,12 +184,11 @@ class IndexPage extends React.Component<Props> {
       category = 'Library' in categories ? 'Library' : 'Classroom';
     }
 
-    const featuredContent = await fetchFeaturedContent(languageCode);
-    if (!featuredContent.isOk) {
-      return {
-        statusCode: featuredContent.statusCode
-      };
-    }
+    const featureRes = await apolloClient.query({
+      query: FEATURED_CONTENT_QUERY,
+      language: languageCode
+    });
+
     // $FlowFixMe: We know this is a valid category :/
     setBookLanguageAndCategory(languageCode, category, res);
 
@@ -179,7 +196,7 @@ class IndexPage extends React.Component<Props> {
       category,
       categories,
       languageCode,
-      featuredContent: featuredContent.data,
+      featuredContent: featureRes.data.featuredContent,
       bookSummaries: bookSummaries.data
     };
   }
