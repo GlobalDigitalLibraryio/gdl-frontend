@@ -43,36 +43,33 @@ const MY_TRANSLATION_QUERY = gql`
       translations {
         crowdinUrl
         synchronizeUrl
-        to {
-          ...TranslationFields
-        }
         from {
-          ...TranslationFields
+          language {
+            name
+          }
+        }
+        to {
+          bookId
+          title
+          publisher {
+            name
+          }
+          coverImage {
+            url
+            variants {
+              height
+              width
+              x
+              y
+              ratio
+            }
+          }
+          language {
+            name
+            code
+          }
         }
       }
-    }
-  }
-
-  fragment TranslationFields on BookDetails {
-    id
-    bookId
-    title
-    publisher {
-      name
-    }
-    coverImage {
-      url
-      variants {
-        height
-        width
-        x
-        y
-        ratio
-      }
-    }
-    language {
-      name
-      code
     }
   }
 `;
@@ -104,7 +101,7 @@ class TranslationCard extends React.Component<
     const { isLoading } = this.state;
 
     return (
-      <Card key={translateFrom.bookId} css={{ marginBottom: spacing.large }}>
+      <Card key={translateTo.bookId} css={{ marginBottom: spacing.large }}>
         <Grid container>
           <Grid item>
             <Link
@@ -227,7 +224,7 @@ class MyTranslationsPage extends React.Component<*> {
               ) : (
                 translations.map(translation => (
                   <TranslationCard
-                    key={translation.from.id}
+                    key={translation.to.bookId}
                     translation={translation}
                     handleSync={refetch}
                   />
