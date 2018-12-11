@@ -11,6 +11,15 @@ import type { ConfigShape } from './types';
 const { GDL_ENVIRONMENT } = require('gdl-config');
 const dnsResolver = require('./lib/customResolver');
 
+const graphqlEndpoint = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'http://localhost:4000/graphql';
+    default:
+      return 'http://localhost:4000/graphql';
+  }
+};
+
 const bookApiUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
@@ -75,6 +84,7 @@ module.exports = {
     }
   },
   publicRuntimeConfig: {
+    graphqlEndpoint: graphqlEndpoint(),
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
 
