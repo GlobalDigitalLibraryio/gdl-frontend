@@ -17,9 +17,6 @@
       "./jest.setup.js"
     ]
   },
-  "browser": {
-    "dns": false
-  },
   "scripts": {
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
