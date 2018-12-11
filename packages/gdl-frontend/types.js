@@ -22,6 +22,7 @@ export type ConfigShape = {
   publicRuntimeConfig: {
     bookApiUrl: string,
     canonicalUrl: string,
+    graphqlEndpoint: string,
     SENTRY_PROJECT_ID: string,
     SENTRY_PUBLIC_KEY: string,
     REPORT_ERRORS: boolean,
