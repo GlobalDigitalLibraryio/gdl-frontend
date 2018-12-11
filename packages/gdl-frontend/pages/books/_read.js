@@ -262,9 +262,9 @@ const CHAPTER_QUERY = gql`
   query Chapter($id: ID!) {
     chapter(id: $id) {
       id
+      seqNo
       chapterId
       content
-      seqNo
       imageUrls
     }
   }

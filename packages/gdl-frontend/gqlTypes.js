@@ -42,6 +42,149 @@ export type languages = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OfflineBook
+// ====================================================
+
+export type OfflineBook_book_chapters = {
+  __typename: "Chapter",
+  id: string,
+  seqNo: number,
+  chapterId: number,
+  content: string,
+  imageUrls: Array<string>,
+};
+
+export type OfflineBook_book_similar_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type OfflineBook_book_similar_results_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type OfflineBook_book_similar_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<OfflineBook_book_similar_results_coverImage_variants>,
+};
+
+export type OfflineBook_book_similar_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  language: OfflineBook_book_similar_results_language,
+  coverImage: ?OfflineBook_book_similar_results_coverImage,
+};
+
+export type OfflineBook_book_similar = {
+  __typename: "ResultItemConnection",
+  results: Array<OfflineBook_book_similar_results>,
+};
+
+export type OfflineBook_book_downloads = {
+  __typename: "Download",
+  epub: ?string,
+  pdf: ?string,
+};
+
+export type OfflineBook_book_license = {
+  __typename: "License",
+  url: string,
+  name: string,
+};
+
+export type OfflineBook_book_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+  isRTL: boolean,
+};
+
+export type OfflineBook_book_coverImage_variants = {
+  __typename: "ImageCropCoordinates",
+  height: number,
+  width: number,
+  x: number,
+  y: number,
+  ratio: string,
+};
+
+export type OfflineBook_book_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+  variants: ?Array<OfflineBook_book_coverImage_variants>,
+};
+
+export type OfflineBook_book_publisher = {
+  __typename: "Publisher",
+  name: string,
+};
+
+export type OfflineBook_book_authors = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBook_book_illustrators = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBook_book_translators = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBook_book_photographers = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBook_book = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  description: string,
+  category: Category,
+  readingLevel: ReadingLevel,
+  bookFormat: BookFormat,
+  supportsTranslation: boolean,
+  additionalInformation: ?string,
+  chapters: Array<OfflineBook_book_chapters>,
+  similar: OfflineBook_book_similar,
+  downloads: OfflineBook_book_downloads,
+  license: OfflineBook_book_license,
+  language: OfflineBook_book_language,
+  coverImage: ?OfflineBook_book_coverImage,
+  publisher: OfflineBook_book_publisher,
+  authors: ?Array<OfflineBook_book_authors>,
+  illustrators: ?Array<OfflineBook_book_illustrators>,
+  translators: ?Array<OfflineBook_book_translators>,
+  photographers: ?Array<OfflineBook_book_photographers>,
+};
+
+export type OfflineBook = {
+  book: ?OfflineBook_book
+};
+
+export type OfflineBookVariables = {
+  id: string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: book
 // ====================================================
 
@@ -236,9 +379,9 @@ export type ReadBookVariables = {
 export type Chapter_chapter = {
   __typename: "Chapter",
   id: string,
+  seqNo: number,
   chapterId: number,
   content: string,
-  seqNo: number,
   imageUrls: Array<string>,
 };
 

@@ -1,6 +1,6 @@
 // @flow
 import getConfig from 'next/config';
-import type { BookDetails, ConfigShape } from '../../types';
+import type { ConfigShape } from '../../types';
 import OfflineLibrary from './OfflineLibrary';
 
 const {
@@ -8,20 +8,6 @@ const {
 }: ConfigShape = getConfig();
 
 export const CACHE_NAME = 'gdl-offline';
-
-/**
- * Book ids aren't unique. So we make a composite key together with the language
- */
-export function keyForBook(
-  bookOrId: string | number | BookDetails,
-  language?: string
-) {
-  return arguments.length > 1
-    ? // $FlowFixMe
-      `${bookOrId}-${language}`
-    : // $FlowFixMe
-      `${bookOrId.id}-${bookOrId.language.code}`;
-}
 
 const serviceworker =
   typeof window !== 'undefined' && 'serviceWorker' in navigator;
