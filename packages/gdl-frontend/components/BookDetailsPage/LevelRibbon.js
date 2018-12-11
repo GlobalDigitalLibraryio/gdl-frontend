@@ -10,7 +10,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { triangle } from 'polished';
 
-import type { ReadingLevel } from '../../types';
+import type { ReadingLevel } from '../../gqlTypes';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts, misc } from '../../style/theme';
 import media from '../../style/media';
