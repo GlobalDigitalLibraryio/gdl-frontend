@@ -351,10 +351,7 @@ class BookActions1 extends React.Component<
   async componentDidMount() {
     if (!offlineLibrary) return;
 
-    const offlineBook = await offlineLibrary.getBook(
-      this.props.book.id,
-      this.props.book.language.code
-    );
+    const offlineBook = await offlineLibrary.getBook(this.props.book.id);
 
     this.setState({
       isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
@@ -389,14 +386,14 @@ class BookActions1 extends React.Component<
     this.setState({ isAvailableOffline: 'DOWNLOADING' });
 
     if (this.state.isAvailableOffline === 'YES') {
-      await offlineLibrary.deleteBook(book.id, book.language.code);
+      await offlineLibrary.deleteBook(book.id);
       this.setState({
         isAvailableOffline: 'NO',
         snackbarMessage: 'Removed book from your offline library.'
       });
       logEvent('Books', 'Remove offline', book.title);
     } else {
-      const offlinedBook = await offlineLibrary.addBook(book);
+      const offlinedBook = await offlineLibrary.addBook(book.id);
       this.setState({
         isAvailableOffline: offlinedBook ? 'YES' : 'NO',
         snackbarMessage: offlinedBook
