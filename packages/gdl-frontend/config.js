@@ -9,7 +9,6 @@
 import type { ConfigShape } from './types';
 */
 const { GDL_ENVIRONMENT } = require('gdl-config');
-const dnsResolver = require('./lib/customResolver');
 
 const graphqlEndpoint = () => {
   switch (GDL_ENVIRONMENT) {
@@ -63,13 +62,7 @@ module.exports = {
   serverRuntimeConfig: {
     port: process.env.GDL_FRONTEND_PORT || 3005,
     // No need to add this to the public config (and ship to client) since we only use it in _document.js
-    googleSiteVerificationId: 't5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA',
-    // If we want to use our own custom DNS resolver (when running in Docker)
-    get bookApiUrl() {
-      return process.env.CUSTOM_DNS_RESOLVE
-        ? dnsResolver('book-api.gdl-local', '/book-api/v1')
-        : bookApiUrl();
-    }
+    googleSiteVerificationId: 't5dnhhLP6IP-A-0-EPdggXp7th33SJI_dgqLv9vkAcA'
   },
   publicRuntimeConfig: {
     graphqlEndpoint: graphqlEndpoint(),
