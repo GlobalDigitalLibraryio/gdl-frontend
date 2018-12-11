@@ -6,13 +6,12 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 import { QueryIsAdmin } from '../../gql';
 
-import { logEvent } from '../../lib/analytics';
 import { Link } from '../../routes';
 import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
@@ -21,6 +20,7 @@ import Favorite, { FavoriteIcon } from '../Favorite';
 import { flexCenter } from '../../style/flex';
 
 export type Book = $ReadOnly<{
+  id: string,
   bookId: number,
   language: { +code: string, isRTL: boolean },
   title: string,
@@ -70,53 +70,34 @@ const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
   </Div>
 );
 
-class FavButton extends React.Component<{ book: Book }> {
-  render() {
-    return (
-      <Favorite
-        id={this.props.book.bookId}
-        language={this.props.book.language.code}
+const FavButton = ({ book }: { book: Book }) => (
+  <Favorite book={book}>
+    {({ isFav, onClick }) => (
+      <Tooltip
+        // Force remounting of the tooltip when the fav state changes
+        key={isFav.toString()}
+        title={
+          isFav ? (
+            <Trans>Remove from favorites</Trans>
+          ) : (
+            <Trans>Add to favorites</Trans>
+          )
+        }
       >
-        {({ isFav, onClick }) => (
-          <Tooltip
-            // Force remounting of the tooltip when the fav state changes
-            key={isFav.toString()}
-            title={
-              isFav ? (
-                <Trans>Remove from favorites</Trans>
-              ) : (
-                <Trans>Add to favorites</Trans>
-              )
-            }
-          >
-            <IconButton
-              onClick={() => {
-                onClick();
-                logEvent(
-                  'Books',
-                  isFav ? 'Unfavorited' : 'Favorited',
-                  this.props.book.title
-                );
-              }}
-            >
-              <FavoriteIcon
-                data-cy="read-book-favorite-button"
-                filled={isFav}
-              />
-              <SrOnly>
-                {isFav ? (
-                  <Trans>Remove from favorites</Trans>
-                ) : (
-                  <Trans>Add to favorites</Trans>
-                )}
-              </SrOnly>
-            </IconButton>
-          </Tooltip>
-        )}
-      </Favorite>
-    );
-  }
-}
+        <IconButton onClick={onClick}>
+          <FavoriteIcon filled={isFav} data-cy="read-book-favorite-button" />
+          <SrOnly>
+            {isFav ? (
+              <Trans>Remove from favorites</Trans>
+            ) : (
+              <Trans>Add to favorites</Trans>
+            )}
+          </SrOnly>
+        </IconButton>
+      </Tooltip>
+    )}
+  </Favorite>
+);
 
 const Div = styled.div`
   z-index: 2;

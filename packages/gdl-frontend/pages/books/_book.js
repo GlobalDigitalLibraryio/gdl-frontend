@@ -406,14 +406,7 @@ class BookActions1 extends React.Component<
                 css={media.mobile`position: absolute; top: 0; left: ${
                   misc.gutter
                 }px;`}
-                onClick={() => {
-                  onClick();
-                  logEvent(
-                    'Books',
-                    isFav ? 'Unfavorited' : 'Favorited',
-                    book.title
-                  );
-                }}
+                onClick={onClick}
                 icon={
                   <FavoriteIcon
                     data-cy={
