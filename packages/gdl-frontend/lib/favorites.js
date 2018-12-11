@@ -13,28 +13,21 @@ const FAVORITES_KEY = 'favorites';
 type OldFav = { id: number, language: string };
 const oldFavToId = (fav: OldFav) => `${fav.id}-${fav.language}`;
 
-export function markAsFavorite(fav: OldFav) {
+export function addFavorite(id: string) {
   // Make sure we don't add the same book multiple times
-  if (!isFavorite(fav)) {
-    const favs = [oldFavToId(fav), ...getFavoritedBookIds()];
+  if (!isFavorite(id)) {
+    const favs = [id, ...getFavoritedBookIds()];
     setFavorites(favs);
   }
 }
 
-/**
- * @deprecated
- */
-export function removeAsFavorite(fav: OldFav) {
-  return removeFavoriteById(oldFavToId(fav));
-}
-
-export function removeFavoriteById(id: string) {
+export function removeFavorite(id: string) {
   const favs = getFavoritedBookIds().filter(x => x !== id);
   setFavorites(favs);
 }
 
-export function isFavorite(fav: OldFav) {
-  return getFavoritedBookIds().includes(oldFavToId(fav));
+export function isFavorite(id: string) {
+  return getFavoritedBookIds().includes(id);
 }
 
 export function getFavoritedBookIds(): Array<string> {

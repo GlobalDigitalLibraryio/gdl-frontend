@@ -407,21 +407,14 @@ class BookActions1 extends React.Component<
             width: '100%'
           }}
         >
-          <Favorite id={book.bookId} language={book.language.code}>
+          <Favorite book={book}>
             {({ onClick, isFav }) => (
               <IconButton
                 // Moving the fav button up top on mobile
                 css={media.mobile`position: absolute; top: 0; left: ${
                   misc.gutter
                 }px;`}
-                onClick={() => {
-                  onClick();
-                  logEvent(
-                    'Books',
-                    isFav ? 'Unfavorited' : 'Favorited',
-                    book.title
-                  );
-                }}
+                onClick={onClick}
                 icon={<FavoriteIcon filled={isFav} />}
                 label={<Trans>Favorite</Trans>}
               />
