@@ -3,13 +3,16 @@ import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
+import getConfig from 'next/config';
+
+const {
+  publicRuntimeConfig: { graphqlEndpoint }
+} = getConfig();
 
 let apolloClient = null;
 
 function create(initialState, { getToken }) {
-  const httpLink = createHttpLink({
-    uri: 'http://localhost:4000/graphql'
-  });
+  const httpLink = createHttpLink({ uri: graphqlEndpoint });
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
