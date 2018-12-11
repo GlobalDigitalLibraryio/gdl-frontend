@@ -26,7 +26,7 @@ import green from '@material-ui/core/colors/green';
 import gql from 'graphql-tag';
 
 import { sendToTranslation } from '../../fetch';
-import type { Language, Translation, Context } from '../../types';
+import type { Translation, Context } from '../../types';
 import { Link, Router } from '../../routes';
 import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
@@ -36,7 +36,10 @@ import CoverImage from '../../components/CoverImage';
 import LanguageList from '../../components/LanguageList';
 import { spacing } from '../../style/theme';
 
-import type { TranslateBook_book } from '../../gqlTypes';
+import type {
+  TranslateBook_book,
+  TranslateBook_translationLanguages as Language
+} from '../../gqlTypes';
 
 const translationStates = {
   SELECT: 'SELECT',

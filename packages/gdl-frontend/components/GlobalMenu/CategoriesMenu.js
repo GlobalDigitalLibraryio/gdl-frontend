@@ -146,7 +146,7 @@ const Categories = ({
             key={level}
             lang={languageCode}
             readingLevel={level}
-            category="library_books"
+            category="Library"
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
@@ -155,7 +155,7 @@ const Categories = ({
             </ListItem>
           </Link>
         ))}
-        <Link category="library_books" lang={languageCode} sort="-arrivalDate">
+        <Link category="Library" lang={languageCode} sort="-arrivalDate">
           <ListItem button onClick={onSelectCategory}>
             <ListItemText inset>
               <Trans>New arrivals</Trans>
