@@ -11,8 +11,11 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
-import type { FeaturedContent, Category } from '../../types';
-import type { books as Books } from '../../gqlTypes';
+import type { Category } from '../../types';
+import type {
+  books as Books,
+  FeaturedContent_featuredContent as FeaturedContent
+} from '../../gqlTypes';
 
 import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';

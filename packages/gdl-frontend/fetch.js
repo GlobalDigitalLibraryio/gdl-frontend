@@ -10,12 +10,7 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { getAuthToken } from 'gdl-auth';
 
-import type {
-  ConfigShape,
-  RemoteData,
-  FeaturedContent,
-  Translation
-} from './types';
+import type { ConfigShape, RemoteData, Translation } from './types';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
@@ -79,12 +74,6 @@ async function doFetch(
 // DO NOT declare doFetch and export it as default as the same time
 // See https://github.com/babel/babel/issues/6262
 export default doFetch;
-
-export function fetchFeaturedContent(
-  language: ?string
-): Promise<RemoteData<Array<FeaturedContent>>> {
-  return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
-}
 
 export function sendToTranslation(
   bookId: number | string,
