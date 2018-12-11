@@ -26,7 +26,7 @@ import { spacing } from '../style/theme';
 import type { Favorites, FavoritesVariables } from '../gqlTypes';
 import {
   getFavoritedBookIds,
-  removeFavoriteById,
+  removeFavorite,
   clearFavorites
 } from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
@@ -41,7 +41,7 @@ function removeBooksNotFound(data: Favorites) {
   const foundFavoriteIds = data.books.filter(Boolean).map(b => b.id);
 
   const diff = favoritedIds.filter(id => !foundFavoriteIds.includes(id));
-  diff.forEach(removeFavoriteById);
+  diff.forEach(removeFavorite);
 }
 
 class FavoritesPage extends React.Component<{}> {
