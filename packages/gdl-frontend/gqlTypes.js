@@ -1,5 +1,3 @@
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -10,13 +8,12 @@
 
 export type catgoryReadingLevels = {
   classroom: Array<ReadingLevel>,
-  library: Array<ReadingLevel>,
+  library: Array<ReadingLevel>
 };
 
 export type catgoryReadingLevelsVariables = {
   language: string
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -27,15 +24,14 @@ export type catgoryReadingLevelsVariables = {
 // ====================================================
 
 export type languages_languages = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type languages = {
   languages: Array<languages_languages>
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -46,75 +42,75 @@ export type languages = {
 // ====================================================
 
 export type OfflineBook_book_chapters = {
-  __typename: "Chapter",
+  __typename: 'Chapter',
   id: string,
   seqNo: number,
   chapterId: number,
   content: string,
-  imageUrls: Array<string>,
+  imageUrls: Array<string>
 };
 
 export type OfflineBook_book_downloads = {
-  __typename: "Download",
+  __typename: 'Download',
   epub: ?string,
-  pdf: ?string,
+  pdf: ?string
 };
 
 export type OfflineBook_book_license = {
-  __typename: "License",
+  __typename: 'License',
   url: string,
-  name: string,
+  name: string
 };
 
 export type OfflineBook_book_language = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
   name: string,
-  isRTL: boolean,
+  isRTL: boolean
 };
 
 export type OfflineBook_book_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type OfflineBook_book_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<OfflineBook_book_coverImage_variants>,
+  variants: ?Array<OfflineBook_book_coverImage_variants>
 };
 
 export type OfflineBook_book_publisher = {
-  __typename: "Publisher",
-  name: string,
+  __typename: 'Publisher',
+  name: string
 };
 
 export type OfflineBook_book_authors = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type OfflineBook_book_illustrators = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type OfflineBook_book_translators = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type OfflineBook_book_photographers = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type OfflineBook_book = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
   bookId: number,
   title: string,
@@ -133,7 +129,7 @@ export type OfflineBook_book = {
   authors: ?Array<OfflineBook_book_authors>,
   illustrators: ?Array<OfflineBook_book_illustrators>,
   translators: ?Array<OfflineBook_book_translators>,
-  photographers: ?Array<OfflineBook_book_photographers>,
+  photographers: ?Array<OfflineBook_book_photographers>
 };
 
 export type OfflineBook = {
@@ -144,7 +140,6 @@ export type OfflineBookVariables = {
   id: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -154,65 +149,65 @@ export type OfflineBookVariables = {
 // ====================================================
 
 export type book_book_downloads = {
-  __typename: "Download",
+  __typename: 'Download',
   epub: ?string,
-  pdf: ?string,
+  pdf: ?string
 };
 
 export type book_book_license = {
-  __typename: "License",
+  __typename: 'License',
   url: string,
-  name: string,
+  name: string
 };
 
 export type book_book_language = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type book_book_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type book_book_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<book_book_coverImage_variants>,
+  variants: ?Array<book_book_coverImage_variants>
 };
 
 export type book_book_publisher = {
-  __typename: "Publisher",
-  name: string,
+  __typename: 'Publisher',
+  name: string
 };
 
 export type book_book_authors = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type book_book_illustrators = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type book_book_translators = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type book_book_photographers = {
-  __typename: "Contributor",
-  name: string,
+  __typename: 'Contributor',
+  name: string
 };
 
 export type book_book = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
   bookId: number,
   title: string,
@@ -230,7 +225,7 @@ export type book_book = {
   authors: ?Array<book_book_authors>,
   illustrators: ?Array<book_book_illustrators>,
   translators: ?Array<book_book_translators>,
-  photographers: ?Array<book_book_photographers>,
+  photographers: ?Array<book_book_photographers>
 };
 
 export type book = {
@@ -241,7 +236,6 @@ export type bookVariables = {
   id: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -251,43 +245,43 @@ export type bookVariables = {
 // ====================================================
 
 export type similar_book_similar_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type similar_book_similar_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type similar_book_similar_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<similar_book_similar_results_coverImage_variants>,
+  variants: ?Array<similar_book_similar_results_coverImage_variants>
 };
 
 export type similar_book_similar_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   language: similar_book_similar_results_language,
-  coverImage: ?similar_book_similar_results_coverImage,
+  coverImage: ?similar_book_similar_results_coverImage
 };
 
 export type similar_book_similar = {
-  __typename: "ResultItemConnection",
-  results: Array<similar_book_similar_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<similar_book_similar_results>
 };
 
 export type similar_book = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
-  similar: similar_book_similar,
+  similar: similar_book_similar
 };
 
 export type similar = {
@@ -298,7 +292,6 @@ export type similarVariables = {
   id: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -308,42 +301,42 @@ export type similarVariables = {
 // ====================================================
 
 export type ReadBook_book_language = {
-  __typename: "Language",
+  __typename: 'Language',
   isRTL: boolean,
-  code: string,
+  code: string
 };
 
 export type ReadBook_book_chapters = {
-  __typename: "Chapter",
+  __typename: 'Chapter',
   id: string,
   seqNo: number,
-  chapterId: number,
+  chapterId: number
 };
 
 export type ReadBook_book_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type ReadBook_book_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<ReadBook_book_coverImage_variants>,
+  variants: ?Array<ReadBook_book_coverImage_variants>
 };
 
 export type ReadBook_book = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
   bookId: number,
   title: string,
   description: string,
   language: ReadBook_book_language,
   chapters: Array<ReadBook_book_chapters>,
-  coverImage: ?ReadBook_book_coverImage,
+  coverImage: ?ReadBook_book_coverImage
 };
 
 export type ReadBook = {
@@ -354,7 +347,6 @@ export type ReadBookVariables = {
   id: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -364,12 +356,12 @@ export type ReadBookVariables = {
 // ====================================================
 
 export type Chapter_chapter = {
-  __typename: "Chapter",
+  __typename: 'Chapter',
   id: string,
   seqNo: number,
   chapterId: number,
   content: string,
-  imageUrls: Array<string>,
+  imageUrls: Array<string>
 };
 
 export type Chapter = {
@@ -380,7 +372,6 @@ export type ChapterVariables = {
   id: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -390,58 +381,57 @@ export type ChapterVariables = {
 // ====================================================
 
 export type TranslateBook_book_publisher = {
-  __typename: "Publisher",
-  name: string,
+  __typename: 'Publisher',
+  name: string
 };
 
 export type TranslateBook_book_language = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type TranslateBook_book_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type TranslateBook_book_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<TranslateBook_book_coverImage_variants>,
+  variants: ?Array<TranslateBook_book_coverImage_variants>
 };
 
 export type TranslateBook_book = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
   bookId: number,
   title: string,
   description: string,
   publisher: TranslateBook_book_publisher,
   language: TranslateBook_book_language,
-  coverImage: ?TranslateBook_book_coverImage,
+  coverImage: ?TranslateBook_book_coverImage
 };
 
 export type TranslateBook_translationLanguages = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type TranslateBook = {
   book: ?TranslateBook_book,
-  translationLanguages: Array<TranslateBook_translationLanguages>,
+  translationLanguages: Array<TranslateBook_translationLanguages>
 };
 
 export type TranslateBookVariables = {
   id: string,
-  languageCode: string,
+  languageCode: string
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -452,44 +442,44 @@ export type TranslateBookVariables = {
 // ====================================================
 
 export type BrowseBooks_bookSummaries_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type BrowseBooks_bookSummaries_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<BrowseBooks_bookSummaries_results_coverImage_variants>,
+  variants: ?Array<BrowseBooks_bookSummaries_results_coverImage_variants>
 };
 
 export type BrowseBooks_bookSummaries_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type BrowseBooks_bookSummaries_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?BrowseBooks_bookSummaries_results_coverImage,
-  language: BrowseBooks_bookSummaries_results_language,
+  language: BrowseBooks_bookSummaries_results_language
 };
 
 export type BrowseBooks_bookSummaries_pageInfo = {
-  __typename: "PageInfo",
+  __typename: 'PageInfo',
   page: number,
-  hasNextPage: boolean,
+  hasNextPage: boolean
 };
 
 export type BrowseBooks_bookSummaries = {
-  __typename: "ResultItemConnection",
+  __typename: 'ResultItemConnection',
   results: Array<BrowseBooks_bookSummaries_results>,
-  pageInfo: BrowseBooks_bookSummaries_pageInfo,
+  pageInfo: BrowseBooks_bookSummaries_pageInfo
 };
 
 export type BrowseBooks = {
@@ -502,9 +492,8 @@ export type BrowseBooksVariables = {
   category?: ?Category,
   orderBy?: ?OrderBy,
   pageSize?: ?number,
-  page: number,
+  page: number
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -515,67 +504,66 @@ export type BrowseBooksVariables = {
 // ====================================================
 
 export type MyBookTranslations_currentUser_translations_from_language = {
-  __typename: "Language",
-  name: string,
+  __typename: 'Language',
+  name: string
 };
 
 export type MyBookTranslations_currentUser_translations_from = {
-  __typename: "BookDetails",
-  language: MyBookTranslations_currentUser_translations_from_language,
+  __typename: 'BookDetails',
+  language: MyBookTranslations_currentUser_translations_from_language
 };
 
 export type MyBookTranslations_currentUser_translations_to_publisher = {
-  __typename: "Publisher",
-  name: string,
+  __typename: 'Publisher',
+  name: string
 };
 
 export type MyBookTranslations_currentUser_translations_to_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type MyBookTranslations_currentUser_translations_to_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<MyBookTranslations_currentUser_translations_to_coverImage_variants>,
+  variants: ?Array<MyBookTranslations_currentUser_translations_to_coverImage_variants>
 };
 
 export type MyBookTranslations_currentUser_translations_to_language = {
-  __typename: "Language",
+  __typename: 'Language',
   name: string,
-  code: string,
+  code: string
 };
 
 export type MyBookTranslations_currentUser_translations_to = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   bookId: number,
   title: string,
   publisher: MyBookTranslations_currentUser_translations_to_publisher,
   coverImage: ?MyBookTranslations_currentUser_translations_to_coverImage,
-  language: MyBookTranslations_currentUser_translations_to_language,
+  language: MyBookTranslations_currentUser_translations_to_language
 };
 
 export type MyBookTranslations_currentUser_translations = {
-  __typename: "Translation",
+  __typename: 'Translation',
   crowdinUrl: string,
   synchronizeUrl: string,
   from: MyBookTranslations_currentUser_translations_from,
-  to: MyBookTranslations_currentUser_translations_to,
+  to: MyBookTranslations_currentUser_translations_to
 };
 
 export type MyBookTranslations_currentUser = {
-  __typename: "User",
-  translations: Array<MyBookTranslations_currentUser_translations>,
+  __typename: 'User',
+  translations: Array<MyBookTranslations_currentUser_translations>
 };
 
 export type MyBookTranslations = {
   currentUser: ?MyBookTranslations_currentUser
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -586,32 +574,32 @@ export type MyBookTranslations = {
 // ====================================================
 
 export type Favorites_books_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type Favorites_books_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type Favorites_books_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<Favorites_books_coverImage_variants>,
+  variants: ?Array<Favorites_books_coverImage_variants>
 };
 
 export type Favorites_books = {
-  __typename: "BookDetails",
+  __typename: 'BookDetails',
   id: string,
   bookId: number,
   title: string,
   language: Favorites_books_language,
-  coverImage: ?Favorites_books_coverImage,
+  coverImage: ?Favorites_books_coverImage
 };
 
 export type Favorites = {
@@ -622,7 +610,6 @@ export type FavoritesVariables = {
   ids: Array<string>
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -632,19 +619,19 @@ export type FavoritesVariables = {
 // ====================================================
 
 export type FeaturedContent_featuredContent_language = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type FeaturedContent_featuredContent = {
-  __typename: "FeaturedContent",
+  __typename: 'FeaturedContent',
   id: string,
   title: string,
   description: string,
   link: string,
   imageUrl: string,
-  language: FeaturedContent_featuredContent_language,
+  language: FeaturedContent_featuredContent_language
 };
 
 export type FeaturedContent = {
@@ -654,7 +641,6 @@ export type FeaturedContent = {
 export type FeaturedContentVariables = {
   language?: ?string
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -672,7 +658,6 @@ export type GetCategoriesVariables = {
   language: string
 };
 
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -682,241 +667,241 @@ export type GetCategoriesVariables = {
 // ====================================================
 
 export type books_Decodable_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_Decodable_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_Decodable_results_coverImage_variants>,
+  variants: ?Array<books_Decodable_results_coverImage_variants>
 };
 
 export type books_Decodable_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_Decodable_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_Decodable_results_coverImage,
-  language: books_Decodable_results_language,
+  language: books_Decodable_results_language
 };
 
 export type books_Decodable = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Decodable_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_Decodable_results>
 };
 
 export type books_Level1_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_Level1_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_Level1_results_coverImage_variants>,
+  variants: ?Array<books_Level1_results_coverImage_variants>
 };
 
 export type books_Level1_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_Level1_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_Level1_results_coverImage,
-  language: books_Level1_results_language,
+  language: books_Level1_results_language
 };
 
 export type books_Level1 = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Level1_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_Level1_results>
 };
 
 export type books_Level2_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_Level2_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_Level2_results_coverImage_variants>,
+  variants: ?Array<books_Level2_results_coverImage_variants>
 };
 
 export type books_Level2_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_Level2_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_Level2_results_coverImage,
-  language: books_Level2_results_language,
+  language: books_Level2_results_language
 };
 
 export type books_Level2 = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Level2_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_Level2_results>
 };
 
 export type books_Level3_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_Level3_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_Level3_results_coverImage_variants>,
+  variants: ?Array<books_Level3_results_coverImage_variants>
 };
 
 export type books_Level3_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_Level3_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_Level3_results_coverImage,
-  language: books_Level3_results_language,
+  language: books_Level3_results_language
 };
 
 export type books_Level3 = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Level3_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_Level3_results>
 };
 
 export type books_Level4_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_Level4_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_Level4_results_coverImage_variants>,
+  variants: ?Array<books_Level4_results_coverImage_variants>
 };
 
 export type books_Level4_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_Level4_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_Level4_results_coverImage,
-  language: books_Level4_results_language,
+  language: books_Level4_results_language
 };
 
 export type books_Level4 = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Level4_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_Level4_results>
 };
 
 export type books_ReadAloud_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_ReadAloud_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_ReadAloud_results_coverImage_variants>,
+  variants: ?Array<books_ReadAloud_results_coverImage_variants>
 };
 
 export type books_ReadAloud_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_ReadAloud_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_ReadAloud_results_coverImage,
-  language: books_ReadAloud_results_language,
+  language: books_ReadAloud_results_language
 };
 
 export type books_ReadAloud = {
-  __typename: "ResultItemConnection",
-  results: Array<books_ReadAloud_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_ReadAloud_results>
 };
 
 export type books_NewArrivals_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type books_NewArrivals_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<books_NewArrivals_results_coverImage_variants>,
+  variants: ?Array<books_NewArrivals_results_coverImage_variants>
 };
 
 export type books_NewArrivals_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type books_NewArrivals_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?books_NewArrivals_results_coverImage,
-  language: books_NewArrivals_results_language,
+  language: books_NewArrivals_results_language
 };
 
 export type books_NewArrivals = {
-  __typename: "ResultItemConnection",
-  results: Array<books_NewArrivals_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<books_NewArrivals_results>
 };
 
 export type books = {
@@ -926,14 +911,13 @@ export type books = {
   Level3: books_Level3,
   Level4: books_Level4,
   ReadAloud: books_ReadAloud,
-  NewArrivals: books_NewArrivals,
+  NewArrivals: books_NewArrivals
 };
 
 export type booksVariables = {
   language: string,
-  pageSize?: ?number,
+  pageSize?: ?number
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -944,28 +928,28 @@ export type booksVariables = {
 // ====================================================
 
 export type Search_search_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type Search_search_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<Search_search_results_coverImage_variants>,
+  variants: ?Array<Search_search_results_coverImage_variants>
 };
 
 export type Search_search_results_language = {
-  __typename: "Language",
+  __typename: 'Language',
   code: string,
-  name: string,
+  name: string
 };
 
 export type Search_search_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
@@ -974,20 +958,20 @@ export type Search_search_results = {
   highlightDescription: ?string,
   readingLevel: ReadingLevel,
   coverImage: ?Search_search_results_coverImage,
-  language: Search_search_results_language,
+  language: Search_search_results_language
 };
 
 export type Search_search_pageInfo = {
-  __typename: "PageInfo",
+  __typename: 'PageInfo',
   page: number,
-  hasNextPage: boolean,
+  hasNextPage: boolean
 };
 
 export type Search_search = {
-  __typename: "ResultItemConnection",
+  __typename: 'ResultItemConnection',
   results: Array<Search_search_results>,
   totalCount: number,
-  pageInfo: Search_search_pageInfo,
+  pageInfo: Search_search_pageInfo
 };
 
 export type Search = {
@@ -997,9 +981,8 @@ export type Search = {
 export type SearchVariables = {
   query: string,
   pageSize?: ?number,
-  page: number,
+  page: number
 };
-
 
 /* @flow */
 /* eslint-disable */
@@ -1010,37 +993,37 @@ export type SearchVariables = {
 // ====================================================
 
 export type fields_results_coverImage_variants = {
-  __typename: "ImageCropCoordinates",
+  __typename: 'ImageCropCoordinates',
   height: number,
   width: number,
   x: number,
   y: number,
-  ratio: string,
+  ratio: string
 };
 
 export type fields_results_coverImage = {
-  __typename: "CoverImage",
+  __typename: 'CoverImage',
   url: string,
-  variants: ?Array<fields_results_coverImage_variants>,
+  variants: ?Array<fields_results_coverImage_variants>
 };
 
 export type fields_results_language = {
-  __typename: "Language",
-  code: string,
+  __typename: 'Language',
+  code: string
 };
 
 export type fields_results = {
-  __typename: "BookSummary",
+  __typename: 'BookSummary',
   id: string,
   bookId: number,
   title: string,
   coverImage: ?fields_results_coverImage,
-  language: fields_results_language,
+  language: fields_results_language
 };
 
 export type fields = {
-  __typename: "ResultItemConnection",
-  results: Array<fields_results>,
+  __typename: 'ResultItemConnection',
+  results: Array<fields_results>
 };
 
 /* @flow */
@@ -1052,24 +1035,34 @@ export type fields = {
 //==============================================================
 
 /**
- * 
+ *
  */
-export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
+export type ReadingLevel =
+  | 'Decodable'
+  | 'Level1'
+  | 'Level2'
+  | 'Level3'
+  | 'Level4'
+  | 'ReadAloud';
 
 /**
- * 
+ *
  */
-export type Category = "Classroom" | "Library";
+export type Category = 'Classroom' | 'Library';
 
 /**
- * 
+ *
  */
-export type BookFormat = "HTML" | "PDF";
+export type BookFormat = 'HTML' | 'PDF';
 
 /**
- * 
+ *
  */
-export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
+export type OrderBy =
+  | 'arrivalDate_ASC'
+  | 'arrivalDate_DESC'
+  | 'title_ASC'
+  | 'title_DESC';
 
 //==============================================================
 // END Enums and Input Objects
