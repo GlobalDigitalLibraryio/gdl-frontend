@@ -8,6 +8,7 @@
 
 import React, { Fragment } from 'react';
 import { Trans } from '@lingui/react';
+import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
@@ -103,26 +104,6 @@ const BOOK_QUERY = gql`
       bookFormat
       supportsTranslation
       additionalInformation
-      similar {
-        results {
-          id
-          bookId
-          title
-          language {
-            code
-          }
-          coverImage {
-            url
-            variants {
-              height
-              width
-              x
-              y
-              ratio
-            }
-          }
-        }
-      }
       downloads {
         epub
         pdf
@@ -277,14 +258,26 @@ class BookPage extends React.Component<{ book: Book }> {
                 </Grid>
 
                 <Divider />
-                {!offline && book.similar.results.length > 0 && (
-                  <View mb={spacing.medium}>
-                    <BookList
-                      heading={<Trans>Similar</Trans>}
-                      books={book.similar.results}
-                    />
-                  </View>
-                )}
+                <Query query={SIMILAR_BOOKS_QUERY} variables={{ id: book.id }}>
+                  {({ data, loading, error }) => {
+                    if (
+                      offline ||
+                      loading ||
+                      error ||
+                      data.book.similar.results.length < 1
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <View mb={spacing.medium}>
+                        <BookList
+                          heading={<Trans>Similar</Trans>}
+                          books={data.book.similar.results}
+                        />
+                      </View>
+                    );
+                  }}
+                </Query>
               </div>
             </Container>
           </Main>
@@ -659,5 +652,33 @@ class BookActions2 extends React.Component<
     );
   }
 }
+
+const SIMILAR_BOOKS_QUERY = gql`
+  query similar($id: ID!) {
+    book(id: $id) {
+      id
+      similar {
+        results {
+          id
+          bookId
+          title
+          language {
+            code
+          }
+          coverImage {
+            url
+            variants {
+              height
+              width
+              x
+              y
+              ratio
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 export default withErrorPage(BookPage);

@@ -192,26 +192,6 @@ const OFFLINE_BOOK_QUERY = gql`
         content
         imageUrls
       }
-      similar {
-        results {
-          id
-          bookId
-          title
-          language {
-            code
-          }
-          coverImage {
-            url
-            variants {
-              height
-              width
-              x
-              y
-              ratio
-            }
-          }
-        }
-      }
       downloads {
         epub
         pdf
