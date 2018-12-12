@@ -205,13 +205,6 @@ const SEARCH_QUERY = gql`
         readingLevel
         coverImage {
           url
-          variants {
-            height
-            width
-            x
-            y
-            ratio
-          }
         }
         language {
           code
