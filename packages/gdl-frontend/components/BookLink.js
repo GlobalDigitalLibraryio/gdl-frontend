@@ -9,7 +9,6 @@
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { Card, CardContent, Typography } from '@material-ui/core';
-import { type CoverImage as CoverImageType } from 'gdl-image';
 
 import { Link } from '../routes';
 import CoverImage from './CoverImage';
@@ -27,7 +26,7 @@ export type Book = $ReadOnly<{
   language: {
     code: string
   },
-  coverImage: ?CoverImageType
+  coverImage: ?{ url: string }
 }>;
 
 /**

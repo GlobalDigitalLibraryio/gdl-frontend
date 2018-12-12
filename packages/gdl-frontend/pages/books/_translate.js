@@ -64,13 +64,6 @@ const BOOK_QUERY = gql`
       }
       coverImage {
         url
-        variants {
-          height
-          width
-          x
-          y
-          ratio
-        }
       }
     }
     translationLanguages(languageCode: $languageCode) {

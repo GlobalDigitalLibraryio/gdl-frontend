@@ -51,13 +51,6 @@ const QUERY = gql`
         title
         coverImage {
           url
-          variants {
-            height
-            width
-            x
-            y
-            ratio
-          }
         }
         language {
           code
