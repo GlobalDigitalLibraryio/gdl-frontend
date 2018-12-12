@@ -9,7 +9,6 @@
 import * as React from 'react';
 import { Typography } from '@material-ui/core';
 
-import type { CoverImage as CoverImageType } from 'gdl-image';
 import type { ReadingLevel } from '../../../../gqlTypes';
 
 import ReadingLevelTrans from '../../../ReadingLevelTrans';
@@ -31,7 +30,7 @@ type Book = $ReadOnly<{
     name: string,
     code: string
   },
-  coverImage: ?CoverImageType
+  coverImage: ?{ url: string }
 }>;
 
 function renderTitle(book) {

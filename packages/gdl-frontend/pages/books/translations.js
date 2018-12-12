@@ -56,13 +56,6 @@ const MY_TRANSLATION_QUERY = gql`
           }
           coverImage {
             url
-            variants {
-              height
-              width
-              x
-              y
-              ratio
-            }
           }
           language {
             name

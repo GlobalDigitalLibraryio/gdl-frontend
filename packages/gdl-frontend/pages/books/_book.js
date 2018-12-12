@@ -13,7 +13,6 @@ import NextLink from 'next/link';
 import getConfig from 'next/config';
 import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
-import { coverImageUrl } from 'gdl-image';
 import gql from 'graphql-tag';
 import {
   Snackbar,
@@ -116,13 +115,6 @@ const BOOK_QUERY = gql`
       }
       coverImage {
         url
-        variants {
-          height
-          width
-          x
-          y
-          ratio
-        }
       }
       publisher {
         name
@@ -172,7 +164,7 @@ class BookPage extends React.Component<{ book: Book }> {
         <Head
           description={book.description}
           title={book.title}
-          image={book.coverImage && coverImageUrl(book.coverImage)}
+          image={book.coverImage && book.coverImage.url}
         >
           <BookJsonLd book={book} />
         </Head>
@@ -648,13 +640,6 @@ const SIMILAR_BOOKS_QUERY = gql`
           }
           coverImage {
             url
-            variants {
-              height
-              width
-              x
-              y
-              ratio
-            }
           }
         }
       }
