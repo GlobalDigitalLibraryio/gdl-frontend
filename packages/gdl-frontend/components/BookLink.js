@@ -38,7 +38,7 @@ export default ({ book }: { book: Book }) => (
   <Card className={cardCss}>
     <Link
       route="book"
-      params={{ id: book.bookId || book.id, lang: book.language.code }}
+      params={{ id: book.bookId, lang: book.language.code }}
       passHref
     >
       <ClickTarget aria-hidden tabIndex="-1" />
@@ -47,7 +47,7 @@ export default ({ book }: { book: Book }) => (
     <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>
       <Link
         route="book"
-        params={{ id: book.bookId || book.id, lang: book.language.code }}
+        params={{ id: book.bookId, lang: book.language.code }}
         passHref
       >
         <Typography
