@@ -92,7 +92,6 @@ module.exports = {
   publicRuntimeConfig: {
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
-    crowdinProject: crowdinProject(),
 
     DEFAULT_LANGUAGE: {
       code: 'en',
