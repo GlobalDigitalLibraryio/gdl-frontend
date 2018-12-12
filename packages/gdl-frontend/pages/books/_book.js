@@ -94,7 +94,8 @@ const GridItem = styled('div')(
 );
 
 type State = {
-  similarBooks: Array<Book>
+  similarBooks: Array<Book>,
+  loadingSimiliarBooks: boolean
 };
 
 class BookPage extends React.Component<Props, State> {
@@ -116,7 +117,8 @@ class BookPage extends React.Component<Props, State> {
   static contextType = OnlineContext;
 
   state = {
-    similarBooks: []
+    similarBooks: [],
+    loadingSimiliarBooks: true,
   };
 
   componentDidMount() {
@@ -128,14 +130,16 @@ class BookPage extends React.Component<Props, State> {
     const similarRes = await fetchSimilarBooks(book.id, book.language.code);
     this.setState({
       // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : []
+      similarBooks: similarRes.isOk ? similarRes.data.results : [],
+      loadingSimiliarBooks: similarRes.isOk ? false : true
     });
   }
 
   render() {
     const { book } = this.props;
-    const { similarBooks } = this.state;
+    const { similarBooks, loadingSimiliarBooks } = this.state;
     const offline: boolean = !this.context;
+    const hasLoadedSimilarBooks = !offline && similarBooks.length > 0 && !loadingSimiliarBooks;
 
     return (
       <>
@@ -229,11 +233,12 @@ class BookPage extends React.Component<Props, State> {
                 </Grid>
 
                 <Divider />
-                {!offline && similarBooks.length > 0 && (
+                {!offline && (
                   <View mb={spacing.medium}>
                     <BookList
                       heading={<Trans>Similar</Trans>}
                       books={similarBooks}
+                      loading={!hasLoadedSimilarBooks}
                     />
                   </View>
                 )}

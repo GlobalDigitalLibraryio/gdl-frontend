@@ -17,15 +17,17 @@ import media from '../../style/media';
 import type { Book } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
+import Shimmer from '../../elements/Shimmer';
 
 type Props = {
   books: Array<Book>,
   heading: Element<typeof Trans>,
-  browseLinkProps?: BrowseLinkProps
+  browseLinkProps?: BrowseLinkProps,
+  loading?: boolean
 };
 
 // Add a wrapper around each book list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
-const BookList = ({ books, heading, browseLinkProps }: Props) => (
+const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
   <>
     <View
       flexDirection="row"
@@ -46,11 +48,16 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
       )}
     </View>
     <Scroller>
-      {books.map(book => (
-        <CoverItem key={book.id}>
-          <BookLink book={book} />
-        </CoverItem>
-      ))}
+      {loading ? (
+          <Shimmer columns={5} />
+        ) : (
+          books.map(book => (
+            <CoverItem key={book.id}>
+              <BookLink book={book} />
+            </CoverItem>
+          ))
+        )
+      }
     </Scroller>
   </>
 );
