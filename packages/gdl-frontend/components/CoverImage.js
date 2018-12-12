@@ -7,8 +7,7 @@
  */
 
 import * as React from 'react';
-import { css, cx } from 'react-emotion';
-import { coverImageUrl, type CoverImage as CoverImageType } from 'gdl-image';
+import { css } from '@emotion/core';
 
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
@@ -35,7 +34,9 @@ type Props = {
   noShadow?: boolean,
   // By using predetermined sizes for the book covers, we make sure to take advantage of the client's browser cache to not redownload the image in lots of different sizes on different pages
   size: 'small' | 'medium' | 'large',
-  coverImage: ?CoverImageType
+  coverImage: ?$ReadOnly<{
+    url: string
+  }>
 };
 
 /**
@@ -51,13 +52,12 @@ const CoverImage = ({
   className,
   noShadow = false
 }: Props) => {
-  const cn = cx({ [shadowStyle]: !noShadow }, className);
-
   if (coverImage == null) {
     return (
       <Image
         ariaHidden
-        className={cn}
+        className={className}
+        css={[!noShadow && shadowStyle]}
         responsiveHeight={sizesMap[size].height}
         // $FlowFixMe
         responsiveWidth={sizesMap[size].width}
@@ -76,11 +76,12 @@ const CoverImage = ({
   return (
     <Image
       ariaHidden
-      className={cn}
+      className={className}
+      css={[!noShadow && shadowStyle]}
       crossOrigin="anonymous"
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}
-      src={coverImageUrl(coverImage)}
+      src={coverImage.url}
       sizes={sizes}
     />
   );

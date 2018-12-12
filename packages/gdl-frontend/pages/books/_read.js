@@ -9,7 +9,6 @@
 import * as React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
-import { coverImageUrl } from 'gdl-image';
 import gql from 'graphql-tag';
 import { Query, withApollo, type ApolloClient } from 'react-apollo';
 
@@ -187,7 +186,7 @@ class Read extends React.Component<Props, { current: ReadBook_book_chapters }> {
             book.chapters.length
           })`}
           description={book.description}
-          image={book.coverImage && coverImageUrl(book.coverImage)}
+          image={book.coverImage && book.coverImage.url}
         >
           {showCanonicalChapterUrl && (
             <link
@@ -246,13 +245,6 @@ const BOOK_QUERY = gql`
       }
       coverImage {
         url
-        variants {
-          height
-          width
-          x
-          y
-          ratio
-        }
       }
     }
   }
