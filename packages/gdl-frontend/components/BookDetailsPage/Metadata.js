@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { IconButton, Collapse, Typography } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
@@ -23,7 +23,7 @@ type Props = {
 };
 
 const Contributor = ({ contributorType, values }) => (
-  <Fragment>
+  <>
     <Typography variant="subtitle2" component="span">
       <Plural
         one={contributorType}
@@ -34,7 +34,7 @@ const Contributor = ({ contributorType, values }) => (
     <Typography component="span" paragraph className={noMarginForLastChild}>
       {values.map(contributor => contributor.name).join(', ')}
     </Typography>
-  </Fragment>
+  </>
 );
 
 const BookMeta = ({ book, online }: Props) => (
