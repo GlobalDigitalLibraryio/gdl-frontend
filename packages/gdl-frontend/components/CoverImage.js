@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { css, cx } from 'react-emotion';
-import { coverImageUrl, type CoverImage as CoverImageType } from 'gdl-image';
 
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
@@ -31,7 +30,9 @@ type Props = {
   noShadow?: boolean,
   // By using predetermined sizes for the book covers, we make sure to take advantage of the client's browser cache to not redownload the image in lots of different sizes on different pages
   size: 'small' | 'large',
-  coverImage: ?CoverImageType
+  coverImage: ?$ReadOnly<{
+    url: string
+  }>
 };
 
 /**
@@ -76,7 +77,7 @@ const CoverImage = ({
       crossOrigin="anonymous"
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}
-      src={coverImageUrl(coverImage)}
+      src={coverImage.url}
       sizes={sizes}
     />
   );

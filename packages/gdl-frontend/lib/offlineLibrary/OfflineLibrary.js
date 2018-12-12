@@ -1,5 +1,4 @@
 // @flow
-import { coverImageUrl } from 'gdl-image';
 import localForage from 'localforage';
 import gql from 'graphql-tag';
 
@@ -168,68 +167,68 @@ function getImageUrls(book: Book) {
   imageUrls = [...new Set(imageUrls)];
 
   if (book.coverImage) {
-    imageUrls.push(coverImageUrl(book.coverImage));
+    imageUrls.push(book.coverImage.url);
   }
   return imageUrls;
 }
 
+const OfflineBookFragment = gql`
+  fragment OfflinedBook on BookDetails {
+    id
+    bookId
+    title
+    description
+    category
+    readingLevel
+    bookFormat
+    supportsTranslation
+    additionalInformation
+    chapters {
+      id
+      seqNo
+      chapterId
+      content
+      imageUrls
+    }
+    downloads {
+      epub
+      pdf
+    }
+    license {
+      url
+      name
+    }
+    language {
+      code
+      name
+      isRTL
+    }
+    coverImage {
+      url
+    }
+    publisher {
+      name
+    }
+    authors {
+      name
+    }
+    illustrators {
+      name
+    }
+    translators {
+      name
+    }
+    photographers {
+      name
+    }
+  }
+`;
+
 const OFFLINE_BOOK_QUERY = gql`
   query OfflineBook($id: ID!) {
     book(id: $id) {
-      id
-      bookId
-      title
-      description
-      category
-      readingLevel
-      bookFormat
-      supportsTranslation
-      additionalInformation
-      chapters {
-        id
-        seqNo
-        chapterId
-        content
-        imageUrls
-      }
-      downloads {
-        epub
-        pdf
-      }
-      license {
-        url
-        name
-      }
-      language {
-        code
-        name
-        isRTL
-      }
-      coverImage {
-        url
-        variants {
-          height
-          width
-          x
-          y
-          ratio
-        }
-      }
-      publisher {
-        name
-      }
-      authors {
-        name
-      }
-      illustrators {
-        name
-      }
-      translators {
-        name
-      }
-      photographers {
-        name
-      }
+      ...OfflinedBook
     }
+    ${OfflineBookFragment}
   }
 `;

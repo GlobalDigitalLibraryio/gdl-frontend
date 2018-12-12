@@ -159,13 +159,6 @@ const FAVORITES_QUERY = gql`
       }
       coverImage {
         url
-        variants {
-          height
-          width
-          x
-          y
-          ratio
-        }
       }
     }
   }
