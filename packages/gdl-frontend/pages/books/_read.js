@@ -11,8 +11,7 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import { coverImageUrl } from 'gdl-image';
 import gql from 'graphql-tag';
-import { Query, withApollo } from 'react-apollo';
-import type { ApolloClient } from 'react-apollo';
+import { Query, withApollo, type ApolloClient } from 'react-apollo';
 
 import type {
   Chapter,
