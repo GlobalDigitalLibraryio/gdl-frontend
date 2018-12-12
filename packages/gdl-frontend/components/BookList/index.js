@@ -49,15 +49,14 @@ const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
     </View>
     <Scroller>
       {loading ? (
-          <Shimmer columns={5} />
-        ) : (
-          books.map(book => (
-            <CoverItem key={book.id}>
-              <BookLink book={book} />
-            </CoverItem>
-          ))
-        )
-      }
+        <Shimmer columns={5} />
+      ) : (
+        books.map(book => (
+          <CoverItem key={book.id}>
+            <BookLink book={book} />
+          </CoverItem>
+        ))
+      )}
     </Scroller>
   </>
 );

@@ -118,7 +118,7 @@ class BookPage extends React.Component<Props, State> {
 
   state = {
     similarBooks: [],
-    loadingSimiliarBooks: true,
+    loadingSimiliarBooks: true
   };
 
   componentDidMount() {
@@ -139,7 +139,8 @@ class BookPage extends React.Component<Props, State> {
     const { book } = this.props;
     const { similarBooks, loadingSimiliarBooks } = this.state;
     const offline: boolean = !this.context;
-    const hasLoadedSimilarBooks = !offline && similarBooks.length > 0 && !loadingSimiliarBooks;
+    const hasLoadedSimilarBooks =
+      !offline && similarBooks.length > 0 && !loadingSimiliarBooks;
 
     return (
       <>
