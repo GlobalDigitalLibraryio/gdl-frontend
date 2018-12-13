@@ -140,6 +140,104 @@ export type OfflineBookVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: OfflineBooks
+// ====================================================
+
+export type OfflineBooks_books_chapters = {
+  __typename: "Chapter",
+  id: string,
+  seqNo: number,
+  chapterId: number,
+  content: string,
+  imageUrls: Array<string>,
+};
+
+export type OfflineBooks_books_downloads = {
+  __typename: "Download",
+  epub: ?string,
+  pdf: ?string,
+};
+
+export type OfflineBooks_books_license = {
+  __typename: "License",
+  url: string,
+  name: string,
+};
+
+export type OfflineBooks_books_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+  isRTL: boolean,
+};
+
+export type OfflineBooks_books_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type OfflineBooks_books_publisher = {
+  __typename: "Publisher",
+  name: string,
+};
+
+export type OfflineBooks_books_authors = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBooks_books_illustrators = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBooks_books_translators = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBooks_books_photographers = {
+  __typename: "Contributor",
+  name: string,
+};
+
+export type OfflineBooks_books = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  description: string,
+  category: Category,
+  readingLevel: ReadingLevel,
+  bookFormat: BookFormat,
+  supportsTranslation: boolean,
+  additionalInformation: ?string,
+  chapters: Array<OfflineBooks_books_chapters>,
+  downloads: OfflineBooks_books_downloads,
+  license: OfflineBooks_books_license,
+  language: OfflineBooks_books_language,
+  coverImage: ?OfflineBooks_books_coverImage,
+  publisher: OfflineBooks_books_publisher,
+  authors: ?Array<OfflineBooks_books_authors>,
+  illustrators: ?Array<OfflineBooks_books_illustrators>,
+  translators: ?Array<OfflineBooks_books_translators>,
+  photographers: ?Array<OfflineBooks_books_photographers>,
+};
+
+export type OfflineBooks = {
+  books: Array<?OfflineBooks_books>
+};
+
+export type OfflineBooksVariables = {
+  ids: Array<string>
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: book
 // ====================================================
 

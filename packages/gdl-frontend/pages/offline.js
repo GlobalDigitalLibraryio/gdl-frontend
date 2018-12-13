@@ -123,7 +123,6 @@ const OfflineBooks = ({ books, onClear }) => (
     >
       <Trans>Offline library</Trans>
     </Typography>
-    {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />
     <Center>
       <Button

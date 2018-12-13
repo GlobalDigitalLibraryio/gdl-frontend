@@ -29,9 +29,13 @@ function create(initialState, { getToken }) {
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: authLink.concat(httpLink),
     cache: new InMemoryCache({
-      // Because of offline
+      // Add some cache redirets because of offline functionality.
+      // Custom resolvers to help Apollo understand that some data could already be in the cache
+      // even though it is requested by another query
       cacheRedirects: {
         Query: {
+          book: (_, args, { getCacheKey }) =>
+            getCacheKey({ __typename: 'BookDetails', id: args.id }),
           chapter: (_, args, { getCacheKey }) =>
             getCacheKey({ __typename: 'Chapter', id: args.id })
         }

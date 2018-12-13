@@ -17,6 +17,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import * as Sentry from '@sentry/browser';
 import { withApollo } from 'gdl-apollo-client';
+import type { ApolloClient } from 'react-apollo';
 
 import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';
 import getPageContext from '../getPageContext';
@@ -27,6 +28,7 @@ import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { register as registerServiceWorker } from '../registerServiceWorker';
+import OfflineLibrary from '../lib/offlineLibrary';
 
 // Adds server generated styles to the emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -54,9 +56,14 @@ class App extends NextApp {
     return { pageProps };
   }
 
-  constructor(props: {}) {
+  constructor(props: { apolloClient: ApolloClient }) {
     super(props);
     this.pageContext = getPageContext();
+    // Pass off the apollo client instance to the offline library so it can
+    // put all the offlined books in the cache
+    if (process.browser && OfflineLibrary && props.apolloClient) {
+      OfflineLibrary.populateApolloCache(props.apolloClient);
+    }
   }
 
   componentDidCatch(error: *, errorInfo: *) {

@@ -1,6 +1,8 @@
 // @flow
 import localForage from 'localforage';
 import gql from 'graphql-tag';
+import type { ApolloClient } from 'react-apollo';
+import * as Sentry from '@sentry/browser';
 
 import { initApollo } from 'gdl-apollo-client';
 import type { OfflineBook, OfflineBook_book as Book } from '../../gqlTypes';
@@ -88,6 +90,22 @@ export default class OfflineLibrary {
     this.deleteBook(book.id);
   }
 
+  async populateApolloCache(apolloClient: ApolloClient) {
+    try {
+      const books = await this.getBooks();
+      apolloClient.writeQuery({ query: OFFLINE_BOOKS_QUERY, data: { books } });
+    } catch (error) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.error(
+          'Error occurred while populating Apollo cache with offline books',
+          error
+        );
+      }
+      Sentry.captureException(error);
+      await this.clear();
+    }
+  }
+
   /**
    * Get all books in the offline library
    *
@@ -126,6 +144,7 @@ export default class OfflineLibrary {
 
   async addBook(id: string) {
     try {
+      // This is a singleton on the client, so this is okay
       const client = initApollo();
 
       const { data }: { data: OfflineBook } = await client.query({
@@ -229,6 +248,15 @@ const OFFLINE_BOOK_QUERY = gql`
     book(id: $id) {
       ...OfflinedBook
     }
-    ${OfflineBookFragment}
   }
+  ${OfflineBookFragment}
+`;
+
+const OFFLINE_BOOKS_QUERY = gql`
+  query OfflineBooks($ids: [ID!]!) {
+    books(ids: $ids) {
+      ...OfflinedBook
+    }
+  }
+  ${OfflineBookFragment}
 `;
