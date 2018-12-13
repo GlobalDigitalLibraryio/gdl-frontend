@@ -26,7 +26,7 @@ import {
 } from '@material-ui/icons';
 
 import { FavoriteIcon } from '../Favorite';
-import OfflineIcon from '../OfflineIcon';
+import { OfflineIcon } from '../Offline';
 import { hasAuthToken } from 'gdl-auth';
 import { QueryIsAdmin } from '../../gql';
 import { Link as RouteLink } from '../../routes';
