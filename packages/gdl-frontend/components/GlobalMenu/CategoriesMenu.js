@@ -165,6 +165,7 @@ const Categories = ({
             lang={languageCode}
             readingLevel={level}
             category="Library"
+            passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
