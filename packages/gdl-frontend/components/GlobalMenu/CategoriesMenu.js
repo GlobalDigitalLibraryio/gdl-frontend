@@ -141,8 +141,13 @@ const Categories = ({
         <ListSubheader component="div">
           <Trans>Library books</Trans>
         </ListSubheader>
-        <Link category="Library" lang={languageCode} sort="-arrivalDate">
-          <ListItem button onClick={onSelectCategory}>
+        <Link
+          category="Library"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem button onClick={onSelectCategory} component="a">
             <ListItemText inset>
               <Trans>New arrivals</Trans>
             </ListItemText>
@@ -154,6 +159,7 @@ const Categories = ({
             lang={languageCode}
             readingLevel={level}
             category="Library"
+            passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
