@@ -36,22 +36,15 @@ type Props = {
 };
 
 type State = {
-  searchResult: Array<Language>
+  input: ?string
 };
 
 class LanguageList extends React.Component<Props, State> {
-  listRef: ?React$ElementRef<List>;
+  listRef: ?React$ElementRef<List> = React.createRef();
 
-  constructor(props: Props) {
-    super(props);
-    const selectedLanguage = this.getSelectedLanguage();
-    const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
-    this.listRef = React.createRef();
-
-    this.state = {
-      searchResult: filteredLanguages
-    };
-  }
+  state = {
+    input: undefined
+  };
 
   componentDidMount() {
     if (this.listRef) {
@@ -60,22 +53,9 @@ class LanguageList extends React.Component<Props, State> {
     }
   }
 
-  searchLanguage = (
-    value: SyntheticInputEvent<EventTarget>,
-    filteredLanguages: Array<Language>
-  ) => {
-    const input = value.target.value.toLowerCase();
-
-    const result = filteredLanguages.filter(language =>
-      language.name.toLowerCase().includes(input)
-    );
-    this.setState({ searchResult: result });
-  };
-
   getSelectedLanguage = () =>
     this.props.languages.find(l => l.code === this.props.selectedLanguageCode);
 
-  // Remove selected language so it wont display again as a selectable language
   getFilteredLanguages = (selectedLanguage: ?Language) => {
     const { languages } = this.props;
     return selectedLanguage
@@ -85,10 +65,16 @@ class LanguageList extends React.Component<Props, State> {
 
   render() {
     const { enableSearch, onSelectLanguage, linkProps } = this.props;
-    const { searchResult } = this.state;
+    const { input } = this.state;
 
     const selectedLanguage = this.getSelectedLanguage();
+    // Remove selected language so it wont display again as a selectable language
     const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
+    const searchResult = input
+      ? filteredLanguages.filter(lang =>
+          lang.name.toLowerCase().includes(input)
+        )
+      : filteredLanguages;
     const noResult = searchResult.length === 0;
 
     return (
@@ -110,8 +96,10 @@ class LanguageList extends React.Component<Props, State> {
                     <TextField
                       className={styles.textfield}
                       placeholder={i18n.t`Search`}
-                      onChange={values =>
-                        this.searchLanguage(values, filteredLanguages)
+                      onChange={value =>
+                        this.setState({
+                          input: value.target.value.toLowerCase()
+                        })
                       }
                     />
                   </ListItemText>
