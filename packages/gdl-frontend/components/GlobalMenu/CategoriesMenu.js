@@ -14,6 +14,7 @@ import {
   List,
   ListSubheader,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Typography
 } from '@material-ui/core';
@@ -22,7 +23,8 @@ import { getBookLanguageCode } from '../../lib/storage';
 import type { ReadingLevel } from '../../types';
 import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
-import LevelLabel from './LevelLabel';
+import CircleLabel from './CircleLabel';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
@@ -118,8 +120,11 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
               <ListItemText inset>
-                <LevelLabel level={level} />
+                <ReadingLevelTrans readingLevel level={level} />
               </ListItemText>
             </ListItem>
           </Link>
@@ -155,16 +160,22 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             category="library_books"
           >
             <ListItem onClick={onSelectCategory} button component="a">
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
               <ListItemText>
-                <LevelLabel level={level} />
+                <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
             </ListItem>
           </Link>
         ))}
         <Link category="library_books" lang={languageCode} sort="-arrivalDate">
           <ListItem button onClick={onSelectCategory}>
+            <ListItemIcon>
+              <CircleLabel level="new-arrivals" />
+            </ListItemIcon>
             <ListItemText>
-              <LevelLabel level='new-arrivals'/>
+              <ReadingLevelTrans readingLevel="new-arrivals" />
             </ListItemText>
           </ListItem>
         </Link>
