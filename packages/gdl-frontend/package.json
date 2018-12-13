@@ -34,7 +34,7 @@
     "@sentry/browser": "4.4.2",
     "@sentry/node": "4.4.2",
     "@zeit/next-source-maps": "0.0.3",
-    "auth0-js": "9.8.1",
+    "auth0-js": "9.8.2",
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
     "emotion": "9.2.12",
