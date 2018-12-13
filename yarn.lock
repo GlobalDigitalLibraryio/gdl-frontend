@@ -822,41 +822,41 @@
     react-dom "^16.3.0"
     terser "^3.8.2"
 
-"@lingui/babel-plugin-extract-messages@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-2.7.1.tgz#686efb86b7741b7e5184023a77ac92f995b63ab7"
-  integrity sha512-5vEkE4bF9fQutLbRkeHPrBFFkvr4B/px5OEw+cNBTv08inHwQjLu2SSrmUgDWrUnkRbFhT21EUl7l1U7grY98g==
+"@lingui/babel-plugin-extract-messages@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-extract-messages/-/babel-plugin-extract-messages-2.7.2.tgz#4e00539260f661942fbafab26378fff8e15012ec"
+  integrity sha512-YKyB0avVZteskOeXsJCTO+346FfhTCmhF4W4rG4nwRbyIeTOYL5heBL54g1e+T5YXBJLi5HJuhRd1OGuGzbQzg==
   dependencies:
-    "@lingui/conf" "2.7.1"
+    "@lingui/conf" "2.7.2"
     babel-generator "^6.26.1"
 
-"@lingui/babel-plugin-transform-js@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.7.1.tgz#6ff147a5f3f8394f3c774358062d00af1c6bef07"
-  integrity sha512-zO5Pfn3ecqVe9oOmoIuyUAcf+bps/8bWxgKk192SL5ShsbbLxOmMnFZF3Kb9oYjEDomtI/znf77Nh6+Zk7zqiA==
+"@lingui/babel-plugin-transform-js@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-js/-/babel-plugin-transform-js-2.7.2.tgz#0a496c10705b970d48e25a0ab977e39dd2ccffb9"
+  integrity sha512-V2avCZOqiyejz4vM24X+Wz1+bvzdovLUdW9iBRocaH6hcRtA1ttVQ6JAQBw/tACY5sFw73LdrPiVMiD7dw1NtA==
 
-"@lingui/babel-plugin-transform-react@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.7.1.tgz#163e3ac704ea751ff1a3103f87564a6610494ef8"
-  integrity sha512-NAgv209OJiboxyFhIHvgKvUyLpMdYARNm6EWGUHYPibAzOa6/CuFkbq9SILKZTGlk0o94tLVMM1cYw8B9Sc7Tg==
+"@lingui/babel-plugin-transform-react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-plugin-transform-react/-/babel-plugin-transform-react-2.7.2.tgz#b73ab59673e498ddc1dc74922ae82b01485eb5be"
+  integrity sha512-50+GM9LL7V4mB6ekY7hUGmyMLewDQ9bzVXTyRtbTl/78xJoQKSv8Wuz+jlvPcP0fKAFcmcHo3QJPPOkSAbgnOw==
 
-"@lingui/babel-preset-react@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.7.1.tgz#8e10cc2610e05cc0530b8c3da89dcf844248c370"
-  integrity sha512-mX8yR3ryPSQWmpfwLRgWuH3zIUOscMBLm72GYcmCx7hVLfH1Xx3D6+UuWMae218HKFp8shve070zHWfsQ+lF7Q==
+"@lingui/babel-preset-react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/babel-preset-react/-/babel-preset-react-2.7.2.tgz#49812536c0ac7feabba28cb0632c4ace32b156a6"
+  integrity sha512-HhQyulJPDXYMK/L5Kvo5ypnqNipFTFmS1laB8dHZ+8hh24KcJ6kft24IylcQn5QU1rFV5XZG1MpNo2NhEbrnlQ==
   dependencies:
-    "@lingui/babel-plugin-transform-js" "2.7.1"
-    "@lingui/babel-plugin-transform-react" "2.7.1"
+    "@lingui/babel-plugin-transform-js" "2.7.2"
+    "@lingui/babel-plugin-transform-react" "2.7.2"
 
-"@lingui/cli@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.7.1.tgz#2fbf65743ce8bd0274c9dfd1e7ff94ce32965bbb"
-  integrity sha512-JSaGURupji67kRPTQ1yG70WeRgkMqzKhCPpQU+6x3eQ6G0445fWgmXot7f5UlfyMRyRP0NmZsur27RkttOzCXw==
+"@lingui/cli@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/cli/-/cli-2.7.2.tgz#d0ba485eb5d8777a72f2410326954914c716a7f5"
+  integrity sha512-PdSUALHUyHG7iwwoECWqUlvWjI5jg+9TUWJMgnLyelGi/th6EAdhs/DPxT1uYWQl438hYXLRN61QrPzKtKgZHQ==
   dependencies:
-    "@lingui/babel-plugin-extract-messages" "2.7.1"
-    "@lingui/babel-plugin-transform-js" "2.7.1"
-    "@lingui/babel-plugin-transform-react" "2.7.1"
-    "@lingui/conf" "2.7.1"
+    "@lingui/babel-plugin-extract-messages" "2.7.2"
+    "@lingui/babel-plugin-transform-js" "2.7.2"
+    "@lingui/babel-plugin-transform-react" "2.7.2"
+    "@lingui/conf" "2.7.2"
     babel-generator "^6.26.1"
     babel-plugin-syntax-jsx "^6.18.0"
     babel-runtime "^6.26.0"
@@ -880,10 +880,10 @@
     ramda "^0.25.0"
     typescript "^2.9.2"
 
-"@lingui/conf@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-2.7.1.tgz#2b2816ebd5ab786f87f83b0d9161908349c46ae4"
-  integrity sha512-i9CJ1Erxo/bGuGxvgB+ctVgGzZ++7YCYgOXXA+CCFNs18sQjGIDjDW7AcDUr4UFAsfhYqhjsoyQ/TDyXumCx8Q==
+"@lingui/conf@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/conf/-/conf-2.7.2.tgz#bec94bd66520afea605d790a9e644168d042df88"
+  integrity sha512-SMTY4GWaP611hEnWm4YiPXp6jufD+qzH6RUiDe+r9aX5j9kMXV2/aYQfNezbh46BpLFf29xxm+Wn5q89/fRbIw==
   dependencies:
     chalk "^2.3.0"
     cosmiconfig "^5.0.6"
@@ -891,21 +891,21 @@
     jest-validate "^23.5.0"
     pkg-conf "^2.1.0"
 
-"@lingui/core@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.7.1.tgz#48d8839c61bc1eba985a53c031f58fa01a0e6d4a"
-  integrity sha512-w9ap3irla0ya/Q3Bv1zYmFOnQQzdiJReFuef1Q89MyCxKaaoqR+h9O6pcBmnqSLGbkP4lhfrdfu5OycBfaYzWg==
+"@lingui/core@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/core/-/core-2.7.2.tgz#bfb116e0d08af483e1461e4e6ffec6574e9c064a"
+  integrity sha512-LLMNcxfXmjhxG18sQmIb4azNuwVyhMUhcVFgOQ682eVQEGaSIncPsnSQRGhgYbiqY1LGXlZEXZnYdyyDMSZR0A==
   dependencies:
     babel-runtime "^6.26.0"
     make-plural "^4.1.1"
     messageformat-parser "^2.0.0"
 
-"@lingui/react@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-2.7.1.tgz#bb4689247327374947d9ebf9b71973aefc0646f3"
-  integrity sha512-NlDuIgBdk01pvOwOlgG7HDEkBDFX+UJCwW90zK1YT/QwOLFNhlpFrPVk0h+AAwOA2IG6/xnw4kxqqcsrd2AmWg==
+"@lingui/react@2.7.2":
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/@lingui/react/-/react-2.7.2.tgz#6aa336d600d5de2b1a953097d66da80b0467126f"
+  integrity sha512-dYfhojpYLKyXp3V1i3twjipIXGK80rBBLNMZOXBBCqm5Lypef3d7Ip1jLXuhk4Ni++ijWJfHC40F3gWNBNFSjw==
   dependencies:
-    "@lingui/core" "2.7.1"
+    "@lingui/core" "2.7.2"
     babel-runtime "^6.26.0"
     hash-sum "^1.0.2"
     hoist-non-react-statics "3.0.1"
