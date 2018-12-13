@@ -48,8 +48,9 @@ class LanguageList extends React.Component<Props, State> {
 
   componentDidMount() {
     if (this.listRef) {
-      const width = this.listRef.current.offsetWidth;
-      this.listRef.current.style.width = `${width}px`;
+      const listElement = this.listRef.current;
+      const width = listElement.getBoundingClientRect().width;
+      listElement.style.width = `${width}px`;
     }
   }
 
