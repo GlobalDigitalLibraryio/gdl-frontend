@@ -104,6 +104,18 @@ const Categories = ({
         <ListSubheader component="div">
           <Trans>Classroom books</Trans>
         </ListSubheader>
+        <Link
+          category="Classroom"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemText inset>
+              <Trans>New arrivals</Trans>
+            </ListItemText>
+          </ListItem>
+        </Link>
         {classroom.map(level => (
           <Link
             key={level}
@@ -119,18 +131,6 @@ const Categories = ({
             </ListItem>
           </Link>
         ))}
-        <Link
-          category="Classroom"
-          lang={languageCode}
-          sort="-arrivalDate"
-          passHref
-        >
-          <ListItem onClick={onSelectCategory} button component="a">
-            <ListItemText inset>
-              <Trans>New arrivals</Trans>
-            </ListItemText>
-          </ListItem>
-        </Link>
       </>
     )}
 
@@ -141,12 +141,25 @@ const Categories = ({
         <ListSubheader component="div">
           <Trans>Library books</Trans>
         </ListSubheader>
+        <Link
+          category="Library"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem button onClick={onSelectCategory} component="a">
+            <ListItemText inset>
+              <Trans>New arrivals</Trans>
+            </ListItemText>
+          </ListItem>
+        </Link>
         {library.map(level => (
           <Link
             key={level}
             lang={languageCode}
             readingLevel={level}
             category="Library"
+            passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemText inset>
@@ -155,13 +168,6 @@ const Categories = ({
             </ListItem>
           </Link>
         ))}
-        <Link category="Library" lang={languageCode} sort="-arrivalDate">
-          <ListItem button onClick={onSelectCategory}>
-            <ListItemText inset>
-              <Trans>New arrivals</Trans>
-            </ListItemText>
-          </ListItem>
-        </Link>
       </>
     )}
   </List>
