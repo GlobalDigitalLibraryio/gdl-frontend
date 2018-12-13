@@ -4,12 +4,12 @@
   "license": "GPL-3.0",
   "main": "index.js",
   "peerDependencies": {
-    "babel-eslint": "9.0.0",
-    "eslint": "5.8.0",
+    "babel-eslint": "10.0.1",
+    "eslint": "5.10.0",
     "eslint-config-react-app": "3.0.5",
-    "eslint-plugin-flowtype": "3.1.4",
+    "eslint-plugin-flowtype": "3.2.0",
     "eslint-plugin-import": "2.14.0",
-    "eslint-plugin-jest": "21.26.2",
+    "eslint-plugin-jest": "22.1.2",
     "eslint-plugin-jsx-a11y": "6.1.2",
     "eslint-plugin-react": "7.11.1"
   }
