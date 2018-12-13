@@ -9,7 +9,7 @@
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
 import {
-  Drawer,
+  SwipeableDrawer,
   Divider,
   List,
   ListSubheader,
@@ -79,7 +79,10 @@ export default class CategoriesMenu extends React.Component<
           onClick: this.handleShowMenu,
           loading: categories === 'LOADING'
         })}
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
           open={showMenu && categories !== 'LOADING'}
           onClose={this.handleCloseMenu}
         >
@@ -96,7 +99,7 @@ export default class CategoriesMenu extends React.Component<
               languageCode={languageCode}
             />
           )}
-        </Drawer>
+        </SwipeableDrawer>
       </>
     );
   }

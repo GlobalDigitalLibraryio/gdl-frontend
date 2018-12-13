@@ -13,7 +13,7 @@ import {
   AppBar,
   Button,
   Divider,
-  Drawer,
+  SwipeableDrawer,
   List,
   ListItem,
   ListItemText,
@@ -101,7 +101,10 @@ class Layout extends React.Component<
           </Toolbar>
         </AppBar>
 
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
           variant="permanent"
           css={{ width: drawerWidth, position: 'relative' }}
         >
@@ -135,7 +138,7 @@ class Layout extends React.Component<
               </ListItem>
             </Link>
           </List>
-        </Drawer>
+        </SwipeableDrawer>
 
         <main css={renderedMainCSS}>{this.props.children}</main>
       </div>
