@@ -15,7 +15,8 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  TextField
+  TextField,
+  RootRef
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
 import { css } from 'react-emotion';
@@ -39,10 +40,13 @@ type State = {
 };
 
 class LanguageList extends React.Component<Props, State> {
+  listRef: ?React$ElementRef<List>;
+
   constructor(props: Props) {
     super(props);
     const selectedLanguage = this.getSelectedLanguage();
     const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
+    this.listRef = React.createRef();
 
     this.state = {
       searchResult: filteredLanguages
@@ -50,10 +54,9 @@ class LanguageList extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const container = document.getElementById('listContainer');
-    if (container) {
-      const width = container.offsetWidth;
-      container.style.width = `${width}px`;
+    if (this.listRef) {
+      const width = this.listRef.current.offsetWidth;
+      this.listRef.current.style.width = `${width}px`;
     }
   }
 
@@ -89,63 +92,64 @@ class LanguageList extends React.Component<Props, State> {
     const noResult = searchResult.length === 0;
 
     return (
-      <List
-        id="listContainer"
-        component="div"
-        className={styles.visibleScrollbar}
-        subheader={
-          <ListSubheader component="div">
-            <Trans>Choose book language</Trans>
-          </ListSubheader>
-        }
-      >
-        {enableSearch && (
-          <I18n>
-            {({ i18n }) => (
+      <RootRef rootRef={this.listRef}>
+        <List
+          component="div"
+          className={styles.visibleScrollbar}
+          subheader={
+            <ListSubheader component="div">
+              <Trans>Choose book language</Trans>
+            </ListSubheader>
+          }
+        >
+          {enableSearch && (
+            <I18n>
+              {({ i18n }) => (
+                <ListItem>
+                  <ListItemText inset>
+                    <TextField
+                      className={styles.textfield}
+                      placeholder={i18n.t`Search`}
+                      onChange={values =>
+                        this.searchLanguage(values, filteredLanguages)
+                      }
+                    />
+                  </ListItemText>
+                </ListItem>
+              )}
+            </I18n>
+          )}
+
+          {selectedLanguage && (
+            <>
               <ListItem>
+                <ListItemIcon>
+                  <CheckIcon css={{ color: colors.base.green }} />
+                </ListItemIcon>
                 <ListItemText inset>
-                  <TextField
-                    className={styles.textfield}
-                    placeholder={i18n.t`Search`}
-                    onChange={values =>
-                      this.searchLanguage(values, filteredLanguages)
-                    }
-                  />
+                  <Trans>
+                    <SrOnly>Selected: </SrOnly>
+                    {selectedLanguage.name}
+                  </Trans>
                 </ListItemText>
               </ListItem>
-            )}
-          </I18n>
-        )}
-
-        {selectedLanguage && (
-          <>
-            <ListItem>
-              <ListItemIcon>
-                <CheckIcon css={{ color: colors.base.green }} />
-              </ListItemIcon>
-              <ListItemText inset>
-                <Trans>
-                  <SrOnly>Selected: </SrOnly>
-                  {selectedLanguage.name}
-                </Trans>
-              </ListItemText>
-            </ListItem>
-            <Divider />
-          </>
-        )}
-        {noResult ? (
-          <NoLanguageItem />
-        ) : (
-          searchResult.map(l => (
-            <LanguageItem
-              key={l.code}
-              language={l}
-              linkProps={linkProps}
-              onSelectLanguage={onSelectLanguage}
-            />
-          ))
-        )}
-      </List>
+              <Divider />
+            </>
+          )}
+          {noResult ? (
+            <NoLanguageItem />
+          ) : (
+            searchResult.map(l => (
+              <LanguageItem
+                key={l.code}
+                language={l}
+                linkProps={linkProps}
+                onSelectLanguage={onSelectLanguage}
+              />
+            ))
+          )}
+        </List>
+      </RootRef>
     );
   }
 }
