@@ -109,6 +109,18 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         <ListSubheader component="div">
           <Trans>Classroom books</Trans>
         </ListSubheader>
+        <Link
+          category="classroom_books"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemText inset>
+              <Trans>New arrivals</Trans>
+            </ListItemText>
+          </ListItem>
+        </Link>
         {categories.classroom_books.map(level => (
           <Link
             key={level}
@@ -124,18 +136,6 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             </ListItem>
           </Link>
         ))}
-        <Link
-          category="classroom_books"
-          lang={languageCode}
-          sort="-arrivalDate"
-          passHref
-        >
-          <ListItem onClick={onSelectCategory} button component="a">
-            <ListItemText inset>
-              <Trans>New arrivals</Trans>
-            </ListItemText>
-          </ListItem>
-        </Link>
       </>
     )}
 
