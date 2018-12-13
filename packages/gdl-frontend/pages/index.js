@@ -144,19 +144,18 @@ class IndexPage extends React.Component<Props> {
 
     const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
-
     let category: string;
     if (asPath.includes('/classroom')) {
       category = 'Classroom';
     } else if (asPath.includes('/library')) {
       category = 'Library';
-    } else if (categoryInCookie && categoryInCookie in categories) {
+    } else if (categoryInCookie && categories.includes(categoryInCookie)) {
       // Small check to make sure the value in the cookie is something valid
       // $FlowFixMe: We know this is a valid category :/
       category = categoryInCookie;
     } else {
       // Default to Library
-      category = 'Library' in categories ? 'Library' : 'Classroom';
+      category = categories.includes('Library') ? 'Library' : 'Classroom';
     }
 
     const featuredContent = await fetchFeaturedContent(languageCode);

@@ -167,6 +167,19 @@ export default class HomePage extends React.Component<Props> {
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
+          <View {...bookListViewStyle}>
+            <Container width="100%">
+              <BookList
+                heading={<Trans>New arrivals</Trans>}
+                browseLinkProps={{
+                  lang: languageCode,
+                  category: category
+                }}
+                books={NewArrivals.results}
+              />
+            </Container>
+          </View>
+
           {Object.entries(readingLevels)
             // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
             .filter(([_, data]) => data.results && data.results.length > 0)
@@ -185,19 +198,6 @@ export default class HomePage extends React.Component<Props> {
                 </Container>
               </View>
             ))}
-
-          <View {...bookListViewStyle}>
-            <Container width="100%">
-              <BookList
-                heading={<Trans>New arrivals</Trans>}
-                browseLinkProps={{
-                  lang: languageCode,
-                  category: category
-                }}
-                books={NewArrivals.results}
-              />
-            </Container>
-          </View>
         </Main>
       </Layout>
     );
