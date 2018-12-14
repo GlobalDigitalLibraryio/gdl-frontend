@@ -71,6 +71,7 @@
     "universal-cookie": "3.0.4"
   },
   "devDependencies": {
+    "@emotion/babel-preset-css-prop": "10.0.5",
     "@lingui/babel-preset-react": "2.7.2",
     "@lingui/cli": "2.7.2",
     "babel-plugin-emotion": "10.0.6",
