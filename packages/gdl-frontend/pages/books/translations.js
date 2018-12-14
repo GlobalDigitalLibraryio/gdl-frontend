@@ -125,7 +125,7 @@ const TranslateButton = ({ id, lang, ...rest }) => (
   <Link
     passHref
     prefetch
-    route={`/en/books/translate/${id}`}
+    route={`/en/books/translate/${id}/edit`}
     params={{ id, lang }}
   >
     <Button {...rest} color="primary">

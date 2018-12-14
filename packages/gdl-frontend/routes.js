@@ -13,14 +13,14 @@ const routes = nextRoutes();
 const langParam = `:lang([\\w-]+)`;
 
 routes.add(
-  'prepare_translate',
-  `/${langParam}/books/prepare_translate/:id(\\d+)`,
-  'books/_prepareTranslate'
+  'translate',
+  `/${langParam}/books/translate/:id(\\d+)`,
+  'books/_translate'
 );
 routes.add(
-  'translate',
-  `/${langParam}/books/translate/:id(\\d+)/:chapterId(\\d+)?`,
-  'books/_translate'
+  'translateEdit',
+  `/${langParam}/books/translate/:id(\\d+)/edit/:chapterId(\\d+)?`,
+  'books/_translate_edit'
 );
 
 routes.add({

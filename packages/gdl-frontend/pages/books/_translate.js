@@ -7,324 +7,322 @@
  */
 
 import * as React from 'react';
-import { withRouter } from 'next/router';
-import Head from 'next/head';
-import getConfig from 'next/config';
+import { Trans, I18n } from '@lingui/react';
+import { css } from 'react-emotion';
+import {
+  ArrowForward as ArrowForwardIcon,
+  ArrowDownward as ArrowDownwardIcon
+} from '@material-ui/icons';
+import {
+  Card,
+  CardContent,
+  Drawer,
+  Typography,
+  Hidden,
+  Grid,
+  Button
+} from '@material-ui/core';
+import green from '@material-ui/core/colors/green';
 
-import { Router } from '../../routes';
-import Reader from '../../components/Reader';
 import {
   fetchBook,
-  fetchCrowdinBook,
-  fetchMyTranslations,
-  fetchCrowdinChapter,
-  fetchTranslationProject
+  fetchSupportedLanguages,
+  sendToTranslation
 } from '../../fetch';
-import type {
-  ConfigShape,
-  BookDetails,
-  FrontPage,
-  Chapter,
-  CrowdinBook,
-  ChapterSummary,
-  Context,
-  Language
-} from '../../types';
-
-const {
-  publicRuntimeConfig: { canonicalUrl }
-}: ConfigShape = getConfig();
-
-// In-context requires that jipt is defined before the crowdin script is initialized
-if (typeof window !== 'undefined') {
-  window._jipt = [];
-}
+import type { BookDetails, Language, Translation, Context } from '../../types';
+import { Link } from '../../routes';
+import { securePage, withErrorPage } from '../../hocs';
+import Layout from '../../components/Layout';
+import { LoadingButton, Container } from '../../elements';
+import Head from '../../components/Head';
+import CoverImage from '../../components/CoverImage';
+import LanguageList from '../../components/LanguageList';
+import { spacing } from '../../style/theme';
 
 type Props = {
   book: BookDetails,
-  translatedTo: Language,
-  initialChapter: FrontPage | Chapter,
-  crowdinProjectName: { [key: string]: string },
-  crowdinChapters: Array<ChapterSummary>,
-  showCanonicalChapterUrl: boolean
+  statusCode?: number,
+  supportedLanguages: Array<Language>
+};
+
+const translationStates = {
+  SELECT: 'SELECT',
+  PREPARING: 'PREPARING',
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR'
 };
 
 type State = {
-  chapters: { [number]: FrontPage | Chapter },
-  current: ChapterSummary
+  // Duplicating the values here because Flow doesn't like $Values<translationStates>
+  translationState: 'SELECT' | 'PREPARING' | 'SUCCESS' | 'ERROR',
+  selectedLanguage: ?Language,
+  translation?: Translation,
+  showLanguageMenu: boolean
 };
 
-class TranslatePage extends React.Component<Props, State> {
-  static async getInitialProps({ query, req }: Context) {
-    const bookRes = await fetchBook(query.id, query.lang);
-    if (!bookRes.isOk) {
+class PrepareTranslatePage extends React.Component<Props, State> {
+  static async getInitialProps({ query }: Context) {
+    const [bookRes, supportedLanguagesRes] = await Promise.all([
+      fetchBook(query.id, query.lang),
+      fetchSupportedLanguages(query.lang)
+    ]);
+
+    if (!bookRes.isOk || !supportedLanguagesRes.isOk) {
       return {
-        statusCode: bookRes.statusCode
+        statusCode: bookRes.isOk
+          ? bookRes.statusCode
+          : supportedLanguagesRes.statusCode
       };
     }
-    const book = bookRes.data;
 
-    const crowdinBook = await fetchCrowdinBook(book.id, book.language.code);
-    if (!crowdinBook.isOk) return { statusCode: crowdinBook.statusCode };
-
-    const crowdinProjectName = await fetchTranslationProject();
-    if (!crowdinProjectName.isOk)
-      return { statusCode: crowdinProjectName.statusCode };
-
-    // Flow complains because selectedTranslation can be undefined.
-    // Graphql could handle this better.. $FlowFixMe
-    const myTranslations = await fetchMyTranslations();
-    if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
-
-    const selectedTranslation = myTranslations.data.find(
-      element => element.id === book.id
+    const bookLanguages = bookRes.data.availableLanguages.map(
+      lang => lang.code
     );
 
-    let initialChapter;
-    const frontPage = createFrontPage(crowdinBook.data);
-
-    if (query.chapterId) {
-      const chapterInfo = crowdinBook.data.chapters.find(
-        chapter => chapter.id.toString() === query.chapterId
-      );
-
-      // If no chapterInfo, it means the chapterId is invalid and we will show the user the frontpage
-      if (!chapterInfo) return;
-      initialChapter = await fetchCrowdinChapter(chapterInfo);
-    }
-    if (initialChapter && !initialChapter.isOk)
-      return { statusCode: initialChapter.statusCode };
+    const filteredLanguages = supportedLanguagesRes.data.filter(
+      lang => !bookLanguages.includes(lang.code)
+    );
 
     return {
-      book,
-      translatedTo: selectedTranslation.translatedTo,
-      initialChapter: initialChapter ? initialChapter.data : frontPage,
-      showCanonicalChapterUrl: !query.chapterId,
-      crowdinProjectName: crowdinProjectName.data,
-      crowdinChapters: [frontPage, ...crowdinBook.data.chapters]
+      book: bookRes.data,
+      supportedLanguages: filteredLanguages
     };
   }
 
-  constructor(props: Props) {
-    super(props);
-    const { initialChapter, crowdinChapters } = props;
+  state = {
+    selectedLanguage: null,
+    translationState: translationStates.SELECT,
+    showLanguageMenu: false
+  };
 
-    // Init both frontPage and loaded chapter
-    const frontPage = crowdinChapters[0];
-    const chapters = {
-      [frontPage.id]: frontPage,
-      [initialChapter.id]: initialChapter
-    };
-
-    const current = crowdinChapters.find(c => c.id === initialChapter.id);
-
-    if (!current) {
-      throw new Error('Chapter not found in book');
-    }
-
-    this.state = {
-      chapters,
-      current
-    };
-  }
-
-  componentDidMount() {
-    // Preload the next and previous chapters, so we are ready when the user navigates
-    const next = this.getNext();
-    if (next) {
-      this.loadChapter(next.id);
-    }
-
-    const prev = this.getPrevious();
-    if (prev) {
-      this.loadChapter(prev.id);
-    }
-
-    const { crowdinProjectName, book, translatedTo } = this.props;
-    window.localStorage.clear();
-    initInContext(book.id, crowdinProjectName.en, translatedTo);
-  }
-
-  getNext() {
-    const { crowdinChapters } = this.props;
-    const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
-    return crowdinChapters[indexOfCurrent + 1];
-  }
-
-  getPrevious() {
-    const { crowdinChapters } = this.props;
-    const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
-    return crowdinChapters[indexOfCurrent - 1];
-  }
-
-  async loadChapter(chapterId: number) {
-    // Make sure we haven't loaded the chapter already
-    if (this.state.chapters[chapterId]) return;
-    const { crowdinChapters } = this.props;
-    const chapterInfo =
-      crowdinChapters.find(chapter => chapter.id === chapterId) ||
-      crowdinChapters[0];
-
-    const result = await fetchCrowdinChapter(chapterInfo);
-
-    // TODO: Notify user of error
-    if (!result.isOk) {
-      return;
-    }
-
-    const chapter = result.data;
-
+  toggleLanguageMenu = () =>
     this.setState(state => ({
-      chapters: { ...state.chapters, [chapter.id]: chapter }
+      showLanguageMenu: !this.state.showLanguageMenu
     }));
 
-    preloadImages(chapter.images);
-  }
+  handlePrepareTranslation = async () => {
+    // This only makes sense if we have selected a language
+    if (this.state.selectedLanguage) {
+      // Set the preparing phase, to show loading indicators etc.
+      this.setState({ translationState: translationStates.PREPARING });
 
-  handleNextChapter = () => {
-    removeInContextBadge();
-    const next = this.getNext();
-    if (next) {
-      this.loadChapter(next.id);
-      this.setState({ current: next }, () => {
-        // Change the URL, and start preloading
-        this.changeChapterInUrl();
-        const newNext = this.getNext();
-        newNext && this.loadChapter(newNext.id);
-      });
+      const translationRes = await sendToTranslation(
+        this.props.book.id,
+        this.props.book.language.code,
+        // $FlowFixMe: We are already checking for this in the enclosing if
+        this.state.selectedLanguage.code
+      );
+
+      // Based on the result of the ajax call, we either go to the success or error phase
+      if (translationRes.isOk) {
+        this.setState({
+          translation: translationRes.data,
+          translationState: translationStates.SUCCESS
+        });
+      } else {
+        this.setState({ translationState: translationStates.ERROR });
+      }
     }
   };
 
-  handlePreviousChapter = () => {
-    removeInContextBadge();
-    const prev = this.getPrevious();
-    if (prev) {
-      this.loadChapter(prev.id);
-      this.setState({ current: prev }, () => {
-        // Change the URL, and start preloading
-        this.changeChapterInUrl();
-        const newPrev = this.getPrevious();
-        newPrev && this.loadChapter(newPrev.id);
-      });
-    }
-  };
-
-  // Using window navigation to be able to kill crowdin in-context script
-  handleCloseBook = () => {
-    window.location.href = `/books/translations`;
-  };
-
-  changeChapterInUrl = () =>
-    Router.replaceRoute(
-      'translate',
-      {
-        id: this.props.book.id,
-        lang: this.props.book.language.code,
-        chapterId: this.state.current.id || null
-      },
-      { shallow: true }
-    );
+  handleChangeLanguage = (lang: Language) =>
+    this.setState({
+      selectedLanguage: lang,
+      showLanguageMenu: false,
+      // Make sure we clear out any previous 'success' result if change the translation language
+      translationState: translationStates.SELECT,
+      translation: undefined
+    });
 
   render() {
-    const { book, showCanonicalChapterUrl } = this.props;
-    const { current, chapters } = this.state;
-    const next = this.getNext();
-    const prev = this.getPrevious();
-
+    const { book, supportedLanguages } = this.props;
+    const { selectedLanguage, translationState } = this.state;
     return (
-      <>
-        <Head
-          title={`Read: ${book.title} (${current.seqNo}/${
-            book.chapters.length
-          })`}
-          description={book.description}
+      <Layout>
+        <I18n>
+          {({ i18n }) => (
+            <Head
+              title={i18n.t`Translate: ${book.title}`}
+              description={book.description}
+              image={book.coverImage && book.coverImage.url}
+            />
+          )}
+        </I18n>
+        <Container
+          css={{ marginTop: spacing.large, marginBottom: spacing.large }}
         >
-          {showCanonicalChapterUrl && (
-            <link
-              rel="canonical"
-              href={`${canonicalUrl}/${book.language.code}/books/translate/${
-                book.id
-              }/${current.id}`}
-            />
-          )}
-          {prev && (
-            <link
-              rel="prev"
-              href={`/${book.language.code}/books/translate/${book.id}/${
-                prev.id
-              }`}
-            />
-          )}
-          {next && (
-            <link
-              rel="next"
-              href={`/${book.language.code}/books/translate/${book.id}/${
-                next.id
-              }`}
-            />
-          )}
-          <script src="https://cdn.crowdin.com/jipt/jipt.js" />
-        </Head>
+          <Typography
+            variant="h4"
+            component="h1"
+            align="center"
+            css={{ marginBottom: spacing.large }}
+          >
+            <Trans>Translate book</Trans>
+          </Typography>
+          <Card>
+            <CardContent>
+              <Grid container spacing={16}>
+                <Grid item>
+                  <Link
+                    route="book"
+                    params={{ lang: book.language.code, id: book.id }}
+                  >
+                    <a>
+                      <CoverImage coverImage={book.coverImage} size="small" />
+                    </a>
+                  </Link>
+                </Grid>
+                <Grid item xs>
+                  <Typography
+                    lang={book.language.code}
+                    variant="h5"
+                    component="h2"
+                  >
+                    {book.title}
+                  </Typography>
 
-        <Reader
-          book={book}
-          hasFrontPage
-          chapterWithContent={chapters[current.id]}
-          chapterPointer={current}
-          onRequestNextChapter={this.handleNextChapter}
-          onRequestPreviousChapter={this.handlePreviousChapter}
-          onRequestClose={this.handleCloseBook}
-        />
-      </>
+                  <Typography paragraph variant="subtitle1">
+                    <Trans>from {book.publisher.name}</Trans>
+                  </Typography>
+
+                  <Typography lang={book.language.code} paragraph>
+                    {book.description}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+
+          <Grid
+            container
+            alignItems="center"
+            css={{
+              textAlign: 'center',
+              marginTop: spacing.xxlarge,
+              marginBottom: spacing.xxlarge
+            }}
+          >
+            <Grid item md={4} xs={12}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
+                <Trans gutterBottom>Translate from</Trans>
+              </Typography>
+              <Typography
+                color="inherit"
+                variant="button"
+                css={{ paddingTop: '8px' }}
+              >
+                {book.language.name}
+              </Typography>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Hidden
+                mdUp
+                implementation="css"
+                css={{ margin: `${spacing.large} 0` }}
+              >
+                <ArrowDownwardIcon />
+              </Hidden>
+              <Hidden mdDown implementation="css">
+                <ArrowForwardIcon />
+              </Hidden>
+            </Grid>
+            <Grid item md={4} xs={12}>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="span"
+              >
+                <Trans>Translate to</Trans>
+              </Typography>
+              <Button color="primary" onClick={this.toggleLanguageMenu}>
+                {selectedLanguage ? (
+                  selectedLanguage.name
+                ) : (
+                  <Trans>Select language</Trans>
+                )}
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Drawer
+            open={this.state.showLanguageMenu}
+            onClose={this.toggleLanguageMenu}
+            anchor="right"
+          >
+            <LanguageList
+              languages={supportedLanguages}
+              selectedLanguageCode={selectedLanguage && selectedLanguage.code}
+              onSelectLanguage={this.handleChangeLanguage}
+            />
+          </Drawer>
+
+          <div css={{ textAlign: 'center' }}>
+            {translationState === translationStates.SUCCESS ? (
+              <Link
+                passHref
+                route={`/en/books/translate/${this.props.book.id}/edit`}
+                params={{
+                  id: this.props.book.id,
+                  lang: this.props.book.language.code
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  className={styles.buttonSucccess}
+                >
+                  <Trans>Start translation</Trans>
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <LoadingButton
+                  isLoading={translationState === translationStates.PREPARING}
+                  disabled={this.state.selectedLanguage == null}
+                  onClick={this.handlePrepareTranslation}
+                  color="primary"
+                  size="large"
+                  variant="outlined"
+                >
+                  <Trans>Prepare translation</Trans>
+                </LoadingButton>
+                {translationState === translationStates.PREPARING && (
+                  <Typography css={{ marginTop: spacing.medium }}>
+                    <Trans>
+                      Please wait while we’re preparing the book for
+                      translation. This could take some time.
+                    </Trans>
+                  </Typography>
+                )}
+              </>
+            )}
+            {translationState === translationStates.ERROR && (
+              <Typography color="error" css={{ marginTop: spacing.medium }}>
+                <Trans>
+                  Something went wrong while preparing the translation. Please
+                  try again.
+                </Trans>
+              </Typography>
+            )}
+          </div>
+        </Container>
+      </Layout>
     );
   }
 }
 
-function initInContext(id: number, project: string, toLanguage: Language) {
-  window.localStorage.setItem(`jipt_language_code_${project}`, toLanguage.code);
-  window.localStorage.setItem(`jipt_language_id_${project}`, id);
-  window.localStorage.setItem(`jipt_language_name_${project}`, toLanguage.name);
-
-  window._jipt.push(['preload_texts', true]);
-  window._jipt.push(['project', project]);
-  window._jipt.push([
-    'escape',
-    () => {
-      window.location.href = '/books/translations';
+const styles = {
+  buttonSucccess: css`
+    background-color: ${green[800]};
+    &:hover {
+      background-color: ${green[900]};
     }
-  ]);
-}
+  `
+};
 
-function createFrontPage(crowdin: CrowdinBook): FrontPage {
-  return {
-    id: 0,
-    chapterType: 'FrontPage',
-    title: crowdin.title,
-    description: crowdin.description,
-    seqNo: 0,
-    images: [crowdin.coverImage.url]
-  };
-}
-
-/**
- * The previous badge for in-context translation doesn't disappear on navigation which
- * allows editing of text on previous page. This function removes the badge.
- */
-function removeInContextBadge() {
-  const badge = window.document.getElementById('crowdin-translation-badge');
-  if (badge) badge.remove();
-  const dialog = window.document.getElementsByClassName('jipt-dialog-close')[0];
-  if (dialog) dialog.click();
-}
-
-/**
- * Used to force the browser the begin loading images
- */
-function preloadImages(urls) {
-  urls.forEach(url => {
-    const image = new Image();
-    image.src = url;
-  });
-}
-
-export default withRouter(TranslatePage);
+export default securePage(withErrorPage(PrepareTranslatePage));
