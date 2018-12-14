@@ -21,7 +21,7 @@ import {
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
 import doFetch, { fetchMyTranslations } from '../../fetch';
-import { Link, Router } from '../../routes';
+import { Link } from '../../routes';
 import type { Translation } from '../../types';
 import { securePage } from '../../hocs';
 import Layout from '../../components/Layout';
@@ -107,22 +107,32 @@ class TranslationCard extends React.Component<
           >
             <Trans>Sync</Trans>
           </LoadingButton>
-          <Button
-            color="primary"
-            onClick={() =>
-              Router.pushRoute(`/en/books/translate/${translation.id}`, {
-                id: translation.id,
-                lang: translation.translatedFrom.code
-              })
-            }
-          >
-            <Trans>Translate</Trans>
-          </Button>
+          <TranslateButton
+            id={translation.id}
+            lang={translation.translatedFrom.code}
+          />
         </CardActions>
       </Card>
     );
   }
 }
+
+/**
+ * <CardActions /> passes className to its children and by wrapping <Button/>
+ * with <Link/>, we pass the className to <Button/>. Hence this wrapped component.
+ */
+const TranslateButton = ({ id, lang, ...rest }) => (
+  <Link
+    passHref
+    prefetch
+    route={`/en/books/translate/${id}`}
+    params={{ id, lang }}
+  >
+    <Button {...rest} color="primary">
+      <Trans>Translate</Trans>
+    </Button>
+  </Link>
+);
 
 type LoadingState = 'LOADING' | 'SUCCESS' | 'ERROR';
 

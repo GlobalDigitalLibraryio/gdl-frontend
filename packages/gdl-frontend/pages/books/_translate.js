@@ -13,10 +13,10 @@ import getConfig from 'next/config';
 
 import { Router } from '../../routes';
 import Reader from '../../components/Reader';
-import InContextTranslation from '../../components/InContextTranslation';
 import {
   fetchBook,
   fetchCrowdinBook,
+  fetchMyTranslations,
   fetchCrowdinChapter,
   fetchTranslationProject
 } from '../../fetch';
@@ -27,17 +27,24 @@ import type {
   Chapter,
   CrowdinBook,
   ChapterSummary,
-  Context
+  Context,
+  Language
 } from '../../types';
 
 const {
   publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
 
+// In-context requires that jipt is defined before the crowdin script is initialized
+if (typeof window !== 'undefined') {
+  window._jipt = [];
+}
+
 type Props = {
   book: BookDetails,
+  translatedTo: Language,
   initialChapter: FrontPage | Chapter,
-  crowdinProjectName: { en: string },
+  crowdinProjectName: { [key: string]: string },
   crowdinChapters: Array<ChapterSummary>,
   showCanonicalChapterUrl: boolean
 };
@@ -64,6 +71,15 @@ class TranslatePage extends React.Component<Props, State> {
     if (!crowdinProjectName.isOk)
       return { statusCode: crowdinProjectName.statusCode };
 
+    // Flow complains because selectedTranslation can be undefined.
+    // Graphql could handle this better.. $FlowFixMe
+    const myTranslations = await fetchMyTranslations();
+    if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
+
+    const selectedTranslation = myTranslations.data.find(
+      element => element.id === book.id
+    );
+
     let initialChapter;
     const frontPage = createFrontPage(crowdinBook.data);
 
@@ -81,6 +97,7 @@ class TranslatePage extends React.Component<Props, State> {
 
     return {
       book,
+      translatedTo: selectedTranslation.translatedTo,
       initialChapter: initialChapter ? initialChapter.data : frontPage,
       showCanonicalChapterUrl: !query.chapterId,
       crowdinProjectName: crowdinProjectName.data,
@@ -122,6 +139,10 @@ class TranslatePage extends React.Component<Props, State> {
     if (prev) {
       this.loadChapter(prev.id);
     }
+
+    const { crowdinProjectName, book, translatedTo } = this.props;
+    window.localStorage.clear();
+    initInContext(book.id, crowdinProjectName.en, translatedTo);
   }
 
   getNext() {
@@ -242,24 +263,36 @@ class TranslatePage extends React.Component<Props, State> {
               }`}
             />
           )}
+          <script src="https://cdn.crowdin.com/jipt/jipt.js" />
         </Head>
-        <InContextTranslation
-          bookId={book.id.toString()}
-          project={this.props.crowdinProjectName}
-        >
-          <Reader
-            book={book}
-            hasFrontPage
-            chapterWithContent={chapters[current.id]}
-            chapterPointer={current}
-            onRequestNextChapter={this.handleNextChapter}
-            onRequestPreviousChapter={this.handlePreviousChapter}
-            onRequestClose={this.handleCloseBook}
-          />
-        </InContextTranslation>
+
+        <Reader
+          book={book}
+          hasFrontPage
+          chapterWithContent={chapters[current.id]}
+          chapterPointer={current}
+          onRequestNextChapter={this.handleNextChapter}
+          onRequestPreviousChapter={this.handlePreviousChapter}
+          onRequestClose={this.handleCloseBook}
+        />
       </>
     );
   }
+}
+
+function initInContext(id: number, project: string, toLanguage: Language) {
+  window.localStorage.setItem(`jipt_language_code_${project}`, toLanguage.code);
+  window.localStorage.setItem(`jipt_language_id_${project}`, id);
+  window.localStorage.setItem(`jipt_language_name_${project}`, toLanguage.name);
+
+  window._jipt.push(['preload_texts', true]);
+  window._jipt.push(['project', project]);
+  window._jipt.push([
+    'escape',
+    () => {
+      window.location.href = '/books/translations';
+    }
+  ]);
 }
 
 function createFrontPage(crowdin: CrowdinBook): FrontPage {
