@@ -10,7 +10,6 @@ import React from 'react';
 import NextApp, { Container as NextContainer } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
-import { hydrate } from 'react-emotion';
 import Router from 'next/router';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -30,12 +29,6 @@ import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 import OfflineLibrary from '../lib/offlineLibrary';
-
-// Adds server generated styles to the emotion cache.
-// '__NEXT_DATA__.ids' is set in '_document.js'
-if (typeof window !== 'undefined' && window.__NEXT_DATA__) {
-  hydrate(window.__NEXT_DATA__.ids);
-}
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();

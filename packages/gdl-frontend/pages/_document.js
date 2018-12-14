@@ -9,7 +9,6 @@
 import React from 'react';
 import { NextScript } from '@engineerapart/nextscript';
 import NextDocument, { Head, Main } from 'next/document';
-import { extractCritical } from 'emotion-server';
 import PropTypes from 'prop-types';
 import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
@@ -41,24 +40,13 @@ export default class Document extends NextDocument {
 
       return WrappedComponent;
     });
-    // Extract Emotion's styles for SSR
-    const emotionStyles = extractCritical(page.html);
 
     return {
       ...page,
       pageContext,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
-      language: req.language,
-      ...emotionStyles
+      language: req.language
     };
-  }
-
-  constructor(props: any) {
-    super(props);
-    const { __NEXT_DATA__, ids } = props;
-    if (ids) {
-      __NEXT_DATA__.ids = ids;
-    }
   }
 
   render() {
@@ -138,9 +126,6 @@ if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
 
           {/* Custom JSS insertion point, so our Emotion styles takes precedence. This is used on the client. See withMuiRoot */}
           <noscript id="jss-insertion-point" />
-
-          {/* Emotion's styles are injected here. We want them below the JSS styles, so we can overwrite MUI css with Emotion */}
-          <style dangerouslySetInnerHTML={{ __html: this.props.css }} />
         </Head>
         <body>
           <Main />
