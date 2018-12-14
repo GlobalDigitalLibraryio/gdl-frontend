@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { coverWidths } from '../BookLink';
 import media from '../../style/media';
 

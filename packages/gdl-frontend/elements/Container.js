@@ -8,7 +8,8 @@
 
 import React from 'react';
 import { fluidRange } from 'polished';
-import styled, { cx, css } from 'react-emotion';
+import { cx, css } from 'react-emotion';
+import styled from '@emotion/styled';
 
 import View from './View';
 import { misc } from '../style/theme';

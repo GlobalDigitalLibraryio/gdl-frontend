@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import mq from '../style/mq';
 
 // Base on gatbsy-image Kyle Mathews

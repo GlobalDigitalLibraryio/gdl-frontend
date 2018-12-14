@@ -16,9 +16,7 @@ import type { Context } from '../types';
 import polyfills from '../polyfills';
 import config from '../config';
 
-// This is an import with a sideeffect :/
-// eslint-disable-next-line no-unused-vars
-import injectGlobalStyles from '../style/globalStyles';
+import GlobalStyles from '../components/GlobalStyles';
 
 const favIcon = '/static/img/favicon-32x32.png';
 const icon192x192 = '/static/img/icon-192x192.png';
@@ -130,6 +128,7 @@ if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
         <body>
           <Main />
           <NextScript features={polyfills} allowUserMonitoring={false} />
+          <GlobalStyles />
         </body>
       </html>
     );

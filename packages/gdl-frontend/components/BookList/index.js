@@ -7,7 +7,8 @@
  */
 
 import React, { type Element } from 'react';
-import styled, { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
@@ -69,7 +70,7 @@ const BookList = ({
     <Scroller>
       {loading
         ? [...Array(5).keys()].map(index => (
-            <div className={cx(itemStyle, shimmerStyle)} key={index}>
+            <div css={[itemStyle, shimmerStyle]} key={index}>
               <Shimmer className={shimmerStyle} />
             </div>
           ))

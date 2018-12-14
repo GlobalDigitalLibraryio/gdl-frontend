@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { fonts } from '../../style/theme';
 import media from '../../style/media';
 

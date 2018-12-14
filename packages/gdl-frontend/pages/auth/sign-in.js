@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Trans, I18n } from '@lingui/react';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'next/router';

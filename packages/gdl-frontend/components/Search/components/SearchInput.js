@@ -13,7 +13,8 @@ import { Trans, I18n } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
-import styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
+import styled from '@emotion/styled';
 
 import media from '../../../style/media';
 

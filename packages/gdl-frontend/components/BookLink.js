@@ -7,7 +7,8 @@
  */
 
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import { css } from 'react-emotion';
+import styled from '@emotion/styled';
 import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Link } from '../routes';

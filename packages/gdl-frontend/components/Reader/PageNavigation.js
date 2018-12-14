@@ -12,7 +12,7 @@ import {
 } from '@material-ui/icons';
 import { I18n } from '@lingui/react';
 import Swipeable from 'react-swipeable';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import KeyDown from '../KeyDown';
 import { colors } from '../../style/theme';
@@ -165,7 +165,7 @@ const NavigationButtons = ({
   </I18n>
 );
 
-const Button = styled.button`
+const Button = styled('button')`
   color: ${colors.base.white};
   position: fixed;
   background-color: rgba(68, 68, 68, 0.1);
