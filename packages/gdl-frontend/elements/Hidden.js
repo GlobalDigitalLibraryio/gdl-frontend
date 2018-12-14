@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 import mq from '../style/mq';
 
 type Props = {
@@ -21,9 +21,9 @@ const tablet = css(mq({ display: ['none', 'inherit', 'inherit'] }));
 /**
  * Only render on the given type
  */
-const Hidden = ({ className, only, ...props }: Props) => {
+const Hidden = ({ only, ...props }: Props) => {
   const style = only === 'mobile' ? mobile : tablet;
-  return <div className={cx(style, className)} {...props} />;
+  return <div css={style} {...props} />;
 };
 
 export default Hidden;

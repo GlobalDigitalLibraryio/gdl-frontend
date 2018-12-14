@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 const style = css`
   display: flex;
@@ -14,8 +14,6 @@ type Props = {
 /**
  * Flex centered column
  */
-const Center = ({ className, ...props }: Props) => (
-  <div className={cx(style, className)} {...props} />
-);
+const Center = (props: Props) => <div css={style} {...props} />;
 
 export default Center;

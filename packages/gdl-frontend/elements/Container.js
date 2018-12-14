@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { fluidRange } from 'polished';
-import { cx, css } from 'react-emotion';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
 import View from './View';
@@ -30,15 +30,12 @@ type Props = {
   size: $Keys<typeof misc.containers>
 };
 
-const Container = ({ className, gutter, size, ...props }: Props) => (
+const Container = ({ gutter, size, ...props }: Props) => (
   <StyledContainer
-    className={cx(
-      {
-        [smallGutterStyle]: gutter === true && size === 'small',
-        [largeGutterStyle]: gutter === true && size === 'large'
-      },
-      className
-    )}
+    css={[
+      gutter === true && size === 'small' && smallGutterStyle,
+      gutter === true && size === 'large' && largeGutterStyle
+    ]}
     size={size}
     {...props}
   />
@@ -65,7 +62,7 @@ const gutterFunc = containerSize =>
         toSize: '0px'
       },
       {
-        prop: 'padding-right',
+        prop: 'padding.right',
         fromSize: `${misc.gutter}px`,
         toSize: '0px'
       }

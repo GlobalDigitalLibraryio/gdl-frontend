@@ -29,6 +29,7 @@ import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 import OfflineLibrary from '../lib/offlineLibrary';
+import GlobalStyles from '../components/GlobalStyles';
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
@@ -130,6 +131,7 @@ class App extends NextApp {
     const { Component, pageProps, apolloClient } = this.props;
     return (
       <NextContainer>
+        <GlobalStyles />
         <ApolloProvider client={apolloClient}>
           <Head>
             <title>{DEFAULT_TITLE}</title>
