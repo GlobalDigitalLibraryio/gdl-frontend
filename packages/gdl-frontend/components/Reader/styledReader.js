@@ -33,7 +33,7 @@ export const Page = styled('div')`
     margin-right: auto;
     margin-bottom: 30px;
   }
-  &:first-child {
+  &:first-of-type {
     margin-top: 0;
   }
   overflow-y: auto;
