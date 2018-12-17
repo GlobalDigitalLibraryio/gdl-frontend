@@ -64,7 +64,6 @@
     "react": "16.6.3",
     "react-content-loader": "3.4.1",
     "react-dom": "16.6.3",
-    "react-emotion": "9.2.12",
     "react-ga": "2.5.3",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
