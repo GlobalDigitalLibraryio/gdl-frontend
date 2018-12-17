@@ -8,7 +8,7 @@
 
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
-import { Drawer, Typography } from '@material-ui/core';
+import { SwipeableDrawer, Typography } from '@material-ui/core';
 
 import type { Language } from '../../types';
 import { fetchLanguages } from '../../fetch';
@@ -96,7 +96,10 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
           onClick: this.handleShowMenu,
           loading: languages === 'LOADING'
         })}
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
           onClose={this.handleCloseMenu}
           open={showMenu && !!languages && languages !== 'LOADING'}
           anchor={anchor}
@@ -114,7 +117,7 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
               languages={languages}
             />
           )}
-        </Drawer>
+        </SwipeableDrawer>
       </>
     );
   }

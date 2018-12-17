@@ -10,13 +10,13 @@ import React from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
 import {
-  Drawer,
   Divider,
   List,
   ListItem,
   ListItemText,
   ListItemIcon,
-  CircularProgress
+  CircularProgress,
+  SwipeableDrawer
 } from '@material-ui/core';
 import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
@@ -59,7 +59,13 @@ class GlobalMenu extends React.Component<Props, State> {
     const online: boolean = this.context;
 
     return (
-      <Drawer open={this.props.isOpen} onClose={onClose}>
+      <SwipeableDrawer
+        disableDiscovery
+        disableSwipeToOpen
+        disableBackdropTransition
+        open={this.props.isOpen}
+        onClose={onClose}
+      >
         <List>
           {online && (
             <>
@@ -164,7 +170,7 @@ class GlobalMenu extends React.Component<Props, State> {
             </>
           )}
         </List>
-      </Drawer>
+      </SwipeableDrawer>
     );
   }
 }
