@@ -57,12 +57,12 @@ const gutterFunc = containerSize =>
   fluidRange(
     [
       {
-        prop: 'padding-left',
+        prop: 'paddingLeft',
         fromSize: `${misc.gutter}px`,
         toSize: '0px'
       },
       {
-        prop: 'padding.right',
+        prop: 'paddingRight',
         fromSize: `${misc.gutter}px`,
         toSize: '0px'
       }
