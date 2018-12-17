@@ -27,46 +27,21 @@ const sizesMap = {
   }
 };
 
-const Shimmer = ({ columns, size = 'small', ...props }: Props) => {
-  const widths = sizesMap[size].width;
-
+const Shimmer = ({ columns, size = 'small' }: Props) => {
+  const { width, height } = sizesMap[size];
   // Creates an array representing the number of 'columns' given to hold shimmers
-  const arrayOfPlaceholders = Array.from(Array(columns).keys()) || null;
+  const arrayOfPlaceholders = Array.from(Array(columns).keys());
 
-  return arrayOfPlaceholders ? (
+  return arrayOfPlaceholders.length > 0 ? (
     arrayOfPlaceholders.map(column => (
-      <ComposedShimmer
-        key={column}
-        height={sizesMap[size].height}
-        width={widths}
-        {...props}
-      />
+      <ShimmerPlaceholder key={column} height={height} width={width} />
     ))
   ) : (
-    <ComposedShimmer height={sizesMap[size].height} width={widths} {...props} />
+    <ShimmerPlaceholder height={height} width={width} />
   );
 };
 
-const ComposedShimmer = ({ ...props }: Props) => (
-  <ShimmerPlaceholder {...props}>
-    <ShimmerFiller />
-  </ShimmerPlaceholder>
-);
-
 /******** Shimmer setup.. **********/
-
-const ShimmerFiller = styled('div')`
-  height: 100%;
-  width: 100%;
-  position: relative;
-  > ${this} div {
-    background: #fff;
-    position: absolute;
-    height: 15px;
-    left: 0%;
-    right: 0%;
-  }
-`;
 
 const shimmerAnimation = keyframes`
   0% {
@@ -78,7 +53,6 @@ const shimmerAnimation = keyframes`
 `;
 
 const ShimmerPlaceholder = styled('div')`
-  position: relative;
   background: #f6f7f9;
   background-image: linear-gradient(
     to right,
@@ -88,8 +62,6 @@ const ShimmerPlaceholder = styled('div')`
     #f6f7f9 100%
   );
   background-repeat: no-repeat;
-  height: 210px;
-  width: 130px;
   ${p =>
     mq({
       height: p.height,
@@ -101,11 +73,6 @@ const ShimmerPlaceholder = styled('div')`
   animation-fill-mode: forwards;
   animation-iteration-count: infinite;
   animation-name: ${shimmerAnimation};
-  -webkit-animation-timing-function: linear;
-  -webkit-animation-duration: 1s;
-  -webkit-animation-fill-mode: forwards;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-name: ${shimmerAnimation};
 `;
 
 export default Shimmer;
