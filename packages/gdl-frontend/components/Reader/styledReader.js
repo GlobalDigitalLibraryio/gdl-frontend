@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import styled from '@emotion/styled';
+import { Global, css } from '@emotion/core';
 import { fonts } from '../../style/theme';
 import media from '../../style/media';
 
@@ -46,16 +47,12 @@ export const Page = styled('div')`
   `};
 `;
 
-// A grey backdrop that's only visible on tablets/desktops
-export const Backdrop = styled('div')`
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  position: fixed;
-  z-index: -2;
-  background-color: rgba(0, 0, 0, 0.7);
-  ${media.mobile`
-    display: none;
-  `};
-`;
+export const Backdrop = () => (
+  <Global
+    styles={css`
+      body {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    `}
+  />
+);
