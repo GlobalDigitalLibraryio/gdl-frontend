@@ -40,8 +40,6 @@
     "auth0-js": "9.8.2",
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
-    "emotion": "10.0.6",
-    "emotion-server": "10.0.6",
     "express": "4.16.4",
     "express-request-language": "^1.1.15",
     "facepaint": "1.2.1",
@@ -70,7 +68,7 @@
     "universal-cookie": "3.0.4"
   },
   "devDependencies": {
-    "@emotion/babel-preset-css-prop": "10.0.5",
+    "@emotion/babel-preset-css-prop": "10.0.6",
     "@lingui/babel-preset-react": "2.7.2",
     "@lingui/cli": "2.7.2",
     "babel-plugin-emotion": "10.0.6",
