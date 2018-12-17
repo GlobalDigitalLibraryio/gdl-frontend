@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import { getStyles } from 'jest-emotion';
 import media from '../media';
 
