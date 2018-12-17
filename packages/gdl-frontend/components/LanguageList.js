@@ -46,8 +46,13 @@ class LanguageList extends React.Component<Props, State> {
     input: undefined
   };
 
+  /**
+   * When searching, the languages get filtered and the drawer renders
+   * the width corresponding to the shortest element. Therefore, we set the
+   * width on the drawer dynamically to the longest element on mount.
+   */
   componentDidMount() {
-    if (this.listRef) {
+    if (this.props.enableSearch && this.listRef) {
       const listElement = this.listRef.current;
       const width = listElement.getBoundingClientRect().width;
       listElement.style.width = `${width}px`;
@@ -89,6 +94,22 @@ class LanguageList extends React.Component<Props, State> {
             </ListSubheader>
           }
         >
+          {selectedLanguage && (
+            <>
+              <ListItem>
+                <ListItemIcon>
+                  <CheckIcon css={{ color: colors.base.green }} />
+                </ListItemIcon>
+                <ListItemText inset>
+                  <Trans>
+                    <SrOnly>Selected: </SrOnly>
+                    {selectedLanguage.name}
+                  </Trans>
+                </ListItemText>
+              </ListItem>
+              <Divider />
+            </>
+          )}
           {enableSearch && (
             <I18n>
               {({ i18n }) => (
@@ -107,23 +128,6 @@ class LanguageList extends React.Component<Props, State> {
                 </ListItem>
               )}
             </I18n>
-          )}
-
-          {selectedLanguage && (
-            <>
-              <ListItem>
-                <ListItemIcon>
-                  <CheckIcon css={{ color: colors.base.green }} />
-                </ListItemIcon>
-                <ListItemText inset>
-                  <Trans>
-                    <SrOnly>Selected: </SrOnly>
-                    {selectedLanguage.name}
-                  </Trans>
-                </ListItemText>
-              </ListItem>
-              <Divider />
-            </>
           )}
           {noResult ? (
             <NoLanguageItem />
