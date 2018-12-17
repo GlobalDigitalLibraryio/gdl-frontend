@@ -146,7 +146,7 @@ export default class Image extends React.Component<Props, State> {
         className={className}
         responsiveHeight={responsiveHeight}
         responsiveWidth={responsiveWidth}
-        innerRef={this.handleRef}
+        ref={this.handleRef}
         aria-hidden={ariaHidden}
       >
         {this.state.isVisible && this.renderImg()}
