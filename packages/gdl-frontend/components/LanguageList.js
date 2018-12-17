@@ -36,14 +36,14 @@ type Props = {
 };
 
 type State = {
-  input: ?string
+  filterText: ?string
 };
 
 class LanguageList extends React.Component<Props, State> {
   listRef: ?React$ElementRef<List> = React.createRef();
 
   state = {
-    input: undefined
+    filterText: undefined
   };
 
   /**
@@ -64,24 +64,26 @@ class LanguageList extends React.Component<Props, State> {
 
   getFilteredLanguages = (selectedLanguage: ?Language) => {
     const { languages } = this.props;
-    return selectedLanguage
+    const { filterText } = this.state;
+
+    const withoutSelected = selectedLanguage
       ? languages.filter(l => l !== selectedLanguage)
       : languages;
+
+    return filterText
+      ? withoutSelected.filter(lang =>
+          lang.name.toLowerCase().includes(filterText)
+        )
+      : withoutSelected;
   };
 
   render() {
     const { enableSearch, onSelectLanguage, linkProps } = this.props;
-    const { input } = this.state;
 
     const selectedLanguage = this.getSelectedLanguage();
     // Remove selected language so it wont display again as a selectable language
     const filteredLanguages = this.getFilteredLanguages(selectedLanguage);
-    const searchResult = input
-      ? filteredLanguages.filter(lang =>
-          lang.name.toLowerCase().includes(input)
-        )
-      : filteredLanguages;
-    const noResult = searchResult.length === 0;
+    const noResult = filteredLanguages.length === 0;
 
     return (
       <RootRef rootRef={this.listRef}>
@@ -120,7 +122,7 @@ class LanguageList extends React.Component<Props, State> {
                       placeholder={i18n.t`Search`}
                       onChange={value =>
                         this.setState({
-                          input: value.target.value.toLowerCase()
+                          filterText: value.target.value.toLowerCase()
                         })
                       }
                     />
@@ -132,7 +134,7 @@ class LanguageList extends React.Component<Props, State> {
           {noResult ? (
             <NoLanguageItem />
           ) : (
-            searchResult.map(l => (
+            filteredLanguages.map(l => (
               <LanguageItem
                 key={l.code}
                 language={l}
