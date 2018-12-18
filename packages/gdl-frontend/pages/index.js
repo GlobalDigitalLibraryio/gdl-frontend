@@ -11,8 +11,9 @@ import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 
-import type { ConfigShape, Context, Category } from '../types';
+import type { ConfigShape, Context } from '../types';
 import type {
+  Category,
   books as Books,
   FeaturedContent_featuredContent as FeaturedContent
 } from '../gqlTypes';
