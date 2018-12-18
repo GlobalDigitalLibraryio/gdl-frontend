@@ -7,7 +7,7 @@
  */
 
 import React, { type Element } from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
@@ -17,7 +17,7 @@ import media from '../../style/media';
 import type { Book } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
-import Shimmer from '../../elements/Shimmer';
+import Shimmer from './Shimmer';
 
 type Props = {
   books: Array<Book>,
@@ -49,12 +49,18 @@ const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
     </View>
     <Scroller>
       {loading ? (
-        <Shimmer columns={5} />
+        <>
+          <Shimmer className={itemStyle} />
+          <Shimmer className={itemStyle} />
+          <Shimmer className={itemStyle} />
+          <Shimmer className={itemStyle} />
+          <Shimmer className={itemStyle} />
+        </>
       ) : (
         books.map(book => (
-          <CoverItem key={book.id}>
+          <div className={itemStyle} key={book.id}>
             <BookLink book={book} />
-          </CoverItem>
+          </div>
         ))
       )}
     </Scroller>
@@ -64,7 +70,7 @@ const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
 /**
  * For browsers that doesn't support grid we add some spacing around the book covers
  */
-const CoverItem = styled('div')`
+const itemStyle = css`
   display: inline-block;
   &:not(:last-child) {
     margin-right: 15px;
