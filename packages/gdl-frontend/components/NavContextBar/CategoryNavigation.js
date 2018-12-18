@@ -12,7 +12,7 @@ import { Trans } from '@lingui/react';
 
 import { colors } from '../../style/theme';
 import { logEvent } from '../../lib/analytics';
-import type { Category } from '../../types';
+import type { Category } from '../../gqlTypes';
 import SrOnly from '../../components/SrOnly';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
