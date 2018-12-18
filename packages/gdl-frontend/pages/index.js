@@ -130,7 +130,7 @@ const BOOK_QUERY = gql`
 type Props = {|
   bookSummaries: Books,
   languageCode: string,
-  featuredContent: Array<FeaturedContent>,
+  featuredContent: FeaturedContent,
   category: Category,
   categories: Array<Category>
 |};
@@ -188,7 +188,8 @@ class IndexPage extends React.Component<Props> {
       category,
       categories,
       languageCode,
-      featuredContent: featureRes.data.featuredContent,
+      // Currently the UI only supports one featured content, not an array
+      featuredContent: featureRes.data.featuredContent[0],
       bookSummaries: bookSummaries.data
     };
   }
