@@ -646,6 +646,39 @@ export type FavoritesVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FeaturedContent
+// ====================================================
+
+export type FeaturedContent_featuredContent_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+};
+
+export type FeaturedContent_featuredContent = {
+  __typename: "FeaturedContent",
+  id: string,
+  title: string,
+  description: string,
+  link: string,
+  imageUrl: string,
+  language: FeaturedContent_featuredContent_language,
+};
+
+export type FeaturedContent = {
+  featuredContent: Array<FeaturedContent_featuredContent>
+};
+
+export type FeaturedContentVariables = {
+  language?: ?string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetCategories
 // ====================================================
 
