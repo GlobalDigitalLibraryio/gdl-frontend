@@ -11,8 +11,8 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
-import type { Category } from '../../types';
 import type {
+  Category,
   books as Books,
   FeaturedContent_featuredContent as FeaturedContent
 } from '../../gqlTypes';
