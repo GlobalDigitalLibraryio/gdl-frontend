@@ -10,7 +10,8 @@ import type { $Request, $Response } from 'express';
 import UniversalCookie from 'universal-cookie';
 import getConfig from 'next/config';
 
-import type { Category, ConfigShape } from '../types';
+import type { ConfigShape } from '../types';
+import type { Category } from '../gqlTypes';
 
 const {
   publicRuntimeConfig: { DEFAULT_LANGUAGE }

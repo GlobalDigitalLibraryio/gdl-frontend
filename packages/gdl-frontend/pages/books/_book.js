@@ -15,7 +15,6 @@ import styled from 'react-emotion';
 import copyToClipboard from 'copy-to-clipboard';
 import gql from 'graphql-tag';
 import {
-  Snackbar,
   Menu,
   MenuItem,
   ListItemIcon,
@@ -59,7 +58,7 @@ import {
   LevelRibbon
 } from '../../components/BookDetailsPage';
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
-import OfflineIcon from '../../components/OfflineIcon';
+import Offline, { OfflineIcon } from '../../components/Offline';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -318,28 +317,14 @@ const ReadBookLink = ({ book }) =>
 class BookActions1 extends React.Component<
   { book: Book },
   {
-    anchorEl: ?HTMLElement,
-    isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
-    snackbarMessage: ?string
+    anchorEl: ?HTMLElement
   }
 > {
   state = {
-    anchorEl: null,
-    isAvailableOffline: null,
-    snackbarMessage: null
+    anchorEl: null
   };
 
   static contextType = OnlineContext;
-
-  async componentDidMount() {
-    if (!offlineLibrary) return;
-
-    const offlineBook = await offlineLibrary.getBook(this.props.book.id);
-
-    this.setState({
-      isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
-    });
-  }
 
   closeShareMenu = () => this.setState({ anchorEl: null });
 
@@ -358,32 +343,6 @@ class BookActions1 extends React.Component<
         .catch(() => {}); // Ignore here because we don't care if people cancel sharing
     } else {
       this.setState({ anchorEl: event.currentTarget });
-    }
-  };
-
-  handleOfflineClick = async () => {
-    if (!offlineLibrary) return;
-
-    const { book } = this.props;
-
-    this.setState({ isAvailableOffline: 'DOWNLOADING' });
-
-    if (this.state.isAvailableOffline === 'YES') {
-      await offlineLibrary.deleteBook(book.id);
-      this.setState({
-        isAvailableOffline: 'NO',
-        snackbarMessage: 'Removed book from your offline library.'
-      });
-      logEvent('Books', 'Remove offline', book.title);
-    } else {
-      const offlinedBook = await offlineLibrary.addBook(book.id);
-      this.setState({
-        isAvailableOffline: offlinedBook ? 'YES' : 'NO',
-        snackbarMessage: offlinedBook
-          ? 'Added book to your offline library.'
-          : 'An error occurred while adding this book to your offline library.'
-      });
-      logEvent('Books', 'Available offline', book.title);
     }
   };
 
@@ -413,20 +372,20 @@ class BookActions1 extends React.Component<
             )}
           </Favorite>
 
-          <NoSsr>
-            {offlineLibrary && (
-              <IconButton
-                isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
-                icon={
-                  <OfflineIcon
-                    filled={this.state.isAvailableOffline === 'YES'}
+          {offlineLibrary && (
+            <NoSsr>
+              <Offline book={book}>
+                {({ onClick, downloading, offlined }) => (
+                  <IconButton
+                    isLoading={downloading}
+                    icon={<OfflineIcon filled={offlined} />}
+                    onClick={onClick}
+                    label={<Trans>Save offline</Trans>}
                   />
-                }
-                onClick={this.handleOfflineClick}
-                label={<Trans>Save offline</Trans>}
-              />
-            )}
-          </NoSsr>
+                )}
+              </Offline>
+            </NoSsr>
+          )}
 
           {!offline && (
             <IconButton
@@ -485,18 +444,6 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
-        {/* Show offlined snackbar*/}
-        <Snackbar
-          autoHideDuration={3000}
-          open={Boolean(this.state.snackbarMessage)}
-          onClose={() => this.setState({ snackbarMessage: null })}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}
-          message={
-            <span id="snackbar-message">{this.state.snackbarMessage}</span>
-          }
-        />
       </>
     );
   }

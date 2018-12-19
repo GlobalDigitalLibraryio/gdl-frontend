@@ -11,8 +11,11 @@ import { Trans } from '@lingui/react';
 import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
-import type { FeaturedContent, Category } from '../../types';
-import type { books as Books } from '../../gqlTypes';
+import type {
+  Category,
+  books as Books,
+  FeaturedContent_featuredContent as FeaturedContent
+} from '../../gqlTypes';
 
 import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
@@ -76,7 +79,7 @@ const HeroCardTablet = styled(Card)`
 type Props = {|
   bookSummaries: Books,
   languageCode: string,
-  featuredContent: Array<FeaturedContent>,
+  featuredContent: FeaturedContent,
   categories: Array<Category>,
   category: Category
 |};
@@ -91,22 +94,13 @@ export default class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    const featuredForChosenCategory = featuredContent.filter(
-      // $FlowFixMe...
-      f => f.category && f.category.name === category
-    );
-    const featured =
-      featuredForChosenCategory.length > 0
-        ? featuredForChosenCategory[0]
-        : featuredContent[0];
-
     const { NewArrivals, ...readingLevels } = bookSummaries;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
       <View alignItems="center" style={{ width: '100%' }}>
         <Typography
-          lang={featured.language.code}
+          lang={featuredContent.language.code}
           align="center"
           variant="h5"
           component="h2"
@@ -114,20 +108,22 @@ export default class HomePage extends React.Component<Props> {
           // Specifying width here makes text in IE11 wrap
           style={{ width: '100%' }}
         >
-          {featured.title}
+          {featuredContent.title}
         </Typography>
         <Typography
-          lang={featured.language.code}
+          lang={featuredContent.language.code}
           align="center"
           paragraph
           // Specifying width here makes text in IE11 wrap
           style={{ width: '100%' }}
         >
-          {featured.description}
+          {featuredContent.description}
         </Typography>
         <Button
-          onClick={() => logEvent('Navigation', 'Featured', featured.title)}
-          href={featured.link}
+          onClick={() =>
+            logEvent('Navigation', 'Featured', featuredContent.title)
+          }
+          href={featuredContent.link}
           variant="contained"
           color="primary"
           size="large"
@@ -139,7 +135,7 @@ export default class HomePage extends React.Component<Props> {
 
     return (
       <Layout wrapWithMain={false}>
-        <Head image={featured.imageUrl} />
+        <Head image={featuredContent.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
             category={category}
@@ -148,7 +144,7 @@ export default class HomePage extends React.Component<Props> {
           />
         </NavContextBar>
         <Main>
-          <Banner src={featured.imageUrl}>
+          <Banner src={featuredContent.imageUrl}>
             <HeroCovertitle>
               <Typography
                 component="h1"

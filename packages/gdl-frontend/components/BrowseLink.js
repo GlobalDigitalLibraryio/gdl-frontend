@@ -7,7 +7,7 @@
  */
 import React, { type Node } from 'react';
 import { Link } from '../routes';
-import type { Category } from '../types';
+import type { Category } from '../gqlTypes';
 
 export type Props = {
   category: Category,
