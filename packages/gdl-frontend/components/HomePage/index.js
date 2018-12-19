@@ -13,8 +13,8 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
-  books as Books,
-  FeaturedContent_featuredContent as FeaturedContent
+  BooksAndFeatured,
+  BooksAndFeatured_featuredContent as FeaturedContent
 } from '../../gqlTypes';
 
 import { logEvent } from '../../lib/analytics';
@@ -77,7 +77,10 @@ const HeroCardTablet = styled(Card)`
 `;
 
 type Props = {|
-  bookSummaries: Books,
+  bookSummaries: $Diff<
+    BooksAndFeatured,
+    { featuredContent: Array<FeaturedContent> }
+  >,
   languageCode: string,
   featuredContent: FeaturedContent,
   categories: Array<Category>,
