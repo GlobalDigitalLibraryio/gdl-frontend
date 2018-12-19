@@ -646,39 +646,6 @@ export type FavoritesVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: FeaturedContent
-// ====================================================
-
-export type FeaturedContent_featuredContent_language = {
-  __typename: "Language",
-  code: string,
-  name: string,
-};
-
-export type FeaturedContent_featuredContent = {
-  __typename: "FeaturedContent",
-  id: string,
-  title: string,
-  description: string,
-  link: string,
-  imageUrl: string,
-  language: FeaturedContent_featuredContent_language,
-};
-
-export type FeaturedContent = {
-  featuredContent: Array<FeaturedContent_featuredContent>
-};
-
-export type FeaturedContentVariables = {
-  language?: ?string
-};
-
-
-/* @flow */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
 // GraphQL query operation: GetCategories
 // ====================================================
 
@@ -696,189 +663,206 @@ export type GetCategoriesVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: books
+// GraphQL query operation: BooksAndFeatured
 // ====================================================
 
-export type books_Decodable_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type books_Decodable_results_language = {
+export type BooksAndFeatured_featuredContent_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_Decodable_results = {
-  __typename: "BookSummary",
+export type BooksAndFeatured_featuredContent = {
+  __typename: "FeaturedContent",
   id: string,
-  bookId: number,
   title: string,
-  coverImage: ?books_Decodable_results_coverImage,
-  language: books_Decodable_results_language,
+  description: string,
+  link: string,
+  imageUrl: string,
+  language: BooksAndFeatured_featuredContent_language,
 };
 
-export type books_Decodable = {
-  __typename: "ResultItemConnection",
-  results: Array<books_Decodable_results>,
-};
-
-export type books_Level1_results_coverImage = {
+export type BooksAndFeatured_NewArrivals_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_Level1_results_language = {
+export type BooksAndFeatured_NewArrivals_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_Level1_results = {
+export type BooksAndFeatured_NewArrivals_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_Level1_results_coverImage,
-  language: books_Level1_results_language,
+  coverImage: ?BooksAndFeatured_NewArrivals_results_coverImage,
+  language: BooksAndFeatured_NewArrivals_results_language,
 };
 
-export type books_Level1 = {
+export type BooksAndFeatured_NewArrivals = {
   __typename: "ResultItemConnection",
-  results: Array<books_Level1_results>,
+  results: Array<BooksAndFeatured_NewArrivals_results>,
 };
 
-export type books_Level2_results_coverImage = {
+export type BooksAndFeatured_Decodable_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_Level2_results_language = {
+export type BooksAndFeatured_Decodable_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_Level2_results = {
+export type BooksAndFeatured_Decodable_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_Level2_results_coverImage,
-  language: books_Level2_results_language,
+  coverImage: ?BooksAndFeatured_Decodable_results_coverImage,
+  language: BooksAndFeatured_Decodable_results_language,
 };
 
-export type books_Level2 = {
+export type BooksAndFeatured_Decodable = {
   __typename: "ResultItemConnection",
-  results: Array<books_Level2_results>,
+  results: Array<BooksAndFeatured_Decodable_results>,
 };
 
-export type books_Level3_results_coverImage = {
+export type BooksAndFeatured_Level1_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_Level3_results_language = {
+export type BooksAndFeatured_Level1_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_Level3_results = {
+export type BooksAndFeatured_Level1_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_Level3_results_coverImage,
-  language: books_Level3_results_language,
+  coverImage: ?BooksAndFeatured_Level1_results_coverImage,
+  language: BooksAndFeatured_Level1_results_language,
 };
 
-export type books_Level3 = {
+export type BooksAndFeatured_Level1 = {
   __typename: "ResultItemConnection",
-  results: Array<books_Level3_results>,
+  results: Array<BooksAndFeatured_Level1_results>,
 };
 
-export type books_Level4_results_coverImage = {
+export type BooksAndFeatured_Level2_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_Level4_results_language = {
+export type BooksAndFeatured_Level2_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_Level4_results = {
+export type BooksAndFeatured_Level2_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_Level4_results_coverImage,
-  language: books_Level4_results_language,
+  coverImage: ?BooksAndFeatured_Level2_results_coverImage,
+  language: BooksAndFeatured_Level2_results_language,
 };
 
-export type books_Level4 = {
+export type BooksAndFeatured_Level2 = {
   __typename: "ResultItemConnection",
-  results: Array<books_Level4_results>,
+  results: Array<BooksAndFeatured_Level2_results>,
 };
 
-export type books_ReadAloud_results_coverImage = {
+export type BooksAndFeatured_Level3_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_ReadAloud_results_language = {
+export type BooksAndFeatured_Level3_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_ReadAloud_results = {
+export type BooksAndFeatured_Level3_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_ReadAloud_results_coverImage,
-  language: books_ReadAloud_results_language,
+  coverImage: ?BooksAndFeatured_Level3_results_coverImage,
+  language: BooksAndFeatured_Level3_results_language,
 };
 
-export type books_ReadAloud = {
+export type BooksAndFeatured_Level3 = {
   __typename: "ResultItemConnection",
-  results: Array<books_ReadAloud_results>,
+  results: Array<BooksAndFeatured_Level3_results>,
 };
 
-export type books_NewArrivals_results_coverImage = {
+export type BooksAndFeatured_Level4_results_coverImage = {
   __typename: "CoverImage",
   url: string,
 };
 
-export type books_NewArrivals_results_language = {
+export type BooksAndFeatured_Level4_results_language = {
   __typename: "Language",
   code: string,
 };
 
-export type books_NewArrivals_results = {
+export type BooksAndFeatured_Level4_results = {
   __typename: "BookSummary",
   id: string,
   bookId: number,
   title: string,
-  coverImage: ?books_NewArrivals_results_coverImage,
-  language: books_NewArrivals_results_language,
+  coverImage: ?BooksAndFeatured_Level4_results_coverImage,
+  language: BooksAndFeatured_Level4_results_language,
 };
 
-export type books_NewArrivals = {
+export type BooksAndFeatured_Level4 = {
   __typename: "ResultItemConnection",
-  results: Array<books_NewArrivals_results>,
+  results: Array<BooksAndFeatured_Level4_results>,
 };
 
-export type books = {
-  Decodable: books_Decodable,
-  Level1: books_Level1,
-  Level2: books_Level2,
-  Level3: books_Level3,
-  Level4: books_Level4,
-  ReadAloud: books_ReadAloud,
-  NewArrivals: books_NewArrivals,
+export type BooksAndFeatured_ReadAloud_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
 };
 
-export type booksVariables = {
+export type BooksAndFeatured_ReadAloud_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type BooksAndFeatured_ReadAloud_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?BooksAndFeatured_ReadAloud_results_coverImage,
+  language: BooksAndFeatured_ReadAloud_results_language,
+};
+
+export type BooksAndFeatured_ReadAloud = {
+  __typename: "ResultItemConnection",
+  results: Array<BooksAndFeatured_ReadAloud_results>,
+};
+
+export type BooksAndFeatured = {
+  featuredContent: Array<BooksAndFeatured_featuredContent>,
+  NewArrivals: BooksAndFeatured_NewArrivals,
+  Decodable: BooksAndFeatured_Decodable,
+  Level1: BooksAndFeatured_Level1,
+  Level2: BooksAndFeatured_Level2,
+  Level3: BooksAndFeatured_Level3,
+  Level4: BooksAndFeatured_Level4,
+  ReadAloud: BooksAndFeatured_ReadAloud,
+};
+
+export type BooksAndFeaturedVariables = {
   language: string,
+  category: Category,
   pageSize?: ?number,
 };
 
