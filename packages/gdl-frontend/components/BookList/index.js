@@ -7,7 +7,7 @@
  */
 
 import React, { type Element } from 'react';
-import styled, { css } from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
@@ -48,32 +48,39 @@ const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
       )}
     </View>
     <Scroller>
-      {loading ? (
-        <>
-          <Shimmer className={itemStyle} />
-          <Shimmer className={itemStyle} />
-          <Shimmer className={itemStyle} />
-          <Shimmer className={itemStyle} />
-          <Shimmer className={itemStyle} />
-        </>
-      ) : (
-        books.map(book => (
-          <div className={itemStyle} key={book.id}>
-            <BookLink book={book} />
-          </div>
-        ))
-      )}
+      {loading
+        ? [...Array(5).keys()].map(index => (
+            <div className={cx(itemStyle, shimmerStyle)} key={index}>
+              <Shimmer className={shimmerStyle} />
+            </div>
+          ))
+        : books.map(book => (
+            <div className={itemStyle} key={book.id}>
+              <BookLink book={book} />
+            </div>
+          ))}
     </Scroller>
   </>
 );
 
+const shimmerStyle = css`
+  &:last-child {
+    margin-right: ${coverWidths.large - coverWidths.small}px;
+  }
+  width: ${coverWidths.small}px;
+  ${media.tablet`
+  width: ${coverWidths.large}px;
+`};
+`;
+
+const COLUMN_GAP = 15;
 /**
  * For browsers that doesn't support grid we add some spacing around the book covers
  */
 const itemStyle = css`
   display: inline-block;
   &:not(:last-child) {
-    margin-right: 15px;
+    margin-right: ${COLUMN_GAP}px;
   }
   @supports (display: grid) {
     margin-right: 0 !important;
@@ -87,7 +94,6 @@ const itemStyle = css`
  * Currently this is coded to show at the most 5 book covers (so the spacing is the same between the items even if there are fewer than 5 books)
  */
 
-const COLUMN_GAP = 15;
 const Scroller = styled('div')`
   overflow-x: auto;
   /* Fixes problem with scrolling in Safari all over the place */
