@@ -55,11 +55,12 @@ const CATEGORY_QUERY = gql`
 `;
 
 const BOOK_QUERY = gql`
-  query books($language: String!, $pageSize: Int) {
+  query books($language: String!, $category: Category!, $pageSize: Int) {
     Decodable: bookSummaries(
       language: $language
       pageSize: $pageSize
       readingLevel: Decodable
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
@@ -68,6 +69,7 @@ const BOOK_QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level1
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
@@ -76,6 +78,7 @@ const BOOK_QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level2
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
@@ -84,6 +87,7 @@ const BOOK_QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level3
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
@@ -92,6 +96,7 @@ const BOOK_QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: Level4
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
@@ -100,12 +105,14 @@ const BOOK_QUERY = gql`
       language: $language
       pageSize: $pageSize
       readingLevel: ReadAloud
+      category: $category
       orderBy: title_ASC
     ) {
       ...fields
     }
     NewArrivals: bookSummaries(
       language: $language
+      category: $category
       orderBy: arrivalDate_DESC
       pageSize: $pageSize
     ) {
@@ -146,13 +153,6 @@ class IndexPage extends React.Component<Props> {
   }: Context) {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
-    const bookSummaries = await apolloClient.query({
-      query: BOOK_QUERY,
-      variables: {
-        language: languageCode,
-        pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
-      }
-    });
 
     const categoriesRes = await apolloClient.query({
       query: CATEGORY_QUERY,
@@ -174,8 +174,17 @@ class IndexPage extends React.Component<Props> {
       category = categoryInCookie;
     } else {
       // Default to Library
-      category = categories.includes('Library') ? 'Library' : 'Classroom';
+      category = categories.includes('Library') ? 'Library' : categories[0];
     }
+
+    const bookSummaries = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: {
+        category,
+        language: languageCode,
+        pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+      }
+    });
 
     const featureRes = await apolloClient.query({
       query: FEATURED_CONTENT_QUERY,
