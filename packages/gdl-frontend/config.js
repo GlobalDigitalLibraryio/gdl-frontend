@@ -11,8 +11,6 @@ import type { ConfigShape } from './types';
 const { GDL_ENVIRONMENT } = require('gdl-config');
 const dnsResolver = require('./lib/customResolver');
 
-const isDev = process.env.NODE_ENV !== 'production';
-
 const bookApiUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
@@ -75,11 +73,10 @@ module.exports = {
 
     SENTRY_PROJECT_ID: '1195015',
     SENTRY_PUBLIC_KEY: '7d5b3ec618464d4abceb4b4fc2ee0ed0',
-    REPORT_ERRORS: !(
-      isDev ||
-      GDL_ENVIRONMENT === 'dev' ||
-      GDL_ENVIRONMENT === 'local'
-    ),
+    REPORT_ERRORS:
+      process.env.NODE_ENV === 'production' &&
+      GDL_ENVIRONMENT !== 'dev' &&
+      GDL_ENVIRONMENT !== 'local',
 
     AUTH0: {
       clientId: 'Hf3lgXrS71nxiiEaHAyRZ3GncgeE2pq5',
