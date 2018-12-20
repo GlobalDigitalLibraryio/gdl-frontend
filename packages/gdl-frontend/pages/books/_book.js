@@ -126,6 +126,13 @@ class BookPage extends React.Component<Props, State> {
     this.loadSimilarBooks(book);
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.book !== this.props.book) {
+      const { book } = this.props;
+      this.loadSimilarBooks(book);
+    }
+  }
+
   async loadSimilarBooks(book: BookDetails) {
     const similarRes = await fetchSimilarBooks(book.id, book.language.code);
     this.setState({

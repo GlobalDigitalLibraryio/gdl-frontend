@@ -14,4 +14,3 @@ export { default as DelayedLoading } from './DelayedLoading';
 export { default as IconButton } from './IconButton';
 export { default as Center } from './Center';
 export { default as Hidden } from './Hidden';
-export { default as Shimmer } from './Shimmer';
