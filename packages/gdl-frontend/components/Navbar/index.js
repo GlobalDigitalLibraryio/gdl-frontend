@@ -173,7 +173,7 @@ const Center = styled('div')`
   display: flex;
   align-items: center;
   flex: 1 25%;
-  ${media.mobile`display: none`};
+  ${media.mobile`display: none;`};
 `;
 
 const Right = styled('div')`

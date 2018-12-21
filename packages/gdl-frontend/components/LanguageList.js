@@ -19,7 +19,7 @@ import {
   RootRef
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import { I18n } from '@lingui/react';
 
 import type { languages_languages as Language } from '../gqlTypes';
@@ -89,7 +89,7 @@ class LanguageList extends React.Component<Props, State> {
       <RootRef rootRef={this.listRef}>
         <List
           component="div"
-          className={styles.visibleScrollbar}
+          css={{ overflowY: 'scroll' }}
           subheader={
             <ListSubheader component="div">
               <Trans>Choose book language</Trans>
@@ -118,7 +118,7 @@ class LanguageList extends React.Component<Props, State> {
                 <ListItem>
                   <ListItemText inset>
                     <TextField
-                      className={styles.textfield}
+                      css={{ width: '100%' }}
                       placeholder={i18n.t`Search`}
                       onChange={value =>
                         this.setState({
@@ -148,15 +148,6 @@ class LanguageList extends React.Component<Props, State> {
     );
   }
 }
-
-const styles = {
-  visibleScrollbar: css`
-    overflow-y: scroll;
-  `,
-  textfield: css`
-    width: 100%;
-  `
-};
 
 const NoLanguageItem = () => (
   <ListItem component="div">

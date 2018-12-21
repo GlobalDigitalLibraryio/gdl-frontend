@@ -5,6 +5,7 @@
  *
  * See LICENSE
  */
+import React from 'react';
 import styled from '@emotion/styled';
 import { Global, css } from '@emotion/core';
 import { fonts } from '../../style/theme';
