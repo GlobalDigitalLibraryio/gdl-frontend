@@ -10,6 +10,7 @@ import React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 
 import type { ConfigShape, Context } from '../types';
 import type {
@@ -19,6 +20,7 @@ import type {
   GetCategories as Categories
 } from '../gqlTypes';
 
+import { isValidLanguageTag } from '../utils/bcp47Validator';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -28,7 +30,7 @@ import {
 } from '../lib/storage';
 
 const {
-  publicRuntimeConfig: { canonicalUrl }
+  publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
 }: ConfigShape = getConfig();
 
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
@@ -53,7 +55,13 @@ class IndexPage extends React.Component<Props> {
     apolloClient
   }: Context) {
     // Get the language either from the URL or the user's cookies
-    const languageCode = query.lang || getBookLanguageCode(req);
+    let languageCode = query.lang || getBookLanguageCode(req);
+
+    if (!isValidLanguageTag(languageCode)) {
+      return {
+        statusCode: 404
+      };
+    }
 
     const categoriesRes: { data: Categories } = await apolloClient.query({
       query: CATEGORIES_QUERY,
@@ -62,8 +70,20 @@ class IndexPage extends React.Component<Props> {
       }
     });
 
+    if (categoriesRes.data.categories.length === 0) {
+      // We have different ways of redirecting on the server and on the client...
+      // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      if (res) {
+        res.writeHead(302, { Location: `/${DEFAULT_LANGUAGE.code}` });
+        res.end();
+      } else {
+        Router.push(`/${DEFAULT_LANGUAGE.code}`);
+      }
+      return {};
+    }
     const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
+
     let category: string;
     if (asPath.includes('/classroom')) {
       category = 'Classroom';
