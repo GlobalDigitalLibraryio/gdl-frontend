@@ -101,6 +101,7 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
           disableSwipeToOpen
           disableBackdropTransition
           onClose={this.handleCloseMenu}
+          onOpen={() => {}}
           open={showMenu && !!languages && languages !== 'LOADING'}
           anchor={anchor}
         >
