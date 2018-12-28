@@ -54,7 +54,7 @@ class IndexPage extends React.Component<Props> {
     apolloClient
   }: Context) {
     // Get the language either from the URL or the user's cookies
-    let languageCode = query.lang || getBookLanguageCode(req);
+    const languageCode = query.lang || getBookLanguageCode(req);
 
     const categoriesRes: { data: Categories } = await apolloClient.query({
       query: CATEGORIES_QUERY,
