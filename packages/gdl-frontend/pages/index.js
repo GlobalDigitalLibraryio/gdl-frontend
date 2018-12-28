@@ -20,7 +20,6 @@ import type {
   GetCategories as Categories
 } from '../gqlTypes';
 
-import { isValidLanguageTag } from '../utils/bcp47Validator';
 import { withErrorPage } from '../hocs';
 import HomePage from '../components/HomePage';
 import {
@@ -57,12 +56,6 @@ class IndexPage extends React.Component<Props> {
     // Get the language either from the URL or the user's cookies
     let languageCode = query.lang || getBookLanguageCode(req);
 
-    if (!isValidLanguageTag(languageCode)) {
-      return {
-        statusCode: 404
-      };
-    }
-
     const categoriesRes: { data: Categories } = await apolloClient.query({
       query: CATEGORIES_QUERY,
       variables: {
@@ -73,11 +66,12 @@ class IndexPage extends React.Component<Props> {
     if (categoriesRes.data.categories.length === 0) {
       // We have different ways of redirecting on the server and on the client...
       // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      const { code } = DEFAULT_LANGUAGE;
       if (res) {
-        res.writeHead(302, { Location: `/${DEFAULT_LANGUAGE.code}` });
+        res.writeHead(302, { Location: `/${code}` });
         res.end();
       } else {
-        Router.push(`/${DEFAULT_LANGUAGE.code}`);
+        Router.push(`/${code}`);
       }
       return {};
     }
