@@ -10,6 +10,7 @@ import React from 'react';
 import Head from 'next/head';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
+import Router from 'next/router';
 
 import type { ConfigShape, Context } from '../types';
 import type {
@@ -28,7 +29,7 @@ import {
 } from '../lib/storage';
 
 const {
-  publicRuntimeConfig: { canonicalUrl }
+  publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
 }: ConfigShape = getConfig();
 
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
@@ -62,8 +63,25 @@ class IndexPage extends React.Component<Props> {
       }
     });
 
+    /**
+     * Some valid languages does not have content and will eventually return empty categories.
+     * Fallback/redirect to default language (english).
+     */
+    if (categoriesRes.data.categories.length === 0) {
+      // We have different ways of redirecting on the server and on the client...
+      // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
+      if (res) {
+        res.writeHead(302, { Location: redirectUrl });
+        res.end();
+      } else {
+        Router.push(redirectUrl);
+      }
+      return {};
+    }
     const categories = categoriesRes.data.categories;
     const categoryInCookie = getBookCategory(req);
+
     let category: string;
     if (asPath.includes('/classroom')) {
       category = 'Classroom';
