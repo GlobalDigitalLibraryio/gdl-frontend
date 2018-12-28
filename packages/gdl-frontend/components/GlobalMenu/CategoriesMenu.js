@@ -84,6 +84,7 @@ export default class CategoriesMenu extends React.Component<
           disableSwipeToOpen
           disableBackdropTransition
           open={showMenu && categories !== 'LOADING'}
+          onOpen={() => {}}
           onClose={this.handleCloseMenu}
         >
           {categories === 'ERROR' && (

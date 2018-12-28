@@ -63,6 +63,7 @@ class GlobalMenu extends React.Component<Props, State> {
         disableDiscovery
         disableSwipeToOpen
         disableBackdropTransition
+        onOpen={() => {}}
         open={this.props.isOpen}
         onClose={onClose}
       >
