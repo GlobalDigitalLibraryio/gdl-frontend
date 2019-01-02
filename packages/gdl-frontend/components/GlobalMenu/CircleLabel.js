@@ -20,9 +20,15 @@ const colorMap = {
 };
 
 type Props = {
-  level: ReadingLevel
+  level: ReadingLevel,
+  style?: CSSStyleDeclaration
 };
 
-export default ({ level }: Props) => {
-  return <CircleLabel style={{ color: colorMap[level] }} />;
+export default ({ level, style, ...props }: Props) => {
+  return (
+    <CircleLabel
+      style={{ color: colorMap[level], marginBottom: '2px', ...style }}
+      {...props}
+    />
+  );
 };

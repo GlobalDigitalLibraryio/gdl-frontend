@@ -124,7 +124,7 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
                 <CircleLabel level={level} />
               </ListItemIcon>
               <ListItemText inset>
-                <ReadingLevelTrans readingLevel level={level} />
+                <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
             </ListItem>
           </Link>
@@ -136,8 +136,11 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
           passHref
         >
           <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemIcon>
+              <CircleLabel level="new-arrivals" />
+            </ListItemIcon>
             <ListItemText inset>
-              <Trans>New arrivals</Trans>
+              <ReadingLevelTrans readingLevel="new-arrivals" />
             </ListItemText>
           </ListItem>
         </Link>
