@@ -26,6 +26,8 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
+  enableParentSwipe: () => void,
+  disableParentSwipe: () => void,
   onSelectCategory: () => void
 |};
 
@@ -66,9 +68,15 @@ export default class CategoriesMenu extends React.Component<
     });
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, onSelectCategory } = this.props;

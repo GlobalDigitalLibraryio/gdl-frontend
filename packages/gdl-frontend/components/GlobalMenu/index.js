@@ -40,11 +40,13 @@ type Props = {|
 |};
 
 type State = {
+  swipeDisabled: boolean,
   userHasAdminPrivileges: boolean
 };
 
 class GlobalMenu extends React.Component<Props, State> {
   state = {
+    swipeDisabled: false,
     userHasAdminPrivileges: false
   };
 
@@ -54,23 +56,36 @@ class GlobalMenu extends React.Component<Props, State> {
     this.setState({ userHasAdminPrivileges: hasClaim(claims.readAdmin) });
   }
 
+  disableSwipe = () => this.setState({ swipeDisabled: true });
+  enableSwipe = () => this.setState({ swipeDisabled: false });
+
   render() {
     const { onClose } = this.props;
     const online: boolean = this.context;
-
     return (
       <SwipeableDrawer
         disableDiscovery
         disableSwipeToOpen
         disableBackdropTransition
         onOpen={() => {}}
+        PaperProps={{
+          style: {
+            // By setting variant="temporary" a borde right is applied. Which is why it setting it to "inherit" removes it
+            borderRight: 'inherit'
+          }
+        }}
+        variant={this.state.swipeDisabled ? null : 'temporary'}
         open={this.props.isOpen}
         onClose={onClose}
       >
         <List>
           {online && (
             <>
-              <SelectBookLanguage onSelectLanguage={onClose}>
+              <SelectBookLanguage
+                onSelectLanguage={onClose}
+                disableParentSwipe={this.disableSwipe}
+                enableParentSwipe={this.enableSwipe}
+              >
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
@@ -84,7 +99,11 @@ class GlobalMenu extends React.Component<Props, State> {
                   </ListItem>
                 )}
               </SelectBookLanguage>
-              <CategoriesMenu onSelectCategory={onClose}>
+              <CategoriesMenu
+                onSelectCategory={onClose}
+                disableParentSwipe={this.disableSwipe}
+                enableParentSwipe={this.enableSwipe}
+              >
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>

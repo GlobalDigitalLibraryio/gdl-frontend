@@ -18,7 +18,9 @@ import { getBookLanguageCode } from '../../lib/storage';
 type Props = {
   anchor?: 'left' | 'right',
   children: (data: { onClick: () => void, loading: boolean }) => Node,
-  onSelectLanguage?: Language => void
+  onSelectLanguage?: Language => void,
+  enableParentSwipe?: () => void,
+  disableParentSwipe?: () => void
 };
 
 type State = {
@@ -83,9 +85,15 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe && this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe && this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, anchor } = this.props;
