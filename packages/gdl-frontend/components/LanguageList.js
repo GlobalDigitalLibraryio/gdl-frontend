@@ -19,7 +19,6 @@ import {
   RootRef
 } from '@material-ui/core';
 import { Check as CheckIcon } from '@material-ui/icons';
-import { css } from '@emotion/core';
 import { I18n } from '@lingui/react';
 
 import type { languages_languages as Language } from '../gqlTypes';

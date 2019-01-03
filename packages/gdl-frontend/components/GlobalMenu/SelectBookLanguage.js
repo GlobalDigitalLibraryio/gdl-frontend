@@ -5,7 +5,6 @@
  *
  * See LICENSE
  */
-
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
 import { SwipeableDrawer, Typography } from '@material-ui/core';

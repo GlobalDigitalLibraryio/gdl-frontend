@@ -7,6 +7,7 @@
  */
 
 import { css } from '@emotion/core';
+// $FlowFixMe getStyles does not exist, but since this test is skipped removes error for now
 import { getStyles } from 'jest-emotion';
 import media from '../media';
 

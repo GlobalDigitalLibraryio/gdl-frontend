@@ -9,11 +9,12 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { createSerializer } from 'jest-emotion';
-import * as emotion from 'emotion';
+import serializer from 'jest-emotion';
 import BookJsonLd from '../BookJsonLd';
 
-expect.addSnapshotSerializer(createSerializer(emotion));
+// $FlowFixMe flow type is not correct for serializer
+expect.addSnapshotSerializer(serializer);
+
 const bookBase = {
   id: 'abc123',
   title: 'A Life in the Fair Jungle',

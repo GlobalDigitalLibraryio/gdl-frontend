@@ -5,7 +5,6 @@
  *
  * See LICENSE
  */
-
 import React from 'react';
 import { Trans } from '@lingui/react';
 import Link from 'next/link';
