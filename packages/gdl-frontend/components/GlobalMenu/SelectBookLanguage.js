@@ -19,8 +19,8 @@ type Props = {
   anchor?: 'left' | 'right',
   children: (data: { onClick: () => void, loading: boolean }) => Node,
   onSelectLanguage?: Language => void,
-  enableParentSwipe: () => void,
-  disableParentSwipe: () => void
+  enableParentSwipe?: () => void,
+  disableParentSwipe?: () => void
 };
 
 type State = {
@@ -87,12 +87,12 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
 
   handleShowMenu = () => {
     this.setState({ showMenu: true });
-    this.props.disableParentSwipe();
+    this.props.disableParentSwipe && this.props.disableParentSwipe();
   };
 
   handleCloseMenu = () => {
     this.setState({ showMenu: false });
-    this.props.enableParentSwipe();
+    this.props.enableParentSwipe && this.props.enableParentSwipe();
   };
 
   render() {
