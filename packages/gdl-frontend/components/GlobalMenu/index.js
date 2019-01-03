@@ -70,6 +70,7 @@ class GlobalMenu extends React.Component<Props, State> {
         onOpen={() => {}}
         PaperProps={{
           style: {
+            // By setting variant="temporary" a borde right is applied. Which is why it setting it to "inherit" removes it
             borderRight: 'inherit'
           }
         }}
@@ -80,7 +81,11 @@ class GlobalMenu extends React.Component<Props, State> {
         <List>
           {online && (
             <>
-              <SelectBookLanguage onSelectLanguage={onClose}>
+              <SelectBookLanguage
+                onSelectLanguage={onClose}
+                disableParentSwipe={this.disableSwipe}
+                enableParentSwipe={this.enableSwipe}
+              >
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
