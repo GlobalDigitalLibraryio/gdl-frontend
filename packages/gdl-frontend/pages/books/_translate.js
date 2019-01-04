@@ -20,9 +20,16 @@ import {
   Typography,
   Hidden,
   Grid,
-  Button
+  Button,
+  ClickAwayListener,
+  Grow,
+  Popper,
+  MenuList,
+  MenuItem,
+  Tooltip
 } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
+import Router from 'next/router';
 
 import {
   fetchBook,
@@ -92,7 +99,8 @@ class PrepareTranslatePage extends React.Component<Props, State> {
   state = {
     selectedLanguage: null,
     translationState: translationStates.SELECT,
-    showLanguageMenu: false
+    showLanguageMenu: false,
+    translation: undefined
   };
 
   toggleLanguageMenu = () =>
@@ -136,7 +144,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
 
   render() {
     const { book, supportedLanguages } = this.props;
-    const { selectedLanguage, translationState } = this.state;
+    const { selectedLanguage, translationState, translation } = this.state;
     return (
       <Layout>
         <I18n>
@@ -262,23 +270,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
 
           <div css={{ textAlign: 'center' }}>
             {translationState === translationStates.SUCCESS ? (
-              <Link
-                passHref
-                route={`/en/books/translate/${this.props.book.id}/edit`}
-                params={{
-                  id: this.props.book.id,
-                  lang: this.props.book.language.code
-                }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  className={styles.buttonSucccess}
-                >
-                  <Trans>Start translation</Trans>
-                </Button>
-              </Link>
+              <StartTranslationButton book={book} translation={translation} />
             ) : (
               <>
                 <LoadingButton
@@ -316,12 +308,121 @@ class PrepareTranslatePage extends React.Component<Props, State> {
   }
 }
 
+class StartTranslationButton extends React.Component<
+  { book: BookDetails, translation: ?Translation },
+  { menuIsOpen: boolean }
+> {
+  anchorEl: ?HTMLAnchorElement = null;
+  state = { menuIsOpen: false };
+
+  handleToggle = () => {
+    this.setState(state => ({ menuIsOpen: !state.menuIsOpen }));
+  };
+
+  handleClose = event => {
+    if (this.anchorEl && this.anchorEl.contains(event.target)) {
+      return;
+    }
+
+    this.setState({ menuIsOpen: false });
+  };
+
+  // When Crowdin opens in a new tab, we want to redirect the user to "my translations"
+  toCrowdin = () => Router.pushRoute('translations');
+
+  toIncontext = () =>
+    Router.push({
+      pathname: `/en/books/translate/${this.props.book.id}/edit`,
+      query: {
+        id: this.props.book.id,
+        lang: this.props.book.language.code
+      }
+    });
+
+  render() {
+    const { translation } = this.props;
+    const { menuIsOpen } = this.state;
+
+    return (
+      <>
+        <Button
+          aria-owns={menuIsOpen ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+          onClick={this.handleToggle}
+          variant="contained"
+          color="primary"
+          size="large"
+          className={styles.buttonSucccess}
+        >
+          <Trans>Start translation</Trans>
+        </Button>
+        <I18n>
+          {({ i18n }) => (
+            <Popper
+              open={menuIsOpen}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal
+              css={styles.translationMenu}
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === 'bottom' ? 'center top' : 'center bottom'
+                  }}
+                >
+                  <Card>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList>
+                        <MenuItem onClick={this.toIncontext}>
+                          <Trans>Use in-context</Trans>
+                        </MenuItem>
+                        <Tooltip
+                          title={i18n.t`Opens 3rd party site in a new window`}
+                          placement="bottom"
+                        >
+                          <MenuItem
+                            button
+                            component="button"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={this.toCrowdin}
+                            href={translation && translation.crowdinUrl}
+                          >
+                            <Trans>To Crowdin</Trans>
+                          </MenuItem>
+                        </Tooltip>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Card>
+                </Grow>
+              )}
+            </Popper>
+          )}
+        </I18n>
+      </>
+    );
+  }
+}
+
 const styles = {
   buttonSucccess: css`
     background-color: ${green[800]};
     &:hover {
       background-color: ${green[900]};
     }
+  `,
+  translationMenu: css`
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-right: auto;
+    margin-left: auto;
+    z-index: 1000;
+    width: fit-content;
   `
 };
 
