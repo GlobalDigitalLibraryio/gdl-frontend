@@ -54,7 +54,7 @@ type State = {
   current: ChapterSummary
 };
 
-class TranslatePage extends React.Component<Props, State> {
+class TranslateEditPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {
@@ -327,4 +327,4 @@ function preloadImages(urls) {
   });
 }
 
-export default withRouter(TranslatePage);
+export default withRouter(TranslateEditPage);
