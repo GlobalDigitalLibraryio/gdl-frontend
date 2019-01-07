@@ -108,9 +108,22 @@ class TranslationCard extends React.Component<
             <Trans>Sync</Trans>
           </LoadingButton>
           <TranslateButton
-            id={translation.id}
-            lang={translation.translatedFrom.code}
-          />
+            route={`/en/books/translate/${translation.id}/edit`}
+            params={{
+              id: translation.id,
+              lang: translation.translatedFrom.code
+            }}
+          >
+            <Trans>Translate - use in-context</Trans>
+          </TranslateButton>
+          <Button
+            color="primary"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={translation && translation.crowdinUrl}
+          >
+            <Trans>Translate - to Crowdin</Trans>
+          </Button>
         </CardActions>
       </Card>
     );
@@ -121,16 +134,9 @@ class TranslationCard extends React.Component<
  * <CardActions /> passes className to its children and by wrapping <Button/>
  * with <Link/>, we pass the className to <Button/>. Hence this wrapped component.
  */
-const TranslateButton = ({ id, lang, ...rest }) => (
-  <Link
-    passHref
-    prefetch
-    route={`/en/books/translate/${id}/edit`}
-    params={{ id, lang }}
-  >
-    <Button {...rest} color="primary">
-      <Trans>Translate</Trans>
-    </Button>
+const TranslateButton = ({ route, params, ...rest }) => (
+  <Link passHref prefetch route={route} params={params}>
+    <Button {...rest} color="primary" />
   </Link>
 );
 
