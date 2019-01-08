@@ -155,12 +155,7 @@ class BrowsePage extends React.Component<Props, State> {
             component="h1"
             align="left"
             css={{
-              margin: [
-                spacing.large,
-                spacing.medium,
-                spacing.medium,
-                spacing.medium
-              ]
+              margin: `${spacing.large} ${spacing.medium}`
             }}
           >
             {books.results.length > 0 ? (
@@ -171,8 +166,7 @@ class BrowsePage extends React.Component<Props, State> {
                   <LevelHR
                     level={readingLevel}
                     css={{
-                      marginTop: spacing.xsmall,
-                      marginBottom: spacing.xsmall
+                      margin: `${spacing.xsmall} 0`
                     }}
                   />
                 </>

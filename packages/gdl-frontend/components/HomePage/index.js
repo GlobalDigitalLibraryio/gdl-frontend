@@ -180,6 +180,21 @@ export default class HomePage extends React.Component<
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
+          <View {...bookListViewStyle}>
+            <Container width="100%">
+              <BookList
+                heading={<ReadingLevelTrans readingLevel={'new-arrivals'} />}
+                browseLinkProps={{
+                  lang: languageCode,
+                  sort: '-arrivalDate',
+                  category: category
+                }}
+                books={newArrivals.results}
+                level="new-arrivals"
+              />
+            </Container>
+          </View>
+
           {levels.map((level, index) => (
             <View {...bookListViewStyle} key={level}>
               <Container width="100%">
@@ -196,21 +211,6 @@ export default class HomePage extends React.Component<
               </Container>
             </View>
           ))}
-
-          <View {...bookListViewStyle}>
-            <Container width="100%">
-              <BookList
-                heading={<ReadingLevelTrans readingLevel={'new-arrivals'} />}
-                browseLinkProps={{
-                  lang: languageCode,
-                  sort: '-arrivalDate',
-                  category: category
-                }}
-                books={newArrivals.results}
-                level="new-arrivals"
-              />
-            </Container>
-          </View>
         </Main>
       </Layout>
     );

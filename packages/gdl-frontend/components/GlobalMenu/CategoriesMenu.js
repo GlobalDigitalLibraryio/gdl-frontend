@@ -9,7 +9,7 @@
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
 import {
-  Drawer,
+  SwipeableDrawer,
   Divider,
   List,
   ListSubheader,
@@ -28,6 +28,8 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
+  enableParentSwipe: () => void,
+  disableParentSwipe: () => void,
   onSelectCategory: () => void
 |};
 
@@ -68,9 +70,15 @@ export default class CategoriesMenu extends React.Component<
     });
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, onSelectCategory } = this.props;
@@ -81,8 +89,12 @@ export default class CategoriesMenu extends React.Component<
           onClick: this.handleShowMenu,
           loading: categories === 'LOADING'
         })}
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
           open={showMenu && categories !== 'LOADING'}
+          onOpen={() => {}}
           onClose={this.handleCloseMenu}
         >
           {categories === 'ERROR' && (
@@ -98,7 +110,7 @@ export default class CategoriesMenu extends React.Component<
               languageCode={languageCode}
             />
           )}
-        </Drawer>
+        </SwipeableDrawer>
       </>
     );
   }
@@ -111,6 +123,21 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         <ListSubheader component="div">
           <Trans>Classroom books</Trans>
         </ListSubheader>
+        <Link
+          category="classroom_books"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemIcon>
+              <CircleLabel level="new-arrivals" />
+            </ListItemIcon>
+            <ListItemText inset>
+              <ReadingLevelTrans readingLevel="new-arrivals" />
+            </ListItemText>
+          </ListItem>
+        </Link>
         {categories.classroom_books.map(level => (
           <Link
             key={level}
@@ -129,21 +156,6 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             </ListItem>
           </Link>
         ))}
-        <Link
-          category="classroom_books"
-          lang={languageCode}
-          sort="-arrivalDate"
-          passHref
-        >
-          <ListItem onClick={onSelectCategory} button component="a">
-            <ListItemIcon>
-              <CircleLabel level="new-arrivals" />
-            </ListItemIcon>
-            <ListItemText inset>
-              <ReadingLevelTrans readingLevel="new-arrivals" />
-            </ListItemText>
-          </ListItem>
-        </Link>
       </>
     )}
 
@@ -155,12 +167,28 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         <ListSubheader component="div">
           <Trans>Library books</Trans>
         </ListSubheader>
+        <Link
+          category="library_books"
+          lang={languageCode}
+          sort="-arrivalDate"
+          passHref
+        >
+          <ListItem button onClick={onSelectCategory} component="a">
+            <ListItemIcon>
+              <CircleLabel level="new-arrivals" />
+            </ListItemIcon>
+            <ListItemText>
+              <ReadingLevelTrans readingLevel="new-arrivals" />
+            </ListItemText>
+          </ListItem>
+        </Link>
         {categories.library_books.map(level => (
           <Link
             key={level}
             lang={languageCode}
             readingLevel={level}
             category="library_books"
+            passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
               <ListItemIcon>
@@ -172,16 +200,6 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             </ListItem>
           </Link>
         ))}
-        <Link category="library_books" lang={languageCode} sort="-arrivalDate">
-          <ListItem button onClick={onSelectCategory}>
-            <ListItemIcon>
-              <CircleLabel level="new-arrivals" />
-            </ListItemIcon>
-            <ListItemText>
-              <ReadingLevelTrans readingLevel="new-arrivals" />
-            </ListItemText>
-          </ListItem>
-        </Link>
       </>
     )}
   </List>

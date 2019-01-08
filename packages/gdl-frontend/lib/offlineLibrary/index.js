@@ -1,11 +1,6 @@
 // @flow
-import getConfig from 'next/config';
-import type { BookDetails, ConfigShape } from '../../types';
+import type { BookDetails } from '../../types';
 import OfflineLibrary from './OfflineLibrary';
-
-const {
-  publicRuntimeConfig: { ENABLE_OFFLINE }
-}: ConfigShape = getConfig();
 
 export const CACHE_NAME = 'gdl-offline';
 
@@ -33,6 +28,5 @@ const online =
  * Singleton that is null unless the client has offline support
  */
 
-const offlineLibrary =
-  ENABLE_OFFLINE && serviceworker && online ? new OfflineLibrary() : null;
+const offlineLibrary = serviceworker && online ? new OfflineLibrary() : null;
 export default offlineLibrary;

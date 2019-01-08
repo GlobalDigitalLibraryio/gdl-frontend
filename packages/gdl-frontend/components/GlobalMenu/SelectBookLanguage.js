@@ -8,7 +8,7 @@
 
 import React, { type Node } from 'react';
 import { Trans } from '@lingui/react';
-import { Drawer, Typography } from '@material-ui/core';
+import { SwipeableDrawer, Typography } from '@material-ui/core';
 
 import type { Language } from '../../types';
 import { fetchLanguages } from '../../fetch';
@@ -18,7 +18,9 @@ import { getBookLanguageCode } from '../../lib/storage';
 type Props = {
   anchor?: 'left' | 'right',
   children: (data: { onClick: () => void, loading: boolean }) => Node,
-  onSelectLanguage?: Language => void
+  onSelectLanguage?: Language => void,
+  enableParentSwipe?: () => void,
+  disableParentSwipe?: () => void
 };
 
 type State = {
@@ -83,9 +85,15 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe && this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe && this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, anchor } = this.props;
@@ -96,8 +104,12 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
           onClick: this.handleShowMenu,
           loading: languages === 'LOADING'
         })}
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
           onClose={this.handleCloseMenu}
+          onOpen={() => {}}
           open={showMenu && !!languages && languages !== 'LOADING'}
           anchor={anchor}
         >
@@ -114,7 +126,7 @@ export default class SelectBookLanguage extends React.Component<Props, State> {
               languages={languages}
             />
           )}
-        </Drawer>
+        </SwipeableDrawer>
       </>
     );
   }
