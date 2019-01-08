@@ -19,6 +19,7 @@ import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
+import GridContainer from '../../components/BookGrid/styledGridContainer';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import LevelHR from '../../components/Level/LevelHR';
 import { spacing } from '../../style/theme';
@@ -150,31 +151,44 @@ class BrowsePage extends React.Component<Props, State> {
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`Browse books`} />}</I18n>
         <Container>
-          <Typography
-            variant="h4"
-            component="h1"
-            align="left"
-            css={{
-              margin: `${spacing.large} ${spacing.medium}`
-            }}
-          >
-            {books.results.length > 0 ? (
-              readingLevel && (
-                <>
-                  {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
-                  <ReadingLevelTrans readingLevel={readingLevel} />
-                  <LevelHR
-                    level={readingLevel}
-                    css={{
-                      margin: `${spacing.xsmall} 0`
-                    }}
-                  />
-                </>
-              )
-            ) : (
-              <Trans>No books found</Trans>
-            )}
-          </Typography>
+          <GridContainer>
+            <Typography
+              variant="h4"
+              component="h1"
+              align="left"
+              css={{
+                margin: `${spacing.large} 0`,
+                width: 'auto',
+                gridColumn: '1/-1'
+              }}
+            >
+              {books.results.length > 0 ? (
+                readingLevel ? (
+                  <>
+                    {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                    <ReadingLevelTrans readingLevel={readingLevel} />
+                    <LevelHR
+                      level={readingLevel}
+                      css={{
+                        margin: `${spacing.xsmall} 0`
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Trans>New arrivals</Trans>
+                    <LevelHR
+                      css={{
+                        margin: `${spacing.xsmall} 0`
+                      }}
+                    />
+                  </>
+                )
+              ) : (
+                <Trans>No books found</Trans>
+              )}
+            </Typography>
+          </GridContainer>
           <BookGrid books={books.results} />
 
           <div css={{ alignSelf: 'center' }}>

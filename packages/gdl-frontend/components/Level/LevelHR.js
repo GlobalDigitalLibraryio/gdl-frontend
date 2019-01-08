@@ -17,17 +17,16 @@ const colorMap = {
   '3': '#F1C528',
   '4': '#FA9F28',
   'read-aloud': '#F56324',
-  'new-arrivals': '#D2D2D2',
   decodable: '#AB86CD'
 };
 
 const Hr = styled('hr')`
-  border: 2px solid ${p => colorMap[p.level]};
+  border: 2px solid ${p => (p.level ? colorMap[p.level] : '#D2D2D2')};
   width: 100%;
 `;
 
 type Props = {
-  level: ReadingLevel
+  level?: ReadingLevel
 };
 
 export default ({ level, ...props }: Props) => <Hr level={level} {...props} />;

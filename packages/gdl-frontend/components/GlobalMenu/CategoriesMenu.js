@@ -131,10 +131,10 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         >
           <ListItem onClick={onSelectCategory} button component="a">
             <ListItemIcon>
-              <CircleLabel level="new-arrivals" />
+              <CircleLabel />
             </ListItemIcon>
             <ListItemText inset>
-              <ReadingLevelTrans readingLevel="new-arrivals" />
+              <Trans>New arrivals</Trans>
             </ListItemText>
           </ListItem>
         </Link>
@@ -175,10 +175,10 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
         >
           <ListItem button onClick={onSelectCategory} component="a">
             <ListItemIcon>
-              <CircleLabel level="new-arrivals" />
+              <CircleLabel />
             </ListItemIcon>
             <ListItemText>
-              <ReadingLevelTrans readingLevel="new-arrivals" />
+              <Trans>New arrivals</Trans>
             </ListItemText>
           </ListItem>
         </Link>
