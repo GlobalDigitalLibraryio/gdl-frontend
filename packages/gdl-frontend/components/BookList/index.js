@@ -14,7 +14,7 @@ import { Typography, Button } from '@material-ui/core';
 import View from '../../elements/View';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import type { Book } from '../../types';
+import type { Book, ReadingLevel } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
@@ -25,7 +25,7 @@ type Props = {
   heading: Element<typeof Trans>,
   browseLinkProps?: BrowseLinkProps,
   loading?: boolean,
-  level: ReadingLevel,
+  level?: ReadingLevel,
   shouldBeColorized?: boolean
 };
 
@@ -57,7 +57,7 @@ const BookList = ({
       )}
     </View>
     {/* Adjust the space between books and the hr */}
-    {(shouldBeColorized || level) && (
+    {shouldBeColorized && (
       <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
     )}
     <Scroller>

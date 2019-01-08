@@ -13,7 +13,13 @@ import { Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
 import { fetchBooks } from '../../fetch';
-import type { Book, Language, Category, Context } from '../../types';
+import type {
+  Book,
+  Language,
+  Category,
+  Context,
+  ReadingLevel
+} from '../../types';
 import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
@@ -36,7 +42,7 @@ type Props = {
   router: {
     query: {
       lang: string,
-      readingLevel?: string,
+      readingLevel?: ReadingLevel,
       category?: string,
       sort?: string
     }

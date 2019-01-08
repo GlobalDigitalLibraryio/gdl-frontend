@@ -207,6 +207,7 @@ export default class HomePage extends React.Component<
                   }}
                   books={booksByLevel[index].results}
                   level={level}
+                  shouldBeColorized
                 />
               </Container>
             </View>
