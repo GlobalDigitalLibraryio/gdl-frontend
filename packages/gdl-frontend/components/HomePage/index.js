@@ -183,14 +183,14 @@ export default class HomePage extends React.Component<
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
-                heading={<ReadingLevelTrans readingLevel={'new-arrivals'} />}
+                heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
                   sort: '-arrivalDate',
                   category: category
                 }}
                 books={newArrivals.results}
-                level="new-arrivals"
+                shouldBeColorized
               />
             </Container>
           </View>

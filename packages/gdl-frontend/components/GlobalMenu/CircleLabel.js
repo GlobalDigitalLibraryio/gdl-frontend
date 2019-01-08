@@ -15,7 +15,6 @@ const colorMap = {
   '3': '#F1C528',
   '4': '#FA9F28',
   'read-aloud': '#F56324',
-  'new-arrivals': '#D2D2D2',
   decodable: '#AB86CD'
 };
 

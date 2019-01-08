@@ -7,7 +7,7 @@
  */
 
 import React, { type Element } from 'react';
-import styled from 'react-emotion';
+import styled, { css, cx } from 'react-emotion';
 import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
@@ -18,16 +18,26 @@ import type { Book } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
+import Shimmer from './Shimmer';
 
 type Props = {
   books: Array<Book>,
   heading: Element<typeof Trans>,
   browseLinkProps?: BrowseLinkProps,
-  level: ReadingLevel
+  loading?: boolean,
+  level: ReadingLevel,
+  shouldBeColorized?: boolean
 };
 
 // Add a wrapper around each book list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
-const BookList = ({ books, heading, browseLinkProps, level }: Props) => (
+const BookList = ({
+  books,
+  heading,
+  browseLinkProps,
+  loading,
+  level,
+  shouldBeColorized
+}: Props) => (
   <>
     <View
       flexDirection="row"
@@ -47,24 +57,43 @@ const BookList = ({ books, heading, browseLinkProps, level }: Props) => (
       )}
     </View>
     {/* Adjust the space between books and the hr */}
-    <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
+    {(shouldBeColorized || level) && (
+      <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
+    )}
     <Scroller>
-      {books.map(book => (
-        <CoverItem key={book.id}>
-          <BookLink book={book} />
-        </CoverItem>
-      ))}
+      {loading
+        ? [...Array(5).keys()].map(index => (
+            <div className={cx(itemStyle, shimmerStyle)} key={index}>
+              <Shimmer className={shimmerStyle} />
+            </div>
+          ))
+        : books.map(book => (
+            <div className={itemStyle} key={book.id}>
+              <BookLink book={book} />
+            </div>
+          ))}
     </Scroller>
   </>
 );
 
+const shimmerStyle = css`
+  &:last-child {
+    margin-right: ${coverWidths.large - coverWidths.small}px;
+  }
+  width: ${coverWidths.small}px;
+  ${media.tablet`
+  width: ${coverWidths.large}px;
+`};
+`;
+
+const COLUMN_GAP = 15;
 /**
  * For browsers that doesn't support grid we add some spacing around the book covers
  */
-const CoverItem = styled('div')`
+const itemStyle = css`
   display: inline-block;
   &:not(:last-child) {
-    margin-right: 15px;
+    margin-right: ${COLUMN_GAP}px;
   }
   @supports (display: grid) {
     margin-right: 0 !important;
@@ -78,7 +107,6 @@ const CoverItem = styled('div')`
  * Currently this is coded to show at the most 5 book covers (so the spacing is the same between the items even if there are fewer than 5 books)
  */
 
-const COLUMN_GAP = 15;
 const Scroller = styled('div')`
   overflow-x: auto;
   /* Fixes problem with scrolling in Safari all over the place */
