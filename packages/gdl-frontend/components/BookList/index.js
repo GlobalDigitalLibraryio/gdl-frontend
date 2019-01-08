@@ -12,7 +12,7 @@ import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
-import { misc } from '../../style/theme/';
+import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
 import type { Book } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
@@ -47,7 +47,7 @@ const BookList = ({ books, heading, browseLinkProps, level }: Props) => (
       )}
     </View>
     {/* Adjust the space between books and the hr */}
-    <LevelHR level={level} />
+    <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
     <Scroller>
       {books.map(book => (
         <CoverItem key={book.id}>
