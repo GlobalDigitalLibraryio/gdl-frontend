@@ -6,6 +6,7 @@
  * See LICENSE
  */
 const TABLET_BREAKPOINT = 768;
+const LARGER_TABLET_BREAKPOINT = 1024;
 
 const misc = {
   containers: {
@@ -15,4 +16,4 @@ const misc = {
   gutter: 28
 };
 
-export { misc as default, TABLET_BREAKPOINT };
+export { misc as default, TABLET_BREAKPOINT, LARGER_TABLET_BREAKPOINT };

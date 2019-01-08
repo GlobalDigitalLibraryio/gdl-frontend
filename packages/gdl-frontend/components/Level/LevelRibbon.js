@@ -22,7 +22,7 @@ const colorMap = {
   '3': '#F1C528',
   '4': '#FA9F28',
   'read-aloud': '#F56324',
-  'new-arrivals':'#D3D3D3',
+  'new-arrivals': '#D2D2D2',
   decodable: '#AB86CD'
 };
 
@@ -38,14 +38,15 @@ const Ribbon = styled('div')`
   text-transform: uppercase;
   background-color: ${p => colorMap[p.readingLevel]};
   color: black;
-  ${p => mq({
-    paddingLeft: [misc.gutter, 40],
-    paddingRight: [20, p.homePage ? 100 : 40],
-    marginLeft: [-misc.gutter, p.homePage ? -125 : -40],
-    marginRight: [0, 20],
-    height: [30, 40],
-    fontSize: [14, 20]
-  })}
+  ${p =>
+    mq({
+      paddingLeft: [misc.gutter, 40, 40],
+      paddingRight: [20, 40, 40],
+      marginLeft: [-misc.gutter, -40, -40],
+      marginRight: [20, 40, 40],
+      height: [30, 40, 40],
+      fontSize: [14, 20, 20]
+    })}
   font-weight: ${fonts.weight.medium};
   position: relative;
   &:after {
@@ -70,18 +71,11 @@ const Ribbon = styled('div')`
 `;
 
 type Props = {
-  level: ReadingLevel,
-  homePage: ?boolean
+  level: ReadingLevel
 };
 
-export default ({ level, homePage }: Props) => {
-  return homePage ? (
-    <Ribbon readingLevel={level} homePage>
-      <ReadingLevelTrans readingLevel={level} />
-    </Ribbon>
-  ) : (
-    <Ribbon readingLevel={level}>
-      <ReadingLevelTrans readingLevel={level} />
-    </Ribbon>
-  );
-}
+export default ({ level }: Props) => (
+  <Ribbon readingLevel={level}>
+    <ReadingLevelTrans readingLevel={level} />
+  </Ribbon>
+);

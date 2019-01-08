@@ -127,8 +127,8 @@ class BookPage extends React.Component<Props> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
-          <Main background="white" css={mq({ marginTop: [200, 100] })}>
-            <Container css={mq({ marginTop: [-160, -54] })}>
+          <Main background="white" css={mq({ marginTop: [200, 100, 100] })}>
+            <Container css={mq({ marginTop: [-160, -54, -54] })}>
               <div>
                 <Grid>
                   <GridItem css={media.tablet`flex: 0 0 310px;`}>

@@ -15,8 +15,8 @@ type Props = {
   only: 'mobile' | 'tablet'
 };
 
-const mobile = css(mq({ display: [null, 'none'] }));
-const tablet = css(mq({ display: ['none', 'inherit'] }));
+const mobile = css(mq({ display: [null, 'none', 'none'] }));
+const tablet = css(mq({ display: ['none', 'inherit', 'inherit'] }));
 
 /**
  * Only render on the given type

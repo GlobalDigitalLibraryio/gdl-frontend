@@ -28,7 +28,7 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
-import LevelRibbon from '../Level/LevelRibbon';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -184,13 +184,14 @@ export default class HomePage extends React.Component<
             <View {...bookListViewStyle} key={level}>
               <Container width="100%">
                 <BookList
-                  heading={<LevelRibbon level={level} homePage/>}
+                  heading={<ReadingLevelTrans readingLevel={level} />}
                   browseLinkProps={{
                     lang: languageCode,
                     readingLevel: level,
                     category: category
                   }}
                   books={booksByLevel[index].results}
+                  level={level}
                 />
               </Container>
             </View>
@@ -199,13 +200,14 @@ export default class HomePage extends React.Component<
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
-                heading={<LevelRibbon level={'new-arrivals'} homePage/>}
+                heading={<ReadingLevelTrans readingLevel={'new-arrivals'} />}
                 browseLinkProps={{
                   lang: languageCode,
                   sort: '-arrivalDate',
                   category: category
                 }}
                 books={newArrivals.results}
+                level="new-arrivals"
               />
             </Container>
           </View>

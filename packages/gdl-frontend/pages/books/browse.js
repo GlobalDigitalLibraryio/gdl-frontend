@@ -20,6 +20,7 @@ import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import LevelHR from '../../components/Level/LevelHR';
 import { spacing } from '../../style/theme';
 
 const PAGE_SIZE = 30;
@@ -152,13 +153,29 @@ class BrowsePage extends React.Component<Props, State> {
           <Typography
             variant="h4"
             component="h1"
-            align="center"
-            css={{ marginBottom: spacing.large, marginTop: spacing.large }}
+            align="left"
+            css={{
+              margin: [
+                spacing.large,
+                spacing.medium,
+                spacing.medium,
+                spacing.medium
+              ]
+            }}
           >
             {books.results.length > 0 ? (
               readingLevel && (
-                // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-                <ReadingLevelTrans readingLevel={readingLevel} />
+                <>
+                  {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                  <ReadingLevelTrans readingLevel={readingLevel} />
+                  <LevelHR
+                    level={readingLevel}
+                    css={{
+                      marginTop: spacing.xsmall,
+                      marginBottom: spacing.xsmall
+                    }}
+                  />
+                </>
               )
             ) : (
               <Trans>No books found</Trans>

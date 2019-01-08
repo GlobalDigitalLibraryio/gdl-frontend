@@ -12,28 +12,29 @@ import { Trans } from '@lingui/react';
 import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
-import { spacing, misc } from '../../style/theme/';
+import { misc } from '../../style/theme/';
 import media from '../../style/media';
 import type { Book } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
+import LevelHR from '../Level/LevelHR';
 
 type Props = {
   books: Array<Book>,
   heading: Element<typeof Trans>,
-  browseLinkProps?: BrowseLinkProps
+  browseLinkProps?: BrowseLinkProps,
+  level: ReadingLevel
 };
 
 // Add a wrapper around each book list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
-const BookList = ({ books, heading, browseLinkProps }: Props) => (
+const BookList = ({ books, heading, browseLinkProps, level }: Props) => (
   <>
     <View
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      mb={spacing.small}
     >
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h5" style={{ textAlign: 'left' }}>
         {heading}
       </Typography>
       {browseLinkProps && (
@@ -45,6 +46,8 @@ const BookList = ({ books, heading, browseLinkProps }: Props) => (
         </BrowseLink>
       )}
     </View>
+    {/* Adjust the space between books and the hr */}
+    <LevelHR level={level} />
     <Scroller>
       {books.map(book => (
         <CoverItem key={book.id}>
