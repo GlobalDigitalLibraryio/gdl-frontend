@@ -11,15 +11,17 @@ import type { ReadingLevel } from '../../types';
 import colorMap from '../../style/colorMapping';
 
 type Props = {
-  level?: ReadingLevel
+  level?: ReadingLevel,
+  style?: Object
 };
 
-export default ({ level, ...props }: Props) => {
+export default ({ level, style, ...props }: Props) => {
   return (
     <CircleLabel
       style={{
         color: level ? colorMap[level] : '#D2D2D2',
-        marginBottom: '2px'
+        marginBottom: '2px',
+        ...style
       }}
       {...props}
     />
