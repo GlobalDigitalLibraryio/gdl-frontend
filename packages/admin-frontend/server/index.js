@@ -44,6 +44,7 @@ app.prepare().then(() => {
 
   server.listen(port, err => {
     if (err) throw err;
+    console.log('> Admin Service on ', process.env.ADMIN_SERVICE);
     console.log(`> Ready on http://localhost:${port}`);
   });
 });

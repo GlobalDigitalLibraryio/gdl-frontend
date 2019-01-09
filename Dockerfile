@@ -11,6 +11,10 @@ RUN yarn global add bolt
 # Copy necessary files for installing dependencies
 COPY yarn.lock package.json $APP_PATH/
 
+# Copy run-script to
+RUN apk add py2-pip jq && pip install awscli
+COPY run_component.sh $HOME/
+
 # Since we use a monorepo, copy every package over, so Bolt can symlink them for us
 COPY packages $APP_PATH/packages
 
@@ -22,4 +26,4 @@ RUN bolt
 WORKDIR $APP_PATH/packages/$MODULE
 RUN yarn build
 
-CMD ["yarn", "run", "start"]
+CMD ["/home/app/run_component.sh", "yarn", "run", "start"]
