@@ -13,13 +13,21 @@ import { Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
 import { fetchBooks } from '../../fetch';
-import type { Book, Language, Category, Context } from '../../types';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import type {
+  Book,
+  Language,
+  Category,
+  Context,
+  ReadingLevel
+} from '../../types';
 import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import { Container, LoadingButton } from '../../elements/';
 import Head from '../../components/Head';
 import BookGrid from '../../components/BookGrid';
+import GridContainer from '../../components/BookGrid/styledGridContainer';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import LevelHR from '../../components/Level/LevelHR';
 import { spacing } from '../../style/theme';
 
 const PAGE_SIZE = 30;
@@ -34,7 +42,7 @@ type Props = {
   router: {
     query: {
       lang: string,
-      readingLevel?: string,
+      readingLevel?: ReadingLevel,
       category?: string,
       sort?: string
     }
@@ -149,23 +157,44 @@ class BrowsePage extends React.Component<Props, State> {
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`Browse books`} />}</I18n>
         <Container>
-          <Typography
-            variant="h4"
-            component="h1"
-            align="center"
-            css={{ marginBottom: spacing.large, marginTop: spacing.large }}
-          >
-            {books.results.length > 0 ? (
-              readingLevel ? (
-                // $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck
-                <ReadingLevelTrans readingLevel={readingLevel} />
+          <GridContainer>
+            <Typography
+              variant="h4"
+              component="h1"
+              align="left"
+              css={{
+                margin: `${spacing.large} 0`,
+                width: 'auto',
+                gridColumn: '1/-1'
+              }}
+            >
+              {books.results.length > 0 ? (
+                readingLevel ? (
+                  <>
+                    {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                    <ReadingLevelTrans readingLevel={readingLevel} />
+                    <LevelHR
+                      level={readingLevel}
+                      css={{
+                        margin: `${spacing.xsmall} 0`
+                      }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Trans>New arrivals</Trans>
+                    <LevelHR
+                      css={{
+                        margin: `${spacing.xsmall} 0`
+                      }}
+                    />
+                  </>
+                )
               ) : (
-                <Trans>New arrivals</Trans>
-              )
-            ) : (
-              <Trans>No books found</Trans>
-            )}
-          </Typography>
+                <Trans>No books found</Trans>
+              )}
+            </Typography>
+          </GridContainer>
           <BookGrid books={books.results} />
 
           <div css={{ alignSelf: 'center' }}>

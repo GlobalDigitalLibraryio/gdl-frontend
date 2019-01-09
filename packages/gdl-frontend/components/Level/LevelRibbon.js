@@ -1,7 +1,7 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2018 GDL
  *
  * See LICENSE
  */
@@ -15,15 +15,7 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts, misc } from '../../style/theme';
 import media from '../../style/media';
 import mq from '../../style/mq';
-
-const colorMap = {
-  '1': '#5DD0C1',
-  '2': '#84CB65',
-  '3': '#F1C528',
-  '4': '#FA9F28',
-  'read-aloud': '#F56324',
-  decodable: '#AB86CD'
-};
+import colorMap from '../../style/colorMapping';
 
 /**
  * This component is specially tailored to align perfectly on the book details page.
@@ -37,15 +29,16 @@ const Ribbon = styled('div')`
   text-transform: uppercase;
   background-color: ${p => colorMap[p.readingLevel]};
   color: black;
-  ${mq({
-    paddingLeft: [misc.gutter, 40],
-    paddingRight: [20, 25],
-    marginLeft: [-misc.gutter, -40],
-    marginRight: [0, 20],
-    height: [30, 40],
-    fontSize: [14, 20]
-  })}
-  font-weight: ${fonts.weight.bold};
+  ${p =>
+    mq({
+      paddingLeft: [misc.gutter, 40, 40],
+      paddingRight: [20, 40, 40],
+      marginLeft: [-misc.gutter, -40, -40],
+      marginRight: [20, 40, 40],
+      height: [30, 40, 40],
+      fontSize: [14, 20, 20]
+    })}
+  font-weight: ${fonts.weight.medium};
   position: relative;
   &:after {
     content: '';

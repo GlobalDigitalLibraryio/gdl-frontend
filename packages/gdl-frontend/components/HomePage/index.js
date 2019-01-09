@@ -12,7 +12,6 @@ import styled from 'react-emotion';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import { logEvent } from '../../lib/analytics';
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import type {
   Book,
   Language,
@@ -29,6 +28,7 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
+import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -190,6 +190,7 @@ export default class HomePage extends React.Component<
                   category: category
                 }}
                 books={newArrivals.results}
+                shouldBeColorized
               />
             </Container>
           </View>
@@ -205,6 +206,8 @@ export default class HomePage extends React.Component<
                     category: category
                   }}
                   books={booksByLevel[index].results}
+                  level={level}
+                  shouldBeColorized
                 />
               </Container>
             </View>

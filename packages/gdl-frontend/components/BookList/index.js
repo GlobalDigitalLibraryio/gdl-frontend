@@ -14,28 +14,37 @@ import { Typography, Button } from '@material-ui/core';
 import View from '../../elements/View';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import type { Book } from '../../types';
+import type { Book, ReadingLevel } from '../../types';
 import BookLink, { coverWidths } from '../BookLink';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
+import LevelHR from '../Level/LevelHR';
 import Shimmer from './Shimmer';
 
 type Props = {
   books: Array<Book>,
   heading: Element<typeof Trans>,
   browseLinkProps?: BrowseLinkProps,
-  loading?: boolean
+  loading?: boolean,
+  level?: ReadingLevel,
+  shouldBeColorized?: boolean
 };
 
 // Add a wrapper around each book list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
-const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
+const BookList = ({
+  books,
+  heading,
+  browseLinkProps,
+  loading,
+  level,
+  shouldBeColorized
+}: Props) => (
   <>
     <View
       flexDirection="row"
       alignItems="center"
       justifyContent="space-between"
-      mb={spacing.small}
     >
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h5" style={{ textAlign: 'left' }}>
         {heading}
       </Typography>
       {browseLinkProps && (
@@ -47,6 +56,10 @@ const BookList = ({ books, heading, browseLinkProps, loading }: Props) => (
         </BrowseLink>
       )}
     </View>
+    {/* Adjust the space between books and the hr */}
+    {shouldBeColorized && (
+      <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
+    )}
     <Scroller>
       {loading
         ? [...Array(5).keys()].map(index => (

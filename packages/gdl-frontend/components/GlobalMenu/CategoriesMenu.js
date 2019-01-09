@@ -14,6 +14,7 @@ import {
   List,
   ListSubheader,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Typography
 } from '@material-ui/core';
@@ -22,6 +23,7 @@ import { getBookLanguageCode } from '../../lib/storage';
 import type { ReadingLevel } from '../../types';
 import { fetchCategories } from '../../fetch';
 import Link from '../BrowseLink';
+import CircleLabel from './CircleLabel';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 
 type Props = {|
@@ -128,6 +130,9 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
           passHref
         >
           <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemIcon>
+              <CircleLabel />
+            </ListItemIcon>
             <ListItemText inset>
               <Trans>New arrivals</Trans>
             </ListItemText>
@@ -142,6 +147,9 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
               <ListItemText inset>
                 <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
@@ -166,7 +174,10 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
           passHref
         >
           <ListItem button onClick={onSelectCategory} component="a">
-            <ListItemText inset>
+            <ListItemIcon>
+              <CircleLabel />
+            </ListItemIcon>
+            <ListItemText>
               <Trans>New arrivals</Trans>
             </ListItemText>
           </ListItem>
@@ -180,7 +191,10 @@ const Categories = ({ categories, onSelectCategory, languageCode }) => (
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
-              <ListItemText inset>
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
+              <ListItemText>
                 <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
             </ListItem>
