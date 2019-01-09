@@ -8,15 +8,7 @@
 import React from 'react';
 import { FiberManualRecord as CircleLabel } from '@material-ui/icons';
 import type { ReadingLevel } from '../../types';
-
-const colorMap = {
-  '1': '#5DD0C1',
-  '2': '#84CB65',
-  '3': '#F1C528',
-  '4': '#FA9F28',
-  'read-aloud': '#F56324',
-  decodable: '#AB86CD'
-};
+import colorMap from '../../style/colorMapping';
 
 type Props = {
   level?: ReadingLevel

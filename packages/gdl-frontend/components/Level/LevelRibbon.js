@@ -15,16 +15,7 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 import { fonts, misc } from '../../style/theme';
 import media from '../../style/media';
 import mq from '../../style/mq';
-
-const colorMap = {
-  '1': '#5DD0C1',
-  '2': '#84CB65',
-  '3': '#F1C528',
-  '4': '#FA9F28',
-  'read-aloud': '#F56324',
-  'new-arrivals': '#D2D2D2',
-  decodable: '#AB86CD'
-};
+import colorMap from '../../style/colorMapping';
 
 /**
  * This component is specially tailored to align perfectly on the book details page.
