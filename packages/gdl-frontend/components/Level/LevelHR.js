@@ -13,7 +13,7 @@ import type { ReadingLevel } from '../../types';
 import colorMap from '../../style/colorMapping';
 
 const Hr = styled('hr')`
-  border: 2px solid ${p => (p.level ? colorMap[p.level] : '#D2D2D2')};
+  border: 2px solid ${p => (p.level ? colorMap[p.level] : '#B4A4E5')};
   width: 100%;
 `;
 
