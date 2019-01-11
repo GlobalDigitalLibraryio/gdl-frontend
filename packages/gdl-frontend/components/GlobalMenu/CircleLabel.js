@@ -19,7 +19,7 @@ export default ({ level, style, ...props }: Props) => {
   return (
     <CircleLabel
       style={{
-        color: level ? colorMap[level] : '#D2D2D2',
+        color: level ? colorMap[level] : '#B4A4E5',
         marginBottom: '2px',
         ...style
       }}
