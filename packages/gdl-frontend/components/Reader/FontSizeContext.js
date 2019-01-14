@@ -8,20 +8,33 @@
 
 import * as React from 'react';
 
-const FontSizeContext = React.createContext();
+const INTERVAL = 2;
+
+type ContextState = {
+  fontSize: number,
+  increaseFontSize: () => void,
+  decreaseFontSize: () => void
+};
+
+const FontSizeContext = React.createContext<ContextState>({
+  fontSize: 14,
+  increaseFontSize: () => {},
+  decreaseFontSize: () => {}
+});
 
 // Extending PureComponent, otherwise we would trigger a render in every consumer every time the provider renders
 // (because we are creating objects as the context value)
 // See https://reactjs.org/docs/context.html#caveats
 class FontSizeProvider extends React.PureComponent<*, { fontSize: number }> {
-  changeFontSize = (newFontSize: number) => {
-    // We set a lower bound for font size
-    if (newFontSize >= 10) {
-      this.setState(prev => ({
-        fontSize: prev.fontSize >= 10 ? newFontSize : prev.fontSize
-      }));
-    }
-  };
+  increaseFontSize = () =>
+    this.setState(prev => ({
+      fontSize: prev.fontSize >= 10 ? prev.fontSize + INTERVAL : prev.fontSize
+    }));
+
+  decreaseFontSize = () =>
+    this.setState(prev => ({
+      fontSize: prev.fontSize >= 10 ? prev.fontSize - INTERVAL : prev.fontSize
+    }));
 
   state = {
     fontSize: 14
@@ -31,11 +44,11 @@ class FontSizeProvider extends React.PureComponent<*, { fontSize: number }> {
     return (
       <FontSizeContext.Provider
         value={{
-          state: this.state,
-          changeFontSize: this.changeFontSize
+          fontSize: this.state.fontSize,
+          increaseFontSize: this.increaseFontSize,
+          decreaseFontSize: this.decreaseFontSize
         }}
       >
-        {' '}
         {this.props.children}
       </FontSizeContext.Provider>
     );

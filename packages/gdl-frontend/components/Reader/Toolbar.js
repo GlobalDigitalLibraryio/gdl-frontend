@@ -30,7 +30,8 @@ type Props = {
   onRequestClose(): void,
   userHasEditAccess?: boolean,
   chapter: { id: number, seqNo: number },
-  changeFontSize: (newFontSize: number) => void,
+  increaseFontSize(): void,
+  decreaseFontSize(): void,
   fontSize: number
 };
 
@@ -39,12 +40,17 @@ const Toolbar = ({
   chapter,
   userHasEditAccess,
   onRequestClose,
-  changeFontSize,
+  increaseFontSize,
+  decreaseFontSize,
   fontSize
 }: Props) => (
   <Grid container className={styledGrid}>
-    <Grid item>
-      <FontSizeComponent fontSize={fontSize} changeFontSize={changeFontSize} />
+    <Grid item style={{ alignSelf: 'flex-end' }}>
+      <FontSizeComponent
+        fontSize={fontSize}
+        increaseFontSize={increaseFontSize}
+        decreaseFontSize={decreaseFontSize}
+      />
     </Grid>
     <Grid item>
       {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
@@ -127,19 +133,21 @@ class FavButton extends React.Component<{ book: BookDetails }> {
 
 const FontSizeComponent = ({
   fontSize,
-  changeFontSize
+  decreaseFontSize,
+  increaseFontSize
 }: {
   fontSize: number,
-  changeFontSize(fontSize: number): void
+  decreaseFontSize(): void,
+  increaseFontSize(): void
 }) => (
   <FontSizeButtons>
-    <IconButton onClick={() => changeFontSize(fontSize - 2)}>
+    <IconButton onClick={decreaseFontSize}>
       <RemoveIcon />
     </IconButton>
     <div css={{ marginTop: '15px' }}>
       <FormatSizeIcon />
     </div>
-    <IconButton onClick={() => changeFontSize(fontSize + 2)}>
+    <IconButton onClick={increaseFontSize}>
       <AddIcon />
     </IconButton>
   </FontSizeButtons>
