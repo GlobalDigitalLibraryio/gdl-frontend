@@ -39,8 +39,7 @@ const Reader = ({
   const isRtlLanguage = !!book.language.isRTL;
   return (
     <FontSizeContext.Consumer>
-      {/*$FlowFixMe: Ignore flow errors from Context */}
-      {({ fontSize, increaseFontSize, decreaseFontSize }) => (
+      {({ fontSize }) => (
         <Container size="large" gutter={false}>
           <Backdrop />
           <Card>
@@ -49,9 +48,6 @@ const Reader = ({
               chapter={chapterPointer}
               userHasEditAccess={userHasEditAccess}
               onRequestClose={onRequestClose}
-              fontSize={fontSize}
-              increaseFontSize={increaseFontSize}
-              decreaseFontSize={decreaseFontSize}
             />
             {/*
             We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.

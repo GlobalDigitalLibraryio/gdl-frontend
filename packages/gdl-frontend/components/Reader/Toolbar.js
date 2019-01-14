@@ -24,33 +24,24 @@ import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import Favorite, { FavoriteIcon } from '../Favorite';
+import { FontSizeContext } from './FontSizeContext';
 
 type Props = {
   book: BookDetails,
   onRequestClose(): void,
   userHasEditAccess?: boolean,
-  chapter: { id: number, seqNo: number },
-  increaseFontSize(): void,
-  decreaseFontSize(): void,
-  fontSize: number
+  chapter: { id: number, seqNo: number }
 };
 
 const Toolbar = ({
   book,
   chapter,
   userHasEditAccess,
-  onRequestClose,
-  increaseFontSize,
-  decreaseFontSize,
-  fontSize
+  onRequestClose
 }: Props) => (
   <Grid container className={styledGrid}>
     <Grid item style={{ alignSelf: 'flex-end' }}>
-      <FontSizeComponent
-        fontSize={fontSize}
-        increaseFontSize={increaseFontSize}
-        decreaseFontSize={decreaseFontSize}
-      />
+      <FontSizeComponent />
     </Grid>
     <Grid item>
       {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
@@ -131,26 +122,22 @@ class FavButton extends React.Component<{ book: BookDetails }> {
   }
 }
 
-const FontSizeComponent = ({
-  fontSize,
-  decreaseFontSize,
-  increaseFontSize
-}: {
-  fontSize: number,
-  decreaseFontSize(): void,
-  increaseFontSize(): void
-}) => (
-  <FontSizeButtons>
-    <IconButton onClick={decreaseFontSize}>
-      <RemoveIcon />
-    </IconButton>
-    <div css={{ marginTop: '15px' }}>
-      <FormatSizeIcon />
-    </div>
-    <IconButton onClick={increaseFontSize}>
-      <AddIcon />
-    </IconButton>
-  </FontSizeButtons>
+const FontSizeComponent = () => (
+  <FontSizeContext.Consumer>
+    {({ decreaseFontSize, increaseFontSize }) => (
+      <FontSizeButtons>
+        <IconButton onClick={decreaseFontSize}>
+          <RemoveIcon />
+        </IconButton>
+        <div css={{ marginTop: '15px' }}>
+          <FormatSizeIcon />
+        </div>
+        <IconButton onClick={increaseFontSize}>
+          <AddIcon />
+        </IconButton>
+      </FontSizeButtons>
+    )}
+  </FontSizeContext.Consumer>
 );
 
 const styledGrid = css`
