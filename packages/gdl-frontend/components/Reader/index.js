@@ -15,6 +15,7 @@ import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import PageNavigation from './PageNavigation';
 import { colors } from '../../style/theme';
+import { FontSizeContext } from './FontSizeContext';
 
 type Props = {|
   book: BookDetails,
@@ -36,39 +37,43 @@ const Reader = ({
   userHasEditAccess
 }: Props) => {
   const isRtlLanguage = !!book.language.isRTL;
-
   return (
-    <Container size="large" gutter={false}>
-      <Backdrop />
-      <Card>
-        <Toolbar
-          book={book}
-          chapter={chapterPointer}
-          userHasEditAccess={userHasEditAccess}
-          onRequestClose={onRequestClose}
-        />
-        {/*
+    <FontSizeContext.Consumer>
+      {({ fontSize }) => (
+        <Container size="large" gutter={false}>
+          <Backdrop />
+          <Card>
+            <Toolbar
+              book={book}
+              chapter={chapterPointer}
+              userHasEditAccess={userHasEditAccess}
+              onRequestClose={onRequestClose}
+            />
+            {/*
             We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.
           */}
-        <PageNavigation
-          css={{ flex: 1 }}
-          isRtlLanguage={isRtlLanguage}
-          onRequestNextChapter={onRequestNextChapter}
-          onRequestPreviousChapter={onRequestPreviousChapter}
-          disableNext={chapterPointer.seqNo >= book.chapters.length}
-          disablePrevious={chapterPointer.seqNo <= 1}
-        >
-          <Page
-            lang={book.language.code}
-            dir={isRtlLanguage ? 'rtl' : 'ltr'}
-            dangerouslySetInnerHTML={
-              chapterWithContent ? createMarkup(chapterWithContent) : null
-            }
-          />
-        </PageNavigation>
-      </Card>
-      <KeyDown when="Escape" then={onRequestClose} />
-    </Container>
+            <PageNavigation
+              css={{ flex: 1 }}
+              isRtlLanguage={isRtlLanguage}
+              onRequestNextChapter={onRequestNextChapter}
+              onRequestPreviousChapter={onRequestPreviousChapter}
+              disableNext={chapterPointer.seqNo >= book.chapters.length}
+              disablePrevious={chapterPointer.seqNo <= 1}
+            >
+              <Page
+                lang={book.language.code}
+                dir={isRtlLanguage ? 'rtl' : 'ltr'}
+                dangerouslySetInnerHTML={
+                  chapterWithContent ? createMarkup(chapterWithContent) : null
+                }
+                fontSize={fontSize}
+              />
+            </PageNavigation>
+          </Card>
+          <KeyDown when="Escape" then={onRequestClose} />
+        </Container>
+      )}
+    </FontSizeContext.Consumer>
   );
 };
 

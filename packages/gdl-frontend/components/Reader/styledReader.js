@@ -9,11 +9,12 @@ import styled from 'react-emotion';
 import { fonts } from '../../style/theme';
 import media from '../../style/media';
 
+// We calculate rem to use for font size
 export const Page = styled('div')`
   color: #000;
   overflow-wrap: break-word;
   word-wrap: break-word;
-  font-size: 1.375rem;
+  font-size: ${p => (p.fontSize ? p.fontSize / 16 : '1.375')}rem;
   text-align: center;
   line-height: 1.5;
   font-family: ${fonts.family.book};
