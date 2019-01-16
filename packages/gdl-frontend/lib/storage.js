@@ -78,9 +78,10 @@ export function getBookLanguageCode(req?: $Request): string {
   return language || DEFAULT_LANGUAGE.code;
 }
 
-export function setFinishedHomeTutorial() {
+export function setFinishedHomeTutorial(callback?: () => void) {
   const c = cookies();
   c.set(HOME_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
+  callback && callback();
 }
 
 export function getHomeTutorialStatus(req?: $Request) {
@@ -90,9 +91,10 @@ export function getHomeTutorialStatus(req?: $Request) {
   return hasFinished || false;
 }
 
-export function setFinishedBookDetailsTutorial() {
+export function setFinishedBookDetailsTutorial(callback?: () => void) {
   const c = cookies();
   c.set(BOOKDETAILS_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
+  callback && callback();
 }
 
 export function getBookDetailsTutorialStatus(req?: $Request) {
@@ -100,4 +102,10 @@ export function getBookDetailsTutorialStatus(req?: $Request) {
     ? req.cookies[BOOKDETAILS_TUTORIAL_STATUS_KEY]
     : cookies().get(BOOKDETAILS_TUTORIAL_STATUS_KEY, { doNotParse: false });
   return hasFinished || false;
+}
+
+export function clearTutorial() {
+  const c = cookies();
+  c.remove(HOME_TUTORIAL_STATUS_KEY, SIX_MONTHS_OPTIONS);
+  c.remove(BOOKDETAILS_TUTORIAL_STATUS_KEY, SIX_MONTHS_OPTIONS);
 }

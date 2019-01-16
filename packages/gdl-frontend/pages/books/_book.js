@@ -51,12 +51,9 @@ import { hasClaim, claims } from 'gdl-auth';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
-import {
-  BookJsonLd,
-  Metadata,
-  Tutorial
-} from '../../components/BookDetailsPage';
+import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import { DimensionContext } from '../../context/DimensionContext';
+import Tutorial from '../../components/Tutorials/BookDetailsTutorial';
 
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import LevelRibbon from '../../components/Level/LevelRibbon';
@@ -67,7 +64,7 @@ import {
   tabletOfflineTarget,
   mobileBookTarget,
   mobileOfflineTarget
-} from '../../components/BookDetailsPage/Tutorial';
+} from '../../components/Tutorials/BookDetailsTutorial';
 
 const {
   publicRuntimeConfig: { zendeskUrl }

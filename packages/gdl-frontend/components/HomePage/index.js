@@ -32,10 +32,11 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import Tutorial from './Tutorial';
+import Tutorial from '../Tutorials/HomeTutorial';
 import { withTutorialContext } from '../../context/TutorialContext';
 
 type Props = {|
+  homeTutorialStatus: boolean,
   context: {
     homePageStatus: boolean,
     onFinishHomeTutorial: () => void,
@@ -104,6 +105,7 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
 
   render() {
     const {
+      homeTutorialStatus,
       context,
       category,
       featuredContent,
@@ -163,7 +165,7 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
       <Layout
         wrapWithMain={false}
         // TODO: when emotion 10 is merged, instead of toggling appbar position when can disable scrolling with <Global />
-        homeTutorialInProgress={!context.homePageStatus}
+        homeTutorialInProgress={!context.homePageStatus && !homeTutorialStatus}
       >
         <Tutorial
           status={!context.homePageStatus}

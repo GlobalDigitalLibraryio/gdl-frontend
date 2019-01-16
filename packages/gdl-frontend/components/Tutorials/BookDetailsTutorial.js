@@ -8,9 +8,9 @@
 
 import * as React from 'react';
 import Joyride from 'react-joyride';
-import { Trans } from '@lingui/react';
+import { Trans, i18nMark } from '@lingui/react';
 import styled, { css } from 'react-emotion';
-import Arrow from '../tooltip-arrow.svg';
+import Arrow from './tooltip-arrow.svg';
 import { Button, Typography } from '@material-ui/core';
 import { withTheme, type Theme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
@@ -24,8 +24,7 @@ const steps = {
   tablet: [
     {
       target: `[data-target='${tabletBookTarget}']`,
-      event: 'click',
-      content: 'Start reading a book!',
+      content: i18nMark('Start reading a book!'),
       placement: 'right',
       disableBeacon: true,
 
@@ -35,8 +34,7 @@ const steps = {
     },
     {
       target: `.${tabletOfflineTarget}`,
-      event: 'click',
-      content: 'Click here to save books so you can read offline.',
+      content: i18nMark('Click here to save books so you can read offline.'),
       placement: 'bottom-start',
       disableBeacon: true,
       floaterProps: {
@@ -47,8 +45,7 @@ const steps = {
   mobile: [
     {
       target: `[data-target='${mobileBookTarget}']`,
-      event: 'click',
-      content: 'Start reading a book!',
+      content: i18nMark('Start reading a book!'),
       placement: 'top-end',
       disableBeacon: true,
       floaterProps: {
@@ -57,8 +54,7 @@ const steps = {
     },
     {
       target: `.${mobileOfflineTarget}`,
-      event: 'click',
-      content: 'Click here to save books so you can read offline.',
+      content: i18nMark('Click here to save books so you can read offline.'),
       placement: 'top-start',
       disableBeacon: true,
       floaterProps: {
@@ -79,7 +75,7 @@ type State = {
   currentSteps: Array<*>
 };
 
-class Tutorial extends React.Component<Props, State> {
+class BookDetailsTutorial extends React.Component<Props, State> {
   state = {
     currentSteps: steps[this.props.media]
   };
@@ -256,4 +252,4 @@ const styles = {
   `
 };
 
-export default withTheme()(Tutorial);
+export default withTheme()(BookDetailsTutorial);
