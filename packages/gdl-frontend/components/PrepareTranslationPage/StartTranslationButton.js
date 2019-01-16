@@ -10,43 +10,29 @@ import React, { Component } from 'react';
 import { Trans, I18n } from '@lingui/react';
 import { css } from 'react-emotion';
 
-import {
-  Card,
-  Button,
-  ClickAwayListener,
-  Grow,
-  Popper,
-  MenuList,
-  MenuItem,
-  Tooltip
-} from '@material-ui/core';
+import { Button, MenuList, MenuItem, Tooltip } from '@material-ui/core';
 import Router from 'next/router';
 import green from '@material-ui/core/colors/green';
 
 import type { BookDetails, Translation } from '../../types';
 import { Link } from '../../routes';
+import MenuDropdown from '../../elements/MenuDropdown';
 
 class StartTranslationButton extends Component<
   { book: BookDetails, translation: ?Translation },
   { menuIsOpen: boolean }
 > {
-  anchorEl: ?HTMLAnchorElement = null;
+  anchorEl: ?React$ElementRef<Button> = React.createRef();
   state = { menuIsOpen: false };
 
   handleToggle = () => {
     this.setState(state => ({ menuIsOpen: !state.menuIsOpen }));
   };
 
-  handleClose = (event: any) => {
-    if (this.anchorEl && this.anchorEl.contains(event.target)) {
-      return;
-    }
-
-    this.setState({ menuIsOpen: false });
-  };
+  handleClose = () => this.setState({ menuIsOpen: false });
 
   // When Crowdin opens in a new tab, we want to redirect the user to "my translations"
-  toCrowdin = () => Router.pushRoute('translations');
+  toTranslation = () => Router.pushRoute('translations');
 
   render() {
     const { translation } = this.props;
@@ -65,61 +51,38 @@ class StartTranslationButton extends Component<
         >
           <Trans>Start translation</Trans>
         </Button>
-        <I18n>
-          {({ i18n }) => (
-            <Popper
-              open={menuIsOpen}
-              anchorEl={this.anchorEl}
-              transition
-              disablePortal
-              css={styles.translationMenu}
+        <MenuDropdown open={menuIsOpen} onClose={this.handleClose}>
+          <MenuList>
+            <LinkItem
+              route={`/en/books/translate/${this.props.book.id}/edit`}
+              params={{
+                id: this.props.book.id,
+                lang: this.props.book.language.code
+              }}
             >
-              {({ TransitionProps, placement }) => (
-                <Grow
-                  {...TransitionProps}
-                  id="menu-list-grow"
-                  style={{
-                    transformOrigin:
-                      placement === 'bottom' ? 'center top' : 'center bottom'
-                  }}
+              <Trans>Use in-context</Trans>
+            </LinkItem>
+            <I18n>
+              {({ i18n }) => (
+                <Tooltip
+                  title={i18n.t`Opens 3rd party site in a new window`}
+                  placement="bottom"
                 >
-                  <Card>
-                    <ClickAwayListener onClickAway={this.handleClose}>
-                      <MenuList>
-                        <LinkItem
-                          route={`/en/books/translate/${
-                            this.props.book.id
-                          }/edit`}
-                          params={{
-                            id: this.props.book.id,
-                            lang: this.props.book.language.code
-                          }}
-                        >
-                          <Trans>Use in-context</Trans>
-                        </LinkItem>
-                        <Tooltip
-                          title={i18n.t`Opens 3rd party site in a new window`}
-                          placement="bottom"
-                        >
-                          <MenuItem
-                            button
-                            component="button"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={this.toCrowdin}
-                            href={translation && translation.crowdinUrl}
-                          >
-                            <Trans>To Crowdin</Trans>
-                          </MenuItem>
-                        </Tooltip>
-                      </MenuList>
-                    </ClickAwayListener>
-                  </Card>
-                </Grow>
+                  <MenuItem
+                    button
+                    component="button"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={this.toTranslation}
+                    href={translation && translation.crowdinUrl}
+                  >
+                    <Trans>To Crowdin</Trans>
+                  </MenuItem>
+                </Tooltip>
               )}
-            </Popper>
-          )}
-        </I18n>
+            </I18n>
+          </MenuList>
+        </MenuDropdown>
       </>
     );
   }
@@ -143,15 +106,7 @@ const styles = {
       background-color: ${green[900]};
     }
   `,
-  translationMenu: css`
-    position: absolute;
-    left: 0;
-    right: 0;
-    margin-right: auto;
-    margin-left: auto;
-    z-index: 1000;
-    width: fit-content;
-  `
+  translationMenu: css``
 };
 
 export default StartTranslationButton;

@@ -16,7 +16,11 @@ import {
   Typography,
   Grid,
   Divider,
-  CircularProgress
+  CircularProgress,
+  MenuList,
+  MenuItem,
+  Tooltip,
+  RootRef
 } from '@material-ui/core';
 import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
 
@@ -30,15 +34,18 @@ import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
 import { LoadingButton } from '../../elements';
 import { spacing } from '../../style/theme';
+import MenuDropdown from '../../elements/MenuDropdown';
 
 class TranslationCard extends React.Component<
   {
     translation: Translation,
     handleSync: () => void
   },
-  { isLoading: boolean, isSynchronized: boolean }
+  { menuIsOpen: boolean, isLoading: boolean, isSynchronized: boolean }
 > {
+  anchorEl: any;
   state = {
+    menuIsOpen: false,
     isLoading: false,
     isSynchronized: false
   };
@@ -51,9 +58,13 @@ class TranslationCard extends React.Component<
     this.props.handleSync();
   };
 
+  closeMenu = () => this.setState({ menuIsOpen: false });
+
+  openMenu = () => this.setState({ menuIsOpen: true });
+
   render() {
     const { translation } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, menuIsOpen } = this.state;
 
     return (
       <Card key={translation.id} css={{ marginBottom: spacing.large }}>
@@ -107,23 +118,53 @@ class TranslationCard extends React.Component<
           >
             <Trans>Sync</Trans>
           </LoadingButton>
-          <TranslateButton
-            route={`/en/books/translate/${translation.id}/edit`}
-            params={{
-              id: translation.id,
-              lang: translation.translatedFrom.code
-            }}
-          >
-            <Trans>Translate - use in-context</Trans>
-          </TranslateButton>
           <Button
+            buttonRef={node => {
+              this.anchorEl = node;
+            }}
+            aria-owns={menuIsOpen ? 'menu-list-grow' : undefined}
+            aria-haspopup="true"
             color="primary"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={translation && translation.crowdinUrl}
+            onClick={this.openMenu}
           >
-            <Trans>Translate - to Crowdin</Trans>
+            <Trans>Start translation</Trans>
           </Button>
+
+          <MenuDropdown
+            open={menuIsOpen}
+            anchorRef={this.anchorEl}
+            onClose={this.closeMenu}
+          >
+            <MenuList>
+              <LinkItem
+                route={`/en/books/translate/${translation.id}/edit`}
+                params={{
+                  id: translation.id,
+                  lang: 'en'
+                }}
+              >
+                <Trans>Use in-context</Trans>
+              </LinkItem>
+              <I18n>
+                {({ i18n }) => (
+                  <Tooltip
+                    title={i18n.t`Opens 3rd party site in a new window`}
+                    placement="bottom"
+                  >
+                    <MenuItem
+                      button
+                      component="button"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={translation && translation.crowdinUrl}
+                    >
+                      <Trans>To Crowdin</Trans>
+                    </MenuItem>
+                  </Tooltip>
+                )}
+              </I18n>
+            </MenuList>
+          </MenuDropdown>
         </CardActions>
       </Card>
     );
@@ -134,9 +175,10 @@ class TranslationCard extends React.Component<
  * <CardActions /> passes className to its children and by wrapping <Button/>
  * with <Link/>, we pass the className to <Button/>. Hence this wrapped component.
  */
-const TranslateButton = ({ route, params, ...rest }) => (
-  <Link passHref prefetch route={route} params={params}>
-    <Button {...rest} color="primary" />
+
+const LinkItem = ({ route, onClick, params, ...rest }) => (
+  <Link passHref route={route} params={params}>
+    <MenuItem {...rest} component="a" />
   </Link>
 );
 
