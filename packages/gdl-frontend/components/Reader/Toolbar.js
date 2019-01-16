@@ -6,16 +6,10 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { Trans } from '@lingui/react';
-import { IconButton, Tooltip, Grid } from '@material-ui/core';
-import {
-  Close as CloseIcon,
-  Edit as EditIcon,
-  FormatSize as FormatSizeIcon,
-  Add as AddIcon,
-  Remove as RemoveIcon
-} from '@material-ui/icons';
+import { IconButton, Tooltip } from '@material-ui/core';
+import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 
 import { logEvent } from '../../lib/analytics';
 import type { BookDetails } from '../../types';
@@ -24,7 +18,7 @@ import SrOnly from '../SrOnly';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import Favorite, { FavoriteIcon } from '../Favorite';
-import { FontSizeContext } from './FontSizeContext';
+import { flexCenter } from '../../style/flex';
 
 type Props = {
   book: BookDetails,
@@ -39,42 +33,35 @@ const Toolbar = ({
   userHasEditAccess,
   onRequestClose
 }: Props) => (
-  <Grid container className={styledGrid}>
-    <Grid item style={{ alignSelf: 'flex-end' }}>
-      <FontSizeComponent />
-    </Grid>
-    <Grid item>
-      {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
-      <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
-    </Grid>
-    <Grid item>
-      <Buttons>
-        {userHasEditAccess && (
-          <Link
-            href={{
-              pathname: '/admin/edit/book',
-              query: {
-                id: book.id,
-                lang: book.language.code,
-                chapterId: chapter.id
-              }
-            }}
-          >
-            <IconButton title="Edit book">
-              <EditIcon />
-            </IconButton>
-          </Link>
-        )}
-        <FavButton book={book} />
-        <IconButton onClick={onRequestClose}>
-          <CloseIcon />
-          <SrOnly>
-            <Trans>Close book</Trans>
-          </SrOnly>
-        </IconButton>
-      </Buttons>
-    </Grid>
-  </Grid>
+  <Div>
+    {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
+    <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
+    <Buttons>
+      {userHasEditAccess && (
+        <Link
+          href={{
+            pathname: '/admin/edit/book',
+            query: {
+              id: book.id,
+              lang: book.language.code,
+              chapterId: chapter.id
+            }
+          }}
+        >
+          <IconButton title="Edit book">
+            <EditIcon />
+          </IconButton>
+        </Link>
+      )}
+      <FavButton book={book} />
+      <IconButton onClick={onRequestClose}>
+        <CloseIcon />
+        <SrOnly>
+          <Trans>Close book</Trans>
+        </SrOnly>
+      </IconButton>
+    </Buttons>
+  </Div>
 );
 
 class FavButton extends React.Component<{ book: BookDetails }> {
@@ -122,49 +109,27 @@ class FavButton extends React.Component<{ book: BookDetails }> {
   }
 }
 
-const FontSizeComponent = () => (
-  <FontSizeContext.Consumer>
-    {({ decreaseFontSize, increaseFontSize }) => (
-      <FontSizeButtons>
-        <IconButton onClick={decreaseFontSize}>
-          <RemoveIcon />
-        </IconButton>
-        <div css={{ marginTop: '15px' }}>
-          <FormatSizeIcon />
-        </div>
-        <IconButton onClick={increaseFontSize}>
-          <AddIcon />
-        </IconButton>
-      </FontSizeButtons>
-    )}
-  </FontSizeContext.Consumer>
-);
-
-const styledGrid = css`
+const Div = styled.div`
   z-index: 2;
-  top: 0;
+  background: #fff;
   position: relative;
   position: sticky;
-  justify-content: space-around;
-  align-items: baseline;
-  background: #fff;
+  top: 0;
   color: ${colors.text.subtle};
   border-bottom: 1px solid ${colors.base.grayLight};
+  ${flexCenter};
+
   font-size: 14px;
   min-height: 48px;
   ${media.tablet`
     margin-bottom: 50px;
-    justify-content: space-between;
   `};
 `;
 
-const FontSizeButtons = styled.div`
-  width: 100%;
-  display: flex;
-`;
-
 const Buttons = styled.div`
+  position: absolute;
   right: 0;
+  top: 0;
 `;
 
 export default Toolbar;

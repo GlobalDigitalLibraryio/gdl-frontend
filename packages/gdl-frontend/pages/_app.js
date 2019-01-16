@@ -25,7 +25,6 @@ import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { register as registerServiceWorker } from '../registerServiceWorker';
-import { FontSizeProvider } from '../components/Reader/FontSizeContext';
 
 // Adds server generated styles to the emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -138,9 +137,7 @@ class App extends NextApp {
               <OnlineStatusRedirectProvider>
                 {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                <FontSizeProvider>
-                  <Component pageContext={this.pageContext} {...pageProps} />
-                </FontSizeProvider>
+                <Component pageContext={this.pageContext} {...pageProps} />
               </OnlineStatusRedirectProvider>
             </MuiThemeProvider>
           </JssProvider>
