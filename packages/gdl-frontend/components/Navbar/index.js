@@ -34,6 +34,7 @@ import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
+import { drawerTarget, languageTarget } from '../HomePage/Tutorial';
 
 type Props = {
   onMenuClick(): void,
@@ -76,7 +77,7 @@ const Navbar = ({ onMenuClick, online }: Props) => {
             onClick={onMenuClick}
             css={media.tablet({ marginRight: 18 })}
           >
-            <MenuIcon />
+            <MenuIcon data-target={drawerTarget} />
             <SrOnly>
               <Trans>Open menu</Trans>
             </SrOnly>
@@ -143,7 +144,7 @@ const Navbar = ({ onMenuClick, online }: Props) => {
                       {loading ? (
                         <CircularProgress color="inherit" size={24} />
                       ) : (
-                        <LanguageIcon />
+                        <LanguageIcon data-target={languageTarget} />
                       )}
                       <SrOnly>
                         <Trans>Choose book language</Trans>
