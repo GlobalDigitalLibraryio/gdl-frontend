@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
 const DimensionContext = React.createContext({
   media: 'tablet'
