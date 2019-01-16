@@ -38,7 +38,8 @@ import { drawerTarget, languageTarget } from '../HomePage/Tutorial';
 
 type Props = {
   onMenuClick(): void,
-  online: boolean
+  online: boolean,
+  homeTutorialInProgress?: boolean
 };
 
 const BrandLink = styled('a')`
@@ -54,7 +55,7 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick, online }: Props) => {
+const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
   const offline = !online;
 
   const brandLink = (
@@ -69,7 +70,7 @@ const Navbar = ({ onMenuClick, online }: Props) => {
   );
 
   return (
-    <AppBar>
+    <AppBar position={homeTutorialInProgress ? 'absolute' : 'fixed'}>
       <Toolbar>
         <Left>
           <IconButton

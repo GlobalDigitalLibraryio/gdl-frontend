@@ -17,14 +17,14 @@ function getHomeTutorialStatus() {
   const hasFinished = cookies().get(HOME_TUTORIAL_STATUS_KEY, {
     doNotParse: false
   });
-  return hasFinished || false;
+  return typeof window !== 'undefined' ? hasFinished : false;
 }
 
 function getBookDetailsTutorialStatus() {
   const hasFinished = cookies().get(BOOKDETAILS_TUTORIAL_STATUS_KEY, {
     doNotParse: false
   });
-  return hasFinished || false;
+  return typeof window !== 'undefined' ? hasFinished : false;
 }
 
 const withTutorialContext = Component => {
@@ -77,6 +77,7 @@ class TutorialProvider extends React.Component<*> {
       <TutorialContext.Provider
         value={{
           ...this.state,
+          homePageTutorialInProgress: !this.state.homePageStatus,
           resetTutorialStatus: this.resetTutorialStatus,
           onClearTutorial: this.onClearTutorial,
           onFinishHomeTutorial: this.onFinishHomeTutorial,

@@ -56,7 +56,7 @@ import {
   Metadata,
   Tutorial
 } from '../../components/BookDetailsPage';
-import { DimensionContext } from '../../components/BookDetailsPage/DimensionContext';
+import { DimensionContext } from '../../context/DimensionContext';
 
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import LevelRibbon from '../../components/Level/LevelRibbon';

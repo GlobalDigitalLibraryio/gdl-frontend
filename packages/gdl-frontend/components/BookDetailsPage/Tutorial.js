@@ -10,7 +10,7 @@ import * as React from 'react';
 import Joyride from 'react-joyride';
 import { Trans } from '@lingui/react';
 import styled, { css } from 'react-emotion';
-import Arrow from './tooltip-arrow.svg';
+import Arrow from '../tooltip-arrow.svg';
 import { Button, Typography } from '@material-ui/core';
 import { withTheme, type Theme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';

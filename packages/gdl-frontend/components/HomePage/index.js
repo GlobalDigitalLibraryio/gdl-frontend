@@ -160,7 +160,11 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
     const languageCode = newArrivals.language.code;
 
     return (
-      <Layout wrapWithMain={false}>
+      <Layout
+        wrapWithMain={false}
+        // TODO: when emotion 10 is merged, instead of toggling appbar position when can disable scrolling with <Global />
+        homeTutorialInProgress={!context.homePageStatus}
+      >
         <Tutorial
           status={!context.homePageStatus}
           onFinish={context.onFinishHomeTutorial}
