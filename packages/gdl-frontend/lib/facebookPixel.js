@@ -15,7 +15,6 @@ export function initFacebookPixel() {
       autoConfig: true,
       debug: true
     };
-    console.log('facbook Pixel', facebookPixelId);
     ReactPixel.init(facebookPixelId, options);
     REACT_PIXEL_INITIALIZED = true;
   }
