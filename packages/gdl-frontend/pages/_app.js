@@ -26,6 +26,8 @@ import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
+import { DimensionProvider } from '../components/BookDetailsPage/DimensionContext';
+import { TutorialProvider } from '../context/TutorialContext';
 
 // Adds server generated styles to the emotion cache.
 // '__NEXT_DATA__.ids' is set in '_document.js'
@@ -149,7 +151,11 @@ class App extends NextApp {
               <OnlineStatusRedirectProvider>
                 {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                <Component pageContext={this.pageContext} {...pageProps} />
+                <DimensionProvider>
+                  <TutorialProvider>
+                    <Component pageContext={this.pageContext} {...pageProps} />
+                  </TutorialProvider>
+                </DimensionProvider>
               </OnlineStatusRedirectProvider>
             </MuiThemeProvider>
           </JssProvider>

@@ -18,13 +18,21 @@ const {
 
 const BOOK_LANGUAGE_KEY = 'bookLanguage';
 const BOOK_CATEGORY_KEY = 'bookCategory';
+const BOOKDETAILS_TUTORIAL_STATUS_KEY = 'bookDetailsTutorialFinished';
+const HOME_TUTORIAL_STATUS_KEY = 'homeTutorialFinished';
 
 const oneMonthsInSeconds = 60 * 60 * 24 * 30; // approximately
+const sixMonthsInSeconds = oneMonthsInSeconds * 6;
 
 const cookies = () => new UniversalCookie();
 
-const OPTIONS = {
+const ONE_MONTH_OPTIONS = {
   maxAge: oneMonthsInSeconds,
+  path: '/'
+};
+
+const SIX_MONTHS_OPTIONS = {
+  maxAge: sixMonthsInSeconds,
   path: '/'
 };
 
@@ -38,13 +46,13 @@ export function setBookLanguageAndCategory(
 ) {
   // Server
   if (res) {
-    res.cookie(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
-    res.cookie(BOOK_CATEGORY_KEY, category, OPTIONS);
+    res.cookie(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
+    res.cookie(BOOK_CATEGORY_KEY, category, ONE_MONTH_OPTIONS);
   } else {
     // Client
     const c = cookies();
-    c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
-    c.set(BOOK_CATEGORY_KEY, category, OPTIONS);
+    c.set(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
+    c.set(BOOK_CATEGORY_KEY, category, ONE_MONTH_OPTIONS);
   }
 }
 
@@ -56,7 +64,7 @@ export function getBookCategory(req?: $Request) {
 
 export function setBookLanguage(language: Language) {
   const c = cookies();
-  c.set(BOOK_LANGUAGE_KEY, language.code, OPTIONS);
+  c.set(BOOK_LANGUAGE_KEY, language.code, ONE_MONTH_OPTIONS);
 }
 
 /**
@@ -68,4 +76,28 @@ export function getBookLanguageCode(req?: $Request): string {
     : cookies().get(BOOK_LANGUAGE_KEY, { doNotParse: true });
 
   return language || DEFAULT_LANGUAGE.code;
+}
+
+export function setFinishedHomeTutorial() {
+  const c = cookies();
+  c.set(HOME_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
+}
+
+export function getHomeTutorialStatus(req?: $Request) {
+  const hasFinished = req
+    ? req.cookies[HOME_TUTORIAL_STATUS_KEY]
+    : cookies().get(HOME_TUTORIAL_STATUS_KEY, { doNotParse: false });
+  return hasFinished || false;
+}
+
+export function setFinishedBookDetailsTutorial() {
+  const c = cookies();
+  c.set(BOOKDETAILS_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
+}
+
+export function getBookDetailsTutorialStatus(req?: $Request) {
+  const hasFinished = req
+    ? req.cookies[BOOKDETAILS_TUTORIAL_STATUS_KEY]
+    : cookies().get(BOOKDETAILS_TUTORIAL_STATUS_KEY, { doNotParse: false });
+  return hasFinished || false;
 }

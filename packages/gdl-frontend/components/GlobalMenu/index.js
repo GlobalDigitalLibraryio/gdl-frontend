@@ -22,9 +22,11 @@ import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
   ExitToApp as ExitToAppIcon,
   Translate as TranslateIcon,
-  Edit as EditIcon
+  Edit as EditIcon,
+  Help as HelpIcon
 } from '@material-ui/icons';
 import { hasClaim, claims, hasAuthToken } from 'gdl-auth';
+import { withRouter } from 'next/router';
 
 import { FavoriteIcon } from '../Favorite';
 import OfflineIcon from '../OfflineIcon';
@@ -33,6 +35,7 @@ import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
 import offlineLibrary from '../../lib/offlineLibrary';
+import { TutorialContext } from '../../context/TutorialContext';
 
 type Props = {|
   onClose(): void,
@@ -152,6 +155,7 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItem>
             </RouteLink>
           )}
+          <ConnectedTooltip onClose={onClose} />
           {online && (
             <>
               <RouteLink passHref route="translations">
@@ -194,5 +198,37 @@ class GlobalMenu extends React.Component<Props, State> {
     );
   }
 }
+
+/**
+ * This tooltip button needs current router path to decide if user
+ * is already at homescreen to prompt tutorial.
+ * By using withRouter it conflicts with GlobalMenus OnlineStatusContext
+ */
+const TooltipItem = ({ onClose, router }) => (
+  <TutorialContext.Consumer>
+    {({ onClearTutorial, resetTutorialStatus }) => (
+      <Link passHref href="/">
+        <ListItem
+          button
+          component="a"
+          onClick={() => {
+            onClearTutorial();
+            onClose();
+            router.pathname === '/' && resetTutorialStatus();
+          }}
+        >
+          <ListItemIcon>
+            <HelpIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <Trans>Tooltip</Trans>
+          </ListItemText>
+        </ListItem>
+      </Link>
+    )}
+  </TutorialContext.Consumer>
+);
+
+const ConnectedTooltip = withRouter(TooltipItem);
 
 export default GlobalMenu;

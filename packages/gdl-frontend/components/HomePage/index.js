@@ -32,8 +32,15 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
+import Tutorial from './Tutorial';
+import { withTutorialContext } from '../../context/TutorialContext';
 
 type Props = {|
+  context: {
+    homePageStatus: boolean,
+    onFinishHomeTutorial: () => void,
+    resetTutorialStatus: () => void
+  },
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
@@ -86,16 +93,18 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-export default class HomePage extends React.Component<
-  Props,
-  { showLanguageMenu: boolean }
-> {
+class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
   state = {
     showLanguageMenu: false
   };
 
+  componentDidMount() {
+    this.props.context.resetTutorialStatus();
+  }
+
   render() {
     const {
+      context,
       category,
       featuredContent,
       levels,
@@ -152,6 +161,10 @@ export default class HomePage extends React.Component<
 
     return (
       <Layout wrapWithMain={false}>
+        <Tutorial
+          status={!context.homePageStatus}
+          onFinish={context.onFinishHomeTutorial}
+        />
         <Head image={featured.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
@@ -222,3 +235,5 @@ const bookListViewStyle = {
   py: spacing.medium,
   borderBottom: `solid 1px ${colors.base.grayLight}`
 };
+
+export default withTutorialContext(HomePage);
