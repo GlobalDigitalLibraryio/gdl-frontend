@@ -1,31 +1,11 @@
 import * as React from 'react';
-import UniversalCookie from 'universal-cookie';
-
-const BOOKDETAILS_TUTORIAL_STATUS_KEY = 'bookDetailsTutorialFinished';
-const HOME_TUTORIAL_STATUS_KEY = 'homeTutorialFinished';
-
-const sixMonthsInSeconds = 60 * 60 * 24 * 30 * 6; // approximately
-
-const cookies = () => new UniversalCookie();
-
-const SIX_MONTHS_OPTIONS = {
-  maxAge: sixMonthsInSeconds,
-  path: '/'
-};
-
-function getHomeTutorialStatus() {
-  const hasFinished = cookies().get(HOME_TUTORIAL_STATUS_KEY, {
-    doNotParse: false
-  });
-  return typeof window !== 'undefined' ? hasFinished : false;
-}
-
-function getBookDetailsTutorialStatus() {
-  const hasFinished = cookies().get(BOOKDETAILS_TUTORIAL_STATUS_KEY, {
-    doNotParse: false
-  });
-  return typeof window !== 'undefined' ? hasFinished : false;
-}
+import {
+  clearTutorial,
+  setFinishedHomeTutorial,
+  setFinishedBookDetailsTutorial,
+  getBookDetailsTutorialStatus,
+  getHomeTutorialStatus
+} from '../lib/storage';
 
 const withTutorialContext = Component => {
   return props => (
@@ -47,22 +27,16 @@ class TutorialProvider extends React.Component<*> {
   };
 
   onFinishHomeTutorial = () => {
-    const c = cookies();
-    c.set(HOME_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
-    this.setState({ homePageStatus: true });
+    setFinishedHomeTutorial(() => this.setState({ homePageStatus: true }));
   };
 
   onFinishedBookDetailsTutorial = () => {
-    const c = cookies();
-    c.set(BOOKDETAILS_TUTORIAL_STATUS_KEY, true, SIX_MONTHS_OPTIONS);
-    this.setState({ bookDetailStatus: true });
+    setFinishedBookDetailsTutorial(() =>
+      this.setState({ bookDetailStatus: true })
+    );
   };
 
-  onClearTutorial = () => {
-    const c = cookies();
-    c.remove(HOME_TUTORIAL_STATUS_KEY);
-    c.remove(BOOKDETAILS_TUTORIAL_STATUS_KEY);
-  };
+  onClearTutorial = () => clearTutorial();
 
   resetTutorialStatus = () => {
     const noTutorialCookies =

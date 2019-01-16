@@ -9,8 +9,8 @@
 import * as React from 'react';
 import Joyride from 'react-joyride';
 import styled, { css } from 'react-emotion';
-import { Trans } from '@lingui/react';
-import Arrow from '../tooltip-arrow.svg';
+import { Trans, i18nMark } from '@lingui/react';
+import Arrow from './tooltip-arrow.svg';
 import Kenya from './kenya.svg';
 import Ethiopia from './ethiopia.svg';
 import Cambodia from './cambodia.svg';
@@ -24,8 +24,8 @@ export const languageTarget = 'global_menu_language';
 const steps = [
   {
     target: `[data-target='${drawerTarget}']`,
-    title: 'Welcome!',
-    content: 'Use the main menu for more options.',
+    title: i18nMark('Welcome!'),
+    content: i18nMark('Use the main menu for more options.'),
     placement: 'bottom-start',
     disableBeacon: true,
     floaterProps: {
@@ -35,7 +35,7 @@ const steps = [
   {
     target: `[data-target='${languageTarget}']`,
     icon: true,
-    content: 'Choose your preferred language here!',
+    content: i18nMark('Choose your preferred language here!'),
     placement: 'bottom-end',
     disableBeacon: true,
     floaterProps: {
@@ -50,7 +50,7 @@ type Props = {
   onFinish: () => void
 };
 
-class Tutorial extends React.Component<Props> {
+class HomeTutorial extends React.Component<Props> {
   render() {
     const { theme, status, onFinish } = this.props;
     // Find the max zIndex from Material Ui components, because this component should be on top
@@ -215,4 +215,4 @@ const styles = {
   `
 };
 
-export default withTheme()(Tutorial);
+export default withTheme()(HomeTutorial);

@@ -26,7 +26,7 @@ import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
 import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
-import { DimensionProvider } from '../components/BookDetailsPage/DimensionContext';
+import { DimensionProvider } from '../context/DimensionContext';
 import { TutorialProvider } from '../context/TutorialContext';
 
 // Adds server generated styles to the emotion cache.

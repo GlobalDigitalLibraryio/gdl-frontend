@@ -34,7 +34,7 @@ import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
-import { drawerTarget, languageTarget } from '../HomePage/Tutorial';
+import { drawerTarget, languageTarget } from '../Tutorials/HomeTutorial';
 
 type Props = {
   onMenuClick(): void,
