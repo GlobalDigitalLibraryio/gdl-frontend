@@ -143,8 +143,7 @@ class BookPage extends React.Component<Props, State> {
     const { book } = this.props;
     const { similarBooks, loadingSimiliarBooks } = this.state;
     const offline: boolean = !this.context;
-    const hasLoadedSimilarBooks =
-      !offline && similarBooks.length > 0 && !loadingSimiliarBooks;
+    const hasLoadedSimilarBooks = !offline && !loadingSimiliarBooks;
 
     return (
       <>
