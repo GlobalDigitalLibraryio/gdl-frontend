@@ -38,7 +38,11 @@ const BookList = ({
   level,
   shouldBeColorized
 }: Props) => (
-  <>
+  <div
+    css={{
+      visibility: `${!loading && books.length === 0 ? 'hidden' : 'visible'}`
+    }}
+  >
     <View
       flexDirection="row"
       alignItems="center"
@@ -60,26 +64,20 @@ const BookList = ({
     {shouldBeColorized && (
       <LevelHR level={level} css={{ marginBottom: spacing.medium }} />
     )}
-    {!loading && books.length === 0 ? (
-      <Typography variant="body1">
-        <Trans>No books found</Trans>
-      </Typography>
-    ) : (
-      <Scroller>
-        {loading
-          ? [...Array(5).keys()].map(index => (
-              <div className={cx(itemStyle, shimmerStyle)} key={index}>
-                <Shimmer className={shimmerStyle} />
-              </div>
-            ))
-          : books.map(book => (
-              <div className={itemStyle} key={book.id}>
-                <BookLink book={book} />
-              </div>
-            ))}
-      </Scroller>
-    )}
-  </>
+    <Scroller>
+      {loading
+        ? [...Array(5).keys()].map(index => (
+            <div className={cx(itemStyle, shimmerStyle)} key={index}>
+              <Shimmer className={shimmerStyle} />
+            </div>
+          ))
+        : books.map(book => (
+            <div className={itemStyle} key={book.id}>
+              <BookLink book={book} />
+            </div>
+          ))}
+    </Scroller>
+  </div>
 );
 
 const shimmerStyle = css`
