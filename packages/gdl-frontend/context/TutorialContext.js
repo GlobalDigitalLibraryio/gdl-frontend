@@ -24,18 +24,33 @@ const withTutorialContext = (Component: React.ComponentType<*>) => {
 
 type TutorialState = {
   homePageStatus: boolean,
-  bookDetailStatus: boolean
+  bookDetailStatus: boolean,
+  homePageTutorialInProgress: boolean,
+  resetTutorialStatus: () => void,
+  onClearTutorial: () => void,
+  onFinishHomeTutorial: () => void,
+  onFinishedBookDetailsTutorial: () => void
 };
 
 const TutorialContext = React.createContext<TutorialState>({
   homePageStatus: getHomeTutorialStatus(),
-  bookDetailStatus: getBookDetailsTutorialStatus()
+  bookDetailStatus: getBookDetailsTutorialStatus(),
+  homePageTutorialInProgress: false,
+  resetTutorialStatus: () => {},
+  onClearTutorial: () => {},
+  onFinishHomeTutorial: () => {},
+  onFinishedBookDetailsTutorial: () => {}
 });
 
 class TutorialProvider extends React.Component<*, TutorialState> {
   state = {
     homePageStatus: getHomeTutorialStatus(),
-    bookDetailStatus: getBookDetailsTutorialStatus()
+    bookDetailStatus: getBookDetailsTutorialStatus(),
+    homePageTutorialInProgress: false,
+    resetTutorialStatus: () => {},
+    onClearTutorial: () => {},
+    onFinishHomeTutorial: () => {},
+    onFinishedBookDetailsTutorial: () => {}
   };
 
   onFinishHomeTutorial = () => {
