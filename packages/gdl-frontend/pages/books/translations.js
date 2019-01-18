@@ -62,7 +62,7 @@ class TranslationCard extends React.Component<
             <Link
               route="book"
               params={{
-                lang: translation.translatedFrom.code,
+                lang: translation.translatedTo.code,
                 id: translation.id
               }}
             >
