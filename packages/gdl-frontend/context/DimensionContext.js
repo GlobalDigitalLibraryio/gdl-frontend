@@ -1,4 +1,10 @@
 // @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2019 GDL
+ *
+ * See LICENSE
+ */
 import * as React from 'react';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
