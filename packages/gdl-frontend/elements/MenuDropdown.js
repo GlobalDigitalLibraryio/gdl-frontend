@@ -1,11 +1,10 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2019 GDL
  *
  * See LICENSE
  */
-
 import React, { PureComponent, type Element } from 'react';
 import { css } from 'react-emotion';
 import {

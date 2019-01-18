@@ -1,7 +1,7 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2018 GDL
+ * Copyright (C) 2019 GDL
  *
  * See LICENSE
  */

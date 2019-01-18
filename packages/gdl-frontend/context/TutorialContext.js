@@ -1,3 +1,10 @@
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2019 GDL
+ *
+ * See LICENSE
+ */
 import * as React from 'react';
 import {
   clearTutorial,
@@ -7,20 +14,25 @@ import {
   getHomeTutorialStatus
 } from '../lib/storage';
 
-const withTutorialContext = Component => {
-  return props => (
+const withTutorialContext = (Component: React.ComponentType<*>) => {
+  return (props: any) => (
     <TutorialContext.Consumer>
       {state => <Component {...props} context={state} />}
     </TutorialContext.Consumer>
   );
 };
 
-const TutorialContext = React.createContext({
+type TutorialState = {
+  homePageStatus: boolean,
+  bookDetailStatus: boolean
+};
+
+const TutorialContext = React.createContext<TutorialState>({
   homePageStatus: getHomeTutorialStatus(),
   bookDetailStatus: getBookDetailsTutorialStatus()
 });
 
-class TutorialProvider extends React.Component<*> {
+class TutorialProvider extends React.Component<*, TutorialState> {
   state = {
     homePageStatus: getHomeTutorialStatus(),
     bookDetailStatus: getBookDetailsTutorialStatus()

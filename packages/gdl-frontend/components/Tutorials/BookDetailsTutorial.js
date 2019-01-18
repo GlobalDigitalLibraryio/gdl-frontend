@@ -1,7 +1,7 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2018 GDL
+ * Copyright (C) 2019 GDL
  *
  * See LICENSE
  */
@@ -117,15 +117,11 @@ const Tooltip = ({
   primaryProps
 }) => (
   <Center isFirstStep={index === 0} media={media}>
-    {media === 'mobile' ? (
-      <MobileArrow />
-    ) : (
-      <TabletArrow isFirstStep={index === 0} />
-    )}
+    <BouncingArrow type={media} isFirstStep={index === 0} />
     <div css={styles.tooltipBody} {...tooltipProps}>
       <CloseButton
         {...closeProps}
-        top={index === 0 ? 0 : media === 'mobile' ? 0 : 50}
+        top={index === 0 || media === 'mobile' ? 0 : 50}
         isFirstStep={index === 0}
         onClick={closeTutorial}
       />
@@ -155,12 +151,13 @@ const Tooltip = ({
   </Center>
 );
 
-const TabletArrow = props => {
-  const marginLeft = props.isFirstStep ? '-50px' : '30px';
+const BouncingArrow = props => {
+  const marginLeft =
+    props.type === 'tablet' && props.isFirstStep ? '-50px' : '30px';
   const style = css`
     width: 100px;
     margin-bottom: 20px;
-    animation: tabletBounce 1s infinite alternate;
+    animation: ${props.type}Bounce 1s infinite alternate;
     margin-left: ${marginLeft};
 
     @keyframes tabletBounce {
@@ -171,16 +168,6 @@ const TabletArrow = props => {
         transform: rotate(180deg) translateY(-15px) scale(1, -1);
       }
     }
-  `;
-  return <Arrow className={style} />;
-};
-
-const MobileArrow = props => {
-  const style = css`
-    width: 100px;
-    margin-bottom: 20px;
-    animation: mobileBounce 1s infinite alternate;
-    margin-left: 30px;
 
     @keyframes mobileBounce {
       from {
@@ -226,17 +213,6 @@ const Center = styled('div')`
 `;
 
 const styles = {
-  closeButton: css`
-    position: absolute;
-    top: 0;
-    right: 0;
-    color: #fff;
-    background-color: #000;
-    border: 2px solid #fff;
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-  `,
   tooltipBody: css`
     width: 270px;
     height: 270px;
