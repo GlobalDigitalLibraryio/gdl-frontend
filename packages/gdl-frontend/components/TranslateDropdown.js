@@ -1,7 +1,7 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2019 GDL
  *
  * See LICENSE
  */
@@ -70,6 +70,7 @@ const TranslateDropdown = React.forwardRef(
               </div>
               <div style={{ marginTop: 5 }}>
                 <ButtonBase
+                  component="a"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={crowdinUrl}
