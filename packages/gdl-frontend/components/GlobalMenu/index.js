@@ -155,9 +155,9 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItem>
             </RouteLink>
           )}
-          <ConnectedTooltip onClose={onClose} />
           {online && (
             <>
+              <ConnectedTooltip onClose={onClose} />
               <RouteLink passHref route="translations">
                 <ListItem button component="a">
                   <ListItemIcon>
