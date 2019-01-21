@@ -32,16 +32,8 @@ import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import Tutorial from '../Tutorials/HomeTutorial';
-import { withTutorialContext } from '../../context/TutorialContext';
 
 type Props = {|
-  homeTutorialStatus: boolean,
-  context: {
-    homePageStatus: boolean,
-    onFinishHomeTutorial: () => void,
-    resetTutorialStatus: () => void
-  },
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
@@ -94,19 +86,16 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
+export default class HomePage extends React.Component<
+  Props,
+  { showLanguageMenu: boolean }
+> {
   state = {
     showLanguageMenu: false
   };
 
-  componentDidMount() {
-    this.props.context.resetTutorialStatus();
-  }
-
   render() {
     const {
-      homeTutorialStatus,
-      context,
       category,
       featuredContent,
       levels,
@@ -162,15 +151,7 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
     const languageCode = newArrivals.language.code;
 
     return (
-      <Layout
-        wrapWithMain={false}
-        // TODO: when emotion 10 is merged, instead of toggling appbar position when can disable scrolling with <Global />
-        homeTutorialInProgress={!context.homePageStatus && !homeTutorialStatus}
-      >
-        <Tutorial
-          status={!context.homePageStatus}
-          onFinish={context.onFinishHomeTutorial}
-        />
+      <Layout wrapWithMain={false}>
         <Head image={featured.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
@@ -241,5 +222,3 @@ const bookListViewStyle = {
   py: spacing.medium,
   borderBottom: `solid 1px ${colors.base.grayLight}`
 };
-
-export default withTutorialContext(HomePage);

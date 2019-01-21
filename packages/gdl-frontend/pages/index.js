@@ -27,14 +27,12 @@ import {
   getBookLanguageCode,
   getBookCategory
 } from '../lib/storage';
-import { getHomeTutorialStatus } from '../lib/storage';
 
 const {
   publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
 
 type Props = {|
-  homeTutorialStatus: boolean,
   featuredContent: Array<FeaturedContent>,
   newArrivals: { results: Array<Book>, language: Language },
   levels: Array<ReadingLevel>,
@@ -111,10 +109,7 @@ class IndexPage extends React.Component<Props> {
     // $FlowFixMe: We know this is a valid category :/
     setBookLanguageAndCategory(newArrivals.language, category, res);
 
-    const homeTutorialStatus = getHomeTutorialStatus(req);
-
     return {
-      homeTutorialStatus,
       category,
       featuredContent,
       newArrivals,
@@ -134,7 +129,6 @@ class IndexPage extends React.Component<Props> {
 
   render() {
     const {
-      homeTutorialStatus,
       category,
       featuredContent,
       levels,
@@ -171,7 +165,6 @@ class IndexPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
-          homeTutorialStatus={homeTutorialStatus}
           category={category}
           categories={categories}
           levels={levels}
