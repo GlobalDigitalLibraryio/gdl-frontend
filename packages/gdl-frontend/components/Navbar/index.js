@@ -34,12 +34,10 @@ import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
-import { drawerTarget, languageTarget } from '../Tutorials/HomeTutorial';
 
 type Props = {
   onMenuClick(): void,
-  online: boolean,
-  homeTutorialInProgress?: boolean
+  online: boolean
 };
 
 const BrandLink = styled('a')`
@@ -55,7 +53,7 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
+const Navbar = ({ onMenuClick, online }: Props) => {
   const offline = !online;
 
   const brandLink = (
@@ -70,7 +68,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
   );
 
   return (
-    <AppBar position={homeTutorialInProgress ? 'absolute' : 'fixed'}>
+    <AppBar>
       <Toolbar>
         <Left>
           <IconButton
@@ -78,7 +76,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
             onClick={onMenuClick}
             css={media.tablet({ marginRight: 18 })}
           >
-            <MenuIcon data-target={drawerTarget} />
+            <MenuIcon />
             <SrOnly>
               <Trans>Open menu</Trans>
             </SrOnly>
@@ -145,7 +143,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                       {loading ? (
                         <CircularProgress color="inherit" size={24} />
                       ) : (
-                        <LanguageIcon data-target={languageTarget} />
+                        <LanguageIcon />
                       )}
                       <SrOnly>
                         <Trans>Choose book language</Trans>

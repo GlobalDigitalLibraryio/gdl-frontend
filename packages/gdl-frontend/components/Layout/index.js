@@ -34,7 +34,6 @@ const PageWrapper = styled('div')`
 type Props = {|
   children: Node,
   wrapWithMain: boolean,
-  homeTutorialInProgress?: boolean,
   containerBackground?: 'white' | 'gray'
 |};
 
@@ -52,18 +51,10 @@ class Layout extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      children,
-      wrapWithMain,
-      containerBackground,
-      homeTutorialInProgress
-    } = this.props;
+    const { children, wrapWithMain, containerBackground } = this.props;
     return (
       <PageWrapper>
-        <Navbar
-          homeTutorialInProgress={homeTutorialInProgress}
-          onMenuClick={() => this.setState({ drawerIsOpen: true })}
-        />
+        <Navbar onMenuClick={() => this.setState({ drawerIsOpen: true })} />
         <GlobalMenu
           onClose={() => this.setState({ drawerIsOpen: false })}
           isOpen={this.state.drawerIsOpen}
