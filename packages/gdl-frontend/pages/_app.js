@@ -24,6 +24,7 @@ import GdlI18nProvider from '../components/GdlI18nProvider';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
+import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 
 // Adds server generated styles to the emotion cache.
@@ -78,10 +79,18 @@ class App extends NextApp {
       jssStyles.parentNode.removeChild(jssStyles);
     }
 
-    // Setup Google Analytics to log the current page and subsequent other pages
+    // Setup Google Analytics and Facebook pixel to log the current page and subsequent other pages
     initGA();
     logPageView();
-    Router.router.events.on('routeChangeComplete', logPageView);
+
+    // Set up Facebook pixel
+    initFacebookPixel();
+    facebookPixelPageView();
+
+    Router.router.events.on('routeChangeComplete', () => {
+      logPageView();
+      facebookPixelPageView();
+    });
 
     // This fires when a user is prompted to add the app to their homescreen
     // We use it to track it happening in Google Analytics so we have those sweet metrics
@@ -100,7 +109,10 @@ class App extends NextApp {
   componentWillUnmount() {
     // Stop listening to logout events
     window.removeEventListener('storage', this.logout, false);
-    Router.router.events.off('routeChangeComplete', logPageView);
+    Router.router.events.off('routeChangeComplete', () => {
+      logPageView();
+      facebookPixelPageView();
+    });
   }
 
   /**
