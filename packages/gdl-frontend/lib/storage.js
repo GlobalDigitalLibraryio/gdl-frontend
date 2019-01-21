@@ -88,7 +88,7 @@ export function getHomeTutorialStatus(req?: $Request): boolean {
   const hasFinished = req
     ? req.cookies[HOME_TUTORIAL_STATUS_KEY]
     : cookies().get(HOME_TUTORIAL_STATUS_KEY, { doNotParse: false });
-  return hasFinished === 'true' || false;
+  return hasFinished === 'true' || hasFinished === true || false;
 }
 
 export function setFinishedBookDetailsTutorial(callback?: () => void) {
@@ -101,7 +101,7 @@ export function getBookDetailsTutorialStatus(req?: $Request): boolean {
   const hasFinished = req
     ? req.cookies[BOOKDETAILS_TUTORIAL_STATUS_KEY]
     : cookies().get(BOOKDETAILS_TUTORIAL_STATUS_KEY, { doNotParse: false });
-  return hasFinished === 'true' || false;
+  return hasFinished === 'true' || hasFinished === true || false;
 }
 
 export function clearTutorial() {
