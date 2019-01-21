@@ -52,9 +52,19 @@ import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+import { DimensionContext } from '../../context/DimensionContext';
+import Tutorial from '../../components/Tutorials/BookDetailsTutorial';
+
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import LevelRibbon from '../../components/Level/LevelRibbon';
 import OfflineIcon from '../../components/OfflineIcon';
+import { TutorialContext } from '../../context/TutorialContext';
+import {
+  tabletBookTarget,
+  tabletOfflineTarget,
+  mobileBookTarget,
+  mobileOfflineTarget
+} from '../../components/Tutorials/BookDetailsTutorial';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -156,6 +166,19 @@ class BookPage extends React.Component<Props, State> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
+          <TutorialContext.Consumer>
+            {({ bookDetailStatus, onFinishedBookDetailsTutorial }) => (
+              <DimensionContext.Consumer>
+                {({ media }) => (
+                  <Tutorial
+                    media={media}
+                    status={!bookDetailStatus}
+                    onFinish={onFinishedBookDetailsTutorial}
+                  />
+                )}
+              </DimensionContext.Consumer>
+            )}
+          </TutorialContext.Consumer>
           <Main background="white" css={mq({ marginTop: [200, 100, 100] })}>
             <Container css={mq({ marginTop: [-160, -54, -54] })}>
               <div>
@@ -167,7 +190,7 @@ class BookPage extends React.Component<Props, State> {
                       size="large"
                     />
                     <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
-                      <ReadBookLink book={book} />
+                      <ReadBookLink book={book} target={tabletBookTarget} />
                     </Hidden>
                     <Hidden
                       only="mobile"
@@ -192,7 +215,11 @@ class BookPage extends React.Component<Props, State> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} key={book.uuid} />
+                        <BookActions1
+                          book={book}
+                          key={book.uuid}
+                          target={tabletOfflineTarget}
+                        />
                       </div>
                     </Hidden>
                     <Typography
@@ -211,12 +238,16 @@ class BookPage extends React.Component<Props, State> {
                       {book.description}
                     </Typography>
                     <Hidden only="mobile">
-                      <ReadBookLink book={book} />
+                      <ReadBookLink book={book} target={mobileBookTarget} />
                     </Hidden>
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} key={book.uuid} />
+                  <BookActions1
+                    book={book}
+                    key={book.uuid}
+                    target={mobileOfflineTarget}
+                  />
                 </Hidden>
                 <Divider />
 
@@ -256,7 +287,7 @@ class BookPage extends React.Component<Props, State> {
   }
 }
 
-const ReadBookLink = ({ book }) =>
+const ReadBookLink = ({ book, target }) =>
   book.bookFormat === 'HTML' ? (
     <Link
       route="read"
@@ -265,6 +296,7 @@ const ReadBookLink = ({ book }) =>
       prefetch
     >
       <Button
+        data-target={target}
         variant="contained"
         color="primary"
         size="large"
@@ -295,7 +327,7 @@ const ReadBookLink = ({ book }) =>
  * updated props
  */
 class BookActions1 extends React.Component<
-  { book: BookDetails },
+  { book: BookDetails, target: string },
   {
     anchorEl: ?HTMLElement,
     isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
@@ -370,7 +402,7 @@ class BookActions1 extends React.Component<
   };
 
   render() {
-    const { book } = this.props;
+    const { book, target } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -408,6 +440,8 @@ class BookActions1 extends React.Component<
           <NoSsr>
             {offlineLibrary && (
               <IconButton
+                component="button"
+                className={target}
                 isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
                 icon={
                   <OfflineIcon
