@@ -18,7 +18,7 @@ const GDL_ENVIRONMENT /*: string */ = (function() {
   return (
     (typeof window !== 'undefined'
       ? window[globalVarName]
-      : process.env.GDL_ENVIRONMENT) || 'demo'
+      : process.env.GDL_ENVIRONMENT) || 'dev'
   );
 })();
 
