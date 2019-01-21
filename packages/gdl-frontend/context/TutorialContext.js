@@ -25,7 +25,6 @@ const withTutorialContext = (Component: React.ComponentType<*>) => {
 type TutorialState = {
   homePageStatus: boolean,
   bookDetailStatus: boolean,
-  homePageTutorialInProgress: boolean,
   resetTutorialStatus: () => void,
   onClearTutorial: () => void,
   onFinishHomeTutorial: () => void,
@@ -35,7 +34,6 @@ type TutorialState = {
 const TutorialContext = React.createContext<TutorialState>({
   homePageStatus: getHomeTutorialStatus(),
   bookDetailStatus: getBookDetailsTutorialStatus(),
-  homePageTutorialInProgress: false,
   resetTutorialStatus: () => {},
   onClearTutorial: () => {},
   onFinishHomeTutorial: () => {},
@@ -46,7 +44,6 @@ class TutorialProvider extends React.Component<*, TutorialState> {
   state = {
     homePageStatus: getHomeTutorialStatus(),
     bookDetailStatus: getBookDetailsTutorialStatus(),
-    homePageTutorialInProgress: false,
     resetTutorialStatus: () => {},
     onClearTutorial: () => {},
     onFinishHomeTutorial: () => {},
@@ -78,7 +75,6 @@ class TutorialProvider extends React.Component<*, TutorialState> {
       <TutorialContext.Provider
         value={{
           ...this.state,
-          homePageTutorialInProgress: !this.state.homePageStatus,
           resetTutorialStatus: this.resetTutorialStatus,
           onClearTutorial: this.onClearTutorial,
           onFinishHomeTutorial: this.onFinishHomeTutorial,
