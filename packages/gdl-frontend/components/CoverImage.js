@@ -21,6 +21,10 @@ const sizesMap = {
     width: ['105px', '130px'],
     height: ['130px', '160px']
   },
+  medium: {
+    width: ['130px', '130px'],
+    height: ['170px', '160px']
+  },
   large: {
     width: ['180px', '310px'],
     height: ['220px', '380px']
@@ -31,7 +35,7 @@ type Props = {
   className?: string,
   noShadow?: boolean,
   // By using predetermined sizes for the book covers, we make sure to take advantage of the client's browser cache to not redownload the image in lots of different sizes on different pages
-  size: 'small' | 'large',
+  size: 'small' | 'medium' | 'large',
   coverImage: ?CoverImageType
 };
 

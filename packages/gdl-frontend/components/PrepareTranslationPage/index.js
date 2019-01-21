@@ -22,7 +22,7 @@ import {
   Button
 } from '@material-ui/core';
 
-import StartTranslationButton from './StartTranslationButton';
+import TranslateDropdown from '../TranslateDropdown';
 import { sendToTranslation } from '../../fetch';
 import type { BookDetails, Language, Translation } from '../../types';
 import { Link } from '../../routes';
@@ -48,7 +48,8 @@ type State = {
   translationState: 'SELECT' | 'PREPARING' | 'SUCCESS' | 'ERROR',
   selectedLanguage: ?Language,
   translation?: Translation,
-  showLanguageMenu: boolean
+  showLanguageMenu: boolean,
+  menuIsOpen: boolean
 };
 
 class PrepareTranslatePage extends React.Component<Props, State> {
@@ -56,7 +57,21 @@ class PrepareTranslatePage extends React.Component<Props, State> {
     selectedLanguage: null,
     translationState: translationStates.SELECT,
     showLanguageMenu: false,
-    translation: undefined
+    translation: undefined,
+    menuIsOpen: false
+  };
+
+  anchorEl: React$ElementRef<Button> = React.createRef();
+
+  handleToggle = () => {
+    this.setState(state => ({ menuIsOpen: !state.menuIsOpen }));
+  };
+
+  closeMenu = (event: SyntheticInputEvent<EventTarget>) => {
+    if (this.anchorEl.current.contains(event.target)) {
+      return;
+    }
+    this.setState({ menuIsOpen: false });
   };
 
   toggleLanguageMenu = () =>
@@ -100,7 +115,12 @@ class PrepareTranslatePage extends React.Component<Props, State> {
 
   render() {
     const { book, supportedLanguages } = this.props;
-    const { selectedLanguage, translationState, translation } = this.state;
+    const {
+      selectedLanguage,
+      translationState,
+      translation,
+      menuIsOpen
+    } = this.state;
     return (
       <Container
         css={{ marginTop: spacing.large, marginBottom: spacing.large }}
@@ -208,7 +228,27 @@ class PrepareTranslatePage extends React.Component<Props, State> {
 
         <div css={{ textAlign: 'center' }}>
           {translationState === translationStates.SUCCESS ? (
-            <StartTranslationButton book={book} translation={translation} />
+            <>
+              <Button
+                buttonRef={this.anchorEl}
+                aria-owns={menuIsOpen ? 'menu-list-grow' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleToggle}
+                variant="contained"
+                color="primary"
+                size="large"
+                css={{ borderRadius: 2 }}
+              >
+                <Trans>Start translation</Trans>
+              </Button>
+              <TranslateDropdown
+                ref={this.anchorEl}
+                bookId={book.id}
+                crowdinUrl={translation && translation.crowdinUrl}
+                onClose={this.closeMenu}
+                menuIsOpen={menuIsOpen}
+              />
+            </>
           ) : (
             <>
               <LoadingButton
@@ -218,6 +258,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 color="primary"
                 size="large"
                 variant="outlined"
+                css={{ borderRadius: 2 }}
               >
                 <Trans>Prepare translation</Trans>
               </LoadingButton>
