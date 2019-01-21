@@ -10,6 +10,7 @@ const {
 } = require('../config');
 
 const googleAnalytics = 'www.google-analytics.com';
+const facebookPixel = 'https://connect.facebook.net';
 
 const directives = {
   defaultSrc: ["'self'"],
@@ -18,7 +19,8 @@ const directives = {
     "'unsafe-inline'",
     googleAnalytics,
     'https://cdn.polyfill.io',
-    'https://storage.googleapis.com' // Used by Workbox for PWA/service worker
+    'https://storage.googleapis.com', // Used by Workbox for PWA/service worker
+    facebookPixel
   ],
   styleSrc: [
     "'self'",
@@ -37,7 +39,8 @@ const directives = {
     'data:',
     'https://*.digitallibrary.io',
     'https://*.cloudinary.com',
-    googleAnalytics
+    googleAnalytics,
+    'https://www.facebook.com'
   ],
   connectSrc: [
     "'self'",
@@ -45,7 +48,8 @@ const directives = {
     'https://res.cloudinary.com',
     'https://digitallibrary.eu.auth0.com',
     `https://sentry.io/api/${SENTRY_PROJECT_ID}/store/`,
-    googleAnalytics
+    googleAnalytics,
+    facebookPixel
   ],
   reportUri: `https://sentry.io/api/${SENTRY_PROJECT_ID}/csp-report/?sentry_key=${SENTRY_PUBLIC_KEY}`
 };
