@@ -32,6 +32,8 @@ import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
+import type { ReadingLevel } from '../../gqlTypes';
+
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
@@ -169,6 +171,7 @@ export default class HomePage extends React.Component<Props> {
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
+                shouldBeColorized
                 heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
@@ -181,12 +184,17 @@ export default class HomePage extends React.Component<Props> {
 
           {Object.entries(readingLevels)
             // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
-            .filter(([_, data]) => data.results && data.results.length > 0)
-            .map(([level, data]) => (
+            .filter(
+              ([_, data]: [ReadingLevel, any]) =>
+                data.results && data.results.length > 0
+            )
+            .map(([level, data]: [ReadingLevel, any]) => (
               <View {...bookListViewStyle} key={level}>
                 <Container width="100%">
                   <BookList
                     heading={<ReadingLevelTrans readingLevel={level} />}
+                    level={level}
+                    shouldBeColorized
                     browseLinkProps={{
                       lang: languageCode,
                       readingLevel: level,

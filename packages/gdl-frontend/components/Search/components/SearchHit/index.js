@@ -17,6 +17,7 @@ import { Link } from '../../../../routes';
 import CoverImage from '../../../CoverImage';
 import A from '../../../../elements/A';
 import { BookTitle, BookDescription, Wrapper, Divider } from './styled';
+import CircleLabel from '../../../GlobalMenu/CircleLabel';
 
 type Book = $ReadOnly<{
   id: string,
@@ -86,6 +87,14 @@ const SearchHit = ({ book }: { book: Book }) => {
         >
           {book.language.name}
           <Divider ariaHidden />
+          <CircleLabel
+            level={book.readingLevel}
+            style={{
+              marginBottom: '-2px',
+              marginRight: '4px',
+              fontSize: 'small'
+            }}
+          />
           <ReadingLevelTrans readingLevel={book.readingLevel} />
         </Typography>
       </div>

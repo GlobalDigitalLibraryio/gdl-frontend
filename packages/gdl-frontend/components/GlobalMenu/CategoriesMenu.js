@@ -14,6 +14,7 @@ import {
   List,
   ListSubheader,
   ListItem,
+  ListItemIcon,
   ListItemText,
   Typography
 } from '@material-ui/core';
@@ -22,10 +23,13 @@ import { Query } from 'react-apollo';
 
 import { getBookLanguageCode } from '../../lib/storage';
 import Link from '../BrowseLink';
+import CircleLabel from './CircleLabel';
 import ReadingLevelTrans from '../ReadingLevelTrans';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
+  enableParentSwipe: () => void,
+  disableParentSwipe: () => void,
   onSelectCategory: () => void
 |};
 
@@ -46,9 +50,15 @@ export default class CategoriesMenu extends React.Component<
     showMenu: false
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, onSelectCategory } = this.props;
@@ -72,6 +82,7 @@ export default class CategoriesMenu extends React.Component<
               disableSwipeToOpen
               disableBackdropTransition
               open={showMenu && !loading}
+              onOpen={() => {}}
               onClose={this.handleCloseMenu}
             >
               {error && (
@@ -117,6 +128,9 @@ const Categories = ({
           passHref
         >
           <ListItem onClick={onSelectCategory} button component="a">
+            <ListItemIcon>
+              <CircleLabel />
+            </ListItemIcon>
             <ListItemText inset>
               <Trans>New arrivals</Trans>
             </ListItemText>
@@ -131,6 +145,9 @@ const Categories = ({
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
               <ListItemText inset>
                 <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
@@ -153,8 +170,11 @@ const Categories = ({
           sort="-arrivalDate"
           passHref
         >
-          <ListItem button component="a" onClick={onSelectCategory}>
-            <ListItemText inset>
+          <ListItem button onClick={onSelectCategory} component="a">
+            <ListItemIcon>
+              <CircleLabel />
+            </ListItemIcon>
+            <ListItemText>
               <Trans>New arrivals</Trans>
             </ListItemText>
           </ListItem>
@@ -168,7 +188,10 @@ const Categories = ({
             passHref
           >
             <ListItem onClick={onSelectCategory} button component="a">
-              <ListItemText inset>
+              <ListItemIcon>
+                <CircleLabel level={level} />
+              </ListItemIcon>
+              <ListItemText>
                 <ReadingLevelTrans readingLevel={level} />
               </ListItemText>
             </ListItem>

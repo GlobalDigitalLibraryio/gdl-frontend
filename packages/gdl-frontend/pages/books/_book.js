@@ -52,13 +52,10 @@ import BookList from '../../components/BookList';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
-import {
-  BookJsonLd,
-  Metadata,
-  LevelRibbon
-} from '../../components/BookDetailsPage';
+import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import Offline, { OfflineIcon } from '../../components/Offline';
+import LevelRibbon from '../../components/Level/LevelRibbon';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -168,8 +165,8 @@ class BookPage extends React.Component<{ book: Book }> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
-          <Main background="white" css={mq({ marginTop: [200, 100] })}>
-            <Container css={mq({ marginTop: [-160, -54] })}>
+          <Main background="white" css={mq({ marginTop: [200, 100, 100] })}>
+            <Container css={mq({ marginTop: [-160, -54, -54] })}>
               <div>
                 <Grid>
                   <GridItem css={media.tablet`flex: 0 0 310px;`}>
@@ -249,19 +246,16 @@ class BookPage extends React.Component<{ book: Book }> {
                 <Divider />
                 <Query query={SIMILAR_BOOKS_QUERY} variables={{ id: book.id }}>
                   {({ data, loading, error }) => {
-                    if (
-                      offline ||
-                      loading ||
-                      error ||
-                      data.book.similar.results.length < 1
-                    ) {
+                    if (offline || error) {
                       return null;
                     }
+
                     return (
                       <View mb={spacing.medium}>
                         <BookList
+                          loading={loading && !data.book}
                           heading={<Trans>Similar</Trans>}
-                          books={data.book.similar.results}
+                          books={data.book ? data.book.similar.results : []}
                         />
                       </View>
                     );

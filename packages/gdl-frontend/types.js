@@ -29,6 +29,7 @@ export type ConfigShape = {
     },
     DEFAULT_LANGUAGE: Language,
     googleAnalyticsId: ?string,
+    facebookPixelId: ?string,
     zendeskUrl: string
   },
   // Empty object on the client

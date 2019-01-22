@@ -58,6 +58,18 @@ const googleAnalyticsId = () => {
   }
 };
 
+// Only activated pixel in production
+const facebookPixelId = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'prod':
+      return process.env.GDL_FACEBOOK_PIXEL_ID;
+    case 'local':
+      return process.env.GDL_FACEBOOK_PIXEL_ID;
+    default:
+      return null;
+  }
+};
+
 module.exports = {
   serverRuntimeConfig: {
     port: process.env.GDL_FRONTEND_PORT || 3005,
@@ -88,6 +100,8 @@ module.exports = {
     },
 
     googleAnalyticsId: googleAnalyticsId(),
+
+    facebookPixelId: facebookPixelId(),
 
     zendeskUrl: 'https://digitallibrary.zendesk.com/hc/en-us/requests/new'
   }

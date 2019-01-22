@@ -7,7 +7,7 @@
  */
 
 import { css } from 'react-emotion';
-import { TABLET_BREAKPOINT } from './theme/misc';
+import { TABLET_BREAKPOINT, LARGER_TABLET_BREAKPOINT } from './theme/misc';
 
 /**
  * Mobile first media template
@@ -28,7 +28,8 @@ const query = (condition: 'min' | 'max', width: number) => (
 
 const media = {
   mobile: query('max', TABLET_BREAKPOINT - 1),
-  tablet: query('min', TABLET_BREAKPOINT)
+  tablet: query('min', TABLET_BREAKPOINT),
+  largerTablet: query('min', LARGER_TABLET_BREAKPOINT)
 };
 
 export default media;

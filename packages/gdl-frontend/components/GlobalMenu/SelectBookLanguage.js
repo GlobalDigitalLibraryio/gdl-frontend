@@ -38,7 +38,9 @@ const LANGUAGES_QUERY = gql`
 type Props = {
   anchor?: 'left' | 'right',
   children: (data: { onClick: () => void, loading: boolean }) => Node,
-  onSelectLanguage?: Language => void
+  onSelectLanguage?: Language => void,
+  enableParentSwipe?: () => void,
+  disableParentSwipe?: () => void
 };
 
 type State = {
@@ -68,9 +70,15 @@ class SelectBookLanguage extends React.Component<Props, State> {
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
   };
 
-  handleShowMenu = () => this.setState({ showMenu: true });
+  handleShowMenu = () => {
+    this.setState({ showMenu: true });
+    this.props.disableParentSwipe && this.props.disableParentSwipe();
+  };
 
-  handleCloseMenu = () => this.setState({ showMenu: false });
+  handleCloseMenu = () => {
+    this.setState({ showMenu: false });
+    this.props.enableParentSwipe && this.props.enableParentSwipe();
+  };
 
   render() {
     const { children, anchor } = this.props;
@@ -93,6 +101,7 @@ class SelectBookLanguage extends React.Component<Props, State> {
               disableSwipeToOpen
               disableBackdropTransition
               onClose={this.handleCloseMenu}
+              onOpen={() => {}}
               open={showMenu && !loading}
               anchor={anchor}
             >

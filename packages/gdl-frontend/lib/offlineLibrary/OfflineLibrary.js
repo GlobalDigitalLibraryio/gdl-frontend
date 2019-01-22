@@ -163,7 +163,6 @@ export default class OfflineLibrary {
       await this.timestampModel.setTimestamp(book.id);
       await this.bookStore.setItem(book.id, book);
 
-      console.log(data);
       return true;
     } catch (error) {
       // If something went wrong when offlining the book, cleanup after ourselves

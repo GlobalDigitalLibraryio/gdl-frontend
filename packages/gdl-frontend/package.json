@@ -10,7 +10,8 @@
       "<rootDir>/pages/",
       "<rootDir>/hocs/",
       "<rootDir>/elements/"
-    ]
+    ],
+    "format": "minimal"
   },
   "jest": {
     "setupFiles": [
@@ -59,6 +60,7 @@
     "polished": "2.3.0",
     "prop-types": "15.6.2",
     "react": "16.6.3",
+    "react-content-loader": "3.4.1",
     "react-dom": "16.6.3",
     "react-emotion": "9.2.12",
     "react-ga": "2.5.3",

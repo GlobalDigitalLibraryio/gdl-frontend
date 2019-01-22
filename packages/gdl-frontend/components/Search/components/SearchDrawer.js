@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { SwipeableDrawer } from '@material-ui/core';
+import { Drawer } from '@material-ui/core';
 import SearchInput from './SearchInput';
 
 export default class SearchDrawer extends React.Component<
@@ -28,16 +28,9 @@ export default class SearchDrawer extends React.Component<
 
     return (
       <>
-        <SwipeableDrawer
-          disableDiscovery
-          disableSwipeToOpen
-          disableBackdropTransition
-          anchor="top"
-          open={showDrawer}
-          onClose={this.handleClose}
-        >
+        <Drawer anchor="top" open={showDrawer} onClose={this.handleClose}>
           <SearchInput autoFocus onSubmit={this.handleClose} />
-        </SwipeableDrawer>
+        </Drawer>
         {this.props.children({ onShowClick: this.handleOpen })}
       </>
     );

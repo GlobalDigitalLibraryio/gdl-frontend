@@ -8090,6 +8090,11 @@ react-apollo@^2.3.2:
     lodash.isequal "^4.5.0"
     prop-types "^15.6.0"
 
+react-content-loader@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/react-content-loader/-/react-content-loader-3.4.1.tgz#8eb273c630ffb36cb92f4383be811828eb8e1e66"
+  integrity sha512-lco6voFNwAGFBhVtczjyBuUKcBV1m8Ce3GNNEHm6maOCTIqGQePnomkwkfgcnpT9izZdAbpgeE8O4J/X+OG3JA==
+
 react-cropper@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-1.0.1.tgz#6e5595abb8576088ab3e51ecfdcfe5f865d0340f"
@@ -8129,6 +8134,11 @@ react-event-listener@^0.6.2:
     "@babel/runtime" "7.0.0"
     prop-types "^15.6.0"
     warning "^4.0.1"
+
+react-facebook-pixel@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/react-facebook-pixel/-/react-facebook-pixel-0.1.2.tgz#a1519f215611eb136802d78542aface547972827"
+  integrity sha512-6ObMnP8U42m/r2nCft0VqVG8xPk2JEsA4tDK+sRovTXhIaA/UmH2CywmC2lh/0yXY3Sq9I2MQmBBUMjZ6/rfbg==
 
 react-final-form@3.6.5:
   version "3.6.5"
