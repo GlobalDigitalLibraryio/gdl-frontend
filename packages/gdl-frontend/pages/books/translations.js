@@ -21,6 +21,7 @@ import {
   Translate as TranslateIcon
 } from '@material-ui/icons';
 import styled, { css } from 'react-emotion';
+import facepaint from 'facepaint';
 
 import doFetch, { fetchMyTranslations } from '../../fetch';
 import { Link } from '../../routes';
@@ -34,6 +35,16 @@ import TranslateDropdown from '../../components/TranslateDropdown';
 import { spacing } from '../../style/theme';
 import mq from '../../style/mq';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+
+/**
+ * There is a breakpoint interval between 768-865px in width
+ * that breaks the UI for the translate dropdown. Which is why
+ * a custom media query is used here.
+ */
+const customMedia = facepaint([
+  `@media(min-width: ${TABLET_BREAKPOINT}px)`,
+  `@media(min-width: 866px)`
+]);
 
 class TranslationCard extends React.Component<
   {
@@ -113,15 +124,15 @@ class TranslationCard extends React.Component<
               color="primary"
               size="large"
               fullWidth
-              css={{
+              css={mq({
                 justifyContent: 'flex-start',
                 borderRadius: 0,
-                fontSize: 16
-              }}
+                fontSize: [13, 16, 16]
+              })}
             >
               <SyncIcon
                 className={isLoading ? spin : null}
-                css={{ fontSize: 30 }}
+                css={mq({ fontSize: [24, 30, 30] })}
               />
               <Trans>Sync</Trans>
             </Button>
@@ -134,13 +145,13 @@ class TranslationCard extends React.Component<
               size="large"
               variant={menuIsOpen ? 'contained' : 'text'}
               fullWidth
-              css={{
+              css={mq({
                 justifyContent: 'flex-start',
                 borderRadius: 0,
-                fontSize: 16
-              }}
+                fontSize: [13, 16, 16]
+              })}
             >
-              <TranslateIcon css={{ fontSize: 30 }} />
+              <TranslateIcon css={mq({ fontSize: [24, 30, 30] })} />
               <Trans>Translate</Trans>
             </Button>
 
@@ -152,6 +163,7 @@ class TranslationCard extends React.Component<
               menuIsOpen={menuIsOpen}
               popperStyle={css`
                 margin-right: initial;
+                ${customMedia({ paddingRight: [0, 28, 0] })};
               `}
             />
           </Grid>

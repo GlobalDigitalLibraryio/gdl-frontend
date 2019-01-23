@@ -109,12 +109,13 @@ class TranslateEditPage extends React.Component<Props, State> {
     super(props);
     const { initialChapter, crowdinChapters } = props;
 
-    // Init both frontPage and loaded chapter
-    const frontPage = crowdinChapters[0];
-    const chapters = {
-      [frontPage.id]: frontPage,
-      [initialChapter.id]: initialChapter
-    };
+    // Create frontPage with title and description and concat with chapters
+    const chapters = crowdinChapters
+      ? {
+          [crowdinChapters[0].id]: crowdinChapters[0],
+          [initialChapter.id]: initialChapter
+        }
+      : { [initialChapter.id]: initialChapter };
 
     const current = crowdinChapters.find(c => c.id === initialChapter.id);
 

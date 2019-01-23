@@ -15,7 +15,7 @@ import {
 import {
   Card,
   CardContent,
-  Drawer,
+  SwipeableDrawer,
   Typography,
   Hidden,
   Grid,
@@ -214,7 +214,11 @@ class PrepareTranslatePage extends React.Component<Props, State> {
           </Grid>
         </Grid>
 
-        <Drawer
+        <SwipeableDrawer
+          disableDiscovery
+          disableSwipeToOpen
+          disableBackdropTransition
+          onOpen={() => {}}
           open={this.state.showLanguageMenu}
           onClose={this.toggleLanguageMenu}
           anchor="right"
@@ -225,7 +229,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
             selectedLanguageCode={selectedLanguage && selectedLanguage.code}
             onSelectLanguage={this.handleChangeLanguage}
           />
-        </Drawer>
+        </SwipeableDrawer>
 
         <div css={{ textAlign: 'center' }}>
           {translationState === translationStates.SUCCESS ? (

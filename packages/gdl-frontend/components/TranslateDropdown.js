@@ -18,6 +18,7 @@ import {
   Typography,
   ClickAwayListener
 } from '@material-ui/core';
+import { colors } from '../style/theme';
 
 type Props = {
   menuIsOpen: boolean,
@@ -53,40 +54,26 @@ const TranslateDropdown = React.forwardRef(
                     lang: 'en'
                   }}
                 >
-                  <ButtonBase
-                    css={{
-                      padding: '8px 0 8px 24px',
-                      width: ref.current ? ref.current.clientWidth : null,
-                      justifyContent: 'flex-start',
-                      borderRadius: 0,
-                      backgroundColor: '#C6E9FD'
-                    }}
-                  >
+                  <MenuButton buttonRef={ref}>
                     <Typography style={{ fontSize: '0.9375rem' }} align="left">
                       <Trans>Translate in context</Trans>
                     </Typography>
-                  </ButtonBase>
+                  </MenuButton>
                 </Link>
               </div>
               <div style={{ marginTop: 5 }}>
-                <ButtonBase
+                <MenuButton
                   component="a"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={crowdinUrl}
+                  buttonRef={ref}
                   onClick={() => Router.pushRoute('translations')}
-                  css={{
-                    padding: '8px 0 8px 24px',
-                    width: ref.current ? ref.current.clientWidth : null,
-                    justifyContent: 'flex-start',
-                    borderRadius: 0,
-                    backgroundColor: '#C6E9FD'
-                  }}
                 >
                   <Typography style={{ fontSize: '0.9375rem' }} align="left">
                     <Trans>Mobile translation</Trans>
                   </Typography>
-                </ButtonBase>
+                </MenuButton>
               </div>
             </div>
           </ClickAwayListener>
@@ -95,6 +82,32 @@ const TranslateDropdown = React.forwardRef(
     </Popper>
   )
 );
+
+/**
+ * Wrapped ButtonBase, so we can reuse css style which initially cant handle dynamic props
+ *
+ * @param {ref of parent button to scale width} param0
+ */
+const MenuButton = ({ buttonRef, ...rest }) => {
+  const clientWidth = buttonRef.current ? buttonRef.current.clientWidth : null;
+  const style = css`
+    padding: 8px 0 8px 24px;
+    width: ${clientWidth}px;
+    justify-content: flex-start;
+    border-radius: 0;
+    background-color: #c6e9fd;
+    &:hover,
+    &:focus {
+      background-color: ${colors.default};
+      p {
+        color: #fff;
+        font-weight: 500;
+      }
+    }
+  `;
+
+  return <ButtonBase {...rest} css={style} />;
+};
 
 const styles = {
   translationMenu: css`
