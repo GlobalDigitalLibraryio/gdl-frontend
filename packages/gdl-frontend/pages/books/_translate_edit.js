@@ -56,6 +56,7 @@ type State = {
 
 class TranslateEditPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
+    console.log('query', query);
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {
       return {
@@ -63,26 +64,26 @@ class TranslateEditPage extends React.Component<Props, State> {
       };
     }
     const book = bookRes.data;
-
+    console.log('book', book);
     const crowdinBook = await fetchCrowdinBook(book.id, book.language.code);
     if (!crowdinBook.isOk) return { statusCode: crowdinBook.statusCode };
-
+    console.log('crowdinBook', crowdinBook);
     const crowdinProjectName = await fetchTranslationProject();
     if (!crowdinProjectName.isOk)
       return { statusCode: crowdinProjectName.statusCode };
-
+    console.log('project', crowdinProjectName);
     // Flow complains because selectedTranslation can be undefined.
     // Graphql could handle this better.. $FlowFixMe
     const myTranslations = await fetchMyTranslations();
     if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
-
+    console.log('trans', myTranslations);
     const selectedTranslation = myTranslations.data.find(
       element => element.id === book.id
     );
 
     let initialChapter;
     const frontPage = createFrontPage(crowdinBook.data);
-
+    console.log('front', frontPage);
     if (query.chapterId) {
       const chapterInfo = crowdinBook.data.chapters.find(
         chapter => chapter.id.toString() === query.chapterId
@@ -108,7 +109,7 @@ class TranslateEditPage extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     const { initialChapter, crowdinChapters } = props;
-
+    console.log('contructor', initialChapter, crowdinChapters);
     // Create frontPage with title and description and concat with chapters
     const chapters = crowdinChapters
       ? {
