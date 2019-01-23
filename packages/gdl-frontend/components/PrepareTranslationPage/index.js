@@ -220,6 +220,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
           anchor="right"
         >
           <LanguageList
+            enableSearch
             languages={supportedLanguages}
             selectedLanguageCode={selectedLanguage && selectedLanguage.code}
             onSelectLanguage={this.handleChangeLanguage}
