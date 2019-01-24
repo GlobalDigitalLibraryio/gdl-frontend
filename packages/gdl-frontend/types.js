@@ -114,6 +114,8 @@ export type CoverImage = {
   variants?: { [string]: ImageCropCoordinates }
 };
 
+export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
+
 export type Translation = {
   translatedFrom: Language,
   translatedTo: Language,
@@ -124,12 +126,11 @@ export type Translation = {
   publisher: {
     name: string
   },
+  readingLevel: ReadingLevel,
   coverImage?: CoverImage
 };
 
 export type Category = 'library_books' | 'classroom_books';
-
-export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
 
 export type CrowdinBook = {
   id: number,

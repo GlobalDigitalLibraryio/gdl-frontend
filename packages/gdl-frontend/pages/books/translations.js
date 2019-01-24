@@ -35,6 +35,8 @@ import TranslateDropdown from '../../components/TranslateDropdown';
 import { spacing } from '../../style/theme';
 import mq from '../../style/mq';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 
 /**
  * There is a breakpoint interval between 768-865px in width
@@ -179,8 +181,18 @@ class TranslationCard extends React.Component<
           >
             <Grid item>
               <Typography variant="h5">{translation.title}</Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" component="span">
                 <Trans>From {translation.publisher.name}</Trans>
+                {', '}
+                <CircleLabel
+                  level={translation.readingLevel}
+                  style={{
+                    marginBottom: '-5px',
+                    marginRight: '4px',
+                    fontSize: 22
+                  }}
+                />
+                <ReadingLevelTrans readingLevel={translation.readingLevel} />
               </Typography>
             </Grid>
 
@@ -332,7 +344,7 @@ class MyTranslationsPage extends React.Component<{}, State> {
     return (
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
-        <Container>
+        <Container style={{ marginBottom: spacing.large }}>
           <Typography
             variant="h4"
             component="h1"
@@ -346,6 +358,7 @@ class MyTranslationsPage extends React.Component<{}, State> {
             <CircularProgress
               css={{
                 marginTop: spacing.large,
+                marginBottom: spacing.large,
                 display: 'block',
                 marginLeft: 'auto',
                 marginRight: 'auto'
