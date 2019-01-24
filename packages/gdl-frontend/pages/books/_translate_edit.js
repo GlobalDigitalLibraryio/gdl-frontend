@@ -10,6 +10,7 @@ import * as React from 'react';
 import { withRouter } from 'next/router';
 import Head from 'next/head';
 import getConfig from 'next/config';
+import { CircularProgress } from '@material-ui/core';
 
 import { Router } from '../../routes';
 import Reader from '../../components/Reader';
@@ -20,6 +21,7 @@ import {
   fetchCrowdinChapter,
   fetchTranslationProject
 } from '../../fetch';
+import Container from '../../elements/Container';
 import type {
   ConfigShape,
   BookDetails,
@@ -50,13 +52,13 @@ type Props = {
 };
 
 type State = {
-  chapters: { [number]: FrontPage | Chapter },
-  current: ChapterSummary
+  chapters: ?{ [number]: FrontPage | Chapter },
+  current: ?ChapterSummary,
+  loading: boolean
 };
 
 class TranslateEditPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
-    console.log('query', query);
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {
       return {
@@ -64,26 +66,17 @@ class TranslateEditPage extends React.Component<Props, State> {
       };
     }
     const book = bookRes.data;
-    console.log('book', book);
+
     const crowdinBook = await fetchCrowdinBook(book.id, book.language.code);
     if (!crowdinBook.isOk) return { statusCode: crowdinBook.statusCode };
-    console.log('crowdinBook', crowdinBook);
+
     const crowdinProjectName = await fetchTranslationProject();
     if (!crowdinProjectName.isOk)
       return { statusCode: crowdinProjectName.statusCode };
-    console.log('project', crowdinProjectName);
-    // Flow complains because selectedTranslation can be undefined.
-    // Graphql could handle this better.. $FlowFixMe
-    const myTranslations = await fetchMyTranslations();
-    if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
-    console.log('trans', myTranslations);
-    const selectedTranslation = myTranslations.data.find(
-      element => element.id === book.id
-    );
 
     let initialChapter;
     const frontPage = createFrontPage(crowdinBook.data);
-    console.log('front', frontPage);
+
     if (query.chapterId) {
       const chapterInfo = crowdinBook.data.chapters.find(
         chapter => chapter.id.toString() === query.chapterId
@@ -98,7 +91,6 @@ class TranslateEditPage extends React.Component<Props, State> {
 
     return {
       book,
-      translatedTo: selectedTranslation.translatedTo,
       initialChapter: initialChapter ? initialChapter.data : frontPage,
       showCanonicalChapterUrl: !query.chapterId,
       crowdinProjectName: crowdinProjectName.data,
@@ -106,11 +98,30 @@ class TranslateEditPage extends React.Component<Props, State> {
     };
   }
 
-  constructor(props: Props) {
-    super(props);
-    const { initialChapter, crowdinChapters } = props;
-    console.log('contructor', initialChapter, crowdinChapters);
-    // Create frontPage with title and description and concat with chapters
+  state = {
+    chapters: undefined,
+    current: undefined,
+    loading: true
+  };
+
+  async componentDidMount() {
+    const {
+      crowdinProjectName,
+      book,
+      initialChapter,
+      crowdinChapters
+    } = this.props;
+
+    // Flow complains because selectedTranslation can be undefined.
+    // Graphql could handle this better.. $FlowFixMe
+    const myTranslations = await fetchMyTranslations();
+    if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
+
+    const selectedTranslation = myTranslations.data.find(
+      element => element.id === book.id
+    );
+
+    //Create frontPage with title and description and concat with chapters
     const chapters = crowdinChapters
       ? {
           [crowdinChapters[0].id]: crowdinChapters[0],
@@ -124,27 +135,25 @@ class TranslateEditPage extends React.Component<Props, State> {
       throw new Error('Chapter not found in book');
     }
 
-    this.state = {
-      chapters,
-      current
-    };
-  }
+    this.setState({ chapters, current, loading: false }, () => {
+      // Preload the next and previous chapters, so we are ready when the user navigates
+      const next = this.getNext();
+      if (next) {
+        this.loadChapter(next.id);
+      }
 
-  componentDidMount() {
-    // Preload the next and previous chapters, so we are ready when the user navigates
-    const next = this.getNext();
-    if (next) {
-      this.loadChapter(next.id);
-    }
+      const prev = this.getPrevious();
+      if (prev) {
+        this.loadChapter(prev.id);
+      }
 
-    const prev = this.getPrevious();
-    if (prev) {
-      this.loadChapter(prev.id);
-    }
-
-    const { crowdinProjectName, book, translatedTo } = this.props;
-    window.localStorage.clear();
-    initInContext(book.id, crowdinProjectName.en, translatedTo);
+      window.localStorage.clear();
+      initInContext(
+        book.id,
+        crowdinProjectName.en,
+        selectedTranslation.translatedTo
+      );
+    });
   }
 
   getNext() {
@@ -161,7 +170,7 @@ class TranslateEditPage extends React.Component<Props, State> {
 
   async loadChapter(chapterId: number) {
     // Make sure we haven't loaded the chapter already
-    if (this.state.chapters[chapterId]) return;
+    if (this.state.chapters && this.state.chapters[chapterId]) return;
     const { crowdinChapters } = this.props;
     const chapterInfo =
       crowdinChapters.find(chapter => chapter.id === chapterId) ||
@@ -222,14 +231,28 @@ class TranslateEditPage extends React.Component<Props, State> {
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
-        chapterId: this.state.current.id || null
+        chapterId: this.state.current ? this.state.current.id : null
       },
       { shallow: true }
     );
 
   render() {
     const { book, showCanonicalChapterUrl } = this.props;
-    const { current, chapters } = this.state;
+    const { current, chapters, loading } = this.state;
+    if (loading || !current || !chapters) {
+      return (
+        <Container
+          css={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh'
+          }}
+        >
+          <CircularProgress size={60} />
+        </Container>
+      );
+    }
     const next = this.getNext();
     const prev = this.getPrevious();
 
