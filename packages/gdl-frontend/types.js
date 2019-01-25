@@ -70,6 +70,25 @@ export type License = {
 export type Chapter = {|
   id: number,
   content: string,
+  chapterType: string,
+  seqNo: number,
+  revision: number,
+  images: Array<string>,
+  title?: string,
+  description?: string
+|};
+
+export type ChapterSummary = {|
+  id: number,
+  seqNo: number,
+  url: string
+|};
+
+export type FrontPage = {|
+  id: number,
+  chapterType: 'FrontPage',
+  title: string,
+  description: string,
   seqNo: number,
   images: Array<string>
 |};
@@ -95,6 +114,8 @@ export type CoverImage = {
   variants?: { [string]: ImageCropCoordinates }
 };
 
+export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
+
 export type Translation = {
   translatedFrom: Language,
   translatedTo: Language,
@@ -105,12 +126,23 @@ export type Translation = {
   publisher: {
     name: string
   },
+  readingLevel: ReadingLevel,
   coverImage?: CoverImage
 };
 
 export type Category = 'library_books' | 'classroom_books';
 
-export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
+export type CrowdinBook = {
+  id: number,
+  title: string,
+  description: string,
+  coverImage: {
+    url: string,
+    imageId: string,
+    alttext: string
+  },
+  chapters: Array<ChapterSummary>
+};
 
 export type Book = $ReadOnly<{|
   id: number,
@@ -134,10 +166,7 @@ export type BookDetails = $ReadOnly<{|
   additionalInformation?: string,
   contributors: Array<Contributor>,
   availableLanguages: Array<Language>,
-  chapters: Array<{|
-    id: number,
-    seqNo: number
-  |}>,
+  chapters: Array<ChapterSummary>,
   bookFormat: 'PDF' | 'HTML',
   downloads: {
     epub?: string,

@@ -17,6 +17,12 @@ routes.add(
   `/${langParam}/books/translate/:id(\\d+)`,
   'books/_translate'
 );
+routes.add(
+  'translateEdit',
+  `/${langParam}/books/translate/:id(\\d+)/edit/:chapterId(\\d+)?`,
+  'books/_translate_edit'
+);
+
 routes.add({
   name: 'translations',
   pattern: '/books/translations',
