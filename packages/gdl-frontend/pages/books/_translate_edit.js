@@ -231,7 +231,8 @@ class TranslateEditPage extends React.Component<Props, State> {
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
-        chapterId: this.state.current ? this.state.current.id : null
+        // FrontPage is custom made and have been given id 0, which should not be appended in url.
+        chapterId: this.state.current && !!this.state.current.id ? this.state.current.id : null
       },
       { shallow: true }
     );
