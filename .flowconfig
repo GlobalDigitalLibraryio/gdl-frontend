@@ -1,6 +1,8 @@
 [ignore]
 .*/node_modules/jss/
 .*/node_modules/@lingui/.*[.]js[.]flow
+# https://github.com/emotion-js/emotion/issues/1154
+.*/node_modules/jest-emotion/src/utils.js
 
 [include]
 
