@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {

@@ -7,7 +7,8 @@
  */
 
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 
 import { colors } from '../../style/theme';

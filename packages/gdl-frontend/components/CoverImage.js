@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import Image from './Image';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
@@ -48,13 +48,12 @@ const CoverImage = ({
   className,
   noShadow = false
 }: Props) => {
-  const cn = cx({ [shadowStyle]: !noShadow }, className);
-
   if (coverImage == null) {
     return (
       <Image
         ariaHidden
-        className={cn}
+        className={className}
+        css={[!noShadow && shadowStyle]}
         responsiveHeight={sizesMap[size].height}
         // $FlowFixMe
         responsiveWidth={sizesMap[size].width}
@@ -73,7 +72,8 @@ const CoverImage = ({
   return (
     <Image
       ariaHidden
-      className={cn}
+      className={className}
+      css={[!noShadow && shadowStyle]}
       crossOrigin="anonymous"
       responsiveHeight={sizesMap[size].height}
       responsiveWidth={widths}

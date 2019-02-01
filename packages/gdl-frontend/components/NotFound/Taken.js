@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { keyframes, css } from 'react-emotion';
+import { keyframes, css } from '@emotion/core';
 
 const rotate360 = keyframes`
   from {
@@ -30,7 +30,7 @@ const svgClass = css`
 
 const Taken = () => (
   <svg
-    className={svgClass}
+    css={svgClass}
     aria-hidden
     xmlns="http://www.w3.org/2000/svg"
     width="442"
@@ -85,7 +85,7 @@ const Taken = () => (
         opacity=".3"
         transform="translate(175 239)"
       />
-      <g className={spinningGhostClass}>
+      <g css={spinningGhostClass}>
         <g transform="translate(176 241)">
           <path
             fill="#FFF"

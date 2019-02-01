@@ -8,14 +8,14 @@
 
 import React from 'react';
 import { Typography } from '@material-ui/core';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 type Props = {
   className?: string,
   openNewTab?: boolean
 };
 
-const A = ({ openNewTab, className, ...restProps }: Props) => {
+const A = ({ openNewTab, ...restProps }: Props) => {
   const props = {
     ...restProps
   };
@@ -25,14 +25,7 @@ const A = ({ openNewTab, className, ...restProps }: Props) => {
     // $FlowFixMe
     props.rel = 'noopener noreferrer';
   }
-  return (
-    <Typography
-      component="a"
-      color="primary"
-      className={cx(style, className)}
-      {...props}
-    />
-  );
+  return <Typography component="a" color="primary" css={style} {...props} />;
 };
 
 const style = css`

@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import media from '../../../style/media';
 import PlayfulCat from '../illustrations/cat-in-bag.svg';
@@ -26,7 +26,7 @@ const svgStyle = css`
 
 const NoResults = () => (
   <div css={{ textAlign: 'center' }} aria-hidden>
-    <PlayfulCat className={svgStyle} />
+    <PlayfulCat css={svgStyle} />
     <span>
       <Trans>
         <strong>Oh no!</strong> Please try searching for something else.

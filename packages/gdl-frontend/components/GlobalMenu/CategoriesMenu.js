@@ -89,7 +89,7 @@ export default class CategoriesMenu extends React.Component<
                 <Typography
                   component="span"
                   color="error"
-                  css={{ margin: '1rem' }}
+                  style={{ margin: '1rem' }}
                 >
                   <Trans>Error loading data.</Trans>
                 </Typography>

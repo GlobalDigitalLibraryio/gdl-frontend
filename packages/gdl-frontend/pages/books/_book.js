@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import copyToClipboard from 'copy-to-clipboard';
 import gql from 'graphql-tag';
 import {

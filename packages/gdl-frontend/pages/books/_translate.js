@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans, I18n } from '@lingui/react';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import {
   ArrowForward as ArrowForwardIcon,
   ArrowDownward as ArrowDownwardIcon
@@ -298,7 +298,7 @@ class TranslatePage extends React.Component<Props, State> {
                   variant="contained"
                   color="primary"
                   size="large"
-                  className={styles.buttonSucccess}
+                  css={styles.buttonSucccess}
                 >
                   <Trans>Start translation</Trans>
                 </Button>

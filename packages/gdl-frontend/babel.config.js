@@ -4,10 +4,10 @@ module.exports = api => {
   const presets = [
     'next/babel',
     '@babel/preset-flow',
-    '@lingui/babel-preset-react'
+    '@lingui/babel-preset-react',
+    '@emotion/babel-preset-css-prop'
   ];
   const plugins = [
-    'emotion',
     'inline-react-svg',
     [
       'transform-imports',
