@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';

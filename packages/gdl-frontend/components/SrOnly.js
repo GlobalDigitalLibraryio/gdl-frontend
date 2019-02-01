@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { hideVisually } from 'polished';
 
 // A component whose content is only visible to screen readers

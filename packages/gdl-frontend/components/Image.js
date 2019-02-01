@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import mq from '../style/mq';
 
 // Base on gatbsy-image Kyle Mathews
@@ -146,7 +146,7 @@ export default class Image extends React.Component<Props, State> {
         className={className}
         responsiveHeight={responsiveHeight}
         responsiveWidth={responsiveWidth}
-        innerRef={this.handleRef}
+        ref={this.handleRef}
         aria-hidden={ariaHidden}
       >
         {this.state.isVisible && this.renderImg()}
