@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { ButtonBase, CircularProgress, Typography } from '@material-ui/core';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 type Props = {
   className?: string,
@@ -32,8 +32,9 @@ const CustomButton = ({
     <ButtonBase
       disabled={disabled || isLoading}
       focusRipple
-      className={cx(styles, className)}
+      css={styles}
       onClick={onClick}
+      className={className}
     >
       {isLoading ? <CircularProgress size={24} /> : icon}
       <Typography variant="body1" component="span">

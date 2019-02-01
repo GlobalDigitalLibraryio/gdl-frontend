@@ -7,7 +7,8 @@
  */
 
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Card, CardContent, Typography } from '@material-ui/core';
 
 import { Link } from '../routes';
@@ -34,7 +35,7 @@ export type Book = $ReadOnly<{
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
 export default ({ book }: { book: Book }) => (
-  <Card className={cardCss}>
+  <Card css={cardCss}>
     <Link
       route="book"
       params={{ id: book.bookId, lang: book.language.code }}

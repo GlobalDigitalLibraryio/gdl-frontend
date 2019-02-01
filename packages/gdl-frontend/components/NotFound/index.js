@@ -5,7 +5,6 @@
  *
  * See LICENSE
  */
-
 import * as React from 'react';
 import Taken from './Taken';
 import { Trans } from '@lingui/react';

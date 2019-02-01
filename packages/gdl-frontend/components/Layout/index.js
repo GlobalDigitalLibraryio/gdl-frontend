@@ -7,7 +7,7 @@
  */
 
 import React, { type Node } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import Navbar from '../Navbar';
 import GlobalMenu from '../GlobalMenu';

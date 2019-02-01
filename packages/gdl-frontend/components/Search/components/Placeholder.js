@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import media from '../../../style/media';
 import Search from '../illustrations/Search.svg';
@@ -26,7 +26,7 @@ const svgStyle = css`
 
 const Placeholder = () => (
   <div css={{ textAlign: 'center' }}>
-    <Search className={svgStyle} aria-hidden />
+    <Search css={svgStyle} aria-hidden />
     <Trans>Search for books.</Trans>
   </div>
 );

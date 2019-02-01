@@ -13,7 +13,8 @@ import { Trans, I18n } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 import media from '../../../style/media';
 
@@ -88,11 +89,7 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
             value={value}
           />
           <Tooltip title={<Trans>Search</Trans>}>
-            <IconButton
-              aria-label="Search"
-              className={styles.iconButton}
-              type="submit"
-            >
+            <IconButton aria-label="Search" css={iconButton} type="submit">
               <SearchIcon />
             </IconButton>
           </Tooltip>
@@ -143,13 +140,11 @@ const Input = styled('input')`
   }
 `;
 
-const styles = {
-  iconButton: css`
-    position: absolute;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    margin-left: 5px;
-    color: #fff;
-  `
-};
+const iconButton = css`
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+  color: #fff;
+`;

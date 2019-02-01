@@ -10,7 +10,7 @@ import React from 'react';
 import { IconButton, Collapse, Typography } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import type { book_book as Book } from '../../gqlTypes';
 
@@ -31,7 +31,7 @@ const Contributor = ({ contributorType, values }) => (
         value={values.length}
       />
     </Typography>
-    <Typography component="span" paragraph className={noMarginForLastChild}>
+    <Typography component="span" paragraph css={noMarginForLastChild}>
       {values.map(contributor => contributor.name).join(', ')}
     </Typography>
   </>
@@ -55,11 +55,11 @@ const BookMeta = ({ book, online }: Props) => (
       <Trans>License</Trans>
     </Typography>
     {online ? (
-      <A href={book.license.url} paragraph className={noMarginForLastChild}>
+      <A href={book.license.url} paragraph css={noMarginForLastChild}>
         {book.license.name}
       </A>
     ) : (
-      <Typography component="span" paragraph className={noMarginForLastChild}>
+      <Typography component="span" paragraph css={noMarginForLastChild}>
         {book.license.name}
       </Typography>
     )}
@@ -81,9 +81,9 @@ class AdditionalInformation extends React.Component<
 
   render() {
     return (
-      <div className={expansionStyles.wrapper}>
+      <div css={expansionStyles.wrapper}>
         <div
-          className={expansionStyles.button}
+          css={expansionStyles.button}
           role="button"
           tabIndex="0"
           aria-expanded={this.state.isExpanded}
@@ -95,9 +95,10 @@ class AdditionalInformation extends React.Component<
             <Trans>Additional information</Trans>
           </Typography>
           <IconButton
-            className={cx(expansionStyles.iconButton, {
-              [expansionStyles.iconButtonExpanded]: this.state.isExpanded
-            })}
+            css={[
+              expansionStyles.iconButton,
+              this.state.isExpanded && expansionStyles.iconButtonExpanded
+            ]}
             tabIndex={-1}
             aria-hidden
             component="div"

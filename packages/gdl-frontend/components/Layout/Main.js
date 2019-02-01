@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 import { Paper } from '@material-ui/core';
 
 import { misc, colors } from '../../style/theme';
@@ -32,13 +32,9 @@ type Props = {
   background?: 'white' | 'gray'
 };
 
-const Main = ({ background, className, ...props }: Props) => (
+const Main = ({ background, ...props }: Props) => (
   <Paper
-    className={cx(
-      styles.default,
-      { [styles.white]: background === 'white' },
-      className
-    )}
+    css={[styles.default, background === 'white' && styles.white]}
     component="main"
     {...props}
   />
