@@ -32,6 +32,7 @@ import type {
   Context,
   Language
 } from '../../types';
+import { withErrorPage } from '../../hocs';
 
 const {
   publicRuntimeConfig: { canonicalUrl }
@@ -82,8 +83,8 @@ class TranslateEditPage extends React.Component<Props, State> {
         chapter => chapter.id.toString() === query.chapterId
       );
 
-      // If no chapterInfo, it means the chapterId is invalid and we will show the user the frontpage
-      if (!chapterInfo) return;
+      // If no chapterInfo, it means the chapterId is invalid and we prompt 404 page
+      if (!chapterInfo) return { statusCode: 404 };
       initialChapter = await fetchCrowdinChapter(chapterInfo);
     }
     if (initialChapter && !initialChapter.isOk)
@@ -231,7 +232,11 @@ class TranslateEditPage extends React.Component<Props, State> {
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
-        chapterId: this.state.current ? this.state.current.id : null
+        // FrontPage is custom made and have been given id 0, which should not be appended in url.
+        chapterId:
+          this.state.current && !!this.state.current.id
+            ? this.state.current.id
+            : null
       },
       { shallow: true }
     );
@@ -352,4 +357,4 @@ function preloadImages(urls) {
   });
 }
 
-export default withRouter(TranslateEditPage);
+export default withRouter(withErrorPage(TranslateEditPage));
