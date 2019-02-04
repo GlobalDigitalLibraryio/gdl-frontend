@@ -580,6 +580,7 @@ export type MyBookTranslations_currentUser_translations_to_language = {
 
 export type MyBookTranslations_currentUser_translations_to = {
   __typename: "BookDetails",
+  id: string,
   bookId: number,
   title: string,
   publisher: MyBookTranslations_currentUser_translations_to_publisher,
@@ -589,6 +590,7 @@ export type MyBookTranslations_currentUser_translations_to = {
 
 export type MyBookTranslations_currentUser_translations = {
   __typename: "Translation",
+  readingLevel: ReadingLevel,
   crowdinUrl: string,
   synchronizeUrl: string,
   from: MyBookTranslations_currentUser_translations_from,
@@ -1054,22 +1056,22 @@ export type fields = {
 //==============================================================
 
 /**
- *
+ * 
  */
 export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
 
 /**
- *
+ * 
  */
 export type Category = "Classroom" | "Library";
 
 /**
- *
+ * 
  */
 export type BookFormat = "HTML" | "PDF";
 
 /**
- *
+ * 
  */
 export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
 

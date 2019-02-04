@@ -10,7 +10,15 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { getAuthToken } from 'gdl-auth';
 
-import type { ConfigShape, RemoteData, Translation } from './types';
+import type {
+  Language,
+  FeaturedContent,
+  Translation,
+  CrowdinBook,
+  ChapterSummary,
+  ConfigShape,
+  RemoteData
+} from './types';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
@@ -74,6 +82,49 @@ async function doFetch(
 // DO NOT declare doFetch and export it as default as the same time
 // See https://github.com/babel/babel/issues/6262
 export default doFetch;
+
+export function fetchLanguages(): Promise<RemoteData<Array<Language>>> {
+  return doFetch(`${bookApiUrl()}/languages`);
+}
+
+export function fetchFeaturedContent(
+  language: ?string
+): Promise<RemoteData<Array<FeaturedContent>>> {
+  return doFetch(`${bookApiUrl()}/featured/${language || ''}`);
+}
+
+export async function fetchTranslationProject() {
+  return doFetch(`${bookApiUrl()}/translations/translation-projects`);
+}
+
+export async function fetchCrowdinBook(
+  id: string | number,
+  fromLanguage: string
+): Promise<RemoteData<CrowdinBook>> {
+  const book = await doFetch(
+    `${bookApiUrl()}/translations/${fromLanguage}/${id}`
+  );
+  if (book.isOk) {
+    book.data.chapters.sort((a, b) => a.seqNo - b.seqNo);
+  }
+  return book;
+}
+
+export async function fetchCrowdinChapter(chapter: ChapterSummary) {
+  return doFetch(chapter.url);
+}
+
+export function fetchSupportedLanguages(
+  language: string
+): Promise<RemoteData<Array<Language>>> {
+  return doFetch(
+    `${bookApiUrl()}/translations/${language}/supported-languages`
+  );
+}
+
+export function fetchMyTranslations(): Promise<RemoteData<Array<Translation>>> {
+  return doFetch(`${bookApiUrl()}/books/mine`);
+}
 
 export function sendToTranslation(
   bookId: number | string,
