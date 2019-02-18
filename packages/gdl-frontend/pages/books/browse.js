@@ -112,7 +112,7 @@ class BrowsePage extends React.Component<Props, State> {
       level: query.readingLevel,
       page: this.state.books.page + 1,
       pageSize: PAGE_SIZE,
-      category: this.props.category,
+      category: this.props.category || this.props.router.query.category,
       sort: 'title'
     });
 
