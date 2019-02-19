@@ -43,11 +43,11 @@ type Props = {
     query: {
       lang: string,
       readingLevel?: ReadingLevel,
-      category?: string,
+      category?: Category,
       sort?: string
     }
   },
-  category: Category
+  category?: Category
 };
 
 type State = {
