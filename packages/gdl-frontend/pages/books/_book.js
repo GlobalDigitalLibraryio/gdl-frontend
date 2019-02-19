@@ -437,7 +437,7 @@ class BookActions1 extends React.Component<
           </Favorite>
 
           <NoSsr>
-            {offlineLibrary && (
+            {offlineLibrary && book.bookFormat !== 'PDF' && (
               <IconButton
                 component="button"
                 className={target}
