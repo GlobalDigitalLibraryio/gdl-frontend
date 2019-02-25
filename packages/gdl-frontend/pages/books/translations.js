@@ -200,7 +200,7 @@ class TranslationCard extends React.Component<
               <Grid
                 container
                 direction="row"
-                css={{ marginTop: spacing.medium }}
+                css={mq({ marginTop: [spacing.medium, 0, spacing.medium] })}
               >
                 <Grid item>
                   <Typography variant="body1">
