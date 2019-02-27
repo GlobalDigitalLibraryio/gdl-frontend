@@ -161,6 +161,7 @@ class TranslationCard extends React.Component<
               ref={this.anchorEl}
               bookId={translation.id}
               crowdinUrl={translation.crowdinUrl}
+              translatedTo={translation.translatedTo.code}
               onClose={this.closeMenu}
               menuIsOpen={menuIsOpen}
               popperStyle={css`

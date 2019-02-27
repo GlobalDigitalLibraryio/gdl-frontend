@@ -45,6 +45,7 @@ if (typeof window !== 'undefined') {
 
 type Props = {
   book: BookDetails,
+  toLanguage: string,
   translatedTo: Language,
   initialChapter: FrontPage | Chapter,
   crowdinProjectName: { [key: string]: string },
@@ -60,6 +61,8 @@ type State = {
 
 class TranslateEditPage extends React.Component<Props, State> {
   static async getInitialProps({ query, req }: Context) {
+    if (!query.id || !query.lang || !query.toLang) return { statusCode: 404 };
+
     const bookRes = await fetchBook(query.id, query.lang);
     if (!bookRes.isOk) {
       return {
@@ -92,6 +95,7 @@ class TranslateEditPage extends React.Component<Props, State> {
 
     return {
       book,
+      toLanguage: query.toLang,
       initialChapter: initialChapter ? initialChapter.data : frontPage,
       showCanonicalChapterUrl: !query.chapterId,
       crowdinProjectName: crowdinProjectName.data,
@@ -109,6 +113,7 @@ class TranslateEditPage extends React.Component<Props, State> {
     const {
       crowdinProjectName,
       book,
+      toLanguage,
       initialChapter,
       crowdinChapters
     } = this.props;
@@ -119,7 +124,7 @@ class TranslateEditPage extends React.Component<Props, State> {
     if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
 
     const selectedTranslation = myTranslations.data.find(
-      element => element.id === book.id
+      element => element.translatedTo.code === toLanguage
     );
 
     //Create frontPage with title and description and concat with chapters
@@ -223,6 +228,7 @@ class TranslateEditPage extends React.Component<Props, State> {
 
   // Using window navigation to be able to kill crowdin in-context script
   handleCloseBook = () => {
+    window.localStorage.clear();
     window.location.href = `/books/translations`;
   };
 
@@ -232,6 +238,7 @@ class TranslateEditPage extends React.Component<Props, State> {
       {
         id: this.props.book.id,
         lang: this.props.book.language.code,
+        toLang: this.props.toLanguage,
         // FrontPage is custom made and have been given id 0, which should not be appended in url.
         chapterId:
           this.state.current && !!this.state.current.id
