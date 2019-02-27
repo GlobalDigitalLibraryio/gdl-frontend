@@ -95,7 +95,7 @@ class TranslateEditPage extends React.Component<Props, State> {
 
     return {
       book,
-      toLanguage: query.toLang,
+      toLanguage: query.toLang.toLowerCase(),
       initialChapter: initialChapter ? initialChapter.data : frontPage,
       showCanonicalChapterUrl: !query.chapterId,
       crowdinProjectName: crowdinProjectName.data,
@@ -117,14 +117,14 @@ class TranslateEditPage extends React.Component<Props, State> {
       initialChapter,
       crowdinChapters
     } = this.props;
-
     // Flow complains because selectedTranslation can be undefined.
     // Graphql could handle this better.. $FlowFixMe
     const myTranslations = await fetchMyTranslations();
     if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
 
     const selectedTranslation = myTranslations.data.find(
-      element => element.translatedTo.code === toLanguage
+      element =>
+        element.translatedTo.code === toLanguage && element.id === book.id
     );
 
     //Create frontPage with title and description and concat with chapters

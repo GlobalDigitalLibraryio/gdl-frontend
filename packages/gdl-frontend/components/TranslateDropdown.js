@@ -56,11 +56,11 @@ const TranslateDropdown = React.forwardRef(
               <div style={{ marginTop: 5 }}>
                 <Link
                   passHref
-                  route={`/en/books/translate/${bookId}/${translatedTo}/edit`}
+                  route={`/en/books/translate/${bookId}/${translatedTo.toLowerCase()}/edit`}
                   params={{
                     id: bookId,
                     lang: 'en',
-                    toLang: translatedTo
+                    toLang: translatedTo.toLowerCase()
                   }}
                 >
                   <MenuButton buttonRef={ref}>
