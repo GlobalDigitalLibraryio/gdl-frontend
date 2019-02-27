@@ -24,6 +24,7 @@ type Props = {
   menuIsOpen: boolean,
   bookId: number,
   crowdinUrl: ?string,
+  translatedTo: string,
   popperStyle?: Object,
   onClose: (event: SyntheticInputEvent<EventTarget>) => void
 };
@@ -31,7 +32,14 @@ type Props = {
 // $FlowFixMe forwardRef fixed in flow@0.89 https://github.com/facebook/flow/issues/6103
 const TranslateDropdown = React.forwardRef(
   (
-    { menuIsOpen, bookId, crowdinUrl, onClose, popperStyle }: Props,
+    {
+      menuIsOpen,
+      bookId,
+      translatedTo,
+      crowdinUrl,
+      onClose,
+      popperStyle
+    }: Props,
     ref: React$ElementRef<Button>
   ) => (
     <Popper
@@ -48,10 +56,11 @@ const TranslateDropdown = React.forwardRef(
               <div style={{ marginTop: 5 }}>
                 <Link
                   passHref
-                  route={`/en/books/translate/${bookId}/edit`}
+                  route={`/en/books/translate/${bookId}/${translatedTo}/edit`}
                   params={{
                     id: bookId,
-                    lang: 'en'
+                    lang: 'en',
+                    toLang: translatedTo
                   }}
                 >
                   <MenuButton buttonRef={ref}>

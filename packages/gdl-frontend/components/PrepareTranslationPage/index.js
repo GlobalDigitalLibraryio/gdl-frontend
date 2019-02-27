@@ -250,6 +250,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 ref={this.anchorEl}
                 bookId={book.id}
                 crowdinUrl={translation && translation.crowdinUrl}
+                translatedTo={selectedLanguage && selectedLanguage.code}
                 onClose={this.closeMenu}
                 menuIsOpen={menuIsOpen}
               />
