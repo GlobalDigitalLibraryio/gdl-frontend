@@ -30,6 +30,8 @@ import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
+import { DimensionProvider } from '../context/DimensionContext';
+import { TutorialProvider } from '../context/TutorialContext';
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
@@ -152,9 +154,16 @@ class App extends NextApp {
                 {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                 <CssBaseline />
                 <OnlineStatusRedirectProvider>
-                  {/* Pass pageContext to the _document though the renderPage enhancer
+                  <DimensionProvider>
+                    <TutorialProvider>
+                      {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                  <Component pageContext={this.pageContext} {...pageProps} />
+                      <Component
+                        pageContext={this.pageContext}
+                        {...pageProps}
+                      />
+                    </TutorialProvider>
+                  </DimensionProvider>
                 </OnlineStatusRedirectProvider>
               </MuiThemeProvider>
             </JssProvider>

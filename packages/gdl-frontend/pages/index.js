@@ -27,6 +27,7 @@ import {
   getBookLanguageCode,
   getBookCategory
 } from '../lib/storage';
+import { getHomeTutorialStatus } from '../lib/storage';
 
 const {
   publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
@@ -35,14 +36,15 @@ const {
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
+  homeTutorialStatus: boolean,
+  category: Category,
+  categories: Array<Category>,
+  languageCode: string,
+  featuredContent: FeaturedContent,
   bookSummaries: $Diff<
     BooksAndFeatured,
     { featuredContent: Array<FeaturedContent> }
-  >,
-  languageCode: string,
-  featuredContent: FeaturedContent,
-  category: Category,
-  categories: Array<Category>
+  >
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -114,7 +116,10 @@ class IndexPage extends React.Component<Props> {
       data: { featuredContent, ...bookSummaries }
     } = booksAndFeatured;
 
+    const homeTutorialStatus = getHomeTutorialStatus(req);
+
     return {
+      homeTutorialStatus,
       category,
       categories,
       languageCode,
@@ -132,6 +137,7 @@ class IndexPage extends React.Component<Props> {
   render() {
     const {
       bookSummaries,
+      homeTutorialStatus,
       category,
       featuredContent,
       categories,
@@ -161,6 +167,7 @@ class IndexPage extends React.Component<Props> {
         )}
         <HomePage
           bookSummaries={bookSummaries}
+          homeTutorialStatus={homeTutorialStatus}
           category={category}
           categories={categories}
           languageCode={languageCode}

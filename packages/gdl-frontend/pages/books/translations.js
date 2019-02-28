@@ -211,6 +211,7 @@ class TranslationCard extends React.Component<
               ref={this.anchorEl}
               bookId={translateTo.bookId}
               crowdinUrl={crowdinUrl}
+              translatedTo={translateTo.language.code}
               onClose={this.closeMenu}
               menuIsOpen={menuIsOpen}
               popperStyle={css`
@@ -247,11 +248,7 @@ class TranslationCard extends React.Component<
             </Grid>
 
             <Grid item>
-              <Grid
-                container
-                direction="row"
-                css={{ marginTop: spacing.medium }}
-              >
+              <Grid container css={{ marginTop: spacing.large }}>
                 <Grid item>
                   <Typography variant="body1">
                     <Trans>From</Trans>:
@@ -316,7 +313,6 @@ const CustomGrid = styled('div')`
     padding: 30px 0px 30px 30px;
     grid-gap: 1em;
     grid-template-columns: 130px auto;
-    grid-template-rows: 150px auto;
     grid-template-areas:
       'image buttons'
       'content content';
@@ -325,7 +321,7 @@ const CustomGrid = styled('div')`
   @media (min-width: ${TABLET_BREAKPOINT}px) {
     padding: 40px 0px 40px 40px;
     grid-gap: 1em;
-    grid-template-columns: 130px auto 170px;
+    grid-template-columns: 130px 1fr 170px;
     grid-template-areas: 'image content buttons';
   }
 `;

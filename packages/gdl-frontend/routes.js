@@ -19,7 +19,7 @@ routes.add(
 );
 routes.add(
   'translateEdit',
-  `/${langParam}/books/translate/:id(\\d+)/edit/:chapterId(\\d+)?`,
+  `/${langParam}/books/translate/:id(\\d+)/:toLang([\\w-]+)/edit/:chapterId(\\d+)?`,
   'books/_translate_edit'
 );
 
