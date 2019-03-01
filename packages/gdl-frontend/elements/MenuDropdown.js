@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import React, { PureComponent, type Element } from 'react';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import {
   Card,
   ClickAwayListener,

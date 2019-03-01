@@ -13,9 +13,9 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const graphqlEndpoint = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
-      return 'http://localhost:4000/graphql';
+      return 'http://localhost:4000';
     default:
-      return 'http://localhost:4000/graphql';
+      return 'http://localhost:4000';
   }
 };
 

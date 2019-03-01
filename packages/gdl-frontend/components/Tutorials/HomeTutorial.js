@@ -8,7 +8,8 @@
 
 import * as React from 'react';
 import Joyride from 'react-joyride';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Trans, i18nMark } from '@lingui/react';
 import Arrow from './tooltip-arrow.svg';
 import Kenya from './kenya.svg';
@@ -88,11 +89,7 @@ const Tooltip = ({
   <Center>
     <IconHeader isFirstStep={index === 0}>
       <BouncingArrow isFirstStep={index === 0} />
-      <Close
-        className={styles.closeButton}
-        {...closeProps}
-        onClick={closeTutorial}
-      />
+      <Close css={styles.closeButton} {...closeProps} onClick={closeTutorial} />
     </IconHeader>
     <div css={styles.tooltipBody} {...tooltipProps}>
       {step.icon && (
@@ -167,7 +164,7 @@ const BouncingArrow = props => {
       }
     }
   `;
-  return <Arrow className={style} />;
+  return <Arrow css={style} />;
 };
 
 const Center = styled('div')`

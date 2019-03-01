@@ -9,7 +9,8 @@
 import * as React from 'react';
 import Joyride from 'react-joyride';
 import { Trans, i18nMark } from '@lingui/react';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import Arrow from './tooltip-arrow.svg';
 import { Button, Typography } from '@material-ui/core';
 import { withTheme, type Theme } from '@material-ui/core/styles';
@@ -178,7 +179,7 @@ const BouncingArrow = props => {
       }
     }
   `;
-  return <Arrow className={style} />;
+  return <Arrow css={style} />;
 };
 
 const CloseButton = props => {
@@ -193,7 +194,7 @@ const CloseButton = props => {
     width: 30px;
     border-radius: 50%;
   `;
-  return <Close className={style} onClick={props.onClick} />;
+  return <Close css={style} onClick={props.onClick} />;
 };
 
 const Center = styled('div')`

@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { Link, Router } from '../routes';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import {
   Grow,
@@ -47,7 +47,7 @@ const TranslateDropdown = React.forwardRef(
       transition
       disablePortal
       placement="bottom-end"
-      css={cx(styles.translationMenu, popperStyle)}
+      css={[styles.translationMenu, popperStyle]}
     >
       {({ TransitionProps, placement }) => (
         <Grow {...TransitionProps} id="menu-list-grow">
