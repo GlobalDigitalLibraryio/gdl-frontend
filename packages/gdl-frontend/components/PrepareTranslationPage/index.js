@@ -160,7 +160,8 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 </Typography>
 
                 <Typography paragraph variant="subtitle1">
-                  <Trans>from {book.publisher.name}</Trans>
+                  <Trans>from</Trans>
+                  {book.publisher.name}
                 </Typography>
 
                 <Typography lang={book.language.code} paragraph>
