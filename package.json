@@ -80,6 +80,8 @@
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
     "downshift": "2.0.10",
+    "emotion": "^10.0.7",
+    "emotion-server": "^10.0.7",
     "express": "4.16.4",
     "express-request-language": "^1.1.15",
     "facepaint": "1.2.1",
@@ -107,6 +109,7 @@
     "react-facebook-pixel": "^0.1.2",
     "react-final-form": "3.6.5",
     "react-ga": "2.5.3",
+    "react-joyride": "^2.0.2",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
     "universal-cookie": "3.0.4"

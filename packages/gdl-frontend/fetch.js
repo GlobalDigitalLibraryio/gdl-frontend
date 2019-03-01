@@ -10,7 +10,7 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { getAuthToken } from 'gdl-auth';
 
-import type { ConfigShape, RemoteData, Translation } from './types';
+import type { Translation, ConfigShape, RemoteData } from './types';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 

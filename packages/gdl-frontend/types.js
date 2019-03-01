@@ -8,6 +8,10 @@
 import type { $Request, $Response } from 'express';
 import type { ApolloClient } from 'react-apollo';
 
+export type Publisher = {
+  +name: string
+};
+
 export type Language = {
   +code: string,
   +name: string,
@@ -38,6 +42,59 @@ export type ConfigShape = {
   }
 };
 
+// Neat little enum type trick https://github.com/facebook/flow/issues/2377#issuecomment-372613462
+export const ContributorTypes: {|
+  AUTHOR: 'Author',
+  ILLUSTRATOR: 'Illustrator',
+  TRANSLATOR: 'Translator',
+  PHOTOGRAPHER: 'Photographer',
+  CONTRIBUTOR: 'Contributor'
+|} = {
+  AUTHOR: 'Author',
+  ILLUSTRATOR: 'Illustrator',
+  TRANSLATOR: 'Translator',
+  PHOTOGRAPHER: 'Photographer',
+  CONTRIBUTOR: 'Contributor'
+};
+
+export type Contributor = {
+  +id: number,
+  +name: string,
+  +type: $Values<typeof ContributorTypes>
+};
+
+export type License = {
+  +name: string,
+  +description: string,
+  +url: string
+};
+
+export type Chapter = {|
+  id: number,
+  content: string,
+  chapterType: string,
+  seqNo: number,
+  revision: number,
+  images: Array<string>,
+  title?: string,
+  description?: string
+|};
+
+export type ChapterSummary = {|
+  id: number,
+  seqNo: number,
+  url: string
+|};
+
+export type FrontPage = {|
+  id: number,
+  chapterType: 'FrontPage',
+  title: string,
+  description: string,
+  seqNo: number,
+  images: Array<string>
+|};
+
 // Disjoint union
 type Success<T> = { isOk: true, data: T, statusCode: number };
 type Failed = { isOk: false, error: any, statusCode: number };
@@ -59,6 +116,8 @@ export type CoverImage = {
   variants?: { [string]: ImageCropCoordinates }
 };
 
+export type ReadingLevel = '1' | '2' | '3' | '4' | 'read-aloud' | 'decodable';
+
 export type Translation = {
   translatedFrom: Language,
   translatedTo: Language,
@@ -69,8 +128,61 @@ export type Translation = {
   publisher: {
     name: string
   },
+  readingLevel: ReadingLevel,
   coverImage?: CoverImage
 };
+
+export type Category = 'library_books' | 'classroom_books';
+
+export type CrowdinBook = {
+  id: number,
+  title: string,
+  description: string,
+  coverImage: {
+    url: string,
+    imageId: string,
+    alttext: string
+  },
+  chapters: Array<ChapterSummary>
+};
+
+export type Book = $ReadOnly<{|
+  id: number,
+  uuid: string,
+  title: string,
+  description: string,
+  category: Category,
+  highlightTitle?: string,
+  highlightDescription?: string,
+  readingLevel: ReadingLevel,
+  language: Language,
+  coverImage?: CoverImage
+|}>;
+
+export type BookDetails = $ReadOnly<{|
+  ...Book,
+  datePublished?: string,
+  publisher: Publisher,
+  license: License,
+  supportsTranslation: boolean,
+  additionalInformation?: string,
+  contributors: Array<Contributor>,
+  availableLanguages: Array<Language>,
+  chapters: Array<ChapterSummary>,
+  bookFormat: 'PDF' | 'HTML',
+  downloads: {
+    epub?: string,
+    pdf?: string
+  }
+|}>;
+
+export type FeaturedContent = $ReadOnly<{|
+  title: string,
+  description: string,
+  link: string,
+  imageUrl: string,
+  language: Language
+|}>;
 
 export type Context = {
   pathname: string,
@@ -81,3 +193,11 @@ export type Context = {
   req?: $Request,
   apolloClient: ApolloClient
 };
+
+export type ChapterContent = $ReadOnly<{ content: string }>;
+
+export type ChapterPointer = $ReadOnly<{
+  id: string,
+  chapterId: number,
+  seqNo: number
+}>;

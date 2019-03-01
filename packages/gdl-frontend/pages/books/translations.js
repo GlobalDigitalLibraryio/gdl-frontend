@@ -11,16 +11,20 @@ import { Trans, I18n } from '@lingui/react';
 import {
   Button,
   Card,
-  CardContent,
-  CardActions,
   Typography,
   Grid,
-  Divider,
   CircularProgress
 } from '@material-ui/core';
-import { ArrowForward as ArrowForwardIcon } from '@material-ui/icons';
+import {
+  ArrowForward as ArrowForwardIcon,
+  Sync as SyncIcon,
+  Translate as TranslateIcon
+} from '@material-ui/icons';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import facepaint from 'facepaint';
+import styled from '@emotion/styled';
+import { css } from '@emotion/core';
 
 import doFetch from '../../fetch';
 import { Link } from '../../routes';
@@ -29,18 +33,33 @@ import Layout from '../../components/Layout';
 import Container from '../../elements/Container';
 import Head from '../../components/Head';
 import CoverImage from '../../components/CoverImage';
-import { LoadingButton } from '../../elements';
+import TranslateDropdown from '../../components/TranslateDropdown';
 import { spacing } from '../../style/theme';
+import mq from '../../style/mq';
+import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
+import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
 } from '../../gqlTypes';
 
+/**
+ * There is a breakpoint interval between 768-865px in width
+ * that breaks the UI for the translate dropdown. Which is why
+ * a custom media query is used here.
+ */
+const customMedia = facepaint([
+  `@media(min-width: ${TABLET_BREAKPOINT}px)`,
+  `@media(min-width: 866px)`
+]);
+
 const MY_TRANSLATION_QUERY = gql`
   query MyBookTranslations {
     currentUser {
       translations {
+        readingLevel
         crowdinUrl
         synchronizeUrl
         from {
@@ -49,6 +68,7 @@ const MY_TRANSLATION_QUERY = gql`
           }
         }
         to {
+          id
           bookId
           title
           publisher {
@@ -72,9 +92,12 @@ class TranslationCard extends React.Component<
     translation: Translation,
     handleSync: () => void
   },
-  { isLoading: boolean, isSynchronized: boolean }
+  { menuIsOpen: boolean, isLoading: boolean, isSynchronized: boolean }
 > {
+  anchorEl: React$ElementRef<Button> = React.createRef();
+
   state = {
+    menuIsOpen: false,
     isLoading: false,
     isSynchronized: false
   };
@@ -87,16 +110,48 @@ class TranslationCard extends React.Component<
     this.props.handleSync();
   };
 
+  closeMenu = (event: SyntheticInputEvent<EventTarget>) => {
+    if (this.anchorEl.current.contains(event.target)) {
+      return;
+    }
+    this.setState({ menuIsOpen: false });
+  };
+
+  handleToggle = () => {
+    this.setState(prev => ({
+      menuIsOpen: !prev.menuIsOpen
+    }));
+  };
+
   render() {
     const {
-      translation: { to: translateTo, from: translateFrom, crowdinUrl }
+      translation: {
+        to: translateTo,
+        from: translateFrom,
+        crowdinUrl,
+        readingLevel
+      }
     } = this.props;
-    const { isLoading } = this.state;
+    const { isLoading, menuIsOpen } = this.state;
 
     return (
-      <Card key={translateTo.bookId} css={{ marginBottom: spacing.large }}>
-        <Grid container>
-          <Grid item>
+      <Card
+        css={mq({
+          marginTop: spacing.xlarge,
+          marginBottom: [spacing.xxlarge, spacing.medium],
+          overflow: 'visible',
+          marginLeft: ['-30px', 0, 0],
+          marginRight: ['-30px', 0, 0]
+        })}
+      >
+        <CustomGrid>
+          <Grid
+            item
+            css={mq({
+              gridArea: 'image',
+              marginTop: [-50, 0, 0]
+            })}
+          >
             <Link
               route="book"
               params={{
@@ -105,72 +160,183 @@ class TranslationCard extends React.Component<
               }}
             >
               <a>
-                <CoverImage coverImage={translateTo.coverImage} size="small" />
+                <CoverImage coverImage={translateTo.coverImage} size="medium" />
               </a>
             </Link>
           </Grid>
-          <Grid item xs>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                {translateTo.title}
-              </Typography>
-              <Typography variant="subtitle1">
-                <Trans>from {translateTo.publisher.name}</Trans>
-              </Typography>
-            </CardContent>
+          <Grid item css={{ gridArea: 'buttons' }}>
+            <Button
+              onClick={this.handleSynchronize}
+              disabled={isLoading}
+              color="primary"
+              size="large"
+              fullWidth
+              css={mq({
+                justifyContent: 'flex-start',
+                borderRadius: 0,
+                fontSize: [13, 16, 16]
+              })}
+            >
+              <SyncIcon
+                css={
+                  isLoading
+                    ? spin
+                    : mq({
+                        fontSize: [24, 30, 30]
+                      })
+                }
+              />
+              <Trans>Sync</Trans>
+            </Button>
+            <Button
+              buttonRef={this.anchorEl}
+              aria-owns={menuIsOpen ? 'menu-list-grow' : undefined}
+              aria-haspopup="true"
+              onClick={this.handleToggle}
+              color="primary"
+              size="large"
+              variant={menuIsOpen ? 'contained' : 'text'}
+              fullWidth
+              css={mq({
+                justifyContent: 'flex-start',
+                borderRadius: 0,
+                fontSize: [13, 16, 16]
+              })}
+            >
+              <TranslateIcon css={mq({ fontSize: [24, 30, 30] })} />
+              <Trans>Translate</Trans>
+            </Button>
+
+            <TranslateDropdown
+              ref={this.anchorEl}
+              bookId={translateTo.bookId}
+              crowdinUrl={crowdinUrl}
+              translatedTo={translateTo.language.code}
+              onClose={this.closeMenu}
+              menuIsOpen={menuIsOpen}
+              popperStyle={css`
+                margin-right: initial;
+                ${customMedia({ paddingRight: [0, 28, 0] })};
+              `}
+            />
           </Grid>
-        </Grid>
-        <CardContent>
-          <Grid container alignItems="center">
-            <Grid item xs={4}>
-              <Typography>{translateFrom.language.name}</Typography>
-            </Grid>
-            <Grid item xs={4} css={{ textAlign: 'center' }}>
-              <ArrowForwardIcon />
-            </Grid>
-            <Grid item xs={4}>
-              <Typography align="right" variant="body2">
-                {translateTo.language.name}
+          <Grid
+            container
+            direction="column"
+            justify="space-between"
+            css={mq({
+              gridArea: 'content',
+              paddingLeft: [0, '1em', '1em'],
+              borderRight: [0, '1px solid #e5e5e5', '1px solid #e5e5e5']
+            })}
+          >
+            <Grid item>
+              <Typography variant="h5">{translateTo.title}</Typography>
+              <Typography variant="body1" component="span">
+                <Trans>From {translateTo.publisher.name}</Trans>
+                {', '}
+                <CircleLabel
+                  level={readingLevel}
+                  style={{
+                    marginBottom: '-5px',
+                    marginRight: '4px',
+                    fontSize: 22
+                  }}
+                />
+                <ReadingLevelTrans readingLevel={readingLevel} />
               </Typography>
             </Grid>
+
+            <Grid item>
+              <Grid container css={{ marginTop: spacing.large }}>
+                <Grid item>
+                  <Typography variant="body1">
+                    <Trans>From</Trans>:
+                  </Typography>
+                  <Typography variant="h6">
+                    {translateFrom.language.name}
+                  </Typography>
+                </Grid>
+                <Grid
+                  item
+                  css={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    marginLeft: spacing.large,
+                    marginRight: spacing.large
+                  }}
+                >
+                  <ArrowForwardIcon style={{ fontSize: 40 }} />
+                </Grid>
+                <Grid item>
+                  <Typography variant="body1">To:</Typography>
+                  <Typography variant="h6">
+                    {translateTo.language.name}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
-        </CardContent>
-        <Divider />
-        <CardActions>
-          <LoadingButton
-            isLoading={isLoading}
-            disabled={this.state.isSynchronized}
-            onClick={this.handleSynchronize}
-            color="primary"
-          >
-            <Trans>Sync</Trans>
-          </LoadingButton>
-          <Button
-            color="primary"
-            href={crowdinUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Trans>Edit</Trans>
-          </Button>
-        </CardActions>
+        </CustomGrid>
       </Card>
     );
   }
 }
 
-class MyTranslationsPage extends React.Component<*> {
+const spin = css`
+  animation-name: spin;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  display: inline-block;
+
+  ${mq({ fontSize: [24, 30, 30] })}
+
+  @keyframes spin {
+    from {
+      transform: rotate(360deg);
+    }
+    to {
+      transform: rotate(0deg);
+    }
+  }
+`;
+
+const CustomGrid = styled('div')`
+  display: grid;
+  grid-template-areas:
+    'image'
+    'content'
+    'buttons';
+
+  @media (min-width: 0px) and (orientation: portrait) {
+    padding: 30px 0px 30px 30px;
+    grid-gap: 1em;
+    grid-template-columns: 130px auto;
+    grid-template-areas:
+      'image buttons'
+      'content content';
+  }
+
+  @media (min-width: ${TABLET_BREAKPOINT}px) {
+    padding: 40px 0px 40px 40px;
+    grid-gap: 1em;
+    grid-template-columns: 130px 1fr 170px;
+    grid-template-areas: 'image content buttons';
+  }
+`;
+
+class MyTranslationsPage extends React.PureComponent<{}> {
   render() {
     return (
       <Layout>
         <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
-        <Container>
+        <Container style={{ marginBottom: spacing.large }}>
           <Typography
             variant="h4"
             component="h1"
-            align="center"
             paragraph
-            css={{ marginTop: spacing.large }}
+            css={{ marginTop: spacing.large, marginBottom: spacing.medium }}
           >
             <Trans>My translations</Trans>
           </Typography>
@@ -191,6 +357,7 @@ class MyTranslationsPage extends React.Component<*> {
                   <CircularProgress
                     css={{
                       marginTop: spacing.large,
+                      marginBottom: spacing.large,
                       display: 'block',
                       marginLeft: 'auto',
                       marginRight: 'auto'
@@ -204,7 +371,6 @@ class MyTranslationsPage extends React.Component<*> {
                   </Typography>
                 );
               const { translations } = data.currentUser;
-
               return translations.length === 0 ? (
                 <Typography
                   align="center"
@@ -217,7 +383,7 @@ class MyTranslationsPage extends React.Component<*> {
               ) : (
                 translations.map(translation => (
                   <TranslationCard
-                    key={translation.to.bookId}
+                    key={translation.to.id}
                     translation={translation}
                     handleSync={refetch}
                   />

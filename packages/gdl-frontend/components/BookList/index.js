@@ -42,7 +42,11 @@ const BookList = ({
   level,
   shouldBeColorized
 }: Props) => (
-  <>
+  <div
+    css={{
+      visibility: `${!loading && books.length === 0 ? 'hidden' : 'visible'}`
+    }}
+  >
     <View
       flexDirection="row"
       alignItems="center"
@@ -80,7 +84,7 @@ const BookList = ({
             </div>
           ))}
     </Scroller>
-  </>
+  </div>
 );
 
 const shimmerStyle = css`
