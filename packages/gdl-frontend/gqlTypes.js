@@ -346,6 +346,100 @@ export type ChapterVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: CrowdinBook
+// ====================================================
+
+export type CrowdinBook_crowdinBook_frontPage = {
+  __typename: "FrontPage",
+  id: string,
+  seqNo: number,
+  title: string,
+  description: string,
+  chapterType: ChapterType,
+  images: Array<string>,
+};
+
+export type CrowdinBook_crowdinBook_chapters = {
+  __typename: "BookChapter",
+  id: string,
+  seqNo: number,
+  url: string,
+};
+
+export type CrowdinBook_crowdinBook_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type CrowdinBook_crowdinBook = {
+  __typename: "CrowdinBook",
+  id: string,
+  frontPage: CrowdinBook_crowdinBook_frontPage,
+  chapters: Array<CrowdinBook_crowdinBook_chapters>,
+  coverImage: ?CrowdinBook_crowdinBook_coverImage,
+};
+
+export type CrowdinBook_book_chapters = {
+  __typename: "Chapter",
+  seqNo: number,
+};
+
+export type CrowdinBook_book_language = {
+  __typename: "Language",
+  code: string,
+  isRTL: boolean,
+};
+
+export type CrowdinBook_book = {
+  __typename: "BookDetails",
+  id: string,
+  bookId: number,
+  title: string,
+  description: string,
+  chapters: Array<CrowdinBook_book_chapters>,
+  language: CrowdinBook_book_language,
+};
+
+export type CrowdinBook_translation_to_language = {
+  __typename: "Language",
+  code: string,
+  name: string,
+};
+
+export type CrowdinBook_translation_to = {
+  __typename: "BookDetails",
+  language: CrowdinBook_translation_to_language,
+};
+
+export type CrowdinBook_translation = {
+  __typename: "Translation",
+  to: CrowdinBook_translation_to,
+};
+
+export type CrowdinBook_crowdinProjects = {
+  __typename: "CrowdinProjects",
+  en: string,
+};
+
+export type CrowdinBook = {
+  crowdinBook: CrowdinBook_crowdinBook,
+  book: ?CrowdinBook_book,
+  translation: ?CrowdinBook_translation,
+  crowdinProjects: CrowdinBook_crowdinProjects,
+};
+
+export type CrowdinBookVariables = {
+  id: string,
+  language: string,
+  bookId: string,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: TranslateBook
 // ====================================================
 
@@ -482,6 +576,7 @@ export type MyBookTranslations_currentUser_translations_to_language = {
 
 export type MyBookTranslations_currentUser_translations_to = {
   __typename: "BookDetails",
+  id: string,
   bookId: number,
   title: string,
   publisher: MyBookTranslations_currentUser_translations_to_publisher,
@@ -491,6 +586,7 @@ export type MyBookTranslations_currentUser_translations_to = {
 
 export type MyBookTranslations_currentUser_translations = {
   __typename: "Translation",
+  readingLevel: ReadingLevel,
   crowdinUrl: string,
   synchronizeUrl: string,
   from: MyBookTranslations_currentUser_translations_from,
@@ -939,22 +1035,27 @@ export type fields = {
 //==============================================================
 
 /**
- *
+ * 
  */
 export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
 
 /**
- *
+ * 
  */
 export type Category = "Classroom" | "Library";
 
 /**
- *
+ * 
  */
 export type BookFormat = "HTML" | "PDF";
 
 /**
- *
+ * 
+ */
+export type ChapterType = "Content" | "FrontPage";
+
+/**
+ * 
  */
 export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
 
