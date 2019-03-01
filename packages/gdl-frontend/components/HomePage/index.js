@@ -98,6 +98,10 @@ type Props = {|
 |};
 
 class HomePage extends React.Component<Props> {
+  componentDidMount() {
+    this.props.context.resetTutorialStatus();
+  }
+
   render() {
     const {
       context,
