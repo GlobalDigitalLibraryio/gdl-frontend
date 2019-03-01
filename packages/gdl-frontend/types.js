@@ -193,3 +193,11 @@ export type Context = {
   req?: $Request,
   apolloClient: ApolloClient
 };
+
+export type ChapterContent = $ReadOnly<{ content: string }>;
+
+export type ChapterPointer = $ReadOnly<{
+  id: string,
+  chapterId: number,
+  seqNo: number
+}>;

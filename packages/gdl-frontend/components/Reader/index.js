@@ -7,24 +7,23 @@
  */
 import * as React from 'react';
 import styled from '@emotion/styled';
-
 import { Typography } from '@material-ui/core';
 
-import type { FrontPage as FrontPageType } from '../../types';
 import { Backdrop, Page } from './styledReader';
 import Toolbar, { type Book } from './Toolbar';
 import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import PageNavigation from './PageNavigation';
 import { colors } from '../../style/theme';
+import { type CrowdinBook_crowdinBook_frontPage as FrontPageType } from '../../gqlTypes';
+import type { ChapterContent, ChapterPointer } from '../../types';
 
-type Chapter = $ReadOnly<{ content: string }>;
 type Props = {|
   book: Book,
   onRequestClose(): void,
-  chapterPointer: $ReadOnly<{ id: string, chapterId: number, seqNo: number }>,
+  chapterPointer: ChapterPointer,
   hasFrontPage?: boolean,
-  chapterWithContent: ?(FrontPageType | Chapter),
+  chapterWithContent: ?(FrontPageType | ChapterContent),
   onRequestNextChapter(): void,
   onRequestPreviousChapter(): void
 |};
@@ -95,8 +94,8 @@ const FrontPage = ({ content, language, dir }: any) => (
   </Page>
 );
 
-function createMarkup(chapter: Chapter) {
-  return { __html: chapter.content };
+function createMarkup(chapter: FrontPageType | ChapterContent) {
+  return { __html: chapter.content && chapter.content };
 }
 
 const Card = styled.div`

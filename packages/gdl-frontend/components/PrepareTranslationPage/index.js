@@ -90,7 +90,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
       this.setState({ translationState: translationStates.PREPARING });
 
       const translationRes = await sendToTranslation(
-        this.props.book.id,
+        this.props.book.bookId,
         this.props.book.language.code,
         // $FlowFixMe: We are already checking for this in the enclosing if
         this.state.selectedLanguage.code
@@ -143,7 +143,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
               <Grid item>
                 <Link
                   route="book"
-                  params={{ lang: book.language.code, id: book.id }}
+                  params={{ lang: book.language.code, id: book.bookId }}
                 >
                   <a>
                     <CoverImage coverImage={book.coverImage} size="small" />
@@ -252,7 +252,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
               </Button>
               <TranslateDropdown
                 ref={this.anchorEl}
-                bookId={book.id}
+                bookId={book.bookId}
                 crowdinUrl={translation && translation.crowdinUrl}
                 translatedTo={selectedLanguage && selectedLanguage.code}
                 onClose={this.closeMenu}
