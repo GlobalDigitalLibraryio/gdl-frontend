@@ -15,7 +15,7 @@ const graphqlEndpoint = () => {
     case 'dev':
       return 'http://localhost:4000';
     default:
-      return 'http://localhost:4000';
+      return 'https://api.test.digitallibrary.io/graphql-book-service';
   }
 };
 
