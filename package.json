@@ -30,6 +30,7 @@
     "@babel/preset-flow": "7.0.0",
     "@lingui/babel-preset-react": "2.7.1",
     "@lingui/cli": "2.7.1",
+    "@sentry/cli": "^1.40.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
     "babel-plugin-emotion": "9.2.11",
