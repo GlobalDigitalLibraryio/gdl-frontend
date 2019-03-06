@@ -18,6 +18,7 @@ const {
 export default function() {
   if (process.env.NODE_ENV === 'production' && REPORT_ERRORS) {
     Sentry.init({
+      release: 'test-release',
       dsn: `https://${SENTRY_PUBLIC_KEY}@sentry.io/${SENTRY_PROJECT_ID}`,
       environment: GDL_ENVIRONMENT
     });
