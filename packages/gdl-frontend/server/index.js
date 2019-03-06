@@ -48,6 +48,7 @@ app.prepare().then(() => {
   } else {
     if (REPORT_ERRORS) {
       Sentry.init({
+        release: '5612c7e633c828ed4dc7b1b4cbab9f37d5ecc73f',
         dsn: `https://${SENTRY_PUBLIC_KEY}@sentry.io/${SENTRY_PROJECT_ID}`,
         environment: GDL_ENVIRONMENT
       });
