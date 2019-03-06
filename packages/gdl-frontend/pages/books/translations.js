@@ -364,7 +364,8 @@ class MyTranslationsPage extends React.PureComponent<{}> {
                     }}
                   />
                 );
-              if (error || !data.currentUser)
+              if (error) throw new Error(error);
+              if (!data.currentUser)
                 return (
                   <Typography align="center" color="error" variant="body1">
                     <Trans>An error has occurred. Please try again.</Trans>
