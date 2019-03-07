@@ -7,7 +7,7 @@
  */
 import React from 'react';
 import { FiberManualRecord as CircleLabel } from '@material-ui/icons';
-import type { ReadingLevel } from '../../types';
+import type { ReadingLevel } from '../../gqlTypes';
 import colorMap from '../../style/colorMapping';
 
 type Props = {
