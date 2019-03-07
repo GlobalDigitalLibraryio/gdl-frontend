@@ -41,7 +41,8 @@ async function doFetch(
     });
 
     let result;
-    if (response.headers.get('Content-Type').includes('application/json')) {
+    const header: ?string = response.headers.get('Content-Type');
+    if (header && header.includes('application/json')) {
       result = await response.json();
     } else {
       result = await response.text();

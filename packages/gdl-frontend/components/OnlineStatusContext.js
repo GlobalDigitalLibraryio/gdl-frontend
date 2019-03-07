@@ -1,7 +1,7 @@
 // @flow
 import * as React from 'react';
 
-const OnlineStatusContext = React.createContext(true);
+const OnlineStatusContext = React.createContext<boolean>(true);
 export default OnlineStatusContext;
 
 // OnlineStatusContext as a HoC. Hooks will make this so much nicer

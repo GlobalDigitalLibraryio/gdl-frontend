@@ -1,6 +1,6 @@
 // @flow
 import styled from '@emotion/styled';
-import { placeholder, hideVisually } from 'polished';
+import { hideVisually } from 'polished';
 import colors from '../../style/colors';
 
 export const Container = styled('div')`
@@ -22,10 +22,14 @@ export const Input = styled('input')`
   font-size: 1rem;
   line-height: 1.5rem;
   transition: all 0.2s ease-in-out;
-  ${placeholder({ color: colors.base.gray })};
 
+  &::placeholder {
+    color: ${colors.base.gray};
+  }
   &:focus {
-    ${placeholder({ color: 'rgb(117, 117, 117)' })};
+    &::placeholder {
+      color: rgb(117, 117, 117);
+    }
   }
   &:hover,
   &:focus {

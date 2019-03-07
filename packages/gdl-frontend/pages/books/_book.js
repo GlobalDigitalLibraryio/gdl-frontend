@@ -21,9 +21,9 @@ import {
   ListItemText,
   Button,
   Typography,
-  Divider as MuiDivider,
-  NoSsr
+  Divider as MuiDivider
 } from '@material-ui/core';
+import NoSsr from '@material-ui/core/NoSsr';
 import {
   Edit as EditIcon,
   Translate as TranslateIcon,

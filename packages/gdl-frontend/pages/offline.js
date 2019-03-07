@@ -69,7 +69,7 @@ class OfflinePage extends React.Component<{}, State> {
    * is only shown when online. Since we use this page as a fallback when offline, we don't want to show the search field
    * in the inital HTML. So therefore we wrap the content here on the server with a false value
    */
-  wrapWithOfflineFromServer(children) {
+  wrapWithOfflineFromServer(children: React.Node) {
     if (typeof window !== 'undefined') {
       return children;
     }
