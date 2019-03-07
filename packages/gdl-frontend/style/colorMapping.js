@@ -17,12 +17,12 @@
  * pink: #EE8BD0
  */
 const colorMap = {
-  '1': '#5BCDE5',
-  '2': '#90CE4C',
-  '3': '#F1C528',
-  '4': '#FF9442',
-  'read-aloud': '#EE6D6D',
-  decodable: '#EE8BD0'
+  Level1: '#5BCDE5',
+  Level2: '#90CE4C',
+  Level3: '#F1C528',
+  Level4: '#FF9442',
+  ReadAloud: '#EE6D6D',
+  Decodable: '#EE8BD0'
 };
 
 export default colorMap;
