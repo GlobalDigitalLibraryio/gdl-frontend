@@ -66,7 +66,7 @@
     "react-dom": "16.6.3",
     "react-emotion": "9.2.12",
     "react-ga": "2.5.3",
-    "react-joyride": "^2.0.2",
+    "react-joyride": "2.0.5",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
     "universal-cookie": "3.0.4"
