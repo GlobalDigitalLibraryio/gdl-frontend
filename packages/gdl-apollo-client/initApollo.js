@@ -19,7 +19,7 @@ function create(initialState, { getToken }) {
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : null
+        Authorization: token ? `Bearer ${token}` : null
       }
     };
   });
