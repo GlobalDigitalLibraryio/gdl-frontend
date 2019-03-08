@@ -189,7 +189,11 @@ class BookPage extends React.Component<Props, State> {
                       size="large"
                     />
                     <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
-                      <ReadBookLink book={book} target={tabletBookTarget} />
+                      <ReadBookLink
+                        book={book}
+                        target={tabletBookTarget}
+                        cypressTarget="read-book-tablet-button"
+                      />
                     </Hidden>
                     <Hidden
                       only="mobile"
@@ -237,7 +241,11 @@ class BookPage extends React.Component<Props, State> {
                       {book.description}
                     </Typography>
                     <Hidden only="mobile">
-                      <ReadBookLink book={book} target={mobileBookTarget} />
+                      <ReadBookLink
+                        book={book}
+                        target={mobileBookTarget}
+                        cypressTarget="read-book-mobile-button"
+                      />
                     </Hidden>
                   </GridItem>
                 </Grid>
@@ -245,6 +253,7 @@ class BookPage extends React.Component<Props, State> {
                   <BookActions1
                     book={book}
                     key={book.uuid}
+                    isMobile
                     target={mobileOfflineTarget}
                   />
                 </Hidden>
@@ -286,7 +295,7 @@ class BookPage extends React.Component<Props, State> {
   }
 }
 
-const ReadBookLink = ({ book, target }) =>
+const ReadBookLink = ({ book, target, cypressTarget }) =>
   book.bookFormat === 'HTML' ? (
     <Link
       route="read"
@@ -295,6 +304,7 @@ const ReadBookLink = ({ book, target }) =>
       prefetch
     >
       <Button
+        data-cy={cypressTarget}
         data-target={target}
         variant="contained"
         color="primary"
@@ -326,7 +336,11 @@ const ReadBookLink = ({ book, target }) =>
  * updated props
  */
 class BookActions1 extends React.Component<
-  { book: BookDetails, target: string },
+  {
+    book: BookDetails,
+    target: string,
+    isMobile: boolean
+  },
   {
     anchorEl: ?HTMLElement,
     isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
@@ -401,7 +415,7 @@ class BookActions1 extends React.Component<
   };
 
   render() {
-    const { book, target } = this.props;
+    const { book, target, isMobile } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -430,7 +444,14 @@ class BookActions1 extends React.Component<
                     book.title
                   );
                 }}
-                icon={<FavoriteIcon filled={isFav} />}
+                icon={
+                  <FavoriteIcon
+                    data-cy={
+                      isMobile ? 'save-favorite-mobile' : 'save-favorite-tablet'
+                    }
+                    filled={isFav}
+                  />
+                }
                 label={<Trans>Favorite</Trans>}
               />
             )}
@@ -444,6 +465,7 @@ class BookActions1 extends React.Component<
                 isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
                 icon={
                   <OfflineIcon
+                    data-cy={isMobile ? 'save-book-mobile' : 'save-book-tablet'}
                     filled={this.state.isAvailableOffline === 'YES'}
                   />
                 }
@@ -519,7 +541,9 @@ class BookActions1 extends React.Component<
             'aria-describedby': 'message-id'
           }}
           message={
-            <span id="snackbar-message">{this.state.snackbarMessage}</span>
+            <span data-cy="save-offline-snackbar" id="snackbar-message">
+              {this.state.snackbarMessage}
+            </span>
           }
         />
       </>
@@ -555,6 +579,7 @@ class BookActions2 extends React.Component<
             aria-owns={this.state.anchorEl ? 'download-book-menu' : null}
             color="primary"
             aria-haspopup="true"
+            data-cy="download-book-button"
             onClick={this.handleDownloadClick}
             disabled={offline}
           >
@@ -571,6 +596,7 @@ class BookActions2 extends React.Component<
               params={{ id: book.id, lang: book.language.code }}
             >
               <Button
+                data-cy="translate-book-button"
                 onClick={() => logEvent('Books', 'Translate', book.title)}
                 color="primary"
                 disabled={offline}
@@ -599,6 +625,7 @@ class BookActions2 extends React.Component<
         )}
         <div>
           <Button
+            data-cy="report-book-button"
             color="primary"
             href={zendeskUrl}
             target="_blank"
@@ -616,6 +643,7 @@ class BookActions2 extends React.Component<
           onClose={this.closeDownloadMenu}
           anchorEl={this.state.anchorEl}
           open={Boolean(this.state.anchorEl)}
+          data-cy="download-book-menu"
         >
           {book.downloads.epub && (
             <MenuItem

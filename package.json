@@ -23,7 +23,8 @@
     "format": "prettier --write \"**/*.js\"",
     "format:check": "prettier --list-different \"**/*.js\"",
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
-    "start": "cd packages/gdl-frontend && yarn start"
+    "start": "cd packages/gdl-frontend && yarn start",
+    "cypress": "cypress open"
   },
   "devDependencies": {
     "@babel/core": "7.1.6",
@@ -39,6 +40,7 @@
     "clean-webpack-plugin": "1.0.0",
     "copy-webpack-plugin": "4.5.4",
     "cross-env": "^5.0.1",
+    "cypress": "^3.1.5",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.7.0",
     "enzyme-to-json": "^3.3.4",
