@@ -134,6 +134,11 @@ class Layout extends React.Component<
                 <ListItemText primary="Flagged books" />
               </ListItem>
             </Link>
+            <Link href="/admin/statistics/most-read" passHref>
+              <ListItem button component="a">
+                <ListItemText primary="Statistics &rarr; Most read" />
+              </ListItem>
+            </Link>
           </List>
         </Drawer>
 

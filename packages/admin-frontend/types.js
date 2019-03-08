@@ -175,3 +175,8 @@ export type ImageMetadata = {
   supportedLanguages: [string],
   imageVariants?: { [string]: ImageCropCoordinates }
 };
+
+export type BookStatistics = {
+  count: number,
+  title: string
+};

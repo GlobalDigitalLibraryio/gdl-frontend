@@ -20,11 +20,12 @@ import type {
   ImageCropCoordinates,
   NewImageMetadata,
   ImageMetadata,
-  License
+  License,
+  BookStatistics
 } from '../types';
 
 const {
-  publicRuntimeConfig: { bookApiUrl, imageApiUrl }
+  publicRuntimeConfig: { bookApiUrl, imageApiUrl, statisticsUrl }
 } = getConfig();
 
 export async function fetchBook(
@@ -305,4 +306,29 @@ export async function fetchLicenses(): Promise<RemoteData<Array<License>>> {
     method: 'GET',
     body: null
   });
+}
+
+export async function fetchMostReadBooks(): Promise<
+  RemoteData<Array<BookStatistics>>
+> {
+  const mostReadRes = await doFetch(`${statisticsUrl}/most-read`);
+  /**
+   * The data comes as plan text or csv format which is comma separated
+   * 1. We split on \n
+   * 2. We remove the header, which is the first element in the array
+   * 3. We return the formatted object values
+   */
+  if (mostReadRes.isOk) {
+    mostReadRes.data = mostReadRes.data
+      .split('\n')
+      .slice(1)
+      .map(item => {
+        const values = item.split(',');
+        return {
+          count: values[0],
+          title: values[1]
+        };
+      });
+  }
+  return mostReadRes;
 }
