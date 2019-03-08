@@ -45,8 +45,12 @@ class MostRead extends React.Component<
               Could not find any statistics on most read books.
             </Typography>
           )}
-          {mostReadBooks.length > 0 && (
-            <MostReadTable mostReadBooks={mostReadBooks} loading={loading} />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            mostReadBooks.length > 0 && (
+              <MostReadTable mostReadBooks={mostReadBooks} />
+            )
           )}
         </Container>
       </Layout>
@@ -54,8 +58,7 @@ class MostRead extends React.Component<
   }
 }
 
-const MostReadTable = ({ mostReadBooks, loading }) => {
-  if (loading) return <CircularProgress />;
+const MostReadTable = ({ mostReadBooks }) => {
   return (
     <Table>
       <TableHead>
