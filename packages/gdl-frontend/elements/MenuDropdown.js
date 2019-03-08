@@ -11,16 +11,16 @@ import {
   Card,
   ClickAwayListener,
   Grow,
-  Popper,
   MenuList,
   Button
 } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
 
 type Props = {
-  anchorRef: ?React$ElementRef<Button>,
+  anchorRef: ?React$ElementRef<typeof Button>,
   open: boolean,
   onClose: () => void,
-  children: Element<MenuList>
+  children: Element<typeof MenuList>
 };
 
 class MenuDropdown extends PureComponent<Props> {

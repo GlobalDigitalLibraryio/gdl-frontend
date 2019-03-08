@@ -57,6 +57,7 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
         return { sources: sourcesResult.data, selectedSource };
       });
     }
+    throw new Error('Something wrong happen during language change');
   };
 
   handleSourceChange = (event: SyntheticInputEvent<EventTarget>) => {

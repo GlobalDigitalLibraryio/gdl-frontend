@@ -8,7 +8,7 @@
 import * as React from 'react';
 import { TABLET_BREAKPOINT } from '../style/theme/misc';
 
-const DimensionContext = React.createContext({
+const DimensionContext = React.createContext<{ media: 'mobile' | 'tablet' }>({
   media: 'tablet'
 });
 

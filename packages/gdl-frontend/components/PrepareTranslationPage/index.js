@@ -65,7 +65,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
     menuIsOpen: false
   };
 
-  anchorEl: React$ElementRef<Button> = React.createRef();
+  anchorEl: React$ElementRef<typeof Button> = React.createRef();
 
   handleToggle = () => {
     this.setState(state => ({ menuIsOpen: !state.menuIsOpen }));

@@ -94,7 +94,7 @@ class TranslationCard extends React.Component<
   },
   { menuIsOpen: boolean, isLoading: boolean, isSynchronized: boolean }
 > {
-  anchorEl: React$ElementRef<Button> = React.createRef();
+  anchorEl: React$ElementRef<typeof Button> = React.createRef();
 
   state = {
     menuIsOpen: false,
