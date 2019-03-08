@@ -323,10 +323,9 @@ export async function fetchMostReadBooks(): Promise<
       .split('\n')
       .slice(1)
       .map(item => {
-        const values = item.split(',');
         return {
-          count: values[0],
-          title: values[1]
+          count: item.substr(0, item.indexOf(',')),
+          title: item.substr(item.indexOf(',') + 1)
         };
       });
   }
