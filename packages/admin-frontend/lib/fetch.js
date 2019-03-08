@@ -308,26 +308,19 @@ export async function fetchLicenses(): Promise<RemoteData<Array<License>>> {
   });
 }
 
-export async function fetchMostReadBooks(): Promise<
-  RemoteData<Array<BookStatistics>>
-> {
-  const mostReadRes = await doFetch(`${statisticsUrl}/most-read`);
-  /**
-   * The data comes as plan text or csv format which is comma separated
-   * 1. We split on \n
-   * 2. We remove the header, which is the first element in the array
-   * 3. We return the formatted object values
-   */
-  if (mostReadRes.isOk) {
-    mostReadRes.data = mostReadRes.data
-      .split('\n')
-      .slice(1)
-      .map(item => {
-        return {
-          count: item.substr(0, item.indexOf(',')),
-          title: item.substr(item.indexOf(',') + 1)
-        };
-      });
+export async function fetchMostReadBooks(
+  numberOfBooksWanted: number,
+  periodOfDays: number
+): Promise<RemoteData<Array<BookStatistics>>> {
+  let urlparameters = '';
+  if (numberOfBooksWanted > 0 || periodOfDays > 0) {
+    urlparameters += `?${
+      numberOfBooksWanted > 0 ? `n=${numberOfBooksWanted}&` : ''
+    }${periodOfDays > 0 ? `days=${periodOfDays}` : ''}`;
   }
+
+  const mostReadRes = await doFetch(
+    `${statisticsUrl}/most-read${urlparameters}`
+  );
   return mostReadRes;
 }
