@@ -11,7 +11,7 @@ export default function formatMostReadDataToObjects(mostReadRes) {
    * 2. We remove the header, which is the first element in the array
    * 3. We return the formatted object values
    */
-  mostReadRes.data = mostReadRes.data
+  return mostReadRes
     .split('\n')
     .slice(1)
     .map(item => {
@@ -20,5 +20,4 @@ export default function formatMostReadDataToObjects(mostReadRes) {
         title: item.substr(item.indexOf(',') + 1)
       };
     });
-  return mostReadRes;
 }

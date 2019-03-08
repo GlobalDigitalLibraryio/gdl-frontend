@@ -314,9 +314,11 @@ export async function fetchMostReadBooks(
 ): Promise<RemoteData<Array<BookStatistics>>> {
   let urlparameters = '';
   if (numberOfBooksWanted > 0 || periodOfDays > 0) {
-    urlparameters += `?${
-      numberOfBooksWanted > 0 ? `n=${numberOfBooksWanted}&` : ''
-    }${periodOfDays > 0 ? `days=${periodOfDays}` : ''}`;
+    urlparameters = `?${
+      numberOfBooksWanted > 0 ? `n=${numberOfBooksWanted}` : ''
+    }${numberOfBooksWanted > 0 && periodOfDays > 0 ? '&' : ''}${
+      periodOfDays > 0 ? `days=${periodOfDays}` : ''
+    }`;
   }
 
   const mostReadRes = await doFetch(

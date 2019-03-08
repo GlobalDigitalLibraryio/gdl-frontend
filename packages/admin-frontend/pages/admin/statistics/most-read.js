@@ -62,21 +62,14 @@ class MostRead extends React.Component<*, State> {
       periodOfDays
     );
 
-    if (bookStatisticsRes.isOk) {
-      this.setState({
-        loading: false,
-        mostReadBooks: formatMostReadDataToObjects(bookStatisticsRes).data
-      });
-    }
+    this.setState({
+      loading: false,
+      mostReadBooks: bookStatisticsRes.isOk ? bookStatisticsRes.data : []
+    });
   };
 
   handleExportButtonClick = async () => {
-    const { numberOfBooksWanted, periodOfDays } = this.state;
-    const bookStatisticsRes = await fetchMostReadBooks(
-      numberOfBooksWanted,
-      periodOfDays
-    );
-    const data = bookStatisticsRes.isOk ? bookStatisticsRes.data : [];
+    const { numberOfBooksWanted, periodOfDays, mostReadBooks } = this.state;
     // We create a hidden a tag
     const a: Object = document.createElement('a');
     const body = document.body;
@@ -87,7 +80,7 @@ class MostRead extends React.Component<*, State> {
     a.style = 'display: none';
 
     // Small trick to download the CSV file with a custom filename
-    const blob = new Blob([data], { type: 'text/csv' });
+    const blob = new Blob([mostReadBooks], { type: 'text/csv' });
     const blobUrl = window.URL.createObjectURL(blob);
     a.href = blobUrl;
     a.download = `mostReadBooks-periodInDaysBack=${periodOfDays}-topResultsOf=${numberOfBooksWanted}-${new Date().toLocaleString()}.csv`;
@@ -156,6 +149,7 @@ class MostRead extends React.Component<*, State> {
 }
 
 const MostReadTable = ({ mostReadBooks }) => {
+  const formattedData = formatMostReadDataToObjects(mostReadBooks);
   return (
     <Table>
       <TableHead>
@@ -165,7 +159,7 @@ const MostReadTable = ({ mostReadBooks }) => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {mostReadBooks.map(book => (
+        {formattedData.map(book => (
           <TableRow key={`${book.count}-${book.title}`}>
             <TableCell>{book.count}</TableCell>
             <TableCell>{book.title}</TableCell>

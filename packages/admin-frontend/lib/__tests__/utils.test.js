@@ -1,6 +1,7 @@
 // @flow
 
 import isEmptyString from '../isEmptyString';
+import formatMostReadDataToObjects from '../utils';
 
 test('That " " returns empty string', () => {
   expect(isEmptyString(' ')).toEqual(true);
@@ -32,4 +33,25 @@ test('That undefined returns empty string', () => {
 
 test('That null returns empty string', () => {
   expect(isEmptyString(null)).toEqual(true);
+});
+
+describe('Test formatMostReadDataToObjects function', () => {
+  const testString = formatMostReadDataToObjects(
+    'Count,Title\n123,My fish, oh no\n222,Dogs\n333,cats'
+  );
+  test('That the formatted list should have a length of 3', () => {
+    expect(testString.length).toBeLessThanOrEqual(3);
+  });
+
+  test('That the formatted list should objects with count and title', () => {
+    expect(testString).toEqual([
+      { count: '123', title: 'My fish, oh no' },
+      { count: '222', title: 'Dogs' },
+      { count: '333', title: 'cats' }
+    ]);
+  });
+
+  test('That "Count,Title" should return empty list', () => {
+    expect(formatMostReadDataToObjects('Count,Title')).toEqual([]);
+  });
 });
