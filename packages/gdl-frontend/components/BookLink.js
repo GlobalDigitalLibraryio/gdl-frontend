@@ -58,7 +58,7 @@ export default ({ book }: { book: Book | BookDetails }) => (
       params={{ id: book.id, lang: book.language.code }}
       passHref
     >
-      <ClickTarget aria-hidden tabIndex="-1" />
+      <ClickTarget aria-hidden tabIndex="-1" data-cy="book-link" />
     </Link>
     <CoverImage size="small" coverImage={book.coverImage} noShadow />
     <CardContent css={{ padding: 10, ':last-child': { paddingBottom: 10 } }}>

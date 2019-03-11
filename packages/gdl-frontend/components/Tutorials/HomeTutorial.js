@@ -107,8 +107,13 @@ const Tooltip = ({
           <Ethiopia css={styles.ethiopia} />
         </div>
       )}
-      {step.title && <Typography variant="h5">{step.title}</Typography>}
+      {step.title && (
+        <Typography data-cy="home-tooltip-title" variant="h5">
+          {step.title}
+        </Typography>
+      )}
       <Typography
+        data-cy="home-tooltip-content"
         style={{ marginTop: index === 0 ? 15 : 0 }}
         variant="body1"
         align="center"
@@ -121,6 +126,7 @@ const Tooltip = ({
           isLastStep && closeTutorial();
           primaryProps.onClick(event);
         }}
+        data-cy="home-tooltip-button"
         variant="contained"
         color="primary"
         size="large"

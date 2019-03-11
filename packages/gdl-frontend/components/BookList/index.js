@@ -54,7 +54,12 @@ const BookList = ({
       {browseLinkProps && (
         <BrowseLink {...browseLinkProps}>
           {/* Negative margin to align the link against the edge of the container */}
-          <Button color="primary" size="small" variant="outlined">
+          <Button
+            data-cy="book-list-more-button"
+            color="primary"
+            size="small"
+            variant="outlined"
+          >
             <Trans>More</Trans>
           </Button>
         </BrowseLink>
