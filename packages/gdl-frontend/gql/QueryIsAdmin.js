@@ -20,7 +20,7 @@ const QueryIsAdmin = ({
   children: any => React.Node
 }) =>
   // Query require a JWT token
-  hasAuthToken ? (
+  hasAuthToken() ? (
     <Query query={QUERY} {...props}>
       {({ loading, error, data }) => {
         if (loading) return null;
