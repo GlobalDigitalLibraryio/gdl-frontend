@@ -81,7 +81,7 @@ class GlobalMenu extends React.Component<Props, State> {
         open={this.props.isOpen}
         onClose={onClose}
       >
-        <List>
+        <List data-cy="global-menu">
           {online && (
             <>
               <SelectBookLanguage

@@ -61,6 +61,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
   const brandLink = (
     <Link route={offline ? 'offline' : 'books'} passHref>
       <BrandLink
+        data-cy="gdl-logo"
         aria-label="Global Digital Library"
         onClick={() => logEvent('Navigation', 'Home', 'Brand logo')}
       >
@@ -74,6 +75,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
       <Toolbar>
         <Left>
           <IconButton
+            data-cy="hamburger-menu"
             color="inherit"
             onClick={onMenuClick}
             css={media.tablet({ marginRight: 18 })}
@@ -122,6 +124,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
               </SearchDrawer>
               <Link route="books" passHref>
                 <IconButton
+                  data-cy="home-button"
                   color="inherit"
                   component="a"
                   onClick={() => logEvent('Navigation', 'Home', 'House icon')}
@@ -136,6 +139,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                 {({ onClick, loading }) => (
                   <Tooltip title={<Trans>Choose book language</Trans>}>
                     <IconButton
+                      data-cy="global-language-button"
                       onClick={() => {
                         logEvent('Navigation', 'Language', 'Globe icon');
                         onClick();
