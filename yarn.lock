@@ -1747,6 +1747,15 @@ apollo-link-error@^1.0.3:
   dependencies:
     apollo-link "^1.2.4"
 
+apollo-link-error@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.1.8.tgz#3a957b22b843cf6c307d516709cdc42371c9aafe"
+  integrity sha512-5hbMIBaINWOsZapWgTF8H2X0q3NjrQD/y4HlqDnUeLmT12OqejLasNh+EFE6q37/l28UHQu1/AuyRn15J7gvCA==
+  dependencies:
+    apollo-link "^1.2.9"
+    apollo-link-http-common "^0.2.11"
+    tslib "^1.9.3"
+
 apollo-link-http-common@^0.2.11:
   version "0.2.11"
   resolved "https://registry.yarnpkg.com/apollo-link-http-common/-/apollo-link-http-common-0.2.11.tgz#d4e494ed1e45ea0e0c0ed60f3df64541d0de682d"

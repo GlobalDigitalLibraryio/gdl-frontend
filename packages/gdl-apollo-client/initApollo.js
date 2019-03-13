@@ -4,6 +4,8 @@ import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
+import { onError } from 'apollo-link-error';
+import * as Sentry from '@sentry/browser';
 
 const {
   publicRuntimeConfig: { graphqlEndpoint }
@@ -13,6 +15,26 @@ let apolloClient = null;
 
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({ uri: graphqlEndpoint });
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (networkError) {
+      Sentry.captureEvent({
+        message: `ClientGraphQlNetworkError - ${networkError.message}`,
+        extra: {
+          source: networkError.source && networkError.source.body
+        }
+      });
+    } else if (graphQLErrors) {
+      graphQLErrors.forEach(clientError =>
+        Sentry.captureEvent({
+          message: `ClientGrapQlError - ${clientError.message}`,
+          extra: {
+            source: clientError.source && clientError.source.body
+          }
+        })
+      );
+    }
+  });
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
@@ -27,7 +49,7 @@ function create(initialState, { getToken }) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: authLink.concat(httpLink),
+    link: authLink.concat(errorLink).concat(httpLink),
     cache: new InMemoryCache({
       // Because of offline
       cacheRedirects: {
