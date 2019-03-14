@@ -2,6 +2,7 @@
 import { ApolloClient, InMemoryCache } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
 import { setContext } from 'apollo-link-context';
+import ApolloLinkTimeout from 'apollo-link-timeout';
 import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { onError } from 'apollo-link-error';
@@ -12,6 +13,8 @@ const {
 } = getConfig();
 
 let apolloClient = null;
+
+const timeoutLink = new ApolloLinkTimeout(10000); // 10 second timeout
 
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({ uri: graphqlEndpoint });
@@ -49,7 +52,10 @@ function create(initialState, { getToken }) {
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
-    link: authLink.concat(errorLink).concat(httpLink),
+    link: authLink
+      .concat(errorLink)
+      .concat(timeoutLink)
+      .concat(httpLink),
     cache: new InMemoryCache({
       // Because of offline
       cacheRedirects: {
