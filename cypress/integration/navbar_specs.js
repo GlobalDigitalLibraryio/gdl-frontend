@@ -6,19 +6,24 @@ describe('Navigation bar', () => {
   });
 
   it('Should be able to search for book with word "Friend"', function() {
-    expect(true).to.equal(true);
+    cy.get('[data-cy="search-book-field"]')
+      .clear()
+      .type('friend')
+      .type('{enter}');
+
+    cy.url().should('include', '/search?q=friend');
   });
 
   it('House button should redirect back to home page', function() {
     cy.visit('/en/books/category/library');
     cy.get('[data-cy="home-button"]').click();
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.url().should('eq', Cypress.config().baseUrl + '/');
   });
 
   it('GDL logo should redirect back to home page', function() {
     cy.visit('/en/books/category/library');
     cy.get('[data-cy="gdl-logo"]').click();
-    cy.url().should('eq', 'http://localhost:3000/');
+    cy.url().should('eq', Cypress.config().baseUrl + '/');
   });
 
   it('Should be able to change language with global button', function() {
@@ -33,6 +38,37 @@ describe('Navigation bar', () => {
         // xhr[0] is what we asked for: https://docs.cypress.io/api/commands/wait.html#Aliases
         cy.location('href').should('eq', xhr[0].baseURI);
       });
+  });
+
+  it('Select Favorites from global menu should navigate you to offline library page', function() {
+    cy.get('[data-cy="hamburger-menu"]').click();
+
+    cy.get('[data-cy="global-menu-offline-button"').click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/offline');
+  });
+
+  it('Select Login from global menu should navigate you to login page', function() {
+    cy.get('[data-cy="hamburger-menu"]').click();
+
+    cy.get('[data-cy="global-menu-login-button"').click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/auth/sign-in');
+  });
+
+  it('Select My translation from global menu should navigate you to login page with next params', function() {
+    cy.get('[data-cy="hamburger-menu"]').click();
+
+    cy.get('[data-cy="global-menu-translation-button"').click();
+    cy.url().should(
+      'include',
+      Cypress.config().baseUrl + '/auth/sign-in?next=%2Fbooks%2Ftranslations'
+    );
+  });
+
+  it('Select Offline library from global menu should navigate you to favorites', function() {
+    cy.get('[data-cy="hamburger-menu"]').click();
+
+    cy.get('[data-cy="global-menu-favorite-button"').click();
+    cy.url().should('eq', Cypress.config().baseUrl + '/favorites');
   });
 
   it('Hamburger menu should show display different menus', function() {

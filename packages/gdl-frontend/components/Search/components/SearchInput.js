@@ -78,6 +78,7 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
         <>
           {/* We use an adjacent sibling selector, se be careful when moving stuff around here. See Form */}
           <Input
+            data-cy="search-book-field"
             aria-label={i18n.t`Search for books`}
             autoComplete="off"
             type="search"
