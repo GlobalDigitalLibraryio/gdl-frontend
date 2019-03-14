@@ -58,10 +58,8 @@ describe('Navigation bar', () => {
     cy.get('[data-cy="hamburger-menu"]').click();
 
     cy.get('[data-cy="global-menu-translation-button"').click();
-    cy.url().should(
-      'include',
-      Cypress.config().baseUrl + '/auth/sign-in?next=%2Fbooks%2Ftranslations'
-    );
+    cy.wait(1000);
+    cy.url().should('include', '/auth/sign-in?next=%2Fbooks%2Ftranslations');
   });
 
   it('Select Offline library from global menu should navigate you to favorites', function() {

@@ -339,7 +339,7 @@ class BookActions1 extends React.Component<
   {
     book: BookDetails,
     target: string,
-    isMobile: boolean
+    isMobile?: boolean
   },
   {
     anchorEl: ?HTMLElement,

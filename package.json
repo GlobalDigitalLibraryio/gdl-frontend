@@ -16,7 +16,8 @@
     "delete": "yarn run delete:modules",
     "delete:modules": "find . -type d -name node_modules -maxdepth 3 -exec rm -rf '{}' +",
     "proxy": "micro-proxy -r rules-dev-proxy.json -p 3000",
-    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build",
+    "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:test",
+    "ci:remote": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:boot && yarn cypress:test:record",
     "typecheck": "flow check",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -24,7 +25,10 @@
     "format:check": "prettier --list-different \"**/*.js\"",
     "lint": "eslint . --ext .js --max-warnings=0 --ignore-path .prettierignore",
     "start": "cd packages/gdl-frontend && yarn start",
-    "cypress": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:boot": "cd packages/gdl-frontend && yarn start & wait-on http://localhost:3000",
+    "cypress:test": "./node_modules/.bin/cypress run",
+    "cypress:test:record": "./node_modules/.bin/cypress run --record"
   },
   "devDependencies": {
     "@babel/core": "7.1.6",
@@ -60,6 +64,7 @@
     "prettier": "1.15.2",
     "react-test-renderer": "16.6.3",
     "service-worker-mock": "1.10.1",
+    "wait-on": "^3.2.0",
     "webpack-bundle-analyzer": "3.0.3",
     "workbox-webpack-plugin": "3.6.3"
   },

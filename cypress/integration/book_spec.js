@@ -53,6 +53,7 @@ describe('Book details', () => {
       'Added book to your offline library.'
     );
     cy.get('[data-cy="save-book-tablet"]').click();
+    cy.wait(500);
     cy.get('[data-cy="save-offline-snackbar"]').contains(
       'Removed book from your offline library.'
     );
