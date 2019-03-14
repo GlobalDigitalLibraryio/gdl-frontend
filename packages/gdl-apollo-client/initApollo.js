@@ -14,7 +14,7 @@ const {
 
 let apolloClient = null;
 
-const timeoutLink = new ApolloLinkTimeout(10000); // 10 second timeout
+const timeoutLink = new ApolloLinkTimeout(600000); // 1min timeout
 
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({ uri: graphqlEndpoint });
