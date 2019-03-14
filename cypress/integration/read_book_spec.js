@@ -1,10 +1,13 @@
-const BOOK_ID = 478;
-
 describe('Read book', () => {
   beforeEach(() => {
     cy.setCookie('bookDetailsTutorialFinished', 'true');
     cy.setCookie('homeTutorialFinished', 'true');
-    cy.visit(`/en/books/read/${BOOK_ID}`); // TODO: consider how to do this (test-data? api? need permanent book that has both epub nd pdf)
+
+    cy.visit('/');
+    cy.get('[data-cy="book-link"]')
+      .first()
+      .click();
+    cy.get('[data-cy="read-book-tablet-button"]').click();
   });
 
   it('Should be able to navigate forward and backwards', () => {
