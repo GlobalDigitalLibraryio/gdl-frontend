@@ -4,4 +4,3 @@ node_modules/
 packages/gdl-frontend/locale/
 **/.next
 .git/
-cypress/
