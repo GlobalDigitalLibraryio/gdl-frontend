@@ -20,11 +20,12 @@ import type {
   ImageCropCoordinates,
   NewImageMetadata,
   ImageMetadata,
-  License
+  License,
+  BookStatistics
 } from '../types';
 
 const {
-  publicRuntimeConfig: { bookApiUrl, imageApiUrl }
+  publicRuntimeConfig: { bookApiUrl, imageApiUrl, statisticsUrl }
 } = getConfig();
 
 export async function fetchBook(
@@ -305,4 +306,23 @@ export async function fetchLicenses(): Promise<RemoteData<Array<License>>> {
     method: 'GET',
     body: null
   });
+}
+
+export async function fetchMostReadBooks(
+  numberOfBooksWanted: number,
+  periodOfDays: number
+): Promise<RemoteData<Array<BookStatistics>>> {
+  let urlparameters = '';
+  if (numberOfBooksWanted > 0 || periodOfDays > 0) {
+    urlparameters = `?${
+      numberOfBooksWanted > 0 ? `n=${numberOfBooksWanted}` : ''
+    }${numberOfBooksWanted > 0 && periodOfDays > 0 ? '&' : ''}${
+      periodOfDays > 0 ? `days=${periodOfDays}` : ''
+    }`;
+  }
+
+  const mostReadRes = await doFetch(
+    `${statisticsUrl}/most-read${urlparameters}`
+  );
+  return mostReadRes;
 }

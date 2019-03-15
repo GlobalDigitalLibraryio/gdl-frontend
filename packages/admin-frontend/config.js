@@ -7,6 +7,19 @@
  */
 const { GDL_ENVIRONMENT } = require('gdl-config');
 
+const statisticsUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'local':
+      return 'https://localhost:3000/admin-service';
+    case 'dev':
+      return 'https://api.test.digitallibrary.io/admin-service';
+    case 'prod':
+      return 'https://api.digitallibrary.io/admin-service';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/admin-service`;
+  }
+};
+
 const bookApiUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'local':
@@ -39,6 +52,7 @@ module.exports = {
   },
   publicRuntimeConfig: {
     imageApiUrl: imageApiUrl(),
-    bookApiUrl: bookApiUrl()
+    bookApiUrl: bookApiUrl(),
+    statisticsUrl: statisticsUrl()
   }
 };
