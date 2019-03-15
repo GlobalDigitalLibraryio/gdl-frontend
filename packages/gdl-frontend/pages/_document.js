@@ -10,7 +10,6 @@ import React from 'react';
 import { NextScript } from '@engineerapart/nextscript';
 import NextDocument, { Head, Main } from 'next/document';
 import { extractCritical } from 'emotion-server';
-import PropTypes from 'prop-types';
 import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
 import type { Context } from '../types';
@@ -33,10 +32,6 @@ export default class Document extends NextDocument {
       const WrappedComponent = props => {
         pageContext = props.pageContext;
         return <Component {...props} />;
-      };
-
-      WrappedComponent.propTypes = {
-        pageContext: PropTypes.object.isRequired
       };
 
       return WrappedComponent;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import HTTPStatus from 'http-status';
 import Head from 'next/head';
 
@@ -8,10 +7,6 @@ export default class Error extends React.Component {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null;
     return { statusCode };
   }
-
-  static propTypes = {
-    statusCode: PropTypes.number
-  };
 
   render() {
     const { statusCode, children } = this.props;
