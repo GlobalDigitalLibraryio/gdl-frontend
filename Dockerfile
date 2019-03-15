@@ -11,7 +11,7 @@ RUN yarn global add bolt
 # Copy necessary files for installing dependencies
 COPY yarn.lock package.json $APP_PATH/
 
-WORKDIR $APP_PATH
+# Ignore devDependencies and Yarn's cache folder
 RUN yarn install --frozen-lockfile --no-cache --production
 
 # Since we use a monorepo, copy every package over, so Bolt can symlink them for us
