@@ -169,6 +169,7 @@ const LanguageItem = ({ language, linkProps, onSelectLanguage }) => {
     return (
       <Link key={language.code} passHref {...linkProps(language)}>
         <ListItem
+          data-cy="choose-language-field"
           button
           component="a"
           onClick={() => onSelectLanguage(language)}

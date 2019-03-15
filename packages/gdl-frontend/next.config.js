@@ -44,6 +44,15 @@ const nextConfig = {
           swDest
         })
       );
+
+      if (config.optimization && config.optimization.minimizer) {
+        for (const plugin of config.optimization.minimizer) {
+          if (plugin.constructor.name === 'TerserPlugin') {
+            plugin.options.sourceMap = true;
+            break;
+          }
+        }
+      }
     }
 
     if (ANALYZE) {

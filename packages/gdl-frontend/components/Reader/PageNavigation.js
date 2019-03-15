@@ -143,6 +143,7 @@ const NavigationButtons = ({
     {({ i18n }) => (
       <>
         <Button
+          data-cy="read-book-previous-button"
           style={{ left: 0, opacity: showNavigationButtons ? 1 : 0 }}
           onClick={onRequestPreviousChapter}
           type="button"
@@ -152,6 +153,7 @@ const NavigationButtons = ({
           <KeyboardArrowLeftIcon style={{ fontSize: 50 }} />
         </Button>
         <Button
+          data-cy="read-book-next-button"
           style={{ right: 0, opacity: showNavigationButtons ? 1 : 0 }}
           onClick={onRequestNextChapter}
           type="button"

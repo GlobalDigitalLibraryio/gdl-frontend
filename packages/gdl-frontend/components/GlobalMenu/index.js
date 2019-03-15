@@ -81,7 +81,7 @@ class GlobalMenu extends React.Component<Props, State> {
         open={this.props.isOpen}
         onClose={onClose}
       >
-        <List>
+        <List data-cy="global-menu">
           {online && (
             <>
               <SelectBookLanguage
@@ -132,7 +132,11 @@ class GlobalMenu extends React.Component<Props, State> {
                 </ListItem>
               )}
               <RouteLink passHref route="favorites">
-                <ListItem button component="a">
+                <ListItem
+                  button
+                  component="a"
+                  data-cy="global-menu-favorite-button"
+                >
                   <ListItemIcon>
                     <FavoriteIcon filled />
                   </ListItemIcon>
@@ -145,7 +149,11 @@ class GlobalMenu extends React.Component<Props, State> {
           )}
           {offlineLibrary && (
             <RouteLink passHref route="offline">
-              <ListItem button component="a">
+              <ListItem
+                button
+                component="a"
+                data-cy="global-menu-offline-button"
+              >
                 <ListItemIcon>
                   <OfflineIcon filled />
                 </ListItemIcon>
@@ -159,7 +167,11 @@ class GlobalMenu extends React.Component<Props, State> {
             <>
               <ConnectedTooltip onClose={onClose} />
               <RouteLink passHref route="translations">
-                <ListItem button component="a">
+                <ListItem
+                  button
+                  component="a"
+                  data-cy="global-menu-translation-button"
+                >
                   <ListItemIcon>
                     <TranslateIcon />
                   </ListItemIcon>
@@ -170,7 +182,11 @@ class GlobalMenu extends React.Component<Props, State> {
               </RouteLink>
               {!hasAuthToken() ? (
                 <Link passHref href="/auth/sign-in">
-                  <ListItem button component="a">
+                  <ListItem
+                    button
+                    component="a"
+                    data-cy="global-menu-login-button"
+                  >
                     <ListItemIcon>
                       <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
                     </ListItemIcon>

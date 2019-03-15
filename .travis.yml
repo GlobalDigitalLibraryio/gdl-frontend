@@ -5,8 +5,10 @@ before_install:
   - yarn global add bolt
 install:
   - bolt
+before_script:
+  - yarn run cypress:verify
 script:
-  - yarn run ci
+  - yarn run ci:remote
 cache: yarn
 notifications:
   slack:

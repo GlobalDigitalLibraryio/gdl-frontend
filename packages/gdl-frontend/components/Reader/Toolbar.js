@@ -35,7 +35,9 @@ const Toolbar = ({
 }: Props) => (
   <Div>
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
-    <div>{`${chapter.seqNo} / ${book.chapters.length}`}</div>
+    <div data-cy="read-book-chapter-index">{`${chapter.seqNo} / ${
+      book.chapters.length
+    }`}</div>
     <Buttons>
       {userHasEditAccess && (
         <Link
@@ -55,7 +57,7 @@ const Toolbar = ({
       )}
       <FavButton book={book} />
       <IconButton onClick={onRequestClose}>
-        <CloseIcon />
+        <CloseIcon data-cy="read-book-close-button" />
         <SrOnly>
           <Trans>Close book</Trans>
         </SrOnly>
@@ -93,7 +95,10 @@ class FavButton extends React.Component<{ book: BookDetails }> {
                 );
               }}
             >
-              <FavoriteIcon filled={isFav} />
+              <FavoriteIcon
+                data-cy="read-book-favorite-button"
+                filled={isFav}
+              />
               <SrOnly>
                 {isFav ? (
                   <Trans>Remove from favorites</Trans>
