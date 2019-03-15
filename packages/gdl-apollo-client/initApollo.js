@@ -30,8 +30,15 @@ function create(initialState, { getToken }) {
     } else if (graphQLErrors) {
       graphQLErrors.forEach(clientError =>
         Sentry.captureEvent({
-          message: `ClientGrapQlError - ${clientError.message}`,
+          message: `ClientGraphQlError - ${clientError.message}`,
           extra: {
+            name:
+              clientError.extensions &&
+              clientError.extensions.response.body.name,
+            body:
+              clientError.extensions && clientError.extensions.response.body,
+            positions: clientError.positions,
+
             source: clientError.source && clientError.source.body
           }
         })
