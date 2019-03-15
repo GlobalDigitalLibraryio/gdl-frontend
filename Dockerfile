@@ -1,5 +1,9 @@
 FROM node:10.13.0-alpine
 
+# Set environment to production
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 ARG MODULE
 RUN test -n "$MODULE"
 
@@ -9,7 +13,7 @@ ENV APP_PATH=$HOME/$MODULE
 RUN yarn global add bolt
 
 # Copy necessary files for installing dependencies
-COPY yarn.lock package.json $APP_PATH/
+COPY package.json $APP_PATH/
 
 # Ignore devDependencies and Yarn's cache folder
 RUN yarn install --frozen-lockfile --no-cache --production
