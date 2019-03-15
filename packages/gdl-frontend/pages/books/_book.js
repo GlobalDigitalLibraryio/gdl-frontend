@@ -532,6 +532,7 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
+
         {/* Show offlined snackbar*/}
         <Snackbar
           autoHideDuration={3000}
