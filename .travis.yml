@@ -1,10 +1,12 @@
 language: node_js
 node_js:
-  - '10'
+  - "10"
 before_install:
   - yarn global add bolt
 install:
   - bolt
+before_script:
+  - yarn run cypress:verify
 script:
   - yarn run ci:remote
 cache: yarn

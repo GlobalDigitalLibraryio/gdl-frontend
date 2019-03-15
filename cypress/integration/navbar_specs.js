@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect */
 describe('Navigation bar', () => {
   beforeEach(() => {
     cy.setCookie('bookDetailsTutorialFinished', 'true');
@@ -58,6 +59,7 @@ describe('Navigation bar', () => {
     cy.get('[data-cy="hamburger-menu"]').click();
 
     cy.get('[data-cy="global-menu-translation-button"').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
     cy.wait(1000);
     cy.url().should('include', '/auth/sign-in?next=%2Fbooks%2Ftranslations');
   });

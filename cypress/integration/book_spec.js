@@ -25,11 +25,13 @@ describe('Book details', () => {
     cy.get('[data-cy="save-favorite-tablet"]')
       .click()
       .should(() => {
+        // eslint-disable-next-line jest/valid-expect
         expect(localStorage.getItem('lscache-favorites')).to.exist;
       });
 
     // turns red
     cy.get('[data-cy="save-favorite-tablet"]').should($el => {
+      // eslint-disable-next-line jest/valid-expect
       expect($el).to.have.css('color', 'rgb(255, 0, 0)');
     });
   });
@@ -47,13 +49,13 @@ describe('Book details', () => {
     cy.get('[data-cy="save-book-tablet"]').click();
     // turns green
     cy.get('[data-cy="save-book-tablet"]').should($el => {
+      // eslint-disable-next-line jest/valid-expect
       expect($el).to.have.css('color', 'rgb(0, 128, 0)');
     });
     cy.get('[data-cy="save-offline-snackbar"]').contains(
       'Added book to your offline library.'
     );
     cy.get('[data-cy="save-book-tablet"]').click();
-    cy.wait(500);
     cy.get('[data-cy="save-offline-snackbar"]').contains(
       'Removed book from your offline library.'
     );

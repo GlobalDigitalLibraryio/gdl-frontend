@@ -27,11 +27,13 @@ describe('Read book', () => {
     cy.get('[data-cy="read-book-favorite-button"]')
       .click()
       .should(() => {
+        // eslint-disable-next-line jest/valid-expect
         expect(localStorage.getItem('lscache-favorites')).to.exist;
       });
 
     // turns red
     cy.get('[data-cy="read-book-favorite-button"]').should($el => {
+      // eslint-disable-next-line jest/valid-expect
       expect($el).to.have.css('color', 'rgb(255, 0, 0)');
     });
   });
