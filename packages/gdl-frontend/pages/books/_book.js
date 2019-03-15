@@ -21,8 +21,7 @@ import {
   ListItemText,
   Button,
   Typography,
-  Divider as MuiDivider,
-  Snackbar
+  Divider as MuiDivider
 } from '@material-ui/core';
 import NoSsr from '@material-ui/core/NoSsr';
 import {
@@ -500,20 +499,6 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
-        {/* Show offlined snackbar*/}
-        <Snackbar
-          autoHideDuration={3000}
-          open={Boolean(this.state.snackbarMessage)}
-          onClose={() => this.setState({ snackbarMessage: null })}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}
-          message={
-            <span data-cy="save-offline-snackbar" id="snackbar-message">
-              {this.state.snackbarMessage}
-            </span>
-          }
-        />
       </>
     );
   }

@@ -97,7 +97,11 @@ export default class Offline extends React.Component<
           ContentProps={{
             'aria-describedby': 'offline-snack-msg'
           }}
-          message={<span id="offline-snack-msg">{snackbarMessage}</span>}
+          message={
+            <span data-cy="save-offline-snackbar" id="offline-snack-msg">
+              {snackbarMessage}
+            </span>
+          }
         />
       </>
     );
