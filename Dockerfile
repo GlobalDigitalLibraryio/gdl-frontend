@@ -22,4 +22,4 @@ RUN bolt
 WORKDIR $APP_PATH/packages/$MODULE
 RUN yarn build
 
-CMD ["yarn", "run", "start"]
+CMD ["yarn install --production", "run", "start"]
