@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "node server",
-    "build": "npm run i18n:extract && npm run i18n:compile && next build",
+    "build": "next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "node_modules/@lingui/cli/lingui.js extract --clean",
     "i18n:compile": "node_modules/@lingui/cli/lingui.js compile",
