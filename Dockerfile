@@ -13,7 +13,7 @@ ENV APP_PATH=$HOME/$MODULE
 RUN yarn global add bolt
 
 # Copy necessary files for installing dependencies
-COPY package.json $APP_PATH/
+COPY yarn.lock package.json $APP_PATH/
 
 # Ignore devDependencies and Yarn's cache folder
 RUN yarn install --frozen-lockfile --no-cache --production
