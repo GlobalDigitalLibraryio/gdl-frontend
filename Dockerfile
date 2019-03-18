@@ -11,8 +11,6 @@ ENV HOME=/home/app
 ENV APP_PATH=$HOME/$MODULE
 
 RUN yarn global add bolt
-# Instead of requiring lingui/cli as dependency
-RUN yarn global add @lingui/cli
 
 # Copy necessary files for installing dependencies
 COPY yarn.lock package.json $APP_PATH/

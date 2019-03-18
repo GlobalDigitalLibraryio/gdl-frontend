@@ -25,13 +25,14 @@
     "dev": "node server",
     "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
-    "i18n:extract": "lingui extract --clean",
-    "i18n:compile": "lingui compile",
-    "i18n:add-locale": "lingui add-locale",
+    "i18n:extract": "node_modules/@lingui/cli/lingui.js extract --clean",
+    "i18n:compile": "node_modules/@lingui/cli/lingui.js compile",
+    "i18n:add-locale": "node_modules/@lingui/cli/lingui.js add-locale",
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
     "@engineerapart/nextscript": "1.0.2",
+    "@lingui/cli": "2.7.1",
     "@lingui/react": "2.7.1",
     "@lingui/babel-preset-react": "2.7.1",
     "@material-ui/core": "3.6.1",
