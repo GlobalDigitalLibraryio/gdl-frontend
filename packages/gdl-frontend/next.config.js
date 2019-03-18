@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 // Add source maps in production for Sentry
 const withSourceMaps = require('@zeit/next-source-maps');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const InlinePrecacheManifestPlugin = require('./inlinePrecacheManifestPlugin');
 const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
@@ -56,6 +55,7 @@ const nextConfig = {
     }
 
     if (ANALYZE && process.env.NODE_ENV !== 'production') {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
