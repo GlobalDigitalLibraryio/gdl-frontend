@@ -20,6 +20,7 @@
     "gdl-image": "^0.0.0",
     "isomorphic-unfetch": "3.0.0",
     "next": "7.0.2",
+    "next-plugin-transpile-modules": "0.1.3",
     "react": "16.6.3",
     "react-cropper": "^1.0.1",
     "react-dom": "16.6.3",
@@ -28,7 +29,6 @@
     "react-jss": "8.6.1"
   },
   "devDependencies": {
-    "@zeit/next-css": "1.0.1",
-    "next-plugin-transpile-modules": "0.1.3"
+    "@zeit/next-css": "1.0.1"
   }
 }
