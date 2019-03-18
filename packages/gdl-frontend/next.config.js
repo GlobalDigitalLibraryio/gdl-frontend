@@ -1,11 +1,9 @@
 // @flow
 const withTM = require('next-plugin-transpile-modules');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 // Add source maps in production for Sentry
 const withSourceMaps = require('@zeit/next-source-maps');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const InlinePrecacheManifestPlugin = require('./inlinePrecacheManifestPlugin');
 const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
@@ -25,6 +23,7 @@ const nextConfig = {
   webpack(config, options) {
     // If we are running in dev mode, add a dummy service worker
     if (options.dev) {
+      const CopyWebpackPlugin = require('copy-webpack-plugin');
       config.plugins.push(
         new CopyWebpackPlugin([{ from: 'service-worker-dev.js', to: swDest }])
       );
@@ -55,7 +54,8 @@ const nextConfig = {
       }
     }
 
-    if (ANALYZE) {
+    if (ANALYZE && options.dev) {
+      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
