@@ -55,7 +55,7 @@ const nextConfig = {
       }
     }
 
-    if (ANALYZE) {
+    if (ANALYZE && process.env.NODE_ENV !== 'production') {
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'server',
