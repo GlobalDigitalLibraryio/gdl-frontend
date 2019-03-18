@@ -23,7 +23,7 @@
   },
   "scripts": {
     "dev": "node server",
-    "build": "next build",
+    "build": "npm run i18n:extract && npm run i18n:compile && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "node_modules/@lingui/cli/lingui.js extract --clean",
     "i18n:compile": "node_modules/@lingui/cli/lingui.js compile",
@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "@engineerapart/nextscript": "1.0.2",
+    "@lingui/cli": "2.7.1",
     "@lingui/react": "2.7.1",
     "@lingui/babel-preset-react": "2.7.1",
     "@material-ui/core": "3.6.1",
@@ -77,7 +78,6 @@
     "workbox-webpack-plugin": "3.6.3"
   },
   "devDependencies": {
-    "@lingui/cli": "2.7.1",
     "cross-env": "^5.0.1",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.7.0",
