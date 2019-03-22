@@ -13,9 +13,13 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const graphqlEndpoint = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
-      return 'http://localhost:4000';
-    default:
       return 'https://api.test.digitallibrary.io/graphql-book-service';
+    case 'local':
+      return 'http://localhost:4000';
+    case 'prod':
+      return 'https://api.digitallibrary.io/graphql-book-service';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/graphql-book-service`;
   }
 };
 
