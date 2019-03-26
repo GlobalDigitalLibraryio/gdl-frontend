@@ -10,6 +10,19 @@ import type { ConfigShape } from './types';
 */
 const { GDL_ENVIRONMENT } = require('gdl-config');
 
+const siteTranslationServiceUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'dev':
+      return 'http://localhost:5000';
+    case 'local':
+      return 'http://localhost:5000';
+    case 'prod':
+      return 'https://api.digitallibrary.io/site-translation-service';
+    default:
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/site-translation-service`;
+  }
+};
+
 const graphqlEndpoint = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
@@ -84,6 +97,7 @@ module.exports = {
     graphqlEndpoint: graphqlEndpoint(),
     bookApiUrl: bookApiUrl(),
     canonicalUrl: canonicalUrl(),
+    siteTranslationServiceUrl: siteTranslationServiceUrl(),
 
     DEFAULT_LANGUAGE: {
       code: 'en',

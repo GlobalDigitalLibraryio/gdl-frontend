@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { Link, Router } from '../routes';
 import { css } from '@emotion/core';
 
@@ -65,7 +65,10 @@ const TranslateDropdown = React.forwardRef(
                 >
                   <MenuButton buttonRef={ref}>
                     <Typography style={{ fontSize: '0.9375rem' }} align="left">
-                      <Trans>Translate in context</Trans>
+                      <FormattedMessage
+                        id="Translate in context"
+                        defaultMessage="Translate in context"
+                      />
                     </Typography>
                   </MenuButton>
                 </Link>
@@ -80,7 +83,10 @@ const TranslateDropdown = React.forwardRef(
                   onClick={() => Router.pushRoute('translations')}
                 >
                   <Typography style={{ fontSize: '0.9375rem' }} align="left">
-                    <Trans>Mobile translation</Trans>
+                    <FormattedMessage
+                      id="Mobile translation"
+                      defaultMessage="Mobile translation"
+                    />
                   </Typography>
                 </MenuButton>
               </div>

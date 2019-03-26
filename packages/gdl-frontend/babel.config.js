@@ -4,7 +4,6 @@ module.exports = api => {
   const presets = [
     'next/babel',
     '@babel/preset-flow',
-    '@lingui/babel-preset-react',
     '@emotion/babel-preset-css-prop'
   ];
   const plugins = [
@@ -21,7 +20,8 @@ module.exports = api => {
           preventFullImport: true
         }
       }
-    ]
+    ],
+    ['react-intl', { messageDir: './locale/' }]
   ];
 
   return {

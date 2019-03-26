@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/core';
 
 import media from '../../../style/media';
@@ -28,9 +28,13 @@ const NoResults = () => (
   <div css={{ textAlign: 'center' }} aria-hidden>
     <PlayfulCat css={svgStyle} />
     <span>
-      <Trans>
-        <strong>Oh no!</strong> Please try searching for something else.
-      </Trans>
+      <FormattedMessage
+        id="Please try searching for something else"
+        defaultMessage="{emph} Please try searching for something else."
+        values={{
+          emph: <strong>Oh no!</strong>
+        }}
+      />
     </span>
   </div>
 );

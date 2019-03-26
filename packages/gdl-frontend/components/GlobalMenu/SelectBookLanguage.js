@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -17,6 +17,7 @@ import type {
 } from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
+import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 function linkProps(language) {
   return {
@@ -39,7 +40,8 @@ type Props = {
   children: (data: { onClick: () => void, loading: boolean }) => Node,
   onSelectLanguage?: Language => void,
   enableParentSwipe?: () => void,
-  disableParentSwipe?: () => void
+  disableParentSwipe?: () => void,
+  changeSiteLanguage?: () => void
 };
 
 type State = {
@@ -110,16 +112,26 @@ class SelectBookLanguage extends React.Component<Props, State> {
                   color="error"
                   css={{ margin: '1rem' }}
                 >
-                  <Trans>Error loading data.</Trans>
+                  <FormattedMessage
+                    id="Error loading data"
+                    defaultMessage="Error loading data."
+                  />
                 </Typography>
               )}
               {data && (
-                <LanguageList
-                  onSelectLanguage={this.handleSelectLanguage}
-                  selectedLanguageCode={selectedLanguage}
-                  linkProps={linkProps}
-                  languages={data.languages}
-                />
+                <GdlI18nConsumer>
+                  {({ changeSiteLanguage }) => (
+                    <LanguageList
+                      onSelectLanguage={language => {
+                        this.handleSelectLanguage(language);
+                        changeSiteLanguage(language);
+                      }}
+                      selectedLanguageCode={selectedLanguage}
+                      linkProps={linkProps}
+                      languages={data.languages}
+                    />
+                  )}
+                </GdlI18nConsumer>
               )}
             </SwipeableDrawer>
           </>

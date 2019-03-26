@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans, I18n } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import {
   Button,
   Card,
@@ -40,6 +40,7 @@ import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 
+import type { intlShape } from 'react-intl';
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
@@ -92,7 +93,11 @@ class TranslationCard extends React.Component<
     translation: Translation,
     handleSync: () => void
   },
-  { menuIsOpen: boolean, isLoading: boolean, isSynchronized: boolean }
+  {
+    menuIsOpen: boolean,
+    isLoading: boolean,
+    isSynchronized: boolean
+  }
 > {
   anchorEl: React$ElementRef<typeof Button> = React.createRef();
 
@@ -186,7 +191,7 @@ class TranslationCard extends React.Component<
                       })
                 }
               />
-              <Trans>Sync</Trans>
+              <FormattedMessage id="Sync" defaultMessage="Sync" />
             </Button>
             <Button
               buttonRef={this.anchorEl}
@@ -204,7 +209,7 @@ class TranslationCard extends React.Component<
               })}
             >
               <TranslateIcon css={mq({ fontSize: [24, 30, 30] })} />
-              <Trans>Translate</Trans>
+              <FormattedMessage id="Translate" defaultMessage="Translate" />
             </Button>
 
             <TranslateDropdown
@@ -233,7 +238,11 @@ class TranslationCard extends React.Component<
             <Grid item>
               <Typography variant="h5">{translateTo.title}</Typography>
               <Typography variant="body1" component="span">
-                <Trans>From {translateTo.publisher.name}</Trans>
+                <FormattedMessage
+                  id="From name"
+                  defaultMessage="From {name}"
+                  values={{ name: translateTo.publisher.name }}
+                />
                 {', '}
                 <CircleLabel
                   level={readingLevel}
@@ -251,7 +260,7 @@ class TranslationCard extends React.Component<
               <Grid container css={{ marginTop: spacing.large }}>
                 <Grid item>
                   <Typography variant="body1">
-                    <Trans>From</Trans>:
+                    <FormattedMessage id="From" defaultMessage="From" />:
                   </Typography>
                   <Typography variant="h6">
                     {translateFrom.language.name}
@@ -326,11 +335,17 @@ const CustomGrid = styled('div')`
   }
 `;
 
-class MyTranslationsPage extends React.PureComponent<{}> {
+class MyTranslationsPage extends React.PureComponent<*, { intl?: intlShape }> {
   render() {
+    const { intl } = this.props;
     return (
       <Layout>
-        <I18n>{({ i18n }) => <Head title={i18n.t`My translations`} />}</I18n>
+        <Head
+          title={intl.formatMessage({
+            id: 'My translations',
+            defaultMessage: 'My translations'
+          })}
+        />
         <Container style={{ marginBottom: spacing.large }}>
           <Typography
             variant="h4"
@@ -338,7 +353,10 @@ class MyTranslationsPage extends React.PureComponent<{}> {
             paragraph
             css={{ marginTop: spacing.large, marginBottom: spacing.medium }}
           >
-            <Trans>My translations</Trans>
+            <FormattedMessage
+              id="My translations"
+              defaultMessage="My translations"
+            />
           </Typography>
           <Query query={MY_TRANSLATION_QUERY}>
             {({
@@ -368,7 +386,10 @@ class MyTranslationsPage extends React.PureComponent<{}> {
               if (!data.currentUser)
                 return (
                   <Typography align="center" color="error" variant="body1">
-                    <Trans>An error has occurred. Please try again.</Trans>
+                    <FormattedMessage
+                      id="An error has occurred. Please try again"
+                      defaultMessage="An error has occurred. Please try again."
+                    />
                   </Typography>
                 );
               const { translations } = data.currentUser;
@@ -379,7 +400,10 @@ class MyTranslationsPage extends React.PureComponent<{}> {
                   variant="body1"
                   css={{ marginTop: spacing.medium }}
                 >
-                  <Trans>You have not translated any books yet.</Trans>
+                  <FormattedMessage
+                    id="You have not translated any books yet"
+                    defaultMessage="You have not translated any books yet."
+                  />
                 </Typography>
               ) : (
                 translations.map(translation => (
@@ -398,4 +422,4 @@ class MyTranslationsPage extends React.PureComponent<{}> {
   }
 }
 
-export default securePage(MyTranslationsPage);
+export default securePage(injectIntl(MyTranslationsPage));

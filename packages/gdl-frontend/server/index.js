@@ -15,15 +15,22 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const glob = require('glob');
 const csp = require('helmet-csp');
 const { join } = require('path');
+const { readFileSync } = require('fs');
+const axios = require('axios');
 
 const routes = require('../routes');
 const {
-  publicRuntimeConfig: { REPORT_ERRORS, SENTRY_PUBLIC_KEY, SENTRY_PROJECT_ID },
+  publicRuntimeConfig: {
+    REPORT_ERRORS,
+    SENTRY_PUBLIC_KEY,
+    SENTRY_PROJECT_ID,
+    siteTranslationServiceUrl
+  },
   serverRuntimeConfig: { port }
 } = require('../config');
 const contentSecurityPolicy = require('./contentSecurityPolicy');
 
-const languages = glob.sync('locale/*/messages.js').map(f => f.split('/')[1]);
+const languages = glob.sync('locale/*/en.json').map(f => f.split('/')[1]);
 console.log('> Found translations for the following languages: ', languages);
 console.log('> GDL environment: ', GDL_ENVIRONMENT);
 console.log('> Will report errors: ', REPORT_ERRORS);
@@ -35,9 +42,39 @@ const app = next({ dev: isDev });
 const renderAndCache = require('./cache')(app);
 
 // Use cache and next-routes for custom routing
-const handle = routes.getRequestHandler(app, ({ req, res, route, query }) => {
-  renderAndCache(req, res, route.page, query);
-});
+const handle = routes.getRequestHandler(
+  app,
+  async ({ req, res, route, query }) => {
+    const siteLang = req.cookies['siteLanguage'] || 'en';
+    req.localeDataScript = getLocaleDataScript(siteLang);
+    req.localeCatalog = await getLanguageCatalog(siteLang);
+    renderAndCache(req, res, route.page, query);
+  }
+);
+
+// We need to expose React Intl's locale data on the request for the user's
+// locale. This function will also cache the scripts by lang in memory.
+const localeDataCache = new Map();
+const getLocaleDataScript = language => {
+  if (!localeDataCache.has(language)) {
+    const localeDataFile = require.resolve(
+      `react-intl/locale-data/${language}`
+    );
+    const localeDataScript = readFileSync(localeDataFile, 'utf8');
+    localeDataCache.set(language, localeDataScript);
+  }
+  return localeDataCache.get(language);
+};
+
+// We need to expose React Intl's locale data on the request for the user's
+const getLanguageCatalog = async language => {
+  const translation = await axios(
+    `${siteTranslationServiceUrl}/${language}`
+  ).then(res => {
+    return res.data;
+  });
+  return translation[language];
+};
 
 app.prepare().then(() => {
   const server = express();
