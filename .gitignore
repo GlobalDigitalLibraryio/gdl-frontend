@@ -8,6 +8,6 @@ yarn-debug.log*
 *.iml
 .idea
 # Currently we only have one language, so we ignore the locale folder for now
-packages/gdl-frontend/locale/
+packages/gdl-frontend/locale/_build
 cypress/videos/
 cypress/screenshots/
