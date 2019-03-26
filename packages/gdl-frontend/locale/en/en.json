@@ -1,0 +1,116 @@
+{
+  "Blog": "Blog",
+  "From": "From",
+  "Home": "Home",
+  "More": "More",
+  "Next": "Next",
+  "Sync": "Sync",
+  "from": "from",
+  "About": "About",
+  "Done!": "Done!",
+  "Level": "Level {level}",
+  "Share": "Share",
+  "Log in": "Log in",
+  "Oh no!": "Oh no!",
+  "Search": "Search",
+  "result": "{totalCount, number} {totalCount, plural, one {result for} other {results for}}",
+  "Level 1": "Level 1",
+  "Level 2": "Level 2",
+  "Level 3": "Level 3",
+  "Level 4": "Level 4",
+  "License": "License",
+  "Log out": "Log out",
+  "Similar": "Similar",
+  "Tooltip": "Tooltip",
+  "Copy URL": "Copy URL",
+  "Download": "Download",
+  "Favorite": "Favorite",
+  "Featured": "Featured",
+  "Next tip": "Next tip",
+  "Previous": "Previous",
+  "Selected": "Selected:",
+  "Decodable": "Decodable",
+  "Favorites": "Favorites",
+  "From name": "From {name}",
+  "GDL Admin": "GDL Admin",
+  "Open menu": "Open menu",
+  "Read book": "Read book",
+  "Translate": "Translate",
+  "from name": "from {name}",
+  "Categories": "Categories",
+  "Close book": "Close book",
+  "More books": "More books",
+  "Read aloud": "Read aloud",
+  "Contributor": "{contributorType}",
+  "New arrivals": "New arrivals",
+  "Save offline": "Save offline",
+  "Take me home": "Take me home",
+  "Translate to": "Translate to",
+  "Book language": "Book language",
+  "Cookie policy": "Cookie policy",
+  "E-book (EPUB)": "E-book (EPUB)",
+  "Library books": "Library books",
+  "Report issues": "Report issues",
+  "No books found": "No books found",
+  "Privacy policy": "Privacy policy",
+  "Translate book": "Translate book",
+  "Translate from": "Translate from",
+  "Classroom books": "Classroom books",
+  "My translations": "My translations",
+  "Offline library": "Offline library",
+  "Select language": "Select language",
+  "Tutorial online": "Start reading a book!",
+  "Add to favorites": "Add to favorites",
+  "Remove all books": "Remove all books",
+  "Report a problem": "Report a problem",
+  "Search for books": "Search for books",
+  "Tutorial offline": "Click here to save books so you can read offline.",
+  "No language found": "No language found",
+  "Selected language": "{language}",
+  "Start translation": "Start translation",
+  "Error loading data": "Error loading data.",
+  "Mobile translation": "Mobile translation",
+  "Clear all favorites": "Clear all favorites",
+  "Licensing and reuse": "Licensing and reuse",
+  "Prepare translation": "Prepare translation",
+  "Sign in to continue": "Sign in to continue",
+  "Translate this book": "Translate this book",
+  "Choose book language": "Choose book language",
+  "Printable book (PDF)": "Printable book (PDF)",
+  "Sign in using Google": "Sign in using Google",
+  "Translate in context": "Translate in context",
+  "No results for search": "No results for",
+  "Remove from favorites": "Remove from favorites",
+  "Additional information": "Additional information",
+  "Find something to read": "Find something to read",
+  "Sign in using Facebook": "Sign in using Facebook",
+  "You have not translated any books yet": "You have not translated any books yet.",
+  "An error has occurred": {
+    " Please try again": "An error has occurred. Please try again."
+  },
+  "Please try searching for something else": "{emph} Please try searching for something else.",
+  "Oops, there was a problem signing you in": {
+    "": "Oops, there was a problem signing you in."
+  },
+  "The page you were looking for was taken by a 404": {
+    "": "The page you were looking for was taken by a 404."
+  },
+  "Add books to your favorites so you can easily find them later": {
+    "": "Add books to your favorites so you can easily find them later."
+  },
+  "The error has been reported": {
+    " Please feel free to try signing in again": {
+      "": "The error has been reported. Please feel free to try signing in again."
+    }
+  },
+  "Something went wrong while preparing the translation": {
+    " Please try again": {
+      "": "Something went wrong while preparing the translation. Please try again."
+    }
+  },
+  "Please wait while we’re preparing the book for translation": {
+    " This could take some time": {
+      "": "Please wait while we’re preparing the book for translation. This could take some time."
+    }
+  }
+}
