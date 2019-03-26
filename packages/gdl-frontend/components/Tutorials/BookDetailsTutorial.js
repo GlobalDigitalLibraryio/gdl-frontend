@@ -8,82 +8,103 @@
 
 import * as React from 'react';
 import Joyride from 'react-joyride';
-import { Trans, i18nMark } from '@lingui/react';
+import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Arrow from './tooltip-arrow.svg';
 import { Button, Typography } from '@material-ui/core';
 import { withTheme, type Theme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
+import type { intlShape } from 'react-intl';
 
 export const tabletBookTarget = 'tutorial_read_book_tablet';
 export const tabletOfflineTarget = 'tutorial_save_offline_tablet';
 export const mobileBookTarget = 'tutorial_read_book_mobile';
 export const mobileOfflineTarget = 'tutorial_save_offline_mobile';
 
-const steps = {
-  tablet: [
-    {
-      target: `[data-target='${tabletBookTarget}']`,
-      content: i18nMark('Start reading a book!'),
-      placement: 'right',
-      disableBeacon: true,
-
-      floaterProps: {
-        hideArrow: true
-      }
-    },
-    {
-      target: `.${tabletOfflineTarget}`,
-      content: i18nMark('Click here to save books so you can read offline.'),
-      placement: 'bottom-start',
-      disableBeacon: true,
-      floaterProps: {
-        hideArrow: true
-      }
-    }
-  ],
-  mobile: [
-    {
-      target: `[data-target='${mobileBookTarget}']`,
-      content: i18nMark('Start reading a book!'),
-      placement: 'top-end',
-      disableBeacon: true,
-      floaterProps: {
-        hideArrow: true
-      }
-    },
-    {
-      target: `.${mobileOfflineTarget}`,
-      content: i18nMark('Click here to save books so you can read offline.'),
-      placement: 'top-start',
-      disableBeacon: true,
-      floaterProps: {
-        hideArrow: true
-      }
-    }
-  ]
-};
+const translations = defineMessages({
+  online: {
+    id: 'Tutorial online',
+    defaultMessage: 'Start reading a book!'
+  },
+  offline: {
+    id: 'Tutorial offline',
+    defaultMessage: 'Click here to save books so you can read offline.'
+  }
+});
 
 type Props = {
   theme: Theme,
   status: boolean,
   onFinish: () => void,
-  media: 'tablet' | 'mobile'
+  media: 'tablet' | 'mobile',
+  intl: intlShape
 };
 
 type State = {
-  currentSteps: Array<*>
+  currentSteps: Array<*> | null
 };
 
 class BookDetailsTutorial extends React.Component<Props, State> {
   state = {
-    currentSteps: steps[this.props.media]
+    currentSteps: null
   };
+
+  componentDidMount() {
+    const steps = this.getSteps();
+    this.setState({
+      currentSteps: steps[this.props.media]
+    });
+  }
+
+  getSteps = () => ({
+    tablet: [
+      {
+        target: `[data-target='${tabletBookTarget}']`,
+        content: this.props.intl.formatMessage(translations.online),
+        placement: 'right',
+        disableBeacon: true,
+
+        floaterProps: {
+          hideArrow: true
+        }
+      },
+      {
+        target: `.${tabletOfflineTarget}`,
+        content: this.props.intl.formatMessage(translations.offline),
+        placement: 'bottom-start',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      }
+    ],
+    mobile: [
+      {
+        target: `[data-target='${mobileBookTarget}']`,
+        content: this.props.intl.formatMessage(translations.online),
+        placement: 'top-end',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      },
+      {
+        target: `.${mobileOfflineTarget}`,
+        content: this.props.intl.formatMessage(translations.offline),
+        placement: 'top-start',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      }
+    ]
+  });
 
   render() {
     const { theme, media, status, onFinish } = this.props;
     const { currentSteps } = this.state;
+    if (currentSteps === null) return null;
     // Find the max zIndex from Material Ui components, because this component should be on top
     // $FlowFixMe flow currently handle indirect array number types as mixed
     const maxZIndex = Math.max(...Object.values(theme.zIndex));
@@ -146,7 +167,11 @@ const Tooltip = ({
         size="large"
         style={{ marginTop: 20 }}
       >
-        {isLastStep ? <Trans>Done!</Trans> : <Trans>Next tip</Trans>}
+        {isLastStep ? (
+          <FormattedMessage id="Done!" defaultMessage="Done!" />
+        ) : (
+          <FormattedMessage id="Next tip" defaultMessage="Next tip" />
+        )}
       </Button>
     </div>
   </Center>
@@ -229,4 +254,4 @@ const styles = {
   `
 };
 
-export default withTheme()(BookDetailsTutorial);
+export default withTheme()(injectIntl(BookDetailsTutorial));

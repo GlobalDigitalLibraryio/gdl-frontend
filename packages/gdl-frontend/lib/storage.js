@@ -21,6 +21,7 @@ const BOOK_LANGUAGE_KEY = 'bookLanguage';
 const BOOK_CATEGORY_KEY = 'bookCategory';
 const BOOKDETAILS_TUTORIAL_STATUS_KEY = 'bookDetailsTutorialFinished';
 const HOME_TUTORIAL_STATUS_KEY = 'homeTutorialFinished';
+const SITE_LANGUAGE_KEY = 'siteLanguage';
 
 const oneMonthsInSeconds = 60 * 60 * 24 * 30; // approximately
 const sixMonthsInSeconds = oneMonthsInSeconds * 6;
@@ -104,4 +105,18 @@ export function clearTutorial() {
   const c = cookies();
   c.remove(HOME_TUTORIAL_STATUS_KEY, SIX_MONTHS_OPTIONS);
   c.remove(BOOKDETAILS_TUTORIAL_STATUS_KEY, SIX_MONTHS_OPTIONS);
+}
+
+export function getSiteLanguage(req?: $Request): string {
+  const lang = req
+    ? req.cookies[SITE_LANGUAGE_KEY]
+    : cookies().get(SITE_LANGUAGE_KEY, { doNotParse: true });
+  return lang || 'en';
+}
+
+export function setSiteLanguage(language?: string, callback?: () => void) {
+  // Client
+  const c = cookies();
+  c.set(SITE_LANGUAGE_KEY, language, ONE_MONTH_OPTIONS);
+  callback && callback();
 }

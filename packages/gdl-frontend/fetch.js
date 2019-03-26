@@ -10,7 +10,7 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { getAuthToken } from 'gdl-auth';
 
-import type { Translation, ConfigShape, RemoteData } from './types';
+import type { Translation, ConfigShape, RemoteData, Locale } from './types';
 
 const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 
@@ -19,6 +19,10 @@ const { publicRuntimeConfig, serverRuntimeConfig }: ConfigShape = getConfig();
 const bookApiUrl = () =>
   (serverRuntimeConfig && serverRuntimeConfig.bookApiUrl) ||
   publicRuntimeConfig.bookApiUrl;
+
+const siteTranslationUrl = () =>
+  (serverRuntimeConfig && serverRuntimeConfig.siteTranslationServiceUrl) ||
+  publicRuntimeConfig.siteTranslationServiceUrl;
 
 /*
  * Wrap fetch with some error handling and automatic json parsing
@@ -85,4 +89,10 @@ export function sendToTranslation(
     method: 'POST',
     body: JSON.stringify({ bookId, fromLanguage, toLanguage })
   });
+}
+
+export function fetchSiteTranslation(
+  languageCode: string
+): Promise<RemoteData<Locale>> {
+  return doFetch(`${siteTranslationUrl()}/${languageCode}`);
 }

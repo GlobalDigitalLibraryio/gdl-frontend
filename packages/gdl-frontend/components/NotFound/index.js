@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import Taken from './Taken';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import Link from 'next/link';
 import { Typography } from '@material-ui/core';
 
@@ -22,7 +22,7 @@ const NotFound = () => (
     <Head title="Page not found" />
     <Container my="30px">
       <Typography component="h1" align="center" variant="h4" gutterBottom>
-        <Trans>Oh no!</Trans>
+        <FormattedMessage id="Oh no!" defaultMessage="Oh no!" />
       </Typography>
       <Typography
         component="h2"
@@ -30,7 +30,10 @@ const NotFound = () => (
         variant="subtitle1"
         gutterBottom
       >
-        <Trans>The page you were looking for was taken by a 404.</Trans>
+        <FormattedMessage
+          id="The page you were looking for was taken by a 404."
+          defaultMessage="The page you were looking for was taken by a 404."
+        />
       </Typography>
       <div
         css={{
@@ -43,7 +46,7 @@ const NotFound = () => (
       </div>
       <Link href="/" passHref>
         <A align="center">
-          <Trans>Take me home</Trans>
+          <FormattedMessage id="Take me home" defaultMessage="Take me home" />
         </A>
       </Link>
     </Container>

@@ -7,12 +7,12 @@
  */
 
 import React from 'react';
-import { I18nProvider } from '@lingui/react';
+import { IntlProvider } from 'react-intl';
 import { mount } from 'enzyme';
 import PageNavigation from '../PageNavigation';
 
 function mountWithI18n(node) {
-  return mount(<I18nProvider>{node}</I18nProvider>);
+  return mount(<IntlProvider locale="en">{node}</IntlProvider>);
 }
 
 test('that we can navigate pages with the buttons', () => {

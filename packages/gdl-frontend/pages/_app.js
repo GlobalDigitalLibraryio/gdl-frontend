@@ -22,7 +22,8 @@ import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProv
 import getPageContext from '../getPageContext';
 import initSentry from '../lib/initSentry';
 import type { Context } from '../types';
-import GdlI18nProvider from '../components/GdlI18nProvider';
+import { GdlI18nProvider } from '../components/GdlI18nProvider';
+import { addLocaleData } from 'react-intl';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
@@ -35,6 +36,15 @@ import { TutorialProvider } from '../context/TutorialContext';
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
+
+// Register React Intl's locale data for the user's locale in the browser. This
+// locale data was added to the page by `pages/_document.js`. This only happens
+// once, on initial page load in the browser.
+if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
+  Object.keys(window.ReactIntlLocaleData).forEach(lang => {
+    addLocaleData(window.ReactIntlLocaleData[lang]);
+  });
+}
 
 class App extends NextApp {
   static async getInitialProps({
@@ -50,7 +60,13 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    return { pageProps };
+    const { req } = ctx;
+    // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+    const { localeCatalog } = req || window.__NEXT_DATA__.props;
+
+    const siteLanguage = 'en';
+
+    return { pageProps, localeCatalog, siteLanguage };
   }
 
   constructor(props: { apolloClient: ApolloClient }) {
@@ -130,7 +146,14 @@ class App extends NextApp {
   };
 
   render() {
-    const { Component, pageProps, apolloClient } = this.props;
+    const {
+      Component,
+      pageProps,
+      apolloClient,
+      localeCatalog,
+      siteLanguage
+    } = this.props;
+
     return (
       <NextContainer>
         <GlobalStyles />
@@ -138,7 +161,10 @@ class App extends NextApp {
           <Head>
             <title>{DEFAULT_TITLE}</title>
           </Head>
-          <GdlI18nProvider>
+          <GdlI18nProvider
+            initialCatalog={localeCatalog}
+            initialSiteLanguage={siteLanguage}
+          >
             {/* Wrap every page in Jss and Theme providers */}
             <JssProvider
               jss={this.pageContext.jss}

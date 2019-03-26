@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -147,7 +147,7 @@ class HomePage extends React.Component<Props> {
           color="primary"
           size="large"
         >
-          <Trans>More</Trans>
+          <FormattedMessage id="More" defaultMessage="More" />
         </Button>
       </View>
     );
@@ -178,7 +178,7 @@ class HomePage extends React.Component<Props> {
                 variant="h6"
                 css={{ color: colors.base.white }}
               >
-                <Trans>Featured</Trans>
+                <FormattedMessage id="Featured" defaultMessage="Featured" />
               </Typography>
             </HeroCovertitle>
             <HeroCardTablet>
@@ -194,7 +194,12 @@ class HomePage extends React.Component<Props> {
             <Container width="100%">
               <BookList
                 shouldBeColorized
-                heading={<Trans>New arrivals</Trans>}
+                heading={
+                  <FormattedMessage
+                    id="New arrivals"
+                    defaultMessage="New arrivals"
+                  />
+                }
                 browseLinkProps={{
                   lang: languageCode,
                   category: category

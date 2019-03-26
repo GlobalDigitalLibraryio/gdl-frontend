@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Trans, Plural } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
@@ -15,6 +15,7 @@ import gql from 'graphql-tag';
 
 import type { Context } from '../types';
 import type { Search } from '../gqlTypes';
+import type { intlShape } from 'react-intl';
 
 import { logEvent } from '../lib/analytics';
 import { SearchHit, Placeholder, NoResults } from '../components/Search';
@@ -32,7 +33,8 @@ type Props = {
     query: {
       q?: string
     }
-  }
+  },
+  intl: intlShape
 };
 
 class SearchPage extends React.Component<Props> {
@@ -83,10 +85,13 @@ class SearchPage extends React.Component<Props> {
 
   render() {
     const query = this.props.router.query[QUERY_PARAM];
+    const { intl } = this.props;
 
     return (
       <>
-        <Head title="Search" />
+        <Head
+          title={intl.formatMessage({ id: 'Search', defaultMessage: 'Search' })}
+        />
         <Layout containerBackground="white">
           <Query
             query={SEARCH_QUERY}
@@ -131,10 +136,10 @@ class SearchPage extends React.Component<Props> {
                       >
                         {totalCount > 0 ? (
                           <>
-                            <Plural
-                              value={totalCount}
-                              one="# result for"
-                              other="# results for"
+                            <FormattedMessage
+                              id="result"
+                              defaultMessage={`{totalCount, number} {totalCount, plural, one {result for} other {results for} } `}
+                              values={{ totalCount }}
                             />{' '}
                             <strong>
                               &quot;
@@ -143,14 +148,17 @@ class SearchPage extends React.Component<Props> {
                             </strong>
                           </>
                         ) : (
-                          <Trans>
-                            No results for{' '}
+                          <>
+                            <FormattedMessage
+                              id="No results for search"
+                              defaultMessage="No results for"
+                            />{' '}
                             <strong>
                               &quot;
                               {query}
                               &quot;
                             </strong>
-                          </Trans>
+                          </>
                         )}
                       </Typography>
                     </div>
@@ -176,7 +184,10 @@ class SearchPage extends React.Component<Props> {
                             }
                             isLoading={loading}
                           >
-                            <Trans>More books</Trans>
+                            <FormattedMessage
+                              id="More books"
+                              defaultMessage="More books"
+                            />
                           </LoadingButton>
                         </div>
                       </>
@@ -220,4 +231,4 @@ const SEARCH_QUERY = gql`
   }
 `;
 
-export default withErrorPage(withRouter(SearchPage));
+export default withErrorPage(withRouter(injectIntl(SearchPage)));

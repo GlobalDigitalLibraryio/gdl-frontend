@@ -9,10 +9,11 @@
 import React from 'react';
 import { IconButton, Collapse, Typography } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
-import { Trans, Plural } from '@lingui/react';
+import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { css } from '@emotion/core';
 
 import type { book_book as Book } from '../../gqlTypes';
+import type { intlShape } from 'react-intl';
 
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import A from '../../elements/A';
@@ -22,19 +23,32 @@ type Props = {
   online: boolean
 };
 
-const Contributor = ({ contributorType, values }) => (
-  <>
-    <Typography variant="subtitle2" component="span">
-      <Plural
-        one={contributorType}
-        other={`${contributorType}s`}
-        value={values.length}
-      />
-    </Typography>
-    <Typography component="span" paragraph css={noMarginForLastChild}>
-      {values.map(contributor => contributor.name).join(', ')}
-    </Typography>
-  </>
+type ContributorProps = {
+  contributorType: string,
+  values: Array<{ name: string }>,
+  intl: intlShape
+};
+
+const contributorMessages = defineMessages({
+  contributor: {
+    id: 'Contributor',
+    defaultMessage: '{contributorType}'
+  }
+});
+
+const Contributor = injectIntl(
+  ({ contributorType, values, intl }: ContributorProps) => (
+    <>
+      <Typography variant="subtitle2" component="span">
+        {intl.formatMessage(contributorMessages.contributor, {
+          contributorType: `${contributorType}${values.length > 1 ? 's' : ''}`
+        })}
+      </Typography>
+      <Typography component="span" paragraph css={noMarginForLastChild}>
+        {values.map(contributor => contributor.name).join(', ')}
+      </Typography>
+    </>
+  )
 );
 
 const BookMeta = ({ book, online }: Props) => (
@@ -52,7 +66,7 @@ const BookMeta = ({ book, online }: Props) => (
       <Contributor contributorType="Translator" values={book.translators} />
     )}
     <Typography variant="subtitle2" component="span">
-      <Trans>License</Trans>
+      <FormattedMessage id="License" defaultMessage="License" />
     </Typography>
     {online ? (
       <A href={book.license.url} paragraph css={noMarginForLastChild}>
@@ -92,7 +106,10 @@ class AdditionalInformation extends React.Component<
           }
         >
           <Typography variant="subtitle2" component="span">
-            <Trans>Additional information</Trans>
+            <FormattedMessage
+              id="Additional information"
+              defaultMessage="Additional information"
+            />
           </Typography>
           <IconButton
             css={[

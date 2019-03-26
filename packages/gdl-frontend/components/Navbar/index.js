@@ -22,7 +22,7 @@ import {
   Home as HomeIcon,
   WifiOff as WifiOffIcon
 } from '@material-ui/icons';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
@@ -82,7 +82,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
           >
             <MenuIcon data-target={drawerTarget} />
             <SrOnly>
-              <Trans>Open menu</Trans>
+              <FormattedMessage id="Open menu" defaultMessage="Open menu" />
             </SrOnly>
           </IconButton>
           {brandLink}
@@ -101,7 +101,10 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
               <IconButton color="inherit" component="a">
                 <WifiOffIcon />
                 <SrOnly>
-                  <Trans>Offline library</Trans>
+                  <FormattedMessage
+                    id="Offline library"
+                    defaultMessage="Offline library"
+                  />
                 </SrOnly>
               </IconButton>
             </Link>
@@ -117,7 +120,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                   >
                     <SearchIcon />
                     <SrOnly>
-                      <Trans>Search</Trans>
+                      <FormattedMessage id="Search" defaultMessage="Search" />
                     </SrOnly>
                   </IconButton>
                 )}
@@ -131,13 +134,20 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                 >
                   <HomeIcon />
                   <SrOnly>
-                    <Trans>Home</Trans>
+                    <FormattedMessage id="Home" defaultMessage="Home" />
                   </SrOnly>
                 </IconButton>
               </Link>
               <SelectBookLanguage anchor="right">
                 {({ onClick, loading }) => (
-                  <Tooltip title={<Trans>Choose book language</Trans>}>
+                  <Tooltip
+                    title={
+                      <FormattedMessage
+                        id="Choose book language"
+                        defaultMessage="Choose book language"
+                      />
+                    }
+                  >
                     <IconButton
                       data-cy="global-language-button"
                       onClick={() => {
@@ -152,7 +162,10 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                         <LanguageIcon data-target={languageTarget} />
                       )}
                       <SrOnly>
-                        <Trans>Choose book language</Trans>
+                        <FormattedMessage
+                          id="Choose book language"
+                          defaultMessage="Choose book language"
+                        />
                       </SrOnly>
                     </IconButton>
                   </Tooltip>

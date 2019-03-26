@@ -10,7 +10,7 @@ import {
   KeyboardArrowLeft as KeyboardArrowLeftIcon,
   KeyboardArrowRight as KeyboardArrowRightIcon
 } from '@material-ui/icons';
-import { I18n } from '@lingui/react';
+import { injectIntl, defineMessages } from 'react-intl';
 import Swipeable from 'react-swipeable';
 import styled from '@emotion/styled';
 
@@ -127,44 +127,61 @@ export default class PageNavigation extends React.Component<
   }
 }
 
+const navigationTranslations = defineMessages({
+  next: {
+    id: 'Next',
+    defaultMessage: 'Next'
+  },
+  previous: {
+    id: 'Previous',
+    defaultMessage: 'Previous'
+  }
+});
 /**
  * These buttons are always visible on >= tablet. On mobile they are briefly visible.
  * They are hidden with opacity, so you can tap the sides of the screen to navigate
  */
-const NavigationButtons = ({
-  onRequestNextChapter,
-  onRequestPreviousChapter,
-  showNavigationButtons,
-  isRtlLanguage,
-  disablePrevious,
-  disableNext
-}) => (
-  <I18n>
-    {({ i18n }) => (
-      <>
-        <Button
-          data-cy="read-book-previous-button"
-          style={{ left: 0, opacity: showNavigationButtons ? 1 : 0 }}
-          onClick={onRequestPreviousChapter}
-          type="button"
-          disabled={disablePrevious}
-          aria-label={isRtlLanguage ? i18n.t`Next` : i18n.t`Previous`}
-        >
-          <KeyboardArrowLeftIcon style={{ fontSize: 50 }} />
-        </Button>
-        <Button
-          data-cy="read-book-next-button"
-          style={{ right: 0, opacity: showNavigationButtons ? 1 : 0 }}
-          onClick={onRequestNextChapter}
-          type="button"
-          disabled={disableNext}
-          aria-label={isRtlLanguage ? i18n.t`Previous` : i18n.t`Next`}
-        >
-          <KeyboardArrowRightIcon style={{ fontSize: 50 }} />
-        </Button>
-      </>
-    )}
-  </I18n>
+const NavigationButtons = injectIntl(
+  ({
+    onRequestNextChapter,
+    onRequestPreviousChapter,
+    showNavigationButtons,
+    isRtlLanguage,
+    disablePrevious,
+    disableNext,
+    intl
+  }) => (
+    <>
+      <Button
+        data-cy="read-book-previous-button"
+        style={{ left: 0, opacity: showNavigationButtons ? 1 : 0 }}
+        onClick={onRequestPreviousChapter}
+        type="button"
+        disabled={disablePrevious}
+        aria-label={
+          isRtlLanguage
+            ? intl.formatMessage(navigationTranslations.next)
+            : intl.formatMessage(navigationTranslations.previous)
+        }
+      >
+        <KeyboardArrowLeftIcon style={{ fontSize: 50 }} />
+      </Button>
+      <Button
+        data-cy="read-book-next-button"
+        style={{ right: 0, opacity: showNavigationButtons ? 1 : 0 }}
+        onClick={onRequestNextChapter}
+        type="button"
+        disabled={disableNext}
+        aria-label={
+          isRtlLanguage
+            ? intl.formatMessage(navigationTranslations.previous)
+            : intl.formatMessage(navigationTranslations.next)
+        }
+      >
+        <KeyboardArrowRightIcon style={{ fontSize: 50 }} />
+      </Button>
+    </>
+  )
 );
 
 const Button = styled('button')`

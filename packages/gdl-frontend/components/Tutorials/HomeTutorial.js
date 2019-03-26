@@ -10,7 +10,7 @@ import * as React from 'react';
 import Joyride from 'react-joyride';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Trans, i18nMark } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import Arrow from './tooltip-arrow.svg';
 import Kenya from './kenya.svg';
 import Ethiopia from './ethiopia.svg';
@@ -22,11 +22,12 @@ import { Close } from '@material-ui/icons';
 export const drawerTarget = 'global_menu_drawer';
 export const languageTarget = 'global_menu_language';
 
+// TODO: fix these so the strings can be translated..
 const steps = [
   {
     target: `[data-target='${drawerTarget}']`,
-    title: i18nMark('Welcome!'),
-    content: i18nMark('Use the main menu for more options.'),
+    title: 'Welcome!',
+    content: 'Use the main menu for more options.',
     placement: 'bottom-start',
     disableBeacon: true,
     floaterProps: {
@@ -36,7 +37,7 @@ const steps = [
   {
     target: `[data-target='${languageTarget}']`,
     icon: true,
-    content: i18nMark('Choose your preferred language here!'),
+    content: 'Choose your preferred language here!',
     placement: 'bottom-end',
     disableBeacon: true,
     floaterProps: {
@@ -129,7 +130,11 @@ const Tooltip = ({
         size="large"
         style={{ marginTop: 20 }}
       >
-        {isLastStep ? <Trans>Done!</Trans> : <Trans>Next tip</Trans>}
+        {isLastStep ? (
+          <FormattedMessage id="Done!" defaultMessage="Done!" />
+        ) : (
+          <FormattedMessage id="Next tip" defaultMessage="Next tip" />
+        )}
       </Button>
     </div>
   </Center>

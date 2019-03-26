@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import Link from 'next/link';
 
@@ -121,7 +121,7 @@ const OfflineBooks = ({ books, onClear }) => (
       align="center"
       css={{ marginBottom: spacing.large }}
     >
-      <Trans>Offline library</Trans>
+      <FormattedMessage id="Offline library" defaultMessage="Offline library" />
     </Typography>
     {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />
@@ -132,7 +132,10 @@ const OfflineBooks = ({ books, onClear }) => (
         variant="outlined"
         size="small"
       >
-        <Trans>Remove all books</Trans>
+        <FormattedMessage
+          id="Remove all books"
+          defaultMessage="Remove all books"
+        />
       </Button>
     </Center>
   </>
@@ -155,7 +158,10 @@ const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
     {online && (
       <Link passHref href="/">
         <Button variant="outlined">
-          <Trans>Find something to read</Trans>
+          <FormattedMessage
+            id="Find something to read"
+            defaultMessage="Find something to read"
+          />
         </Button>
       </Link>
     )}

@@ -37,11 +37,15 @@ export default class Document extends NextDocument {
       return WrappedComponent;
     });
 
+    // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+    const { localeDataScript } = req;
+
     return {
       ...page,
       pageContext,
       // $FlowFixMe How to handle that we inject lanugage in the request object on the express side?
-      language: req.language
+      language: req.language,
+      localeDataScript
     };
   }
 
@@ -109,6 +113,11 @@ export default class Document extends NextDocument {
 if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
   document.head.removeChild(document.getElementById('theManifest'))
 }`
+            }}
+          />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: this.props.localeDataScript
             }}
           />
 

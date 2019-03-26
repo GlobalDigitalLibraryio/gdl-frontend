@@ -7,9 +7,10 @@
  */
 
 import * as React from 'react';
-import { I18n } from '@lingui/react';
+import { injectIntl } from 'react-intl';
 import gql from 'graphql-tag';
 
+import type { intlShape } from 'react-intl';
 import type { Context } from '../../types';
 import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
@@ -49,7 +50,8 @@ const BOOK_QUERY = gql`
 type Props = {
   book: TranslateBook_book,
   statusCode?: number,
-  supportedLanguages: Array<Language>
+  supportedLanguages: Array<Language>,
+  intl: intlShape
 };
 
 class TranslatePage extends React.Component<Props> {
@@ -72,18 +74,17 @@ class TranslatePage extends React.Component<Props> {
   }
 
   render() {
-    const { book, supportedLanguages } = this.props;
+    const { book, supportedLanguages, intl } = this.props;
     return (
       <Layout>
-        <I18n>
-          {({ i18n }) => (
-            <Head
-              title={i18n.t`Translate: ${book.title}`}
-              description={book.description}
-              image={book.coverImage && book.coverImage.url}
-            />
+        <Head
+          title={intl.formatMessage(
+            { id: 'Translate', defaultMessage: 'Translate {title}' },
+            { title: book.title }
           )}
-        </I18n>
+          description={book.description}
+          image={book.coverImage && book.coverImage.url}
+        />
         <PrepareTranslatePage
           book={book}
           supportedLanguages={supportedLanguages}
@@ -93,4 +94,4 @@ class TranslatePage extends React.Component<Props> {
   }
 }
 
-export default securePage(withErrorPage(TranslatePage));
+export default securePage(withErrorPage(injectIntl(TranslatePage)));

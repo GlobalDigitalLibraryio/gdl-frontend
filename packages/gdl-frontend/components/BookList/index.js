@@ -9,7 +9,7 @@
 import React, { type Element } from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { Typography, Button } from '@material-ui/core';
 
 import View from '../../elements/View';
@@ -26,7 +26,7 @@ import type {
 
 type Props = {
   books: $ReadOnlyArray<Book>,
-  heading: Element<typeof Trans>,
+  heading: Element<typeof FormattedMessage>,
   browseLinkProps?: BrowseLinkProps,
   loading?: boolean,
   level?: ReadingLevel,
@@ -67,7 +67,7 @@ const BookList = ({
             size="small"
             variant="outlined"
           >
-            <Trans>More</Trans>
+            <FormattedMessage id="More" defaultMessage="More" />
           </Button>
         </BrowseLink>
       )}
