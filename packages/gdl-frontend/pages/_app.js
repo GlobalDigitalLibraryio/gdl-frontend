@@ -33,6 +33,7 @@ import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
 import { DimensionProvider } from '../context/DimensionContext';
 import { TutorialProvider } from '../context/TutorialContext';
+import { getSiteLanguage } from '../lib/storage';
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
@@ -64,7 +65,7 @@ class App extends NextApp {
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
     const { localeCatalog } = req || window.__NEXT_DATA__.props;
 
-    const siteLanguage = 'en';
+    const siteLanguage = getSiteLanguage(req);
 
     return { pageProps, localeCatalog, siteLanguage };
   }
