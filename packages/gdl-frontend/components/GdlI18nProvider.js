@@ -8,6 +8,7 @@
 
 import React, { Component } from 'react';
 import { IntlProvider } from 'react-intl';
+import * as Sentry from '@sentry/browser';
 import type { Locale } from '../types';
 import { fetchSiteTranslation } from '../fetch';
 import { setSiteLanguage } from '../lib/storage';
@@ -47,7 +48,16 @@ class GdlI18nProvider extends Component<
         language: e.code
       });
     } else {
-      // If translations is not found, we default to English
+      // If its a 404 we know that we don't have translations for that language
+      if (translation.statusCode !== 404) {
+        Sentry.captureEvent({
+          message: `GdlI18n - ${translation.error}`,
+          extra: {
+            statusCode: translation.statusCode
+          }
+        });
+      }
+      // If translations is not found or we get an error, we default to English
       setSiteLanguage('en');
       this.setState({
         catalog: defaultCatalog['en'],

@@ -110,8 +110,9 @@ class LanguageList extends React.Component<Props, State> {
                   <SrOnly>
                     {intl.formatMessage({
                       id: 'Selected',
-                      defaultMessage: 'Selected:'
+                      defaultMessage: 'Selected'
                     })}
+                    {': '}
                   </SrOnly>
                   <FormattedMessage
                     id="Selected language"

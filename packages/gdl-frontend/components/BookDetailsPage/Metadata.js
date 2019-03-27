@@ -32,8 +32,11 @@ type ContributorProps = {
 const contributorMessages = defineMessages({
   contributor: {
     id: 'Contributor',
-    defaultMessage:
-      '{numberOf, plural, one {{contributorType}} other {{contributorType}s}}'
+    defaultMessage: '{contributorType}'
+  },
+  contributors: {
+    id: 'Contributors',
+    defaultMessage: '{contributorType}s'
   }
 });
 
@@ -41,10 +44,13 @@ const Contributor = injectIntl(
   ({ contributorType, values, intl }: ContributorProps) => (
     <>
       <Typography variant="subtitle2" component="span">
-        {intl.formatMessage(contributorMessages.contributor, {
-          contributorType: contributorType,
-          numberOf: values.length
-        })}
+        {values.length > 1
+          ? intl.formatMessage(contributorMessages.contributors, {
+              contributorType
+            })
+          : intl.formatMessage(contributorMessages.contributor, {
+              contributorType
+            })}
       </Typography>
       <Typography component="span" paragraph css={noMarginForLastChild}>
         {values.map(contributor => contributor.name).join(', ')}
