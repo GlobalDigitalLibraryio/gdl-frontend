@@ -238,12 +238,8 @@ class TranslationCard extends React.Component<
             <Grid item>
               <Typography variant="h5">{translateTo.title}</Typography>
               <Typography variant="body1" component="span">
-                <FormattedMessage
-                  id="From name"
-                  defaultMessage="From {name}"
-                  values={{ name: translateTo.publisher.name }}
-                />
-                {', '}
+                <FormattedMessage id="From" defaultMessage="From" />
+                {`${translateTo.publisher.name}, `}
                 <CircleLabel
                   level={readingLevel}
                   style={{

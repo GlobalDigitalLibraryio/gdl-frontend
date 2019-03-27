@@ -244,13 +244,8 @@ class BookPage extends React.Component<{ book: Book }> {
                     </Typography>
 
                     <Typography paragraph variant="subtitle1">
-                      <FormattedMessage
-                        id="from name"
-                        defaultMessage="from {name}"
-                        values={{
-                          name: book.publisher.name
-                        }}
-                      />
+                      <FormattedMessage id="from" defaultMessage="from" />
+                      {` ${book.publisher.name}`}
                     </Typography>
 
                     <Typography lang={book.language.code} paragraph>

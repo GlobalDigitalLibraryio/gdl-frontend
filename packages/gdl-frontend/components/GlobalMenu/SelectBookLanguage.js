@@ -40,8 +40,7 @@ type Props = {
   children: (data: { onClick: () => void, loading: boolean }) => Node,
   onSelectLanguage?: Language => void,
   enableParentSwipe?: () => void,
-  disableParentSwipe?: () => void,
-  changeSiteLanguage?: () => void
+  disableParentSwipe?: () => void
 };
 
 type State = {
