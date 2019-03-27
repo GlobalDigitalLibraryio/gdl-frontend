@@ -7,7 +7,7 @@
  */
 
 import React, { Component } from 'react';
-import { addLocaleData, IntlProvider } from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import type { Locale } from '../types';
 import { fetchSiteTranslation } from '../fetch';
 import { setSiteLanguage } from '../lib/storage';
@@ -40,29 +40,20 @@ class GdlI18nProvider extends Component<
   changeSiteLanguage = async (e: { code: string, name: string }) => {
     const translation = await fetchSiteTranslation(e.code);
     if (translation.isOk) {
-      // $FlowFixMe
-      await this.setLocale(e.code);
-
       // We saves the choosen site language in a cookie
       setSiteLanguage(e.code);
-
-      const translation = await this.getLanguageCatalog(e.code);
-      this.setState(prevState => ({
-        catalog: translation,
+      this.setState({
+        catalog: translation.data[e.code],
         language: e.code
-      }));
+      });
+    } else {
+      // If translations is not found, we default to English
+      setSiteLanguage('en');
+      this.setState({
+        catalog: defaultCatalog['en'],
+        language: 'en'
+      });
     }
-  };
-
-  getLanguageCatalog = async (language: string) => {
-    const translation = await fetchSiteTranslation(language);
-    return translation.isOk ? translation.data[language] : defaultCatalog['en'];
-  };
-
-  setLocale = async (language: string) => {
-    // $FlowFixMe
-    const locale = await import(`react-intl/locale-data/${language}`);
-    addLocaleData(locale.default[0]);
   };
 
   render() {
@@ -73,13 +64,15 @@ class GdlI18nProvider extends Component<
           changeSiteLanguage: this.changeSiteLanguage
         }}
       >
-        {/* $FlowFixMe: */}
         <IntlProvider
           key={language}
-          locale={language}
+          locale="en"
+          defaultLocale="en"
           messages={catalog}
-          {...this.props}
-        />
+        >
+          {/* $FlowFixMe: */}
+          {this.props.children}
+        </IntlProvider>
       </GdlI18nContext.Provider>
     );
   }

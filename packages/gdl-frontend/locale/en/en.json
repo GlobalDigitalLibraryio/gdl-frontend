@@ -29,6 +29,7 @@
   "Next tip": "Next tip",
   "Previous": "Previous",
   "Selected": "Selected:",
+  "Welcome!": "Welcome!",
   "Decodable": "Decodable",
   "Favorites": "Favorites",
   "From name": "From {name}",
@@ -41,7 +42,7 @@
   "Close book": "Close book",
   "More books": "More books",
   "Read aloud": "Read aloud",
-  "Contributor": "{contributorType}",
+  "Contributor": "{numberOf, plural, one {{contributorType}} other {{contributorType}s}}",
   "New arrivals": "New arrivals",
   "Save offline": "Save offline",
   "Take me home": "Take me home",
@@ -84,6 +85,8 @@
   "Additional information": "Additional information",
   "Find something to read": "Find something to read",
   "Sign in using Facebook": "Sign in using Facebook",
+  "Tutorial choose language": "Choose your preferred language here!",
+  "Tutorial welcome content": "Use the main menu for more options.",
   "You have not translated any books yet": "You have not translated any books yet.",
   "An error has occurred": {
     " Please try again": "An error has occurred. Please try again."

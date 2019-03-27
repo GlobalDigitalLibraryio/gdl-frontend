@@ -33,6 +33,53 @@ const translations = defineMessages({
   }
 });
 
+const getSteps = (media, intl) => {
+  const steps = {
+    tablet: [
+      {
+        target: `[data-target='${tabletBookTarget}']`,
+        content: intl.formatMessage(translations.online),
+        placement: 'right',
+        disableBeacon: true,
+
+        floaterProps: {
+          hideArrow: true
+        }
+      },
+      {
+        target: `.${tabletOfflineTarget}`,
+        content: intl.formatMessage(translations.offline),
+        placement: 'bottom-start',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      }
+    ],
+    mobile: [
+      {
+        target: `[data-target='${mobileBookTarget}']`,
+        content: intl.formatMessage(translations.online),
+        placement: 'top-end',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      },
+      {
+        target: `.${mobileOfflineTarget}`,
+        content: intl.formatMessage(translations.offline),
+        placement: 'top-start',
+        disableBeacon: true,
+        floaterProps: {
+          hideArrow: true
+        }
+      }
+    ]
+  };
+  return steps[media];
+};
+
 type Props = {
   theme: Theme,
   status: boolean,
@@ -47,59 +94,8 @@ type State = {
 
 class BookDetailsTutorial extends React.Component<Props, State> {
   state = {
-    currentSteps: null
+    currentSteps: getSteps(this.props.media, this.props.intl)
   };
-
-  componentDidMount() {
-    const steps = this.getSteps();
-    this.setState({
-      currentSteps: steps[this.props.media]
-    });
-  }
-
-  getSteps = () => ({
-    tablet: [
-      {
-        target: `[data-target='${tabletBookTarget}']`,
-        content: this.props.intl.formatMessage(translations.online),
-        placement: 'right',
-        disableBeacon: true,
-
-        floaterProps: {
-          hideArrow: true
-        }
-      },
-      {
-        target: `.${tabletOfflineTarget}`,
-        content: this.props.intl.formatMessage(translations.offline),
-        placement: 'bottom-start',
-        disableBeacon: true,
-        floaterProps: {
-          hideArrow: true
-        }
-      }
-    ],
-    mobile: [
-      {
-        target: `[data-target='${mobileBookTarget}']`,
-        content: this.props.intl.formatMessage(translations.online),
-        placement: 'top-end',
-        disableBeacon: true,
-        floaterProps: {
-          hideArrow: true
-        }
-      },
-      {
-        target: `.${mobileOfflineTarget}`,
-        content: this.props.intl.formatMessage(translations.offline),
-        placement: 'top-start',
-        disableBeacon: true,
-        floaterProps: {
-          hideArrow: true
-        }
-      }
-    ]
-  });
 
   render() {
     const { theme, media, status, onFinish } = this.props;

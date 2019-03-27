@@ -10,7 +10,7 @@ import * as React from 'react';
 import Joyride from 'react-joyride';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import Arrow from './tooltip-arrow.svg';
 import Kenya from './kenya.svg';
 import Ethiopia from './ethiopia.svg';
@@ -18,46 +18,63 @@ import Cambodia from './cambodia.svg';
 import { Button, Typography } from '@material-ui/core';
 import { withTheme, type Theme } from '@material-ui/core/styles';
 import { Close } from '@material-ui/icons';
+import type { intlShape } from 'react-intl';
 
 export const drawerTarget = 'global_menu_drawer';
 export const languageTarget = 'global_menu_language';
 
-// TODO: fix these so the strings can be translated..
-const steps = [
-  {
-    target: `[data-target='${drawerTarget}']`,
-    title: 'Welcome!',
-    content: 'Use the main menu for more options.',
-    placement: 'bottom-start',
-    disableBeacon: true,
-    floaterProps: {
-      hideArrow: true
-    }
+const translations = defineMessages({
+  welcomeTutorial: {
+    id: 'Welcome!',
+    defaultMessage: 'Welcome!'
   },
-  {
-    target: `[data-target='${languageTarget}']`,
-    icon: true,
-    content: 'Choose your preferred language here!',
-    placement: 'bottom-end',
-    disableBeacon: true,
-    floaterProps: {
-      hideArrow: true
-    }
+  welcomeTutorialContent: {
+    id: 'Tutorial welcome content',
+    defaultMessage: 'Use the main menu for more options.'
+  },
+  chooseLanguageTutorialContent: {
+    id: 'Tutorial choose language',
+    defaultMessage: 'Choose your preferred language here!'
   }
-];
+});
 
 type Props = {
   theme: Theme,
   status: boolean,
-  onFinish: () => void
+  onFinish: () => void,
+  intl: intlShape
 };
 
 class HomeTutorial extends React.Component<Props> {
+  getSteps = intl => [
+    {
+      target: `[data-target='${drawerTarget}']`,
+      title: intl.formatMessage(translations.welcomeTutorial),
+      content: intl.formatMessage(translations.welcomeTutorialContent),
+      placement: 'bottom-start',
+      disableBeacon: true,
+      floaterProps: {
+        hideArrow: true
+      }
+    },
+    {
+      target: `[data-target='${languageTarget}']`,
+      icon: true,
+      content: intl.formatMessage(translations.chooseLanguageTutorialContent),
+      placement: 'bottom-end',
+      disableBeacon: true,
+      floaterProps: {
+        hideArrow: true
+      }
+    }
+  ];
+
   render() {
-    const { theme, status, onFinish } = this.props;
+    const { theme, status, onFinish, intl } = this.props;
     // Find the max zIndex from Material Ui components, because this component should be on top
     // $FlowFixMe flow currently handle indirect array number types as mixed
     const maxZIndex = Math.max(...Object.values(theme.zIndex));
+    const steps = this.getSteps(intl);
 
     return (
       <Joyride
@@ -223,4 +240,4 @@ const styles = {
   `
 };
 
-export default withTheme()(HomeTutorial);
+export default withTheme()(injectIntl(HomeTutorial));

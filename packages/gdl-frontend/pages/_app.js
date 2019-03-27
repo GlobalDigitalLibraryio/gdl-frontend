@@ -63,9 +63,9 @@ class App extends NextApp {
 
     const { req } = ctx;
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
-    const { localeCatalog } = req || window.__NEXT_DATA__.props;
+    const { localeCatalog, siteLang } = req || window.__NEXT_DATA__.props;
 
-    const siteLanguage = getSiteLanguage(req);
+    const siteLanguage = siteLang || getSiteLanguage(req);
 
     return { pageProps, localeCatalog, siteLanguage };
   }
