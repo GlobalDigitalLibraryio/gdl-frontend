@@ -15,7 +15,6 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const glob = require('glob');
 const csp = require('helmet-csp');
 const { join } = require('path');
-const { readFileSync } = require('fs');
 const axios = require('axios');
 
 const routes = require('../routes');
@@ -30,6 +29,7 @@ const {
 } = require('../config');
 const contentSecurityPolicy = require('./contentSecurityPolicy');
 
+const defaultLangTranslations = require('../locale/en/en.json');
 const languages = glob.sync('locale/*/en.json').map(f => f.split('/')[1]);
 console.log('> Found translations for the following languages: ', languages);
 console.log('> GDL environment: ', GDL_ENVIRONMENT);
@@ -45,34 +45,25 @@ const renderAndCache = require('./cache')(app);
 const handle = routes.getRequestHandler(
   app,
   async ({ req, res, route, query }) => {
-    const siteLang = req.cookies['siteLanguage'] || 'en';
-    req.localeDataScript = getLocaleDataScript(siteLang);
+    // We set precedence for how we get, and sets site language
+    const siteLang = query.lang || req.cookies['siteLanguage'] || 'en';
     req.localeCatalog = await getLanguageCatalog(siteLang);
+    req.siteLang = siteLang;
     renderAndCache(req, res, route.page, query);
   }
 );
 
 // We need to expose React Intl's locale data on the request for the user's
-// locale. This function will also cache the scripts by lang in memory.
-const localeDataCache = new Map();
-const getLocaleDataScript = language => {
-  if (!localeDataCache.has(language)) {
-    const localeDataFile = require.resolve(
-      `react-intl/locale-data/${language}`
-    );
-    const localeDataScript = readFileSync(localeDataFile, 'utf8');
-    localeDataCache.set(language, localeDataScript);
-  }
-  return localeDataCache.get(language);
-};
-
-// We need to expose React Intl's locale data on the request for the user's
 const getLanguageCatalog = async language => {
-  const translation = await axios(
-    `${siteTranslationServiceUrl}/${language}`
-  ).then(res => {
-    return res.data;
-  });
+  const translation = await axios(`${siteTranslationServiceUrl}/${language}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(error => {
+      const { data, status, statusText } = error.response;
+      console.error({ data, status, statusText });
+      return { en: defaultLangTranslations };
+    });
   return translation[language];
 };
 

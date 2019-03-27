@@ -32,7 +32,8 @@ type ContributorProps = {
 const contributorMessages = defineMessages({
   contributor: {
     id: 'Contributor',
-    defaultMessage: '{contributorType}'
+    defaultMessage:
+      '{numberOf, plural, one {{contributorType}} other {{contributorType}s}}'
   }
 });
 
@@ -41,7 +42,8 @@ const Contributor = injectIntl(
     <>
       <Typography variant="subtitle2" component="span">
         {intl.formatMessage(contributorMessages.contributor, {
-          contributorType: `${contributorType}${values.length > 1 ? 's' : ''}`
+          contributorType: contributorType,
+          numberOf: values.length
         })}
       </Typography>
       <Typography component="span" paragraph css={noMarginForLastChild}>
