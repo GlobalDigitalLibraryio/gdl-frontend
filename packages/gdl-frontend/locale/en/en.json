@@ -9,11 +9,11 @@
   "About": "About",
   "Done!": "Done!",
   "Level": "Level {level}",
+  "Oh no": "Oh no",
   "Share": "Share",
   "Log in": "Log in",
   "Oh no!": "Oh no!",
   "Search": "Search",
-  "result": "{totalCount, number} {totalCount, plural, one {result for} other {results for}}",
   "Level 1": "Level 1",
   "Level 2": "Level 2",
   "Level 3": "Level 3",
@@ -22,6 +22,7 @@
   "Log out": "Log out",
   "Similar": "Similar",
   "Tooltip": "Tooltip",
+  "results": "results for",
   "Copy URL": "Copy URL",
   "Download": "Download",
   "Favorite": "Favorite",
@@ -55,6 +56,7 @@
   "Privacy policy": "Privacy policy",
   "Translate book": "Translate book",
   "Translate from": "Translate from",
+  "privacy policy": "privacy policy",
   "Classroom books": "Classroom books",
   "My translations": "My translations",
   "Offline library": "Offline library",
@@ -76,6 +78,7 @@
   "Sign in to continue": "Sign in to continue",
   "Translate this book": "Translate this book",
   "Choose book language": "Choose book language",
+  "No books offline yet": "No books offline yet",
   "Printable book (PDF)": "Printable book (PDF)",
   "Sign in using Google": "Sign in using Google",
   "Translate in context": "Translate in context",
@@ -86,19 +89,33 @@
   "Sign in using Facebook": "Sign in using Facebook",
   "Tutorial choose language": "Choose your preferred language here!",
   "Tutorial welcome content": "Use the main menu for more options.",
+  "View your offline library": {
+    "": "View your offline library."
+  },
+  "An unexpected error occurred!": "An unexpected error occurred!",
   "You have not translated any books yet": "You have not translated any books yet.",
   "An error has occurred": {
     " Please try again": "An error has occurred. Please try again."
   },
-  "Please try searching for something else": "{emph} Please try searching for something else.",
+  "Please try searching for something else": "Please try searching for something else.",
+  "This book is only available for download": "This book is only available for download",
   "Oops, there was a problem signing you in": {
     "": "Oops, there was a problem signing you in."
+  },
+  "In the meantime, try going to the start page": {
+    "": "In the meantime, try going to the start page."
   },
   "The page you were looking for was taken by a 404": {
     "": "The page you were looking for was taken by a 404."
   },
+  "We apologize and we will try our best to correct the issue": {
+    "": "We apologize and we will try our best to correct the issue."
+  },
   "Add books to your favorites so you can easily find them later": {
     "": "Add books to your favorites so you can easily find them later."
+  },
+  "and I am giving my consent to GDL’s use of my personal information": {
+    "": "and I am giving my consent to GDL’s use of my personal information."
   },
   "The error has been reported": {
     " Please feel free to try signing in again": {
@@ -110,9 +127,13 @@
       "": "Something went wrong while preparing the translation. Please try again."
     }
   },
+  "By signing in to this service I am hereby accepting the principles in the GDL": "By signing in to this service I am hereby accepting the principles in the GDL",
   "Please wait while we’re preparing the book for translation": {
     " This could take some time": {
       "": "Please wait while we’re preparing the book for translation. This could take some time."
     }
+  },
+  "Having books available even when you are offline is a great way to make sure you always have something to read": {
+    "": "Having books available even when you are offline is a great way to make sure you always have something to read."
   }
 }

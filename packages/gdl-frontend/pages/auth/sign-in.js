@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'next/router';
 
@@ -32,6 +32,24 @@ const EqualWidthButtonsWrapper = styled('div')`
     margin-top: ${spacing.large};
   }
 `;
+
+const translations = defineMessages({
+  privacy: {
+    id: 'privacy policy',
+    defaultMessage: 'privacy policy'
+  },
+  firstPart: {
+    id:
+      'By signing in to this service I am hereby accepting the principles in the GDL',
+    defaultMessage:
+      'By signing in to this service I am hereby accepting the principles in the GDL'
+  },
+  lastPart: {
+    id: 'and I am giving my consent to GDL’s use of my personal information.',
+    defaultMessage:
+      'and I am giving my consent to GDL’s use of my personal information.'
+  }
+});
 
 class LoginPage extends React.Component<{
   router: {
@@ -101,16 +119,14 @@ class LoginPage extends React.Component<{
             css={{ marginTop: spacing.xxlarge }}
             paragraph
           >
-            By signing in to this service I am hereby accepting the principles
-            in the GDL{' '}
+            {`${intl.formatMessage(translations.firstPart)} `}
             <A
               href="https://home.digitallibrary.io/privacy/"
               css={{ display: 'inline' }}
             >
-              privacy policy
+              {intl.formatMessage(translations.privacy)}
             </A>
-            , and I am giving my consent to GDL’s use of my personal
-            information.
+            {`, ${intl.formatMessage(translations.lastPart)} `}
           </Typography>
         </Container>
       </Layout>

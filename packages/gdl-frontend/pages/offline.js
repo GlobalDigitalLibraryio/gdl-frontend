@@ -7,10 +7,11 @@
  */
 
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import Link from 'next/link';
 
+import type { intlShape } from 'react-intl';
 import type { OfflineBook_book as Book } from '../gqlTypes';
 import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
@@ -141,31 +142,45 @@ const OfflineBooks = ({ books, onClear }) => (
   </>
 );
 
-const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
-  <Center>
-    <Typography
-      align="center"
-      variant="h4"
-      component="h1"
-      css={{ marginBottom: spacing.large }}
-    >
-      No books offline yet
-    </Typography>
-    <Typography align="center" css={{ marginBottom: spacing.large }}>
-      Having books available even when you are offline is a great way to make
-      sure you always have something to read.
-    </Typography>
-    {online && (
-      <Link passHref href="/">
-        <Button variant="outlined">
-          <FormattedMessage
-            id="Find something to read"
-            defaultMessage="Find something to read"
-          />
-        </Button>
-      </Link>
-    )}
-  </Center>
-));
+const translations = defineMessages({
+  offline: {
+    id:
+      'Having books available even when you are offline is a great way to make sure you always have something to read.',
+    defaultMessage:
+      'Having books available even when you are offline is a great way to make sure you always have something to read.'
+  },
+  noBooks: {
+    id: 'No books offline yet',
+    defaultMessage: 'No books offline yet'
+  }
+});
+
+const NoOfflineBooks = withOnlineStatusContext(
+  injectIntl(({ online, intl }: { online: boolean, intl: intlShape }) => (
+    <Center>
+      <Typography
+        align="center"
+        variant="h4"
+        component="h1"
+        css={{ marginBottom: spacing.large }}
+      >
+        {intl.formatMessage(translations.noBooks)}
+      </Typography>
+      <Typography align="center" css={{ marginBottom: spacing.large }}>
+        {intl.formatMessage(translations.offline)}
+      </Typography>
+      {online && (
+        <Link passHref href="/">
+          <Button variant="outlined">
+            <FormattedMessage
+              id="Find something to read"
+              defaultMessage="Find something to read"
+            />
+          </Button>
+        </Link>
+      )}
+    </Center>
+  ))
+);
 
 export default OfflinePage;

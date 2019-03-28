@@ -119,11 +119,11 @@ class SelectBookLanguage extends React.Component<Props, State> {
               )}
               {data && (
                 <GdlI18nConsumer>
-                  {({ changeSiteLanguage }) => (
+                  {value => (
                     <LanguageList
                       onSelectLanguage={language => {
                         this.handleSelectLanguage(language);
-                        changeSiteLanguage(language);
+                        value && value.changeSiteLanguage(language);
                       }}
                       selectedLanguageCode={selectedLanguage}
                       linkProps={linkProps}
