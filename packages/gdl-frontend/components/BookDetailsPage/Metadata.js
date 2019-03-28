@@ -30,33 +30,57 @@ type ContributorProps = {
 };
 
 const contributorMessages = defineMessages({
-  contributor: {
-    id: 'Contributor',
-    defaultMessage: '{contributorType}'
+  author: {
+    id: 'Author',
+    defaultMessage: 'Author'
   },
-  contributors: {
-    id: 'Contributors',
-    defaultMessage: '{contributorType}s'
+  authors: {
+    id: 'Authors',
+    defaultMessage: 'Authors'
+  },
+  illustrator: {
+    id: 'Illustrator',
+    defaultMessage: 'Illustrator'
+  },
+  illustrators: {
+    id: 'Illustrators',
+    defaultMessage: 'Illustrators'
+  },
+  photographer: {
+    id: 'Photographer',
+    defaultMessage: 'Photographer'
+  },
+  photographers: {
+    id: 'Photographers',
+    defaultMessage: 'Photographers'
+  },
+  translator: {
+    id: 'Translator',
+    defaultMessage: 'Translator'
+  },
+  translators: {
+    id: 'Translators',
+    defaultMessage: 'Translators'
   }
 });
 
 const Contributor = injectIntl(
-  ({ contributorType, values, intl }: ContributorProps) => (
-    <>
-      <Typography variant="subtitle2" component="span">
-        {values.length > 1
-          ? intl.formatMessage(contributorMessages.contributors, {
-              contributorType
-            })
-          : intl.formatMessage(contributorMessages.contributor, {
-              contributorType
-            })}
-      </Typography>
-      <Typography component="span" paragraph css={noMarginForLastChild}>
-        {values.map(contributor => contributor.name).join(', ')}
-      </Typography>
-    </>
-  )
+  ({ contributorType, values, intl }: ContributorProps) => {
+    const keyName = (values.length > 1
+      ? `${contributorType}s`
+      : contributorType
+    ).toLocaleLowerCase();
+    return (
+      <>
+        <Typography variant="subtitle2" component="span">
+          {intl.formatMessage(contributorMessages[keyName])}
+        </Typography>
+        <Typography component="span" paragraph css={noMarginForLastChild}>
+          {values.map(contributor => contributor.name).join(', ')}
+        </Typography>
+      </>
+    );
+  }
 );
 
 const BookMeta = ({ book, online }: Props) => (
