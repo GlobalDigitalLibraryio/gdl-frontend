@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
@@ -315,8 +315,13 @@ class BookPage extends React.Component<{ book: Book }> {
     );
   }
 }
-
-const ReadBookLink = ({ book, target, cypressTarget }) =>
+const translations = defineMessages({
+  download: {
+    id: 'This book is only available for download',
+    defaultMessage: 'This book is only available for download'
+  }
+});
+const ReadBookLink = injectIntl(({ book, target, cypressTarget, intl }) =>
   book.bookFormat === 'HTML' ? (
     <Link
       route="read"
@@ -346,10 +351,11 @@ const ReadBookLink = ({ book, target, cypressTarget }) =>
         css={{ marginTop: spacing.small }}
         variant="caption"
       >
-        This book is only available for download.
+        {intl.formatMessage(translations.download)}
       </Typography>
     </>
-  );
+  )
+);
 
 /**
  * Favorite, share, offline

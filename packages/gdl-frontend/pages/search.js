@@ -136,10 +136,10 @@ class SearchPage extends React.Component<Props> {
                       >
                         {totalCount > 0 ? (
                           <>
+                            {`${totalCount} `}
                             <FormattedMessage
-                              id="result"
-                              defaultMessage={`{totalCount, number} {totalCount, plural, one {result for} other {results for} } `}
-                              values={{ totalCount }}
+                              id="results"
+                              defaultMessage="results for"
                             />{' '}
                             <strong>
                               &quot;

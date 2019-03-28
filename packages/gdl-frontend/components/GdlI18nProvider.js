@@ -6,26 +6,30 @@
  * See LICENSE
  */
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { IntlProvider } from 'react-intl';
 import * as Sentry from '@sentry/browser';
-import type { Locale } from '../types';
+import type { Locale, Catalogs } from '../types';
 import { fetchSiteTranslation } from '../fetch';
 import { setSiteLanguage } from '../lib/storage';
 
 // Currently we initially load English as default and fallback language
 import enTranslations from '../locale/en/en.json';
 
+type ChangeSiteAction = (e: { code: string, name: string }) => Promise<void>;
+
 const defaultCatalog = {
   en: enTranslations
 };
 
-const GdlI18nContext = React.createContext<any>();
+const GdlI18nContext = React.createContext<?{
+  changeSiteLanguage: ChangeSiteAction
+}>();
 const GdlI18nConsumer = GdlI18nContext.Consumer;
 
 // https://github.com/yahoo/react-intl/wiki/API
 class GdlI18nProvider extends Component<
-  { initialCatalog: *, initialSiteLanguage: string },
+  { initialCatalog: Catalogs, initialSiteLanguage: string, children: Node },
   Locale
 > {
   state = {
@@ -38,7 +42,10 @@ class GdlI18nProvider extends Component<
     setSiteLanguage(language);
   }
 
-  changeSiteLanguage = async (e: { code: string, name: string }) => {
+  changeSiteLanguage = async (e: {
+    code: string,
+    name: string
+  }): Promise<void> => {
     const translation = await fetchSiteTranslation(e.code);
     if (translation.isOk) {
       // We saves the choosen site language in a cookie
@@ -80,7 +87,6 @@ class GdlI18nProvider extends Component<
           defaultLocale="en"
           messages={catalog}
         >
-          {/* $FlowFixMe: */}
           {this.props.children}
         </IntlProvider>
       </GdlI18nContext.Provider>

@@ -208,15 +208,11 @@ type Messages = {
   [messageId: string]: string | Function
 };
 
-type Catalog = {
-  messages: Messages
-};
-
-type Catalogs = {
-  [language: string]: Catalog
+export type Catalogs = {
+  [language: string]: Messages
 };
 
 export type Locale = {
-  language?: string,
-  catalog?: Catalogs
+  language: string,
+  catalog: Catalogs
 };
