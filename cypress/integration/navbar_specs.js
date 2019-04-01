@@ -107,14 +107,14 @@ describe('Navigation bar', () => {
         $list
           .eq(0)
           .children()
-          .eq(6),
+          .eq(5),
         'menu item'
       ).to.contain('My translations');
       expect(
         $list
           .eq(0)
           .children()
-          .eq(7),
+          .eq(6),
         'menu item'
       ).to.contain('Log in');
     });
