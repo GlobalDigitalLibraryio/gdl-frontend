@@ -53,19 +53,10 @@ import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
-import { DimensionContext } from '../../context/DimensionContext';
-import Tutorial from '../../components/Tutorials/BookDetailsTutorial';
 
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import Offline, { OfflineIcon } from '../../components/Offline';
 import LevelRibbon from '../../components/Level/LevelRibbon';
-import { TutorialContext } from '../../context/TutorialContext';
-import {
-  tabletBookTarget,
-  tabletOfflineTarget,
-  mobileBookTarget,
-  mobileOfflineTarget
-} from '../../components/Tutorials/BookDetailsTutorial';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -175,19 +166,6 @@ class BookPage extends React.Component<{ book: Book }> {
           <BookJsonLd book={book} />
         </Head>
         <Layout wrapWithMain={false}>
-          <TutorialContext.Consumer>
-            {({ bookDetailStatus, onFinishedBookDetailsTutorial }) => (
-              <DimensionContext.Consumer>
-                {({ media }) => (
-                  <Tutorial
-                    media={media}
-                    status={!bookDetailStatus}
-                    onFinish={onFinishedBookDetailsTutorial}
-                  />
-                )}
-              </DimensionContext.Consumer>
-            )}
-          </TutorialContext.Consumer>
           <Main background="white" css={mq({ marginTop: [200, 100, 100] })}>
             <Container css={mq({ marginTop: [-160, -54, -54] })}>
               <div>
@@ -201,7 +179,6 @@ class BookPage extends React.Component<{ book: Book }> {
                     <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
                       <ReadBookLink
                         book={book}
-                        target={tabletBookTarget}
                         cypressTarget="read-book-tablet-button"
                       />
                     </Hidden>
@@ -228,11 +205,7 @@ class BookPage extends React.Component<{ book: Book }> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1
-                          book={book}
-                          key={book.id}
-                          target={tabletOfflineTarget}
-                        />
+                        <BookActions1 book={book} key={book.id} />
                       </div>
                     </Hidden>
                     <Typography
@@ -253,19 +226,13 @@ class BookPage extends React.Component<{ book: Book }> {
                     <Hidden only="mobile">
                       <ReadBookLink
                         book={book}
-                        target={mobileBookTarget}
                         cypressTarget="read-book-mobile-button"
                       />
                     </Hidden>
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1
-                    book={book}
-                    key={book.id}
-                    isMobile
-                    target={mobileOfflineTarget}
-                  />
+                  <BookActions1 book={book} key={book.id} isMobile />
                 </Hidden>
                 <Divider />
 
@@ -310,7 +277,7 @@ class BookPage extends React.Component<{ book: Book }> {
   }
 }
 
-const ReadBookLink = ({ book, target, cypressTarget }) =>
+const ReadBookLink = ({ book, cypressTarget }) =>
   book.bookFormat === 'HTML' ? (
     <Link
       route="read"
@@ -320,7 +287,6 @@ const ReadBookLink = ({ book, target, cypressTarget }) =>
     >
       <Button
         data-cy={cypressTarget}
-        data-target={target}
         variant="contained"
         color="primary"
         size="large"
@@ -353,7 +319,6 @@ const ReadBookLink = ({ book, target, cypressTarget }) =>
 class BookActions1 extends React.Component<
   {
     book: Book,
-    target: string,
     isMobile?: boolean
   },
   {
@@ -387,7 +352,7 @@ class BookActions1 extends React.Component<
   };
 
   render() {
-    const { book, target, isMobile } = this.props;
+    const { book, isMobile } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -424,7 +389,6 @@ class BookActions1 extends React.Component<
               <Offline book={book}>
                 {({ onClick, downloading, offlined }) => (
                   <IconButton
-                    className={target}
                     isLoading={downloading}
                     icon={
                       <OfflineIcon
