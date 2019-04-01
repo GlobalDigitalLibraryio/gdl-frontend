@@ -34,7 +34,6 @@ import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
-import { drawerTarget, languageTarget } from '../Tutorials/HomeTutorial';
 
 type Props = {
   onMenuClick(): void,
@@ -71,7 +70,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
   );
 
   return (
-    <AppBar position={homeTutorialInProgress ? 'absolute' : 'fixed'}>
+    <AppBar position="fixed">
       <Toolbar>
         <Left>
           <IconButton
@@ -80,7 +79,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
             onClick={onMenuClick}
             css={media.tablet({ marginRight: 18 })}
           >
-            <MenuIcon data-target={drawerTarget} />
+            <MenuIcon />
             <SrOnly>
               <FormattedMessage id="Open menu" defaultMessage="Open menu" />
             </SrOnly>
@@ -159,7 +158,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
                       {loading ? (
                         <CircularProgress color="inherit" size={24} />
                       ) : (
-                        <LanguageIcon data-target={languageTarget} />
+                        <LanguageIcon />
                       )}
                       <SrOnly>
                         <FormattedMessage

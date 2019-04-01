@@ -28,7 +28,6 @@ import {
   getBookCategory,
   getSiteLanguage
 } from '../lib/storage';
-import { getHomeTutorialStatus } from '../lib/storage';
 
 const {
   publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
@@ -118,10 +117,7 @@ class IndexPage extends React.Component<Props> {
       data: { featuredContent, ...bookSummaries }
     } = booksAndFeatured;
 
-    const homeTutorialStatus = getHomeTutorialStatus(req);
-
     return {
-      homeTutorialStatus,
       category,
       categories,
       languageCode,
@@ -141,7 +137,6 @@ class IndexPage extends React.Component<Props> {
   render() {
     const {
       bookSummaries,
-      homeTutorialStatus,
       category,
       featuredContent,
       categories,
@@ -171,7 +166,6 @@ class IndexPage extends React.Component<Props> {
         )}
         <HomePage
           bookSummaries={bookSummaries}
-          homeTutorialStatus={homeTutorialStatus}
           category={category}
           categories={categories}
           languageCode={languageCode}

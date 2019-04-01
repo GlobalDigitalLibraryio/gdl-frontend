@@ -21,21 +21,18 @@ import {
   KeyboardArrowRight as KeyboardArrowRightIcon,
   ExitToApp as ExitToAppIcon,
   Translate as TranslateIcon,
-  Edit as EditIcon,
-  Help as HelpIcon
+  Edit as EditIcon
 } from '@material-ui/icons';
-import { withRouter } from 'next/router';
+import { hasAuthToken } from 'gdl-auth';
 
 import { FavoriteIcon } from '../Favorite';
 import { OfflineIcon } from '../Offline';
-import { hasAuthToken } from 'gdl-auth';
 import { QueryIsAdmin } from '../../gql';
 import { Link as RouteLink } from '../../routes';
 import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
 import offlineLibrary from '../../lib/offlineLibrary';
-import { TutorialContext } from '../../context/TutorialContext';
 
 type Props = {|
   onClose(): void,
@@ -161,7 +158,6 @@ class GlobalMenu extends React.Component<Props, State> {
           )}
           {online && (
             <>
-              <ConnectedTooltip onClose={onClose} />
               <RouteLink passHref route="translations">
                 <ListItem
                   button
@@ -230,37 +226,5 @@ class GlobalMenu extends React.Component<Props, State> {
     );
   }
 }
-
-/**
- * This tooltip button needs current router path to decide if user
- * is already at homescreen to prompt tutorial.
- * By using withRouter it conflicts with GlobalMenus OnlineStatusContext
- */
-const TooltipItem = ({ onClose, router }) => (
-  <TutorialContext.Consumer>
-    {({ onClearTutorial, resetTutorialStatus }) => (
-      <Link passHref href="/">
-        <ListItem
-          button
-          component="a"
-          onClick={() => {
-            onClearTutorial();
-            onClose();
-            router.pathname === '/' && resetTutorialStatus();
-          }}
-        >
-          <ListItemIcon>
-            <HelpIcon />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id="Tooltip" defaultMessage="Tooltip" />
-          </ListItemText>
-        </ListItem>
-      </Link>
-    )}
-  </TutorialContext.Consumer>
-);
-
-const ConnectedTooltip = withRouter(TooltipItem);
 
 export default GlobalMenu;

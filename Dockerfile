@@ -1,5 +1,9 @@
 FROM node:10.13.0-alpine
 
+# Set environment to production
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
 ARG MODULE
 RUN test -n "$MODULE"
 
@@ -16,7 +20,7 @@ COPY packages $APP_PATH/packages
 
 # Run bolt before src copy to enable better layer caching
 WORKDIR $APP_PATH
-RUN bolt
+RUN bolt install --frozen-lockfile --no-cache --production
 
 # Build and start the correct frontend
 WORKDIR $APP_PATH/packages/$MODULE

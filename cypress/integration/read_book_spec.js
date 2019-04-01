@@ -1,8 +1,5 @@
 describe('Read book', () => {
   beforeEach(() => {
-    cy.setCookie('bookDetailsTutorialFinished', 'true');
-    cy.setCookie('homeTutorialFinished', 'true');
-
     cy.visit('/');
     cy.get('[data-cy="book-link"]')
       .first()
