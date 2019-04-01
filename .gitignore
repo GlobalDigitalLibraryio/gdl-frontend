@@ -10,3 +10,4 @@ yarn-debug.log*
 # Currently we only have one language, so we ignore the locale folder for now
 packages/gdl-frontend/locale/
 cypress/videos/
+cypress/screenshots/
