@@ -13,13 +13,13 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const siteTranslationServiceUrl = () => {
   switch (GDL_ENVIRONMENT) {
     case 'dev':
-      return 'http://localhost:5000';
+      return 'https://api.test.digitallibrary.io/site-translations-service';
     case 'local':
       return 'http://localhost:5000';
     case 'prod':
-      return 'https://api.digitallibrary.io/site-translation-service';
+      return 'https://api.digitallibrary.io/site-translations-service';
     default:
-      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/site-translation-service`;
+      return `https://api.${GDL_ENVIRONMENT}.digitallibrary.io/site-translations-service`;
   }
 };
 
