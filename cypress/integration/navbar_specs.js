@@ -1,9 +1,7 @@
 /* eslint-disable jest/valid-expect */
 describe('Navigation bar', () => {
   beforeEach(() => {
-    cy.setCookie('bookDetailsTutorialFinished', 'true');
-    cy.setCookie('homeTutorialFinished', 'true');
-    cy.visit('/'); // TODO: consider how to do this (test-data? api? need permanent book that has both epub nd pdf)
+    cy.visit('/');
   });
 
   it('Should be able to search for book with word "Friend"', function() {
@@ -111,19 +109,12 @@ describe('Navigation bar', () => {
           .children()
           .eq(5),
         'menu item'
-      ).to.contain('Tooltip');
-      expect(
-        $list
-          .eq(0)
-          .children()
-          .eq(6),
-        'menu item'
       ).to.contain('My translations');
       expect(
         $list
           .eq(0)
           .children()
-          .eq(7),
+          .eq(6),
         'menu item'
       ).to.contain('Log in');
     });
