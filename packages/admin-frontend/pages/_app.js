@@ -40,7 +40,7 @@ class App extends NextApp {
     Component,
     ctx
   }: {
-    Component: React.ComponentType<*>,
+    Component: React.Element<*>,
     ctx: Context
   }) {
     let pageProps = {};

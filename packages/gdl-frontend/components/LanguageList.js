@@ -15,16 +15,15 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  TextField,
-  RootRef
+  TextField
 } from '@material-ui/core';
+import RootRef from '@material-ui/core/RootRef';
 import { Check as CheckIcon } from '@material-ui/icons';
-import { css } from 'react-emotion';
 import { I18n } from '@lingui/react';
 
+import type { languages_languages as Language } from '../gqlTypes';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
-import type { Language } from '../types';
 import { colors } from '../style/theme';
 
 type Props = {
@@ -40,7 +39,7 @@ type State = {
 };
 
 class LanguageList extends React.Component<Props, State> {
-  listRef: ?React$ElementRef<List> = React.createRef();
+  listRef: ?React$ElementRef<typeof List> = React.createRef();
 
   state = {
     filterText: undefined
@@ -62,11 +61,11 @@ class LanguageList extends React.Component<Props, State> {
   getSelectedLanguage = () =>
     this.props.languages.find(l => l.code === this.props.selectedLanguageCode);
 
-  getFilteredLanguages = (selectedLanguage: ?Language) => {
+  getFilteredLanguages = (selectedLanguage: ?Language): Array<Language> => {
     const { languages } = this.props;
     const { filterText } = this.state;
 
-    const withoutSelected = selectedLanguage
+    const withoutSelected: Array<Language> = selectedLanguage
       ? languages.filter(l => l !== selectedLanguage)
       : languages;
 
@@ -89,7 +88,7 @@ class LanguageList extends React.Component<Props, State> {
       <RootRef rootRef={this.listRef}>
         <List
           component="div"
-          className={styles.visibleScrollbar}
+          css={{ overflowY: 'scroll' }}
           subheader={
             <ListSubheader component="div">
               <Trans>Choose book language</Trans>
@@ -118,7 +117,7 @@ class LanguageList extends React.Component<Props, State> {
                 <ListItem>
                   <ListItemText inset>
                     <TextField
-                      className={styles.textfield}
+                      css={{ width: '100%' }}
                       placeholder={i18n.t`Search`}
                       onChange={value =>
                         this.setState({
@@ -148,15 +147,6 @@ class LanguageList extends React.Component<Props, State> {
     );
   }
 }
-
-const styles = {
-  visibleScrollbar: css`
-    overflow-y: scroll;
-  `,
-  textfield: css`
-    width: 100%;
-  `
-};
 
 const NoLanguageItem = () => (
   <ListItem component="div">

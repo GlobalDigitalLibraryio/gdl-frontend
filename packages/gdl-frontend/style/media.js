@@ -6,9 +6,8 @@
  * See LICENSE
  */
 
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import { TABLET_BREAKPOINT, LARGER_TABLET_BREAKPOINT } from './theme/misc';
-
 /**
  * Mobile first media template
  *

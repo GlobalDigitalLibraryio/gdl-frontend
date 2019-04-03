@@ -7,16 +7,15 @@
  */
 
 import React from 'react';
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
-import { createSerializer } from 'jest-emotion';
-import * as emotion from 'emotion';
+import serializer from 'jest-emotion';
 import SrOnly from '../SrOnly';
+import renderer from 'react-test-renderer';
 
-expect.addSnapshotSerializer(createSerializer(emotion));
+// $FlowFixMe flow type is not correct for serializer
+expect.addSnapshotSerializer(serializer);
 
 test('Renders', () => {
-  const tree = shallow(<SrOnly>Screen reader only</SrOnly>);
+  const tree = renderer.create(<SrOnly>Screen reader only</SrOnly>).toJSON();
 
-  expect(toJson(tree)).toMatchSnapshot();
+  expect(tree).toMatchSnapshot();
 });

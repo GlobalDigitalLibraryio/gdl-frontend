@@ -6,21 +6,21 @@
  * See LICENSE
  */
 import React, { PureComponent, type Element } from 'react';
-import { css } from 'react-emotion';
+import { css } from '@emotion/core';
 import {
   Card,
   ClickAwayListener,
   Grow,
-  Popper,
   MenuList,
   Button
 } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
 
 type Props = {
-  anchorRef: ?React$ElementRef<Button>,
+  anchorRef: ?React$ElementRef<typeof Button>,
   open: boolean,
   onClose: () => void,
-  children: Element<MenuList>
+  children: Element<typeof MenuList>
 };
 
 class MenuDropdown extends PureComponent<Props> {

@@ -8,22 +8,22 @@
 
 import React from 'react';
 import { Trans } from '@lingui/react';
+import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import copyToClipboard from 'copy-to-clipboard';
-import { coverImageUrl } from 'gdl-image';
+import gql from 'graphql-tag';
 import {
-  Snackbar,
   Menu,
   MenuItem,
   ListItemIcon,
   ListItemText,
   Button,
   Typography,
-  Divider as MuiDivider,
-  NoSsr
+  Divider as MuiDivider
 } from '@material-ui/core';
+import NoSsr from '@material-ui/core/NoSsr';
 import {
   Edit as EditIcon,
   Translate as TranslateIcon,
@@ -34,11 +34,13 @@ import {
 } from '@material-ui/icons';
 import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
+import type { Context, ConfigShape } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
+import { QueryIsAdmin } from '../../gql';
 import OnlineContext from '../../components/OnlineStatusContext';
 import offlineLibrary from '../../lib/offlineLibrary';
-import { fetchBook, fetchSimilarBooks } from '../../fetch';
 import { logEvent } from '../../lib/analytics';
-import type { Book, BookDetails, Context, ConfigShape } from '../../types';
 import { withErrorPage } from '../../hocs';
 import { Link } from '../../routes';
 import Layout from '../../components/Layout';
@@ -47,25 +49,18 @@ import Head from '../../components/Head';
 import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import BookList from '../../components/BookList';
-import { hasClaim, claims } from 'gdl-auth';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
 import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
 
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
+import Offline, { OfflineIcon } from '../../components/Offline';
 import LevelRibbon from '../../components/Level/LevelRibbon';
-import OfflineIcon from '../../components/OfflineIcon';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
-
-type Props = {
-  book: BookDetails,
-  similarBooks: Array<Book>,
-  userHasEditAccess: boolean
-};
 
 const Divider = styled(MuiDivider)`
   margin: ${spacing.large} 0;
@@ -91,67 +86,82 @@ const GridItem = styled('div')(
  `
 );
 
-type State = {
-  similarBooks: Array<Book>,
-  loadingSimiliarBooks: boolean
-};
+const BOOK_QUERY = gql`
+  query book($id: ID!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      category
+      readingLevel
+      bookFormat
+      supportsTranslation
+      additionalInformation
+      downloads {
+        epub
+        pdf
+      }
+      license {
+        url
+        name
+      }
+      language {
+        code
+        name
+      }
+      coverImage {
+        url
+      }
+      publisher {
+        name
+      }
+      authors {
+        name
+      }
+      illustrators {
+        name
+      }
+      translators {
+        name
+      }
+      photographers {
+        name
+      }
+    }
+  }
+`;
 
-class BookPage extends React.Component<Props, State> {
-  static async getInitialProps({ query, req }: Context) {
-    const bookRes = await fetchBook(query.id, query.lang);
+class BookPage extends React.Component<{ book: Book }> {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
+    const bookRes = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}` }
+    });
 
-    if (!bookRes.isOk) {
+    if (!bookRes.data.book) {
       return {
-        statusCode: bookRes.statusCode
+        statusCode: 404
       };
     }
 
     return {
-      book: bookRes.data,
-      userHasEditAccess: hasClaim(claims.writeBook, req)
+      book: bookRes.data.book
     };
   }
 
   static contextType = OnlineContext;
 
-  state = {
-    similarBooks: [],
-    loadingSimiliarBooks: true
-  };
-
-  componentDidMount() {
-    const { book } = this.props;
-    this.loadSimilarBooks(book);
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.book !== this.props.book) {
-      const { book } = this.props;
-      this.loadSimilarBooks(book);
-    }
-  }
-
-  async loadSimilarBooks(book: BookDetails) {
-    const similarRes = await fetchSimilarBooks(book.id, book.language.code);
-    this.setState({
-      // Don't let similar books crash the page
-      similarBooks: similarRes.isOk ? similarRes.data.results : [],
-      loadingSimiliarBooks: similarRes.isOk ? false : true
-    });
-  }
-
   render() {
     const { book } = this.props;
-    const { similarBooks, loadingSimiliarBooks } = this.state;
     const offline: boolean = !this.context;
-    const hasLoadedSimilarBooks = !offline && !loadingSimiliarBooks;
 
     return (
       <>
         <Head
           description={book.description}
           title={book.title}
-          image={book.coverImage && coverImageUrl(book.coverImage)}
+          image={book.coverImage && book.coverImage.url}
         >
           <BookJsonLd book={book} />
         </Head>
@@ -195,7 +205,7 @@ class BookPage extends React.Component<Props, State> {
                         }}
                       >
                         <LevelRibbon level={book.readingLevel} />
-                        <BookActions1 book={book} key={book.uuid} />
+                        <BookActions1 book={book} key={book.id} />
                       </div>
                     </Hidden>
                     <Typography
@@ -222,7 +232,7 @@ class BookPage extends React.Component<Props, State> {
                   </GridItem>
                 </Grid>
                 <Hidden only="mobile" css={{ marginTop: spacing.large }}>
-                  <BookActions1 book={book} key={book.uuid} isMobile />
+                  <BookActions1 book={book} key={book.id} isMobile />
                 </Hidden>
                 <Divider />
 
@@ -236,23 +246,28 @@ class BookPage extends React.Component<Props, State> {
                     </GridItem>
                   </Hidden>
                   <GridItem css={media.tablet`flex: 0 0 310px; order: -1;`}>
-                    <BookActions2
-                      book={book}
-                      userHasEditAccess={this.props.userHasEditAccess}
-                    />
+                    <BookActions2 book={book} />
                   </GridItem>
                 </Grid>
 
                 <Divider />
-                {!offline && (
-                  <View mb={spacing.medium}>
-                    <BookList
-                      heading={<Trans>Similar</Trans>}
-                      books={similarBooks}
-                      loading={!hasLoadedSimilarBooks}
-                    />
-                  </View>
-                )}
+                <Query query={SIMILAR_BOOKS_QUERY} variables={{ id: book.id }}>
+                  {({ data, loading, error }) => {
+                    if (offline || error) {
+                      return null;
+                    }
+
+                    return (
+                      <View mb={spacing.medium}>
+                        <BookList
+                          loading={loading && !data.book}
+                          heading={<Trans>Similar</Trans>}
+                          books={data.book ? data.book.similar.results : []}
+                        />
+                      </View>
+                    );
+                  }}
+                </Query>
               </div>
             </Container>
           </Main>
@@ -267,7 +282,7 @@ const ReadBookLink = ({ book, cypressTarget }) =>
     <Link
       route="read"
       passHref
-      params={{ id: book.id, lang: book.language.code }}
+      params={{ id: book.bookId, lang: book.language.code }}
       prefetch
     >
       <Button
@@ -303,35 +318,18 @@ const ReadBookLink = ({ book, cypressTarget }) =>
  */
 class BookActions1 extends React.Component<
   {
-    book: BookDetails,
+    book: Book,
     isMobile?: boolean
   },
   {
-    anchorEl: ?HTMLElement,
-    isAvailableOffline: ?'NO' | 'YES' | 'DOWNLOADING',
-    snackbarMessage: ?string
+    anchorEl: ?HTMLElement
   }
 > {
   state = {
-    anchorEl: null,
-    isAvailableOffline: null,
-    snackbarMessage: null
+    anchorEl: null
   };
 
   static contextType = OnlineContext;
-
-  async componentDidMount() {
-    if (!offlineLibrary) return;
-
-    const offlineBook = await offlineLibrary.getBook(
-      this.props.book.id,
-      this.props.book.language.code
-    );
-
-    this.setState({
-      isAvailableOffline: Boolean(offlineBook) ? 'YES' : 'NO'
-    });
-  }
 
   closeShareMenu = () => this.setState({ anchorEl: null });
 
@@ -353,32 +351,6 @@ class BookActions1 extends React.Component<
     }
   };
 
-  handleOfflineClick = async () => {
-    if (!offlineLibrary) return;
-
-    const { book } = this.props;
-
-    this.setState({ isAvailableOffline: 'DOWNLOADING' });
-
-    if (this.state.isAvailableOffline === 'YES') {
-      await offlineLibrary.deleteBook(book.id, book.language.code);
-      this.setState({
-        isAvailableOffline: 'NO',
-        snackbarMessage: 'Removed book from your offline library.'
-      });
-      logEvent('Books', 'Remove offline', book.title);
-    } else {
-      const offlinedBook = await offlineLibrary.addBook(book);
-      this.setState({
-        isAvailableOffline: offlinedBook ? 'YES' : 'NO',
-        snackbarMessage: offlinedBook
-          ? 'Added book to your offline library.'
-          : 'An error occurred while adding this book to your offline library.'
-      });
-      logEvent('Books', 'Available offline', book.title);
-    }
-  };
-
   render() {
     const { book, isMobile } = this.props;
     const offline: boolean = !this.context;
@@ -391,24 +363,14 @@ class BookActions1 extends React.Component<
             width: '100%'
           }}
         >
-          <Favorite
-            id={this.props.book.id}
-            language={this.props.book.language.code}
-          >
+          <Favorite book={book}>
             {({ onClick, isFav }) => (
               <IconButton
                 // Moving the fav button up top on mobile
                 css={media.mobile`position: absolute; top: 0; left: ${
                   misc.gutter
                 }px;`}
-                onClick={() => {
-                  onClick();
-                  logEvent(
-                    'Books',
-                    isFav ? 'Unfavorited' : 'Favorited',
-                    book.title
-                  );
-                }}
+                onClick={onClick}
                 icon={
                   <FavoriteIcon
                     data-cy={
@@ -422,22 +384,27 @@ class BookActions1 extends React.Component<
             )}
           </Favorite>
 
-          <NoSsr>
-            {offlineLibrary && book.bookFormat !== 'PDF' && (
-              <IconButton
-                component="button"
-                isLoading={this.state.isAvailableOffline === 'DOWNLOADING'}
-                icon={
-                  <OfflineIcon
-                    data-cy={isMobile ? 'save-book-mobile' : 'save-book-tablet'}
-                    filled={this.state.isAvailableOffline === 'YES'}
+          {offlineLibrary && book.bookFormat !== 'PDF' && (
+            <NoSsr>
+              <Offline book={book}>
+                {({ onClick, downloading, offlined }) => (
+                  <IconButton
+                    isLoading={downloading}
+                    icon={
+                      <OfflineIcon
+                        data-cy={
+                          isMobile ? 'save-book-mobile' : 'save-book-tablet'
+                        }
+                        filled={offlined}
+                      />
+                    }
+                    onClick={onClick}
+                    label={<Trans>Save offline</Trans>}
                   />
-                }
-                onClick={this.handleOfflineClick}
-                label={<Trans>Save offline</Trans>}
-              />
-            )}
-          </NoSsr>
+                )}
+              </Offline>
+            </NoSsr>
+          )}
 
           {!offline && (
             <IconButton
@@ -496,21 +463,6 @@ class BookActions1 extends React.Component<
             </ListItemText>
           </MenuItem>
         </Menu>
-
-        {/* Show offlined snackbar*/}
-        <Snackbar
-          autoHideDuration={3000}
-          open={Boolean(this.state.snackbarMessage)}
-          onClose={() => this.setState({ snackbarMessage: null })}
-          ContentProps={{
-            'aria-describedby': 'message-id'
-          }}
-          message={
-            <span data-cy="save-offline-snackbar" id="snackbar-message">
-              {this.state.snackbarMessage}
-            </span>
-          }
-        />
       </>
     );
   }
@@ -520,7 +472,7 @@ class BookActions1 extends React.Component<
  * Download, translate, report book
  */
 class BookActions2 extends React.Component<
-  { book: BookDetails, userHasEditAccess: boolean },
+  { book: Book },
   { anchorEl: ?HTMLElement }
 > {
   state = {
@@ -535,7 +487,7 @@ class BookActions2 extends React.Component<
   closeDownloadMenu = () => this.setState({ anchorEl: null });
 
   render() {
-    const { book, userHasEditAccess } = this.props;
+    const { book } = this.props;
     const offline: boolean = !this.context;
     return (
       <>
@@ -558,7 +510,7 @@ class BookActions2 extends React.Component<
             <Link
               route="translate"
               passHref
-              params={{ id: book.id, lang: book.language.code }}
+              params={{ id: book.bookId, lang: book.language.code }}
             >
               <Button
                 data-cy="translate-book-button"
@@ -572,22 +524,26 @@ class BookActions2 extends React.Component<
             </Link>
           </div>
         )}
-        {userHasEditAccess && (
-          <div>
-            <NextLink
-              href={{
-                pathname: '/admin/edit/book',
-                query: { id: book.id, lang: book.language.code }
-              }}
-              passHref
-            >
-              <Button color="primary" disabled={offline}>
-                <EditIcon css={{ marginRight: spacing.xsmall }} />
-                Edit
-              </Button>
-            </NextLink>
-          </div>
-        )}
+        <QueryIsAdmin>
+          {({ isAdmin }) =>
+            isAdmin && (
+              <div>
+                <NextLink
+                  href={{
+                    pathname: '/admin/edit/book',
+                    query: { id: book.bookId, lang: book.language.code }
+                  }}
+                  passHref
+                >
+                  <Button color="primary" disabled={offline}>
+                    <EditIcon css={{ marginRight: spacing.xsmall }} />
+                    Edit
+                  </Button>
+                </NextLink>
+              </div>
+            )
+          }
+        </QueryIsAdmin>
         <div>
           <Button
             data-cy="report-book-button"
@@ -639,5 +595,26 @@ class BookActions2 extends React.Component<
     );
   }
 }
+
+const SIMILAR_BOOKS_QUERY = gql`
+  query similar($id: ID!) {
+    book(id: $id) {
+      id
+      similar {
+        results {
+          id
+          bookId
+          title
+          language {
+            code
+          }
+          coverImage {
+            url
+          }
+        }
+      }
+    }
+  }
+`;
 
 export default withErrorPage(BookPage);

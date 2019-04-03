@@ -8,12 +8,12 @@
 
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
-import { placeholder } from 'polished';
 import { Trans, I18n } from '@lingui/react';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 
 import media from '../../../style/media';
 
@@ -88,11 +88,7 @@ const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
             value={value}
           />
           <Tooltip title={<Trans>Search</Trans>}>
-            <IconButton
-              aria-label="Search"
-              className={styles.iconButton}
-              type="submit"
-            >
+            <IconButton aria-label="Search" css={iconButton} type="submit">
               <SearchIcon />
             </IconButton>
           </Tooltip>
@@ -135,21 +131,23 @@ const Input = styled('input')`
   transition: background 100ms ease-in, width 100ms ease-out;
   background-color: rgba(255, 255, 255, 0.16);
   color: rgba(255, 255, 255, 0.7);
-  ${placeholder({ color: 'rgba(255, 255, 255, 0.7)' })};
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
   &:focus {
     background-color: #fff;
     color: black;
-    ${placeholder({ color: 'rgb(117, 117, 117)' })};
+    &::placeholder {
+      color: rgb(117, 117, 117);
+    }
   }
 `;
 
-const styles = {
-  iconButton: css`
-    position: absolute;
-    left: 0;
-    width: 40px;
-    height: 40px;
-    margin-left: 5px;
-    color: #fff;
-  `
-};
+const iconButton = css`
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  margin-left: 5px;
+  color: #fff;
+`;

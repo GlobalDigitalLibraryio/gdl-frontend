@@ -8,16 +8,16 @@
 import * as React from 'react';
 import { Trans } from '@lingui/react';
 import { Link, Router } from '../routes';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
 import {
   Grow,
-  Popper,
   Button,
   ButtonBase,
   Typography,
   ClickAwayListener
 } from '@material-ui/core';
+import Popper from '@material-ui/core/Popper';
 import { colors } from '../style/theme';
 
 type Props = {
@@ -26,7 +26,7 @@ type Props = {
   crowdinUrl: ?string,
   translatedTo: string,
   popperStyle?: Object,
-  onClose: (event: SyntheticInputEvent<EventTarget>) => void
+  onClose: (event: Event) => void
 };
 
 // $FlowFixMe forwardRef fixed in flow@0.89 https://github.com/facebook/flow/issues/6103
@@ -40,14 +40,14 @@ const TranslateDropdown = React.forwardRef(
       onClose,
       popperStyle
     }: Props,
-    ref: React$ElementRef<Button>
+    ref: React$ElementRef<typeof Button>
   ) => (
     <Popper
       open={menuIsOpen}
       transition
       disablePortal
       placement="bottom-end"
-      css={cx(styles.translationMenu, popperStyle)}
+      css={[styles.translationMenu, popperStyle]}
     >
       {({ TransitionProps, placement }) => (
         <Grow {...TransitionProps} id="menu-list-grow">

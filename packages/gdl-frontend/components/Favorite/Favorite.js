@@ -7,62 +7,52 @@
  */
 
 import * as React from 'react';
-import {
-  markAsFavorite,
-  removeAsFavorite,
-  isFavorite
-} from '../../lib/favorites';
+import { addFavorite, removeFavorite, isFavorite } from '../../lib/favorites';
+import { logEvent } from '../../lib/analytics';
 
 type Props = {
-  id: number,
-  language: string,
-  children: (data: { isFav: boolean, onClick: () => void }) => React.Node
+  children: (data: { isFav: boolean, onClick: () => void }) => React.Node,
+  book: $ReadOnly<{
+    id: string,
+    title: string
+  }>
 };
 
 export default class Favorite extends React.Component<
   Props,
-  { isFav: boolean }
+  { favorited: boolean }
 > {
   state = {
-    isFav: false
+    favorited: false
   };
-
-  componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.id !== this.props.id ||
-      prevProps.language !== this.props.language
-    ) {
-      this.updateFavState();
-    }
-  }
 
   componentDidMount() {
-    this.updateFavState();
+    this.setState({ favorited: isFavorite(this.props.book.id) });
   }
 
-  updateFavState = () => {
-    const isFav = isFavorite({
-      id: this.props.id,
-      language: this.props.language
-    });
-
-    if (isFav !== this.state.isFav) {
-      this.setState({ isFav });
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.book.id !== this.props.book.id) {
+      this.setState({ favorited: isFavorite(this.props.book.id) });
     }
+  }
+
+  handleFavorite = () => {
+    addFavorite(this.props.book.id);
+    this.setState({ favorited: true });
+    logEvent('Books', 'Favorited', this.props.book.title);
   };
 
-  handleClick = () => {
-    const fav = { id: this.props.id, language: this.props.language };
-
-    this.state.isFav ? removeAsFavorite(fav) : markAsFavorite(fav);
-
-    this.setState(state => ({ isFav: !this.state.isFav }));
+  handleUnfavorite = () => {
+    removeFavorite(this.props.book.id);
+    this.setState({ favorited: false });
+    logEvent('Books', 'Unfavorited', this.props.book.title);
   };
 
   render() {
+    const { favorited } = this.state;
     return this.props.children({
-      isFav: this.state.isFav,
-      onClick: this.handleClick
+      isFav: favorited,
+      onClick: favorited ? this.handleUnfavorite : this.handleFavorite
     });
   }
 }

@@ -66,7 +66,7 @@ async function doFetch(
 ): Promise<RemoteData<any>> {
   const token = typeof window !== 'undefined' ? getAuthToken() : undefined;
 
-  const response = await fetch(url, {
+  const response: Response = await fetch(url, {
     headers: {
       Authorization: token ? `Bearer ${token}` : null
     },
@@ -74,7 +74,8 @@ async function doFetch(
   });
 
   let result;
-  if (response.headers.get('Content-Type').includes('application/json')) {
+  const header: ?string = response.headers.get('Content-Type');
+  if (header && header.includes('application/json')) {
     result = await response.json();
   } else {
     result = await response.text();

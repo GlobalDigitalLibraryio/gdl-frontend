@@ -7,9 +7,9 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
-import type { ReadingLevel } from '../../types';
+import type { ReadingLevel } from '../../gqlTypes';
 import colorMap from '../../style/colorMapping';
 
 const Hr = styled('hr')`

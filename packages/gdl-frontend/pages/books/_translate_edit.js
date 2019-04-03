@@ -10,179 +10,212 @@ import * as React from 'react';
 import { withRouter } from 'next/router';
 import Head from 'next/head';
 import getConfig from 'next/config';
-import { CircularProgress } from '@material-ui/core';
+import gql from 'graphql-tag';
 
 import { Router } from '../../routes';
 import Reader from '../../components/Reader';
-import {
-  fetchBook,
-  fetchCrowdinBook,
-  fetchMyTranslations,
-  fetchCrowdinChapter,
-  fetchTranslationProject
-} from '../../fetch';
-import Container from '../../elements/Container';
+import doFetch from '../../fetch';
 import type {
   ConfigShape,
-  BookDetails,
-  FrontPage,
-  Chapter,
-  CrowdinBook,
-  ChapterSummary,
   Context,
-  Language
+  ChapterContent,
+  ChapterPointer
 } from '../../types';
+
+import type {
+  CrowdinBook_book as Book,
+  CrowdinBook_translation as Translation,
+  CrowdinBook_crowdinBook_frontPage as FrontPage,
+  CrowdinBook_crowdinBook_chapters as Chapter
+} from '../../gqlTypes';
+
 import { withErrorPage } from '../../hocs';
 
 const {
   publicRuntimeConfig: { canonicalUrl }
 }: ConfigShape = getConfig();
 
+const isBrowser = typeof window !== 'undefined';
+
 // In-context requires that jipt is defined before the crowdin script is initialized
-if (typeof window !== 'undefined') {
+if (isBrowser) {
   window._jipt = [];
 }
 
+const CROWDIN_BOOK_QUERY = gql`
+  query CrowdinBook(
+    $id: ID!
+    $language: String!
+    $bookId: ID!
+    $toLanguage: String!
+  ) {
+    crowdinBook(id: $id, language: $language) {
+      id
+      frontPage {
+        id
+        seqNo
+        title
+        description
+        chapterType
+        images
+      }
+      chapters {
+        id
+        seqNo
+        url
+      }
+      coverImage {
+        url
+      }
+    }
+    book(id: $bookId) {
+      id
+      bookId
+      title
+      description
+      chapters {
+        seqNo
+      }
+      language {
+        code
+        isRTL
+      }
+    }
+    translation(id: $id, toLanguage: $toLanguage) {
+      to {
+        language {
+          code
+          name
+        }
+      }
+    }
+    crowdinProjects {
+      en
+    }
+  }
+`;
+
 type Props = {
-  book: BookDetails,
-  toLanguage: string,
-  translatedTo: Language,
+  book: Book,
+  translation: Translation,
+  frontPage: FrontPage,
   initialChapter: FrontPage | Chapter,
-  crowdinProjectName: { [key: string]: string },
-  crowdinChapters: Array<ChapterSummary>,
+  crowdinProjects: { [key: string]: string },
+  crowdinChapters: Array<ChapterPointer>,
   showCanonicalChapterUrl: boolean
 };
 
 type State = {
-  chapters: ?{ [number]: FrontPage | Chapter },
-  current: ?ChapterSummary,
-  loading: boolean
+  chapters: { [string]: FrontPage | ChapterContent },
+  current: ChapterPointer
 };
 
+/**
+ * The logic for in-context translation can be complex so here is a description:
+ *
+ * 1) Fetch all necessary data from GraphQL.
+ * 2) If chapterId is specified in query, fetch specified or fetch first chapter.
+ * 3) Initialize custom frontpage and set pointer for current chapter. Default to frontPage.
+ * 4) Load next and prev chapter with current pointer, if it hasnt been loaded already. This is to preload chapters.
+ * 5) Set in-context params.
+ */
+
 class TranslateEditPage extends React.Component<Props, State> {
-  static async getInitialProps({ query, req }: Context) {
+  static async getInitialProps({ query, req, apolloClient }: Context) {
     if (!query.id || !query.lang || !query.toLang) return { statusCode: 404 };
 
-    const bookRes = await fetchBook(query.id, query.lang);
-    if (!bookRes.isOk) {
-      return {
-        statusCode: bookRes.statusCode
-      };
-    }
-    const book = bookRes.data;
-
-    const crowdinBook = await fetchCrowdinBook(book.id, book.language.code);
-    if (!crowdinBook.isOk) return { statusCode: crowdinBook.statusCode };
-
-    const crowdinProjectName = await fetchTranslationProject();
-    if (!crowdinProjectName.isOk)
-      return { statusCode: crowdinProjectName.statusCode };
+    const crowdinRes = await apolloClient.query({
+      query: CROWDIN_BOOK_QUERY,
+      variables: {
+        id: query.id,
+        language: query.lang,
+        toLanguage: query.toLang,
+        bookId: `${query.id}-${query.lang}`
+      }
+    });
+    const { book, translation, crowdinBook, crowdinProjects } = crowdinRes.data;
+    // translation is optional in case invalid language
+    if (!translation) return { statusCode: 404 };
 
     let initialChapter;
-    const frontPage = createFrontPage(crowdinBook.data);
 
     if (query.chapterId) {
-      const chapterInfo = crowdinBook.data.chapters.find(
+      const chapterInfo = crowdinBook.chapters.find(
         chapter => chapter.id.toString() === query.chapterId
       );
 
       // If no chapterInfo, it means the chapterId is invalid and we prompt 404 page
       if (!chapterInfo) return { statusCode: 404 };
-      initialChapter = await fetchCrowdinChapter(chapterInfo);
+      initialChapter = await doFetch(chapterInfo.url);
+    } else {
+      initialChapter = await doFetch(crowdinBook.chapters[0].url);
     }
     if (initialChapter && !initialChapter.isOk)
       return { statusCode: initialChapter.statusCode };
 
     return {
       book,
-      toLanguage: query.toLang.toLowerCase(),
-      initialChapter: initialChapter ? initialChapter.data : frontPage,
-      showCanonicalChapterUrl: !query.chapterId,
-      crowdinProjectName: crowdinProjectName.data,
-      crowdinChapters: [frontPage, ...crowdinBook.data.chapters]
+      translation,
+      frontPage: crowdinBook.frontPage,
+      initialChapter: initialChapter.data,
+      crowdinProjects,
+      crowdinChapters: [crowdinBook.frontPage, ...crowdinBook.chapters],
+      showCanonicalChapterUrl: !query.chapterId
     };
   }
 
   state = {
-    chapters: undefined,
-    current: undefined,
-    loading: true
+    chapters: {
+      [this.props.frontPage.id]: this.props.frontPage,
+      [this.props.initialChapter.id]: this.props.initialChapter
+    },
+    // To decide initial page, check if query.chapterId exist to bother finding pointer to correct chapter.
+    current: this.props.showCanonicalChapterUrl
+      ? this.props.crowdinChapters[0]
+      : this.props.crowdinChapters.find(
+          v => v.id === this.props.initialChapter.id.toString()
+        ) || this.props.crowdinChapters[0]
   };
 
-  async componentDidMount() {
-    const {
-      crowdinProjectName,
-      book,
-      toLanguage,
-      initialChapter,
-      crowdinChapters
-    } = this.props;
-    // Flow complains because selectedTranslation can be undefined.
-    // Graphql could handle this better.. $FlowFixMe
-    const myTranslations = await fetchMyTranslations();
-    if (!myTranslations.isOk) return { statusCode: myTranslations.statusCode };
+  componentDidMount() {
+    const { book, translation, crowdinProjects } = this.props;
 
-    const selectedTranslation = myTranslations.data.find(
-      element =>
-        element.translatedTo.code === toLanguage && element.id === book.id
-    );
-
-    //Create frontPage with title and description and concat with chapters
-    const chapters = crowdinChapters
-      ? {
-          [crowdinChapters[0].id]: crowdinChapters[0],
-          [initialChapter.id]: initialChapter
-        }
-      : { [initialChapter.id]: initialChapter };
-
-    const current = crowdinChapters.find(c => c.id === initialChapter.id);
-
-    if (!current) {
-      throw new Error('Chapter not found in book');
+    const next = this.getNext();
+    if (next) {
+      this.loadChapter(next.id);
     }
 
-    this.setState({ chapters, current, loading: false }, () => {
-      // Preload the next and previous chapters, so we are ready when the user navigates
-      const next = this.getNext();
-      if (next) {
-        this.loadChapter(next.id);
-      }
+    const prev = this.getPrevious();
+    if (prev) {
+      this.loadChapter(prev.id);
+    }
 
-      const prev = this.getPrevious();
-      if (prev) {
-        this.loadChapter(prev.id);
-      }
-
-      window.localStorage.clear();
-      initInContext(
-        book.id,
-        crowdinProjectName.en,
-        selectedTranslation.translatedTo
-      );
-    });
+    window.localStorage.clear();
+    initInContext(book.id, crowdinProjects.en, translation);
   }
 
-  getNext() {
+  getNext(): ChapterPointer {
     const { crowdinChapters } = this.props;
     const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
     return crowdinChapters[indexOfCurrent + 1];
   }
 
-  getPrevious() {
+  getPrevious(): ChapterPointer {
     const { crowdinChapters } = this.props;
     const indexOfCurrent = crowdinChapters.indexOf(this.state.current);
     return crowdinChapters[indexOfCurrent - 1];
   }
 
-  async loadChapter(chapterId: number) {
+  async loadChapter(chapterId: string) {
     // Make sure we haven't loaded the chapter already
     if (this.state.chapters && this.state.chapters[chapterId]) return;
-    const { crowdinChapters } = this.props;
-    const chapterInfo =
-      crowdinChapters.find(chapter => chapter.id === chapterId) ||
-      crowdinChapters[0];
 
-    const result = await fetchCrowdinChapter(chapterInfo);
+    const chapterInfo = this.props.crowdinChapters.find(
+      chapter => chapter.id === chapterId
+    );
+
+    // $FlowFixMe chapterInfo is either Chapter or FrontPage, but FrontPage doesnt have url and is initially loaded so it stops at the return statement above
+    const result = await doFetch(chapterInfo.url);
 
     // TODO: Notify user of error
     if (!result.isOk) {
@@ -190,12 +223,11 @@ class TranslateEditPage extends React.Component<Props, State> {
     }
 
     const chapter = result.data;
+    preloadImages(chapter.images);
 
     this.setState(state => ({
       chapters: { ...state.chapters, [chapter.id]: chapter }
     }));
-
-    preloadImages(chapter.images);
   }
 
   handleNextChapter = () => {
@@ -236,9 +268,9 @@ class TranslateEditPage extends React.Component<Props, State> {
     Router.replaceRoute(
       'translateEdit',
       {
-        id: this.props.book.id,
+        id: this.props.book.bookId,
         lang: this.props.book.language.code,
-        toLang: this.props.toLanguage,
+        toLang: this.props.translation.to.language.code,
         // FrontPage is custom made and have been given id 0, which should not be appended in url.
         chapterId:
           this.state.current && !!this.state.current.id
@@ -249,22 +281,8 @@ class TranslateEditPage extends React.Component<Props, State> {
     );
 
   render() {
-    const { book, showCanonicalChapterUrl } = this.props;
-    const { current, chapters, loading } = this.state;
-    if (loading || !current || !chapters) {
-      return (
-        <Container
-          css={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh'
-          }}
-        >
-          <CircularProgress size={60} />
-        </Container>
-      );
-    }
+    const { book, crowdinChapters, showCanonicalChapterUrl } = this.props;
+    const { current, chapters } = this.state;
     const next = this.getNext();
     const prev = this.getPrevious();
 
@@ -272,7 +290,7 @@ class TranslateEditPage extends React.Component<Props, State> {
       <>
         <Head
           title={`Read: ${book.title} (${current.seqNo}/${
-            book.chapters.length
+            crowdinChapters.length
           })`}
           description={book.description}
         >
@@ -280,27 +298,28 @@ class TranslateEditPage extends React.Component<Props, State> {
             <link
               rel="canonical"
               href={`${canonicalUrl}/${book.language.code}/books/translate/${
-                book.id
+                book.bookId
               }/edit/${current.id}`}
             />
           )}
           {prev && (
             <link
               rel="prev"
-              href={`/${book.language.code}/books/translate/${book.id}/edit/${
-                prev.id
-              }`}
+              href={`/${book.language.code}/books/translate/${
+                book.bookId
+              }/edit/${prev.id}`}
             />
           )}
           {next && (
             <link
               rel="next"
-              href={`/${book.language.code}/books/translate/${book.id}/edit/${
-                next.id
-              }`}
+              href={`/${book.language.code}/books/translate/${
+                book.bookId
+              }/edit/${next.id}`}
             />
           )}
-          <script src="https://cdn.crowdin.com/jipt/jipt.js" />
+          {/** Require window._jipt to run script */}
+          {isBrowser && <script src="https://cdn.crowdin.com/jipt/jipt.js" />}
         </Head>
 
         <Reader
@@ -317,10 +336,19 @@ class TranslateEditPage extends React.Component<Props, State> {
   }
 }
 
-function initInContext(id: number, project: string, toLanguage: Language) {
-  window.localStorage.setItem(`jipt_language_code_${project}`, toLanguage.code);
+/**
+ * Require window._jipt which is set in browser and not SSR
+ */
+function initInContext(id: string, project: string, translation: Translation) {
+  window.localStorage.setItem(
+    `jipt_language_code_${project}`,
+    translation.to.language.code
+  );
   window.localStorage.setItem(`jipt_language_id_${project}`, id);
-  window.localStorage.setItem(`jipt_language_name_${project}`, toLanguage.name);
+  window.localStorage.setItem(
+    `jipt_language_name_${project}`,
+    translation.to.language.name
+  );
 
   window._jipt.push(['preload_texts', true]);
   window._jipt.push(['project', project]);
@@ -330,17 +358,6 @@ function initInContext(id: number, project: string, toLanguage: Language) {
       window.location.href = '/books/translations';
     }
   ]);
-}
-
-function createFrontPage(crowdin: CrowdinBook): FrontPage {
-  return {
-    id: 0,
-    chapterType: 'FrontPage',
-    title: crowdin.title,
-    description: crowdin.description,
-    seqNo: 0,
-    images: [crowdin.coverImage.url]
-  };
 }
 
 /**

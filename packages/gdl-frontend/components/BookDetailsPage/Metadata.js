@@ -6,84 +6,70 @@
  * See LICENSE
  */
 
-import React, { Fragment } from 'react';
+import React from 'react';
 import { IconButton, Collapse, Typography } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { Trans, Plural } from '@lingui/react';
-import { css, cx } from 'react-emotion';
+import { css } from '@emotion/core';
 
-import { ContributorTypes, type BookDetails } from '../../types';
+import type { book_book as Book } from '../../gqlTypes';
+
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import A from '../../elements/A';
 
 type Props = {
-  book: BookDetails,
+  book: Book,
   online: boolean
 };
 
-function headingText(type, value) {
-  switch (type) {
-    case ContributorTypes.AUTHOR:
-      return <Plural one="Author" other="Authors" value={value} />;
-    case ContributorTypes.ILLUSTRATOR:
-      return <Plural one="Illustrator" other="Illustrators" value={value} />;
-    case ContributorTypes.TRANSLATOR:
-      return <Plural one="Translator" other="Translators" value={value} />;
-    case ContributorTypes.PHOTOGRAPHER:
-      return <Plural one="Photographer" other="Photographers" value={value} />;
-    default:
-      return <Plural one="Contributor" other="Contributors" value={value} />;
-  }
-}
+const Contributor = ({ contributorType, values }) => (
+  <>
+    <Typography variant="subtitle2" component="span">
+      <Plural
+        one={contributorType}
+        other={`${contributorType}s`}
+        value={values.length}
+      />
+    </Typography>
+    <Typography component="span" paragraph css={noMarginForLastChild}>
+      {values.map(contributor => contributor.name).join(', ')}
+    </Typography>
+  </>
+);
 
-function listContributors(contributorType, contributors) {
-  const contributorsOfType = contributors.filter(
-    c => c.type === contributorType
-  );
-
-  if (contributorsOfType.length > 0) {
-    return (
-      // $FlowFixMe this is a string...
-      <Fragment key={contributorType}>
-        <Typography variant="subtitle2" component="span">
-          {headingText(contributorType, contributorsOfType.length)}
-        </Typography>
-        <Typography component="span" paragraph className={noMarginForLastChild}>
-          {contributorsOfType.map(contributor => contributor.name).join(', ')}
-        </Typography>
-      </Fragment>
-    );
-  }
-  return null;
-}
-
-const BookMeta = ({ book, online }: Props) => {
-  return (
-    <>
-      {Object.values(ContributorTypes).map(type =>
-        listContributors(type, book.contributors)
-      )}
-
-      <Typography variant="subtitle2" component="span">
-        <Trans>License</Trans>
+const BookMeta = ({ book, online }: Props) => (
+  <>
+    {book.authors && (
+      <Contributor contributorType="Author" values={book.authors} />
+    )}
+    {book.illustrators && (
+      <Contributor contributorType="Illustrator" values={book.illustrators} />
+    )}
+    {book.photographers && (
+      <Contributor contributorType="Photographer" values={book.photographers} />
+    )}
+    {book.translators && (
+      <Contributor contributorType="Translator" values={book.translators} />
+    )}
+    <Typography variant="subtitle2" component="span">
+      <Trans>License</Trans>
+    </Typography>
+    {online ? (
+      <A href={book.license.url} paragraph css={noMarginForLastChild}>
+        {book.license.name}
+      </A>
+    ) : (
+      <Typography component="span" paragraph css={noMarginForLastChild}>
+        {book.license.name}
       </Typography>
-      {online ? (
-        <A href={book.license.url} paragraph className={noMarginForLastChild}>
-          {book.license.description}
-        </A>
-      ) : (
-        <Typography component="span" paragraph className={noMarginForLastChild}>
-          {book.license.description}
-        </Typography>
-      )}
-      {book.additionalInformation && (
-        <AdditionalInformation
-          additionalInformation={book.additionalInformation}
-        />
-      )}
-    </>
-  );
-};
+    )}
+    {book.additionalInformation && (
+      <AdditionalInformation
+        additionalInformation={book.additionalInformation}
+      />
+    )}
+  </>
+);
 
 class AdditionalInformation extends React.Component<
   { additionalInformation: string },
@@ -95,9 +81,9 @@ class AdditionalInformation extends React.Component<
 
   render() {
     return (
-      <div className={expansionStyles.wrapper}>
+      <div css={expansionStyles.wrapper}>
         <div
-          className={expansionStyles.button}
+          css={expansionStyles.button}
           role="button"
           tabIndex="0"
           aria-expanded={this.state.isExpanded}
@@ -109,9 +95,10 @@ class AdditionalInformation extends React.Component<
             <Trans>Additional information</Trans>
           </Typography>
           <IconButton
-            className={cx(expansionStyles.iconButton, {
-              [expansionStyles.iconButtonExpanded]: this.state.isExpanded
-            })}
+            css={[
+              expansionStyles.iconButton,
+              this.state.isExpanded && expansionStyles.iconButtonExpanded
+            ]}
             tabIndex={-1}
             aria-hidden
             component="div"

@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import type { $Request, $Response } from 'express';
+import type { ApolloClient } from 'react-apollo';
 
 export type Publisher = {
   +name: string
@@ -21,6 +22,7 @@ export type ConfigShape = {
   publicRuntimeConfig: {
     bookApiUrl: string,
     canonicalUrl: string,
+    graphqlEndpoint: string,
     SENTRY_PROJECT_ID: string,
     SENTRY_PUBLIC_KEY: string,
     REPORT_ERRORS: boolean,
@@ -188,5 +190,14 @@ export type Context = {
   query: { [string]: string },
   err?: Error | { statusCode: number },
   res?: $Response,
-  req?: $Request
+  req?: $Request,
+  apolloClient: ApolloClient
 };
+
+export type ChapterContent = $ReadOnly<{ content: string }>;
+
+export type ChapterPointer = $ReadOnly<{
+  id: string,
+  chapterId: number,
+  seqNo: number
+}>;

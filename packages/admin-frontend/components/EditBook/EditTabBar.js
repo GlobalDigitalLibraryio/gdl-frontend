@@ -24,7 +24,10 @@ type Props = {
 };
 
 class RouteAwareTabBar extends React.PureComponent<Props> {
-  handleChange = (event: Event, selectedTab: 'chapter' | 'book') => {
+  handleChange = (
+    event: SyntheticEvent<HTMLButtonElement>,
+    selectedTab: 'chapter' | 'book'
+  ) => {
     const {
       router: { query }
     } = this.props;

@@ -7,7 +7,7 @@
  */
 
 import React, { type Node } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import invariant from 'invariant';
 import mq from '../style/mq';
 

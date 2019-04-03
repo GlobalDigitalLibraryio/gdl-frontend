@@ -6,7 +6,7 @@
  * See LICENSE
  */
 
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { colors, fonts } from '../../../../style/theme';
 import media from '../../../../style/media';
 
@@ -38,12 +38,12 @@ export const Wrapper = styled('div')`
   }
   display: flex;
   padding-bottom: 15px;
-  :not(:first-child) {
+  :not(:first-of-type) {
     padding-top: 15px;
   }
   ${media.tablet`
     padding-bottom: 30px;
-    :not(:first-child) {
+    :not(:first-of-type) {
       padding-top: 30px;
     }
   `};

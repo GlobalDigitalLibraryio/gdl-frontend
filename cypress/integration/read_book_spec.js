@@ -3,8 +3,11 @@ describe('Read book', () => {
     cy.visit('/');
     cy.get('[data-cy="book-link"]')
       .first()
-      .click();
-    cy.get('[data-cy="read-book-tablet-button"]').click();
+      .click()
+      .wait(500); // CI travis runs in Docker and it looks like it goes a bit slow and can fail test
+    cy.get('[data-cy="read-book-tablet-button"]')
+      .click()
+      .wait(1000); // CI travis runs in Docker and it looks like it goes a bit slow and can fail test
   });
 
   it('Should be able to navigate forward and backwards', () => {

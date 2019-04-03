@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import {
   AppBar,
   CircularProgress,
@@ -178,7 +178,7 @@ const Center = styled('div')`
   display: flex;
   align-items: center;
   flex: 1 25%;
-  ${media.mobile`display: none`};
+  ${media.mobile`display: none;`};
 `;
 
 const Right = styled('div')`

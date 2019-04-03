@@ -8,6 +8,8 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import {
   Avatar,
   Button,
@@ -17,62 +19,38 @@ import {
 import { FavoriteBorder as FavoriteBorderIcon } from '@material-ui/icons';
 import Link from 'next/link';
 
-import { fetchBook } from '../fetch';
-import type { Book } from '../types';
 import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
+import type { Favorites, FavoritesVariables } from '../gqlTypes';
 import {
-  getFavorites,
-  clearFavorites,
-  removeAsFavorite
+  getFavoritedBookIds,
+  removeFavorite,
+  clearFavorites
 } from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
 
-type State = {
-  books: Array<Book>,
-  loadingStatus: 'LOADING' | 'SUCCESS'
-};
+/**
+ * If we have favorited books that we are unable to get from the server
+ * we cleanup by deleting the not found ones
+ */
+function removeBooksNotFound(data: Favorites) {
+  const favoritedIds = getFavoritedBookIds();
 
-class FavoritesPage extends React.Component<{}, State> {
-  state = {
-    loadingStatus: 'LOADING',
-    books: []
-  };
+  const foundFavoriteIds = data.books.filter(Boolean).map(b => b.id);
 
-  async componentDidMount() {
-    const favs = getFavorites();
+  const diff = favoritedIds.filter(id => !foundFavoriteIds.includes(id));
+  diff.forEach(removeFavorite);
+}
 
-    // Tuples of [fav, res];
-    const booksResults = await Promise.all(
-      favs.map(async fav => [fav, await fetchBook(fav.id, fav.language)])
-    );
-
-    /**
-     * Try to cleanup failures
-     */
-    const fails = booksResults.filter(([_, res]) => !res.isOk);
-    fails.forEach(([fav]) => removeAsFavorite(fav));
-
-    /**
-     * The books we successfully retrived
-     */
-    const books = booksResults
-      .filter(([_, res]) => res.isOk)
-      .map(([_, res]) => res.data);
-
-    this.setState({ books, loadingStatus: 'SUCCESS' });
-  }
-
-  handleClearFavorites = () => {
+class FavoritesPage extends React.Component<{}> {
+  handleClearFavorites = (refetch: FavoritesVariables => void) => {
     clearFavorites();
-    // Ensures we show the "no favorites yet" screen
-    this.setState({ books: [], loadingStatus: 'SUCCESS' });
+    refetch({ ids: [] });
   };
 
   render() {
-    const { books, loadingStatus } = this.state;
     return (
       <>
         <Head title="Favorites" />
@@ -89,20 +67,45 @@ class FavoritesPage extends React.Component<{}, State> {
               <Trans>Favorites</Trans>
             </Typography>
 
-            {loadingStatus === 'LOADING' && (
-              <Center>
-                <CircularProgress />
-              </Center>
-            )}
+            <Query
+              query={FAVORITES_QUERY}
+              variables={{ ids: getFavoritedBookIds() }}
+              ssr={false}
+              onCompleted={removeBooksNotFound}
+            >
+              {({
+                loading,
+                data,
+                error,
+                refetch
+              }: {
+                loading: boolean,
+                data: Favorites,
+                error: any,
+                refetch: FavoritesVariables => void
+              }) => {
+                if (loading) {
+                  return (
+                    <Center>
+                      <CircularProgress />
+                    </Center>
+                  );
+                }
 
-            {loadingStatus === 'SUCCESS' && (
-              <>
-                {books.length > 0 ? (
+                if (error) {
+                  return <div>Something went wrong</div>;
+                }
+
+                const books = data.books.filter(Boolean);
+
+                return books.length === 0 ? (
+                  <NoFavorites />
+                ) : (
                   <>
                     <BookGrid books={books} />
                     <Center>
                       <Button
-                        onClick={this.handleClearFavorites}
+                        onClick={() => this.handleClearFavorites(refetch)}
                         css={{ marginTop: spacing.large }}
                         variant="outlined"
                         size="small"
@@ -111,39 +114,54 @@ class FavoritesPage extends React.Component<{}, State> {
                       </Button>
                     </Center>
                   </>
-                ) : (
-                  <Center>
-                    <Avatar css={{ height: 100, width: 100 }}>
-                      <FavoriteBorderIcon
-                        css={{ color: 'red', fontSize: 70 }}
-                      />
-                    </Avatar>
-                    <Typography
-                      align="center"
-                      css={{
-                        marginTop: spacing.large,
-                        marginBottom: spacing.medium
-                      }}
-                    >
-                      <Trans>
-                        Add books to your favorites so you can easily find them
-                        later.
-                      </Trans>
-                    </Typography>
-                    <Link passHref href="/">
-                      <Button variant="outlined">
-                        <Trans>Find something to read</Trans>
-                      </Button>
-                    </Link>
-                  </Center>
-                )}
-              </>
-            )}
+                );
+              }}
+            </Query>
           </Container>
         </Layout>
       </>
     );
   }
 }
+
+const NoFavorites = () => (
+  <Center>
+    <Avatar css={{ height: 100, width: 100 }}>
+      <FavoriteBorderIcon css={{ color: 'red', fontSize: 70 }} />
+    </Avatar>
+    <Typography
+      align="center"
+      css={{
+        marginTop: spacing.large,
+        marginBottom: spacing.medium
+      }}
+    >
+      <Trans>
+        Add books to your favorites so you can easily find them later.
+      </Trans>
+    </Typography>
+    <Link passHref href="/">
+      <Button variant="outlined">
+        <Trans>Find something to read</Trans>
+      </Button>
+    </Link>
+  </Center>
+);
+
+const FAVORITES_QUERY = gql`
+  query Favorites($ids: [ID!]!) {
+    books(ids: $ids) {
+      id
+      bookId
+      title
+      language {
+        code
+      }
+      coverImage {
+        url
+      }
+    }
+  }
+`;
 
 export default FavoritesPage;

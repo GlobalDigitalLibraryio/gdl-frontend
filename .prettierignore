@@ -2,5 +2,6 @@
 flow-typed/*
 node_modules/
 packages/gdl-frontend/locale/
+packages/gdl-frontend/gqlTypes.js
 **/.next
 .git/

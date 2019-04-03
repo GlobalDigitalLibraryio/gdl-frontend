@@ -7,12 +7,13 @@
  */
 
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Trans } from '@lingui/react';
 
 import { colors } from '../../style/theme';
 import { logEvent } from '../../lib/analytics';
-import type { Category } from '../../types';
+import type { Category } from '../../gqlTypes';
 import SrOnly from '../../components/SrOnly';
 import { fonts } from '../../style/theme';
 import { Link } from '../../routes';
@@ -46,18 +47,18 @@ class CategoryNavigation extends React.Component<Props> {
     const { languageCode, category, categories } = this.props;
     return (
       <Div>
-        {categories.includes('library_books') && (
+        {categories.includes('Library') && (
           <Tab
-            isSelected={category === 'library_books'}
+            isSelected={category === 'Library'}
             linkProps={{ route: 'library', params: { lang: languageCode } }}
             onClick={() => logEvent('Navigation', 'Category', 'Classroom')}
           >
             <Trans>Library books</Trans>
           </Tab>
         )}
-        {categories.includes('classroom_books') && (
+        {categories.includes('Classroom') && (
           <Tab
-            isSelected={category === 'classroom_books'}
+            isSelected={category === 'Classroom'}
             linkProps={{ route: 'classroom', params: { lang: languageCode } }}
             onClick={() => logEvent('Navigation', 'Category', 'Library')}
           >

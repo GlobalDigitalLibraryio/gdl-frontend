@@ -8,46 +8,66 @@
 
 import * as React from 'react';
 import { I18n } from '@lingui/react';
+import gql from 'graphql-tag';
 
-import { fetchBook, fetchSupportedLanguages } from '../../fetch';
-import type { BookDetails, Language, Context } from '../../types';
-import { securePage, withErrorPage } from '../../hocs';
+import type { Context } from '../../types';
+import { securePage, withErrorPage } from '../../hocs/';
 import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import PrepareTranslatePage from '../../components/PrepareTranslationPage';
 
+import type {
+  TranslateBook_book,
+  TranslateBook_translationLanguages as Language
+} from '../../gqlTypes';
+
+const BOOK_QUERY = gql`
+  query TranslateBook($id: ID!, $languageCode: String!) {
+    book(id: $id) {
+      id
+      bookId
+      title
+      description
+      publisher {
+        name
+      }
+      language {
+        code
+        name
+      }
+      coverImage {
+        url
+      }
+    }
+    translationLanguages(languageCode: $languageCode) {
+      code
+      name
+    }
+  }
+`;
+
 type Props = {
-  book: BookDetails,
+  book: TranslateBook_book,
   statusCode?: number,
   supportedLanguages: Array<Language>
 };
 
 class TranslatePage extends React.Component<Props> {
-  static async getInitialProps({ query }: Context) {
-    const [bookRes, supportedLanguagesRes] = await Promise.all([
-      fetchBook(query.id, query.lang),
-      fetchSupportedLanguages(query.lang)
-    ]);
+  static async getInitialProps({ query, apolloClient }: Context) {
+    const bookRes = await apolloClient.query({
+      query: BOOK_QUERY,
+      variables: { id: `${query.id}-${query.lang}`, languageCode: query.lang }
+    });
 
-    if (!bookRes.isOk || !supportedLanguagesRes.isOk) {
+    if (!bookRes.data.book) {
       return {
-        statusCode: bookRes.isOk
-          ? bookRes.statusCode
-          : supportedLanguagesRes.statusCode
+        statusCode: 404
       };
     }
 
-    const bookLanguages = bookRes.data.availableLanguages.map(
-      lang => lang.code
-    );
-
-    const filteredLanguages = supportedLanguagesRes.data.filter(
-      lang => !bookLanguages.includes(lang.code)
-    );
-
     return {
-      book: bookRes.data,
-      supportedLanguages: filteredLanguages
+      book: bookRes.data.book,
+      supportedLanguages: bookRes.data.translationLanguages
     };
   }
 

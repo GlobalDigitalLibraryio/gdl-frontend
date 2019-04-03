@@ -8,17 +8,17 @@
 
 import * as React from 'react';
 import { Trans } from '@lingui/react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
-import { logEvent } from '../../lib/analytics';
 import type {
-  Book,
-  Language,
-  FeaturedContent,
-  ReadingLevel,
-  Category
-} from '../../types';
+  Category,
+  BooksAndFeatured,
+  BooksAndFeatured_featuredContent as FeaturedContent
+} from '../../gqlTypes';
+
+import { logEvent } from '../../lib/analytics';
+import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import { Container, View } from '../../elements';
@@ -28,19 +28,11 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
-import ReadingLevelTrans from '../ReadingLevelTrans';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 
-type Props = {|
-  featuredContent: Array<FeaturedContent>,
-  newArrivals: { results: Array<Book>, language: Language },
-  levels: Array<ReadingLevel>,
-  booksByLevel: Array<{ results: Array<Book> }>,
-  categories: Array<Category>,
-  category: Category
-|};
+import type { ReadingLevel } from '../../gqlTypes';
 
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
@@ -86,35 +78,34 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
-  state = {
-    showLanguageMenu: false
-  };
+type Props = {|
+  bookSummaries: $Diff<
+    BooksAndFeatured,
+    { featuredContent: Array<FeaturedContent> }
+  >,
+  languageCode: string,
+  featuredContent: FeaturedContent,
+  categories: Array<Category>,
+  category: Category
+|};
 
+class HomePage extends React.Component<Props> {
   render() {
     const {
+      bookSummaries,
       category,
       featuredContent,
-      levels,
-      booksByLevel,
-      newArrivals,
-      categories
+      categories,
+      languageCode
     } = this.props;
 
-    const featuredForChosenCategory = featuredContent.filter(
-      // $FlowFixMe...
-      f => f.category && f.category.name === category
-    );
-    const featured =
-      featuredForChosenCategory.length > 0
-        ? featuredForChosenCategory[0]
-        : featuredContent[0];
+    const { NewArrivals, ...readingLevels } = bookSummaries;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
       <View alignItems="center" style={{ width: '100%' }}>
         <Typography
-          lang={featured.language.code}
+          lang={featuredContent.language.code}
           align="center"
           variant="h5"
           component="h2"
@@ -122,20 +113,22 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
           // Specifying width here makes text in IE11 wrap
           style={{ width: '100%' }}
         >
-          {featured.title}
+          {featuredContent.title}
         </Typography>
         <Typography
-          lang={featured.language.code}
+          lang={featuredContent.language.code}
           align="center"
           paragraph
           // Specifying width here makes text in IE11 wrap
           style={{ width: '100%' }}
         >
-          {featured.description}
+          {featuredContent.description}
         </Typography>
         <Button
-          onClick={() => logEvent('Navigation', 'Featured', featured.title)}
-          href={featured.link}
+          onClick={() =>
+            logEvent('Navigation', 'Featured', featuredContent.title)
+          }
+          href={featuredContent.link}
           variant="contained"
           color="primary"
           size="large"
@@ -145,11 +138,9 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
       </View>
     );
 
-    const languageCode = newArrivals.language.code;
-
     return (
       <Layout wrapWithMain={false}>
-        <Head image={featured.imageUrl} />
+        <Head image={featuredContent.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
             category={category}
@@ -158,7 +149,7 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
           />
         </NavContextBar>
         <Main>
-          <Banner src={featured.imageUrl}>
+          <Banner src={featuredContent.imageUrl}>
             <HeroCovertitle>
               <Typography
                 component="h1"
@@ -180,35 +171,40 @@ class HomePage extends React.Component<Props, { showLanguageMenu: boolean }> {
           <View {...bookListViewStyle}>
             <Container width="100%">
               <BookList
+                shouldBeColorized
                 heading={<Trans>New arrivals</Trans>}
                 browseLinkProps={{
                   lang: languageCode,
-                  sort: '-arrivalDate',
                   category: category
                 }}
-                books={newArrivals.results}
-                shouldBeColorized
+                books={NewArrivals.results}
               />
             </Container>
           </View>
 
-          {levels.map((level, index) => (
-            <View {...bookListViewStyle} key={level}>
-              <Container width="100%">
-                <BookList
-                  heading={<ReadingLevelTrans readingLevel={level} />}
-                  browseLinkProps={{
-                    lang: languageCode,
-                    readingLevel: level,
-                    category: category
-                  }}
-                  books={booksByLevel[index].results}
-                  level={level}
-                  shouldBeColorized
-                />
-              </Container>
-            </View>
-          ))}
+          {Object.entries(readingLevels)
+            // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
+            .filter(
+              ([_, data]: [ReadingLevel, any]) =>
+                data.results && data.results.length > 0
+            )
+            .map(([level, data]: [ReadingLevel, any]) => (
+              <View {...bookListViewStyle} key={level}>
+                <Container width="100%">
+                  <BookList
+                    heading={<ReadingLevelTrans readingLevel={level} />}
+                    level={level}
+                    shouldBeColorized
+                    browseLinkProps={{
+                      lang: languageCode,
+                      readingLevel: level,
+                      category: category
+                    }}
+                    books={bookSummaries[level].results}
+                  />
+                </Container>
+              </View>
+            ))}
         </Main>
       </Layout>
     );

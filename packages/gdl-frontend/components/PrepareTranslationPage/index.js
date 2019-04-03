@@ -24,7 +24,11 @@ import {
 
 import TranslateDropdown from '../TranslateDropdown';
 import { sendToTranslation } from '../../fetch';
-import type { BookDetails, Language, Translation } from '../../types';
+import type { Translation } from '../../types';
+import type {
+  TranslateBook_book as BookDetails,
+  TranslateBook_translationLanguages as Language
+} from '../../gqlTypes';
 import { Link } from '../../routes';
 import { LoadingButton, Container } from '../../elements';
 import CoverImage from '../CoverImage';
@@ -61,7 +65,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
     menuIsOpen: false
   };
 
-  anchorEl: React$ElementRef<Button> = React.createRef();
+  anchorEl: React$ElementRef<typeof Button> = React.createRef();
 
   handleToggle = () => {
     this.setState(state => ({ menuIsOpen: !state.menuIsOpen }));
@@ -86,7 +90,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
       this.setState({ translationState: translationStates.PREPARING });
 
       const translationRes = await sendToTranslation(
-        this.props.book.id,
+        this.props.book.bookId,
         this.props.book.language.code,
         // $FlowFixMe: We are already checking for this in the enclosing if
         this.state.selectedLanguage.code
@@ -139,7 +143,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
               <Grid item>
                 <Link
                   route="book"
-                  params={{ lang: book.language.code, id: book.id }}
+                  params={{ lang: book.language.code, id: book.bookId }}
                 >
                   <a>
                     <CoverImage coverImage={book.coverImage} size="small" />
@@ -156,7 +160,8 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 </Typography>
 
                 <Typography paragraph variant="subtitle1">
-                  <Trans>from {book.publisher.name}</Trans>
+                  <Trans>from</Trans>
+                  {book.publisher.name}
                 </Typography>
 
                 <Typography lang={book.language.code} paragraph>
@@ -248,7 +253,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
               </Button>
               <TranslateDropdown
                 ref={this.anchorEl}
-                bookId={book.id}
+                bookId={book.bookId}
                 crowdinUrl={translation && translation.crowdinUrl}
                 translatedTo={selectedLanguage && selectedLanguage.code}
                 onClose={this.closeMenu}
