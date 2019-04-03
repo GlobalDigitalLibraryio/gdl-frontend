@@ -107,10 +107,28 @@ export default class OfflineLibrary {
   }
 
   /**
+   * By merging graphql, the old book data objects does not match anymore.
+   * Since the lifetime of an offline book is 7 days, the function _expireEntries()
+   * will purge expired books and this migration issue will not be a problem anymore.
+   */
+  async _removeBooksWithoutBookId() {
+    const keys = await this.bookStore.keys();
+    const length = await this.bookStore.length();
+    for (let i = 0; i < length; i++) {
+      const id = keys[i];
+      const item = await this.bookStore.getItem(id);
+      if (!item.hasOwnProperty('bookId')) {
+        await this.deleteBook(id);
+      }
+    }
+  }
+
+  /**
    * Get all books in the offline library
    *
    */
   async getBooks(): Promise<Array<Book>> {
+    await this._removeBooksWithoutBookId();
     await this._expireEntries(Date.now() - MAX_AGE_MS);
 
     const books = [];
