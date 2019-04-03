@@ -3,8 +3,11 @@ describe('Read book', () => {
     cy.visit('/');
     cy.get('[data-cy="book-link"]')
       .first()
-      .click();
-    cy.get('[data-cy="read-book-tablet-button"]').click();
+      .click()
+      .wait(500);
+    cy.get('[data-cy="read-book-tablet-button"]')
+      .click()
+      .wait(1000);
   });
 
   it('Should be able to navigate forward and backwards', () => {
