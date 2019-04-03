@@ -8,7 +8,7 @@
   },
   "author": "gdl@knowit.no",
   "repository": "https://github.com/GlobalDigitalLibraryio/gdl-frontend.git",
-  "license": "GPL-3.0",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "run-p build:frontend build:admin",
     "build:frontend": "cd packages/gdl-frontend && yarn build",
