@@ -22,7 +22,10 @@ export type ConfigShape = {
   publicRuntimeConfig: {
     bookApiUrl: string,
     canonicalUrl: string,
+<<<<<<< HEAD
     siteTranslationServiceUrl: string,
+=======
+>>>>>>> master
     graphqlEndpoint: string,
     SENTRY_PROJECT_ID: string,
     SENTRY_PUBLIC_KEY: string,
@@ -216,3 +219,11 @@ export type Locale = {
   language: string,
   catalog: Catalogs
 };
+
+export type ChapterContent = $ReadOnly<{ content: string }>;
+
+export type ChapterPointer = $ReadOnly<{
+  id: string,
+  chapterId: number,
+  seqNo: number
+}>;

@@ -1,7 +1,7 @@
 {
   "name": "eslint-config-gdl",
   "version": "0.0.0",
-  "license": "GPL-3.0",
+  "license": "Apache-2.0",
   "main": "index.js",
   "peerDependencies": {
     "babel-eslint": "10.0.1",

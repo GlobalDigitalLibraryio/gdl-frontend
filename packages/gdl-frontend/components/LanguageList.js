@@ -20,12 +20,12 @@ import {
 import RootRef from '@material-ui/core/RootRef';
 import { Check as CheckIcon } from '@material-ui/icons';
 
-import type { intlShape } from 'react-intl';
-
-import type { languages_languages as Language } from '../gqlTypes';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
 import { colors } from '../style/theme';
+
+import type { intlShape } from 'react-intl';
+import type { languages_languages as Language } from '../gqlTypes';
 
 type Props = {
   enableSearch?: boolean,
