@@ -113,8 +113,8 @@ export default class OfflineLibrary {
    */
   async _removeBooksWithoutBookId() {
     const keys = await this.bookStore.keys();
-    const length = await this.bookStore.length();
-    for (let i = 0; i < length; i++) {
+
+    for (let i = 0; i < keys.length; i++) {
       const id = keys[i];
       const item = await this.bookStore.getItem(id);
       if (!item.hasOwnProperty('bookId')) {
