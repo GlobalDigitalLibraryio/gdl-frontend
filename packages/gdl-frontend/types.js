@@ -216,11 +216,3 @@ export type Locale = {
   language: string,
   catalog: Catalogs
 };
-
-export type ChapterContent = $ReadOnly<{ content: string }>;
-
-export type ChapterPointer = $ReadOnly<{
-  id: string,
-  chapterId: number,
-  seqNo: number
-}>;
