@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { getAuthToken } from 'gdl-auth';
 import type { ApolloClient } from 'react-apollo';
 
-import initApollo from './initApollo';
+import initApollo, { something } from './initApollo';
 
 type Props = {
   apolloState: any
@@ -19,6 +19,7 @@ export default (App: React.ComponentType<*>) => {
         router,
         ctx: { req, res }
       } = ctx;
+      await something();
       const apollo = initApollo({}, { getToken: () => getAuthToken(req) });
       ctx.ctx.apolloClient = apollo;
 
