@@ -40,7 +40,6 @@
     "@sentry/node": "4.4.2",
     "@zeit/next-source-maps": "0.0.3",
     "apollo-cache-persist": "^0.1.1",
-    "apollo-link-retry": "^2.2.13",
     "auth0-js": "9.8.2",
     "babel-plugin-emotion": "10.0.6",
     "clean-webpack-plugin": "1.0.0",
