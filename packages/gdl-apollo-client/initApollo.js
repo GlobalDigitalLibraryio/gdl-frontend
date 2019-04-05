@@ -7,6 +7,7 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
+import { persistCache } from 'apollo-cache-persist';
 
 const {
   publicRuntimeConfig: { graphqlEndpoint }
@@ -15,6 +16,16 @@ const {
 let apolloClient = null;
 
 const timeoutLink = new ApolloLinkTimeout(600000); // 1min timeout
+
+const cache = new InMemoryCache({
+  // Because of offline
+  cacheRedirects: {
+    Query: {
+      chapter: (_, args, { getCacheKey }) =>
+        getCacheKey({ __typename: 'Chapter', id: args.id })
+    }
+  }
+});
 
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({ uri: graphqlEndpoint });
@@ -63,17 +74,17 @@ function create(initialState, { getToken }) {
       .concat(errorLink)
       .concat(timeoutLink)
       .concat(httpLink),
-    cache: new InMemoryCache({
-      // Because of offline
-      cacheRedirects: {
-        Query: {
-          chapter: (_, args, { getCacheKey }) =>
-            getCacheKey({ __typename: 'Chapter', id: args.id })
-        }
-      }
-    }).restore(initialState || {}),
+    cache: cache.restore(initialState || {}),
     fetch
   });
+}
+
+export function loadCache() {
+  if (!!process.browser) {
+    const storage = window.localStorage;
+    const waitOnCache = persistCache({ cache, storage });
+    return waitOnCache;
+  } else return null;
 }
 
 export default function initApollo(
@@ -90,6 +101,5 @@ export default function initApollo(
   if (!apolloClient) {
     apolloClient = create(initialState, options);
   }
-
   return apolloClient;
 }
