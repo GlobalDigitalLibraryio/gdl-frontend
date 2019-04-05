@@ -29,14 +29,6 @@ const cache = new InMemoryCache({
   }
 });
 
-export function something() {
-  if (!!process.browser) {
-    const storage = window.localStorage;
-    const waitOnCache = persistCache({ cache, storage });
-    return waitOnCache;
-  } else return null;
-}
-
 function create(initialState, { getToken }) {
   const httpLink = createHttpLink({ uri: graphqlEndpoint });
 
@@ -88,6 +80,14 @@ function create(initialState, { getToken }) {
     cache: cache.restore(initialState || {}),
     fetch
   });
+}
+
+export function loadCache() {
+  if (!!process.browser) {
+    const storage = window.localStorage;
+    const waitOnCache = persistCache({ cache, storage });
+    return waitOnCache;
+  } else return null;
 }
 
 export default function initApollo(

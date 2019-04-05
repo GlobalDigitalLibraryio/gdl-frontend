@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { getAuthToken } from 'gdl-auth';
 import type { ApolloClient } from 'react-apollo';
 
-import initApollo, { something } from './initApollo';
+import initApollo, { loadCache } from './initApollo';
 
 type Props = {
   apolloState: any
@@ -19,7 +19,8 @@ export default (App: React.ComponentType<*>) => {
         router,
         ctx: { req, res }
       } = ctx;
-      await something();
+      // load persisted cache so when in offline mode it doesn't fetch new data
+      await loadCache();
       const apollo = initApollo({}, { getToken: () => getAuthToken(req) });
       ctx.ctx.apolloClient = apollo;
 
