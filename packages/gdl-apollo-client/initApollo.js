@@ -7,7 +7,6 @@ import fetch from 'isomorphic-unfetch';
 import getConfig from 'next/config';
 import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
-import { RetryLink } from 'apollo-link-retry';
 import { persistCache } from 'apollo-cache-persist';
 
 const {
@@ -17,7 +16,6 @@ const {
 let apolloClient = null;
 
 const timeoutLink = new ApolloLinkTimeout(600000); // 1min timeout
-const retryLink = new RetryLink({ attempts: { max: Infinity } });
 
 const cache = new InMemoryCache({
   // Because of offline
@@ -73,7 +71,6 @@ function create(initialState, { getToken }) {
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: authLink
-      .concat(retryLink)
       .concat(errorLink)
       .concat(timeoutLink)
       .concat(httpLink),
