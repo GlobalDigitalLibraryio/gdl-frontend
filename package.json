@@ -17,7 +17,7 @@
     "delete:modules": "find . -type d -name node_modules -maxdepth 3 -exec rm -rf '{}' +",
     "proxy": "micro-proxy -r rules-dev-proxy.json -p 3000",
     "ci": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:test --port 3000",
-    "ci:remote": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn && yarn cypress:boot && yarn cypress:test",
+    "ci:remote": "yarn run format:check && yarn run lint && yarn test && yarn run typecheck && yarn build && yarn",
     "typecheck": "flow check",
     "test": "jest",
     "test:watch": "jest --watch",
