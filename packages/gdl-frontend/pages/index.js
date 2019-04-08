@@ -54,75 +54,96 @@ class IndexPage extends React.Component<Props> {
     res,
     apolloClient
   }: Context) {
-    // Get the language either from the URL or the user's cookies
-    const languageCode = query.lang || getBookLanguageCode(req);
+    try {
+      // Get the language either from the URL or the user's cookies
+      const languageCode = query.lang || getBookLanguageCode(req);
 
-    const categoriesRes: { data: Categories } = await apolloClient.query({
-      query: CATEGORIES_QUERY,
-      variables: {
-        language: languageCode
+      const categoriesRes: { data: Categories } = await apolloClient.query({
+        query: CATEGORIES_QUERY,
+        variables: {
+          language: languageCode
+        }
+      });
+
+      /**
+       * Some valid languages does not have content and will eventually return empty categories.
+       * Fallback/redirect to default language (english).
+       */
+      if (categoriesRes.data.categories.length === 0) {
+        // We have different ways of redirecting on the server and on the client...
+        // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+        const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
+        if (res) {
+          res.writeHead(302, { Location: redirectUrl });
+          res.end();
+        } else {
+          Router.push(redirectUrl);
+        }
+        return {};
       }
-    });
+      const categories = categoriesRes.data.categories;
+      const categoryInCookie = getBookCategory(req);
 
-    /**
-     * Some valid languages does not have content and will eventually return empty categories.
-     * Fallback/redirect to default language (english).
-     */
-    if (categoriesRes.data.categories.length === 0) {
-      // We have different ways of redirecting on the server and on the client...
-      // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
-      const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
-      if (res) {
-        res.writeHead(302, { Location: redirectUrl });
-        res.end();
+      let category: string;
+      if (asPath.includes('/classroom')) {
+        category = 'Classroom';
+      } else if (asPath.includes('/library')) {
+        category = 'Library';
+      } else if (categoryInCookie && categories.includes(categoryInCookie)) {
+        // Small check to make sure the value in the cookie is something valid
+        // $FlowFixMe: We know this is a valid category :/
+        category = categoryInCookie;
       } else {
-        Router.push(redirectUrl);
+        // Default to Library
+        category = categories.includes('Library') ? 'Library' : categories[0];
       }
-      return {};
-    }
-    const categories = categoriesRes.data.categories;
-    const categoryInCookie = getBookCategory(req);
 
-    let category: string;
-    if (asPath.includes('/classroom')) {
-      category = 'Classroom';
-    } else if (asPath.includes('/library')) {
-      category = 'Library';
-    } else if (categoryInCookie && categories.includes(categoryInCookie)) {
-      // Small check to make sure the value in the cookie is something valid
+      const booksAndFeatured: {
+        data: BooksAndFeatured
+      } = await apolloClient.query({
+        query: BOOKS_AND_FEATURED_QUERY,
+        variables: {
+          category,
+          language: languageCode,
+          pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+        }
+      });
+
       // $FlowFixMe: We know this is a valid category :/
-      category = categoryInCookie;
-    } else {
-      // Default to Library
-      category = categories.includes('Library') ? 'Library' : categories[0];
-    }
+      setBookLanguageAndCategory(languageCode, category, res);
 
-    const booksAndFeatured: {
-      data: BooksAndFeatured
-    } = await apolloClient.query({
-      query: BOOKS_AND_FEATURED_QUERY,
-      variables: {
+      const {
+        data: { featuredContent, ...bookSummaries }
+      } = booksAndFeatured;
+
+      return {
         category,
-        language: languageCode,
-        pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+        categories,
+        languageCode,
+        // Currently the UI only supports one featured content, not an array
+        featuredContent: featuredContent[0],
+        bookSummaries
+      };
+    } catch (error) {
+      /*
+       * If user request invalid query param to graphql you trigger bad input validation
+       * and recieve 400: Bad Request. The right feedback to the client is a 404 page
+       * and since graphql does not have a better error handling mechanism this is a dirty check.
+       */
+      if (
+        error.graphQLErrors &&
+        error.graphQLErrors.length > 0 &&
+        error.graphQLErrors[0].message === '400: Bad Request'
+      ) {
+        console.log(error.graphQLErrors[0]);
+        return {
+          statusCode: 404
+        };
       }
-    });
-
-    // $FlowFixMe: We know this is a valid category :/
-    setBookLanguageAndCategory(languageCode, category, res);
-
-    const {
-      data: { featuredContent, ...bookSummaries }
-    } = booksAndFeatured;
-
-    return {
-      category,
-      categories,
-      languageCode,
-      // Currently the UI only supports one featured content, not an array
-      featuredContent: featuredContent[0],
-      bookSummaries
-    };
+      return {
+        statusCode: 500
+      };
+    }
   }
 
   // Ensure cookies are set, even if the rendered HTML came from the cache on the server
