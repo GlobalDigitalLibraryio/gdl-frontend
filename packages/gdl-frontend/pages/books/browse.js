@@ -80,26 +80,46 @@ type Props = {
 
 class BrowsePage extends React.Component<Props> {
   static async getInitialProps({ query, apolloClient }: Context) {
-    let category: Category = 'Library'; // Default category
-    if (query.category === 'Classroom') {
-      category = 'Classroom';
-    }
-
-    await apolloClient.query({
-      query: QUERY,
-      variables: {
-        page: INITIAL_PAGE_NUMBER,
-        category,
-        language: query.lang,
-        orderBy: 'title_ASC',
-        pageSize: PAGE_SIZE,
-        readingLevel: query.readingLevel
+    try {
+      let category: Category = 'Library'; // Default category
+      if (query.category === 'Classroom') {
+        category = 'Classroom';
       }
-    });
 
-    return {
-      category
-    };
+      await apolloClient.query({
+        query: QUERY,
+        variables: {
+          page: INITIAL_PAGE_NUMBER,
+          category,
+          language: query.lang,
+          orderBy: 'title_ASC',
+          pageSize: PAGE_SIZE,
+          readingLevel: query.readingLevel
+        }
+      });
+
+      return {
+        category
+      };
+    } catch (error) {
+      /*
+       * If user request invalid query param to graphql you trigger bad input validation
+       * and receive 400: Bad Request. The right feedback to the client is a 404 page
+       * and since graphql does not have a better error handling mechanism this is a dirty check.
+       */
+      if (
+        error.graphQLErrors &&
+        error.graphQLErrors.length > 0 &&
+        error.graphQLErrors[0].message === '400: Bad Request'
+      ) {
+        return {
+          statusCode: 404
+        };
+      }
+      return {
+        statusCode: 500
+      };
+    }
   }
 
   /**
