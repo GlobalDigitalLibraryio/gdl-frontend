@@ -127,7 +127,7 @@ class IndexPage extends React.Component<Props> {
     } catch (error) {
       /*
        * If user request invalid query param to graphql you trigger bad input validation
-       * and recieve 400: Bad Request. The right feedback to the client is a 404 page
+       * and receive 400: Bad Request. The right feedback to the client is a 404 page
        * and since graphql does not have a better error handling mechanism this is a dirty check.
        */
       if (
@@ -135,7 +135,6 @@ class IndexPage extends React.Component<Props> {
         error.graphQLErrors.length > 0 &&
         error.graphQLErrors[0].message === '400: Bad Request'
       ) {
-        console.log(error.graphQLErrors[0]);
         return {
           statusCode: 404
         };
