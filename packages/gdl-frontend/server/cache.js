@@ -60,7 +60,6 @@ function renderAndCache(app) {
     // If the page is in the cache. Serve it
     if (canUseCache && ssrCache.has(cacheKey)) {
       res.setHeader('x-cache', 'HIT');
-      res.setHeader('x-cache-key', cacheKey);
       res.send(ssrCache.get(cacheKey));
       return;
     }

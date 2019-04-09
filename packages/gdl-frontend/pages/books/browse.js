@@ -113,11 +113,11 @@ class BrowsePage extends React.Component<Props> {
       if (query.category === 'Classroom') {
         category = 'Classroom';
       }
-      // We don't know why, but query params from url is not consistent...wtf
+      // Checks if client it is a client request, which happen if you direct access on url
       const queryFromPath = queryString.parse(
         req && req.url ? req.url.split(/\?/)[1] : asPath.split(/\?/)[1]
       );
-      console.log('query-string', queryFromPath);
+
       const parsedLevel = parseReadingLevel(queryFromPath.readingLevel);
 
       await apolloClient.query({
