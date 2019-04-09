@@ -68,48 +68,96 @@ const QUERY = gql`
 
 type Props = {
   category: Category,
+  readingLevel: ReadingLevel,
   router: {
     query: {
       lang: string,
-      readingLevel?: ReadingLevel,
       category?: Category,
       sort?: string
     }
   }
 };
 
+/**
+ * After graphql migration, there is indication that some users still does request with
+ * old readinglevel format, so we need to handle both old and new format.
+ * It is not simple to convert it to old format, because the values of readinglevel
+ * consist of both numberinc and string values which raise issues when using
+ * a numeric value as key property both here and in our graphql service.
+ * @param {readinglevel} level
+ */
+const parseReadingLevel = (level: string) => {
+  switch (level) {
+    case 'decodable':
+      return 'Decodable';
+    case '1':
+      return 'Level1';
+    case '2':
+      return 'Level2';
+    case '3':
+      return 'Level3';
+    case '4':
+      return 'Level4';
+    case 'read-aloud':
+      return 'ReadAloud';
+    default:
+      return level;
+  }
+};
+
 class BrowsePage extends React.Component<Props> {
   static async getInitialProps({ query, apolloClient }: Context) {
-    let category: Category = 'Library'; // Default category
-    if (query.category === 'Classroom') {
-      category = 'Classroom';
-    }
-
-    await apolloClient.query({
-      query: QUERY,
-      variables: {
-        page: INITIAL_PAGE_NUMBER,
-        category,
-        language: query.lang,
-        orderBy: 'title_ASC',
-        pageSize: PAGE_SIZE,
-        readingLevel: query.readingLevel
+    try {
+      let category: Category = 'Library'; // Default category
+      if (query.category === 'Classroom') {
+        category = 'Classroom';
       }
-    });
 
-    return {
-      category
-    };
+      const parsedLevel = parseReadingLevel(query.readingLevel);
+
+      await apolloClient.query({
+        query: QUERY,
+        variables: {
+          page: INITIAL_PAGE_NUMBER,
+          category,
+          language: query.lang,
+          orderBy: 'title_ASC',
+          pageSize: PAGE_SIZE,
+          readingLevel: parsedLevel
+        }
+      });
+
+      return {
+        readingLevel: parsedLevel,
+        category
+      };
+    } catch (error) {
+      /*
+       * If user request invalid query param to graphql you trigger bad input validation
+       * and receive 400: Bad Request. The right feedback to the client is a 404 page
+       * and since graphql does not have a better error handling mechanism this is a dirty check.
+       */
+      if (
+        error.graphQLErrors &&
+        error.graphQLErrors.length > 0 &&
+        error.graphQLErrors[0].message === '400: Bad Request'
+      ) {
+        return {
+          statusCode: 404
+        };
+      }
+      return {
+        statusCode: 500
+      };
+    }
   }
 
   /**
    * Load more books when demanded
    */
   handleFetchMore = (currentPage: number, fetchMore) => {
-    const {
-      router: { query }
-    } = this.props;
-    logEvent('Navigation', 'More - Browse', query.readingLevel);
+    const { readingLevel } = this.props;
+    logEvent('Navigation', 'More - Browse', readingLevel);
 
     fetchMore({
       variables: {
@@ -144,6 +192,7 @@ class BrowsePage extends React.Component<Props> {
 
   render() {
     const {
+      readingLevel,
       router: { query },
       category
     } = this.props;
@@ -157,7 +206,7 @@ class BrowsePage extends React.Component<Props> {
           language: query.lang,
           orderBy: 'title_ASC',
           pageSize: PAGE_SIZE,
-          readingLevel: query.readingLevel
+          readingLevel: readingLevel
         }}
       >
         {({
@@ -191,14 +240,12 @@ class BrowsePage extends React.Component<Props> {
                     }}
                   >
                     {results.length > 0 ? (
-                      query.readingLevel ? (
+                      readingLevel ? (
                         <>
                           {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
-                          <ReadingLevelTrans
-                            readingLevel={query.readingLevel}
-                          />
+                          <ReadingLevelTrans readingLevel={readingLevel} />
                           <LevelHR
-                            level={query.readingLevel}
+                            level={readingLevel}
                             css={{
                               margin: `${spacing.xsmall} 0`
                             }}
