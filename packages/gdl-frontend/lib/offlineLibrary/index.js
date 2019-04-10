@@ -10,10 +10,12 @@ const serviceworker =
 const online =
   typeof window !== 'undefined' && typeof navigator.onLine === 'boolean';
 
-const browserAllowedStorage = localForage.supports(localForage.INDEXEDDB);
+const browserAllowedStorage =
+  typeof window !== 'undefined' && localForage.supports(localForage.INDEXEDDB);
 
 const isCookiesEnabled = () => {
-  var cookieEnabled = navigator.cookieEnabled;
+  let cookieEnabled = typeof window !== 'undefined' && navigator.cookieEnabled;
+
   if (!cookieEnabled) {
     document.cookie = 'testcookie';
     cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
@@ -26,7 +28,7 @@ const isCookiesEnabled = () => {
  */
 
 const offlineLibrary =
-  serviceworker && online && browserAllowedStorage && isCookiesEnabled
+  serviceworker && online && browserAllowedStorage && isCookiesEnabled()
     ? new OfflineLibrary()
     : null;
 
