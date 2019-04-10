@@ -79,8 +79,18 @@ function create(initialState, { getToken }) {
   });
 }
 
+const isCookiesEnabled = () => {
+  let cookieEnabled = typeof window !== 'undefined' && navigator.cookieEnabled;
+
+  if (!cookieEnabled) {
+    document.cookie = 'testcookie';
+    cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
+  }
+  return cookieEnabled;
+};
+
 export function loadCache() {
-  if (!!process.browser) {
+  if (!!process.browser && isCookiesEnabled()) {
     const storage = window.localStorage;
     const waitOnCache = persistCache({ cache, storage });
     return waitOnCache;
