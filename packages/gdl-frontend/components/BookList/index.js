@@ -78,7 +78,7 @@ const BookList = ({
     )}
     <Scroller>
       {loading
-        ? [...Array(5).keys()].map(index => (
+        ? [...Array(5)].map((_, index) => (
             <div css={[itemStyle, shimmerStyle]} key={index}>
               <Shimmer className={shimmerStyle} />
             </div>
