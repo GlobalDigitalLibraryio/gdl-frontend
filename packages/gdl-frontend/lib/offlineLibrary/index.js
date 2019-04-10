@@ -1,5 +1,6 @@
 // @flow
 import OfflineLibrary from './OfflineLibrary';
+import localForage from 'localforage';
 
 export const CACHE_NAME = 'gdl-offline';
 
@@ -9,9 +10,15 @@ const serviceworker =
 const online =
   typeof window !== 'undefined' && typeof navigator.onLine === 'boolean';
 
+const browserAllowedStorage = localForage.supports(localForage.INDEXEDDB);
+
 /**
  * Singleton that is null unless the client has offline support
  */
 
-const offlineLibrary = serviceworker && online ? new OfflineLibrary() : null;
+const offlineLibrary =
+  serviceworker && online && browserAllowedStorage
+    ? new OfflineLibrary()
+    : null;
+
 export default offlineLibrary;
