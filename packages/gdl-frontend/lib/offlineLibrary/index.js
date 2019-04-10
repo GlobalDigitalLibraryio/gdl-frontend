@@ -12,12 +12,21 @@ const online =
 
 const browserAllowedStorage = localForage.supports(localForage.INDEXEDDB);
 
+const isCookiesEnabled = () => {
+  var cookieEnabled = navigator.cookieEnabled;
+  if (!cookieEnabled) {
+    document.cookie = 'testcookie';
+    cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
+  }
+  return cookieEnabled;
+};
+
 /**
  * Singleton that is null unless the client has offline support
  */
 
 const offlineLibrary =
-  serviceworker && online && browserAllowedStorage
+  serviceworker && online && browserAllowedStorage && isCookiesEnabled
     ? new OfflineLibrary()
     : null;
 
