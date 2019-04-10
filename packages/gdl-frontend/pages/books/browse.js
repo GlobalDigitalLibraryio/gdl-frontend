@@ -24,6 +24,7 @@ import BookGrid from '../../components/BookGrid';
 import LevelHR from '../../components/Level/LevelHR';
 import { spacing } from '../../style/theme';
 import GridContainer from '../../components/BookGrid/styledGridContainer';
+import queryString from 'query-string';
 
 import type { BrowseBooks, Category, ReadingLevel } from '../../gqlTypes';
 
@@ -106,14 +107,18 @@ const parseReadingLevel = (level: string) => {
 };
 
 class BrowsePage extends React.Component<Props> {
-  static async getInitialProps({ query, apolloClient }: Context) {
+  static async getInitialProps({ query, asPath, apolloClient, req }: Context) {
     try {
       let category: Category = 'Library'; // Default category
       if (query.category === 'Classroom') {
         category = 'Classroom';
       }
+      // Checks if client it is a client request, which happen if you direct access on url
+      const queryFromPath = queryString.parse(
+        req && req.url ? req.url.split(/\?/)[1] : asPath.split(/\?/)[1]
+      );
 
-      const parsedLevel = parseReadingLevel(query.readingLevel);
+      const parsedLevel = parseReadingLevel(queryFromPath.readingLevel);
 
       await apolloClient.query({
         query: QUERY,
