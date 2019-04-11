@@ -22,10 +22,10 @@ const transformationsMap = {
   /**
    * If we have defined fixed coordinates for the aspect ratio, use that. Otherwise we fallback to cloudinarys aspect ratio
    */
-  aspectRatio: (ratio: number, variants) => {
-    const variant = variants && variants.find(v => v.ratio == ratio); // eslint-disable-line eqeqeq
-    return variant ? fixedCoordinatesCropping(variant) : `ar_${ratio},c_fill`;
-  }
+  aspectRatio: (ratio: number, variants) =>
+    Boolean(variants && variants[ratio])
+      ? fixedCoordinatesCropping(variants[ratio])
+      : `ar_${ratio},c_fill`
 };
 
 /**
