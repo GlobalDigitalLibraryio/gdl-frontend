@@ -22,7 +22,8 @@ const colorMap = {
   Level3: '#F1C528',
   Level4: '#FF9442',
   ReadAloud: '#EE6D6D',
-  Decodable: '#EE8BD0'
+  Decodable: '#EE8BD0',
+  Games: '#C9348B'
 };
 
 export default colorMap;

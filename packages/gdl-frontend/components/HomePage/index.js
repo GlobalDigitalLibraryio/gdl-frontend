@@ -28,6 +28,7 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import BookList from '../../components/BookList';
+import GameList from '../../components/GameList';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -92,6 +93,7 @@ type Props = {|
 class HomePage extends React.Component<Props> {
   render() {
     const {
+      games,
       bookSummaries,
       category,
       featuredContent,
@@ -205,6 +207,12 @@ class HomePage extends React.Component<Props> {
                 </Container>
               </View>
             ))}
+
+          <View {...bookListViewStyle}>
+            <Container width="100%">
+              <GameList games={games} />
+            </Container>
+          </View>
         </Main>
       </Layout>
     );

@@ -62,7 +62,7 @@ const Ribbon = styled('div')`
 `;
 
 type Props = {
-  level: ReadingLevel
+  level: ReadingLevel | 'Games'
 };
 
 export default ({ level }: Props) => (

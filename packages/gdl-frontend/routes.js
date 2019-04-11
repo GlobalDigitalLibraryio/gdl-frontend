@@ -45,6 +45,11 @@ routes.add('browse', `/${langParam}/books/browse`, 'books/browse');
 // Book details page
 routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
+// Game details page
+routes.add('game', `/${langParam}/games/details/:id`, 'games/_game');
+
+routes.add('browseGames', `/${langParam}/games/browse`, 'games/browse');
+
 // Read book
 routes.add(
   'read',
