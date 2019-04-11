@@ -24,12 +24,13 @@ export function logPageView() {
 }
 
 // Define all allowed categories here, so we are able to group all datapoints correctly
-type Category = 'Books' | 'User' | 'Navigation' | 'PWA';
+export type Category = 'Books' | 'Games' | 'User' | 'Navigation' | 'PWA';
 type Action =
   // User
   | 'Login'
   // Books
   | 'Read'
+  | 'Play'
   | 'Favorited'
   | 'Unfavorited'
   | 'Available offline'

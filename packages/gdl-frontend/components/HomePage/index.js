@@ -208,11 +208,13 @@ class HomePage extends React.Component<Props> {
               </View>
             ))}
 
-          <View {...bookListViewStyle}>
-            <Container width="100%">
-              <GameList games={games} />
-            </Container>
-          </View>
+          {category === 'Library' && (
+            <View {...bookListViewStyle}>
+              <Container width="100%">
+                <GameList games={games} />
+              </Container>
+            </View>
+          )}
         </Main>
       </Layout>
     );

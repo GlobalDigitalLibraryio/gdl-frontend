@@ -11,28 +11,15 @@ import { Trans } from '@lingui/react';
 import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
-import styled from '@emotion/styled';
-import copyToClipboard from 'copy-to-clipboard';
 import gql from 'graphql-tag';
-import {
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Button,
-  Typography,
-  Divider as MuiDivider
-} from '@material-ui/core';
+import { Menu, MenuItem, Button, Typography } from '@material-ui/core';
 import NoSsr from '@material-ui/core/NoSsr';
 import {
   Edit as EditIcon,
   Translate as TranslateIcon,
   Warning as WarningIcon,
-  SaveAlt as SaveAltIcon,
-  Share as ShareIcon,
-  Link as LinkIcon
+  SaveAlt as SaveAltIcon
 } from '@material-ui/icons';
-import { FacebookIcon, TwitterIcon } from '../../components/icons';
 
 import type { Context, ConfigShape } from '../../types';
 import type { book_book as Book } from '../../gqlTypes';
@@ -52,7 +39,14 @@ import BookList from '../../components/BookList';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
-import { BookJsonLd, Metadata } from '../../components/BookDetailsPage';
+import {
+  BookJsonLd,
+  Metadata,
+  Grid,
+  GridItem,
+  Divider,
+  ShareButton
+} from '../../components/DetailsPage';
 
 import Favorite, { FavoriteIcon } from '../../components/Favorite';
 import Offline, { OfflineIcon } from '../../components/Offline';
@@ -61,30 +55,6 @@ import LevelRibbon from '../../components/Level/LevelRibbon';
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
-
-const Divider = styled(MuiDivider)`
-  margin: ${spacing.large} 0;
-  ${media.tablet`
-  margin: ${spacing.xxlarge} 0;
-  `};
-`;
-
-const Grid = styled('div')(
-  media.tablet`
-    display: flex;
-    width: calc(100% + 40px);
-    margin-left: -20px;
-    margin-right: -20px;
-  `
-);
-
-const GridItem = styled('div')(
-  media.tablet`
-  flex-grow: 1;
-  padding-left: 20px;
-  padding-right: 20px;
- `
-);
 
 const BOOK_QUERY = gql`
   query book($id: ID!) {
@@ -325,31 +295,7 @@ class BookActions1 extends React.Component<
     anchorEl: ?HTMLElement
   }
 > {
-  state = {
-    anchorEl: null
-  };
-
   static contextType = OnlineContext;
-
-  closeShareMenu = () => this.setState({ anchorEl: null });
-
-  handleShareClick = event => {
-    /**
-     * If the browser supports the web share api, we use that instead of displaying a dropdown
-     */
-    if (navigator.share) {
-      navigator
-        .share({
-          title: this.props.book.title,
-          text: this.props.book.description,
-          url: window.location.href
-        })
-        .then(() => logEvent('Books', 'Shared', this.props.book.title))
-        .catch(() => {}); // Ignore here because we don't care if people cancel sharing
-    } else {
-      this.setState({ anchorEl: event.currentTarget });
-    }
-  };
 
   render() {
     const { book, isMobile } = this.props;
@@ -407,62 +353,13 @@ class BookActions1 extends React.Component<
           )}
 
           {!offline && (
-            <IconButton
-              icon={<ShareIcon />}
-              label={<Trans>Share</Trans>}
-              onClick={this.handleShareClick}
+            <ShareButton
+              title={book.title}
+              description={book.description}
+              logEvent="Books"
             />
           )}
         </div>
-        <Menu
-          id="share-book-menu"
-          onClose={this.closeShareMenu}
-          anchorEl={this.state.anchorEl}
-          open={Boolean(this.state.anchorEl)}
-        >
-          <MenuItem
-            rel="noopener noreferrer"
-            target="_blank"
-            href={`https://www.facebook.com/sharer.php?u=${
-              typeof window !== 'undefined' ? window.location.href : ''
-            }`}
-            component="a"
-            onClick={this.closeShareMenu}
-          >
-            <ListItemIcon>
-              <FacebookIcon />
-            </ListItemIcon>
-            <ListItemText>Facebook</ListItemText>
-          </MenuItem>
-          <MenuItem
-            rel="noopener noreferrer"
-            target="_blank"
-            href={`https://twitter.com/intent/tweet?url=${
-              typeof window !== 'undefined' ? window.location.href : ''
-            }`}
-            component="a"
-            onClick={this.closeShareMenu}
-          >
-            <ListItemIcon>
-              <TwitterIcon />
-            </ListItemIcon>
-            <ListItemText>Twitter</ListItemText>
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              copyToClipboard(window.location.href);
-              this.closeShareMenu();
-            }}
-            component="button"
-          >
-            <ListItemIcon>
-              <LinkIcon />
-            </ListItemIcon>
-            <ListItemText>
-              <Trans>Copy URL</Trans>
-            </ListItemText>
-          </MenuItem>
-        </Menu>
       </>
     );
   }
