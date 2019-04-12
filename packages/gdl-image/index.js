@@ -14,7 +14,7 @@ type ImageCropCoordinates = $ReadOnly<{
 
 export type CoverImage = $ReadOnly<{
   url: string,
-  variants: ?$ReadOnlyArray<ImageCropCoordinates>
+  variants: ?{ [key: string]: ImageCropCoordinates }
 }>;
 
 const transformationsMap = {

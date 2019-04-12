@@ -35,7 +35,9 @@ test('it should include fixed coordinates', () => {
   const coverImage = {
     url:
       'https://res.cloudinary.com/djylvyru4/f_auto,q_auto/60e050af18588e74770b8d2baceb4816',
-    variants: [{ height: 880, width: 713, x: 13, y: 52, ratio: '0.81' }]
+    variants: {
+      '0.81': { height: 880, width: 713, x: 13, y: 52, ratio: '0.81' }
+    }
   };
 
   const url = coverImageUrl(coverImage);
