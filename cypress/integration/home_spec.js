@@ -4,7 +4,7 @@ describe('Home page', () => {
   });
 
   it('More button on booklist should navigate you to /browse', function() {
-    cy.get('[data-cy="book-list-more-button"]')
+    cy.get('[data-cy="browse-more-button"]')
       .first()
       .click();
 

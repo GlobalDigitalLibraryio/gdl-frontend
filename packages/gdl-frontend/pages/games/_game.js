@@ -14,8 +14,6 @@ import { Button, Typography } from '@material-ui/core';
 import { Warning as WarningIcon } from '@material-ui/icons';
 import { css } from '@emotion/core';
 
-import type { Context, ConfigShape } from '../../types';
-
 import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
@@ -27,13 +25,14 @@ import mq from '../../style/mq';
 import media from '../../style/media';
 import LevelRibbon from '../../components/Level/LevelRibbon';
 import { logEvent } from '../../lib/analytics';
-
 import {
   Grid,
   GridItem,
   Divider,
   ShareButton
 } from '../../components/DetailsPage';
+
+import type { Context, ConfigShape } from '../../types';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
