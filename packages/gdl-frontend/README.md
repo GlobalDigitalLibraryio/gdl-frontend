@@ -18,10 +18,10 @@ Make sure you have [Apollo CLI](https://github.com/apollographql/apollo-tooling)
 $ yarn global add apollo
 ```
 
-Then run
+This require that you have started the graphql service locally, then run:
 
 ```
-$ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components,lib}/**/*.js" --target flow --endpoint http://localhost:4000/graphql
+$ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components,lib}/**/*.js" --target flow --endpoint http://localhost:4000
 ```
 
 ### Translations

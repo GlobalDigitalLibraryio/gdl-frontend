@@ -17,7 +17,8 @@ import type {
   Category,
   BooksAndFeatured,
   BooksAndFeatured_featuredContent as FeaturedContent,
-  GetCategories as Categories
+  GetCategories as Categories,
+  Games_games as Game
 } from '../gqlTypes';
 
 import { withErrorPage } from '../hocs';
@@ -35,6 +36,7 @@ const {
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
+  games: Array<Game>,
   homeTutorialStatus: boolean,
   category: Category,
   categories: Array<Category>,

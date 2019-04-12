@@ -1,24 +1,18 @@
 // @flow
 /**
  * Part of GDL gdl-frontend.
- * Copyright (C) 2017 GDL
+ * Copyright (C) 2019 GDL
  *
  * See LICENSE
  */
 
 import * as React from 'react';
-import { css } from '@emotion/core';
-import styled from '@emotion/styled';
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { CardContent, Typography } from '@material-ui/core';
 
-import { Link } from '../routes';
-import CoverImage from './CoverImage';
-import media from '../style/media';
-
-export const coverWidths = {
-  small: 105,
-  large: 130
-};
+import { Link } from '../../routes';
+import CoverImage from '../CoverImage';
+import CustomCard from './CustomCard';
+import ClickTarget from './ClickTarget';
 
 export type Book = $ReadOnly<{
   id: string,
@@ -35,7 +29,7 @@ export type Book = $ReadOnly<{
  * It is hidden from screen readers and when using the keyboard, in that case the title is also a link.
  */
 export default ({ book }: { book: Book }) => (
-  <Card css={cardCss}>
+  <CustomCard>
     <Link
       route="book"
       params={{ id: book.bookId, lang: book.language.code }}
@@ -61,32 +55,5 @@ export default ({ book }: { book: Book }) => (
         </Typography>
       </Link>
     </CardContent>
-  </Card>
+  </CustomCard>
 );
-
-/**
- * Add small brightness effect to book cover when hovered
- */
-const cardCss = css`
-  position: relative;
-  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.1);
-  &:hover {
-    img {
-      transition: 1s opacity linear;
-      pointer-events: none;
-      filter: opacity(0.9);
-    }
-  }
-  width: ${coverWidths.small}px;
-  ${media.tablet`
-    width: ${coverWidths.large}px;
-  `};
-`;
-
-const ClickTarget = styled('a')`
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-`;

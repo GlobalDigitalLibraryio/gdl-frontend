@@ -530,6 +530,7 @@ export type CrowdinBookVariables = {
   id: string,
   language: string,
   bookId: string,
+  toLanguage: string,
 };
 
 
@@ -742,6 +743,43 @@ export type FavoritesVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: game
+// ====================================================
+
+export type game_game_coverImage = {
+  __typename: "GameImage",
+  imageId: string,
+  url: string,
+  altText: ?string,
+};
+
+export type game_game = {
+  __typename: "Game",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  license: string,
+  language: string,
+  coverImage: game_game_coverImage,
+};
+
+export type game = {
+  game: ?game_game
+};
+
+export type gameVariables = {
+  id: string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetCategories
 // ====================================================
 
@@ -751,6 +789,43 @@ export type GetCategories = {
 
 export type GetCategoriesVariables = {
   language: string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: Games
+// ====================================================
+
+export type Games_games_coverImage = {
+  __typename: "GameImage",
+  imageId: string,
+  url: string,
+  altText: ?string,
+};
+
+export type Games_games = {
+  __typename: "Game",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  license: string,
+  language: string,
+  coverImage: Games_games_coverImage,
+};
+
+export type Games = {
+  games: Array<?Games_games>
+};
+
+export type GamesVariables = {
+  language?: ?string
 };
 
 

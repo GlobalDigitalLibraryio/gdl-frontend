@@ -35,7 +35,7 @@ import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
 import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
-import BookList from '../../components/BookList';
+import ScrollView from '../../components/ScrollView';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
@@ -229,10 +229,10 @@ class BookPage extends React.Component<{ book: Book }> {
 
                     return (
                       <View mb={spacing.medium}>
-                        <BookList
+                        <ScrollView
                           loading={loading && !data.book}
                           heading={<Trans>Similar</Trans>}
-                          books={data.book ? data.book.similar.results : []}
+                          items={data.book ? data.book.similar.results : []}
                         />
                       </View>
                     );
