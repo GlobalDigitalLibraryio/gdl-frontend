@@ -9,9 +9,13 @@ import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
 import { persistCache } from 'apollo-cache-persist';
 
-const {
-  publicRuntimeConfig: { graphqlEndpoint }
-} = getConfig();
+const { publicRuntimeConfig, serverRuntimeConfig } = getConfig();
+
+// NB! Must be a function, don't pull it out into a constant here.
+// bookApiUrl is actually a getter on the server, and we want it to be resolved each time it is accessed
+const graphqlEndpoint = () =>
+  (serverRuntimeConfig && serverRuntimeConfig.graphqlEndpoint) ||
+  publicRuntimeConfig.graphqlEndpoint;
 
 let apolloClient = null;
 
@@ -28,7 +32,7 @@ const cache = new InMemoryCache({
 });
 
 function create(initialState, { getToken }) {
-  const httpLink = createHttpLink({ uri: graphqlEndpoint });
+  const httpLink = createHttpLink({ uri: graphqlEndpoint() });
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (networkError) {
