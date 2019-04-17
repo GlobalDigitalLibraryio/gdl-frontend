@@ -8,6 +8,7 @@ import getConfig from 'next/config';
 import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
 import { persistCache } from 'apollo-cache-persist';
+import localForage from 'localforage';
 
 const {
   publicRuntimeConfig: { graphqlEndpoint }
@@ -89,11 +90,9 @@ const isCookiesEnabled = () => {
   return cookieEnabled;
 };
 
-export function loadCache() {
+export async function loadCache() {
   if (!!process.browser && isCookiesEnabled()) {
-    const storage = window.localStorage;
-    const waitOnCache = persistCache({ cache, storage });
-    return waitOnCache;
+    return await persistCache({ cache, storage: localForage });
   } else return null;
 }
 
