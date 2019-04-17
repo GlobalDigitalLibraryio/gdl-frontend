@@ -211,7 +211,10 @@ const styles = {
   actions: css`
     display: flex;
     justify-content: center;
-    width: 300px;
+    width: 100%;
+    ${media.tablet`
+      width: 300px;
+    `}
   `,
   mobileRibbon: css`
     margin-top: -20px;
