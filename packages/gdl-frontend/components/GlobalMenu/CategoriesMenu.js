@@ -116,7 +116,7 @@ const Categories = ({
   languageCode
 }) => (
   <List component="nav">
-    {classroom.length > 0 && (
+    {classroom && classroom.length > 0 && (
       <>
         <ListSubheader component="div">
           <Trans>Classroom books</Trans>
@@ -157,7 +157,7 @@ const Categories = ({
       </>
     )}
 
-    {library.length > 0 && classroom.length > 0 && <Divider />}
+    {library.length > 0 && classroom && classroom.length > 0 && <Divider />}
 
     {library && (
       <>
