@@ -7,7 +7,7 @@
  */
 
 import styled from '@emotion/styled';
-import { coverWidths } from '../BookLink';
+import { coverWidths } from '../ScrollView/coverWidths';
 import media from '../../style/media';
 
 /**

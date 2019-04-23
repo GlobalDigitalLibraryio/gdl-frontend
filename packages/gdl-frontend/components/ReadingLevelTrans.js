@@ -11,7 +11,7 @@ import { Trans } from '@lingui/react';
 import type { ReadingLevel } from '../gqlTypes';
 
 type Props = {|
-  readingLevel: ReadingLevel | string
+  readingLevel: ReadingLevel | 'Games'
 |};
 
 export default function ReadingLevelTrans({ readingLevel: level }: Props) {
@@ -28,5 +28,5 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
   } else if (level === 'Level4') {
     return <Trans>Level 4</Trans>;
   }
-  return <Trans>{level}</Trans>;
+  return level;
 }

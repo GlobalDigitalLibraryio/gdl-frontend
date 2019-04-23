@@ -17,7 +17,8 @@ import type {
   Category,
   BooksAndFeatured,
   BooksAndFeatured_featuredContent as FeaturedContent,
-  GetCategories as Categories
+  GetCategories as Categories,
+  Games_games as Game
 } from '../gqlTypes';
 
 import { withErrorPage } from '../hocs';
@@ -35,6 +36,7 @@ const {
 const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
+  games: Array<Game>,
   homeTutorialStatus: boolean,
   category: Category,
   categories: Array<Category>,
@@ -109,6 +111,15 @@ class IndexPage extends React.Component<Props> {
         }
       });
 
+      const {
+        data: { games }
+      } = await apolloClient.query({
+        query: GAMES_QUERY,
+        variables: {
+          language: languageCode
+        }
+      });
+
       // $FlowFixMe: We know this is a valid category :/
       setBookLanguageAndCategory(languageCode, category, res);
 
@@ -117,6 +128,7 @@ class IndexPage extends React.Component<Props> {
       } = booksAndFeatured;
 
       return {
+        games,
         category,
         categories,
         languageCode,
@@ -152,6 +164,7 @@ class IndexPage extends React.Component<Props> {
 
   render() {
     const {
+      games,
       bookSummaries,
       category,
       featuredContent,
@@ -181,6 +194,7 @@ class IndexPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
+          games={games}
           bookSummaries={bookSummaries}
           category={category}
           categories={categories}
@@ -197,6 +211,26 @@ export default withErrorPage(IndexPage);
 const CATEGORIES_QUERY = gql`
   query GetCategories($language: String!) {
     categories(language: $language)
+  }
+`;
+
+const GAMES_QUERY = gql`
+  query Games($language: String) {
+    games(language: $language) {
+      id
+      title
+      description
+      url
+      source
+      publisher
+      license
+      language
+      coverImage {
+        imageId
+        url
+        altText
+      }
+    }
   }
 `;
 
