@@ -9,6 +9,8 @@ import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
 import { persistCache } from 'apollo-cache-persist';
 import localForage from 'localforage';
+import OfflineLibrary from '../lib/offlineLibrary';
+import { RetryLink } from 'apollo-link-retry';
 
 const {
   publicRuntimeConfig: { graphqlEndpoint }
@@ -17,6 +19,7 @@ const {
 let apolloClient = null;
 
 const timeoutLink = new ApolloLinkTimeout(600000); // 1min timeout
+const retry = new RetryLink({ attempts: { max: Infinity } });
 
 const cache = new InMemoryCache({
   // Because of offline
@@ -70,13 +73,15 @@ function create(initialState, { getToken }) {
 
   return new ApolloClient({
     connectToDevTools: process.browser,
-    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    ssrMode: !Boolean(process.browser), // Disables forceFetch on the server (so queries are only run once)
     link: authLink
+      .concat(retry)
       .concat(errorLink)
       .concat(timeoutLink)
       .concat(httpLink),
     cache: cache.restore(initialState || {}),
-    fetch
+    fetch,
+    ssrForceFetchDelay: !Boolean(process.browser)
   });
 }
 
@@ -96,11 +101,14 @@ export async function loadCache() {
       'apollo-cache-persist',
       JSON.stringify(window.__APOLLO_STATE__)
     );
-    return await persistCache({
+    await persistCache({
       cache,
       storage: localForage
     });
-  } else return null;
+    if (OfflineLibrary) {
+      await OfflineLibrary.populateApolloCache(apolloClient);
+    }
+  }
 }
 
 export default function initApollo(
@@ -116,6 +124,7 @@ export default function initApollo(
   // Reuse client on the client-side
   if (!apolloClient) {
     apolloClient = create(initialState, options);
+    OfflineLibrary && OfflineLibrary.populateApolloCache(apolloClient);
   }
   return apolloClient;
 }
