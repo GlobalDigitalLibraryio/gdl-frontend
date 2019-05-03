@@ -13,7 +13,7 @@ const online =
 const browserAllowedStorage =
   typeof window !== 'undefined' && localForage.supports(localForage.INDEXEDDB);
 
-const isCookiesEnabled = () => {
+export const isCookiesEnabled = () => {
   let cookieEnabled = typeof window !== 'undefined' && navigator.cookieEnabled;
 
   if (!cookieEnabled) {
