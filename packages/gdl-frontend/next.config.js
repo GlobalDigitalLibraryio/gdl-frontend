@@ -19,7 +19,7 @@ const workboxOpts = {
 const nextConfig = {
   serverRuntimeConfig,
   publicRuntimeConfig,
-  transpileModules: ['gdl-auth', 'gdl-apollo-client'],
+  transpileModules: ['gdl-auth'],
   webpack(config, options) {
     // If we are running in dev mode, add a dummy service worker
     if (options.dev) {

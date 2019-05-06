@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { getAuthToken } from 'gdl-auth';
 import type { ApolloClient } from 'react-apollo';
 
-import initApollo, { loadCache } from './initApollo';
+import initApollo, { persistAndPopulateCache } from './initApollo';
 
 type Props = {
   apolloState: any
@@ -19,8 +19,8 @@ export default (App: React.ComponentType<*>) => {
         router,
         ctx: { req, res }
       } = ctx;
-      // load persisted cache so when in offline mode it doesn't fetch new data
-      await loadCache();
+      // This function is only invoked on client page transitions
+      await persistAndPopulateCache();
       const apollo = initApollo({}, { getToken: () => getAuthToken(req) });
       ctx.ctx.apolloClient = apollo;
 
@@ -82,7 +82,20 @@ export default (App: React.ComponentType<*>) => {
     }
 
     render() {
-      return <App {...this.props} apolloClient={this.apolloClient} />;
+      return (
+        <>
+          <Head>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.__APOLLO_STATE__=${JSON.stringify(
+                  this.props.apolloState
+                ).replace(/</g, '\\u003c')};`
+              }}
+            />
+          </Head>
+          <App {...this.props} apolloClient={this.apolloClient} />
+        </>
+      );
     }
   };
 };

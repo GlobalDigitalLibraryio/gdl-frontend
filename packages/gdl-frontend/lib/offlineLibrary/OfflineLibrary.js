@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import type { ApolloClient } from 'react-apollo';
 import * as Sentry from '@sentry/browser';
 
-import { initApollo } from 'gdl-apollo-client';
+import { initApollo } from '../../apollo';
 import type { OfflineBook, OfflineBook_book as Book } from '../../gqlTypes';
 import TimestampModel from './TimestampModel';
 import { CACHE_NAME } from './index';
@@ -93,7 +93,20 @@ export default class OfflineLibrary {
   async populateApolloCache(apolloClient: ApolloClient) {
     try {
       const books = await this.getBooks();
-      apolloClient.writeQuery({ query: OFFLINE_BOOKS_QUERY, data: { books } });
+      // This populates the available offline books to be shown in the /offline page
+      await apolloClient.writeQuery({
+        query: OFFLINE_BOOKS_QUERY,
+        data: { books }
+      });
+      // This populate each specific apollo query for each book available
+      // so apollo can query the correct book when offline
+      for (const book of books) {
+        await apolloClient.writeQuery({
+          query: OFFLINE_BOOK_QUERY,
+          variables: { id: book.id },
+          data: { book }
+        });
+      }
     } catch (error) {
       if (process.env.NODE_ENV !== 'production') {
         console.error(

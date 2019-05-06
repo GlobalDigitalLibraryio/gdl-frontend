@@ -15,7 +15,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import * as Sentry from '@sentry/browser';
-import { withApollo } from 'gdl-apollo-client';
+import { withApollo } from '../apollo';
 import type { ApolloClient } from 'react-apollo';
 
 import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';

@@ -9,6 +9,9 @@ import { onError } from 'apollo-link-error';
 import * as Sentry from '@sentry/browser';
 import { persistCache } from 'apollo-cache-persist';
 import localForage from 'localforage';
+import { RetryLink } from 'apollo-link-retry';
+
+import OfflineLibrary, { isCookiesEnabled } from '../lib/offlineLibrary';
 
 const {
   publicRuntimeConfig: { graphqlEndpoint }
@@ -17,6 +20,13 @@ const {
 let apolloClient = null;
 
 const timeoutLink = new ApolloLinkTimeout(600000); // 1min timeout
+/**
+ * When in offline, graphql checks first the cache then does a POST query.
+ * Since there is no internet, without the retryLink it would crash.
+ * This allows offline site to use the cache and retries the graphql request
+ * until the user is online and fetches new data.
+ */
+const retry = new RetryLink({ attempts: { max: Infinity } });
 
 const cache = new InMemoryCache({
   // Because of offline
@@ -69,31 +79,39 @@ function create(initialState, { getToken }) {
   });
 
   return new ApolloClient({
+    fetch,
     connectToDevTools: process.browser,
-    ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
+    ssrMode: !Boolean(process.browser), // Disables forceFetch on the server (so queries are only run once)
     link: authLink
+      .concat(retry)
       .concat(errorLink)
       .concat(timeoutLink)
       .concat(httpLink),
-    cache: cache.restore(initialState || {}),
-    fetch
+    cache: cache.restore(initialState || {})
   });
 }
 
-const isCookiesEnabled = () => {
-  let cookieEnabled = typeof window !== 'undefined' && navigator.cookieEnabled;
+/**
+ * To make apollo work with offline, the queries in apollo cache needs to be persisted.
+ * window.__AOLLO_STATE__ provides a fresh apollo cache for every initial page visit
+ * and it accumulates the apollo responses for each new client.
+ */
 
-  if (!cookieEnabled) {
-    document.cookie = 'testcookie';
-    cookieEnabled = document.cookie.indexOf('testcookie') !== -1;
-  }
-  return cookieEnabled;
-};
-
-export async function loadCache() {
+export async function persistAndPopulateCache() {
   if (!!process.browser && isCookiesEnabled()) {
-    return await persistCache({ cache, storage: localForage });
-  } else return null;
+    await localForage.setItem(
+      'apollo-cache-persist',
+      JSON.stringify(window.__APOLLO_STATE__)
+    );
+
+    await persistCache({ cache, storage: localForage });
+    // Since window.APOLLO_STATE accumulates only current apollo responses
+    // all offline queries needs to be repopulated in order to make offline
+    // browsing/reading of books possible.
+    if (OfflineLibrary) {
+      await OfflineLibrary.populateApolloCache(apolloClient);
+    }
+  }
 }
 
 export default function initApollo(
@@ -109,6 +127,9 @@ export default function initApollo(
   // Reuse client on the client-side
   if (!apolloClient) {
     apolloClient = create(initialState, options);
+    // The initialState does not contain queries for offline requests
+    // so it needs to get repopulated
+    OfflineLibrary && OfflineLibrary.populateApolloCache(apolloClient);
   }
   return apolloClient;
 }
