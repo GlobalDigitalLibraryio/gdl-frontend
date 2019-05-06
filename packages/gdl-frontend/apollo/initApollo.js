@@ -106,8 +106,9 @@ export async function persistAndPopulateCache() {
     );
 
     await persistCache({ cache, storage: localForage });
-    // Since window.__APOLLO_STATE__ accumulates only current apollo responses,
-    // to make offline work the offline queries needs to be repopulated.
+    // Since window.APOLLO_STATE accumulates only current apollo responses
+    // all offline queries needs to be repopulated in order to make offline
+    // browsing/reading of books possible.
     if (OfflineLibrary) {
       await OfflineLibrary.populateApolloCache(apolloClient);
     }
