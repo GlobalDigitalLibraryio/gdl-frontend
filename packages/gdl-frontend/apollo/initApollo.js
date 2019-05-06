@@ -87,8 +87,7 @@ function create(initialState, { getToken }) {
       .concat(errorLink)
       .concat(timeoutLink)
       .concat(httpLink),
-    cache: cache.restore(initialState || {}),
-    ssrForceFetchDelay: !Boolean(process.browser)
+    cache: cache.restore(initialState || {})
   });
 }
 
