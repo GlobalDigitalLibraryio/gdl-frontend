@@ -36,6 +36,8 @@ import BookGrid from '../components/BookGrid';
  * we cleanup by deleting the not found ones
  */
 function removeBooksNotFound(data: Favorites) {
+  if (!('books' in data)) return null;
+
   const favoritedIds = getFavoritedBookIds();
 
   const foundFavoriteIds = data.books.filter(Boolean).map(b => b.id);
@@ -84,7 +86,7 @@ class FavoritesPage extends React.Component<{}> {
                 error: any,
                 refetch: FavoritesVariables => void
               }) => {
-                if (loading) {
+                if (loading || !data) {
                   return (
                     <Center>
                       <CircularProgress />
@@ -95,6 +97,7 @@ class FavoritesPage extends React.Component<{}> {
                 if (error) {
                   return <div>Something went wrong</div>;
                 }
+                if (!('books' in data)) return null;
 
                 const books = data.books.filter(Boolean);
 
