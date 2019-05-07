@@ -157,9 +157,11 @@ const Categories = ({
       </>
     )}
 
-    {library.length > 0 && classroom && classroom.length > 0 && <Divider />}
+    {library && library.length > 0 && classroom && classroom.length > 0 && (
+      <Divider />
+    )}
 
-    {library && (
+    {library && library.length > 0 && (
       <>
         <ListSubheader component="div">
           <Trans>Library books</Trans>
