@@ -13,6 +13,7 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
+  Games_games as Game,
   BooksAndFeatured,
   BooksAndFeatured_featuredContent as FeaturedContent
 } from '../../gqlTypes';
@@ -27,7 +28,7 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import BookList from '../../components/BookList';
+import ScrollView from '../../components/ScrollView';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -79,6 +80,7 @@ const HeroCardTablet = styled(Card)`
 `;
 
 type Props = {|
+  games: Array<Game>,
   bookSummaries: $Diff<
     BooksAndFeatured,
     { featuredContent: Array<FeaturedContent> }
@@ -92,6 +94,7 @@ type Props = {|
 class HomePage extends React.Component<Props> {
   render() {
     const {
+      games,
       bookSummaries,
       category,
       featuredContent,
@@ -168,9 +171,9 @@ class HomePage extends React.Component<Props> {
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
-          <View {...bookListViewStyle}>
+          <View {...scrollListViewStyle}>
             <Container width="100%">
-              <BookList
+              <ScrollView
                 shouldBeColorized
                 heading={
                   <FormattedMessage
@@ -182,7 +185,7 @@ class HomePage extends React.Component<Props> {
                   lang: languageCode,
                   category: category
                 }}
-                books={NewArrivals.results}
+                items={NewArrivals.results}
               />
             </Container>
           </View>
@@ -194,9 +197,9 @@ class HomePage extends React.Component<Props> {
                 data.results && data.results.length > 0
             )
             .map(([level, data]: [ReadingLevel, any]) => (
-              <View {...bookListViewStyle} key={level}>
+              <View {...scrollListViewStyle} key={level}>
                 <Container width="100%">
-                  <BookList
+                  <ScrollView
                     heading={<ReadingLevelTrans readingLevel={level} />}
                     level={level}
                     shouldBeColorized
@@ -205,18 +208,31 @@ class HomePage extends React.Component<Props> {
                       readingLevel: level,
                       category: category
                     }}
-                    books={bookSummaries[level].results}
+                    items={bookSummaries[level].results}
                   />
                 </Container>
               </View>
             ))}
+
+          {category === 'Library' && (
+            <View {...scrollListViewStyle}>
+              <Container width="100%">
+                <ScrollView
+                  items={games}
+                  shouldBeColorized
+                  level="Games"
+                  heading="Games"
+                />
+              </Container>
+            </View>
+          )}
         </Main>
       </Layout>
     );
   }
 }
 
-const bookListViewStyle = {
+const scrollListViewStyle = {
   py: spacing.medium,
   borderBottom: `solid 1px ${colors.base.grayLight}`
 };

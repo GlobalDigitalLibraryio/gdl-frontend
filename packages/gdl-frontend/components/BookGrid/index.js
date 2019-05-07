@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import GridContainer from './styledGridContainer';
-import BookLink, { type Book } from './../BookLink';
+import BookLink, { type Book } from './../ScrollView/BookLink';
 
 type Props = {
   books: $ReadOnlyArray<Book>

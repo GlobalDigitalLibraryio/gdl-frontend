@@ -12,13 +12,13 @@ import styled from '@emotion/styled';
 import { FormattedMessage } from 'react-intl';
 import { Typography, Button } from '@material-ui/core';
 
-import View from '../../elements/View';
+import { View, Shimmer } from '../../elements';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import BookLink, { coverWidths } from '../BookLink';
+import BookLink from '../ScrollView/BookLink';
+import { coverWidths } from '../ScrollView/coverWidths';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
-import Shimmer from './Shimmer';
 import type {
   ReadingLevel,
   BooksAndFeatured_Level1_results as Book

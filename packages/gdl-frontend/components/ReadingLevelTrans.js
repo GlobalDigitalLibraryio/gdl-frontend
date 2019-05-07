@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import type { ReadingLevel } from '../gqlTypes';
 
 type Props = {|
-  readingLevel: ReadingLevel | string
+  readingLevel: ReadingLevel | 'Games'
 |};
 
 export default function ReadingLevelTrans({ readingLevel: level }: Props) {

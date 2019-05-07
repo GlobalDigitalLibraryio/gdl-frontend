@@ -83,7 +83,7 @@ class MostRead extends React.Component<*, State> {
     const blob = new Blob([mostReadBooks], { type: 'text/csv' });
     const blobUrl = window.URL.createObjectURL(blob);
     a.href = blobUrl;
-    a.download = `mostReadBooks-periodInDaysBack=${periodOfDays}-topResultsOf=${numberOfBooksWanted}-${new Date().toLocaleString()}.csv`;
+    a.download = `most-read-books-${periodOfDays}-days-${numberOfBooksWanted}-results.csv`;
     a.click();
     window.URL.revokeObjectURL(blobUrl);
     a.remove();

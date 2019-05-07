@@ -60,7 +60,7 @@ export default class EditBookImage extends React.Component<Props, State> {
       ? imageMetadata.alttext.alttext
       : this.props.book.coverImage.alttext;
 
-    let coverImage = imageMetadata
+    const coverImage = imageMetadata
       ? {
           url: imageMetadata.imageUrl,
           imageId: imageMetadata.id,
@@ -68,11 +68,6 @@ export default class EditBookImage extends React.Component<Props, State> {
           alttext: altText
         }
       : this.props.book.coverImage;
-
-    coverImage = {
-      ...coverImage,
-      variants: Object.values(coverImage.variants)
-    };
 
     return (
       <>

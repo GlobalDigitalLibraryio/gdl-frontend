@@ -18,19 +18,19 @@ Make sure you have [Apollo CLI](https://github.com/apollographql/apollo-tooling)
 $ yarn global add apollo
 ```
 
-Then run
+This require that you have started the graphql service locally, then run:
 
 ```
-$ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components,lib}/**/*.js" --target flow --endpoint http://localhost:4000/graphql
+$ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components,lib}/**/*.js" --target flow --endpoint http://localhost:4000
 ```
 
 ### Translations
 
-For i18n we use [lingui](https://github.com/lingui/js-lingui).
+For i18n we use [react-intl](https://github.com/yahoo/react-intl).
 
 #### Updating translations
 
-Whenever new texts that are to be translated using lingui are added, run the following command to update the existing translation files:
+Whenever new texts that are to be translated using react-intl are added, run the following command to update the existing translation files:
 
 ```
 $ yarn run i18n:extract

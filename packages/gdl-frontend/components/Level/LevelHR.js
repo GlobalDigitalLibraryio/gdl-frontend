@@ -18,7 +18,7 @@ const Hr = styled('hr')`
 `;
 
 type Props = {
-  level?: ReadingLevel
+  level?: ReadingLevel | 'Games'
 };
 
 export default ({ level, ...props }: Props) => <Hr level={level} {...props} />;

@@ -49,7 +49,7 @@ function getCacheKey(req) {
     return `${path}-${bookLanguage}-${bookCategory}`;
   }
 
-  return req.path;
+  return req.url;
 }
 
 function renderAndCache(app) {
