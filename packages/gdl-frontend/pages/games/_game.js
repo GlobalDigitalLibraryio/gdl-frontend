@@ -86,11 +86,8 @@ const GamePage = ({ game }) => (
                 {game.title}
               </Typography>
               <Typography paragraph variant="subtitle1">
-                <FormattedMessage
-                  id="from"
-                  defaultMessage="from {publisher}"
-                  values={{ publisher: game.publisher }}
-                />
+                <FormattedMessage id="from" defaultMessage="from" />
+                {` ${game.publisher}`}
               </Typography>
               <Typography lang={game.language} paragraph>
                 {game.description}
