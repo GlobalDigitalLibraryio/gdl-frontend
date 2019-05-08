@@ -27,6 +27,8 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
     return <Trans>Level 3</Trans>;
   } else if (level === 'Level4') {
     return <Trans>Level 4</Trans>;
+  } else if (level === 'Games') {
+    return <Trans>Games (Android)</Trans>;
   }
   return level;
 }
