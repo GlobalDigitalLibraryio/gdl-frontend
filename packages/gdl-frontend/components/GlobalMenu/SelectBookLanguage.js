@@ -14,6 +14,7 @@ import gql from 'graphql-tag';
 import type { languages_languages as Language } from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
+import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 function linkProps(language) {
   return {
@@ -123,12 +124,19 @@ class SelectBookLanguage extends React.Component<Props, State> {
                   </Typography>
                 )}
                 {!isLoading && data && (
-                  <LanguageList
-                    onSelectLanguage={this.handleSelectLanguage}
-                    selectedLanguageCode={selectedLanguage}
-                    linkProps={linkProps}
-                    languages={data.languages}
-                  />
+                  <GdlI18nConsumer>
+                    {value => (
+                      <LanguageList
+                        onSelectLanguage={language => {
+                          this.handleSelectLanguage(language);
+                          value && value.changeSiteLanguage(language);
+                        }}
+                        selectedLanguageCode={selectedLanguage}
+                        linkProps={linkProps}
+                        languages={data.languages}
+                      />
+                    )}
+                  </GdlI18nConsumer>
                 )}
               </SwipeableDrawer>
             </>
