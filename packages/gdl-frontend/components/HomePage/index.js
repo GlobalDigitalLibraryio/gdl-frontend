@@ -221,7 +221,7 @@ class HomePage extends React.Component<Props> {
                   items={games}
                   shouldBeColorized
                   level="Games"
-                  heading="Games (Android)"
+                  heading={<ReadingLevelTrans readingLevel="Games" />}
                 />
               </Container>
             </View>
