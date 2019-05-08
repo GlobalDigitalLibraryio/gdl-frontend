@@ -11,10 +11,7 @@ import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import type {
-  languages,
-  languages_languages as Language
-} from '../../gqlTypes';
+import type { languages_languages as Language } from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
 
