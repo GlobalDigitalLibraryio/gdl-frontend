@@ -25,6 +25,7 @@ import { getBookLanguageCode } from '../../lib/storage';
 import Link from '../BrowseLink';
 import CircleLabel from './CircleLabel';
 import ReadingLevelTrans from '../ReadingLevelTrans';
+import { isEmpty } from '../../utils/util';
 
 type Props = {|
   children: (data: { onClick: () => void, loading: boolean }) => Node,
@@ -64,7 +65,6 @@ export default class CategoriesMenu extends React.Component<
     const { children, onSelectCategory } = this.props;
     const { showMenu } = this.state;
     const language = getBookLanguageCode();
-
     return (
       <Query
         query={READINGLEVELS_BY_CATEGORIES}
@@ -98,7 +98,7 @@ export default class CategoriesMenu extends React.Component<
                 </Typography>
               )}
 
-              {data && (
+              {data && !isEmpty(data) && (
                 <Categories
                   onSelectCategory={onSelectCategory}
                   categories={data}
@@ -166,9 +166,11 @@ const Categories = ({
       </>
     )}
 
-    {library.length > 0 && classroom && classroom.length > 0 && <Divider />}
+    {library && library.length > 0 && classroom && classroom.length > 0 && (
+      <Divider />
+    )}
 
-    {library && (
+    {library && library.length > 0 && (
       <>
         <ListSubheader component="div">
           <FormattedMessage id="Library books" defaultMessage="Library books" />

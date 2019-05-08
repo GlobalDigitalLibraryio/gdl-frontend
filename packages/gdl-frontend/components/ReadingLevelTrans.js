@@ -27,6 +27,10 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
     return <FormattedMessage id="Level 3" defaultMessage="Level 3" />;
   } else if (level === 'Level4') {
     return <FormattedMessage id="Level 4" defaultMessage="Level 4" />;
+  } else if (level === 'Games') {
+    return (
+      <FormattedMessage id="Games (Android)" defaultMessage="Games (Android)" />
+    );
   }
   return (
     <FormattedMessage

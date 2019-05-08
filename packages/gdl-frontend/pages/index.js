@@ -62,6 +62,16 @@ class IndexPage extends React.Component<Props> {
       const languageCode = query.lang || getBookLanguageCode(req);
       const siteLanguage = query.lang || getSiteLanguage(req);
 
+      // Check if queried language is supported with content
+      const langRes = await apolloClient.query({
+        query: LANGUAGE_SUPPORT_QUERY,
+        variables: { language: languageCode }
+      });
+
+      if (!langRes.data.languageSupport) {
+        return { statusCode: 404 };
+      }
+
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
         variables: {
@@ -211,6 +221,12 @@ class IndexPage extends React.Component<Props> {
 }
 
 export default withErrorPage(IndexPage);
+
+const LANGUAGE_SUPPORT_QUERY = gql`
+  query CheckLanguageSupport($language: String!) {
+    languageSupport(language: $language)
+  }
+`;
 
 const CATEGORIES_QUERY = gql`
   query GetCategories($language: String!) {
