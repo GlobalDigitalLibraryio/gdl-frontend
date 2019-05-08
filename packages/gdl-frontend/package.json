@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "node server",
-    "build": "npm run i18n:extract && next build",
+    "build": "yarn i18n:extract && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "node_modules/extract-react-intl-messages/cli.js -l=en -o locale/en './**/*.js'",
     "analyze": "cross-env ANALYZE=1 next build"
