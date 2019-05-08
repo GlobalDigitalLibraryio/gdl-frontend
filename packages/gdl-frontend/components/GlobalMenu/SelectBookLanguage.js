@@ -82,7 +82,7 @@ class SelectBookLanguage extends React.Component<Props, State> {
   render() {
     const { children, anchor } = this.props;
     const { showMenu, selectedLanguage } = this.state;
-    console.log('show menu', showMenu);
+
     return (
       <Query query={LANGUAGES_QUERY} skip={!showMenu}>
         {({
@@ -92,43 +92,48 @@ class SelectBookLanguage extends React.Component<Props, State> {
           networkStatus
         }: {
           loading: boolean,
-          data: ?languages,
+          data: any,
           error: any,
           networkStatus: number
-        }) => (
-          <>
-            {console.log('networkStatus', networkStatus)}
-            {console.log('loading', loading)}
-            {children({ onClick: this.handleShowMenu, loading })}
-            <SwipeableDrawer
-              disableDiscovery
-              disableSwipeToOpen
-              disableBackdropTransition
-              onClose={this.handleCloseMenu}
-              onOpen={() => {}}
-              open={showMenu && !loading}
-              anchor={anchor}
-            >
-              {error && (
-                <Typography
-                  component="span"
-                  color="error"
-                  css={{ margin: '1rem' }}
-                >
-                  <Trans>Error loading data.</Trans>
-                </Typography>
-              )}
-              {data && (
-                <LanguageList
-                  onSelectLanguage={this.handleSelectLanguage}
-                  selectedLanguageCode={selectedLanguage}
-                  linkProps={linkProps}
-                  languages={data.languages}
-                />
-              )}
-            </SwipeableDrawer>
-          </>
-        )}
+        }) => {
+          const isLoading = Boolean(data) && !('languages' in data) && loading;
+
+          return (
+            <>
+              {children({
+                onClick: this.handleShowMenu,
+                loading: isLoading
+              })}
+              <SwipeableDrawer
+                disableDiscovery
+                disableSwipeToOpen
+                disableBackdropTransition
+                onClose={this.handleCloseMenu}
+                onOpen={() => {}}
+                open={showMenu && !isLoading}
+                anchor={anchor}
+              >
+                {error && (
+                  <Typography
+                    component="span"
+                    color="error"
+                    css={{ margin: '1rem' }}
+                  >
+                    <Trans>Error loading data.</Trans>
+                  </Typography>
+                )}
+                {!isLoading && data && (
+                  <LanguageList
+                    onSelectLanguage={this.handleSelectLanguage}
+                    selectedLanguageCode={selectedLanguage}
+                    linkProps={linkProps}
+                    languages={data.languages}
+                  />
+                )}
+              </SwipeableDrawer>
+            </>
+          );
+        }}
       </Query>
     );
   }
