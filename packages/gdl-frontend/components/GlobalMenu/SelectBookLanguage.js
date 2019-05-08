@@ -11,10 +11,7 @@ import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import type {
-  languages,
-  languages_languages as Language
-} from '../../gqlTypes';
+import type { languages_languages as Language } from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
 
@@ -82,48 +79,58 @@ class SelectBookLanguage extends React.Component<Props, State> {
   render() {
     const { children, anchor } = this.props;
     const { showMenu, selectedLanguage } = this.state;
+
     return (
       <Query query={LANGUAGES_QUERY} skip={!showMenu}>
         {({
           loading,
           error,
-          data
+          data,
+          networkStatus
         }: {
           loading: boolean,
-          data: ?languages,
-          error: any
-        }) => (
-          <>
-            {children({ onClick: this.handleShowMenu, loading })}
-            <SwipeableDrawer
-              disableDiscovery
-              disableSwipeToOpen
-              disableBackdropTransition
-              onClose={this.handleCloseMenu}
-              onOpen={() => {}}
-              open={showMenu && !loading}
-              anchor={anchor}
-            >
-              {error && (
-                <Typography
-                  component="span"
-                  color="error"
-                  css={{ margin: '1rem' }}
-                >
-                  <Trans>Error loading data.</Trans>
-                </Typography>
-              )}
-              {data && (
-                <LanguageList
-                  onSelectLanguage={this.handleSelectLanguage}
-                  selectedLanguageCode={selectedLanguage}
-                  linkProps={linkProps}
-                  languages={data.languages}
-                />
-              )}
-            </SwipeableDrawer>
-          </>
-        )}
+          data: any,
+          error: any,
+          networkStatus: number
+        }) => {
+          const isLoading = Boolean(data) && !('languages' in data) && loading;
+
+          return (
+            <>
+              {children({
+                onClick: this.handleShowMenu,
+                loading: isLoading
+              })}
+              <SwipeableDrawer
+                disableDiscovery
+                disableSwipeToOpen
+                disableBackdropTransition
+                onClose={this.handleCloseMenu}
+                onOpen={() => {}}
+                open={showMenu && !isLoading}
+                anchor={anchor}
+              >
+                {error && (
+                  <Typography
+                    component="span"
+                    color="error"
+                    css={{ margin: '1rem' }}
+                  >
+                    <Trans>Error loading data.</Trans>
+                  </Typography>
+                )}
+                {!isLoading && data && (
+                  <LanguageList
+                    onSelectLanguage={this.handleSelectLanguage}
+                    selectedLanguageCode={selectedLanguage}
+                    linkProps={linkProps}
+                    languages={data.languages}
+                  />
+                )}
+              </SwipeableDrawer>
+            </>
+          );
+        }}
       </Query>
     );
   }
