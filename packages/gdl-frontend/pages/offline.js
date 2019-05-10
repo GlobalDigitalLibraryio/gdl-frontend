@@ -145,7 +145,7 @@ const OfflineBooks = ({ books, onClear }) => (
 const translations = defineMessages({
   offline: {
     id:
-      'Having books available even when you are offline is a great way to make sure you always have something to read.',
+      'Having books available even when you are offline is a great way to make sure you always have something to read',
     defaultMessage:
       'Having books available even when you are offline is a great way to make sure you always have something to read.'
   },

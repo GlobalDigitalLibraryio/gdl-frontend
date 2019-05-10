@@ -56,13 +56,13 @@ class Success extends React.Component<
             <>
               <Typography align="center" variant="h4" paragraph component="h1">
                 <FormattedMessage
-                  id="Oops, there was a problem signing you in."
+                  id="Sign in problem"
                   defaultMessage="Oops, there was a problem signing you in."
                 />
               </Typography>
               <Typography align="center">
                 <FormattedMessage
-                  id="The error has been reported. Please feel free to try signing in again."
+                  id="Sign in report error"
                   defaultMessage="The error has been reported. Please feel free to try signing in again."
                 />
               </Typography>

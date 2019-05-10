@@ -43,11 +43,11 @@ const styles = {
 
 const translations = defineMessages({
   online: {
-    id: 'In the meantime, try going to the start page.',
+    id: 'In the meantime, try going to the start page',
     defaultMessage: 'In the meantime, try going to the start page.'
   },
   offline: {
-    id: 'View your offline library.',
+    id: 'View your offline library',
     defaultMessage: 'View your offline library.'
   },
   header: {
@@ -55,7 +55,7 @@ const translations = defineMessages({
     defaultMessage: 'An unexpected error occurred!'
   },
   text: {
-    id: 'We apologize and we will try our best to correct the issue.',
+    id: 'We apologize and we will try our best to correct the issue',
     defaultMessage:
       'We apologize and we will try our best to correct the issue.'
   }

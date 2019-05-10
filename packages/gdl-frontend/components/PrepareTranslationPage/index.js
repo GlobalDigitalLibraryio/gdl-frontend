@@ -295,7 +295,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
               {translationState === translationStates.PREPARING && (
                 <Typography css={{ marginTop: spacing.medium }}>
                   <FormattedMessage
-                    id="Please wait while we’re preparing the book for translation. This could take some time."
+                    id="Prepare translation time"
                     defaultMessage="Please wait while we’re preparing the book for translation. This could take some time."
                   />
                 </Typography>
@@ -305,7 +305,7 @@ class PrepareTranslatePage extends React.Component<Props, State> {
           {translationState === translationStates.ERROR && (
             <Typography color="error" css={{ marginTop: spacing.medium }}>
               <FormattedMessage
-                id="Something went wrong while preparing the translation. Please try again."
+                id="Prepare translation error"
                 defaultMessage="Something went wrong while preparing the translation. Please try again."
               />
             </Typography>

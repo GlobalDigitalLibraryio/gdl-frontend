@@ -45,7 +45,7 @@ const translations = defineMessages({
       'By signing in to this service I am hereby accepting the principles in the GDL'
   },
   lastPart: {
-    id: 'and I am giving my consent to GDL’s use of my personal information.',
+    id: 'and I am giving my consent to GDL’s use of my personal information',
     defaultMessage:
       'and I am giving my consent to GDL’s use of my personal information.'
   }

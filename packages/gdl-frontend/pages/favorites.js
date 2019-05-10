@@ -150,7 +150,7 @@ const NoFavorites = () => (
       }}
     >
       <FormattedMessage
-        id="Add books to your favorites so you can easily find them later."
+        id="Add favorite books"
         defaultMessage="Add books to your favorites so you can easily find them later."
       />
     </Typography>

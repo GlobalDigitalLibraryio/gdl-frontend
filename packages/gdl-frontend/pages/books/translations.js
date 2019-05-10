@@ -383,7 +383,7 @@ class MyTranslationsPage extends React.PureComponent<{ intl: intlShape }> {
                 return (
                   <Typography align="center" color="error" variant="body1">
                     <FormattedMessage
-                      id="An error has occurred. Please try again"
+                      id="An error has occurred"
                       defaultMessage="An error has occurred. Please try again."
                     />
                   </Typography>

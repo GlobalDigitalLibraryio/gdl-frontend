@@ -65,6 +65,7 @@
   "My translations": "My translations",
   "Offline library": "Offline library",
   "Select language": "Select language",
+  "Sign in problem": "Oops, there was a problem signing you in.",
   "Add to favorites": "Add to favorites",
   "Remove all books": "Remove all books",
   "Report a problem": "Report a problem",
@@ -72,6 +73,7 @@
   "No language found": "No language found",
   "Selected language": "{language}",
   "Start translation": "Start translation",
+  "Add favorite books": "Add books to your favorites so you can easily find them later.",
   "Error loading data": "Error loading data.",
   "Mobile translation": "Mobile translation",
   "Clear all favorites": "Clear all favorites",
@@ -82,58 +84,26 @@
   "Choose book language": "Choose book language",
   "No books offline yet": "No books offline yet",
   "Printable book (PDF)": "Printable book (PDF)",
+  "Sign in report error": "The error has been reported. Please feel free to try signing in again.",
   "Sign in using Google": "Sign in using Google",
   "Translate in context": "Translate in context",
+  "An error has occurred": "An error has occurred. Please try again.",
   "No results for search": "No results for",
   "Remove from favorites": "Remove from favorites",
   "Additional information": "Additional information",
   "Find something to read": "Find something to read",
   "Sign in using Facebook": "Sign in using Facebook",
-  "View your offline library": {
-    "": "View your offline library."
-  },
+  "Prepare translation time": "Please wait while we’re preparing the book for translation. This could take some time.",
+  "Prepare translation error": "Something went wrong while preparing the translation. Please try again.",
+  "View your offline library": "View your offline library.",
   "An unexpected error occurred!": "An unexpected error occurred!",
   "You have not translated any books yet": "You have not translated any books yet.",
-  "An error has occurred": {
-    " Please try again": "An error has occurred. Please try again."
-  },
   "Please try searching for something else": "Please try searching for something else.",
   "This book is only available for download": "This book is only available for download",
-  "Oops, there was a problem signing you in": {
-    "": "Oops, there was a problem signing you in."
-  },
-  "In the meantime, try going to the start page": {
-    "": "In the meantime, try going to the start page."
-  },
-  "The page you were looking for was taken by a 404": {
-    "": "The page you were looking for was taken by a 404."
-  },
-  "We apologize and we will try our best to correct the issue": {
-    "": "We apologize and we will try our best to correct the issue."
-  },
-  "Add books to your favorites so you can easily find them later": {
-    "": "Add books to your favorites so you can easily find them later."
-  },
-  "and I am giving my consent to GDL’s use of my personal information": {
-    "": "and I am giving my consent to GDL’s use of my personal information."
-  },
-  "The error has been reported": {
-    " Please feel free to try signing in again": {
-      "": "The error has been reported. Please feel free to try signing in again."
-    }
-  },
-  "Something went wrong while preparing the translation": {
-    " Please try again": {
-      "": "Something went wrong while preparing the translation. Please try again."
-    }
-  },
+  "In the meantime, try going to the start page": "In the meantime, try going to the start page.",
+  "The page you were looking for was taken by a 404": "The page you were looking for was taken by a 404.",
+  "We apologize and we will try our best to correct the issue": "We apologize and we will try our best to correct the issue.",
+  "and I am giving my consent to GDL’s use of my personal information": "and I am giving my consent to GDL’s use of my personal information.",
   "By signing in to this service I am hereby accepting the principles in the GDL": "By signing in to this service I am hereby accepting the principles in the GDL",
-  "Please wait while we’re preparing the book for translation": {
-    " This could take some time": {
-      "": "Please wait while we’re preparing the book for translation. This could take some time."
-    }
-  },
-  "Having books available even when you are offline is a great way to make sure you always have something to read": {
-    "": "Having books available even when you are offline is a great way to make sure you always have something to read."
-  }
+  "Having books available even when you are offline is a great way to make sure you always have something to read": "Having books available even when you are offline is a great way to make sure you always have something to read."
 }

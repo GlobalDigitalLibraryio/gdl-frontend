@@ -31,7 +31,7 @@ const NotFound = () => (
         gutterBottom
       >
         <FormattedMessage
-          id="The page you were looking for was taken by a 404."
+          id="The page you were looking for was taken by a 404"
           defaultMessage="The page you were looking for was taken by a 404."
         />
       </Typography>
