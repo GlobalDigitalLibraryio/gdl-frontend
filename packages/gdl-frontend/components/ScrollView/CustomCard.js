@@ -32,6 +32,7 @@ const cardCss = css`
       filter: opacity(0.9);
     }
   }
+  margin-right: 15px;
   width: ${coverWidths.small}px;
   ${media.tablet`
     width: ${coverWidths.large}px;

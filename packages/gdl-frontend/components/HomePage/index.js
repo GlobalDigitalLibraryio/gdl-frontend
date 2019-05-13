@@ -29,9 +29,11 @@ import {
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import ScrollView from '../../components/ScrollView';
+import InfiniteScrollView from '../ScrollView/InfiniteScrollView';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
+import { QueryBookList } from '../../gql';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -78,6 +80,8 @@ const HeroCardTablet = styled(Card)`
     display: none;
   `};
 `;
+
+export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   games: Array<Game>,
@@ -173,15 +177,25 @@ class HomePage extends React.Component<Props> {
 
           <View {...scrollListViewStyle}>
             <Container width="100%">
-              <ScrollView
-                shouldBeColorized
-                heading={<Trans>New arrivals</Trans>}
-                browseLinkProps={{
-                  lang: languageCode,
-                  category: category
-                }}
-                items={NewArrivals.results}
-              />
+              <QueryBookList
+                category={category}
+                pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                language={languageCode}
+                orderBy="arrivalDate_DESC"
+              >
+                {({ books, loadMore }) => (
+                  <InfiniteScrollView
+                    loadMore={loadMore}
+                    shouldBeColorized
+                    heading={<Trans>New arrivals</Trans>}
+                    browseLinkProps={{
+                      lang: languageCode,
+                      category: category
+                    }}
+                    items={books.results}
+                  />
+                )}
+              </QueryBookList>
             </Container>
           </View>
 

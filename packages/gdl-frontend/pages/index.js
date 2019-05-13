@@ -22,7 +22,7 @@ import type {
 } from '../gqlTypes';
 
 import { withErrorPage } from '../hocs';
-import HomePage from '../components/HomePage';
+import HomePage, { AMOUNT_OF_BOOKS_PER_LEVEL } from '../components/HomePage';
 import {
   setBookLanguageAndCategory,
   getBookLanguageCode,
@@ -32,8 +32,6 @@ import {
 const {
   publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
 }: ConfigShape = getConfig();
-
-const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   games: Array<Game>,
@@ -255,6 +253,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     $language: String!
     $category: Category!
     $pageSize: Int
+    $page: Int
   ) {
     featuredContent(language: $language) {
       id
@@ -271,12 +270,14 @@ const BOOKS_AND_FEATURED_QUERY = gql`
       category: $category
       orderBy: arrivalDate_DESC
       pageSize: $pageSize
+      page: $page
     ) {
       ...fields
     }
     Decodable: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: Decodable
       category: $category
       orderBy: title_ASC
@@ -286,6 +287,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     Level1: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: Level1
       category: $category
       orderBy: title_ASC
@@ -295,6 +297,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     Level2: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: Level2
       category: $category
       orderBy: title_ASC
@@ -304,6 +307,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     Level3: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: Level3
       category: $category
       orderBy: title_ASC
@@ -313,6 +317,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     Level4: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: Level4
       category: $category
       orderBy: title_ASC
@@ -322,6 +327,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     ReadAloud: bookSummaries(
       language: $language
       pageSize: $pageSize
+      page: $page
       readingLevel: ReadAloud
       category: $category
       orderBy: title_ASC
@@ -331,6 +337,13 @@ const BOOKS_AND_FEATURED_QUERY = gql`
   }
 
   fragment fields on ResultItemConnection {
+    pageInfo {
+      page
+      pageSize
+      pageCount
+      hasPreviousPage
+      hasNextPage
+    }
     results {
       id
       bookId
