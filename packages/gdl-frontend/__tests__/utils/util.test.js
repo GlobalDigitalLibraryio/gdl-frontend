@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-import { isEmpty } from '../../utils/util';
+import { isEmpty, parseCookies } from '../../utils/util';
 
 describe('isEmpty(obj) function', () => {
   test('isEmpty({}) is true', () => {
@@ -14,5 +14,11 @@ describe('isEmpty(obj) function', () => {
 
   test('isEmpty({a: "b"}) is false', () => {
     expect(isEmpty({ a: 'b' })).toBeFalsy();
+  });
+});
+
+describe('parseCookies(str) function', () => {
+  test('parseCookies("a=b; c=d;") should be {a: b, c: d}', () => {
+    expect(parseCookies('a=b; c=d;')).toEqual({ a: 'b', c: 'd' });
   });
 });

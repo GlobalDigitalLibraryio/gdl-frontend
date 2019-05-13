@@ -331,7 +331,9 @@ const CustomGrid = styled('div')`
   }
 `;
 
-class MyTranslationsPage extends React.PureComponent<{ intl: intlShape }> {
+class MyTranslationsPage extends React.Component<{
+  intl: intlShape
+}> {
   render() {
     const { intl } = this.props;
     return (

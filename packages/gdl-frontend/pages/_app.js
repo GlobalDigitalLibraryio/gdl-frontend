@@ -11,6 +11,7 @@ import NextApp, { Container as NextContainer } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
 import Router from 'next/router';
+import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
@@ -32,6 +33,7 @@ import { register as registerServiceWorker } from '../registerServiceWorker';
 import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
+import { parseCookies } from '../utils/util';
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
@@ -44,6 +46,22 @@ if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
     addLocaleData(window.ReactIntlLocaleData[lang]);
   });
 }
+
+// We need to expose React Intl's locale data on the request for the user's
+const getLanguageCatalog = async language => {
+  const translation = await axios(
+    `https://api.test.digitallibrary.io/site-translations-service/${language}`
+  )
+    .then(res => {
+      return res.data;
+    })
+    .catch(error => {
+      const { data, status, statusText } = error.response;
+      console.error({ data, status, statusText });
+      return { en: 'en' };
+    });
+  return translation[language];
+};
 
 class App extends NextApp {
   static async getInitialProps({
@@ -61,9 +79,20 @@ class App extends NextApp {
 
     const { req } = ctx;
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
-    const { localeCatalog, siteLang } = req || window.__NEXT_DATA__.props;
+    const response = req || window.__NEXT_DATA__.props;
 
-    const siteLanguage = siteLang || getSiteLanguage(req);
+    // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+    let localeCatalog = response.localeCatalog;
+
+    if (!localeCatalog) {
+      // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+      const language =
+        response.siteLanguage ||
+        parseCookies(response.headers.cookie)['siteLanguage'];
+      localeCatalog = await getLanguageCatalog(language);
+    }
+
+    const siteLanguage = response.siteLanguage || getSiteLanguage(req);
 
     return { pageProps, localeCatalog, siteLanguage };
   }
@@ -152,12 +181,18 @@ class App extends NextApp {
       localeCatalog,
       siteLanguage
     } = this.props;
-
     return (
       <NextContainer>
         <GlobalStyles />
         <ApolloProvider client={apolloClient}>
           <Head>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.__LOCALE_CATALOG__=${JSON.stringify(
+                  this.props.localeCatalog
+                ).replace(/</g, '\\u003c')};`
+              }}
+            />
             <title>{DEFAULT_TITLE}</title>
           </Head>
           <GdlI18nProvider
