@@ -86,7 +86,7 @@ class App extends NextApp {
 
     if (!localeCatalog) {
       // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
-      const language =
+      const language: string =
         response.siteLanguage ||
         parseCookies(response.headers.cookie)['siteLanguage'];
       localeCatalog = await getLanguageCatalog(language);
