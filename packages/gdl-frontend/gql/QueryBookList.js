@@ -126,6 +126,10 @@ const QueryBookList = ({
                     ...bookSummaries,
                     pageInfo: {
                       ...bookSummaries.pageInfo,
+                      hasPreviousPage: true,
+                      hasNextPage:
+                        bookSummaries.pageInfo.page <
+                        bookSummaries.pageInfo.pageCount - 1,
                       page: bookSummaries.pageInfo.page + 1
                     }
                   }
@@ -139,6 +143,7 @@ const QueryBookList = ({
               query: GET_BOOKS_QUERY,
               variables: { category, language, orderBy, pageSize, readingLevel }
             });
+
             await client.writeQuery({
               query: GET_BOOKS_QUERY,
               variables: {
@@ -153,6 +158,9 @@ const QueryBookList = ({
                   ...bookSummaries,
                   pageInfo: {
                     ...bookSummaries.pageInfo,
+                    // There is always a prev page if you have navigated to page 2
+                    hasPreviousPage: bookSummaries.pageInfo.page > 2,
+                    hasNextPage: true,
                     page: bookSummaries.pageInfo.page - 1
                   }
                 }
@@ -162,8 +170,15 @@ const QueryBookList = ({
 
           const books = data.bookSummaries;
           const hasNextPage = data.bookSummaries.pageInfo.hasNextPage;
+          const hasPreviousPage = data.bookSummaries.pageInfo.hasPreviousPage;
 
-          return children({ books, loadMore, hasNextPage, goBack });
+          return children({
+            books,
+            loadMore,
+            goBack,
+            hasNextPage,
+            hasPreviousPage
+          });
         }}
       </Query>
     )}

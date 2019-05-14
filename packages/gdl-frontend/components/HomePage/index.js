@@ -184,10 +184,18 @@ class HomePage extends React.Component<Props> {
                 language={languageCode}
                 orderBy="arrivalDate_DESC"
               >
-                {({ books, loadMore, hasNextPage, goBack }) => (
+                {({
+                  books,
+                  loadMore,
+                  hasNextPage,
+                  hasPreviousPage,
+                  goBack
+                }) => (
                   <InfiniteScrollView
                     loadMore={loadMore}
                     goBack={goBack}
+                    hasNextPage={hasNextPage}
+                    hasPreviousPage={hasPreviousPage}
                     pageInfo={books.pageInfo}
                     shouldBeColorized
                     heading={<Trans>New arrivals</Trans>}
@@ -218,10 +226,18 @@ class HomePage extends React.Component<Props> {
                     language={languageCode}
                     orderBy="title_ASC"
                   >
-                    {({ books, loadMore, hasNextPage, goBack }) => (
+                    {({
+                      books,
+                      loadMore,
+                      hasNextPage,
+                      hasPreviousPage,
+                      goBack
+                    }) => (
                       <InfiniteScrollView
                         loadMore={loadMore}
                         goBack={goBack}
+                        hasNextPage={hasNextPage}
+                        hasPreviousPage={hasPreviousPage}
                         pageInfo={books.pageInfo}
                         shouldBeColorized
                         level={level}

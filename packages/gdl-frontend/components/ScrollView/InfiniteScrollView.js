@@ -7,25 +7,28 @@
  */
 
 import React, { Component } from 'react';
-import { Button, Typography, CircularProgress } from '@material-ui/core';
+import {
+  Button,
+  Typography,
+  CircularProgress,
+  ButtonBase
+} from '@material-ui/core';
 import { Trans } from '@lingui/react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons';
 
 import { spacing, misc } from '../../style/theme';
 import media from '../../style/media';
+import colorMap from '../../style/colorMapping';
 import { Hidden } from '../../elements';
 import GameLink from './GameLink';
 import BookLink from './BookLink';
 import LevelHR from '../Level/LevelHR';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
-
-import type { Book } from './BookLink';
 import { coverWidths } from './coverWidths';
 
+import type { Book } from './BookLink';
 import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
 
 type Props = {
@@ -41,6 +44,8 @@ type Props = {
 
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 export default ({
+  hasNextPage,
+  hasPreviousPage,
   loadMore,
   goBack,
   pageInfo,
@@ -80,6 +85,8 @@ export default ({
           level={level}
           loadMore={loadMore}
           items={items}
+          hasNextPage={hasNextPage}
+          hasPreviousPage={hasPreviousPage}
         />
       </Hidden>
       <Hidden only="mobile">
@@ -89,40 +96,69 @@ export default ({
   );
 };
 
-const PaginatedView = ({ goBack, pageInfo, level, loadMore, items }) => (
-  <div style={{ display: 'flex', flexDirection: 'row' }}>
-    <div css={arrowStyle}>
-      <Fab color="primary" aria-label="Add" onClick={goBack}>
-        <AddIcon />
-      </Fab>
-    </div>
+const PaginatedView = ({
+  goBack,
+  pageInfo,
+  level,
+  loadMore,
+  items,
+  hasNextPage,
+  hasPreviousPage
+}) => {
+  const buttonStyle = css`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid ${level ? colorMap[level] : '#B4A4E5'};
+    border-radius: 50%;
+  `;
 
-    <Scroller>
-      {items
-        .slice((pageInfo.page - 1) * 5, pageInfo.page * 5)
-        .map((item: any) => (
-          <div className={itemStyle} key={item.id}>
-            {level === 'Games' ? (
-              <GameLink game={(item: Game)} />
-            ) : (
-              <BookLink book={(item: Book)} />
-            )}
-          </div>
-        ))}
-    </Scroller>
-    <div css={arrowStyle}>
-      <Fab color="primary" aria-label="Add" onClick={loadMore}>
-        <AddIcon />
-      </Fab>
-    </div>
-  </div>
-);
+  const backStyle = css`
+    visibility: ${hasPreviousPage ? 'visible' : 'hidden'};
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
 
-const arrowStyle = css`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+  const forwardStyle = css`
+    visibility: ${hasNextPage ? 'visible' : 'hidden'};
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div css={backStyle}>
+        <ButtonBase css={buttonStyle} aria-label="Add" onClick={goBack}>
+          <KeyboardArrowLeft fontSize="large" />
+        </ButtonBase>
+      </div>
+
+      <Scroller>
+        {items
+          .slice((pageInfo.page - 1) * 5, pageInfo.page * 5)
+          .map((item: any) => (
+            <div className={itemStyle} key={item.id}>
+              {level === 'Games' ? (
+                <GameLink game={(item: Game)} />
+              ) : (
+                <BookLink book={(item: Book)} />
+              )}
+            </div>
+          ))}
+      </Scroller>
+      <div css={forwardStyle}>
+        <ButtonBase css={buttonStyle} aria-label="Add" onClick={loadMore}>
+          <KeyboardArrowRight fontSize="large" />
+        </ButtonBase>
+      </div>
+    </div>
+  );
+};
 
 const levelStyle = css`
   margin-bottom: ${spacing.medium};
