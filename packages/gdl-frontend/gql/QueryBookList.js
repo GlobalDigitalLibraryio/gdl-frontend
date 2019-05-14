@@ -70,6 +70,7 @@ const QueryBookList = ({
   <ApolloConsumer>
     {client => (
       <Query
+        notifyOnNetworkStatusChange
         query={GET_BOOKS_QUERY}
         ssr={false}
         variables={{
@@ -80,7 +81,7 @@ const QueryBookList = ({
           readingLevel
         }}
       >
-        {({ data, fetchMore }) => {
+        {({ data, fetchMore, networkStatus }) => {
           const loadMore = async () => {
             const { bookSummaries } = await client.readQuery({
               query: GET_BOOKS_QUERY,
@@ -171,8 +172,9 @@ const QueryBookList = ({
           const books = data.bookSummaries;
           const hasNextPage = data.bookSummaries.pageInfo.hasNextPage;
           const hasPreviousPage = data.bookSummaries.pageInfo.hasPreviousPage;
-
+          const loading = networkStatus < 7;
           return children({
+            loading,
             books,
             loadMore,
             goBack,

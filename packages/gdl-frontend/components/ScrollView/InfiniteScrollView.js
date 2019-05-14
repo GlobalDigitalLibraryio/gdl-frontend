@@ -46,6 +46,7 @@ type Props = {
 export default ({
   hasNextPage,
   hasPreviousPage,
+  loading,
   loadMore,
   goBack,
   pageInfo,
@@ -80,6 +81,7 @@ export default ({
       {shouldBeColorized && <LevelHR level={level} css={levelStyle} />}
       <Hidden only="tablet">
         <PaginatedView
+          loading={loading}
           goBack={goBack}
           pageInfo={pageInfo}
           level={level}
@@ -97,6 +99,7 @@ export default ({
 };
 
 const PaginatedView = ({
+  loading,
   goBack,
   pageInfo,
   level,
@@ -152,7 +155,12 @@ const PaginatedView = ({
           ))}
       </Scroller>
       <div css={forwardStyle}>
-        <ButtonBase css={buttonStyle} aria-label="Add" onClick={loadMore}>
+        <ButtonBase
+          css={buttonStyle}
+          aria-label="Add"
+          onClick={loadMore}
+          disabled={loading}
+        >
           <KeyboardArrowRight fontSize="large" />
         </ButtonBase>
       </div>
