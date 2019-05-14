@@ -6,12 +6,12 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { Query } from 'react-apollo';
+import { Query, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import type { Category, OrderBy } from '../gqlTypes';
+import type { Category, OrderBy, ReadingLevel } from '../gqlTypes';
 
-const GET_BOOKS = gql`
+const GET_BOOKS_QUERY = gql`
   query BookList(
     $page: Int
     $language: String!
@@ -55,6 +55,7 @@ type Props = {
   orderBy: OrderBy,
   pageSize: number,
   category: Category,
+  readingLevel: ReadingLevel,
   children: any => React.Node
 };
 
@@ -63,47 +64,110 @@ const QueryBookList = ({
   orderBy,
   pageSize,
   language,
+  readingLevel,
   children
 }: Props) => (
-  <Query
-    query={GET_BOOKS}
-    ssr={false}
-    variables={{
-      category,
-      language,
-      orderBy,
-      pageSize
-    }}
-  >
-    {({ data, fetchMore }) => {
-      const loadMore = () =>
-        fetchMore({
-          variables: {
-            category,
-            language,
-            page: data.bookSummaries.pageInfo.page + 1
-          },
-          updateQuery: (prev, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prev;
+  <ApolloConsumer>
+    {client => (
+      <Query
+        query={GET_BOOKS_QUERY}
+        ssr={false}
+        variables={{
+          category,
+          language,
+          orderBy,
+          pageSize,
+          readingLevel
+        }}
+      >
+        {({ data, fetchMore }) => {
+          const loadMore = async () => {
+            const { bookSummaries } = await client.readQuery({
+              query: GET_BOOKS_QUERY,
+              variables: { category, language, orderBy, pageSize, readingLevel }
+            });
+            // Check if result is already in cache
+            const shouldFetch =
+              bookSummaries.results.length / 5 === bookSummaries.pageInfo.page;
+            if (shouldFetch) {
+              await fetchMore({
+                variables: {
+                  category,
+                  language,
+                  page: data.bookSummaries.pageInfo.page + 1
+                },
+                updateQuery: (prev, { fetchMoreResult }) => {
+                  if (!fetchMoreResult) return prev;
 
-            return Object.assign({}, prev, {
-              bookSummaries: {
-                ...prev.bookSummaries,
-                pageInfo: fetchMoreResult.bookSummaries.pageInfo,
-                results: [
-                  ...prev.bookSummaries.results,
-                  ...fetchMoreResult.bookSummaries.results
-                ]
+                  return Object.assign({}, prev, {
+                    bookSummaries: {
+                      ...prev.bookSummaries,
+                      pageInfo: fetchMoreResult.bookSummaries.pageInfo,
+                      results: [
+                        ...prev.bookSummaries.results,
+                        ...fetchMoreResult.bookSummaries.results
+                      ]
+                    }
+                  });
+                }
+              });
+            } else {
+              await client.writeQuery({
+                query: GET_BOOKS_QUERY,
+                variables: {
+                  category,
+                  language,
+                  orderBy,
+                  pageSize,
+                  readingLevel
+                },
+                data: {
+                  bookSummaries: {
+                    ...bookSummaries,
+                    pageInfo: {
+                      ...bookSummaries.pageInfo,
+                      page: bookSummaries.pageInfo.page + 1
+                    }
+                  }
+                }
+              });
+            }
+          };
+
+          const goBack = async () => {
+            const { bookSummaries } = await client.readQuery({
+              query: GET_BOOKS_QUERY,
+              variables: { category, language, orderBy, pageSize, readingLevel }
+            });
+            await client.writeQuery({
+              query: GET_BOOKS_QUERY,
+              variables: {
+                category,
+                language,
+                orderBy,
+                pageSize,
+                readingLevel
+              },
+              data: {
+                bookSummaries: {
+                  ...bookSummaries,
+                  pageInfo: {
+                    ...bookSummaries.pageInfo,
+                    page: bookSummaries.pageInfo.page - 1
+                  }
+                }
               }
             });
-          }
-        });
+          };
 
-      const books = data.bookSummaries;
+          const books = data.bookSummaries;
+          const hasNextPage = data.bookSummaries.pageInfo.hasNextPage;
 
-      return children({ books, loadMore });
-    }}
-  </Query>
+          return children({ books, loadMore, hasNextPage, goBack });
+        }}
+      </Query>
+    )}
+  </ApolloConsumer>
 );
 
 export default QueryBookList;
