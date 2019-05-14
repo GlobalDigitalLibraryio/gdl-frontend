@@ -21,4 +21,7 @@ describe('parseCookies(str) function', () => {
   test('parseCookies("a=b; c=d;") should be {a: b, c: d}', () => {
     expect(parseCookies('a=b; c=d;')).toEqual({ a: 'b', c: 'd' });
   });
+  test('parseCookies(null) should be null', () => {
+    expect(parseCookies(null)).toEqual(null);
+  });
 });
