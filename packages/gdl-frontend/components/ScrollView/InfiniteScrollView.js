@@ -45,6 +45,26 @@ type Props = {
   shouldBeColorized?: boolean
 };
 
+const DotContainer = styled('div')`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  transition: all 0.5s ease;
+`;
+
+const Dot = styled('div')`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  transition: transform 0.5s ease;
+
+  background-color: #bbbbbb;
+`;
+
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 export default ({
   hasNextPage,
@@ -65,19 +85,28 @@ export default ({
         <Typography component="h1" variant="h5" style={{ textAlign: 'left' }}>
           {heading}
         </Typography>
-        {browseLinkProps && (
-          <BrowseLink {...browseLinkProps}>
-            {/* Negative margin to align the link against the edge of the container */}
-            <Button
-              data-cy="browse-more-button"
-              color="primary"
-              size="small"
-              variant="outlined"
-            >
-              <Trans>More</Trans>
-            </Button>
-          </BrowseLink>
-        )}
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <DotContainer>
+            <Dot />
+            <Dot />
+            <Dot />
+            <Dot />
+            <Dot />
+          </DotContainer>
+          {browseLinkProps && (
+            <BrowseLink {...browseLinkProps}>
+              {/* Negative margin to align the link against the edge of the container */}
+              <Button
+                data-cy="browse-more-button"
+                color="primary"
+                size="small"
+                variant="outlined"
+              >
+                <Trans>More</Trans>
+              </Button>
+            </BrowseLink>
+          )}
+        </div>
       </Header>
 
       {/* Adjust the space between items and the hr */}
