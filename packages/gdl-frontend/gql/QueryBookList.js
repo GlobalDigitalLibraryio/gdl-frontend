@@ -82,6 +82,8 @@ const QueryBookList = ({
         }}
       >
         {({ data, fetchMore, networkStatus }) => {
+          const loading = networkStatus < 7;
+
           const loadMore = async () => {
             const { bookSummaries } = await client.readQuery({
               query: GET_BOOKS_QUERY,
@@ -91,27 +93,28 @@ const QueryBookList = ({
             const shouldFetch =
               bookSummaries.results.length / 5 === bookSummaries.pageInfo.page;
             if (shouldFetch) {
-              await fetchMore({
-                variables: {
-                  category,
-                  language,
-                  page: data.bookSummaries.pageInfo.page + 1
-                },
-                updateQuery: (prev, { fetchMoreResult }) => {
-                  if (!fetchMoreResult) return prev;
+              !loading &&
+                (await fetchMore({
+                  variables: {
+                    category,
+                    language,
+                    page: data.bookSummaries.pageInfo.page + 1
+                  },
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    if (!fetchMoreResult) return prev;
 
-                  return Object.assign({}, prev, {
-                    bookSummaries: {
-                      ...prev.bookSummaries,
-                      pageInfo: fetchMoreResult.bookSummaries.pageInfo,
-                      results: [
-                        ...prev.bookSummaries.results,
-                        ...fetchMoreResult.bookSummaries.results
-                      ]
-                    }
-                  });
-                }
-              });
+                    return Object.assign({}, prev, {
+                      bookSummaries: {
+                        ...prev.bookSummaries,
+                        pageInfo: fetchMoreResult.bookSummaries.pageInfo,
+                        results: [
+                          ...prev.bookSummaries.results,
+                          ...fetchMoreResult.bookSummaries.results
+                        ]
+                      }
+                    });
+                  }
+                }));
             } else {
               await client.writeQuery({
                 query: GET_BOOKS_QUERY,
@@ -172,7 +175,6 @@ const QueryBookList = ({
           const books = data.bookSummaries;
           const hasNextPage = data.bookSummaries.pageInfo.hasNextPage;
           const hasPreviousPage = data.bookSummaries.pageInfo.hasPreviousPage;
-          const loading = networkStatus < 7;
           return children({
             loading,
             books,

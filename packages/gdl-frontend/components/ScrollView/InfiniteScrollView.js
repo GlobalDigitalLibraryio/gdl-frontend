@@ -200,6 +200,7 @@ class InfiniteScrollView extends Component<{
 
   handleScroll = (event: Event) => {
     const target: HTMLElement = (event.currentTarget: any);
+
     if (target.scrollLeft + target.clientWidth >= target.scrollWidth) {
       this.props.loadMore();
     }
