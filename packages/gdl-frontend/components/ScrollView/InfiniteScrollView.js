@@ -27,6 +27,7 @@ import BookLink from './BookLink';
 import LevelHR from '../Level/LevelHR';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import { coverWidths } from './coverWidths';
+import CarouselDots from './CarouselDots';
 
 import type { Book } from './BookLink';
 import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
@@ -45,28 +46,10 @@ type Props = {
   shouldBeColorized?: boolean
 };
 
-const DotContainer = styled('div')`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  overflow: hidden;
-  transition: all 0.5s ease;
-`;
-
-const Dot = styled('div')`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: white;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  transition: transform 0.5s ease;
-
-  background-color: #bbbbbb;
-`;
-
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 export default ({
+  page,
+  pageCount,
   hasNextPage,
   hasPreviousPage,
   loading,
@@ -85,14 +68,14 @@ export default ({
         <Typography component="h1" variant="h5" style={{ textAlign: 'left' }}>
           {heading}
         </Typography>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <DotContainer>
-            <Dot />
-            <Dot />
-            <Dot />
-            <Dot />
-            <Dot />
-          </DotContainer>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center'
+          }}
+        >
+          <CarouselDots length={pageCount} active={page} />
           {browseLinkProps && (
             <BrowseLink {...browseLinkProps}>
               {/* Negative margin to align the link against the edge of the container */}

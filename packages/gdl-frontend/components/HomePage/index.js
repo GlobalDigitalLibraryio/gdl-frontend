@@ -190,9 +190,13 @@ class HomePage extends React.Component<Props> {
                   hasNextPage,
                   hasPreviousPage,
                   goBack,
-                  loading
+                  loading,
+                  page,
+                  pageCount
                 }) => (
                   <InfiniteScrollView
+                    pageCount={pageCount}
+                    page={page}
                     loading={loading}
                     loadMore={loadMore}
                     goBack={goBack}
@@ -234,9 +238,13 @@ class HomePage extends React.Component<Props> {
                       hasNextPage,
                       hasPreviousPage,
                       goBack,
-                      loading
+                      loading,
+                      page,
+                      pageCount
                     }) => (
                       <InfiniteScrollView
+                        page={page}
+                        pageCount={pageCount}
                         loading={loading}
                         loadMore={loadMore}
                         goBack={goBack}

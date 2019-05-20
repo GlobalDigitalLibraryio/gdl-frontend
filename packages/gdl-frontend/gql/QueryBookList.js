@@ -175,7 +175,12 @@ const QueryBookList = ({
           const books = data.bookSummaries;
           const hasNextPage = data.bookSummaries.pageInfo.hasNextPage;
           const hasPreviousPage = data.bookSummaries.pageInfo.hasPreviousPage;
+          const page = data.bookSummaries.pageInfo.page;
+          const pageCount = data.bookSummaries.pageInfo.pageCount;
+
           return children({
+            page,
+            pageCount,
             loading,
             books,
             loadMore,
