@@ -33,10 +33,10 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
     );
   }
   return (
-    <FormattedMessage
-      id="Level"
-      defaultMessage="Level {level}"
-      values={{ level: level }}
-    />
+    <>
+      <FormattedMessage id="Level" defaultMessage="Level" />
+      {/* not a very good way to only get the level number (x) when its a possibility that we have levels that are not defined as 'LevelX'*/}
+      {` ${level.replace(/[^0-9]/g, '')}`}
+    </>
   );
 }
