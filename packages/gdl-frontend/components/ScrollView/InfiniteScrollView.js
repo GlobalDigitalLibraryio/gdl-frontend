@@ -36,8 +36,6 @@ type Props = {
   loadMore: () => void,
   goBack: () => void,
   pageInfo: any,
-  hasNextPage: boolean,
-  hasPreviousPage: boolean,
   loading: boolean,
   items: $ReadOnlyArray<Game | Book>,
   heading: typeof Trans,
@@ -48,10 +46,6 @@ type Props = {
 
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 export default ({
-  page,
-  pageCount,
-  hasNextPage,
-  hasPreviousPage,
   loading,
   loadMore,
   goBack,
@@ -75,7 +69,15 @@ export default ({
             alignItems: 'center'
           }}
         >
-          <CarouselDots length={pageCount} active={page} />
+          {/* Dont want to show dots if there is only one page */}
+          {pageInfo.pageCount > 1 && (
+            <Hidden only="tablet">
+              <CarouselDots
+                length={pageInfo.pageCount}
+                current={pageInfo.page - 1}
+              />
+            </Hidden>
+          )}
           {browseLinkProps && (
             <BrowseLink {...browseLinkProps}>
               {/* Negative margin to align the link against the edge of the container */}
@@ -102,8 +104,8 @@ export default ({
           level={level}
           loadMore={loadMore}
           items={items}
-          hasNextPage={hasNextPage}
-          hasPreviousPage={hasPreviousPage}
+          hasNextPage={pageInfo.hasNextPage}
+          hasPreviousPage={pageInfo.hasPreviousPage}
         />
       </Hidden>
       <Hidden only="mobile">

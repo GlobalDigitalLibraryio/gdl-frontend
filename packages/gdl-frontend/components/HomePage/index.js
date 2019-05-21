@@ -184,24 +184,11 @@ class HomePage extends React.Component<Props> {
                 language={languageCode}
                 orderBy="arrivalDate_DESC"
               >
-                {({
-                  books,
-                  loadMore,
-                  hasNextPage,
-                  hasPreviousPage,
-                  goBack,
-                  loading,
-                  page,
-                  pageCount
-                }) => (
+                {({ books, loadMore, goBack, loading }) => (
                   <InfiniteScrollView
-                    pageCount={pageCount}
-                    page={page}
                     loading={loading}
                     loadMore={loadMore}
                     goBack={goBack}
-                    hasNextPage={hasNextPage}
-                    hasPreviousPage={hasPreviousPage}
                     pageInfo={books.pageInfo}
                     shouldBeColorized
                     heading={<Trans>New arrivals</Trans>}
@@ -232,24 +219,11 @@ class HomePage extends React.Component<Props> {
                     language={languageCode}
                     orderBy="title_ASC"
                   >
-                    {({
-                      books,
-                      loadMore,
-                      hasNextPage,
-                      hasPreviousPage,
-                      goBack,
-                      loading,
-                      page,
-                      pageCount
-                    }) => (
+                    {({ books, loadMore, goBack, loading }) => (
                       <InfiniteScrollView
-                        page={page}
-                        pageCount={pageCount}
                         loading={loading}
                         loadMore={loadMore}
                         goBack={goBack}
-                        hasNextPage={hasNextPage}
-                        hasPreviousPage={hasPreviousPage}
                         pageInfo={books.pageInfo}
                         shouldBeColorized
                         level={level}
