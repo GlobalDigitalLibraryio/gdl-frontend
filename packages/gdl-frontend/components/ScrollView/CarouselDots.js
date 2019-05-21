@@ -7,9 +7,10 @@
  */
 import React, { PureComponent } from 'react';
 import styled from '@emotion/styled';
+import { colors } from '../../style/theme';
 
-const SIZE = 10;
-const VISIBLE = 5;
+const SIZE = 8;
+const VISIBLE = 4;
 const MARGIN = 1;
 
 const DotContainer = styled('div')`
@@ -40,7 +41,7 @@ const Dot = styled('div')`
   flex-shrink: 0;
   box-sizing: border-box;
   transition: transform 0.5s ease;
-  background-color: ${p => (p.active ? '#0c0c0c' : '#bbbbbb')};
+  background-color: ${p => (p.active ? colors.default : '#bbbbbb')};
   transform: ${p => (p.big ? 'scale(1.0)' : 'scale(0.5)')};
 `;
 
@@ -51,11 +52,11 @@ type Props = {
 
 export default class CarouselDots extends PureComponent<Props> {
   getTransform = () => {
-    if (this.props.length - 4 < this.props.current) {
+    if (this.props.length - VISIBLE < this.props.current) {
       return `translateX(-${(this.props.length - (VISIBLE + 1)) *
         (SIZE + 2 * MARGIN)}px)`;
     } else {
-      return `translateX(-${(this.props.current - (VISIBLE - 3)) *
+      return `translateX(-${(this.props.current - (VISIBLE - 2)) *
         (SIZE + 2 * MARGIN)}px)`;
     }
   };
@@ -73,7 +74,8 @@ export default class CarouselDots extends PureComponent<Props> {
     // The first dot should always be big if start pointer hasnt moved
     if (start === 0 && index === 0) return true;
     // Visible dots minus 1 should be small on initial pointers
-    if (current < 2 && index === 4 && length !== VISIBLE) return false;
+    if (current < VISIBLE - 3 && index === VISIBLE - 1 && length !== VISIBLE)
+      return false;
     // Check that the end dots should be big when you reach towards the end
     if (current > length - VISIBLE && index >= length - VISIBLE) return true;
     // Otherwise all dots inbetween start and end pointers are big dots
@@ -82,10 +84,9 @@ export default class CarouselDots extends PureComponent<Props> {
 
   render() {
     const { current, length } = this.props;
-
     // The start and end pointers shouldn't move unless current moves away from initial VISIBLE range
     const start = current < VISIBLE - 2 ? 0 : current - 2;
-    const end = current < VISIBLE - 2 ? VISIBLE : current + 3;
+    const end = current < VISIBLE - 2 ? VISIBLE : current + 2;
 
     return (
       <DotContainer style={{ width: this.getHolderWidth() }}>
