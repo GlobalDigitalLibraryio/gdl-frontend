@@ -20,6 +20,7 @@ import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons';
 
 import { spacing, misc } from '../../style/theme';
 import media from '../../style/media';
+import { LARGER_TABLET_BREAKPOINT } from '../../style/theme/misc';
 import colorMap from '../../style/colorMapping';
 import { Hidden } from '../../elements';
 import GameLink from './GameLink';
@@ -71,7 +72,7 @@ export default ({
         >
           {/* Dont want to show dots if there is only one page */}
           {pageInfo.pageCount > 1 && (
-            <Hidden only="tablet">
+            <Hidden only="desktop">
               <CarouselDots
                 length={pageInfo.pageCount}
                 current={pageInfo.page - 1}
@@ -96,7 +97,7 @@ export default ({
 
       {/* Adjust the space between items and the hr */}
       {shouldBeColorized && <LevelHR level={level} css={levelStyle} />}
-      <Hidden only="tablet">
+      <Hidden only="desktop">
         <PaginatedView
           loading={loading}
           goBack={goBack}
@@ -108,8 +109,12 @@ export default ({
           hasPreviousPage={pageInfo.hasPreviousPage}
         />
       </Hidden>
-      <Hidden only="mobile">
-        <InfiniteScrollView items={items} loadMore={loadMore} />
+      <Hidden only="mobileAndTablet">
+        <InfiniteScrollView
+          items={items}
+          loadMore={loadMore}
+          hasMore={pageInfo.hasNextPage}
+        />
       </Hidden>
     </ScrollContainer>
   );
@@ -207,6 +212,7 @@ const loadingStyle = css`
 `;
 
 class InfiniteScrollView extends Component<{
+  hasMore: boolean,
   items: $ReadOnlyArray<Game | Book>,
   loadMore: () => void
 }> {
@@ -221,6 +227,9 @@ class InfiniteScrollView extends Component<{
   };
 
   componentDidMount() {
+    if (window.innerWidth < LARGER_TABLET_BREAKPOINT) {
+      this.props.hasMore && this.props.loadMore();
+    }
     const list = this.scrollerRef.current;
     if (list) {
       list.addEventListener('scroll', this.handleScroll);
@@ -234,7 +243,7 @@ class InfiniteScrollView extends Component<{
   }
 
   render() {
-    const { items } = this.props;
+    const { items, hasMore } = this.props;
     return (
       <Scroller ref={this.scrollerRef}>
         {items.map((item: any) => (
@@ -242,11 +251,13 @@ class InfiniteScrollView extends Component<{
             <BookLink book={(item: Book)} />
           </div>
         ))}
-        <div css={itemStyle}>
-          <div css={loadingStyle}>
-            <CircularProgress size={25} />
+        {hasMore && (
+          <div css={itemStyle}>
+            <div css={loadingStyle}>
+              <CircularProgress size={25} />
+            </div>
           </div>
-        </div>
+        )}
       </Scroller>
     );
   }
@@ -272,7 +283,7 @@ const Header = styled('div')`
 
 const ScrollContainer = styled('div')`
   visibility: ${p => (p.hide ? 'hidden' : 'visible')};
-  ${media.tablet`
+  ${media.largerTablet`
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -294,7 +305,7 @@ const Scroller = styled('div')`
   display: flex;
   flex-direction: row;
 
-  ${media.tablet`
+  ${media.largerTablet`
   ::-webkit-scrollbar {
     display: none;
   }
