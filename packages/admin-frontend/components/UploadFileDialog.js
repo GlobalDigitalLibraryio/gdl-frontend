@@ -61,10 +61,18 @@ export default class UploadFileDialog extends React.Component<Props, State> {
         // $FlowFixMe
       ).description;
 
-    values.copyright.license.description = descriptionForLicense;
-
     if (this.props.selectedFile) {
-      const result = await uploadNewImage(this.props.selectedFile, values);
+      const data = {
+        alttext: values.alttext.alttext,
+        copyright: values.copyright,
+        externalId: values.externalId,
+        language: values.language,
+        tags: values.tags,
+        title: values.title.title,
+        caption: values.title.title
+      };
+      data.copyright.license.description = descriptionForLicense;
+      const result = await uploadNewImage(this.props.selectedFile, data);
       if (result.isOk) {
         this.props.onUpload(result.data.imageUrl);
       }
