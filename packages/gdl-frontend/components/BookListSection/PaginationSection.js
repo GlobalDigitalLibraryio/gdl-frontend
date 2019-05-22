@@ -103,6 +103,7 @@ export default class PaginationSection extends Component<Props> {
             level={level}
             loadMore={loadMore}
             items={items}
+            currentIndex={pageInfo.page}
             hasNextPage={pageInfo.hasNextPage}
             hasPreviousPage={pageInfo.hasPreviousPage}
           />

@@ -22,7 +22,7 @@ import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
 type Props = {
   loading: boolean,
   goBack: () => void,
-  pageInfo: any,
+  currentIndex: number,
   level?: ReadingLevel | 'Games',
   loadMore: () => void,
   items: $ReadOnlyArray<Game | Book>,
@@ -33,7 +33,7 @@ type Props = {
 const PaginationArrowView = ({
   loading,
   goBack,
-  pageInfo,
+  currentIndex,
   level,
   loadMore,
   items,
@@ -75,7 +75,7 @@ const PaginationArrowView = ({
 
       <PaginationScrollGrid>
         {items
-          .slice((pageInfo.page - 1) * 5, pageInfo.page * 5)
+          .slice((currentIndex - 1) * 5, currentIndex * 5)
           .map((item: any) => (
             <div className={itemStyle} key={item.id}>
               {level === 'Games' ? (
