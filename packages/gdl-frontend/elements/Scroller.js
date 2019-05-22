@@ -10,7 +10,7 @@ import styled from '@emotion/styled';
 
 import { misc } from '../style/theme';
 import media from '../style/media';
-import { coverWidths } from '../components/ScrollView/coverWidths';
+import { coverWidths } from '../components/BookListSection/coverWidths';
 
 export const COLUMN_GAP = 15;
 

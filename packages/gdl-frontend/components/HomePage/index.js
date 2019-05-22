@@ -29,8 +29,8 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import ScrollView from '../../components/ScrollView';
-import InfiniteScrollView from '../ScrollView/InfiniteScrollView';
+import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
+import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
@@ -185,7 +185,7 @@ class HomePage extends React.Component<Props> {
                 orderBy="arrivalDate_DESC"
               >
                 {({ books, loadMore, goBack, loading }) => (
-                  <InfiniteScrollView
+                  <PaginationSection
                     loading={loading}
                     loadMore={loadMore}
                     goBack={goBack}
@@ -220,7 +220,7 @@ class HomePage extends React.Component<Props> {
                     orderBy="title_ASC"
                   >
                     {({ books, loadMore, goBack, loading }) => (
-                      <InfiniteScrollView
+                      <PaginationSection
                         loading={loading}
                         loadMore={loadMore}
                         goBack={goBack}
@@ -244,7 +244,7 @@ class HomePage extends React.Component<Props> {
           {category === 'Library' && (
             <View css={scrollStyle}>
               <Container width="100%">
-                <ScrollView
+                <BooksAndShimmerView
                   items={games}
                   shouldBeColorized
                   level="Games"

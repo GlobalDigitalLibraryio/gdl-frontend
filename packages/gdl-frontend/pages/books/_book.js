@@ -35,7 +35,7 @@ import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
 import { Container, IconButton, Hidden, View } from '../../elements';
 import CoverImage from '../../components/CoverImage';
-import ScrollView from '../../components/ScrollView';
+import BooksAndShimmerView from '../../components/BookListSection/BooksAndShimmerView';
 import { spacing, misc } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
@@ -229,7 +229,7 @@ class BookPage extends React.Component<{ book: Book }> {
 
                     return (
                       <View mb={spacing.medium}>
-                        <ScrollView
+                        <BooksAndShimmerView
                           loading={loading && !data.book}
                           heading={<Trans>Similar</Trans>}
                           items={data.book ? data.book.similar.results : []}
