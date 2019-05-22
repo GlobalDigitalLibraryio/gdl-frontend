@@ -48,6 +48,12 @@ const PaginationArrowView = ({
     height: 40px;
     border: 2px solid ${level ? colorMap[level] : '#B4A4E5'};
     border-radius: 50%;
+
+    &:hover,
+    &:focus {
+      transition: all 0.2s ease-in;
+      background-color: ${level ? colorMap[level] : '#B4A4E5'};
+    }
   `;
 
   const backStyle = css`
