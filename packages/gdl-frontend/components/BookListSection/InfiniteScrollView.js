@@ -84,7 +84,7 @@ export default class InfiniteScrollView extends Component<Props> {
           </div>
         ))}
         {hasMore && (
-          <div css={itemStyle}>
+          <div css={itemStyle} tabIndex="0" aria-label="loading more books">
             <div css={loadingStyle}>
               <CircularProgress size={25} />
             </div>
