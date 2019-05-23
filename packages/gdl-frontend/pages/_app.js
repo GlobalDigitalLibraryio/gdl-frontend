@@ -35,6 +35,9 @@ import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
 
+// Load falback locale catalog with english
+const en = require('../locale/en/en');
+
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
 
@@ -58,7 +61,7 @@ const getLanguageCatalog = async language => {
     .catch(error => {
       const { data, status, statusText } = error.response;
       console.error({ data, status, statusText });
-      return { en: 'en' };
+      return { [language]: en };
     });
   return translation[language];
 };
@@ -77,7 +80,7 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const { req } = ctx;
+    const { req, query } = ctx;
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
     const response = req || window.__NEXT_DATA__.props;
 
@@ -87,12 +90,16 @@ class App extends NextApp {
     if (!localeCatalog) {
       // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
       const language: string =
+        (query && query.lang) ||
         response.siteLanguage ||
-        parseCookies(response.headers.cookie)['siteLanguage'];
+        (response.headers &&
+          parseCookies(response.headers.cookie)['siteLanguage']);
+
       localeCatalog = await getLanguageCatalog(language);
     }
 
-    const siteLanguage = response.siteLanguage || getSiteLanguage(req);
+    const siteLanguage =
+      (query && query.lang) || response.siteLanguage || getSiteLanguage(req);
 
     return { pageProps, localeCatalog, siteLanguage };
   }

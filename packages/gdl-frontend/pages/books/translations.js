@@ -274,7 +274,9 @@ class TranslationCard extends React.Component<
                   <ArrowForwardIcon style={{ fontSize: 40 }} />
                 </Grid>
                 <Grid item>
-                  <Typography variant="body1">To:</Typography>
+                  <Typography variant="body1">
+                    <FormattedMessage id="To" defaultMessage="To:" />
+                  </Typography>
                   <Typography variant="h6">
                     {translateTo.language.name}
                   </Typography>
