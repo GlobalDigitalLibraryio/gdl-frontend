@@ -340,7 +340,8 @@ class MyTranslationsPage extends React.PureComponent<{}> {
           >
             <Trans>My translations</Trans>
           </Typography>
-          <Query query={MY_TRANSLATION_QUERY}>
+          {/* https://www.apollographql.com/docs/react/essentials/queries#props partialRefetch*/}
+          <Query query={MY_TRANSLATION_QUERY} partialRefetch>
             {({
               loading,
               error,
