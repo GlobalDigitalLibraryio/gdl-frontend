@@ -71,13 +71,19 @@ const PaginationArrowView = ({
     align-items: center;
   `;
 
+  const itemStyle = css`
+    display: inline-block;
+  `;
+
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <div css={backStyle}>
-        <ButtonBase css={buttonStyle} aria-label="Add" onClick={goBack}>
-          <KeyboardArrowLeft fontSize="large" />
-        </ButtonBase>
-      </div>
+      {currentIndex - 1 > 0 && (
+        <div css={backStyle}>
+          <ButtonBase css={buttonStyle} aria-label="Add" onClick={goBack}>
+            <KeyboardArrowLeft fontSize="large" />
+          </ButtonBase>
+        </div>
+      )}
 
       <PaginationScrollGrid>
         {items
@@ -92,22 +98,20 @@ const PaginationArrowView = ({
             </div>
           ))}
       </PaginationScrollGrid>
-      <div css={forwardStyle}>
-        <ButtonBase
-          css={buttonStyle}
-          aria-label="Add"
-          onClick={loadMore}
-          disabled={loading}
-        >
-          <KeyboardArrowRight fontSize="large" />
-        </ButtonBase>
-      </div>
+      {hasNextPage && (
+        <div css={forwardStyle}>
+          <ButtonBase
+            css={buttonStyle}
+            aria-label="Add"
+            onClick={loadMore}
+            disabled={loading}
+          >
+            <KeyboardArrowRight fontSize="large" />
+          </ButtonBase>
+        </div>
+      )}
     </div>
   );
 };
-
-const itemStyle = css`
-  display: inline-block;
-`;
 
 export default PaginationArrowView;
