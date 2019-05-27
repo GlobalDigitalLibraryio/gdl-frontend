@@ -20,16 +20,11 @@ const DotContainer = styled('div')`
   overflow: hidden;
   transition: all 0.5s ease;
   margin-right: 10px;
-  height: ${SIZE * 2};
 `;
 
 const DotHolder = styled('div')`
   flex-shrink: 0;
   transition: transform 0.5s ease;
-  height: ${SIZE};
-  width: ${SIZE};
-  marginright: ${MARGIN};
-  marginleft: ${MARGIN};
 `;
 
 const Dot = styled('div')`

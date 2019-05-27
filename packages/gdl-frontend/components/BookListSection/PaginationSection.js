@@ -122,9 +122,6 @@ export default class PaginationSection extends Component<Props> {
 
 const levelStyle = css`
   margin-bottom: ${spacing.medium};
-  ${media.tablet`
-    max-width: ${misc.containers.small};
-  `}
 `;
 
 const Header = styled('div')`

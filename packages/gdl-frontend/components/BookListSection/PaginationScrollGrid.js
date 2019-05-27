@@ -13,6 +13,8 @@ import media from '../../style/media';
 import { coverWidths } from './coverWidths';
 
 const COLUMN_GAP = 15;
+/* This carefully calcluated value allows us to "scroll" across gutter on devices that require it */
+const GUTTER_GAP = COLUMN_GAP * 4 + coverWidths.small * 5 + misc.gutter * 2;
 
 const PaginationScrollGrid = styled('div')`
   overflow-x: scroll;
@@ -44,9 +46,7 @@ const PaginationScrollGrid = styled('div')`
       grid-template-columns: repeat(5, ${coverWidths.large}px);
 
       /* This carefully calcluated value allows us to "scroll" across gutter on devices that require it */
-      @media (max-width: ${COLUMN_GAP * 4 +
-        coverWidths.small * 5 +
-        misc.gutter * 2}px) {
+      @media (max-width: ${GUTTER_GAP}px) {
         grid-template-columns: repeat(4, ${
           coverWidths.small
         }px) ${coverWidths.small + misc.gutter}px;
