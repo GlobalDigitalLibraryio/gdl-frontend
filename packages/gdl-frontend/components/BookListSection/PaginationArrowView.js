@@ -10,6 +10,7 @@ import React from 'react';
 import { ButtonBase } from '@material-ui/core';
 import { css } from '@emotion/core';
 import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons';
+import styled from '@emotion/styled';
 
 import colorMap from '../../style/colorMapping';
 import GameLink from './GameLink';
@@ -56,34 +57,15 @@ const PaginationArrowView = ({
     }
   `;
 
-  const backStyle = css`
-    visibility: ${hasPreviousPage ? 'visible' : 'hidden'};
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const forwardStyle = css`
-    visibility: ${hasNextPage ? 'visible' : 'hidden'};
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
-
-  const itemStyle = css`
-    display: inline-block;
-  `;
-
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
-      {currentIndex - 1 > 0 && (
-        <div css={backStyle}>
+      <ButtonContainer level={level}>
+        {hasPreviousPage && (
           <ButtonBase css={buttonStyle} aria-label="Add" onClick={goBack}>
             <KeyboardArrowLeft fontSize="large" />
           </ButtonBase>
-        </div>
-      )}
+        )}
+      </ButtonContainer>
 
       <PaginationScrollGrid>
         {items
@@ -98,8 +80,9 @@ const PaginationArrowView = ({
             </div>
           ))}
       </PaginationScrollGrid>
-      {hasNextPage && (
-        <div css={forwardStyle}>
+
+      <ButtonContainer level={level}>
+        {hasNextPage && (
           <ButtonBase
             css={buttonStyle}
             aria-label="Add"
@@ -108,10 +91,22 @@ const PaginationArrowView = ({
           >
             <KeyboardArrowRight fontSize="large" />
           </ButtonBase>
-        </div>
-      )}
+        )}
+      </ButtonContainer>
     </div>
   );
 };
+
+const ButtonContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 100%;
+`;
+
+const itemStyle = css`
+  display: inline-block;
+`;
 
 export default PaginationArrowView;
