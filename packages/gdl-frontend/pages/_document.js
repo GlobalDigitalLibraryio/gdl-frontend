@@ -7,12 +7,10 @@
  */
 
 import React from 'react';
-import { NextScript } from '@engineerapart/nextscript';
-import NextDocument, { Head, Main } from 'next/document';
+import NextDocument, { Head, Main, NextScript } from 'next/document';
 import { globalVarName, GDL_ENVIRONMENT } from 'gdl-config';
 
 import type { Context } from '../types';
-import polyfills from '../polyfills';
 import config from '../config';
 
 const favIcon = '/static/img/favicon-32x32.png';
@@ -120,7 +118,7 @@ if (/iP(?:hone|ad|od)/.test(navigator.userAgent)) {
         </Head>
         <body>
           <Main />
-          <NextScript features={polyfills} allowUserMonitoring={false} />
+          <NextScript />
         </body>
       </html>
     );
