@@ -89,6 +89,6 @@
     "jest-emotion": "10.0.7",
     "react-test-renderer": "16.6.3",
     "service-worker-mock": "1.10.1",
-    "webpack-bundle-analyzer": "3.0.3"
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }
