@@ -23,7 +23,8 @@ const {
     REPORT_ERRORS,
     SENTRY_PUBLIC_KEY,
     SENTRY_PROJECT_ID,
-    siteTranslationServiceUrl
+    siteTranslationServiceUrl,
+    DEFAULT_LANGUAGE
   },
   serverRuntimeConfig: { port }
 } = require('../config');
@@ -46,7 +47,8 @@ const handle = routes.getRequestHandler(
   app,
   async ({ req, res, route, query }) => {
     // We set precedence for how we get, and sets site language
-    const siteLang = query.lang || req.cookies['siteLanguage'] || 'en';
+    const siteLang =
+      query.lang || req.cookies['siteLanguage'] || DEFAULT_LANGUAGE.code;
     req.localeCatalog = await getLanguageCatalog(siteLang);
     req.siteLang = siteLang;
     renderAndCache(req, res, route.page, query);

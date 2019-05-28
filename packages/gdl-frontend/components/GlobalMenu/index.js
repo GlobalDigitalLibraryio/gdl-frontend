@@ -48,6 +48,13 @@ class GlobalMenu extends React.Component<Props, State> {
     swipeDisabled: false
   };
 
+  shouldComponentUpdate(nextProps: Props, nextState: State) {
+    return (
+      this.props.isOpen !== nextProps.isOpen ||
+      this.state.swipeDisabled !== nextState.swipeDisabled
+    );
+  }
+
   static contextType = OnlineStatusContext;
 
   disableSwipe = () => this.setState({ swipeDisabled: true });
