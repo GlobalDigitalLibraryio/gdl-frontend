@@ -8,7 +8,7 @@
 
 import React from 'react';
 import { Button, Typography } from '@material-ui/core';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 
 import { View, Scroller, Shimmer } from '../../elements';
 import { itemStyle } from '../../elements/Shimmer';
@@ -24,7 +24,7 @@ import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
 type Props = {
   items: $ReadOnlyArray<Game | Book>,
   loading?: boolean,
-  heading: typeof Trans,
+  heading: typeof FormattedMessage,
   browseLinkProps?: BrowseLinkProps,
   level?: ReadingLevel | 'Games',
   shouldBeColorized?: boolean
@@ -64,7 +64,7 @@ const ScrollView = ({
             size="small"
             variant="outlined"
           >
-            <Trans>More</Trans>
+            <FormattedMessage id="More" defaultMessage="More" />
           </Button>
         </BrowseLink>
       )}

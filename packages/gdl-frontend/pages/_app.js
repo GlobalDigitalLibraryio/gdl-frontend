@@ -11,6 +11,7 @@ import NextApp, { Container as NextContainer } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
 import Router from 'next/router';
+import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
@@ -22,7 +23,8 @@ import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProv
 import getPageContext from '../getPageContext';
 import initSentry from '../lib/initSentry';
 import type { Context } from '../types';
-import GdlI18nProvider from '../components/GdlI18nProvider';
+import { GdlI18nProvider } from '../components/GdlI18nProvider';
+import { addLocaleData } from 'react-intl';
 import { LOGOUT_KEY } from '../lib/auth/token';
 import { DEFAULT_TITLE } from '../components/Head';
 import { logPageView, logEvent, initGA } from '../lib/analytics';
@@ -30,9 +32,39 @@ import { facebookPixelPageView, initFacebookPixel } from '../lib/facebookPixel';
 import { register as registerServiceWorker } from '../registerServiceWorker';
 import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
+import { getSiteLanguage } from '../lib/storage';
+import { parseCookies } from '../utils/util';
+
+// Load falback locale catalog with english
+const en = require('../locale/en/en');
 
 // We want to do this as soon as possible so if the site crashes during rehydration we get the event
 initSentry();
+
+// Register React Intl's locale data for the user's locale in the browser. This
+// locale data was added to the page by `pages/_document.js`. This only happens
+// once, on initial page load in the browser.
+if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
+  Object.keys(window.ReactIntlLocaleData).forEach(lang => {
+    addLocaleData(window.ReactIntlLocaleData[lang]);
+  });
+}
+
+// We need to expose React Intl's locale data on the request for the user's
+const getLanguageCatalog = async language => {
+  const translation = await axios(
+    `https://api.test.digitallibrary.io/site-translations-service/${language}`
+  )
+    .then(res => {
+      return res.data;
+    })
+    .catch(error => {
+      const { data, status, statusText } = error.response;
+      console.error({ data, status, statusText });
+      return { [language]: en };
+    });
+  return translation[language];
+};
 
 class App extends NextApp {
   static async getInitialProps({
@@ -48,7 +80,28 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    return { pageProps };
+    const { req, query } = ctx;
+    // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+    const response = req || window.__NEXT_DATA__.props;
+
+    // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+    let localeCatalog = response.localeCatalog;
+
+    if (!localeCatalog) {
+      // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
+      const language: string =
+        (query && query.lang) ||
+        response.siteLanguage ||
+        (response.headers &&
+          parseCookies(response.headers.cookie)['siteLanguage']);
+
+      localeCatalog = await getLanguageCatalog(language);
+    }
+
+    const siteLanguage =
+      (query && query.lang) || response.siteLanguage || getSiteLanguage(req);
+
+    return { pageProps, localeCatalog, siteLanguage };
   }
 
   constructor(props: { apolloClient: ApolloClient }) {
@@ -128,15 +181,31 @@ class App extends NextApp {
   };
 
   render() {
-    const { Component, pageProps, apolloClient } = this.props;
+    const {
+      Component,
+      pageProps,
+      apolloClient,
+      localeCatalog,
+      siteLanguage
+    } = this.props;
     return (
       <NextContainer>
         <GlobalStyles />
         <ApolloProvider client={apolloClient}>
           <Head>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `window.__LOCALE_CATALOG__=${JSON.stringify(
+                  this.props.localeCatalog
+                ).replace(/</g, '\\u003c')};`
+              }}
+            />
             <title>{DEFAULT_TITLE}</title>
           </Head>
-          <GdlI18nProvider>
+          <GdlI18nProvider
+            initialCatalog={localeCatalog}
+            initialSiteLanguage={siteLanguage}
+          >
             {/* Wrap every page in Jss and Theme providers */}
             <JssProvider
               jss={this.pageContext.jss}

@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import Link from 'next/link';
 import {
   Divider,
@@ -83,7 +83,10 @@ class GlobalMenu extends React.Component<Props, State> {
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
-                      <Trans>Book language</Trans>
+                      <FormattedMessage
+                        id="Book language"
+                        defaultMessage="Book language"
+                      />
                     </ListItemText>
                     {loading ? (
                       <CircularProgress size={24} />
@@ -101,7 +104,10 @@ class GlobalMenu extends React.Component<Props, State> {
                 {({ onClick, loading }) => (
                   <ListItem button onClick={onClick}>
                     <ListItemText>
-                      <Trans>Categories</Trans>
+                      <FormattedMessage
+                        id="Categories"
+                        defaultMessage="Categories"
+                      />
                     </ListItemText>
                     {loading ? (
                       <CircularProgress size={24} />
@@ -122,7 +128,10 @@ class GlobalMenu extends React.Component<Props, State> {
                     <FavoriteIcon filled />
                   </ListItemIcon>
                   <ListItemText>
-                    <Trans>Favorites</Trans>
+                    <FormattedMessage
+                      id="Favorites"
+                      defaultMessage="Favorites"
+                    />
                   </ListItemText>
                 </ListItem>
               </RouteLink>
@@ -139,7 +148,10 @@ class GlobalMenu extends React.Component<Props, State> {
                   <OfflineIcon filled />
                 </ListItemIcon>
                 <ListItemText>
-                  <Trans>Offline library</Trans>
+                  <FormattedMessage
+                    id="Offline library"
+                    defaultMessage="Offline library"
+                  />
                 </ListItemText>
               </ListItem>
             </RouteLink>
@@ -156,7 +168,10 @@ class GlobalMenu extends React.Component<Props, State> {
                     <TranslateIcon />
                   </ListItemIcon>
                   <ListItemText>
-                    <Trans>My translations</Trans>
+                    <FormattedMessage
+                      id="My translations"
+                      defaultMessage="My translations"
+                    />
                   </ListItemText>
                 </ListItem>
               </RouteLink>
@@ -168,7 +183,10 @@ class GlobalMenu extends React.Component<Props, State> {
                         <EditIcon />
                       </ListItemIcon>
                       <ListItemText>
-                        <Trans>GDL Admin</Trans>
+                        <FormattedMessage
+                          id="GDL Admin"
+                          defaultMessage="GDL Admin"
+                        />
                       </ListItemText>
                     </ListItem>
                   )
@@ -181,7 +199,7 @@ class GlobalMenu extends React.Component<Props, State> {
                       <ExitToAppIcon />
                     </ListItemIcon>
                     <ListItemText>
-                      <Trans>Log out</Trans>
+                      <FormattedMessage id="Log out" defaultMessage="Log out" />
                     </ListItemText>
                   </ListItem>
                 </Link>
@@ -196,7 +214,7 @@ class GlobalMenu extends React.Component<Props, State> {
                       <ExitToAppIcon css={{ transform: 'rotate(180deg)' }} />
                     </ListItemIcon>
                     <ListItemText>
-                      <Trans>Log in</Trans>
+                      <FormattedMessage id="Log in" defaultMessage="Log in" />
                     </ListItemText>
                   </ListItem>
                 </Link>

@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Query } from 'react-apollo';
 import NextLink from 'next/link';
 import getConfig from 'next/config';
@@ -187,7 +187,8 @@ class BookPage extends React.Component<{ book: Book }> {
                     </Typography>
 
                     <Typography paragraph variant="subtitle1">
-                      <Trans>from {book.publisher.name}</Trans>
+                      <FormattedMessage id="from" defaultMessage="from" />
+                      {` ${book.publisher.name}`}
                     </Typography>
 
                     <Typography lang={book.language.code} paragraph>
@@ -231,7 +232,12 @@ class BookPage extends React.Component<{ book: Book }> {
                       <View mb={spacing.medium}>
                         <ScrollView
                           loading={loading && !data.book}
-                          heading={<Trans>Similar</Trans>}
+                          heading={
+                            <FormattedMessage
+                              id="Similar"
+                              defaultMessage="Similar"
+                            />
+                          }
                           items={data.book ? data.book.similar.results : []}
                         />
                       </View>
@@ -246,8 +252,13 @@ class BookPage extends React.Component<{ book: Book }> {
     );
   }
 }
-
-const ReadBookLink = ({ book, cypressTarget }) =>
+const translations = defineMessages({
+  download: {
+    id: 'This book is only available for download',
+    defaultMessage: 'This book is only available for download'
+  }
+});
+const ReadBookLink = injectIntl(({ book, cypressTarget, intl }) =>
   book.bookFormat === 'HTML' ? (
     <Link
       route="read"
@@ -263,23 +274,24 @@ const ReadBookLink = ({ book, cypressTarget }) =>
         fullWidth
         onClick={() => logEvent('Books', 'Read', book.title)}
       >
-        <Trans>Read book</Trans>
+        <FormattedMessage id="Read book" defaultMessage="Read book" />
       </Button>
     </Link>
   ) : (
     <>
       <Button size="large" variant="raised" disabled fullWidth>
-        <Trans>Read book</Trans>
+        <FormattedMessage id="Read book" defaultMessage="Read book" />
       </Button>
       <Typography
         align="center"
         css={{ marginTop: spacing.small }}
         variant="caption"
       >
-        This book is only available for download.
+        {intl.formatMessage(translations.download)}
       </Typography>
     </>
-  );
+  )
+);
 
 /**
  * Favorite, share, offline
@@ -325,7 +337,9 @@ class BookActions1 extends React.Component<
                     filled={isFav}
                   />
                 }
-                label={<Trans>Favorite</Trans>}
+                label={
+                  <FormattedMessage id="Favorite" defaultMessage="Favorite" />
+                }
               />
             )}
           </Favorite>
@@ -345,7 +359,12 @@ class BookActions1 extends React.Component<
                       />
                     }
                     onClick={onClick}
-                    label={<Trans>Save offline</Trans>}
+                    label={
+                      <FormattedMessage
+                        id="Save offline"
+                        defaultMessage="Save offline"
+                      />
+                    }
                   />
                 )}
               </Offline>
@@ -398,7 +417,7 @@ class BookActions2 extends React.Component<
             disabled={offline}
           >
             <SaveAltIcon css={{ marginRight: spacing.xsmall }} />
-            <Trans>Download</Trans>
+            <FormattedMessage id="Download" defaultMessage="Download" />
           </Button>
         </div>
 
@@ -416,7 +435,10 @@ class BookActions2 extends React.Component<
                 disabled={offline}
               >
                 <TranslateIcon css={{ marginRight: spacing.xsmall }} />{' '}
-                <Trans>Translate this book</Trans>
+                <FormattedMessage
+                  id="Translate this book"
+                  defaultMessage="Translate this book"
+                />
               </Button>
             </Link>
           </div>
@@ -452,7 +474,10 @@ class BookActions2 extends React.Component<
             onClick={() => logEvent('Books', 'Report', book.title)}
           >
             <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}
-            <Trans>Report a problem</Trans>
+            <FormattedMessage
+              id="Report a problem"
+              defaultMessage="Report a problem"
+            />
           </Button>
         </div>
 
@@ -472,7 +497,10 @@ class BookActions2 extends React.Component<
                 logEvent('Books', 'Downloaded ePub', book.title);
               }}
             >
-              <Trans>E-book (EPUB)</Trans>
+              <FormattedMessage
+                id="E-book (EPUB)"
+                defaultMessage="E-book (EPUB)"
+              />
             </MenuItem>
           )}
           {book.downloads.pdf && (
@@ -484,7 +512,10 @@ class BookActions2 extends React.Component<
                 logEvent('Books', 'Downloaded PDF', book.title);
               }}
             >
-              <Trans>Printable book (PDF)</Trans>
+              <FormattedMessage
+                id="Printable book (PDF)"
+                defaultMessage="Printable book (PDF)"
+              />
             </MenuItem>
           )}
         </Menu>

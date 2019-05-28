@@ -2,17 +2,6 @@
   "name": "gdl-frontend",
   "private": true,
   "version": "0.0.1",
-  "lingui": {
-    "fallbackLocale": "en",
-    "sourceLocale": "en",
-    "srcPathDirs": [
-      "<rootDir>/components/",
-      "<rootDir>/pages/",
-      "<rootDir>/hocs/",
-      "<rootDir>/elements/"
-    ],
-    "format": "minimal"
-  },
   "jest": {
     "setupFiles": [
       "./jest.setup.js"
@@ -20,20 +9,15 @@
   },
   "scripts": {
     "dev": "node server",
-    "build": "npm run i18n:extract && npm run i18n:compile && next build",
+    "build": "yarn i18n:extract && next build",
     "start": "NODE_ENV=production node server",
-    "i18n:extract": "node_modules/@lingui/cli/lingui.js extract --clean",
-    "i18n:compile": "node_modules/@lingui/cli/lingui.js compile",
-    "i18n:add-locale": "node_modules/@lingui/cli/lingui.js add-locale",
+    "i18n:extract": "node_modules/extract-react-intl-messages/cli.js -l=en -o locale/en './**/*.js'",
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
     "@emotion/core": "10.0.7",
     "@emotion/styled": "10.0.7",
     "@engineerapart/nextscript": "1.0.2",
-    "@lingui/babel-preset-react": "2.7.2",
-    "@lingui/cli": "2.7.2",
-    "@lingui/react": "2.7.2",
     "@material-ui/core": "3.6.1",
     "@material-ui/icons": "3.0.1",
     "@sentry/browser": "4.4.2",
@@ -46,12 +30,15 @@
     "apollo-link-retry": "^2.2.13",
     "apollo-link-timeout": "^1.2.1",
     "auth0-js": "9.8.2",
+    "axios": "^0.18.0",
     "babel-plugin-emotion": "10.0.6",
+    "babel-plugin-react-intl": "^3.0.1",
     "clean-webpack-plugin": "1.0.0",
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
     "express": "4.16.4",
     "express-request-language": "^1.1.15",
+    "extract-react-intl-messages": "^1.0.1",
     "facepaint": "1.2.1",
     "gdl-auth": "^0.0.0",
     "gdl-config": "^0.0.0",
@@ -74,6 +61,7 @@
     "react-content-loader": "3.4.1",
     "react-dom": "16.8.4",
     "react-ga": "2.5.3",
+    "react-intl": "^2.8.0",
     "react-joyride": "2.0.5",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",

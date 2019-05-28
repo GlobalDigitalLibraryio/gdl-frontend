@@ -15,15 +15,22 @@ const { GDL_ENVIRONMENT } = require('gdl-config');
 const glob = require('glob');
 const csp = require('helmet-csp');
 const { join } = require('path');
+const axios = require('axios');
 
 const routes = require('../routes');
 const {
-  publicRuntimeConfig: { REPORT_ERRORS, SENTRY_PUBLIC_KEY, SENTRY_PROJECT_ID },
+  publicRuntimeConfig: {
+    REPORT_ERRORS,
+    SENTRY_PUBLIC_KEY,
+    SENTRY_PROJECT_ID,
+    siteTranslationServiceUrl
+  },
   serverRuntimeConfig: { port }
 } = require('../config');
 const contentSecurityPolicy = require('./contentSecurityPolicy');
 
-const languages = glob.sync('locale/*/messages.js').map(f => f.split('/')[1]);
+const defaultLangTranslations = require('../locale/en/en.json');
+const languages = glob.sync('locale/*/en.json').map(f => f.split('/')[1]);
 console.log('> Found translations for the following languages: ', languages);
 console.log('> GDL environment: ', GDL_ENVIRONMENT);
 console.log('> Will report errors: ', REPORT_ERRORS);
@@ -35,9 +42,30 @@ const app = next({ dev: isDev });
 const renderAndCache = require('./cache')(app);
 
 // Use cache and next-routes for custom routing
-const handle = routes.getRequestHandler(app, ({ req, res, route, query }) => {
-  renderAndCache(req, res, route.page, query);
-});
+const handle = routes.getRequestHandler(
+  app,
+  async ({ req, res, route, query }) => {
+    // We set precedence for how we get, and sets site language
+    const siteLang = query.lang || req.cookies['siteLanguage'] || 'en';
+    req.localeCatalog = await getLanguageCatalog(siteLang);
+    req.siteLang = siteLang;
+    renderAndCache(req, res, route.page, query);
+  }
+);
+
+// We need to expose React Intl's locale data on the request for the user's
+const getLanguageCatalog = async language => {
+  const translation = await axios(`${siteTranslationServiceUrl}/${language}`)
+    .then(res => {
+      return res.data;
+    })
+    .catch(error => {
+      const { data, status, statusText } = error.response;
+      console.error({ data, status, statusText });
+      return { en: defaultLangTranslations };
+    });
+  return translation[language];
+};
 
 app.prepare().then(() => {
   const server = express();

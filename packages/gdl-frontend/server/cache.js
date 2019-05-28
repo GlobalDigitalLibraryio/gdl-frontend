@@ -46,7 +46,8 @@ function getCacheKey(req) {
   if (path === '/') {
     const bookLanguage = req.cookies.bookLanguage;
     const bookCategory = req.cookies.bookCategory;
-    return `${path}-${bookLanguage}-${bookCategory}`;
+    const siteLanguage = req.cookies.siteLanguage;
+    return `${path}-${siteLanguage}-${bookLanguage}-${bookCategory}`;
   }
 
   return req.url;

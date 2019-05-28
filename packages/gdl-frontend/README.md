@@ -26,11 +26,11 @@ $ apollo client:codegen ./gqlTypes.js --outputFlat --includes "{pages,components
 
 ### Translations
 
-For i18n we use [lingui](https://github.com/lingui/js-lingui).
+For i18n we use [react-intl](https://github.com/yahoo/react-intl).
 
 #### Updating translations
 
-Whenever new texts that are to be translated using lingui are added, run the following command to update the existing translation files:
+Whenever new texts that are to be translated using react-intl are added, run the following command to update the existing translation files:
 
 ```
 $ yarn run i18n:extract

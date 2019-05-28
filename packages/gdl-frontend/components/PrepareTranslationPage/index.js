@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import {
   ArrowForward as ArrowForwardIcon,
   ArrowDownward as ArrowDownwardIcon
@@ -135,7 +135,10 @@ class PrepareTranslatePage extends React.Component<Props, State> {
           align="center"
           css={{ marginBottom: spacing.large }}
         >
-          <Trans>Translate book</Trans>
+          <FormattedMessage
+            id="Translate book"
+            defaultMessage="Translate book"
+          />
         </Typography>
         <Card>
           <CardContent>
@@ -160,8 +163,8 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 </Typography>
 
                 <Typography paragraph variant="subtitle1">
-                  <Trans>from</Trans>
-                  {book.publisher.name}
+                  <FormattedMessage id="from" defaultMessage="from" />
+                  {` ${book.publisher.name}`}
                 </Typography>
 
                 <Typography lang={book.language.code} paragraph>
@@ -183,7 +186,11 @@ class PrepareTranslatePage extends React.Component<Props, State> {
         >
           <Grid item md={4} xs={12}>
             <Typography variant="body2" color="textSecondary" component="span">
-              <Trans gutterBottom>Translate from</Trans>
+              <FormattedMessage
+                id="Translate from"
+                defaultMessage="Translate from"
+                gutterBottom
+              />
             </Typography>
             <Typography
               color="inherit"
@@ -207,13 +214,19 @@ class PrepareTranslatePage extends React.Component<Props, State> {
           </Grid>
           <Grid item md={4} xs={12}>
             <Typography variant="body2" color="textSecondary" component="span">
-              <Trans>Translate to</Trans>
+              <FormattedMessage
+                id="Translate to"
+                defaultMessage="Translate to"
+              />
             </Typography>
             <Button color="primary" onClick={this.toggleLanguageMenu}>
               {selectedLanguage ? (
                 selectedLanguage.name
               ) : (
-                <Trans>Select language</Trans>
+                <FormattedMessage
+                  id="Select language"
+                  defaultMessage="Select language"
+                />
               )}
             </Button>
           </Grid>
@@ -249,7 +262,10 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 size="large"
                 css={{ borderRadius: 2 }}
               >
-                <Trans>Start translation</Trans>
+                <FormattedMessage
+                  id="Start translation"
+                  defaultMessage="Start translation"
+                />
               </Button>
               <TranslateDropdown
                 ref={this.anchorEl}
@@ -271,24 +287,27 @@ class PrepareTranslatePage extends React.Component<Props, State> {
                 variant="outlined"
                 css={{ borderRadius: 2 }}
               >
-                <Trans>Prepare translation</Trans>
+                <FormattedMessage
+                  id="Prepare translation"
+                  defaultMessage="Prepare translation"
+                />
               </LoadingButton>
               {translationState === translationStates.PREPARING && (
                 <Typography css={{ marginTop: spacing.medium }}>
-                  <Trans>
-                    Please wait while we’re preparing the book for translation.
-                    This could take some time.
-                  </Trans>
+                  <FormattedMessage
+                    id="Prepare translation time"
+                    defaultMessage="Please wait while we’re preparing the book for translation. This could take some time."
+                  />
                 </Typography>
               )}
             </>
           )}
           {translationState === translationStates.ERROR && (
             <Typography color="error" css={{ marginTop: spacing.medium }}>
-              <Trans>
-                Something went wrong while preparing the translation. Please try
-                again.
-              </Trans>
+              <FormattedMessage
+                id="Prepare translation error"
+                defaultMessage="Something went wrong while preparing the translation. Please try again."
+              />
             </Typography>
           )}
         </div>
