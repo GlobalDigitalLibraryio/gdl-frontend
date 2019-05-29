@@ -361,7 +361,11 @@ class MyTranslationsPage extends React.Component<{
           {/*  Docs: https://www.apollographql.com/docs/react/essentials/queries#props partialRefetch
                 Issue: https://github.com/apollographql/apollo-client/pull/4743
             */}
-          <Query query={MY_TRANSLATION_QUERY} partialRefetch>
+          <Query
+            query={MY_TRANSLATION_QUERY}
+            partialRefetch
+            notifyOnNetworkStatusChange
+          >
             {({
               loading,
               error,
