@@ -71,10 +71,10 @@ export function getSiteLanguage(req?: $Request): string {
   const lang = req
     ? req.cookies[SITE_LANGUAGE_KEY]
     : cookies().get(SITE_LANGUAGE_KEY, { doNotParse: true });
-  return lang || 'en';
+  return lang || DEFAULT_LANGUAGE.code;
 }
 
-export function setSiteLanguage(language?: string, callback?: () => void) {
+export function setSiteLanguage(language: string, callback?: () => void) {
   // Client
   const c = cookies();
   c.set(SITE_LANGUAGE_KEY, language, ONE_MONTH_OPTIONS);

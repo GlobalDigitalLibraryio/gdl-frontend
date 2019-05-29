@@ -11,6 +11,7 @@ import NextApp, { Container as NextContainer } from 'next/app';
 import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
 import Router from 'next/router';
+import getConfig from 'next/config';
 import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -22,7 +23,6 @@ import type { ApolloClient } from 'react-apollo';
 import OnlineStatusRedirectProvider from '../components/OnlineStatusRedirectProvider';
 import getPageContext from '../getPageContext';
 import initSentry from '../lib/initSentry';
-import type { Context } from '../types';
 import { GdlI18nProvider } from '../components/GdlI18nProvider';
 import { addLocaleData } from 'react-intl';
 import { LOGOUT_KEY } from '../lib/auth/token';
@@ -34,6 +34,12 @@ import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
+
+import type { Context, ConfigShape } from '../types';
+
+const {
+  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+}: ConfigShape = getConfig();
 
 // Load falback locale catalog with english
 const en = require('../locale/en/en');
@@ -88,12 +94,15 @@ class App extends NextApp {
     let localeCatalog = response.localeCatalog;
 
     if (!localeCatalog) {
+      const languageFromCookie =
+        response.headers && parseCookies(response.headers.cookie);
       // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
       const language: string =
         (query && query.lang) ||
         response.siteLanguage ||
-        (response.headers &&
-          parseCookies(response.headers.cookie)['siteLanguage']);
+        (languageFromCookie
+          ? languageFromCookie['siteLanguage']
+          : DEFAULT_LANGUAGE.code);
 
       localeCatalog = await getLanguageCatalog(language);
     }

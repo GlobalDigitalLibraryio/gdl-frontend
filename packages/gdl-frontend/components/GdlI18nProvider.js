@@ -8,13 +8,18 @@
 
 import React, { Component, type Node } from 'react';
 import { IntlProvider } from 'react-intl';
+import getConfig from 'next/config';
 import * as Sentry from '@sentry/browser';
-import type { Locale, Catalogs } from '../types';
+import type { Locale, Catalogs, ConfigShape } from '../types';
 import { fetchSiteTranslation } from '../fetch';
 import { setSiteLanguage } from '../lib/storage';
 
 // Currently we initially load English as default and fallback language
 import enTranslations from '../locale/en/en.json';
+
+const {
+  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+}: ConfigShape = getConfig();
 
 type ChangeSiteAction = (e: { code: string, name: string }) => Promise<void>;
 
@@ -65,10 +70,10 @@ class GdlI18nProvider extends Component<
         });
       }
       // If translations is not found or we get an error, we default to English
-      setSiteLanguage('en');
+      setSiteLanguage(DEFAULT_LANGUAGE.code);
       this.setState({
-        catalog: defaultCatalog['en'],
-        language: 'en'
+        catalog: defaultCatalog[DEFAULT_LANGUAGE.code],
+        language: DEFAULT_LANGUAGE.code
       });
     }
   };
