@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { Trans, I18n } from '@lingui/react';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Button, Typography } from '@material-ui/core';
 import { withRouter } from 'next/router';
 
@@ -18,6 +18,8 @@ import Layout from '../../components/Layout';
 import Head from '../../components/Head';
 import { loginSocialMedia } from '../../lib/auth';
 import { spacing } from '../../style/theme';
+
+import type { IntlShape } from 'react-intl';
 
 const googleColor = '#db3236';
 const facebookColor = '#3b5998';
@@ -31,17 +33,42 @@ const EqualWidthButtonsWrapper = styled('div')`
   }
 `;
 
+const translations = defineMessages({
+  privacy: {
+    id: 'privacy policy',
+    defaultMessage: 'privacy policy'
+  },
+  firstPart: {
+    id:
+      'By signing in to this service I am hereby accepting the principles in the GDL',
+    defaultMessage:
+      'By signing in to this service I am hereby accepting the principles in the GDL'
+  },
+  lastPart: {
+    id: 'and I am giving my consent to GDL’s use of my personal information',
+    defaultMessage:
+      'and I am giving my consent to GDL’s use of my personal information.'
+  }
+});
+
 class LoginPage extends React.Component<{
   router: {
     query: {
       next?: string
     }
-  }
+  },
+  intl: IntlShape
 }> {
   render() {
+    const { intl } = this.props;
     return (
       <Layout>
-        <I18n>{({ i18n }) => <Head title={i18n.t`Sign in`} />}</I18n>
+        <Head
+          title={intl.formatMessage({
+            id: 'Sign in',
+            defaultMessage: 'Sign in'
+          })}
+        />
         <Container alignItems="center">
           <Typography
             variant="h4"
@@ -49,7 +76,10 @@ class LoginPage extends React.Component<{
             align="center"
             css={{ marginTop: spacing.large }}
           >
-            <Trans>Sign in to continue</Trans>
+            <FormattedMessage
+              id="Sign in to continue"
+              defaultMessage="Sign in to continue"
+            />
           </Typography>
           <div>
             <EqualWidthButtonsWrapper>
@@ -64,7 +94,10 @@ class LoginPage extends React.Component<{
                 }}
                 css={{ color: googleColor }}
               >
-                <Trans>Sign in using Google</Trans>
+                <FormattedMessage
+                  id="Sign in using Google"
+                  defaultMessage="Sign in using Google"
+                />
               </Button>
               <Button
                 variant="outlined"
@@ -74,7 +107,10 @@ class LoginPage extends React.Component<{
                 }}
                 css={{ color: facebookColor }}
               >
-                <Trans>Sign in using Facebook</Trans>
+                <FormattedMessage
+                  id="Sign in using Facebook"
+                  defaultMessage="Sign in using Facebook"
+                />
               </Button>
             </EqualWidthButtonsWrapper>
           </div>
@@ -83,16 +119,14 @@ class LoginPage extends React.Component<{
             css={{ marginTop: spacing.xxlarge }}
             paragraph
           >
-            By signing in to this service I am hereby accepting the principles
-            in the GDL{' '}
+            {`${intl.formatMessage(translations.firstPart)} `}
             <A
               href="https://home.digitallibrary.io/privacy/"
               css={{ display: 'inline' }}
             >
-              privacy policy
+              {intl.formatMessage(translations.privacy)}
             </A>
-            , and I am giving my consent to GDL’s use of my personal
-            information.
+            {`, ${intl.formatMessage(translations.lastPart)} `}
           </Typography>
         </Container>
       </Layout>
@@ -100,4 +134,4 @@ class LoginPage extends React.Component<{
   }
 }
 
-export default withRouter(LoginPage);
+export default withRouter(injectIntl(LoginPage));

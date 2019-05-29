@@ -7,7 +7,7 @@
  */
 
 import React, { type Node } from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import {
   SwipeableDrawer,
   Divider,
@@ -91,7 +91,10 @@ export default class CategoriesMenu extends React.Component<
                   color="error"
                   style={{ margin: '1rem' }}
                 >
-                  <Trans>Error loading data.</Trans>
+                  <FormattedMessage
+                    id="Error loading data"
+                    defaultMessage="Error loading data."
+                  />
                 </Typography>
               )}
 
@@ -119,7 +122,10 @@ const Categories = ({
     {classroom && classroom.length > 0 && (
       <>
         <ListSubheader component="div">
-          <Trans>Classroom books</Trans>
+          <FormattedMessage
+            id="Classroom books"
+            defaultMessage="Classroom books"
+          />
         </ListSubheader>
         <Link
           category="Classroom"
@@ -132,7 +138,10 @@ const Categories = ({
               <CircleLabel />
             </ListItemIcon>
             <ListItemText inset>
-              <Trans>New arrivals</Trans>
+              <FormattedMessage
+                id="New arrivals"
+                defaultMessage="New arrivals"
+              />
             </ListItemText>
           </ListItem>
         </Link>
@@ -164,7 +173,7 @@ const Categories = ({
     {library && library.length > 0 && (
       <>
         <ListSubheader component="div">
-          <Trans>Library books</Trans>
+          <FormattedMessage id="Library books" defaultMessage="Library books" />
         </ListSubheader>
         <Link
           category="Library"
@@ -177,7 +186,10 @@ const Categories = ({
               <CircleLabel />
             </ListItemIcon>
             <ListItemText>
-              <Trans>New arrivals</Trans>
+              <FormattedMessage
+                id="New arrivals"
+                defaultMessage="New arrivals"
+              />
             </ListItemText>
           </ListItem>
         </Link>

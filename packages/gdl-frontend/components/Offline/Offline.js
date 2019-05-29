@@ -7,9 +7,27 @@
  */
 
 import * as React from 'react';
+import { injectIntl, defineMessages } from 'react-intl';
 import { Snackbar } from '@material-ui/core';
 import offlineLibrary from '../../lib/offlineLibrary';
 import { logEvent } from '../../lib/analytics';
+import type { IntlShape } from 'react-intl';
+
+const snackbarMessages = defineMessages({
+  add: {
+    id: 'Added book to your offline library',
+    defaultMessage: 'Added book to your offline library.'
+  },
+  error: {
+    id: 'An error occurred while adding this book to your offline library',
+    defaultMessage:
+      'An error occurred while adding this book to your offline library.'
+  },
+  remove: {
+    id: 'Removed book from your offline library',
+    defaultMessage: 'Removed book from your offline library.'
+  }
+});
 
 type Props = {
   children: (data: {
@@ -20,10 +38,11 @@ type Props = {
   book: $ReadOnly<{
     id: string,
     title: string
-  }>
+  }>,
+  intl: IntlShape
 };
 
-export default class Offline extends React.Component<
+class Offline extends React.Component<
   Props,
   { offlined: boolean, downloading: boolean, snackbarMessage: ?string }
 > {
@@ -51,21 +70,19 @@ export default class Offline extends React.Component<
 
   addOffline = async () => {
     if (!offlineLibrary) return;
-
     this.setState({ downloading: true });
     const offlined = await offlineLibrary.addBook(this.props.book.id);
     if (offlined) {
       this.setState({
         offlined,
         downloading: false,
-        snackbarMessage: 'Added book to your offline library.'
+        snackbarMessage: this.props.intl.formatMessage(snackbarMessages.add)
       });
       logEvent('Books', 'Available offline', this.props.book.title);
     } else {
       this.setState({
         downloading: false,
-        snackbarMessage:
-          'An error occurred while adding this book to your offline library.'
+        snackbarMessage: this.props.intl.formatMessage(snackbarMessages.error)
       });
     }
   };
@@ -76,7 +93,7 @@ export default class Offline extends React.Component<
     await offlineLibrary.deleteBook(this.props.book.id);
     this.setState({
       offlined: false,
-      snackbarMessage: 'Removed book from your offline library.'
+      snackbarMessage: this.props.intl.formatMessage(snackbarMessages.remove)
     });
     logEvent('Books', 'Remove offline', this.props.book.title);
   };
@@ -107,3 +124,5 @@ export default class Offline extends React.Component<
     );
   }
 }
+
+export default injectIntl(Offline);

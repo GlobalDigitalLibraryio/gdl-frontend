@@ -26,7 +26,8 @@ import HomePage, { AMOUNT_OF_BOOKS_PER_LEVEL } from '../components/HomePage';
 import {
   setBookLanguageAndCategory,
   getBookLanguageCode,
-  getBookCategory
+  getBookCategory,
+  getSiteLanguage
 } from '../lib/storage';
 
 const {
@@ -57,6 +58,7 @@ class IndexPage extends React.Component<Props> {
     try {
       // Get the language either from the URL or the user's cookies
       const languageCode = query.lang || getBookLanguageCode(req);
+      const siteLanguage = query.lang || getSiteLanguage(req);
 
       // Check if queried language is supported with content
       const langRes = await apolloClient.query({
@@ -142,7 +144,9 @@ class IndexPage extends React.Component<Props> {
         languageCode,
         // Currently the UI only supports one featured content, not an array
         featuredContent: featuredContent[0],
-        bookSummaries
+        bookSummaries,
+        // site languge from cookie
+        siteLanguage
       };
     } catch (error) {
       /*

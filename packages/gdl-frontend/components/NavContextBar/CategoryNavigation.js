@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 
 import { colors } from '../../style/theme';
 import { logEvent } from '../../lib/analytics';
@@ -53,7 +53,10 @@ class CategoryNavigation extends React.Component<Props> {
             linkProps={{ route: 'library', params: { lang: languageCode } }}
             onClick={() => logEvent('Navigation', 'Category', 'Classroom')}
           >
-            <Trans>Library books</Trans>
+            <FormattedMessage
+              id="Library books"
+              defaultMessage="Library books"
+            />
           </Tab>
         )}
         {categories.includes('Classroom') && (
@@ -62,7 +65,10 @@ class CategoryNavigation extends React.Component<Props> {
             linkProps={{ route: 'classroom', params: { lang: languageCode } }}
             onClick={() => logEvent('Navigation', 'Category', 'Library')}
           >
-            <Trans>Classroom books</Trans>
+            <FormattedMessage
+              id="Classroom books"
+              defaultMessage="Classroom books"
+            />
           </Tab>
         )}
       </Div>
@@ -75,7 +81,7 @@ const Tab = ({ isSelected, theme, children, linkProps, ...props }) => (
     <A isSelected={isSelected} {...props}>
       {isSelected && (
         <SrOnly>
-          <Trans>Selected: </Trans>
+          <FormattedMessage id="Selected" defaultMessage="Selected:" />
         </SrOnly>
       )}
       {children}

@@ -8,7 +8,7 @@
 
 import React, { Component } from 'react';
 import { Button, Typography } from '@material-ui/core';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
@@ -30,7 +30,7 @@ type Props = {
   pageInfo: any,
   loading: boolean,
   items: $ReadOnlyArray<Game | Book>,
-  heading: typeof Trans,
+  heading: typeof FormattedMessage,
   browseLinkProps?: BrowseLinkProps,
   level?: ReadingLevel | 'Games',
   shouldBeColorized?: boolean
@@ -86,7 +86,7 @@ export default class PaginationSection extends Component<Props> {
                   size="small"
                   variant="outlined"
                 >
-                  <Trans>More</Trans>
+                  <FormattedMessage id="More" defaultMessage="More" />
                 </Button>
               </BrowseLink>
             )}

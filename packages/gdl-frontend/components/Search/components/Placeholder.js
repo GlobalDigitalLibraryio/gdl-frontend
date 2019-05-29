@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/core';
 
 import media from '../../../style/media';
@@ -27,7 +27,7 @@ const svgStyle = css`
 const Placeholder = () => (
   <div css={{ textAlign: 'center' }}>
     <Search css={svgStyle} aria-hidden />
-    <Trans>Search for books.</Trans>
+    <FormattedMessage id="Search for books" defaultMessage="Search for books" />
   </div>
 );
 

@@ -7,7 +7,8 @@
  */
 
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
+
 import copyToClipboard from 'copy-to-clipboard';
 import { Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Share as ShareIcon, Link as LinkIcon } from '@material-ui/icons';
@@ -51,7 +52,7 @@ class ShareButton extends React.Component<Props, { anchorEl: ?HTMLElement }> {
       <>
         <IconButton
           icon={<ShareIcon />}
-          label={<Trans>Share</Trans>}
+          label={<FormattedMessage id="Share" defaultMessage="Share" />}
           onClick={event => this.handleShareClick(event)}
         />
         <Menu
@@ -99,7 +100,7 @@ class ShareButton extends React.Component<Props, { anchorEl: ?HTMLElement }> {
               <LinkIcon />
             </ListItemIcon>
             <ListItemText>
-              <Trans>Copy URL</Trans>
+              <FormattedMessage id="Copy URL" defaultMessage="Copy URL" />
             </ListItemText>
           </MenuItem>
         </Menu>

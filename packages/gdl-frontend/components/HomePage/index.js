@@ -7,8 +7,8 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
 import { css } from '@emotion/core';
+import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
@@ -141,7 +141,7 @@ class HomePage extends React.Component<Props> {
           color="primary"
           size="large"
         >
-          <Trans>More</Trans>
+          <FormattedMessage id="More" defaultMessage="More" />
         </Button>
       </View>
     );
@@ -164,7 +164,7 @@ class HomePage extends React.Component<Props> {
                 variant="h6"
                 css={{ color: colors.base.white }}
               >
-                <Trans>Featured</Trans>
+                <FormattedMessage id="Featured" defaultMessage="Featured" />
               </Typography>
             </HeroCovertitle>
             <HeroCardTablet>
@@ -191,7 +191,12 @@ class HomePage extends React.Component<Props> {
                     goBack={goBack}
                     pageInfo={books.pageInfo}
                     shouldBeColorized
-                    heading={<Trans>New arrivals</Trans>}
+                    heading={
+                      <FormattedMessage
+                        id="New arrivals"
+                        defaultMessage="New arrivals"
+                      />
+                    }
                     browseLinkProps={{
                       lang: languageCode,
                       category: category
@@ -248,7 +253,7 @@ class HomePage extends React.Component<Props> {
                   items={games}
                   shouldBeColorized
                   level="Games"
-                  heading="Games (Android)"
+                  heading={<ReadingLevelTrans readingLevel="Games" />}
                 />
               </Container>
             </View>

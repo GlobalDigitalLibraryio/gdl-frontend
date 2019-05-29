@@ -7,10 +7,11 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import Link from 'next/link';
 
+import type { intlShape } from 'react-intl';
 import type { OfflineBook_book as Book } from '../gqlTypes';
 import offlineLibrary from '../lib/offlineLibrary';
 import Layout from '../components/Layout';
@@ -121,7 +122,7 @@ const OfflineBooks = ({ books, onClear }) => (
       align="center"
       css={{ marginBottom: spacing.large }}
     >
-      <Trans>Offline library</Trans>
+      <FormattedMessage id="Offline library" defaultMessage="Offline library" />
     </Typography>
     {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
     <BookGrid books={books} />
@@ -132,34 +133,54 @@ const OfflineBooks = ({ books, onClear }) => (
         variant="outlined"
         size="small"
       >
-        <Trans>Remove all books</Trans>
+        <FormattedMessage
+          id="Remove all books"
+          defaultMessage="Remove all books"
+        />
       </Button>
     </Center>
   </>
 );
 
-const NoOfflineBooks = withOnlineStatusContext(({ online }) => (
-  <Center>
-    <Typography
-      align="center"
-      variant="h4"
-      component="h1"
-      css={{ marginBottom: spacing.large }}
-    >
-      No books offline yet
-    </Typography>
-    <Typography align="center" css={{ marginBottom: spacing.large }}>
-      Having books available even when you are offline is a great way to make
-      sure you always have something to read.
-    </Typography>
-    {online && (
-      <Link passHref href="/">
-        <Button variant="outlined">
-          <Trans>Find something to read</Trans>
-        </Button>
-      </Link>
-    )}
-  </Center>
-));
+const translations = defineMessages({
+  offline: {
+    id:
+      'Having books available even when you are offline is a great way to make sure you always have something to read',
+    defaultMessage:
+      'Having books available even when you are offline is a great way to make sure you always have something to read.'
+  },
+  noBooks: {
+    id: 'No books offline yet',
+    defaultMessage: 'No books offline yet'
+  }
+});
+
+const NoOfflineBooks = withOnlineStatusContext(
+  injectIntl(({ online, intl }: { online: boolean, intl: intlShape }) => (
+    <Center>
+      <Typography
+        align="center"
+        variant="h4"
+        component="h1"
+        css={{ marginBottom: spacing.large }}
+      >
+        {intl.formatMessage(translations.noBooks)}
+      </Typography>
+      <Typography align="center" css={{ marginBottom: spacing.large }}>
+        {intl.formatMessage(translations.offline)}
+      </Typography>
+      {online && (
+        <Link passHref href="/">
+          <Button variant="outlined">
+            <FormattedMessage
+              id="Find something to read"
+              defaultMessage="Find something to read"
+            />
+          </Button>
+        </Link>
+      )}
+    </Center>
+  ))
+);
 
 export default OfflinePage;

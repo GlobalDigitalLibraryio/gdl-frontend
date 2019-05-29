@@ -44,6 +44,12 @@ describe('Book details', () => {
 
   it('Should be able save and remove book offline', () => {
     cy.get('[data-cy="save-book-tablet"]').click();
+    /**
+     * Sometimes cypress does not wait to the content is loaded before it takes the next action.
+     * Therefore we need to use wait so we can assure that the content is loaded before we check for data-tags
+     */
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
     // turns green
     cy.get('[data-cy="save-book-tablet"]').should($el => {
       // eslint-disable-next-line jest/valid-expect
@@ -53,6 +59,8 @@ describe('Book details', () => {
       'Added book to your offline library.'
     );
     cy.get('[data-cy="save-book-tablet"]').click();
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
     cy.get('[data-cy="save-offline-snackbar"]').contains(
       'Removed book from your offline library.'
     );

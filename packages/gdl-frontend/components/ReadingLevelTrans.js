@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import type { ReadingLevel } from '../gqlTypes';
 
 type Props = {|
@@ -16,19 +16,21 @@ type Props = {|
 
 export default function ReadingLevelTrans({ readingLevel: level }: Props) {
   if (level === 'Decodable') {
-    return <Trans>Decodable</Trans>;
+    return <FormattedMessage id="Decodable" defaultMessage="Decodable" />;
   } else if (level === 'ReadAloud') {
-    return <Trans>Read aloud</Trans>;
+    return <FormattedMessage id="Read aloud" defaultMessage="Read aloud" />;
   } else if (level === 'Level1') {
-    return <Trans>Level 1</Trans>;
+    return <FormattedMessage id="Level 1" defaultMessage="Level 1" />;
   } else if (level === 'Level2') {
-    return <Trans>Level 2</Trans>;
+    return <FormattedMessage id="Level 2" defaultMessage="Level 2" />;
   } else if (level === 'Level3') {
-    return <Trans>Level 3</Trans>;
+    return <FormattedMessage id="Level 3" defaultMessage="Level 3" />;
   } else if (level === 'Level4') {
-    return <Trans>Level 4</Trans>;
+    return <FormattedMessage id="Level 4" defaultMessage="Level 4" />;
   } else if (level === 'Games') {
-    return <Trans>Games (Android)</Trans>;
+    return (
+      <FormattedMessage id="Games (Android)" defaultMessage="Games (Android)" />
+    );
   }
   return level;
 }

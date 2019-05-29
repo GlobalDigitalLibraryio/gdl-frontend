@@ -6,9 +6,10 @@
  * See LICENSE
  */
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { Link, Router } from '../routes';
 import { css } from '@emotion/core';
+import getConfig from 'next/config';
 
 import {
   Grow,
@@ -19,6 +20,12 @@ import {
 } from '@material-ui/core';
 import Popper from '@material-ui/core/Popper';
 import { colors } from '../style/theme';
+
+import type { ConfigShape } from '../types';
+
+const {
+  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+}: ConfigShape = getConfig();
 
 type Props = {
   menuIsOpen: boolean,
@@ -59,13 +66,16 @@ const TranslateDropdown = React.forwardRef(
                   route={`/en/books/translate/${bookId}/${translatedTo.toLowerCase()}/edit`}
                   params={{
                     id: bookId,
-                    lang: 'en',
+                    lang: DEFAULT_LANGUAGE.code,
                     toLang: translatedTo.toLowerCase()
                   }}
                 >
                   <MenuButton buttonRef={ref}>
                     <Typography style={{ fontSize: '0.9375rem' }} align="left">
-                      <Trans>Translate in context</Trans>
+                      <FormattedMessage
+                        id="Translate in context"
+                        defaultMessage="Translate in context"
+                      />
                     </Typography>
                   </MenuButton>
                 </Link>
@@ -80,7 +90,10 @@ const TranslateDropdown = React.forwardRef(
                   onClick={() => Router.pushRoute('translations')}
                 >
                   <Typography style={{ fontSize: '0.9375rem' }} align="left">
-                    <Trans>Mobile translation</Trans>
+                    <FormattedMessage
+                      id="Mobile translation"
+                      defaultMessage="Mobile translation"
+                    />
                   </Typography>
                 </MenuButton>
               </div>

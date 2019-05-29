@@ -6,7 +6,7 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -14,6 +14,7 @@ import gql from 'graphql-tag';
 import type { languages_languages as Language } from '../../gqlTypes';
 import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
+import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 function linkProps(language) {
   return {
@@ -116,16 +117,26 @@ class SelectBookLanguage extends React.Component<Props, State> {
                     color="error"
                     css={{ margin: '1rem' }}
                   >
-                    <Trans>Error loading data.</Trans>
+                    <FormattedMessage
+                      id="Error loading data"
+                      defaultMessage="Error loading data."
+                    />
                   </Typography>
                 )}
                 {!isLoading && data && (
-                  <LanguageList
-                    onSelectLanguage={this.handleSelectLanguage}
-                    selectedLanguageCode={selectedLanguage}
-                    linkProps={linkProps}
-                    languages={data.languages}
-                  />
+                  <GdlI18nConsumer>
+                    {value => (
+                      <LanguageList
+                        onSelectLanguage={language => {
+                          this.handleSelectLanguage(language);
+                          value && value.changeSiteLanguage(language);
+                        }}
+                        selectedLanguageCode={selectedLanguage}
+                        linkProps={linkProps}
+                        languages={data.languages}
+                      />
+                    )}
+                  </GdlI18nConsumer>
                 )}
               </SwipeableDrawer>
             </>

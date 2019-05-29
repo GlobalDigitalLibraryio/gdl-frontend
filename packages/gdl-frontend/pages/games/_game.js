@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import getConfig from 'next/config';
 import gql from 'graphql-tag';
 import { Button, Typography } from '@material-ui/core';
@@ -86,7 +86,8 @@ const GamePage = ({ game }) => (
                 {game.title}
               </Typography>
               <Typography paragraph variant="subtitle1">
-                <Trans>from {game.publisher}</Trans>
+                <FormattedMessage id="from" defaultMessage="from" />
+                {` ${game.publisher}`}
               </Typography>
               <Typography lang={game.language} paragraph>
                 {game.description}
@@ -112,7 +113,7 @@ const GamePage = ({ game }) => (
           <Grid>
             <GridItem>
               <Typography variant="subtitle2" component="span">
-                <Trans>License</Trans>
+                <FormattedMessage id="License" defaultMessage="License" />
               </Typography>
               <Typography
                 component="span"
@@ -139,7 +140,10 @@ const GamePage = ({ game }) => (
                 style={{ marginBottom: 20 }}
               >
                 <WarningIcon css={{ marginRight: spacing.xsmall }} />{' '}
-                <Trans>Report a problem</Trans>
+                <FormattedMessage
+                  id="Report a problem"
+                  defaultMessage="Report a problem"
+                />
               </Button>
             </GridItem>
           </Grid>
@@ -178,7 +182,7 @@ const GameLinkButton = ({ title, url }: { title: string, url: string }) => (
     fullWidth
     onClick={() => logEvent('Games', 'Play', title)}
   >
-    <Trans>Go to game</Trans>
+    <FormattedMessage id="Go to game" defaultMessage="Go to game" />
   </Button>
 );
 
