@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans, I18n } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { withRouter } from 'next/router';
 import { Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
@@ -15,6 +15,8 @@ import gql from 'graphql-tag';
 
 import { logEvent } from '../../lib/analytics';
 import type { Context } from '../../types';
+import type { intlShape } from 'react-intl';
+
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
@@ -76,7 +78,8 @@ type Props = {
       category?: Category,
       sort?: string
     }
-  }
+  },
+  intl: intlShape
 };
 
 /**
@@ -199,7 +202,8 @@ class BrowsePage extends React.Component<Props> {
     const {
       readingLevel,
       router: { query },
-      category
+      category,
+      intl
     } = this.props;
 
     return (
@@ -231,7 +235,12 @@ class BrowsePage extends React.Component<Props> {
 
           return (
             <Layout>
-              <I18n>{({ i18n }) => <Head title={i18n.t`Browse books`} />}</I18n>
+              <Head
+                title={intl.formatMessage({
+                  id: 'Browse books',
+                  defaultMessage: 'Browse books'
+                })}
+              />
               <Container>
                 <GridContainer>
                   <Typography
@@ -258,7 +267,10 @@ class BrowsePage extends React.Component<Props> {
                         </>
                       ) : (
                         <>
-                          <Trans>New arrivals</Trans>
+                          <FormattedMessage
+                            id="New arrivals"
+                            defaultMessage="New arrivals"
+                          />
                           <LevelHR
                             css={{
                               margin: `${spacing.xsmall} 0`
@@ -267,7 +279,10 @@ class BrowsePage extends React.Component<Props> {
                         </>
                       )
                     ) : (
-                      <Trans>No books found</Trans>
+                      <FormattedMessage
+                        id="No books found"
+                        defaultMessage="No books found"
+                      />
                     )}
                   </Typography>
                 </GridContainer>
@@ -286,7 +301,10 @@ class BrowsePage extends React.Component<Props> {
                       marginBottom: spacing.medium
                     }}
                   >
-                    <Trans>More books</Trans>
+                    <FormattedMessage
+                      id="More books"
+                      defaultMessage="More books"
+                    />
                   </LoadingButton>
                 </div>
               </Container>
@@ -298,4 +316,4 @@ class BrowsePage extends React.Component<Props> {
   }
 }
 
-export default withErrorPage(withRouter(BrowsePage));
+export default withErrorPage(withRouter(injectIntl(BrowsePage)));

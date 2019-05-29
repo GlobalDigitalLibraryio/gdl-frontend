@@ -7,7 +7,7 @@
  */
 
 import React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import {
   Divider,
   List,
@@ -19,19 +19,21 @@ import {
 } from '@material-ui/core';
 import RootRef from '@material-ui/core/RootRef';
 import { Check as CheckIcon } from '@material-ui/icons';
-import { I18n } from '@lingui/react';
 
-import type { languages_languages as Language } from '../gqlTypes';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
 import { colors } from '../style/theme';
+
+import type { intlShape } from 'react-intl';
+import type { languages_languages as Language } from '../gqlTypes';
 
 type Props = {
   enableSearch?: boolean,
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
-  linkProps?: (language: Language) => {}
+  linkProps?: (language: Language) => {},
+  intl: intlShape
 };
 
 type State = {
@@ -77,7 +79,7 @@ class LanguageList extends React.Component<Props, State> {
   };
 
   render() {
-    const { enableSearch, onSelectLanguage, linkProps } = this.props;
+    const { enableSearch, onSelectLanguage, linkProps, intl } = this.props;
 
     const selectedLanguage = this.getSelectedLanguage();
     // Remove selected language so it wont display again as a selectable language
@@ -91,7 +93,10 @@ class LanguageList extends React.Component<Props, State> {
           css={{ overflowY: 'scroll' }}
           subheader={
             <ListSubheader component="div">
-              <Trans>Choose book language</Trans>
+              <FormattedMessage
+                id="Choose book language"
+                defaultMessage="Choose book language"
+              />
             </ListSubheader>
           }
         >
@@ -102,33 +107,36 @@ class LanguageList extends React.Component<Props, State> {
                   <CheckIcon css={{ color: colors.base.green }} />
                 </ListItemIcon>
                 <ListItemText inset>
-                  <Trans>
-                    <SrOnly>Selected: </SrOnly>
-                    {selectedLanguage.name}
-                  </Trans>
+                  <SrOnly>
+                    {intl.formatMessage({
+                      id: 'Selected',
+                      defaultMessage: 'Selected'
+                    })}
+                    {': '}
+                  </SrOnly>
+                  {selectedLanguage.name}
                 </ListItemText>
               </ListItem>
               <Divider />
             </>
           )}
           {enableSearch && (
-            <I18n>
-              {({ i18n }) => (
-                <ListItem>
-                  <ListItemText inset>
-                    <TextField
-                      css={{ width: '100%' }}
-                      placeholder={i18n.t`Search`}
-                      onChange={value =>
-                        this.setState({
-                          filterText: value.target.value.toLowerCase()
-                        })
-                      }
-                    />
-                  </ListItemText>
-                </ListItem>
-              )}
-            </I18n>
+            <ListItem>
+              <ListItemText inset>
+                <TextField
+                  css={{ width: '100%' }}
+                  placeholder={intl.formatMessage({
+                    id: 'Search',
+                    defaultMessage: 'Search'
+                  })}
+                  onChange={value =>
+                    this.setState({
+                      filterText: value.target.value.toLowerCase()
+                    })
+                  }
+                />
+              </ListItemText>
+            </ListItem>
           )}
           {noResult ? (
             <NoLanguageItem />
@@ -150,7 +158,12 @@ class LanguageList extends React.Component<Props, State> {
 
 const NoLanguageItem = () => (
   <ListItem component="div">
-    <ListItemText inset>No language found</ListItemText>
+    <ListItemText inset>
+      <FormattedMessage
+        id="No language found"
+        defaultMessage="No language found"
+      />
+    </ListItemText>
   </ListItem>
 );
 
@@ -181,4 +194,4 @@ const LanguageItem = ({ language, linkProps, onSelectLanguage }) => {
   );
 };
 
-export default LanguageList;
+export default injectIntl(LanguageList);

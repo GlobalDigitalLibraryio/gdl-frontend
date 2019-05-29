@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import getConfig from 'next/config';
 import type { ConfigShape } from '../../types';
 
@@ -47,32 +47,44 @@ const Footer = ({ online }) => {
         <LinkList>
           <li>
             <a href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
-              <Trans>Cookie policy</Trans>
+              <FormattedMessage
+                id="Cookie policy"
+                defaultMessage="Cookie policy"
+              />
             </a>
           </li>
           <li>
             <a href="https://home.digitallibrary.io/privacy/">
-              <Trans>Privacy policy</Trans>
+              <FormattedMessage
+                id="Privacy policy"
+                defaultMessage="Privacy policy"
+              />
             </a>
           </li>
           <li>
             <a href="https://home.digitallibrary.io/cc/">
-              <Trans>Licensing and reuse</Trans>
+              <FormattedMessage
+                id="Licensing and reuse"
+                defaultMessage="Licensing and reuse"
+              />
             </a>
           </li>
           <li>
             <a href={zendeskUrl}>
-              <Trans>Report issues</Trans>
+              <FormattedMessage
+                id="Report issues"
+                defaultMessage="Report issues"
+              />
             </a>
           </li>
           <li>
             <a href="https://home.digitallibrary.io/about/">
-              <Trans>About</Trans>
+              <FormattedMessage id="About" defaultMessage="About" />
             </a>
           </li>
           <li>
             <a href="https://blog.digitallibrary.io/">
-              <Trans>Blog</Trans>
+              <FormattedMessage id="Blog" defaultMessage="Blog" />
             </a>
           </li>
         </LinkList>

@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Search as SearchIcon } from '@material-ui/icons';
-import { Trans, I18n } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import Router from 'next/router';
@@ -70,32 +70,36 @@ class RouteAwareSearch extends React.Component<Props, { searchQuery: string }> {
 
 export default withRouter(RouteAwareSearch);
 
-const SearchInput = ({ autoFocus, className, onSubmit, onChange, value }) => (
-  /* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/
-  <Form role="search" onSubmit={onSubmit} className={className} action=".">
-    <I18n>
-      {({ i18n }) => (
-        <>
-          {/* We use an adjacent sibling selector, se be careful when moving stuff around here. See Form */}
-          <Input
-            data-cy="search-book-field"
-            aria-label={i18n.t`Search for books`}
-            autoComplete="off"
-            type="search"
-            placeholder={i18n.t`Search for books`}
-            autoFocus={autoFocus}
-            onChange={onChange}
-            value={value}
-          />
-          <Tooltip title={<Trans>Search</Trans>}>
-            <IconButton aria-label="Search" css={iconButton} type="submit">
-              <SearchIcon />
-            </IconButton>
-          </Tooltip>
-        </>
-      )}
-    </I18n>
-  </Form>
+const SearchInput = injectIntl(
+  ({ autoFocus, className, onSubmit, onChange, value, intl }) => (
+    /* action attribute ensures mobile safari shows search button in keyboard. See https://stackoverflow.com/a/26287843*/
+    <Form role="search" onSubmit={onSubmit} className={className} action=".">
+      <>
+        {/* We use an adjacent sibling selector, se be careful when moving stuff around here. See Form */}
+        <Input
+          data-cy="search-book-field"
+          aria-label={intl.formatMessage({
+            id: 'Search for books',
+            defaultMessage: 'Search for books'
+          })}
+          autoComplete="off"
+          type="search"
+          placeholder={intl.formatMessage({
+            id: 'Search for books',
+            defaultMessage: 'Search for books'
+          })}
+          autoFocus={autoFocus}
+          onChange={onChange}
+          value={value}
+        />
+        <Tooltip title={<FormattedMessage id="Search" />}>
+          <IconButton aria-label="Search" css={iconButton} type="submit">
+            <SearchIcon />
+          </IconButton>
+        </Tooltip>
+      </>
+    </Form>
+  )
 );
 
 // NB, adjacent sibling selector here. See SearchInput

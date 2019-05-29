@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import {
@@ -24,6 +24,7 @@ import Head from '../components/Head';
 import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
 import type { Favorites, FavoritesVariables } from '../gqlTypes';
+import type { intlShape } from 'react-intl';
 import {
   getFavoritedBookIds,
   removeFavorite,
@@ -46,16 +47,22 @@ function removeBooksNotFound(data: Favorites) {
   diff.forEach(removeFavorite);
 }
 
-class FavoritesPage extends React.Component<{}> {
+class FavoritesPage extends React.Component<{ intl: intlShape }> {
   handleClearFavorites = (refetch: FavoritesVariables => void) => {
     clearFavorites();
     refetch({ ids: [] });
   };
 
   render() {
+    const { intl } = this.props;
     return (
       <>
-        <Head title="Favorites" />
+        <Head
+          title={intl.formatMessage({
+            id: 'Favorites',
+            defaultMessage: 'Favorites'
+          })}
+        />
         <Layout>
           <Container
             css={{ marginTop: spacing.large, marginBottom: spacing.large }}
@@ -66,7 +73,7 @@ class FavoritesPage extends React.Component<{}> {
               align="center"
               css={{ marginBottom: spacing.large }}
             >
-              <Trans>Favorites</Trans>
+              <FormattedMessage id="Favorites" defaultMessage="Favorites" />
             </Typography>
 
             <Query
@@ -113,7 +120,10 @@ class FavoritesPage extends React.Component<{}> {
                         variant="outlined"
                         size="small"
                       >
-                        <Trans>Clear all favorites</Trans>
+                        <FormattedMessage
+                          id="Clear all favorites"
+                          defaultMessage="Clear all favorites"
+                        />
                       </Button>
                     </Center>
                   </>
@@ -139,13 +149,17 @@ const NoFavorites = () => (
         marginBottom: spacing.medium
       }}
     >
-      <Trans>
-        Add books to your favorites so you can easily find them later.
-      </Trans>
+      <FormattedMessage
+        id="Add favorite books"
+        defaultMessage="Add books to your favorites so you can easily find them later."
+      />
     </Typography>
     <Link passHref href="/">
       <Button variant="outlined">
-        <Trans>Find something to read</Trans>
+        <FormattedMessage
+          id="Find something to read"
+          defaultMessage="Find something to read"
+        />
       </Button>
     </Link>
   </Center>
@@ -167,4 +181,4 @@ const FAVORITES_QUERY = gql`
   }
 `;
 
-export default FavoritesPage;
+export default injectIntl(FavoritesPage);

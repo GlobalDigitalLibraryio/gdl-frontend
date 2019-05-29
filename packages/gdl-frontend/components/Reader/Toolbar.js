@@ -7,7 +7,7 @@
  */
 import * as React from 'react';
 import styled from '@emotion/styled';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import { IconButton, Tooltip } from '@material-ui/core';
 import { Close as CloseIcon, Edit as EditIcon } from '@material-ui/icons';
 import { QueryIsAdmin } from '../../gql';
@@ -63,7 +63,7 @@ const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
       <IconButton onClick={onRequestClose}>
         <CloseIcon data-cy="read-book-close-button" />
         <SrOnly>
-          <Trans>Close book</Trans>
+          <FormattedMessage id="Close book" defaultMessage="Close book" />
         </SrOnly>
       </IconButton>
     </Buttons>
@@ -78,9 +78,15 @@ const FavButton = ({ book }: { book: Book }) => (
         key={isFav.toString()}
         title={
           isFav ? (
-            <Trans>Remove from favorites</Trans>
+            <FormattedMessage
+              id="Remove from favorites"
+              defaultMessage="Remove from favorites"
+            />
           ) : (
-            <Trans>Add to favorites</Trans>
+            <FormattedMessage
+              id="Add to favorites"
+              defaultMessage="Add to favorites"
+            />
           )
         }
       >
@@ -88,9 +94,15 @@ const FavButton = ({ book }: { book: Book }) => (
           <FavoriteIcon filled={isFav} data-cy="read-book-favorite-button" />
           <SrOnly>
             {isFav ? (
-              <Trans>Remove from favorites</Trans>
+              <FormattedMessage
+                id="Remove from favorites"
+                defaultMessage="Remove from favorites"
+              />
             ) : (
-              <Trans>Add to favorites</Trans>
+              <FormattedMessage
+                id="Add to favorites"
+                defaultMessage="Add to favorites"
+              />
             )}
           </SrOnly>
         </IconButton>

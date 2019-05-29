@@ -7,7 +7,7 @@
  */
 
 import * as React from 'react';
-import { Trans } from '@lingui/react';
+import { FormattedMessage } from 'react-intl';
 import Router, { withRouter } from 'next/router';
 import { CircularProgress, Typography } from '@material-ui/core';
 import * as Sentry from '@sentry/browser';
@@ -55,13 +55,16 @@ class Success extends React.Component<
           {this.state.authFailed ? (
             <>
               <Typography align="center" variant="h4" paragraph component="h1">
-                <Trans>Oops, there was a problem signing you in.</Trans>
+                <FormattedMessage
+                  id="Sign in problem"
+                  defaultMessage="Oops, there was a problem signing you in."
+                />
               </Typography>
               <Typography align="center">
-                <Trans>
-                  The error has been reported. Please feel free to try signing
-                  in again.
-                </Trans>
+                <FormattedMessage
+                  id="Sign in report error"
+                  defaultMessage="The error has been reported. Please feel free to try signing in again."
+                />
               </Typography>
             </>
           ) : (
