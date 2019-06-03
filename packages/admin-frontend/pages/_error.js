@@ -1,5 +1,4 @@
 import React from 'react';
-import HTTPStatus from 'http-status';
 import Head from 'next/head';
 
 export default class Error extends React.Component {
@@ -13,7 +12,7 @@ export default class Error extends React.Component {
     const title =
       statusCode === 404
         ? 'This page could not be found'
-        : HTTPStatus[statusCode] || 'An unexpected error has occurred';
+        : 'An unexpected error has occurred';
 
     return (
       <div style={styles.error}>

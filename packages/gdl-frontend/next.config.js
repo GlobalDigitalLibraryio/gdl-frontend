@@ -1,5 +1,5 @@
 // @flow
-const withTM = require('next-plugin-transpile-modules');
+const withTM = require('next-transpile-modules');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 // Add source maps in production for Sentry
@@ -21,6 +21,20 @@ const nextConfig = {
   publicRuntimeConfig,
   transpileModules: ['gdl-auth'],
   webpack(config, options) {
+    const originalEntry = config.entry;
+    config.entry = async () => {
+      const entries = await originalEntry();
+
+      if (
+        entries['main.js'] &&
+        !entries['main.js'].includes('./polyfills.js')
+      ) {
+        entries['main.js'].unshift('./polyfills.js');
+      }
+
+      return entries;
+    };
+
     // If we are running in dev mode, add a dummy service worker
     if (options.dev) {
       const CopyWebpackPlugin = require('copy-webpack-plugin');
