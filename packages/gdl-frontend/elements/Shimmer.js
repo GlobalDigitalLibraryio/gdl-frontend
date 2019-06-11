@@ -12,7 +12,7 @@ import ContentLoader from 'react-content-loader';
 
 import media from '../style/media';
 import { COLUMN_GAP } from './Scroller';
-import { coverWidths } from '../components/ScrollView/coverWidths';
+import { coverWidths } from '../components/BookListSection/coverWidths';
 
 const shimmerStyle = css`
   &:last-child {

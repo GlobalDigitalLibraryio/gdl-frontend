@@ -7,6 +7,7 @@
  */
 
 import * as React from 'react';
+import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
@@ -28,10 +29,12 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import ScrollView from '../../components/ScrollView';
+import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
+import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
+import { QueryBookList } from '../../gql';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -78,6 +81,8 @@ const HeroCardTablet = styled(Card)`
     display: none;
   `};
 `;
+
+export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   games: Array<Game>,
@@ -171,22 +176,35 @@ class HomePage extends React.Component<Props> {
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
 
-          <View {...scrollListViewStyle}>
+          <View css={scrollStyle}>
             <Container width="100%">
-              <ScrollView
-                shouldBeColorized
-                heading={
-                  <FormattedMessage
-                    id="New arrivals"
-                    defaultMessage="New arrivals"
+              <QueryBookList
+                category={category}
+                pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                language={languageCode}
+                orderBy="arrivalDate_DESC"
+              >
+                {({ books, loadMore, goBack, loading }) => (
+                  <PaginationSection
+                    loading={loading}
+                    loadMore={loadMore}
+                    goBack={goBack}
+                    pageInfo={books.pageInfo}
+                    shouldBeColorized
+                    heading={
+                      <FormattedMessage
+                        id="New arrivals"
+                        defaultMessage="New arrivals"
+                      />
+                    }
+                    browseLinkProps={{
+                      lang: languageCode,
+                      category: category
+                    }}
+                    items={books.results}
                   />
-                }
-                browseLinkProps={{
-                  lang: languageCode,
-                  category: category
-                }}
-                items={NewArrivals.results}
-              />
+                )}
+              </QueryBookList>
             </Container>
           </View>
 
@@ -197,27 +215,41 @@ class HomePage extends React.Component<Props> {
                 data.results && data.results.length > 0
             )
             .map(([level, data]: [ReadingLevel, any]) => (
-              <View {...scrollListViewStyle} key={level}>
+              <View css={scrollStyle} key={level}>
                 <Container width="100%">
-                  <ScrollView
-                    heading={<ReadingLevelTrans readingLevel={level} />}
-                    level={level}
-                    shouldBeColorized
-                    browseLinkProps={{
-                      lang: languageCode,
-                      readingLevel: level,
-                      category: category
-                    }}
-                    items={bookSummaries[level].results}
-                  />
+                  <QueryBookList
+                    category={category}
+                    readingLevel={level}
+                    pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                    language={languageCode}
+                    orderBy="title_ASC"
+                  >
+                    {({ books, loadMore, goBack, loading }) => (
+                      <PaginationSection
+                        loading={loading}
+                        loadMore={loadMore}
+                        goBack={goBack}
+                        pageInfo={books.pageInfo}
+                        shouldBeColorized
+                        level={level}
+                        heading={<ReadingLevelTrans readingLevel={level} />}
+                        browseLinkProps={{
+                          lang: languageCode,
+                          readingLevel: level,
+                          category: category
+                        }}
+                        items={books.results}
+                      />
+                    )}
+                  </QueryBookList>
                 </Container>
               </View>
             ))}
 
           {category === 'Library' && (
-            <View {...scrollListViewStyle}>
+            <View css={scrollStyle}>
               <Container width="100%">
-                <ScrollView
+                <BooksAndShimmerView
                   items={games}
                   shouldBeColorized
                   level="Games"
@@ -232,9 +264,13 @@ class HomePage extends React.Component<Props> {
   }
 }
 
-const scrollListViewStyle = {
-  py: spacing.medium,
-  borderBottom: `solid 1px ${colors.base.grayLight}`
-};
+const scrollStyle = css`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: ${spacing.medium} 0;
+  border-bottom: solid 1px ${colors.base.grayLight};
+`;
 
 export default HomePage;

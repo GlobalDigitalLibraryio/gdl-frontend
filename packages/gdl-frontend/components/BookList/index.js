@@ -15,8 +15,8 @@ import { Typography, Button } from '@material-ui/core';
 import { View, Shimmer } from '../../elements';
 import { spacing, misc } from '../../style/theme/';
 import media from '../../style/media';
-import BookLink from '../ScrollView/BookLink';
-import { coverWidths } from '../ScrollView/coverWidths';
+import BookLink from '../BookListSection/BookLink';
+import { coverWidths } from '../BookListSection/coverWidths';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
 import type {

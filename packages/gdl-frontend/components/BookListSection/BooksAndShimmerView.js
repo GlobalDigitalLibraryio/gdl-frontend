@@ -31,7 +31,7 @@ type Props = {
 };
 
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
-const ScrollView = ({
+const BooksAndShimmerView = ({
   items,
   loading,
   heading,
@@ -90,4 +90,4 @@ const ScrollView = ({
   </div>
 );
 
-export default ScrollView;
+export default BooksAndShimmerView;
