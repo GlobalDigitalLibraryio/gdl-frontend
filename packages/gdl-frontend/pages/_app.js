@@ -38,7 +38,7 @@ import { parseCookies } from '../utils/util';
 import type { Context, ConfigShape } from '../types';
 
 const {
-  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+  publicRuntimeConfig: { DEFAULT_LANGUAGE, siteTranslationServiceUrl }
 }: ConfigShape = getConfig();
 
 // Load falback locale catalog with english
@@ -58,9 +58,7 @@ if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
 
 // We need to expose React Intl's locale data on the request for the user's
 const getLanguageCatalog = async language => {
-  const translation = await axios(
-    `https://api.test.digitallibrary.io/site-translations-service/${language}`
-  )
+  const translation = await axios(`${siteTranslationServiceUrl}/${language}`)
     .then(res => {
       return res.data;
     })
