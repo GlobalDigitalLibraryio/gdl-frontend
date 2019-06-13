@@ -12,7 +12,6 @@ import { ApolloProvider } from 'react-apollo';
 import Head from 'next/head';
 import Router from 'next/router';
 import getConfig from 'next/config';
-import axios from 'axios';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
@@ -34,6 +33,7 @@ import OfflineLibrary from '../lib/offlineLibrary';
 import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
+import { fetchSiteTranslation } from '../fetch';
 
 import type { Context, ConfigShape } from '../types';
 
@@ -55,22 +55,6 @@ if (typeof window !== 'undefined' && window.ReactIntlLocaleData) {
     addLocaleData(window.ReactIntlLocaleData[lang]);
   });
 }
-
-// We need to expose React Intl's locale data on the request for the user's
-const getLanguageCatalog = async language => {
-  const translation = await axios(
-    `https://api.test.digitallibrary.io/site-translations-service/${language}`
-  )
-    .then(res => {
-      return res.data;
-    })
-    .catch(error => {
-      const { data, status, statusText } = error.response;
-      console.error({ data, status, statusText });
-      return { [language]: en };
-    });
-  return translation[language];
-};
 
 class App extends NextApp {
   static async getInitialProps({
@@ -104,7 +88,13 @@ class App extends NextApp {
           ? languageFromCookie['siteLanguage']
           : DEFAULT_LANGUAGE.code);
 
-      localeCatalog = await getLanguageCatalog(language);
+      localeCatalog = await fetchSiteTranslation(language);
+      // If we dont find translations for selected language we default to english
+      if (!localeCatalog.isOk) {
+        localeCatalog = {
+          [language]: en
+        };
+      }
     }
 
     const siteLanguage =
