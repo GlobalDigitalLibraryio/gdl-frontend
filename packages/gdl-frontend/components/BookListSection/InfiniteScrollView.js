@@ -15,6 +15,7 @@ import { misc } from '../../style/theme';
 import media from '../../style/media';
 import { LARGER_TABLET_BREAKPOINT } from '../../style/theme/misc';
 import BookLink from './BookLink';
+import GameLink from './GameLink';
 import { coverWidths } from './coverWidths';
 
 import type { Book } from './BookLink';
@@ -36,6 +37,7 @@ const itemStyle = css`
 
 type Props = {
   hasMore: boolean,
+  level?: ReadingLevel | 'Games',
   items: $ReadOnlyArray<Game | Book>,
   loadMore: () => void
 };
@@ -75,12 +77,16 @@ export default class InfiniteScrollView extends Component<Props> {
   }
 
   render() {
-    const { items, hasMore } = this.props;
+    const { items, hasMore, level } = this.props;
     return (
       <Scroller ref={this.scrollerRef}>
         {items.map((item: any) => (
           <div css={itemStyle} key={item.id}>
-            <BookLink book={(item: Book)} />
+            {level === 'Games' ? (
+              <GameLink game={(item: Game)} />
+            ) : (
+              <BookLink book={(item: Book)} />
+            )}
           </div>
         ))}
         {hasMore && (

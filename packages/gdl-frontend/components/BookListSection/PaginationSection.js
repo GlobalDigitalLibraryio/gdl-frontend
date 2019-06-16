@@ -111,6 +111,7 @@ export default class PaginationSection extends Component<Props> {
         <Hidden only="mobileAndTablet">
           <InfiniteScrollView
             items={items}
+            level={level}
             loadMore={loadMore}
             hasMore={pageInfo.hasNextPage}
           />

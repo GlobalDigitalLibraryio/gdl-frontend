@@ -34,7 +34,7 @@ import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import { QueryBookList } from '../../gql';
+import { QueryBookList, QueryGameList } from '../../gql';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -99,7 +99,6 @@ type Props = {|
 class HomePage extends React.Component<Props> {
   render() {
     const {
-      games,
       bookSummaries,
       category,
       featuredContent,
@@ -107,7 +106,8 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    const { NewArrivals, ...readingLevels } = bookSummaries;
+    // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
+    const { NewArrivals, Games, ...readingLevels } = bookSummaries;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -246,18 +246,24 @@ class HomePage extends React.Component<Props> {
               </View>
             ))}
 
-          {category === 'Library' && (
-            <View css={scrollStyle}>
-              <Container width="100%">
-                <BooksAndShimmerView
-                  items={games}
-                  shouldBeColorized
-                  level="Games"
-                  heading={<ReadingLevelTrans readingLevel="Games" />}
-                />
-              </Container>
-            </View>
-          )}
+          <View css={scrollStyle}>
+            <Container width="100%">
+              <QueryGameList language={languageCode}>
+                {({ games, loadMore, goBack, loading }) => (
+                  <PaginationSection
+                    loading={loading}
+                    loadMore={loadMore}
+                    goBack={goBack}
+                    pageInfo={games.pageInfo}
+                    shouldBeColorized
+                    level="Games"
+                    heading={<ReadingLevelTrans readingLevel="Games" />}
+                    items={games.results}
+                  />
+                )}
+              </QueryGameList>
+            </Container>
+          </View>
         </Main>
       </Layout>
     );
