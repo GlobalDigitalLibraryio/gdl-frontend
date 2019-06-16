@@ -326,7 +326,7 @@ const HOME_CONTENT_QUERY = gql`
     }
   }
 
-  fragment fields on ResultItemConnection {
+  fragment fields on BookResult {
     pageInfo {
       page
       pageSize
