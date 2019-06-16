@@ -14,7 +14,6 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
-  game_game as Game,
   HomeContent,
   HomeContent_featuredContent as FeaturedContent
 } from '../../gqlTypes';
@@ -29,7 +28,6 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';

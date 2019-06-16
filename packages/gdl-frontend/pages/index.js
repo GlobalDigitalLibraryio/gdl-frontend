@@ -17,8 +17,7 @@ import type {
   Category,
   HomeContent,
   HomeContent_featuredContent as FeaturedContent,
-  GetCategories as Categories,
-  game_game as Game
+  GetCategories as Categories
 } from '../gqlTypes';
 
 import { withErrorPage } from '../hocs';
