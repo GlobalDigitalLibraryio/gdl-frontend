@@ -348,7 +348,7 @@ export type similar_book_similar_results = {
 };
 
 export type similar_book_similar = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<similar_book_similar_results>,
 };
 
@@ -620,7 +620,7 @@ export type BrowseBooks_bookSummaries_pageInfo = {
 };
 
 export type BrowseBooks_bookSummaries = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<BrowseBooks_bookSummaries_results>,
   pageInfo: BrowseBooks_bookSummaries_pageInfo,
 };
@@ -1163,7 +1163,7 @@ export type Search_search_pageInfo = {
 };
 
 export type Search_search = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<Search_search_results>,
   totalCount: number,
   pageInfo: Search_search_pageInfo,
