@@ -15,14 +15,14 @@ import Router from 'next/router';
 import type { ConfigShape, Context } from '../types';
 import type {
   Category,
-  BooksAndFeatured,
-  BooksAndFeatured_featuredContent as FeaturedContent,
+  HomeContent,
+  HomeContent_featuredContent as FeaturedContent,
   GetCategories as Categories,
-  Games_games as Game
+  game_game as Game
 } from '../gqlTypes';
 
 import { withErrorPage } from '../hocs';
-import HomePage, { AMOUNT_OF_BOOKS_PER_LEVEL } from '../components/HomePage';
+import HomePage, { AMOUNT_OF_ITEMS_PER_LEVEL } from '../components/HomePage';
 import {
   setBookLanguageAndCategory,
   getBookLanguageCode,
@@ -35,16 +35,12 @@ const {
 }: ConfigShape = getConfig();
 
 type Props = {|
-  games: Array<Game>,
   homeTutorialStatus: boolean,
   category: Category,
   categories: Array<Category>,
   languageCode: string,
   featuredContent: FeaturedContent,
-  bookSummaries: $Diff<
-    BooksAndFeatured,
-    { featuredContent: Array<FeaturedContent> }
-  >
+  homeContent: HomeContent
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -110,14 +106,14 @@ class IndexPage extends React.Component<Props> {
         category = categories.includes('Library') ? 'Library' : categories[0];
       }
 
-      const booksAndFeatured: {
-        data: BooksAndFeatured
+      const homeContentResult: {
+        data: HomeContent
       } = await apolloClient.query({
-        query: BOOKS_AND_FEATURED_QUERY,
+        query: HOME_CONTENT_QUERY,
         variables: {
           category,
           language: languageCode,
-          pageSize: AMOUNT_OF_BOOKS_PER_LEVEL
+          pageSize: AMOUNT_OF_ITEMS_PER_LEVEL
         }
       });
 
@@ -125,8 +121,8 @@ class IndexPage extends React.Component<Props> {
       setBookLanguageAndCategory(languageCode, category, res);
 
       const {
-        data: { featuredContent, ...bookSummaries }
-      } = booksAndFeatured;
+        data: { featuredContent, ...homeContent }
+      } = homeContentResult;
 
       return {
         category,
@@ -134,7 +130,7 @@ class IndexPage extends React.Component<Props> {
         languageCode,
         // Currently the UI only supports one featured content, not an array
         featuredContent: featuredContent[0],
-        bookSummaries,
+        homeContent,
         // site languge from cookie
         siteLanguage
       };
@@ -166,7 +162,7 @@ class IndexPage extends React.Component<Props> {
 
   render() {
     const {
-      bookSummaries,
+      homeContent,
       category,
       featuredContent,
       categories,
@@ -195,7 +191,7 @@ class IndexPage extends React.Component<Props> {
           </Head>
         )}
         <HomePage
-          bookSummaries={bookSummaries}
+          homeContent={homeContent}
           category={category}
           categories={categories}
           languageCode={languageCode}
@@ -220,8 +216,8 @@ const CATEGORIES_QUERY = gql`
   }
 `;
 
-const BOOKS_AND_FEATURED_QUERY = gql`
-  query BooksAndFeatured(
+const HOME_CONTENT_QUERY = gql`
+  query HomeContent(
     $language: String!
     $category: Category!
     $pageSize: Int
@@ -306,7 +302,7 @@ const BOOKS_AND_FEATURED_QUERY = gql`
     ) {
       ...fields
     }
-    Games: games(language: $language) {
+    Games: games(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize

@@ -348,7 +348,7 @@ export type similar_book_similar_results = {
 };
 
 export type similar_book_similar = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<similar_book_similar_results>,
 };
 
@@ -620,7 +620,7 @@ export type BrowseBooks_bookSummaries_pageInfo = {
 };
 
 export type BrowseBooks_bookSummaries = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<BrowseBooks_bookSummaries_results>,
   pageInfo: BrowseBooks_bookSummaries_pageInfo,
 };
@@ -780,6 +780,23 @@ export type gameVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: CheckLanguageSupport
+// ====================================================
+
+export type CheckLanguageSupport = {
+  languageSupport: boolean
+};
+
+export type CheckLanguageSupportVariables = {
+  language: string
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: GetCategories
 // ====================================================
 
@@ -797,17 +814,278 @@ export type GetCategoriesVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: Games
+// GraphQL query operation: HomeContent
 // ====================================================
 
-export type Games_games_coverImage = {
+export type HomeContent_featuredContent_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_featuredContent = {
+  __typename: "FeaturedContent",
+  id: string,
+  title: string,
+  description: string,
+  link: string,
+  imageUrl: string,
+  language: HomeContent_featuredContent_language,
+};
+
+export type HomeContent_NewArrivals_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_NewArrivals_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_NewArrivals_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_NewArrivals_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_NewArrivals_results_coverImage,
+  language: HomeContent_NewArrivals_results_language,
+};
+
+export type HomeContent_NewArrivals = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_NewArrivals_pageInfo,
+  results: Array<HomeContent_NewArrivals_results>,
+};
+
+export type HomeContent_Decodable_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Decodable_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Decodable_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Decodable_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Decodable_results_coverImage,
+  language: HomeContent_Decodable_results_language,
+};
+
+export type HomeContent_Decodable = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_Decodable_pageInfo,
+  results: Array<HomeContent_Decodable_results>,
+};
+
+export type HomeContent_Level1_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level1_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level1_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level1_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level1_results_coverImage,
+  language: HomeContent_Level1_results_language,
+};
+
+export type HomeContent_Level1 = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_Level1_pageInfo,
+  results: Array<HomeContent_Level1_results>,
+};
+
+export type HomeContent_Level2_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level2_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level2_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level2_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level2_results_coverImage,
+  language: HomeContent_Level2_results_language,
+};
+
+export type HomeContent_Level2 = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_Level2_pageInfo,
+  results: Array<HomeContent_Level2_results>,
+};
+
+export type HomeContent_Level3_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level3_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level3_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level3_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level3_results_coverImage,
+  language: HomeContent_Level3_results_language,
+};
+
+export type HomeContent_Level3 = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_Level3_pageInfo,
+  results: Array<HomeContent_Level3_results>,
+};
+
+export type HomeContent_Level4_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level4_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level4_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level4_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level4_results_coverImage,
+  language: HomeContent_Level4_results_language,
+};
+
+export type HomeContent_Level4 = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_Level4_pageInfo,
+  results: Array<HomeContent_Level4_results>,
+};
+
+export type HomeContent_ReadAloud_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_ReadAloud_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_ReadAloud_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_ReadAloud_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_ReadAloud_results_coverImage,
+  language: HomeContent_ReadAloud_results_language,
+};
+
+export type HomeContent_ReadAloud = {
+  __typename: "BookResult",
+  pageInfo: HomeContent_ReadAloud_pageInfo,
+  results: Array<HomeContent_ReadAloud_results>,
+};
+
+export type HomeContent_Games_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Games_results_coverImage = {
   __typename: "GameImage",
-  imageId: string,
   url: string,
   altText: ?string,
 };
 
-export type Games_games = {
+export type HomeContent_Games_results = {
   __typename: "Game",
   id: string,
   title: string,
@@ -817,224 +1095,32 @@ export type Games_games = {
   publisher: string,
   license: string,
   language: string,
-  coverImage: Games_games_coverImage,
+  coverImage: HomeContent_Games_results_coverImage,
 };
 
-export type Games = {
-  games: Array<?Games_games>
+export type HomeContent_Games = {
+  __typename: "GameResult",
+  pageInfo: HomeContent_Games_pageInfo,
+  results: Array<HomeContent_Games_results>,
 };
 
-export type GamesVariables = {
-  language?: ?string
+export type HomeContent = {
+  featuredContent: Array<HomeContent_featuredContent>,
+  NewArrivals: HomeContent_NewArrivals,
+  Decodable: HomeContent_Decodable,
+  Level1: HomeContent_Level1,
+  Level2: HomeContent_Level2,
+  Level3: HomeContent_Level3,
+  Level4: HomeContent_Level4,
+  ReadAloud: HomeContent_ReadAloud,
+  Games: HomeContent_Games,
 };
 
-
-/* @flow */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: BooksAndFeatured
-// ====================================================
-
-export type BooksAndFeatured_featuredContent_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_featuredContent = {
-  __typename: "FeaturedContent",
-  id: string,
-  title: string,
-  description: string,
-  link: string,
-  imageUrl: string,
-  language: BooksAndFeatured_featuredContent_language,
-};
-
-export type BooksAndFeatured_NewArrivals_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_NewArrivals_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_NewArrivals_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_NewArrivals_results_coverImage,
-  language: BooksAndFeatured_NewArrivals_results_language,
-};
-
-export type BooksAndFeatured_NewArrivals = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_NewArrivals_results>,
-};
-
-export type BooksAndFeatured_Decodable_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_Decodable_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_Decodable_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_Decodable_results_coverImage,
-  language: BooksAndFeatured_Decodable_results_language,
-};
-
-export type BooksAndFeatured_Decodable = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_Decodable_results>,
-};
-
-export type BooksAndFeatured_Level1_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_Level1_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_Level1_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_Level1_results_coverImage,
-  language: BooksAndFeatured_Level1_results_language,
-};
-
-export type BooksAndFeatured_Level1 = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_Level1_results>,
-};
-
-export type BooksAndFeatured_Level2_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_Level2_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_Level2_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_Level2_results_coverImage,
-  language: BooksAndFeatured_Level2_results_language,
-};
-
-export type BooksAndFeatured_Level2 = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_Level2_results>,
-};
-
-export type BooksAndFeatured_Level3_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_Level3_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_Level3_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_Level3_results_coverImage,
-  language: BooksAndFeatured_Level3_results_language,
-};
-
-export type BooksAndFeatured_Level3 = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_Level3_results>,
-};
-
-export type BooksAndFeatured_Level4_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_Level4_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_Level4_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_Level4_results_coverImage,
-  language: BooksAndFeatured_Level4_results_language,
-};
-
-export type BooksAndFeatured_Level4 = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_Level4_results>,
-};
-
-export type BooksAndFeatured_ReadAloud_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type BooksAndFeatured_ReadAloud_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type BooksAndFeatured_ReadAloud_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?BooksAndFeatured_ReadAloud_results_coverImage,
-  language: BooksAndFeatured_ReadAloud_results_language,
-};
-
-export type BooksAndFeatured_ReadAloud = {
-  __typename: "ResultItemConnection",
-  results: Array<BooksAndFeatured_ReadAloud_results>,
-};
-
-export type BooksAndFeatured = {
-  featuredContent: Array<BooksAndFeatured_featuredContent>,
-  NewArrivals: BooksAndFeatured_NewArrivals,
-  Decodable: BooksAndFeatured_Decodable,
-  Level1: BooksAndFeatured_Level1,
-  Level2: BooksAndFeatured_Level2,
-  Level3: BooksAndFeatured_Level3,
-  Level4: BooksAndFeatured_Level4,
-  ReadAloud: BooksAndFeatured_ReadAloud,
-};
-
-export type BooksAndFeaturedVariables = {
+export type HomeContentVariables = {
   language: string,
   category: Category,
   pageSize?: ?number,
+  page?: ?number,
 };
 
 
@@ -1077,7 +1163,7 @@ export type Search_search_pageInfo = {
 };
 
 export type Search_search = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
   results: Array<Search_search_results>,
   totalCount: number,
   pageInfo: Search_search_pageInfo,
@@ -1192,6 +1278,15 @@ export type OfflinedBook = {
 // GraphQL fragment: fields
 // ====================================================
 
+export type fields_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
 export type fields_results_coverImage = {
   __typename: "CoverImage",
   url: string,
@@ -1212,7 +1307,8 @@ export type fields_results = {
 };
 
 export type fields = {
-  __typename: "ResultItemConnection",
+  __typename: "BookResult",
+  pageInfo: fields_pageInfo,
   results: Array<fields_results>,
 };
 

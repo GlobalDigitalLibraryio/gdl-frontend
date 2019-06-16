@@ -19,7 +19,7 @@ import GameLink from './GameLink';
 import { coverWidths } from './coverWidths';
 
 import type { Book } from './BookLink';
-import type { Games_games as Game } from '../../gqlTypes';
+import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
 
 const loadingStyle = css`
   position: relative;

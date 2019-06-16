@@ -12,8 +12,8 @@ import gql from 'graphql-tag';
 import type { Category, OrderBy, ReadingLevel } from '../gqlTypes';
 
 const GET_GAMES_QUERY = gql`
-  query GameList($language: String!) {
-    games(language: $language) {
+  query GameList($language: String!, $pageSize: Int, $page: Int) {
+    games(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize
@@ -41,10 +41,11 @@ const GET_GAMES_QUERY = gql`
 
 type Props = {
   language: string,
+  pageSize: number,
   children: any => React.Node
 };
 
-const QueryGameList = ({ language, children }: Props) => (
+const QueryGameList = ({ language, children, pageSize }: Props) => (
   <ApolloConsumer>
     {client => (
       <Query
@@ -52,38 +53,39 @@ const QueryGameList = ({ language, children }: Props) => (
         query={GET_GAMES_QUERY}
         ssr={false}
         variables={{
-          language
+          language,
+          pageSize
         }}
       >
         {({ data, fetchMore, networkStatus }) => {
           const loading = networkStatus < 7;
 
           const loadMore = async () => {
-            const { bookSummaries } = await client.readQuery({
+            const { games } = await client.readQuery({
               query: GET_GAMES_QUERY,
-              variables: { category, language, orderBy, pageSize, readingLevel }
+              variables: { language, pageSize }
             });
+
             // Check if result is already in cache
             const shouldFetch =
-              bookSummaries.results.length / 5 === bookSummaries.pageInfo.page;
+              games.results.length / 5 === games.pageInfo.page;
             if (shouldFetch) {
               !loading &&
                 (await fetchMore({
                   variables: {
-                    category,
                     language,
-                    page: data.bookSummaries.pageInfo.page + 1
+                    page: data.games.pageInfo.page + 1
                   },
                   updateQuery: (prev, { fetchMoreResult }) => {
                     if (!fetchMoreResult) return prev;
 
                     return Object.assign({}, prev, {
-                      bookSummaries: {
-                        ...prev.bookSummaries,
-                        pageInfo: fetchMoreResult.bookSummaries.pageInfo,
+                      games: {
+                        ...prev.games,
+                        pageInfo: fetchMoreResult.games.pageInfo,
                         results: [
-                          ...prev.bookSummaries.results,
-                          ...fetchMoreResult.bookSummaries.results
+                          ...prev.games.results,
+                          ...fetchMoreResult.games.results
                         ]
                       }
                     });
@@ -93,22 +95,18 @@ const QueryGameList = ({ language, children }: Props) => (
               await client.writeQuery({
                 query: GET_GAMES_QUERY,
                 variables: {
-                  category,
                   language,
-                  orderBy,
-                  pageSize,
-                  readingLevel
+                  pageSize
                 },
                 data: {
-                  bookSummaries: {
-                    ...bookSummaries,
+                  games: {
+                    ...games,
                     pageInfo: {
-                      ...bookSummaries.pageInfo,
+                      ...games.pageInfo,
                       hasPreviousPage: true,
                       hasNextPage:
-                        bookSummaries.pageInfo.page <
-                        bookSummaries.pageInfo.pageCount - 1,
-                      page: bookSummaries.pageInfo.page + 1
+                        games.pageInfo.page < games.pageInfo.pageCount - 1,
+                      page: games.pageInfo.page + 1
                     }
                   }
                 }
@@ -117,29 +115,26 @@ const QueryGameList = ({ language, children }: Props) => (
           };
 
           const goBack = async () => {
-            const { bookSummaries } = await client.readQuery({
+            const { games } = await client.readQuery({
               query: GET_GAMES_QUERY,
-              variables: { category, language, orderBy, pageSize, readingLevel }
+              variables: { language, pageSize }
             });
 
             await client.writeQuery({
               query: GET_GAMES_QUERY,
               variables: {
-                category,
                 language,
-                orderBy,
-                pageSize,
-                readingLevel
+                pageSize
               },
               data: {
-                bookSummaries: {
-                  ...bookSummaries,
+                games: {
+                  ...games,
                   pageInfo: {
-                    ...bookSummaries.pageInfo,
+                    ...games.pageInfo,
                     // There is always a prev page if you have navigated to page 2
-                    hasPreviousPage: bookSummaries.pageInfo.page > 2,
+                    hasPreviousPage: games.pageInfo.page > 2,
                     hasNextPage: true,
-                    page: bookSummaries.pageInfo.page - 1
+                    page: games.pageInfo.page - 1
                   }
                 }
               }

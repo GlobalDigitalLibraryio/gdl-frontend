@@ -14,9 +14,9 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
-  Games_games as Game,
-  BooksAndFeatured,
-  BooksAndFeatured_featuredContent as FeaturedContent
+  game_game as Game,
+  HomeContent,
+  HomeContent_featuredContent as FeaturedContent
 } from '../../gqlTypes';
 
 import { logEvent } from '../../lib/analytics';
@@ -82,14 +82,10 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
+export const AMOUNT_OF_ITEMS_PER_LEVEL = 5;
 
 type Props = {|
-  games: Array<Game>,
-  bookSummaries: $Diff<
-    BooksAndFeatured,
-    { featuredContent: Array<FeaturedContent> }
-  >,
+  homeContent: HomeContent,
   languageCode: string,
   featuredContent: FeaturedContent,
   categories: Array<Category>,
@@ -99,7 +95,7 @@ type Props = {|
 class HomePage extends React.Component<Props> {
   render() {
     const {
-      bookSummaries,
+      homeContent,
       category,
       featuredContent,
       categories,
@@ -107,7 +103,7 @@ class HomePage extends React.Component<Props> {
     } = this.props;
 
     // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
-    const { NewArrivals, Games, ...readingLevels } = bookSummaries;
+    const { NewArrivals, Games, ...readingLevels } = homeContent;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -180,7 +176,7 @@ class HomePage extends React.Component<Props> {
             <Container width="100%">
               <QueryBookList
                 category={category}
-                pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
                 language={languageCode}
                 orderBy="arrivalDate_DESC"
               >
@@ -220,7 +216,7 @@ class HomePage extends React.Component<Props> {
                   <QueryBookList
                     category={category}
                     readingLevel={level}
-                    pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
                     language={languageCode}
                     orderBy="title_ASC"
                   >
@@ -248,7 +244,10 @@ class HomePage extends React.Component<Props> {
 
           <View css={scrollStyle}>
             <Container width="100%">
-              <QueryGameList language={languageCode}>
+              <QueryGameList
+                language={languageCode}
+                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+              >
                 {({ games, loadMore, goBack, loading }) => (
                   <PaginationSection
                     loading={loading}
