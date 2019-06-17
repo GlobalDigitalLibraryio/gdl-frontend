@@ -301,7 +301,7 @@ const HOME_CONTENT_QUERY = gql`
     ) {
       ...fields
     }
-    Games: games(language: $language, pageSize: $pageSize, page: $page) {
+    Games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize

@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 const GET_GAMES_QUERY = gql`
   query GameList($language: String!, $pageSize: Int, $page: Int) {
-    games(language: $language, pageSize: $pageSize, page: $page) {
+    games_v2(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize
@@ -141,7 +141,7 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
 
           return children({
             loading,
-            games: data.games,
+            games: data.games_v2,
             loadMore,
             goBack
           });
