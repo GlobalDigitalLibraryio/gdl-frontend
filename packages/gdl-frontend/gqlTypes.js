@@ -348,7 +348,7 @@ export type similar_book_similar_results = {
 };
 
 export type similar_book_similar = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   results: Array<similar_book_similar_results>,
 };
 
@@ -620,7 +620,7 @@ export type BrowseBooks_bookSummaries_pageInfo = {
 };
 
 export type BrowseBooks_bookSummaries = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   results: Array<BrowseBooks_bookSummaries_results>,
   pageInfo: BrowseBooks_bookSummaries_pageInfo,
 };
@@ -861,7 +861,7 @@ export type HomeContent_NewArrivals_results = {
 };
 
 export type HomeContent_NewArrivals = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_NewArrivals_pageInfo,
   results: Array<HomeContent_NewArrivals_results>,
 };
@@ -895,7 +895,7 @@ export type HomeContent_Decodable_results = {
 };
 
 export type HomeContent_Decodable = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_Decodable_pageInfo,
   results: Array<HomeContent_Decodable_results>,
 };
@@ -929,7 +929,7 @@ export type HomeContent_Level1_results = {
 };
 
 export type HomeContent_Level1 = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_Level1_pageInfo,
   results: Array<HomeContent_Level1_results>,
 };
@@ -963,7 +963,7 @@ export type HomeContent_Level2_results = {
 };
 
 export type HomeContent_Level2 = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_Level2_pageInfo,
   results: Array<HomeContent_Level2_results>,
 };
@@ -997,7 +997,7 @@ export type HomeContent_Level3_results = {
 };
 
 export type HomeContent_Level3 = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_Level3_pageInfo,
   results: Array<HomeContent_Level3_results>,
 };
@@ -1031,7 +1031,7 @@ export type HomeContent_Level4_results = {
 };
 
 export type HomeContent_Level4 = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_Level4_pageInfo,
   results: Array<HomeContent_Level4_results>,
 };
@@ -1065,7 +1065,7 @@ export type HomeContent_ReadAloud_results = {
 };
 
 export type HomeContent_ReadAloud = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: HomeContent_ReadAloud_pageInfo,
   results: Array<HomeContent_ReadAloud_results>,
 };
@@ -1163,7 +1163,7 @@ export type Search_search_pageInfo = {
 };
 
 export type Search_search = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   results: Array<Search_search_results>,
   totalCount: number,
   pageInfo: Search_search_pageInfo,
@@ -1307,7 +1307,7 @@ export type fields_results = {
 };
 
 export type fields = {
-  __typename: "BookResult",
+  __typename: "ResultItemConnection",
   pageInfo: fields_pageInfo,
   results: Array<fields_results>,
 };

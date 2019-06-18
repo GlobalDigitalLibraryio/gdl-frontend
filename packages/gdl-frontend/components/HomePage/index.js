@@ -91,6 +91,9 @@ type Props = {|
 |};
 
 class HomePage extends React.Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
+    return this.props.languageCode !== nextProps.languageCode;
+  }
   render() {
     const {
       homeContent,
@@ -240,27 +243,29 @@ class HomePage extends React.Component<Props> {
               </View>
             ))}
 
-          <View css={scrollStyle}>
-            <Container width="100%">
-              <QueryGameList
-                language={languageCode}
-                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-              >
-                {({ games, loadMore, goBack, loading }) => (
-                  <PaginationSection
-                    loading={loading}
-                    loadMore={loadMore}
-                    goBack={goBack}
-                    pageInfo={games.pageInfo}
-                    shouldBeColorized
-                    level="Games"
-                    heading={<ReadingLevelTrans readingLevel="Games" />}
-                    items={games.results}
-                  />
-                )}
-              </QueryGameList>
-            </Container>
-          </View>
+          {Games.pageInfo.pageCount > 0 && (
+            <View css={scrollStyle}>
+              <Container width="100%">
+                <QueryGameList
+                  language={languageCode}
+                  pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+                >
+                  {({ games, loadMore, goBack, loading }) => (
+                    <PaginationSection
+                      loading={loading}
+                      loadMore={loadMore}
+                      goBack={goBack}
+                      pageInfo={games.pageInfo}
+                      shouldBeColorized
+                      level="Games"
+                      heading={<ReadingLevelTrans readingLevel="Games" />}
+                      items={games.results}
+                    />
+                  )}
+                </QueryGameList>
+              </Container>
+            </View>
+          )}
         </Main>
       </Layout>
     );
