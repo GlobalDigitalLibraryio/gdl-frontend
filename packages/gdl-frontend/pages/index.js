@@ -143,7 +143,7 @@ class IndexPage extends React.Component<Props> {
         categories,
         languageCode,
         // Currently the UI only supports one featured content, not an array
-        featuredContent: featuredContent[0],
+        featuredContent: featuredContent,
         bookSummaries,
         // site languge from cookie
         siteLanguage

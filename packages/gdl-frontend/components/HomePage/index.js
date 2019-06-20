@@ -7,10 +7,17 @@
  */
 
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  ButtonBase
+} from '@material-ui/core';
 
 import type {
   Category,
@@ -23,7 +30,7 @@ import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View } from '../../elements';
+import { Container, View, Hidden } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
@@ -35,8 +42,14 @@ import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 import { QueryBookList } from '../../gql';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
 
 import type { ReadingLevel } from '../../gqlTypes';
+
+import Pagination from '../modules/Pagination';
+import keyboardArrowRight from '../modules/keyboard_arrow_right_white.png';
+import keyboardArrowLeft from '../modules/keyboard_arrow_left_white.png';
 
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
@@ -44,7 +57,7 @@ const Banner = styled('div')`
   position: relative;
   display: flex;
   padding: 15px;
-  justify-content: center;
+  justify-content: flex;
   ${media.mobile`
     height: 210px;
   `} ${media.tablet`
@@ -82,14 +95,13 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+let nrFeaturedContents;
 export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   games: Array<Game>,
-  bookSummaries: $Diff<
-    BooksAndFeatured,
-    { featuredContent: Array<FeaturedContent> }
-  >,
+  bookSummaries: $Diff<BooksAndFeatured>,
   languageCode: string,
   featuredContent: FeaturedContent,
   categories: Array<Category>,
@@ -97,6 +109,33 @@ type Props = {|
 |};
 
 class HomePage extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = { index: 0 };
+  }
+  handleNextIndex = index => {
+    this.setState({
+      index: this.state.index + 1
+    });
+  };
+
+  handlePrevIndex = index => {
+    this.setState({
+      index: this.state.index - 1
+    });
+  };
+
+  goToLastPage = index => {
+    this.setState({
+      index: nrFeaturedContents
+    });
+  };
+  goToFirstPage = index => {
+    this.setState({
+      index: 0
+    });
+  };
+
   render() {
     const {
       games,
@@ -107,44 +146,49 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
+    const { index } = this.state;
+    //const hasPrevPage;
+
     const { NewArrivals, ...readingLevels } = bookSummaries;
 
-    const cardContent = (
-      // Specifying width here makes text in IE11 wrap
-      <View alignItems="center" style={{ width: '100%' }}>
-        <Typography
-          lang={featuredContent.language.code}
-          align="center"
-          variant="h5"
-          component="h2"
-          gutterBottom
-          // Specifying width here makes text in IE11 wrap
-          style={{ width: '100%' }}
-        >
-          {featuredContent.title}
-        </Typography>
-        <Typography
-          lang={featuredContent.language.code}
-          align="center"
-          paragraph
-          // Specifying width here makes text in IE11 wrap
-          style={{ width: '100%' }}
-        >
-          {featuredContent.description}
-        </Typography>
-        <Button
-          onClick={() =>
-            logEvent('Navigation', 'Featured', featuredContent.title)
-          }
-          href={featuredContent.link}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          <FormattedMessage id="More" defaultMessage="More" />
-        </Button>
-      </View>
-    );
+    const cardContent = content => {
+      return (
+        // Specifying width here makes text in IE11 wrap
+        <View alignItems="center" style={{ width: '100%' }}>
+          <Typography
+            lang={content.language.code}
+            align="center"
+            variant="h5"
+            component="h2"
+            gutterBottom
+            // Specifying width here makes text in IE11 wrap
+            style={{ width: '100%' }}
+          >
+            {content.title}
+          </Typography>
+          <Typography
+            lang={content.language.code}
+            align="center"
+            paragraph
+            // Specifying width here makes text in IE11 wrap
+            style={{ width: '100%' }}
+          >
+            {content.description}
+          </Typography>
+          <Button
+            onClick={() => logEvent('Navigation', 'Featured', content.title)}
+            href={content.link}
+            variant="contained"
+            color="primary"
+            size="large"
+          >
+            <FormattedMessage id="More" defaultMessage="More" />
+          </Button>
+        </View>
+      );
+    };
+
+    nrFeaturedContents = featuredContent.length;
 
     return (
       <Layout wrapWithMain={false}>
@@ -157,25 +201,112 @@ class HomePage extends React.Component<Props> {
           />
         </NavContextBar>
         <Main>
-          <Banner src={featuredContent.imageUrl}>
-            <HeroCovertitle>
-              <Typography
-                component="h1"
-                variant="h6"
-                css={{ color: colors.base.white }}
-              >
-                <FormattedMessage id="Featured" defaultMessage="Featured" />
-              </Typography>
-            </HeroCovertitle>
-            <HeroCardTablet>
-              {/* Specifying width here makes text in IE11 wrap*/}
-              <CardContent style={{ width: '100%' }}>{cardContent}</CardContent>
-            </HeroCardTablet>
-          </Banner>
-          <HeroCardMobile>
-            <CardContent>{cardContent}</CardContent>
-          </HeroCardMobile>
+          <div style={{ position: 'relative' }}>
+            <AutoPlaySwipeableViews
+              interval={7000}
+              index={index}
+              onChangeIndex={index => this.setState({ index })}
+            >
+              {featuredContent.map(content => (
+                <div>
+                  <Banner src={content.imageUrl}>
+                    <HeroCovertitle>
+                      <Typography
+                        component="h1"
+                        variant="h6"
+                        css={{ color: colors.base.white }}
+                      >
+                        <FormattedMessage
+                          id="Featured"
+                          defaultMessage="Featured"
+                        />
+                      </Typography>
+                    </HeroCovertitle>
+                    <HeroCardTablet>
+                      {/* Specifying width here makes text in IE11 wrap*/}
+                      <CardContent style={{ width: '100%' }}>
+                        {cardContent(content)}
+                      </CardContent>
+                    </HeroCardTablet>
+                  </Banner>
 
+                  <HeroCardMobile>
+                    <CardContent>{cardContent(content)}</CardContent>
+                  </HeroCardMobile>
+                </div>
+              ))}
+            </AutoPlaySwipeableViews>
+            <Hidden only="desktop">
+              {(index !== 0 && (
+                <div
+                  css={arrowLeftContainer}
+                  aria-label="Previous"
+                  onClick={this.handlePrevIndex}
+                >
+                  {' '}
+                  <img
+                    style={{ height: '20px', width: '20px' }}
+                    src={keyboardArrowLeft}
+                  />
+                </div>
+              )) ||
+                (index === 0 && (
+                  <div
+                    css={arrowLeftContainer}
+                    aria-label="Previous"
+                    onClick={this.goToLastPage}
+                  >
+                    {' '}
+                    <img
+                      style={{ height: '20px', width: '20px' }}
+                      src={keyboardArrowLeft}
+                    />
+                  </div>
+                ))}
+              {(index !== featuredContent.length - 1 && (
+                <div
+                  css={arrowRightContainer}
+                  aria-label="Next"
+                  onClick={this.handleNextIndex}
+                >
+                  {' '}
+                  <img
+                    style={{ height: '20px', width: '20px' }}
+                    src={keyboardArrowRight}
+                  />
+                </div>
+              )) ||
+                (index === featuredContent.length - 1 && (
+                  <div
+                    css={arrowRightContainer}
+                    aria-label="Next"
+                    onClick={this.goToFirstPage}
+                  >
+                    {' '}
+                    <img
+                      style={{ height: '20px', width: '20px' }}
+                      src={keyboardArrowRight}
+                    />
+                  </div>
+                ))}
+              <div css={dotsContainer}>
+                <Pagination
+                  dots={featuredContent.length}
+                  index={index}
+                  onChangeIndex={index => this.setState({ index })}
+                />
+              </div>
+            </Hidden>
+            <Hidden only="mobileAndTablet">
+              <div style={{ paddingTop: '8px' }}>
+                <Pagination
+                  dots={featuredContent.length}
+                  index={index}
+                  onChangeIndex={index => this.setState({ index })}
+                />
+              </div>
+            </Hidden>{' '}
+          </div>
           <View css={scrollStyle}>
             <Container width="100%">
               <QueryBookList
@@ -271,6 +402,58 @@ const scrollStyle = css`
   justify-content: center;
   padding: ${spacing.medium} 0;
   border-bottom: solid 1px ${colors.base.grayLight};
+`;
+const ButtonContainer = styled('div')`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  &:hover {
+    transition: all 0.2s ease-in;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+`;
+const arrowRightContainer = css`
+  position: absolute;
+  width: 9.9%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row-reverse;
+  &:hover {
+    transition: all 0.2s ease-in;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+`;
+const arrowLeftContainer = css`
+  position: absolute;
+  width: 9.9%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  &:hover {
+    transition: all 0.2s ease-in;
+    background: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+  }
+`;
+const dotsContainer = css`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  justifycontent: center;
 `;
 
 export default HomePage;
