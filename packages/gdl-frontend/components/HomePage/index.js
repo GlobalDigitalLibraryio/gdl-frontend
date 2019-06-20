@@ -94,36 +94,43 @@ export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
   games: Array<Game>,
-  bookSummaries: $Diff<BooksAndFeatured>,
+  bookSummaries: $Diff<
+    BooksAndFeatured,
+    { featuredContent: Array<FeaturedContent> }
+  >,
   languageCode: string,
   featuredContent: FeaturedContent,
   categories: Array<Category>,
   category: Category
 |};
 
-class HomePage extends React.Component<Props> {
+type State = { index: int };
+
+class HomePage extends React.Component<Props, State> {
+  props = {};
   constructor(props) {
     super(props);
     this.state = { index: 0 };
   }
-  handleNextIndex = index => {
+
+  handleNextIndex = () => {
     this.setState({
       index: this.state.index + 1
     });
   };
 
-  handlePrevIndex = index => {
+  handlePrevIndex = () => {
     this.setState({
       index: this.state.index - 1
     });
   };
 
-  goToLastPage = index => {
+  goToLastPage = () => {
     this.setState({
-      index: nrFeaturedContents
+      index: nrFeaturedContents - 1
     });
   };
-  goToFirstPage = index => {
+  goToFirstPage = () => {
     this.setState({
       index: 0
     });
