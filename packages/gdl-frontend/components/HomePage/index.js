@@ -7,17 +7,10 @@
  */
 
 import * as React from 'react';
-import ReactDOM from 'react-dom';
 import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
-import {
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  ButtonBase
-} from '@material-ui/core';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
@@ -247,6 +240,7 @@ class HomePage extends React.Component<Props> {
                   <img
                     style={{ height: '20px', width: '20px' }}
                     src={keyboardArrowLeft}
+                    alt="ArrowLeft"
                   />
                 </div>
               )) ||
@@ -260,6 +254,7 @@ class HomePage extends React.Component<Props> {
                     <img
                       style={{ height: '20px', width: '20px' }}
                       src={keyboardArrowLeft}
+                      alt="ArrowLeft"
                     />
                   </div>
                 ))}
@@ -273,6 +268,7 @@ class HomePage extends React.Component<Props> {
                   <img
                     style={{ height: '20px', width: '20px' }}
                     src={keyboardArrowRight}
+                    alt="ArrowRight"
                   />
                 </div>
               )) ||
@@ -286,6 +282,7 @@ class HomePage extends React.Component<Props> {
                     <img
                       style={{ height: '20px', width: '20px' }}
                       src={keyboardArrowRight}
+                      alt="ArrowRight"
                     />
                   </div>
                 ))}
@@ -402,17 +399,6 @@ const scrollStyle = css`
   justify-content: center;
   padding: ${spacing.medium} 0;
   border-bottom: solid 1px ${colors.base.grayLight};
-`;
-const ButtonContainer = styled('div')`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  &:hover {
-    transition: all 0.2s ease-in;
-    background: rgba(0, 0, 0, 0.5);
-    cursor: pointer;
-  }
 `;
 const arrowRightContainer = css`
   position: absolute;
