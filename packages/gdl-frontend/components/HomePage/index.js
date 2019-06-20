@@ -75,6 +75,7 @@ const HeroCardMobile = styled(Card)`
   margin-top: -50px;
   margin-left: ${spacing.large};
   margin-right: ${spacing.large};
+  margin-bottom: 1px;
   ${media.tablet`
     display: none;
   `};
@@ -107,10 +108,6 @@ type Props = {|
 type State = { index: number };
 
 class HomePage extends React.Component<Props, State> {
-  /* constructor(props) {
-    super(props);
-    this.state = { index: 0 };
-  } */
   state = { index: 0 };
 
   handleNextIndex = () => {
@@ -191,7 +188,7 @@ class HomePage extends React.Component<Props, State> {
 
     return (
       <Layout wrapWithMain={false}>
-        <Head image={featuredContent.imageUrl} />
+        {/*  <Head image={featuredContent.imageUrl} /> */}
         <NavContextBar>
           <CategoryNavigation
             category={category}
@@ -202,7 +199,7 @@ class HomePage extends React.Component<Props, State> {
         <Main>
           <div style={{ position: 'relative' }}>
             <AutoPlaySwipeableViews
-              interval={7000}
+              interval={70000}
               index={index}
               onChangeIndex={index => this.setState({ index })}
             >

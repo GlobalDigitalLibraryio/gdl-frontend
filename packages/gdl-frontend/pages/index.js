@@ -40,7 +40,7 @@ type Props = {|
   category: Category,
   categories: Array<Category>,
   languageCode: string,
-  featuredContent: FeaturedContent,
+  featuredContent: Array<FeaturedContent>,
   bookSummaries: $Diff<
     BooksAndFeatured,
     { featuredContent: Array<FeaturedContent> }
