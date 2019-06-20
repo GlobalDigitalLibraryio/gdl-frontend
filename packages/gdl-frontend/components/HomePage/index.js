@@ -28,7 +28,7 @@ import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
-import Head from '../../components/Head';
+//import Head from '../../components/Head';
 import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
@@ -76,6 +76,7 @@ const HeroCardMobile = styled(Card)`
   margin-left: ${spacing.large};
   margin-right: ${spacing.large};
   margin-bottom: 1px;
+
   ${media.tablet`
     display: none;
   `};
@@ -199,7 +200,7 @@ class HomePage extends React.Component<Props, State> {
         <Main>
           <div style={{ position: 'relative' }}>
             <AutoPlaySwipeableViews
-              interval={70000}
+              interval={7000}
               index={index}
               onChangeIndex={index => this.setState({ index })}
             >
@@ -227,7 +228,19 @@ class HomePage extends React.Component<Props, State> {
                   </Banner>
 
                   <HeroCardMobile>
-                    <CardContent>{cardContent(content)}</CardContent>
+                    <CardContent>
+                      {cardContent(content)}
+                      <Hidden only="mobile">
+                        <div style={{ paddingTop: '8px' }}>
+                          <Pagination
+                            dots={featuredContent.length}
+                            index={index}
+                            id={content.id}
+                            onChangeIndex={index => this.setState({ index })}
+                          />
+                        </div>
+                      </Hidden>{' '}
+                    </CardContent>
                   </HeroCardMobile>
                 </div>
               ))}
@@ -293,11 +306,22 @@ class HomePage extends React.Component<Props, State> {
                 <Pagination
                   dots={featuredContent.length}
                   index={index}
+                  id={index}
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
             </Hidden>
-            <Hidden only="mobileAndTablet">
+            <Hidden only="tablet">
+              <div css={dotsContainer}>
+                <Pagination
+                  dots={featuredContent.length}
+                  index={index}
+                  id={index}
+                  onChangeIndex={index => this.setState({ index })}
+                />
+              </div>
+            </Hidden>
+            {/*  <Hidden only="mobileAndTablet">
               <div style={{ paddingTop: '8px' }}>
                 <Pagination
                   dots={featuredContent.length}
@@ -305,7 +329,7 @@ class HomePage extends React.Component<Props, State> {
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
-            </Hidden>{' '}
+            </Hidden>{' '} */}
           </div>
           <View css={scrollStyle}>
             <Container width="100%">

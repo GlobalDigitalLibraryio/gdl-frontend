@@ -4,18 +4,17 @@ import PaginationDot from './PaginationDot';
 
 const styles = {
   root: {
-    //position: 'absolute',
-    bottom: 8,
-    //right: 8,
+    position: 'absolute',
+    bottom: '8px',
+    left: '0',
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     margin: 'auto',
-    justifyContent: 'center',
-    position: 'absolute'
+    justifyContent: 'center'
   }
 };
-
+let id = 0;
 class Pagination extends React.Component {
   handleClick = (event, index) => {
     this.props.onChangeIndex(index);
@@ -29,12 +28,13 @@ class Pagination extends React.Component {
     for (let i = 0; i < dots; i += 1) {
       children.push(
         <PaginationDot
-          key={i}
+          key={id}
           index={i}
           active={i === index}
           onClick={this.handleClick}
         />
       );
+      id++;
     }
 
     return <div style={styles.root}>{children}</div>;
