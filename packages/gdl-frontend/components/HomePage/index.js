@@ -99,19 +99,19 @@ type Props = {|
     { featuredContent: Array<FeaturedContent> }
   >,
   languageCode: string,
-  featuredContent: FeaturedContent,
+  featuredContent: Array<FeaturedContent>,
   categories: Array<Category>,
   category: Category
 |};
 
-type State = { index: int };
+type State = { index: number };
 
 class HomePage extends React.Component<Props, State> {
-  props = {};
-  constructor(props) {
+  /* constructor(props) {
     super(props);
     this.state = { index: 0 };
-  }
+  } */
+  state = { index: 0 };
 
   handleNextIndex = () => {
     this.setState({
@@ -147,7 +147,6 @@ class HomePage extends React.Component<Props, State> {
     } = this.props;
 
     const { index } = this.state;
-    //const hasPrevPage;
 
     const { NewArrivals, ...readingLevels } = bookSummaries;
 
@@ -208,7 +207,7 @@ class HomePage extends React.Component<Props, State> {
               onChangeIndex={index => this.setState({ index })}
             >
               {featuredContent.map(content => (
-                <div>
+                <div key={content.id}>
                   <Banner src={content.imageUrl}>
                     <HeroCovertitle>
                       <Typography
