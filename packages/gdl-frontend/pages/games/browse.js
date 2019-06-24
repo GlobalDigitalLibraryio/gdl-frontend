@@ -27,8 +27,6 @@ import { spacing } from '../../style/theme';
 import GridContainer from '../../components/BookGrid/styledGridContainer';
 import GameLink from '../../components/BookListSection/GameLink';
 
-import queryString from 'query-string';
-
 import type { BrowseGames, Category, ReadingLevel } from '../../gqlTypes';
 
 const PAGE_SIZE = 30;
@@ -75,43 +73,9 @@ type Props = {
   intl: intlShape
 };
 
-/**
- * After graphql migration, there is indication that some users still does request with
- * old readinglevel format, so we need to handle both old and new format.
- * It is not simple to convert it to old format, because the values of readinglevel
- * consist of both numberinc and string values which raise issues when using
- * a numeric value as key property both here and in our graphql service.
- * @param {readinglevel} level
- */
-const parseReadingLevel = (level: string) => {
-  switch (level) {
-    case 'decodable':
-      return 'Decodable';
-    case '1':
-      return 'Level1';
-    case '2':
-      return 'Level2';
-    case '3':
-      return 'Level3';
-    case '4':
-      return 'Level4';
-    case 'read-aloud':
-      return 'ReadAloud';
-    default:
-      return level;
-  }
-};
-
 class BrowsePage extends React.Component<Props> {
   static async getInitialProps({ query, asPath, apolloClient, req }: Context) {
     try {
-      // Checks if client it is a client request, which happen if you direct access on url
-      const queryFromPath = queryString.parse(
-        req && req.url ? req.url.split(/\?/)[1] : asPath.split(/\?/)[1]
-      );
-
-      const parsedLevel = parseReadingLevel(queryFromPath.readingLevel);
-
       await apolloClient.query({
         query: BROWSE_GAMES_QUERY,
         variables: {
@@ -120,10 +84,7 @@ class BrowsePage extends React.Component<Props> {
           pageSize: PAGE_SIZE
         }
       });
-
-      return {
-        readingLevel: parsedLevel
-      };
+      return {};
     } catch (error) {
       /*
        * If user request invalid query param to graphql you trigger bad input validation
