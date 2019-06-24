@@ -59,31 +59,31 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
           const loading = networkStatus < 7;
 
           const loadMore = async () => {
-            const { games } = await client.readQuery({
+            const { games_v2 } = await client.readQuery({
               query: GET_GAMES_QUERY,
               variables: { language, pageSize }
             });
 
             // Check if result is already in cache
             const shouldFetch =
-              games.results.length / 5 === games.pageInfo.page;
+              games_v2.results.length / 5 === games_v2.pageInfo.page;
             if (shouldFetch) {
               !loading &&
                 (await fetchMore({
                   variables: {
                     language,
-                    page: data.games.pageInfo.page + 1
+                    page: data.games_v2.pageInfo.page + 1
                   },
                   updateQuery: (prev, { fetchMoreResult }) => {
                     if (!fetchMoreResult) return prev;
 
                     return Object.assign({}, prev, {
-                      games: {
-                        ...prev.games,
-                        pageInfo: fetchMoreResult.games.pageInfo,
+                      games_v2: {
+                        ...prev.games_v2,
+                        pageInfo: fetchMoreResult.games_v2.pageInfo,
                         results: [
-                          ...prev.games.results,
-                          ...fetchMoreResult.games.results
+                          ...prev.games_v2.results,
+                          ...fetchMoreResult.games_v2.results
                         ]
                       }
                     });
@@ -97,14 +97,15 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
                   pageSize
                 },
                 data: {
-                  games: {
-                    ...games,
+                  games_v2: {
+                    ...games_v2,
                     pageInfo: {
-                      ...games.pageInfo,
+                      ...games_v2.pageInfo,
                       hasPreviousPage: true,
                       hasNextPage:
-                        games.pageInfo.page < games.pageInfo.pageCount - 1,
-                      page: games.pageInfo.page + 1
+                        games_v2.pageInfo.page <
+                        games_v2.pageInfo.pageCount - 1,
+                      page: games_v2.pageInfo.page + 1
                     }
                   }
                 }
@@ -113,7 +114,7 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
           };
 
           const goBack = async () => {
-            const { games } = await client.readQuery({
+            const { games_v2 } = await client.readQuery({
               query: GET_GAMES_QUERY,
               variables: { language, pageSize }
             });
@@ -125,14 +126,14 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
                 pageSize
               },
               data: {
-                games: {
-                  ...games,
+                games_v2: {
+                  ...games_v2,
                   pageInfo: {
-                    ...games.pageInfo,
+                    ...games_v2.pageInfo,
                     // There is always a prev page if you have navigated to page 2
-                    hasPreviousPage: games.pageInfo.page > 2,
+                    hasPreviousPage: games_v2.pageInfo.page > 2,
                     hasNextPage: true,
-                    page: games.pageInfo.page - 1
+                    page: games_v2.pageInfo.page - 1
                   }
                 }
               }
