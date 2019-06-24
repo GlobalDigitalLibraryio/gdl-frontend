@@ -27,7 +27,7 @@ import { spacing } from '../../style/theme';
 import GridContainer from '../../components/BookGrid/styledGridContainer';
 import GameLink from '../../components/BookListSection/GameLink';
 
-import type { BrowseGames, Category, ReadingLevel } from '../../gqlTypes';
+import type { BrowseGames } from '../../gqlTypes';
 
 const PAGE_SIZE = 30;
 const INITIAL_PAGE_NUMBER = 1;
@@ -61,13 +61,9 @@ const BROWSE_GAMES_QUERY = gql`
 `;
 
 type Props = {
-  category: Category,
-  readingLevel: ReadingLevel,
   router: {
     query: {
-      lang: string,
-      category?: Category,
-      sort?: string
+      lang: string
     }
   },
   intl: intlShape
@@ -110,8 +106,7 @@ class BrowsePage extends React.Component<Props> {
    * Load more games when demanded
    */
   handleFetchMore = (currentPage: number, fetchMore) => {
-    const { readingLevel } = this.props;
-    logEvent('Navigation', 'More - Browse', readingLevel);
+    logEvent('Navigation', 'More - Browse', 'Games');
 
     fetchMore({
       variables: {
@@ -150,7 +145,6 @@ class BrowsePage extends React.Component<Props> {
       intl
     } = this.props;
 
-    const readingLevel = 'Games';
     return (
       <Query
         query={BROWSE_GAMES_QUERY}
@@ -196,30 +190,16 @@ class BrowsePage extends React.Component<Props> {
                     }}
                   >
                     {results.length > 0 ? (
-                      readingLevel ? (
-                        <>
-                          {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
-                          <ReadingLevelTrans readingLevel={readingLevel} />
-                          <LevelHR
-                            level={readingLevel}
-                            css={{
-                              margin: `${spacing.xsmall} 0`
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <FormattedMessage
-                            id="New arrivals"
-                            defaultMessage="New arrivals"
-                          />
-                          <LevelHR
-                            css={{
-                              margin: `${spacing.xsmall} 0`
-                            }}
-                          />
-                        </>
-                      )
+                      <>
+                        {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                        <ReadingLevelTrans readingLevel="Games" />
+                        <LevelHR
+                          level="Games"
+                          css={{
+                            margin: `${spacing.xsmall} 0`
+                          }}
+                        />
+                      </>
                     ) : (
                       <FormattedMessage
                         id="No games found"
