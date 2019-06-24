@@ -69,34 +69,6 @@ const BROWSE_BOOKS_QUERY = gql`
   }
 `;
 
-const BROWSE_GAMES_QUERY = gql`
-  query BrowseGames($language: String!, $pageSize: Int, $page: Int) {
-    games_v2(language: $language, pageSize: $pageSize, page: $page) {
-      pageInfo {
-        page
-        pageSize
-        pageCount
-        hasPreviousPage
-        hasNextPage
-      }
-      results {
-        id
-        title
-        description
-        url
-        source
-        publisher
-        license
-        language
-        coverImage {
-          url
-          altText
-        }
-      }
-    }
-  }
-`;
-
 type Props = {
   category: Category,
   readingLevel: ReadingLevel,
