@@ -188,6 +188,7 @@ class HomePage extends React.Component<Props> {
                     goBack={goBack}
                     pageInfo={books.pageInfo}
                     shouldBeColorized
+                    languageCode={languageCode}
                     heading={
                       <FormattedMessage
                         id="New arrivals"
@@ -229,6 +230,7 @@ class HomePage extends React.Component<Props> {
                         pageInfo={books.pageInfo}
                         shouldBeColorized
                         level={level}
+                        languageCode={languageCode}
                         heading={<ReadingLevelTrans readingLevel={level} />}
                         browseLinkProps={{
                           lang: languageCode,
@@ -257,6 +259,7 @@ class HomePage extends React.Component<Props> {
                       goBack={goBack}
                       pageInfo={games.pageInfo}
                       shouldBeColorized
+                      languageCode={languageCode}
                       level="Games"
                       heading={<ReadingLevelTrans readingLevel="Games" />}
                       items={games.results}
