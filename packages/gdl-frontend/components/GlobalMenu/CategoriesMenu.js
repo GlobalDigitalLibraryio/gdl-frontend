@@ -128,6 +128,7 @@ const Categories = ({
           />
         </ListSubheader>
         <Link
+          route="browseBooks"
           category="Classroom"
           lang={languageCode}
           sort="-arrivalDate"
@@ -147,6 +148,7 @@ const Categories = ({
         </Link>
         {classroom.map(level => (
           <Link
+            route="browseBooks"
             key={level}
             lang={languageCode}
             readingLevel={level}
@@ -176,6 +178,7 @@ const Categories = ({
           <FormattedMessage id="Library books" defaultMessage="Library books" />
         </ListSubheader>
         <Link
+          route="browseBooks"
           category="Library"
           lang={languageCode}
           sort="-arrivalDate"
@@ -195,6 +198,7 @@ const Categories = ({
         </Link>
         {library.map(level => (
           <Link
+            route="browseBooks"
             key={level}
             lang={languageCode}
             readingLevel={level}

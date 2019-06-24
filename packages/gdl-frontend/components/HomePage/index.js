@@ -197,7 +197,8 @@ class HomePage extends React.Component<Props> {
                     }
                     browseLinkProps={{
                       lang: languageCode,
-                      category: category
+                      category: category,
+                      route: 'browseBooks'
                     }}
                     items={books.results}
                   />
@@ -235,7 +236,8 @@ class HomePage extends React.Component<Props> {
                         browseLinkProps={{
                           lang: languageCode,
                           readingLevel: level,
-                          category: category
+                          category: category,
+                          route: 'browseBooks'
                         }}
                         items={books.results}
                       />
@@ -261,6 +263,10 @@ class HomePage extends React.Component<Props> {
                       shouldBeColorized
                       languageCode={languageCode}
                       level="Games"
+                      browseLinkProps={{
+                        lang: languageCode,
+                        route: 'browseGames'
+                      }}
                       heading={<ReadingLevelTrans readingLevel="Games" />}
                       items={games.results}
                     />
