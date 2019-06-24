@@ -21,7 +21,7 @@ import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import LevelHR from '../Level/LevelHR';
 import type {
   ReadingLevel,
-  BooksAndFeatured_Level1_results as Book
+  HomeContent_Level1_results as Book
 } from '../../gqlTypes';
 
 type Props = {

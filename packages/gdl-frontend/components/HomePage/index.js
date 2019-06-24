@@ -14,9 +14,8 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
-  Games_games as Game,
-  BooksAndFeatured,
-  BooksAndFeatured_featuredContent as FeaturedContent
+  HomeContent,
+  HomeContent_featuredContent as FeaturedContent
 } from '../../gqlTypes';
 
 import { logEvent } from '../../lib/analytics';
@@ -29,12 +28,11 @@ import {
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
-import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import { QueryBookList } from '../../gql';
+import { QueryBookList, QueryGameList } from '../../gql';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -82,14 +80,10 @@ const HeroCardTablet = styled(Card)`
   `};
 `;
 
-export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
+export const AMOUNT_OF_ITEMS_PER_LEVEL = 5;
 
 type Props = {|
-  games: Array<Game>,
-  bookSummaries: $Diff<
-    BooksAndFeatured,
-    { featuredContent: Array<FeaturedContent> }
-  >,
+  homeContent: HomeContent,
   languageCode: string,
   featuredContent: FeaturedContent,
   categories: Array<Category>,
@@ -97,17 +91,20 @@ type Props = {|
 |};
 
 class HomePage extends React.Component<Props> {
+  shouldComponentUpdate(nextProps: Props) {
+    return this.props.languageCode !== nextProps.languageCode;
+  }
   render() {
     const {
-      games,
-      bookSummaries,
+      homeContent,
       category,
       featuredContent,
       categories,
       languageCode
     } = this.props;
 
-    const { NewArrivals, ...readingLevels } = bookSummaries;
+    // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
+    const { NewArrivals, Games, ...readingLevels } = homeContent;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -180,7 +177,7 @@ class HomePage extends React.Component<Props> {
             <Container width="100%">
               <QueryBookList
                 category={category}
-                pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
                 language={languageCode}
                 orderBy="arrivalDate_DESC"
               >
@@ -220,7 +217,7 @@ class HomePage extends React.Component<Props> {
                   <QueryBookList
                     category={category}
                     readingLevel={level}
-                    pageSize={AMOUNT_OF_BOOKS_PER_LEVEL}
+                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
                     language={languageCode}
                     orderBy="title_ASC"
                   >
@@ -246,15 +243,26 @@ class HomePage extends React.Component<Props> {
               </View>
             ))}
 
-          {category === 'Library' && (
+          {Games.pageInfo.pageCount > 0 && (
             <View css={scrollStyle}>
               <Container width="100%">
-                <BooksAndShimmerView
-                  items={games}
-                  shouldBeColorized
-                  level="Games"
-                  heading={<ReadingLevelTrans readingLevel="Games" />}
-                />
+                <QueryGameList
+                  language={languageCode}
+                  pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+                >
+                  {({ games, loadMore, goBack, loading }) => (
+                    <PaginationSection
+                      loading={loading}
+                      loadMore={loadMore}
+                      goBack={goBack}
+                      pageInfo={games.pageInfo}
+                      shouldBeColorized
+                      level="Games"
+                      heading={<ReadingLevelTrans readingLevel="Games" />}
+                      items={games.results}
+                    />
+                  )}
+                </QueryGameList>
               </Container>
             </View>
           )}

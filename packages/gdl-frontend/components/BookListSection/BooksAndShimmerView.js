@@ -19,7 +19,7 @@ import LevelHR from '../Level/LevelHR';
 import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import type { Book } from './BookLink';
 
-import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
+import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
 
 type Props = {
   items: $ReadOnlyArray<Game | Book>,

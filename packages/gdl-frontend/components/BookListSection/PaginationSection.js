@@ -22,7 +22,7 @@ import InfiniteScrollView from './InfiniteScrollView';
 import PaginationArrowView from './PaginationArrowView';
 
 import type { Book } from './BookLink';
-import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
+import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
 
 type Props = {
   loadMore: () => void,
@@ -111,6 +111,7 @@ export default class PaginationSection extends Component<Props> {
         <Hidden only="mobileAndTablet">
           <InfiniteScrollView
             items={items}
+            level={level}
             loadMore={loadMore}
             hasMore={pageInfo.hasNextPage}
           />
