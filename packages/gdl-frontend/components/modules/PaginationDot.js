@@ -1,5 +1,5 @@
+//@flow
 import React from 'react';
-import PropTypes from 'prop-types';
 
 const styles = {
   root: {
@@ -22,21 +22,22 @@ const styles = {
   }
 };
 
-class PaginationDot extends React.Component {
-  handleClick = event => {
+type Props = {|
+  active: boolean,
+  index: number,
+  onClick: any
+|};
+
+class PaginationDot extends React.Component<Props> {
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>) => {
     this.props.onClick(event, this.props.index);
   };
 
   render() {
     const { active } = this.props;
-
-    let styleDot;
-
-    if (active) {
-      styleDot = Object.assign({}, styles.dot, styles.active);
-    } else {
-      styleDot = styles.dot;
-    }
+    const styleDot = active
+      ? Object.assign({}, styles.dot, styles.active)
+      : styles.dot;
 
     return (
       <button type="button" style={styles.root} onClick={this.handleClick}>
@@ -45,11 +46,5 @@ class PaginationDot extends React.Component {
     );
   }
 }
-
-PaginationDot.propTypes = {
-  active: PropTypes.bool.isRequired,
-  index: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired
-};
 
 export default PaginationDot;

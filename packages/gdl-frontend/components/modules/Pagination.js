@@ -1,5 +1,5 @@
+//@flow
 import React from 'react';
-import PropTypes from 'prop-types';
 import PaginationDot from './PaginationDot';
 
 const styles = {
@@ -14,37 +14,33 @@ const styles = {
     justifyContent: 'center'
   }
 };
-let id = 0;
-class Pagination extends React.Component {
-  handleClick = (event, index) => {
+
+type Props = {|
+  dots: number,
+  index: number,
+  onChangeIndex: number => void
+|};
+
+class Pagination extends React.Component<Props> {
+  handleClick = (event: SyntheticEvent<HTMLButtonElement>, index: number) => {
     this.props.onChangeIndex(index);
   };
 
   render() {
     const { index, dots } = this.props;
 
-    const children = [];
-
-    for (let i = 0; i < dots; i += 1) {
-      children.push(
+    const children = Array(dots)
+      .fill()
+      .map((e, i) => (
         <PaginationDot
-          key={id}
+          key={i}
           index={i}
           active={i === index}
           onClick={this.handleClick}
         />
-      );
-      id++;
-    }
+      ));
 
     return <div style={styles.root}>{children}</div>;
   }
 }
-
-Pagination.propTypes = {
-  dots: PropTypes.number.isRequired,
-  index: PropTypes.number.isRequired,
-  onChangeIndex: PropTypes.func.isRequired
-};
-
 export default Pagination;

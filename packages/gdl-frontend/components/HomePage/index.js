@@ -28,7 +28,7 @@ import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
-//import Head from '../../components/Head';
+import Head from '../../components/Head';
 import BooksAndShimmerView from '../BookListSection/BooksAndShimmerView';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing } from '../../style/theme';
@@ -41,8 +41,7 @@ import { autoPlay } from 'react-swipeable-views-utils';
 import type { ReadingLevel } from '../../gqlTypes';
 
 import Pagination from '../modules/Pagination';
-import keyboardArrowRight from '../modules/keyboard_arrow_right_white.png';
-import keyboardArrowLeft from '../modules/keyboard_arrow_left_white.png';
+import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons/';
 
 const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
@@ -91,7 +90,6 @@ const HeroCardTablet = styled(Card)`
 `;
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-let nrFeaturedContents;
 export const AMOUNT_OF_BOOKS_PER_LEVEL = 5;
 
 type Props = {|
@@ -125,7 +123,7 @@ class HomePage extends React.Component<Props, State> {
 
   goToLastPage = () => {
     this.setState({
-      index: nrFeaturedContents - 1
+      index: this.props.featuredContent.length - 1
     });
   };
   goToFirstPage = () => {
@@ -185,11 +183,8 @@ class HomePage extends React.Component<Props, State> {
       );
     };
 
-    nrFeaturedContents = featuredContent.length;
-
     return (
       <Layout wrapWithMain={false}>
-        {/*  <Head image={featuredContent.imageUrl} /> */}
         <NavContextBar>
           <CategoryNavigation
             category={category}
@@ -206,6 +201,7 @@ class HomePage extends React.Component<Props, State> {
             >
               {featuredContent.map(content => (
                 <div key={content.id}>
+                  <Head image={content.imageUrl} />
                   <Banner src={content.imageUrl}>
                     <HeroCovertitle>
                       <Typography
@@ -235,7 +231,6 @@ class HomePage extends React.Component<Props, State> {
                           <Pagination
                             dots={featuredContent.length}
                             index={index}
-                            id={content.id}
                             onChangeIndex={index => this.setState({ index })}
                           />
                         </div>
@@ -253,11 +248,7 @@ class HomePage extends React.Component<Props, State> {
                   onClick={this.handlePrevIndex}
                 >
                   {' '}
-                  <img
-                    style={{ height: '20px', width: '20px' }}
-                    src={keyboardArrowLeft}
-                    alt="ArrowLeft"
-                  />
+                  <KeyboardArrowLeft style={{ color: 'white' }} />
                 </div>
               )) ||
                 (index === 0 && (
@@ -267,11 +258,7 @@ class HomePage extends React.Component<Props, State> {
                     onClick={this.goToLastPage}
                   >
                     {' '}
-                    <img
-                      style={{ height: '20px', width: '20px' }}
-                      src={keyboardArrowLeft}
-                      alt="ArrowLeft"
-                    />
+                    <KeyboardArrowLeft style={{ color: 'white' }} />
                   </div>
                 ))}
               {(index !== featuredContent.length - 1 && (
@@ -281,11 +268,7 @@ class HomePage extends React.Component<Props, State> {
                   onClick={this.handleNextIndex}
                 >
                   {' '}
-                  <img
-                    style={{ height: '20px', width: '20px' }}
-                    src={keyboardArrowRight}
-                    alt="ArrowRight"
-                  />
+                  <KeyboardArrowRight style={{ color: 'white' }} />
                 </div>
               )) ||
                 (index === featuredContent.length - 1 && (
@@ -295,18 +278,13 @@ class HomePage extends React.Component<Props, State> {
                     onClick={this.goToFirstPage}
                   >
                     {' '}
-                    <img
-                      style={{ height: '20px', width: '20px' }}
-                      src={keyboardArrowRight}
-                      alt="ArrowRight"
-                    />
+                    <KeyboardArrowRight style={{ color: 'white' }} />
                   </div>
                 ))}
               <div css={dotsContainer}>
                 <Pagination
                   dots={featuredContent.length}
                   index={index}
-                  id={index}
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
@@ -316,20 +294,10 @@ class HomePage extends React.Component<Props, State> {
                 <Pagination
                   dots={featuredContent.length}
                   index={index}
-                  id={index}
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
             </Hidden>
-            {/*  <Hidden only="mobileAndTablet">
-              <div style={{ paddingTop: '8px' }}>
-                <Pagination
-                  dots={featuredContent.length}
-                  index={index}
-                  onChangeIndex={index => this.setState({ index })}
-                />
-              </div>
-            </Hidden>{' '} */}
           </div>
           <View css={scrollStyle}>
             <Container width="100%">
