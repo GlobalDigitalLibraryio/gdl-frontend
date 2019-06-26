@@ -22,13 +22,14 @@ import InfiniteScrollView from './InfiniteScrollView';
 import PaginationArrowView from './PaginationArrowView';
 
 import type { Book } from './BookLink';
-import type { Games_games as Game, ReadingLevel } from '../../gqlTypes';
+import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
 
 type Props = {
   loadMore: () => void,
   goBack: () => void,
   pageInfo: any,
   loading: boolean,
+  languageCode: string,
   items: $ReadOnlyArray<Game | Book>,
   heading: typeof FormattedMessage,
   browseLinkProps?: BrowseLinkProps,
@@ -39,7 +40,10 @@ type Props = {
 // Add a wrapper around each book or game list, so we can apply padding on the last element to get our wanted "overscroll effect" on mobile
 export default class PaginationSection extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    return this.props.items.length <= nextProps.items.length;
+    return (
+      this.props.languageCode !== nextProps.languageCode ||
+      this.props.items.length <= nextProps.items.length
+    );
   }
 
   render() {
@@ -111,6 +115,7 @@ export default class PaginationSection extends Component<Props> {
         <Hidden only="mobileAndTablet">
           <InfiniteScrollView
             items={items}
+            level={level}
             loadMore={loadMore}
             hasMore={pageInfo.hasNextPage}
           />
