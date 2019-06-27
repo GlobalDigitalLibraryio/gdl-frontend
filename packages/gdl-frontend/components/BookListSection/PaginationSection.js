@@ -20,6 +20,7 @@ import BrowseLink, { type Props as BrowseLinkProps } from '../BrowseLink';
 import CarouselDots from './CarouselDots';
 import InfiniteScrollView from './InfiniteScrollView';
 import PaginationArrowView from './PaginationArrowView';
+import colorMap from '../../style/colorMapping';
 
 import type { Book } from './BookLink';
 import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
@@ -86,7 +87,11 @@ export default class PaginationSection extends Component<Props> {
                 {/* Negative margin to align the link against the edge of the container */}
                 <Button
                   data-cy="browse-more-button"
-                  color="primary"
+                  css={{
+                    color: 'black',
+                    // $FlowFixMe
+                    border: `1.5px solid ${colorMap[level]}`
+                  }}
                   size="small"
                   variant="outlined"
                 >
