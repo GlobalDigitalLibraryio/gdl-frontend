@@ -89,8 +89,7 @@ export default class PaginationSection extends Component<Props> {
                   data-cy="browse-more-button"
                   css={{
                     color: 'black',
-                    // $FlowFixMe
-                    border: `1.5px solid ${colorMap[level]}`
+                    border: `1.5px solid ${level ? colorMap[level] : '#B4A4E5'}`
                   }}
                   size="small"
                   variant="outlined"
