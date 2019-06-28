@@ -87,12 +87,9 @@ export default class PaginationSection extends Component<Props> {
                 {/* Negative margin to align the link against the edge of the container */}
                 <Button
                   data-cy="browse-more-button"
-                  css={{
-                    color: 'black',
-                    border: `1.5px solid ${level ? colorMap[level] : '#B4A4E5'}`
-                  }}
                   size="small"
-                  variant="outlined"
+                  color="primary"
+                  variant="contained"
                 >
                   <FormattedMessage id="More" defaultMessage="More" />
                 </Button>
