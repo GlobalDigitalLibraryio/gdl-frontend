@@ -295,7 +295,7 @@ class BrowsePage extends React.Component<Props> {
                     }
                     isLoading={loading}
                     color="primary"
-                    variant="outlined"
+                    variant="contained"
                     css={{
                       marginTop: spacing.xlarge,
                       marginBottom: spacing.medium
