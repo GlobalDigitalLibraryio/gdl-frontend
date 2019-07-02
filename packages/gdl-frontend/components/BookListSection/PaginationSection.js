@@ -88,7 +88,7 @@ export default class PaginationSection extends Component<Props> {
                   data-cy="browse-more-button"
                   color="primary"
                   size="small"
-                  variant="outlined"
+                  variant="contained"
                 >
                   <FormattedMessage id="More" defaultMessage="More" />
                 </Button>
