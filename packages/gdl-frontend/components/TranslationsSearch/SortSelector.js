@@ -6,15 +6,21 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-class SortSelector extends React.Component {
-  constructor(props) {
+type Props = {
+  callbackFromParent: (sortBy: string) => void
+};
+type State = {
+  sortBy: string
+};
+
+class SortSelector extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       sortBy: ''
     };
-    this.handleChange = this.handleChange.bind(this);
   }
-  handleChange(event) {
+  handleChange(event: SyntheticInputEvent<EventTarget>) {
     this.setState({ sortBy: event.target.value }, () => {
       this.props.callbackFromParent(this.state.sortBy);
     });
@@ -27,7 +33,7 @@ class SortSelector extends React.Component {
         <Select
           native
           value={this.state.sortBy}
-          onChange={this.handleChange}
+          onChange={this.handleChange.bind(this)}
           input={<OutlinedInput labelWidth={50} name="sortBy" />}
         >
           <option value="" />

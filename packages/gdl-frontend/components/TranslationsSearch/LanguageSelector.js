@@ -5,16 +5,21 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-class LanguageSelector extends React.Component {
-  constructor(props) {
+type Props = {
+  languages: Array<string>,
+  callbackFromParent: (language: string) => void
+};
+type State = {
+  language: string
+};
+class LanguageSelector extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
-    this.languages = props.languages;
     this.state = {
       language: ''
     };
-    this.handleChange = this.handleChange.bind(this);
   }
-  handleChange(event) {
+  handleChange(event: SyntheticInputEvent<EventTarget>) {
     this.setState({ language: event.target.value }, () => {
       this.props.callbackFromParent(this.state.language);
     });
@@ -27,12 +32,12 @@ class LanguageSelector extends React.Component {
         <Select
           native
           value={this.state.language}
-          onChange={this.handleChange}
+          onChange={this.handleChange.bind(this)}
           input={<OutlinedInput labelWidth={130} name="language" />}
         >
           <option value="" />
           <option value="">All languages</option>
-          {this.languages.map((language, i) => {
+          {this.props.languages.map((language, i) => {
             return (
               <option value={language} key={i}>
                 {language}

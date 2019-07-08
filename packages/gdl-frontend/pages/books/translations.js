@@ -354,14 +354,14 @@ const CustomSearchbarItem = styled('div')`
 `;
 
 function dynamicSort(property) {
-  var sortOrder = 1;
+  let sortOrder = 1;
   if (property[0] === '-') {
     sortOrder = -1;
     property = property.substr(1);
   }
   if (property.indexOf('language') !== -1) {
     return function(a, b) {
-      var result =
+      let result =
         a.to.language['name'] < b.to.language['name']
           ? -1
           : a.to.language['name'] > b.to.language['name']
@@ -372,7 +372,7 @@ function dynamicSort(property) {
   }
   if (property.indexOf('title') !== -1) {
     return function(a, b) {
-      var result =
+      let result =
         a.to[property] < b.to[property]
           ? -1
           : a.to[property] > b.to[property]
@@ -382,7 +382,7 @@ function dynamicSort(property) {
     };
   }
   return function(a, b) {
-    var result =
+    let result =
       a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
     return result * sortOrder;
   };
@@ -416,9 +416,18 @@ function showSelectedTranslations(
   });
 }
 
-class MyTranslationsPage extends React.Component<{
-  intl: intlShape
-}> {
+type State = {
+  SelectedLanguage: string,
+  sortBy: string,
+  titleSearch: string
+};
+
+class MyTranslationsPage extends React.Component<
+  {
+    intl: intlShape
+  },
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
