@@ -39,8 +39,10 @@ import mq from '../../style/mq';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
-
 import type { intlShape } from 'react-intl';
+import LanguageSelector from '../../components/TranslationsSearch/LanguageSelector';
+import SortSelector from '../../components/TranslationsSearch/SortSelector';
+import TitleSearch from '../../components/TranslationsSearch/titleSearch';
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
@@ -333,9 +335,116 @@ const CustomGrid = styled('div')`
   }
 `;
 
+const CustomSearchBar = styled('div')`
+  display: flex;
+  flex-direction: column;
+  @media (min-width: ${TABLET_BREAKPOINT}px) {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+`;
+
+const CustomSearchbarItem = styled('div')`
+  width: 100%;
+  padding-top: 5px;
+  @media (min-width: ${TABLET_BREAKPOINT}px) {
+    padding-top: 0;
+    width: 30%;
+  }
+`;
+
+function dynamicSort(property) {
+  var sortOrder = 1;
+  if (property[0] === '-') {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+  if (property.indexOf('language') !== -1) {
+    return function(a, b) {
+      var result =
+        a.to.language['name'] < b.to.language['name']
+          ? -1
+          : a.to.language['name'] > b.to.language['name']
+          ? 1
+          : 0;
+      return result * sortOrder;
+    };
+  }
+  if (property.indexOf('title') !== -1) {
+    return function(a, b) {
+      var result =
+        a.to[property] < b.to[property]
+          ? -1
+          : a.to[property] > b.to[property]
+          ? 1
+          : 0;
+      return result * sortOrder;
+    };
+  }
+  return function(a, b) {
+    var result =
+      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+    return result * sortOrder;
+  };
+}
+
+function showSelectedTranslations(
+  translations,
+  refetch,
+  SelectedLanguage,
+  sortBy,
+  titleSearch
+) {
+  if (sortBy !== '') translations.sort(dynamicSort(sortBy));
+
+  return translations.map(translation => {
+    if (
+      (translation.to.language.name === SelectedLanguage ||
+        SelectedLanguage === '') &&
+      translation.to.title.toUpperCase().indexOf(titleSearch.toUpperCase()) !=
+        -1
+    ) {
+      return (
+        <TranslationCard
+          key={translation.to.id}
+          translation={translation}
+          handleSync={refetch}
+        />
+      );
+    }
+  });
+}
+
 class MyTranslationsPage extends React.Component<{
   intl: intlShape
 }> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      SelectedLanguage: '',
+      sortBy: '',
+      titleSearch: ''
+    };
+  }
+
+  languageCallback = dataFromChild => {
+    this.setState({
+      SelectedLanguage: dataFromChild
+    });
+  };
+
+  sortCallback = dataFromChild => {
+    this.setState({
+      sortBy: dataFromChild
+    });
+  };
+
+  titleSearchCallback = dataFromChild => {
+    this.setState({
+      titleSearch: dataFromChild
+    });
+  };
+
   render() {
     const { intl } = this.props;
     return (
@@ -361,6 +470,7 @@ class MyTranslationsPage extends React.Component<{
           {/*  Docs: https://www.apollographql.com/docs/react/essentials/queries#props partialRefetch
                 Issue: https://github.com/apollographql/apollo-client/pull/4743
             */}
+
           <Query
             query={MY_TRANSLATION_QUERY}
             partialRefetch
@@ -400,6 +510,13 @@ class MyTranslationsPage extends React.Component<{
                   </Typography>
                 );
               const { translations } = data.currentUser;
+              const toLanguages = [];
+              translations.forEach(translation => {
+                if (toLanguages.indexOf(translation.to.language.name) < 0) {
+                  toLanguages.push(translation.to.language.name);
+                }
+              });
+              toLanguages.sort();
               return translations.length === 0 ? (
                 <Typography
                   align="center"
@@ -413,13 +530,31 @@ class MyTranslationsPage extends React.Component<{
                   />
                 </Typography>
               ) : (
-                translations.map(translation => (
-                  <TranslationCard
-                    key={translation.to.id}
-                    translation={translation}
-                    handleSync={refetch}
-                  />
-                ))
+                <>
+                  <CustomSearchBar>
+                    <CustomSearchbarItem>
+                      <TitleSearch
+                        callbackFromParent={this.titleSearchCallback}
+                      />
+                    </CustomSearchbarItem>
+                    <CustomSearchbarItem>
+                      <LanguageSelector
+                        languages={toLanguages}
+                        callbackFromParent={this.languageCallback}
+                      />
+                    </CustomSearchbarItem>
+                    <CustomSearchbarItem>
+                      <SortSelector callbackFromParent={this.sortCallback} />
+                    </CustomSearchbarItem>
+                  </CustomSearchBar>
+                  {showSelectedTranslations(
+                    translations,
+                    refetch,
+                    this.state.SelectedLanguage,
+                    this.state.sortBy,
+                    this.state.titleSearch
+                  )}
+                </>
               );
             }}
           </Query>
