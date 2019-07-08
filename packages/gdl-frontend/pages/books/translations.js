@@ -401,7 +401,7 @@ function showSelectedTranslations(
     if (
       (translation.to.language.name === SelectedLanguage ||
         SelectedLanguage === '') &&
-      translation.to.title.toUpperCase().indexOf(titleSearch.toUpperCase()) !=
+      translation.to.title.toUpperCase().indexOf(titleSearch.toUpperCase()) !==
         -1
     ) {
       return (
@@ -412,6 +412,7 @@ function showSelectedTranslations(
         />
       );
     }
+    return null;
   });
 }
 
