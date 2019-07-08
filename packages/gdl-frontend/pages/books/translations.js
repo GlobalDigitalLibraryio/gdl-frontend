@@ -42,7 +42,7 @@ import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 import type { intlShape } from 'react-intl';
 import LanguageSelector from '../../components/TranslationsSearch/LanguageSelector';
 import SortSelector from '../../components/TranslationsSearch/SortSelector';
-import TitleSearch from '../../components/TranslationsSearch/titleSearch';
+import TitleSearch from '../../components/TranslationsSearch/TitleSearch';
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
