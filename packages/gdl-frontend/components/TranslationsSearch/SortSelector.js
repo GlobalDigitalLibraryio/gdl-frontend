@@ -40,8 +40,8 @@ class SortSelector extends React.Component<Props, State> {
           <option value="title">title (A to Z)</option>
           <option value="-title">title (Z to A)</option>
           <option value="readingLevel">level</option>
-          <option value="language">to-language (A to Z)</option>
-          <option value="-language">to-language (Z to A)</option>
+          <option value="name">to-language (A to Z)</option>
+          <option value="-name">to-language (Z to A)</option>
         </Select>
       </FormControl>
     );

@@ -359,33 +359,28 @@ function dynamicSort(property) {
     sortOrder = -1;
     property = property.substr(1);
   }
-  if (property.indexOf('language') !== -1) {
+  if (property.indexOf('name') !== -1) {
     return function(a, b) {
-      let result =
-        a.to.language['name'] < b.to.language['name']
-          ? -1
-          : a.to.language['name'] > b.to.language['name']
-          ? 1
-          : 0;
-      return result * sortOrder;
+      return compareValues(
+        a.to.language[property],
+        b.to.language[property],
+        sortOrder
+      );
     };
   }
   if (property.indexOf('title') !== -1) {
     return function(a, b) {
-      let result =
-        a.to[property] < b.to[property]
-          ? -1
-          : a.to[property] > b.to[property]
-          ? 1
-          : 0;
-      return result * sortOrder;
+      return compareValues(a.to[property], b.to[property], sortOrder);
     };
   }
   return function(a, b) {
-    let result =
-      a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-    return result * sortOrder;
+    return compareValues(a[property], b[property], sortOrder);
   };
+}
+
+function compareValues(a, b, sortOrder) {
+  const result = a < b ? -1 : a > b ? 1 : 0;
+  return result * sortOrder;
 }
 
 function showSelectedTranslations(
