@@ -40,8 +40,6 @@ import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 import type { intlShape } from 'react-intl';
-import LanguageSelector from '../../components/TranslationsSearch/LanguageSelector';
-import SortSelector from '../../components/TranslationsSearch/SortSelector';
 import TitleSearch from '../../components/TranslationsSearch/TitleSearch';
 import IconButton from '@material-ui/core/IconButton';
 import SortIcon from '@material-ui/icons/Sort';
@@ -393,7 +391,7 @@ function showSelectedTranslations(
 type State = {
   titleSearch: string,
   sortDirection: string,
-  sortDirStyle: style
+  sortDirStyle: { [key: string]: Object }
 };
 
 class MyTranslationsPage extends React.Component<
