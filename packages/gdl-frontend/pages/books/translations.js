@@ -43,6 +43,9 @@ import type { intlShape } from 'react-intl';
 import LanguageSelector from '../../components/TranslationsSearch/LanguageSelector';
 import SortSelector from '../../components/TranslationsSearch/SortSelector';
 import TitleSearch from '../../components/TranslationsSearch/TitleSearch';
+import IconButton from '@material-ui/core/IconButton';
+import SortIcon from '@material-ui/icons/Sort';
+
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
@@ -347,57 +350,33 @@ const CustomSearchBar = styled('div')`
 const CustomSearchbarItem = styled('div')`
   width: 100%;
   padding-top: 5px;
-  @media (min-width: ${TABLET_BREAKPOINT}px) {
-    padding-top: 0;
-    width: 30%;
-  }
 `;
 
-function dynamicSort(property) {
-  let sortOrder = 1;
-  if (property[0] === '-') {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-  if (property.indexOf('name') !== -1) {
-    return function(a, b) {
-      return compareValues(
-        a.to.language[property],
-        b.to.language[property],
-        sortOrder
-      );
-    };
-  }
-  if (property.indexOf('title') !== -1) {
-    return function(a, b) {
-      return compareValues(a.to[property], b.to[property], sortOrder);
-    };
-  }
+function sortOnTitle(dir) {
   return function(a, b) {
-    return compareValues(a[property], b[property], sortOrder);
+    const result =
+      a.to['title'] < b.to['title']
+        ? -1
+        : a.to['title'] > b.to['title']
+        ? 1
+        : 0;
+    return result * dir;
   };
-}
-
-function compareValues(a, b, sortOrder) {
-  const result = a < b ? -1 : a > b ? 1 : 0;
-  return result * sortOrder;
 }
 
 function showSelectedTranslations(
   translations,
   refetch,
-  SelectedLanguage,
-  sortBy,
-  titleSearch
+  titleSearch,
+  sortDirection
 ) {
-  if (sortBy !== '') translations.sort(dynamicSort(sortBy));
+  if (sortDirection === 'asc') translations.sort(sortOnTitle(1));
+  else translations.sort(sortOnTitle(-1));
 
   return translations.map(translation => {
     if (
-      (translation.to.language.name === SelectedLanguage ||
-        SelectedLanguage === '') &&
       translation.to.title.toUpperCase().indexOf(titleSearch.toUpperCase()) !==
-        -1
+      -1
     ) {
       return (
         <TranslationCard
@@ -412,9 +391,9 @@ function showSelectedTranslations(
 }
 
 type State = {
-  SelectedLanguage: string,
-  sortBy: string,
-  titleSearch: string
+  titleSearch: string,
+  sortDirection: string,
+  sortDirStyle: style
 };
 
 class MyTranslationsPage extends React.Component<
@@ -426,30 +405,30 @@ class MyTranslationsPage extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      SelectedLanguage: '',
-      sortBy: '',
-      titleSearch: ''
+      titleSearch: '',
+      sortDirection: 'asc',
+      sortDirStyle: { transform: 'scaleX(1)', margin: '10px' }
     };
   }
 
-  languageCallback = dataFromChild => {
-    this.setState({
-      SelectedLanguage: dataFromChild
-    });
-  };
-
-  sortCallback = dataFromChild => {
-    this.setState({
-      sortBy: dataFromChild
-    });
-  };
-
+  toggleSortDirection() {
+    if (this.state.sortDirection === 'asc') {
+      this.setState({
+        sortDirection: 'desc',
+        sortDirStyle: { transform: 'scaleY(-1)', margin: '10px' }
+      });
+    } else {
+      this.setState({
+        sortDirection: 'asc',
+        sortDirStyle: { transform: 'scaleY(1)', margin: '10px' }
+      });
+    }
+  }
   titleSearchCallback = dataFromChild => {
     this.setState({
       titleSearch: dataFromChild
     });
   };
-
   render() {
     const { intl } = this.props;
     return (
@@ -542,22 +521,19 @@ class MyTranslationsPage extends React.Component<
                         callbackFromParent={this.titleSearchCallback}
                       />
                     </CustomSearchbarItem>
-                    <CustomSearchbarItem>
-                      <LanguageSelector
-                        languages={toLanguages}
-                        callbackFromParent={this.languageCallback}
-                      />
-                    </CustomSearchbarItem>
-                    <CustomSearchbarItem>
-                      <SortSelector callbackFromParent={this.sortCallback} />
-                    </CustomSearchbarItem>
+                    <IconButton
+                      aria-label="Sort"
+                      css={this.state.sortDirStyle}
+                      onClick={() => this.toggleSortDirection()}
+                    >
+                      <SortIcon />
+                    </IconButton>
                   </CustomSearchBar>
                   {showSelectedTranslations(
                     translations,
                     refetch,
-                    this.state.SelectedLanguage,
-                    this.state.sortBy,
-                    this.state.titleSearch
+                    this.state.titleSearch,
+                    this.state.sortDirection
                   )}
                 </>
               );

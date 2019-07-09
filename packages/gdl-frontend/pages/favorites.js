@@ -100,7 +100,6 @@ class FavoritesPage extends React.Component<{ intl: intlShape }> {
                     </Center>
                   );
                 }
-
                 if (error) {
                   return <div>Something went wrong</div>;
                 }
