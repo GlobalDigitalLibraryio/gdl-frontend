@@ -92,7 +92,10 @@ type Props = {|
 
 class HomePage extends React.Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    return this.props.languageCode !== nextProps.languageCode;
+    return (
+      this.props.languageCode !== nextProps.languageCode ||
+      this.props.category !== nextProps.category
+    );
   }
   render() {
     const {

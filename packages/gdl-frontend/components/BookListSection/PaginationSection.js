@@ -42,7 +42,10 @@ export default class PaginationSection extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     return (
       this.props.languageCode !== nextProps.languageCode ||
-      this.props.items.length <= nextProps.items.length
+      // Check for items.length as precedence to not allow rerendring of elements
+      // with the same key, when spamming.
+      this.props.items.length <= nextProps.items.length ||
+      this.props.items !== nextProps.items
     );
   }
 
