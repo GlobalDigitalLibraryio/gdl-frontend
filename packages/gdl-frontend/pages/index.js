@@ -22,6 +22,7 @@ import type {
 
 import { withErrorPage } from '../hocs';
 import HomePage, { AMOUNT_OF_ITEMS_PER_LEVEL } from '../components/HomePage';
+import WelcomeTutorial from '../components/WelcomeTutorial/WelcomeTutorial';
 import {
   setBookLanguageAndCategory,
   getBookLanguageCode,
@@ -196,6 +197,8 @@ class IndexPage extends React.Component<Props> {
           languageCode={languageCode}
           featuredContent={featuredContent}
         />
+
+        <WelcomeTutorial shouldOpen={true} />
       </>
     );
   }
