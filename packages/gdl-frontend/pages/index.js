@@ -27,7 +27,9 @@ import {
   setBookLanguageAndCategory,
   getBookLanguageCode,
   getBookCategory,
-  getSiteLanguage
+  getSiteLanguage,
+  setVisited,
+  getVisited
 } from '../lib/storage';
 
 const {
@@ -35,7 +37,7 @@ const {
 }: ConfigShape = getConfig();
 
 type Props = {|
-  homeTutorialStatus: boolean,
+  visitedBefore: boolean,
   category: Category,
   categories: Array<Category>,
   languageCode: string,
@@ -91,6 +93,7 @@ class IndexPage extends React.Component<Props> {
       }
       const categories = categoriesRes.data.categories;
       const categoryInCookie = getBookCategory(req);
+      const visitedBeforeCookie = getVisited(req);
 
       let category: string;
       if (asPath.includes('/classroom')) {
@@ -104,6 +107,12 @@ class IndexPage extends React.Component<Props> {
       } else {
         // Default to Library
         category = categories.includes('Library') ? 'Library' : categories[0];
+      }
+      let visitedBefore: boolean;
+      if (visitedBeforeCookie === 'true') {
+        visitedBefore = true;
+      } else {
+        visitedBefore = false;
       }
 
       const homeContentResult: {
@@ -132,7 +141,8 @@ class IndexPage extends React.Component<Props> {
         featuredContent: featuredContent[0],
         homeContent,
         // site languge from cookie
-        siteLanguage
+        siteLanguage,
+        visitedBefore
       };
     } catch (error) {
       /*
@@ -166,7 +176,8 @@ class IndexPage extends React.Component<Props> {
       category,
       featuredContent,
       categories,
-      languageCode
+      languageCode,
+      visitedBefore
     } = this.props;
 
     let categoryTypeForUrl;
@@ -197,8 +208,8 @@ class IndexPage extends React.Component<Props> {
           languageCode={languageCode}
           featuredContent={featuredContent}
         />
-
-        <WelcomeTutorial shouldOpen={true} />
+        <WelcomeTutorial shouldOpen={!visitedBefore} />
+        {setVisited()}
       </>
     );
   }

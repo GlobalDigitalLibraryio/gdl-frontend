@@ -4,19 +4,31 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { Card, CardContent } from '@material-ui/core';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
+import Slide from '@material-ui/core/Slide';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import getDialogContent from './DialogContent';
+
+const grace1 = '/static/img/grace1.png';
+const grace2 = '/static/img/grace2.png';
+const grace3 = '/static/img/grace3.png';
+const selectLanguage = '/static/img/selectLanguagePil.png';
+const saveOffline = '/static/img/saveOfflinePil.png';
+const readBook = '/static/img/readBookPil.png';
 
 type State = {
   open: boolean,
   width: number,
   height: number,
-  activeStep: number
+  activeStep: number,
+  direction: 'left' | 'right',
+  isHidden1: string,
+  isHidden2: string,
+  isHidden3: string
 };
 type Props = {
   shouldOpen: boolean
@@ -30,6 +42,11 @@ const Styles = {
     flexDirection: 'column',
     justifyContent: 'space-between'
   },
+  dialogContent: {
+    backgroundColor: '#2B8DC8',
+    height: '100%',
+    width: '100%'
+  },
   nextButton: {
     color: 'white',
     backgroundColor: '#8FE346'
@@ -37,8 +54,7 @@ const Styles = {
   skipButton: {
     color: 'white',
     backgroundColor: 'rgba(255, 255, 255, 0.16)'
-  },
-  dotActive: { backgroundColor: 'white' }
+  }
 };
 
 class WelcomeTutorial extends React.Component<Props, State> {
@@ -48,7 +64,11 @@ class WelcomeTutorial extends React.Component<Props, State> {
       open: this.props.shouldOpen,
       width: 0,
       height: 0,
-      activeStep: 0
+      activeStep: 0,
+      direction: 'left',
+      isHidden1: 'flex',
+      isHidden2: 'none',
+      isHidden3: 'none'
     };
   }
 
@@ -77,19 +97,56 @@ class WelcomeTutorial extends React.Component<Props, State> {
 
   handleClose() {
     this.setState({
-      open: false
+      open: false,
+      isHidden1: 'flex',
+      isHidden2: 'none',
+      isHidden3: 'none'
     });
   }
 
   handleNext() {
-    this.setState({
-      activeStep: this.state.activeStep + 1
-    });
+    if (this.state.activeStep === 2) {
+      this.handleClose();
+    } else {
+      this.setState({
+        activeStep: this.state.activeStep + 1,
+        direction: 'left'
+      });
+      if (this.state.activeStep === 0) {
+        this.setState({
+          isHidden1: 'none',
+          isHidden2: 'flex',
+          isHidden3: 'none'
+        });
+      }
+      if (this.state.activeStep === 1) {
+        this.setState({
+          isHidden1: 'none',
+          isHidden2: 'none',
+          isHidden3: 'flex'
+        });
+      }
+    }
   }
   handleBack() {
     this.setState({
+      direction: 'right',
       activeStep: this.state.activeStep - 1
     });
+    if (this.state.activeStep === 1) {
+      this.setState({
+        isHidden1: 'flex',
+        isHidden2: 'none',
+        isHidden3: 'none'
+      });
+    }
+    if (this.state.activeStep === 2) {
+      this.setState({
+        isHidden1: 'none',
+        isHidden2: 'flex',
+        isHidden3: 'none'
+      });
+    }
   }
 
   render() {
@@ -107,72 +164,105 @@ class WelcomeTutorial extends React.Component<Props, State> {
           fullScreen={this.state.width < 500}
           open={this.state.open}
           onClose={this.handleClose.bind(this)}
-          aria-labelledby="responsive-dialog-title"
         >
           <div style={Styles.dialogWindow}>
-            <DialogContent>
-              <div style={{}}>
-                <img
-                  src="https://files.slack.com/files-pri/T0STRACJV-FL869E849/group.png"
-                  style={{ width: '100%' }}
-                />
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
-                  <img src="https://files.slack.com/files-pri/T0STRACJV-FLGM4GPE2/grace.png" />
-
-                  <Card style={{ marginLeft: '15px' }}>
-                    <CardContent>
-                      Hi! <br /> <br />
-                      If you want to change the language, click on the globe in
-                      the at the top-right corner of the screen!
-                    </CardContent>
-                  </Card>
-                </div>
-              </div>
-            </DialogContent>
-            <DialogActions>
-              <MobileStepper
-                variant="dots"
-                steps={3}
-                position="static"
-                activeStep={this.state.activeStep}
-                style={Styles.dotActive}
-                nextButton={
-                  <Button
-                    size="large"
-                    onClick={this.handleNext.bind(this)}
-                    disabled={this.state.activeStep === 2}
-                    autoFocus
-                    style={Styles.nextButton}
-                  >
-                    Next
-                  </Button>
-                }
-                backButton={
-                  <Button
-                    size="large"
-                    onClick={this.handleBack.bind(this)}
-                    disabled={this.state.activeStep === 0}
-                    style={Styles.skipButton}
-                  >
-                    Back
-                  </Button>
-                }
-                style={{
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  backgroundColor: '#2B8DC8'
-                }}
-              />
-            </DialogActions>
-            <Button
-              size="small"
-              onClick={this.handleClose.bind(this)}
-              color="primary"
-              style={Styles.skipButton}
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 0}
             >
-              Skip
-            </Button>
-            <br />
+              <div style={{ display: this.state.isHidden1 }}>
+                {getDialogContent(
+                  selectLanguage,
+                  grace1,
+                  `Hi! If you want to change the language, click on the globe at the top-right corner of the screen!`
+                )}
+              </div>
+            </Slide>
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 1}
+            >
+              <div style={{ display: this.state.isHidden2 }}>
+                {getDialogContent(
+                  saveOffline,
+                  grace2,
+                  'You can save books for later and read them offline by clicking the Save offline icon.'
+                )}
+              </div>
+            </Slide>
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 2}
+            >
+              <div style={{ display: this.state.isHidden3 }}>
+                {getDialogContent(
+                  readBook,
+                  grace3,
+                  'To read a book, click on the blue READ BOOK-button. Enjoy! '
+                )}
+              </div>
+            </Slide>
+            <div>
+              <DialogActions>
+                <MobileStepper
+                  variant="dots"
+                  steps={3}
+                  position="static"
+                  activeStep={this.state.activeStep}
+                  classes={{ dotActive: 'activeDot' }}
+                  css={css`
+                    width: 100%;
+                    justify-content: space-between;
+                    background-color: #2b8dc8;
+                    .activeDot {
+                      background-color: white;
+                    }
+                  `}
+                  nextButton={
+                    <Button
+                      size="large"
+                      onClick={this.handleNext.bind(this)}
+                      autoFocus
+                      style={Styles.nextButton}
+                    >
+                      {this.state.activeStep === 2 ? 'Finish' : 'Next'}
+                    </Button>
+                  }
+                  backButton={
+                    <Button
+                      size="large"
+                      onClick={this.handleBack.bind(this)}
+                      disabled={this.state.activeStep === 0}
+                      style={Styles.skipButton}
+                    >
+                      Back
+                    </Button>
+                  }
+                />
+              </DialogActions>
+              <div
+                style={{
+                  paddingLeft: '16px',
+                  paddingRight: '16px',
+                  paddingBottom: '16px'
+                }}
+              >
+                <Button
+                  size="small"
+                  onClick={this.handleClose.bind(this)}
+                  color="primary"
+                  style={Styles.skipButton}
+                  css={css`
+                    width: 100%;
+                  `}
+                >
+                  Skip
+                </Button>
+              </div>
+            </div>
           </div>
         </Dialog>
       </div>
@@ -180,4 +270,4 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 }
 
-export default withStyles(Styles)(WelcomeTutorial);
+export default WelcomeTutorial;

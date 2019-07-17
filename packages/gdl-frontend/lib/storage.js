@@ -20,6 +20,7 @@ const {
 const BOOK_LANGUAGE_KEY = 'bookLanguage';
 const BOOK_CATEGORY_KEY = 'bookCategory';
 const SITE_LANGUAGE_KEY = 'siteLanguage';
+const VISITED_BEFORE_KEY = 'visitedBefore';
 
 const oneMonthsInSeconds = 60 * 60 * 24 * 30; // approximately
 
@@ -50,10 +51,23 @@ export function setBookLanguageAndCategory(
   }
 }
 
+export function setVisited(res?: $Response) {
+  if (res) {
+    res.cookie(VISITED_BEFORE_KEY, 'true', ONE_MONTH_OPTIONS);
+  } else {
+    cookies().set(VISITED_BEFORE_KEY, true, ONE_MONTH_OPTIONS);
+  }
+}
+
 export function getBookCategory(req?: $Request) {
   return req
     ? req.cookies[BOOK_CATEGORY_KEY]
     : cookies().get(BOOK_CATEGORY_KEY, { doNotParse: true });
+}
+export function getVisited(req?: $Request) {
+  return req
+    ? req.cookies[VISITED_BEFORE_KEY]
+    : cookies().get(VISITED_BEFORE_KEY, { doNotParse: true });
 }
 
 /**
