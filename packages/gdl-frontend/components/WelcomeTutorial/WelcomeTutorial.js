@@ -148,7 +148,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 
   render() {
-    let mobile: Boolean = this.state.width < 500;
+    let mobile: boolean = this.state.width < 500;
     return (
       <div>
         <IconButton
