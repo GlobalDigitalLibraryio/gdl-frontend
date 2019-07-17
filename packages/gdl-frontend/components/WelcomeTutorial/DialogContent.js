@@ -6,8 +6,13 @@ import { Card, CardContent } from '@material-ui/core';
 function getDialogContent(
   screenshotUrl: string,
   graceImgUrl: string,
-  message: string
+  message: string,
+  fullscreen: boolean
 ) {
+  let isFullscreenStyle;
+  fullscreen
+    ? (isFullscreenStyle = { display: 'flex' })
+    : (isFullscreenStyle = { height: '270px' });
   return (
     <DialogContent
       style={{
@@ -18,11 +23,13 @@ function getDialogContent(
         height: '100%'
       }}
     >
-      <img
-        src={screenshotUrl}
-        style={{ width: '100%' }}
-        alt="screenshot from the page"
-      />
+      <div style={isFullscreenStyle}>
+        <img
+          src={screenshotUrl}
+          alt="screenshot from the page"
+          style={{ width: '100%' }}
+        />
+      </div>
       <div style={{ display: 'flex', flexDirection: 'row', marginTop: 25 }}>
         <img style={{ maxHeight: 182 }} src={graceImgUrl} alt="Grace" />
         <Card style={{ marginLeft: '15px', width: '100%' }}>

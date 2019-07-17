@@ -14,9 +14,9 @@ import getDialogContent from './DialogContent';
 const grace1 = '/static/img/grace1.png';
 const grace2 = '/static/img/grace2.png';
 const grace3 = '/static/img/grace3.png';
-const selectLanguage = '/static/img/selectLanguagePil.png';
-const saveOffline = '/static/img/saveOfflinePil.png';
-const readBook = '/static/img/readBookPil.png';
+const selectLanguage = '/static/img/selectLanguage.png';
+const saveOffline = '/static/img/saveOffline.png';
+const readBook = '/static/img/readBook.png';
 
 type State = {
   open: boolean,
@@ -148,6 +148,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 
   render() {
+    let mobile: Boolean = this.state.width < 500;
     return (
       <div>
         <IconButton
@@ -159,7 +160,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
         </IconButton>
 
         <Dialog
-          fullScreen={this.state.width < 500}
+          fullScreen={mobile}
           open={this.state.open}
           onClose={this.handleClose.bind(this)}
         >
@@ -173,7 +174,8 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 {getDialogContent(
                   selectLanguage,
                   grace1,
-                  `Hi! If you want to change the language, click on the globe at the top-right corner of the screen!`
+                  `Hi! If you want to change the language, click on the globe at the top-right corner of the screen!`,
+                  mobile
                 )}
               </div>
             </Slide>
@@ -186,7 +188,8 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 {getDialogContent(
                   saveOffline,
                   grace2,
-                  'You can save books for later and read them offline by clicking the Save offline icon.'
+                  'You can save books for later and read them offline by clicking the Save offline icon.',
+                  mobile
                 )}
               </div>
             </Slide>
@@ -199,7 +202,8 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 {getDialogContent(
                   readBook,
                   grace3,
-                  'To read a book, click on the blue READ BOOK-button. Enjoy! '
+                  'To read a book, click on the blue READ BOOK-button. Enjoy! ',
+                  mobile
                 )}
               </div>
             </Slide>
