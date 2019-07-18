@@ -4,15 +4,21 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { Card, CardContent } from '@material-ui/core';
 
 function getDialogContent(
+  screenshotUrlM: string,
   screenshotUrl: string,
   graceImgUrl: string,
   message: string,
   fullscreen: boolean
 ) {
   let isFullscreenStyle;
-  fullscreen
-    ? (isFullscreenStyle = { display: 'flex' })
-    : (isFullscreenStyle = { height: '270px' });
+  let isFullscreenScreenshot;
+  if (fullscreen) {
+    isFullscreenStyle = { display: 'flex' };
+    isFullscreenScreenshot = screenshotUrlM;
+  } else {
+    isFullscreenStyle = { height: '270px' };
+    isFullscreenScreenshot = screenshotUrl;
+  }
   return (
     <DialogContent
       style={{
@@ -25,15 +31,27 @@ function getDialogContent(
     >
       <div style={isFullscreenStyle}>
         <img
-          src={screenshotUrl}
+          src={isFullscreenScreenshot}
           alt="screenshot from the page"
           style={{ width: '100%' }}
         />
       </div>
-      <div style={{ display: 'flex', flexDirection: 'row', marginTop: 25 }}>
+      <div style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
         <img style={{ maxHeight: 182 }} src={graceImgUrl} alt="Grace" />
         <Card style={{ marginLeft: '15px', width: '100%' }}>
-          <CardContent>{message}</CardContent>
+          <CardContent
+            style={{ display: 'table', height: '100%', width: '100%' }}
+          >
+            <p
+              style={{
+                textAlign: 'center',
+                verticalAlign: 'middle',
+                display: 'table-cell'
+              }}
+            >
+              {message}
+            </p>
+          </CardContent>
         </Card>
       </div>
     </DialogContent>

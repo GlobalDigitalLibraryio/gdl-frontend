@@ -4,8 +4,6 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import IconButton from '@material-ui/core/IconButton';
-import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import Slide from '@material-ui/core/Slide';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
@@ -16,7 +14,9 @@ const grace2 = '/static/img/grace2.png';
 const grace3 = '/static/img/grace3.png';
 const selectLanguage = '/static/img/selectLanguage.png';
 const saveOffline = '/static/img/saveOffline.png';
-const readBook = '/static/img/readBook.png';
+const menu = '/static/img/menu.png';
+const saveOfflineM = '/static/img/saveOfflineM.png';
+const menuM = '/static/img/menuM.png';
 
 type State = {
   open: boolean,
@@ -38,7 +38,8 @@ const Styles = {
     height: '100%',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    overflow: 'hidden'
   },
   dialogContent: {
     backgroundColor: '#2B8DC8',
@@ -151,14 +152,6 @@ class WelcomeTutorial extends React.Component<Props, State> {
     let mobile: boolean = this.state.width < 500;
     return (
       <div>
-        <IconButton
-          variant="outlined"
-          color="primary"
-          onClick={this.handleClickOpen.bind(this)}
-        >
-          <HelpOutlineIcon />
-        </IconButton>
-
         <Dialog
           fullScreen={mobile}
           open={this.state.open}
@@ -173,6 +166,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
               <div style={{ display: this.state.isHidden1 }}>
                 {getDialogContent(
                   selectLanguage,
+                  selectLanguage,
                   grace1,
                   `Hi! If you want to change the language, click on the globe at the top-right corner of the screen!`,
                   mobile
@@ -186,6 +180,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
             >
               <div style={{ display: this.state.isHidden2 }}>
                 {getDialogContent(
+                  saveOfflineM,
                   saveOffline,
                   grace2,
                   'You can save books for later and read them offline by clicking the Save offline icon.',
@@ -200,9 +195,10 @@ class WelcomeTutorial extends React.Component<Props, State> {
             >
               <div style={{ display: this.state.isHidden3 }}>
                 {getDialogContent(
-                  readBook,
+                  menuM,
+                  menu,
                   grace3,
-                  'To read a book, click on the blue READ BOOK-button. Enjoy! ',
+                  'The menu is in the top left corner. menu menu menu menu menu menu menu menu menu menu',
                   mobile
                 )}
               </div>
