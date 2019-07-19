@@ -116,14 +116,8 @@ class WelcomeTutorial extends React.Component<Props, State> {
 
   animateSlidingToZero() {
     let { left, velocity, beingTouched } = this.state;
-    if (!beingTouched && left < -0.01) {
-      velocity += 10 * 0.033;
-      left += velocity;
-      if (left < -350) {
-        window.clearInterval(this.state.intervalId);
-      }
-      this.setState({ left, velocity });
-    } else if (!beingTouched) {
+
+    if (!beingTouched) {
       left = 0;
       velocity = 0;
       window.clearInterval(this.state.intervalId);
@@ -169,11 +163,11 @@ class WelcomeTutorial extends React.Component<Props, State> {
       const elapsed = currTime - this.state.timeOfLastDragEvent;
       const velocity = (20 * (touchX - this.state.prevTouchX)) / elapsed;
       let deltaX = touchX - this.state.touchStartX + this.state.originalOffset;
-      if (deltaX < -350) {
+      if (deltaX < -300) {
         this.handleNext();
         deltaX = 0;
         this.setState({ beingTouched: false });
-      } else if (deltaX > 350) {
+      } else if (deltaX > 300) {
         if (this.state.activeStep > 0) {
           this.handleBack();
           deltaX = 0;

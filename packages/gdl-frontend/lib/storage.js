@@ -31,6 +31,11 @@ const ONE_MONTH_OPTIONS = {
   path: '/'
 };
 
+const FIVE_YEARS_OPTION = {
+  maxAge: 60 * 60 * 24 * 365 * 5, //5 years in seconds ish
+  path: '/'
+};
+
 /**
  * Set book language and category
  */
@@ -53,9 +58,9 @@ export function setBookLanguageAndCategory(
 
 export function setVisited(res?: $Response) {
   if (res) {
-    res.cookie(VISITED_BEFORE_KEY, 'true', ONE_MONTH_OPTIONS);
+    res.cookie(VISITED_BEFORE_KEY, 'true', FIVE_YEARS_OPTION);
   } else {
-    cookies().set(VISITED_BEFORE_KEY, true, ONE_MONTH_OPTIONS);
+    cookies().set(VISITED_BEFORE_KEY, true, FIVE_YEARS_OPTION);
   }
 }
 
