@@ -29,7 +29,6 @@ class GetDialogContent extends React.Component<Props> {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-around',
-          minHeight: 485,
           height: '100%'
         }}
       >
