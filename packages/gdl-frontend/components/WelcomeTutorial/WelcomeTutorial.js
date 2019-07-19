@@ -163,11 +163,11 @@ class WelcomeTutorial extends React.Component<Props, State> {
       const elapsed = currTime - this.state.timeOfLastDragEvent;
       const velocity = (20 * (touchX - this.state.prevTouchX)) / elapsed;
       let deltaX = touchX - this.state.touchStartX + this.state.originalOffset;
-      if (deltaX < -300) {
+      if (deltaX < -200) {
         this.handleNext();
         deltaX = 0;
         this.setState({ beingTouched: false });
-      } else if (deltaX > 300) {
+      } else if (deltaX > 200) {
         if (this.state.activeStep > 0) {
           this.handleBack();
           deltaX = 0;
