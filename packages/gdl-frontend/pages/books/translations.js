@@ -13,12 +13,15 @@ import {
   Card,
   Typography,
   Grid,
-  CircularProgress
+  CircularProgress,
+  TextField,
+  IconButton
 } from '@material-ui/core';
 import {
   ArrowForward as ArrowForwardIcon,
   Sync as SyncIcon,
-  Translate as TranslateIcon
+  Translate as TranslateIcon,
+  Sort as SortIcon
 } from '@material-ui/icons';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -40,9 +43,6 @@ import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
 import type { intlShape } from 'react-intl';
-import TitleSearch from '../../components/TranslationsSearch/TitleSearch';
-import IconButton from '@material-ui/core/IconButton';
-import SortIcon from '@material-ui/icons/Sort';
 
 import type {
   MyBookTranslations,
@@ -338,11 +338,8 @@ const CustomGrid = styled('div')`
 
 const CustomSearchBar = styled('div')`
   display: flex;
-  flex-direction: column;
-  @media (min-width: ${TABLET_BREAKPOINT}px) {
-    flex-direction: row;
-    justify-content: space-between;
-  }
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const CustomSearchbarItem = styled('div')`
@@ -350,7 +347,7 @@ const CustomSearchbarItem = styled('div')`
   padding-top: 5px;
 `;
 
-function sortOnTitle(dir) {
+function sortOnTitle(sortDirection: 'asc' | 'desc') {
   return function(a, b) {
     const result =
       a.to['title'] < b.to['title']
@@ -358,7 +355,7 @@ function sortOnTitle(dir) {
         : a.to['title'] > b.to['title']
         ? 1
         : 0;
-    return result * dir;
+    return result * (sortDirection === 'asc' ? 1 : -1);
   };
 }
 
@@ -368,30 +365,35 @@ function showSelectedTranslations(
   titleSearch,
   sortDirection
 ) {
-  if (sortDirection === 'asc') translations.sort(sortOnTitle(1));
-  else translations.sort(sortOnTitle(-1));
-
-  return translations.map(translation => {
-    if (
-      translation.to.title.toUpperCase().indexOf(titleSearch.toUpperCase()) !==
-      -1
-    ) {
-      return (
-        <TranslationCard
-          key={translation.to.id}
-          translation={translation}
-          handleSync={refetch}
-        />
-      );
-    }
-    return null;
-  });
+  let copyTranslations = [...translations];
+  copyTranslations.sort(sortOnTitle(sortDirection));
+  if (titleSearch !== '') {
+    copyTranslations = copyTranslations.filter(
+      value =>
+        value.to.title.toLowerCase().indexOf(titleSearch.toLowerCase()) !== -1
+    );
+  }
+  if (copyTranslations.length > 0) {
+    return copyTranslations.map(translation => (
+      <TranslationCard
+        key={translation.to.id}
+        translation={translation}
+        handleSync={refetch}
+      />
+    ));
+  } else {
+    return (
+      <p>
+        There are no results for <b>"{titleSearch}"</b>
+      </p>
+    );
+  }
 }
 
 type State = {
   titleSearch: string,
-  sortDirection: string,
-  sortDirStyle: { [key: string]: Object }
+  sortDirection: 'asc' | 'desc',
+  sortDirStyle: { [key: string]: string | number }
 };
 
 class MyTranslationsPage extends React.Component<
@@ -405,7 +407,7 @@ class MyTranslationsPage extends React.Component<
     this.state = {
       titleSearch: '',
       sortDirection: 'asc',
-      sortDirStyle: { transform: 'scaleX(1)', margin: '10px' }
+      sortDirStyle: { transform: 'scaleX(1)', margin: 10 }
     };
   }
 
@@ -413,12 +415,12 @@ class MyTranslationsPage extends React.Component<
     if (this.state.sortDirection === 'asc') {
       this.setState({
         sortDirection: 'desc',
-        sortDirStyle: { transform: 'scaleY(-1)', margin: '10px' }
+        sortDirStyle: { transform: 'scaleY(-1)', margin: 10 }
       });
     } else {
       this.setState({
         sortDirection: 'asc',
-        sortDirStyle: { transform: 'scaleY(1)', margin: '10px' }
+        sortDirStyle: { transform: 'scaleY(1)', margin: 10 }
       });
     }
   }
@@ -492,13 +494,6 @@ class MyTranslationsPage extends React.Component<
                   </Typography>
                 );
               const { translations } = data.currentUser;
-              const toLanguages = [];
-              translations.forEach(translation => {
-                if (toLanguages.indexOf(translation.to.language.name) < 0) {
-                  toLanguages.push(translation.to.language.name);
-                }
-              });
-              toLanguages.sort();
               return translations.length === 0 ? (
                 <Typography
                   align="center"
@@ -515,8 +510,16 @@ class MyTranslationsPage extends React.Component<
                 <>
                   <CustomSearchBar>
                     <CustomSearchbarItem>
-                      <TitleSearch
-                        callbackFromParent={this.titleSearchCallback}
+                      <TextField
+                        id="standard-search"
+                        label="Search titles"
+                        type="search"
+                        value={this.state.titleSearch}
+                        onChange={event =>
+                          this.setState({ titleSearch: event.target.value })
+                        }
+                        variant="outlined"
+                        css={{ width: '100%' }}
                       />
                     </CustomSearchbarItem>
                     <IconButton
