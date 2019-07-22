@@ -15,8 +15,8 @@
     "analyze": "cross-env ANALYZE=1 next build"
   },
   "dependencies": {
-    "@emotion/core": "10.0.7",
-    "@emotion/styled": "10.0.7",
+    "@emotion/core": "^10.0.14",
+    "@emotion/styled": "^10.0.14",
     "@lingui/babel-preset-react": "2.7.2",
     "@lingui/cli": "2.7.2",
     "@lingui/react": "2.7.2",
@@ -25,7 +25,7 @@
     "@sentry/browser": "4.4.2",
     "@sentry/node": "4.4.2",
     "@zeit/next-source-maps": "0.0.3",
-    "apollo-boost": "0.3.1",
+    "apollo-boost": "^0.4.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-link-context": "^1.0.15",
     "apollo-link-http": "^1.5.12",
@@ -34,7 +34,7 @@
     "auth0-js": "9.8.2",
     "axios": "^0.18.0",
     "babel-plugin-emotion": "10.0.6",
-    "babel-plugin-react-intl": "^3.0.1",
+    "babel-plugin-react-intl": "^3.5.1",
     "clean-webpack-plugin": "1.0.0",
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
