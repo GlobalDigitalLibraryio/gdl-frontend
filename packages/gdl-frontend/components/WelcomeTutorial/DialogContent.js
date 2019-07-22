@@ -41,7 +41,7 @@ class GetDialogContent extends React.Component<Props> {
         </div>
         <div style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
           <img
-            style={{ maxHeight: 182 }}
+            style={{ maxHeight: 170 }}
             src={this.props.graceImgUrl}
             alt="Grace"
           />
