@@ -1,10 +1,12 @@
 //@flow
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import MobileStepper from '@material-ui/core/MobileStepper';
-import Slide from '@material-ui/core/Slide';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  MobileStepper,
+  Slide
+} from '@material-ui/core';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import GetDialogContent from './DialogContent';
@@ -15,14 +17,15 @@ const grace3 = '/static/img/grace3.png';
 const selectLanguage = '/static/img/selectLanguage.png';
 const saveOffline = '/static/img/saveOffline.png';
 const menu = '/static/img/menu.png';
-const saveOfflineM = '/static/img/saveOfflineM.png';
-const menuM = '/static/img/menuM.png';
+const saveOfflineM = '/static/img/saveOfflineM.png'; //for mobile
+const menuM = '/static/img/menuM.png'; //for mobile
 
 const fullscreenWidth = 768;
 
 type State = {
   open: boolean,
   width: number,
+  height: number,
   activeStep: number,
   direction: 'left' | 'right',
   isHidden1: string,
@@ -35,22 +38,19 @@ type State = {
   touchStartX: number,
   prevTouchX: number,
   beingTouched: boolean,
-  height: number,
   intervalId: string | null
 };
 type Props = {
   shouldOpen: boolean
 };
-type touchMoveEventType = {
-  targetTouches: {
-    clientX: number
-  }
-};
-type TargetTouchesArray = {
+type TargetTouches = {
   clientX: number
 };
+type touchMoveEventType = {
+  targetTouches: TargetTouches
+};
 type touchStartEventType = {
-  targetTouches: Array<TargetTouchesArray>
+  targetTouches: Array<TargetTouches>
 };
 
 const Styles = {
@@ -73,7 +73,8 @@ const Styles = {
   },
   skipButton: {
     color: 'white',
-    backgroundColor: 'rgba(255, 255, 255, 0.16)'
+    backgroundColor: 'rgba(255, 255, 255, 0.16)',
+    width: '100%'
   }
 };
 
@@ -135,50 +136,46 @@ class WelcomeTutorial extends React.Component<Props, State> {
   handleNext() {
     if (this.state.activeStep === 2) {
       this.handleClose();
-    } else {
+    } else if (this.state.activeStep === 0) {
       this.setState({
+        isHidden1: 'none',
+        isHidden2: 'flex',
+        isHidden3: 'none',
         activeStep: this.state.activeStep + 1,
         direction: 'left'
       });
-      if (this.state.activeStep === 0) {
-        this.setState({
-          isHidden1: 'none',
-          isHidden2: 'flex',
-          isHidden3: 'none'
-        });
-      }
-      if (this.state.activeStep === 1) {
-        this.setState({
-          isHidden1: 'none',
-          isHidden2: 'none',
-          isHidden3: 'flex'
-        });
-      }
+    } else if (this.state.activeStep === 1) {
+      this.setState({
+        isHidden1: 'none',
+        isHidden2: 'none',
+        isHidden3: 'flex',
+        activeStep: this.state.activeStep + 1,
+        direction: 'left'
+      });
     }
   }
-  handleMove(clientX: number) {
-    if (this.state.beingTouched) {
-      const touchX = clientX;
+
+  handleMove(touchMoveEvent: touchMoveEventType, mobile: boolean) {
+    const clientX = touchMoveEvent.targetTouches[0].clientX;
+    if (this.state.beingTouched && mobile) {
       const currTime = Date.now();
       const elapsed = currTime - this.state.timeOfLastDragEvent;
-      const velocity = (20 * (touchX - this.state.prevTouchX)) / elapsed;
-      let deltaX = touchX - this.state.touchStartX + this.state.originalOffset;
+      const velocity = (20 * (clientX - this.state.prevTouchX)) / elapsed;
+      let deltaX = clientX - this.state.touchStartX + this.state.originalOffset;
       if (deltaX < -200) {
         this.handleNext();
         deltaX = 0;
         this.setState({ beingTouched: false });
       } else if (deltaX > 200) {
-        if (this.state.activeStep > 0) {
-          this.handleBack();
-          deltaX = 0;
-          this.setState({ beingTouched: false });
-        }
+        if (this.state.activeStep > 0) this.handleBack();
+        deltaX = 0;
+        this.setState({ beingTouched: false });
       }
       this.setState({
         left: deltaX,
         velocity,
         timeOfLastDragEvent: currTime,
-        prevTouchX: touchX
+        prevTouchX: clientX
       });
     }
   }
@@ -193,9 +190,6 @@ class WelcomeTutorial extends React.Component<Props, State> {
     }
   }
 
-  handleTouchMove(touchMoveEvent: touchMoveEventType, mobile: boolean) {
-    if (mobile) this.handleMove(touchMoveEvent.targetTouches[0].clientX);
-  }
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions.bind(this));
@@ -213,22 +207,22 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 
   handleBack() {
-    this.setState({
-      direction: 'right',
-      activeStep: this.state.activeStep - 1
-    });
     if (this.state.activeStep === 1) {
       this.setState({
         isHidden1: 'flex',
         isHidden2: 'none',
-        isHidden3: 'none'
+        isHidden3: 'none',
+        direction: 'right',
+        activeStep: this.state.activeStep - 1
       });
     }
     if (this.state.activeStep === 2) {
       this.setState({
         isHidden1: 'none',
         isHidden2: 'flex',
-        isHidden3: 'none'
+        isHidden3: 'none',
+        direction: 'right',
+        activeStep: this.state.activeStep - 1
       });
     }
   }
@@ -247,7 +241,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
             this.handleTouchStart(touchStartEvent, mobile)
           }
           onTouchMove={touchMoveEvent =>
-            this.handleTouchMove(touchMoveEvent, mobile)
+            this.handleMove(touchMoveEvent, mobile)
           }
           onTouchEnd={() => {
             this.handleTouchEnd(mobile);
@@ -363,9 +357,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
             </DialogActions>
             <div
               style={{
-                paddingLeft: '16px',
-                paddingRight: '16px',
-                paddingBottom: '16px'
+                padding: '0px 16px 16px 16px'
               }}
             >
               <Button
@@ -373,9 +365,6 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 onClick={this.handleClose.bind(this)}
                 color="primary"
                 style={Styles.skipButton}
-                css={css`
-                  width: 100%;
-                `}
               >
                 Skip
               </Button>
