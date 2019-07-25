@@ -50,9 +50,9 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const userHasAuthToken = hasAuthToken(ctx.req);
+    const userHasAuthToken = true; // hasAuthToken(ctx.req);
 
-    const userHasAdminPrivileges = hasClaim(claims.readAdmin, ctx.req);
+    const userHasAdminPrivileges = true; //hasClaim(claims.readAdmin, ctx.req);
 
     // If we have response object, set a proper HTTP status code
     if (!userHasAdminPrivileges && ctx.res) {

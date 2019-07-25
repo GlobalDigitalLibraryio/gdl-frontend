@@ -14,7 +14,11 @@ import {
   InputLabel,
   FormControl,
   TextField,
-  Typography
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions
 } from '@material-ui/core';
 import { Form, Field, FormSpy } from 'react-final-form';
 import {
@@ -31,13 +35,16 @@ import Row from '../../components/Row';
 import Container from '../../components/Container';
 import isEmptyString from '../../lib/isEmptyString';
 import type { FeaturedContent, Language } from '../../types';
-
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import FeaturedEdit from './featuredEdit';
+import FeatureAdd from './featuredAdd';
 type Props = {
   languages: Array<Language>
 };
 
 type State = {
-  featuredContent: ?FeaturedContent,
+  featuredContentList: Array<FeaturedContent>,
   selectedLanguage: string,
   file: ?File
 };
@@ -52,26 +59,33 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   }
 
   state = {
-    featuredContent: null,
     selectedLanguage: '',
     croppedParameters: null,
-    file: null
+    file: null,
+    featuredContentList: []
   };
 
   getFeaturedContent = async (languageCode: string) => {
     const featuredContentRes = await fetchFeaturedContent(languageCode);
-    const featuredContent = featuredContentRes.isOk
-      ? featuredContentRes.data[0]
-      : null;
+    const featContList = [];
+    let i = 0;
+    while (true) {
+      if (featuredContentRes.data[i]) {
+        featContList.push(featuredContentRes.data[i]);
+      } else {
+        break;
+      }
+      i++;
+    }
 
-    if (featuredContent) {
-      if (featuredContent.language.code !== languageCode) {
+    if (featuredContentRes.isOk) {
+      if (featContList[0].language.code !== languageCode) {
         this.setState({
-          featuredContent: null
+          featuredContentList: []
         });
       } else {
         this.setState({
-          featuredContent: featuredContent
+          featuredContentList: featContList
         });
       }
     }
@@ -87,20 +101,28 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
       this.state.selectedLanguage
     );
     if (result.isOk) {
-      this.setState(prevState => ({
-        featuredContent: { ...prevState.featuredContent, id: result.data.id }
-      }));
+      this.setState(() => {
+        const featuredContentList = this.state.featuredContentList.map(item => {
+          if (item.id === content.id) {
+            return content;
+          } else {
+            return item;
+          }
+        });
+        return {
+          featuredContentList
+        };
+      });
     }
   };
-
-  handleSaveButtonClick = (defaultReturned: boolean) => (
-    content: FeaturedContent
-  ) => {
-    defaultReturned
-      ? this.postFeaturedContent(content)
-      : this.putFeaturedContent(content);
-
-    this.setState({ featuredContent: content });
+  postNewFeaturedContent = async (content: FeaturedContent) => {
+    const result = await saveFeaturedContent(
+      content,
+      this.state.selectedLanguage
+    );
+    if (result.isOk) {
+      this.getFeaturedContent(this.state.selectedLanguage);
+    }
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
@@ -111,15 +133,20 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     this.getFeaturedContent(event.target.value);
   };
 
-  deleteFeaturedContent = async (id: number) => {
+  deleteFeaturedContent = async (id: string) => {
     await deleteFeaturedContent(id);
   };
 
-  handleDelete = () => {
-    if (this.state.featuredContent) {
-      this.deleteFeaturedContent(this.state.featuredContent.id);
-      this.setState({ featuredContent: null });
-    }
+  handleDelete = (id: string, index: number) => {
+    this.deleteFeaturedContent(this.state.featuredContentList[index].id);
+    this.setState(state => {
+      const featuredContentList = this.state.featuredContentList.filter(
+        item => item.id !== id
+      );
+      return {
+        featuredContentList
+      };
+    });
   };
 
   handleOnUpload = (
@@ -139,18 +166,50 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
       file: event.target.files[0]
     });
   };
+  addFeatureContent = () => {
+    console.log('ADDING');
+  };
+  handleSaveButtonClick = (
+    defaultReturned: boolean,
+    content: FeaturedContent
+  ) => {
+    defaultReturned
+      ? this.postFeaturedContent(content)
+      : this.putFeaturedContent(content);
+
+    this.setState(() => {
+      const featuredContentList = this.state.featuredContentList.map(item => {
+        if (item.id === content.id) {
+          return content;
+        } else {
+          return item;
+        }
+      });
+      return {
+        featuredContentList
+      };
+    });
+  };
+
+  handleSaveButtonClickNew = (
+    defaultReturned: boolean,
+    content: FeaturedContent
+  ) => {
+    this.postNewFeaturedContent(content);
+  };
 
   render() {
-    const { featuredContent, selectedLanguage } = this.state;
+    const { selectedLanguage, featuredContentList } = this.state;
 
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
     let defaultReturned = true;
     if (
-      featuredContent &&
-      featuredContent.language &&
-      featuredContent.language.code
+      featuredContentList[0] &&
+      featuredContentList[0].language &&
+      featuredContentList[0].language.code
     ) {
-      defaultReturned = featuredContent.language.code !== selectedLanguage;
+      defaultReturned =
+        featuredContentList[0].language.code !== selectedLanguage;
     }
 
     return (
@@ -180,143 +239,79 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
               ;
             </Select>
           </FormControl>
-          <Form
-            initialValues={featuredContent || {}}
-            onSubmit={this.handleSaveButtonClick(defaultReturned)}
-            validate={handleValidate}
-            render={({ handleSubmit, pristine, invalid, form }) => (
-              <form>
-                <Field
-                  name="title"
-                  render={({ input, meta }) => (
-                    <TextField
-                      fullWidth
-                      error={meta.error && meta.touched}
-                      margin="normal"
-                      disabled={selectedLanguage === ''}
-                      label="Title"
-                      {...input}
-                    />
-                  )}
-                />
-                <Field
-                  name="description"
-                  render={({ input, meta }) => (
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      error={meta.error && meta.touched}
-                      disabled={selectedLanguage === ''}
-                      label="Description"
-                      {...input}
-                      multiline
-                    />
-                  )}
-                />
-                <Field
-                  name="link"
-                  render={({ input, meta }) => (
-                    <>
-                      <TextField
-                        fullWidth
-                        type="url"
-                        error={meta.error && meta.touched}
-                        margin="normal"
-                        disabled={selectedLanguage === ''}
-                        label="Link"
-                        {...input}
-                      />
-                      {meta.error && meta.touched && (
-                        <FormHelperText error>{meta.error}</FormHelperText>
-                      )}
-                    </>
-                  )}
-                />
 
-                <Row
-                  alignItems="center"
-                  gridTemplateColumns="auto min-content min-content"
-                >
-                  <div>
-                    <Field
-                      name="imageUrl"
-                      render={({ input, meta }) => (
-                        <>
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            error={meta.error && meta.touched}
-                            type="url"
-                            disabled={selectedLanguage === ''}
-                            label="Image Url"
-                            {...input}
-                          />
-                          {meta.error && meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                        </>
-                      )}
-                    />
-                  </div>
-
-                  <span>or</span>
-
-                  <input
-                    disabled={this.state.selectedLanguage === ''}
-                    type="file"
-                    accept="image/*"
-                    value=""
-                    onChange={event => this.handleFileChosen(event)}
+          {featuredContentList.length === 0 && selectedLanguage !== '' ? (
+            <p>
+              There is no featured content for the language{' '}
+              <b>{selectedLanguage}</b>
+            </p>
+          ) : null}
+          <div
+            css={css`
+              width: 100%;
+              margin-top: 24px;
+              margin-bottom: 24px;
+              display: grid;
+              grid-gap: 20px;
+              grid-template-columns: auto auto auto;
+              @media only screen and (max-width: 1231px) {
+                grid-template-columns: auto auto;
+              }
+            `}
+          >
+            {featuredContentList.map((content, i) => {
+              return (
+                <Card style={{ width: 296, height: 450 }} key={content.id}>
+                  <CardMedia
+                    style={{ height: 150 }}
+                    image={content.imageUrl}
+                    title={content.title}
                   />
 
-                  {this.state.file && (
-                    <UploadFileDialog
-                      language={selectedLanguage}
-                      selectedFile={this.state.file}
-                      objectURL={URL.createObjectURL(this.state.file)}
-                      onCancel={this.handleOnCancel}
-                      onUpload={url => this.handleOnUpload(url, form.change)}
+                  <CardContent>
+                    <h4>{content.title}</h4>
+                    <p>{content.description}</p>
+                  </CardContent>
+                  <CardActions>
+                    <FeaturedEdit
+                      button={
+                        <Button size="small" color="primary">
+                          Edit
+                        </Button>
+                      }
+                      featuredContentList={featuredContentList}
+                      selectedLanguage={selectedLanguage}
+                      i={i}
+                      defaultReturned={defaultReturned}
+                      handleSaveButtonClick={this.handleSaveButtonClick}
+                      handleFileChosen={this.handleFileChosen}
+                      handleOnCancel={this.handleOnCancel}
+                      file={this.state.file}
+                      handleOnUpload={this.handleOnUpload}
                     />
-                  )}
-                </Row>
 
-                <FormSpy
-                  // $FlowFixMe
-                  render={({ values }) =>
-                    // $FlowFixMe
-                    values.imageUrl ? (
-                      <FeaturedImage imageUrl={values.imageUrl} />
-                    ) : null
-                  }
-                />
-
-                <Button
-                  color="primary"
-                  disabled={invalid || pristine}
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Save changes
-                </Button>
-                <Button
-                  color="secondary"
-                  disabled={pristine}
-                  onClick={form.reset}
-                >
-                  Discard changes
-                </Button>
-                <Button
-                  color="secondary"
-                  disabled={
-                    selectedLanguage === '' || !featuredContent // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                  }
-                  onClick={this.handleDelete}
-                >
-                  Delete featured content
-                </Button>
-              </form>
-            )}
-          />
+                    <Button
+                      color="secondary"
+                      onClick={() => this.handleDelete(content.id, i)}
+                    >
+                      Delete
+                    </Button>
+                  </CardActions>
+                </Card>
+              );
+            })}
+            {selectedLanguage !== ''
+              ? FeatureAdd(
+                  defaultReturned,
+                  this.handleSaveButtonClickNew,
+                  this.handleFileChosen,
+                  this.handleOnCancel,
+                  this.state.file,
+                  this.handleOnUpload,
+                  this.state.featuredContentList
+                )
+              : null}
+          </div>
         </Container>
       </Layout>
     );
