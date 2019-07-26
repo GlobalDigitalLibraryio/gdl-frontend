@@ -7,13 +7,6 @@ import UploadFileDialog from '../../components/UploadFileDialog';
 import Row from '../../components/Row';
 import FeaturedImage from '../../components/FeaturedImage';
 import type { FeaturedContent } from '../../types';
-import {
-  fetchLanguages,
-  fetchFeaturedContent,
-  updateFeaturedContent,
-  saveFeaturedContent,
-  deleteFeaturedContent
-} from '../../lib/fetch';
 
 type Props = {
   i: number,
@@ -215,14 +208,18 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                       type="submit"
                       onClick={handleSubmit}
                     >
-                      Save changes
+                      {this.props.featuredContentList.length > this.props.i
+                        ? 'Save changes'
+                        : 'Save'}
                     </Button>
                     <Button
                       color="secondary"
                       disabled={pristine}
                       onClick={form.reset}
                     >
-                      Discard changes
+                      {this.props.featuredContentList.length > this.props.i
+                        ? 'Discard changes'
+                        : 'Discard'}
                     </Button>
                   </form>
                 )}

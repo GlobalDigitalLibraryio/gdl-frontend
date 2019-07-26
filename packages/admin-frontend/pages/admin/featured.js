@@ -10,17 +10,18 @@ import * as React from 'react';
 import {
   Select,
   Button,
-  FormHelperText,
   InputLabel,
   FormControl,
-  TextField,
   Typography,
   Card,
   CardContent,
   CardMedia,
-  CardActions
+  CardActions,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@material-ui/core';
-import { Form, Field, FormSpy } from 'react-final-form';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -28,17 +29,14 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../../lib/fetch';
-import UploadFileDialog from '../../components/UploadFileDialog';
-import FeaturedImage from '../../components/FeaturedImage';
 import Layout from '../../components/Layout';
-import Row from '../../components/Row';
 import Container from '../../components/Container';
-import isEmptyString from '../../lib/isEmptyString';
 import type { FeaturedContent, Language } from '../../types';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import FeaturedEdit from './featuredEdit';
 import FeatureAdd from './featuredAdd';
+
 type Props = {
   languages: Array<Language>
 };
@@ -46,7 +44,10 @@ type Props = {
 type State = {
   featuredContentList: Array<FeaturedContent>,
   selectedLanguage: string,
-  file: ?File
+  file: ?File,
+  openDeleteDialog: boolean,
+  placementOfSelectedContent: number,
+  selectedContent: null | FeaturedContent
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -62,14 +63,17 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     selectedLanguage: '',
     croppedParameters: null,
     file: null,
-    featuredContentList: []
+    featuredContentList: [],
+    openDeleteDialog: false,
+    selectedContent: null,
+    placementOfSelectedContent: 0
   };
 
   getFeaturedContent = async (languageCode: string) => {
     const featuredContentRes = await fetchFeaturedContent(languageCode);
     const featContList = [];
     let i = 0;
-    while (true) {
+    while (featuredContentRes.isOk) {
       if (featuredContentRes.data[i]) {
         featContList.push(featuredContentRes.data[i]);
       } else {
@@ -133,18 +137,33 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     this.getFeaturedContent(event.target.value);
   };
 
-  deleteFeaturedContent = async (id: string) => {
+  deleteFeaturedContent = async (id: number) => {
     await deleteFeaturedContent(id);
   };
+  handleCloseDeleteDialog = () => {
+    this.setState({
+      openDeleteDialog: false,
+      selectedContent: null
+    });
+  };
 
-  handleDelete = (id: string, index: number) => {
+  handleOpenDeleteDialog = (content: FeaturedContent, i: number) => {
+    this.setState({
+      openDeleteDialog: true,
+      selectedContent: content,
+      placementOfSelectedContent: i
+    });
+  };
+  handleDelete = (id: number, index: number) => {
     this.deleteFeaturedContent(this.state.featuredContentList[index].id);
     this.setState(state => {
       const featuredContentList = this.state.featuredContentList.filter(
         item => item.id !== id
       );
       return {
-        featuredContentList
+        featuredContentList,
+        openDeleteDialog: false,
+        selectedContent: null
       };
     });
   };
@@ -165,9 +184,6 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     this.setState({
       file: event.target.files[0]
     });
-  };
-  addFeatureContent = () => {
-    console.log('ADDING');
   };
   handleSaveButtonClick = (
     defaultReturned: boolean,
@@ -196,6 +212,42 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     content: FeaturedContent
   ) => {
     this.postNewFeaturedContent(content);
+  };
+
+  getDialog = () => {
+    if (this.state.selectedContent) {
+      const contentId = this.state.selectedContent.id;
+      return (
+        <Dialog
+          open={this.state.openDeleteDialog}
+          onClose={this.handleCloseDeleteDialog}
+          style={{ backgroundColor: 'rbga(0,0,0,0)' }}
+        >
+          <DialogContent>
+            <DialogTitle>
+              Do you want to delete {this.state.selectedContent.title} form
+              featured content?
+            </DialogTitle>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="secondary"
+              onClick={() =>
+                this.handleDelete(
+                  contentId,
+                  this.state.placementOfSelectedContent
+                )
+              }
+            >
+              Delete
+            </Button>
+            <Button color="primary" onClick={this.handleCloseDeleteDialog}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+    }
   };
 
   render() {
@@ -261,24 +313,24 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
           >
             {featuredContentList.map((content, i) => {
               return (
-                <Card style={{ width: 296, height: 450 }} key={content.id}>
+                <Card
+                  style={{ width: 296, height: 450, position: 'relative' }}
+                  key={content.id}
+                >
                   <CardMedia
                     style={{ height: 150 }}
                     image={content.imageUrl}
                     title={content.title}
                   />
-
                   <CardContent>
                     <h4>{content.title}</h4>
                     <p>{content.description}</p>
                   </CardContent>
-                  <CardActions>
+                  <CardActions
+                    style={{ position: 'absolute', bottom: 0, left: 0 }}
+                  >
                     <FeaturedEdit
-                      button={
-                        <Button size="small" color="primary">
-                          Edit
-                        </Button>
-                      }
+                      button={<Button color="primary">Edit</Button>}
                       featuredContentList={featuredContentList}
                       selectedLanguage={selectedLanguage}
                       i={i}
@@ -291,8 +343,8 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                     />
 
                     <Button
-                      color="secondary"
-                      onClick={() => this.handleDelete(content.id, i)}
+                      color="primary"
+                      onClick={() => this.handleOpenDeleteDialog(content, i)}
                     >
                       Delete
                     </Button>
@@ -308,35 +360,14 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
                   this.handleOnCancel,
                   this.state.file,
                   this.handleOnUpload,
-                  this.state.featuredContentList
+                  this.state.featuredContentList,
+                  this.state.selectedLanguage
                 )
               : null}
           </div>
+          {this.getDialog()}
         </Container>
       </Layout>
     );
   }
-}
-function handleValidate(values) {
-  const errors = {};
-
-  if (isEmptyString(values.title)) {
-    errors.title = 'Required';
-  }
-
-  if (isEmptyString(values.description)) {
-    errors.description = 'Required';
-  }
-
-  const regex = /http(s)?:\/\/.*/;
-  if (isEmptyString(values.link) || !values.link.match(regex)) {
-    errors.link = 'Must be a valid URL e.g "https://digitallibrary.io"';
-  }
-
-  if (isEmptyString(values.imageUrl) || !values.imageUrl.match(regex)) {
-    errors.imageUrl =
-      'Must be a valid URL image url e.g "https://images.digitallibrary.io/imageId.png';
-  }
-
-  return errors;
 }

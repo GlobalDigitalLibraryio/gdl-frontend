@@ -1,7 +1,9 @@
-import React from 'react';
+//@flow
 import { Card } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import FeaturedEdit from './featuredEdit';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 
 export default function FeatureAdd(
   defaultReturned: boolean,
@@ -10,13 +12,21 @@ export default function FeatureAdd(
   handleOnCancel: any,
   file: any,
   handleOnUpload: any,
-  featuredContentList: Array<any>
+  featuredContentList: Array<any>,
+  selectedLanguage: string
 ) {
   return (
     <FeaturedEdit
       button={
         <Card
-          style={{ width: 296, height: 450, display: 'table' }}
+          css={css`
+            width: 296px;
+            height: 450px;
+            display: table;
+            :hover {
+              background-color: #aeb6e3;
+            }
+          `}
           key="addFeaturedCard"
         >
           <div
@@ -49,6 +59,7 @@ export default function FeatureAdd(
       handleOnCancel={handleOnCancel}
       file={file}
       handleOnUpload={handleOnUpload}
+      selectedLanguage={selectedLanguage}
     />
   );
 }
