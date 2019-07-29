@@ -33,6 +33,7 @@ import OnlineStatusContext from '../OnlineStatusContext';
 import SelectBookLanguage from './SelectBookLanguage';
 import CategoriesMenu from './CategoriesMenu';
 import offlineLibrary from '../../lib/offlineLibrary';
+import WelcomeTutorial from '../WelcomeTutorial/WelcomeTutorial';
 
 type Props = {|
   onClose(): void,
@@ -71,7 +72,7 @@ class GlobalMenu extends React.Component<Props, State> {
         onOpen={() => {}}
         PaperProps={{
           style: {
-            // By setting variant="temporary" a borde right is applied. Which is why it setting it to "inherit" removes it
+            // By setting variant="temporary" a border right is applied. Which is why it setting it to "inherit" removes it
             borderRight: 'inherit'
           }
         }}
@@ -163,6 +164,13 @@ class GlobalMenu extends React.Component<Props, State> {
               </ListItem>
             </RouteLink>
           )}
+          <div onClick={this.disableSwipe}>
+            <WelcomeTutorial
+              shouldOpen={false}
+              listButton={true}
+              swipeable={this.enableSwipe}
+            />
+          </div>
           {online && (
             <>
               <RouteLink passHref route="translations">
@@ -182,6 +190,7 @@ class GlobalMenu extends React.Component<Props, State> {
                   </ListItemText>
                 </ListItem>
               </RouteLink>
+
               <QueryIsAdmin skip={!this.props.isOpen}>
                 {({ isAdmin }) =>
                   isAdmin && (

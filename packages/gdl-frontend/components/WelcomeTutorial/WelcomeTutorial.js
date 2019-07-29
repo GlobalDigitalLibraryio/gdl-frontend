@@ -5,11 +5,16 @@ import {
   Dialog,
   DialogActions,
   MobileStepper,
-  Slide
+  Slide,
+  ListItem,
+  ListItemText,
+  ListItemIcon
 } from '@material-ui/core';
+import { Help as HelpIcon } from '@material-ui/icons';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import GetDialogContent from './DialogContent';
+import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 
 const grace1 = '/static/img/grace1.png';
 const grace2 = '/static/img/grace2.png';
@@ -20,17 +25,12 @@ const menu = '/static/img/menu.png';
 const saveOfflineM = '/static/img/saveOfflineM.png'; //for mobile
 const menuM = '/static/img/menuM.png'; //for mobile
 
-const fullscreenWidth = 768;
-
 type State = {
   open: boolean,
   width: number,
   height: number,
   activeStep: number,
   direction: 'left' | 'right',
-  isHidden1: string,
-  isHidden2: string,
-  isHidden3: string,
   left: number,
   originalOffset: number,
   velocity: number,
@@ -41,7 +41,9 @@ type State = {
   intervalId: string | null
 };
 type Props = {
-  shouldOpen: boolean
+  shouldOpen: boolean,
+  listButton: boolean,
+  swipeable: ?any
 };
 type TargetTouches = {
   clientX: number
@@ -53,7 +55,7 @@ type touchStartEventType = {
   targetTouches: Array<TargetTouches>
 };
 
-const Styles = {
+const styles = {
   dialogWindow: {
     backgroundColor: '#2B8DC8',
     height: '100%',
@@ -87,9 +89,6 @@ class WelcomeTutorial extends React.Component<Props, State> {
       height: 0,
       activeStep: 0,
       direction: 'left',
-      isHidden1: 'flex',
-      isHidden2: 'none',
-      isHidden3: 'none',
       left: 0,
       originalOffset: 0,
       velocity: 0,
@@ -127,33 +126,21 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
   handleClose() {
     this.setState({
-      open: false,
-      isHidden1: 'flex',
-      isHidden2: 'none'
+      open: false
     });
-  }
-
-  handleNext() {
-    if (this.state.activeStep === 2) {
-      this.handleClose();
-    } else if (this.state.activeStep === 0) {
-      this.setState({
-        isHidden1: 'none',
-        isHidden2: 'flex',
-        isHidden3: 'none',
-        activeStep: this.state.activeStep + 1,
-        direction: 'left'
-      });
-    } else if (this.state.activeStep === 1) {
-      this.setState({
-        isHidden1: 'none',
-        isHidden2: 'none',
-        isHidden3: 'flex',
-        activeStep: this.state.activeStep + 1,
-        direction: 'left'
-      });
+    if (this.props.swipeable) {
+      this.props.swipeable();
     }
   }
+
+  handleNext = () => {
+    this.state.activeStep === 2
+      ? this.handleClose()
+      : this.setState({
+          activeStep: this.state.activeStep + 1,
+          direction: 'left'
+        });
+  };
 
   handleMove(touchMoveEvent: touchMoveEventType, mobile: boolean) {
     const clientX = touchMoveEvent.targetTouches[0].clientX;
@@ -199,120 +186,121 @@ class WelcomeTutorial extends React.Component<Props, State> {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
-  handleClickOpen() {
+  handleClickOpen = () => {
     this.setState({
       open: true,
       activeStep: 0
     });
-  }
+  };
 
-  handleBack() {
-    if (this.state.activeStep === 1) {
+  handleBack = () => {
+    if (this.state.activeStep !== 0) {
       this.setState({
-        isHidden1: 'flex',
-        isHidden2: 'none',
-        isHidden3: 'none',
         direction: 'right',
         activeStep: this.state.activeStep - 1
       });
     }
-    if (this.state.activeStep === 2) {
-      this.setState({
-        isHidden1: 'none',
-        isHidden2: 'flex',
-        isHidden3: 'none',
-        direction: 'right',
-        activeStep: this.state.activeStep - 1
-      });
+  };
+  getListButton() {
+    if (this.props.listButton) {
+      return (
+        <ListItem
+          button
+          component="a"
+          data-cy="global-menu-favorite-button"
+          onClick={this.handleClickOpen}
+        >
+          <ListItemIcon>
+            <HelpIcon />
+          </ListItemIcon>
+          <ListItemText>tutorial</ListItemText>
+        </ListItem>
+      );
     }
   }
 
   render() {
-    let mobile: boolean = this.state.width < fullscreenWidth;
+    const isTablet: boolean = this.state.width < TABLET_BREAKPOINT;
     return (
-      <Dialog
-        fullScreen={mobile}
-        open={this.state.open}
-        onClose={this.handleClose.bind(this)}
-      >
-        <div
-          style={Styles.dialogWindow}
-          onTouchStart={touchStartEvent =>
-            this.handleTouchStart(touchStartEvent, mobile)
-          }
-          onTouchMove={touchMoveEvent =>
-            this.handleMove(touchMoveEvent, mobile)
-          }
-          onTouchEnd={() => {
-            this.handleTouchEnd(mobile);
-          }}
-        >
-          <Slide
-            style={{ height: '100%' }}
-            direction={this.state.direction}
-            in={this.state.activeStep === 0}
+      <>
+        {this.getListButton()}
+
+        <Dialog fullScreen={isTablet} open={this.state.open}>
+          <div
+            style={styles.dialogWindow}
+            onTouchStart={touchStartEvent =>
+              this.handleTouchStart(touchStartEvent, isTablet)
+            }
+            onTouchMove={touchMoveEvent =>
+              this.handleMove(touchMoveEvent, isTablet)
+            }
+            onTouchEnd={() => {
+              this.handleTouchEnd(isTablet);
+            }}
           >
-            <div
-              style={{
-                display: this.state.isHidden1,
-                left: this.state.left + 'px',
-                position: 'relative'
-              }}
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 0}
             >
-              <div>
+              <div
+                style={{
+                  display: this.state.activeStep === 0 ? 'flex' : 'none',
+                  left: this.state.left,
+                  position: 'relative'
+                }}
+              >
                 <GetDialogContent
                   screenshotUrlM={selectLanguage}
                   screenshotUrl={selectLanguage}
                   graceImgUrl={grace1}
                   message="Hi! If you want to change the language, click on the globe at the top-right corner of the screen!"
-                  fullscreen={mobile}
+                  fullscreen={isTablet}
                 />
               </div>
-            </div>
-          </Slide>
-          <Slide
-            style={{ height: '100%' }}
-            direction={this.state.direction}
-            in={this.state.activeStep === 1}
-          >
-            <div
-              style={{
-                display: this.state.isHidden2,
-                left: this.state.left + 'px',
-                position: 'relative'
-              }}
+            </Slide>
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 1}
             >
-              <GetDialogContent
-                screenshotUrlM={saveOfflineM}
-                screenshotUrl={saveOffline}
-                graceImgUrl={grace2}
-                message="You can save books for later and read them offline by clicking the Save offline icon!!."
-                fullscreen={mobile}
-              />
-            </div>
-          </Slide>
-          <Slide
-            style={{ height: '100%' }}
-            direction={this.state.direction}
-            in={this.state.activeStep === 2}
-          >
-            <div
-              style={{
-                display: this.state.isHidden3,
-                left: this.state.left + 'px',
-                position: 'relative'
-              }}
+              <div
+                style={{
+                  display: this.state.activeStep === 1 ? 'flex' : 'none',
+                  left: this.state.left,
+                  position: 'relative'
+                }}
+              >
+                <GetDialogContent
+                  screenshotUrlM={menuM}
+                  screenshotUrl={menu}
+                  graceImgUrl={grace3}
+                  message="The menu is in the top-left corner. From the menu you can access Categories, Favorites and more."
+                  fullscreen={isTablet}
+                />
+              </div>
+            </Slide>
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 2}
             >
-              <GetDialogContent
-                screenshotUrlM={menuM}
-                screenshotUrl={menu}
-                graceImgUrl={grace3}
-                message="The menu is in the top-left corner. From the menu you can access Categories, Favorites and more."
-                fullscreen={mobile}
-              />
-            </div>
-          </Slide>
-          <div>
+              <div
+                style={{
+                  display: this.state.activeStep === 2 ? 'flex' : 'none',
+                  left: this.state.left,
+                  position: 'relative'
+                }}
+              >
+                <GetDialogContent
+                  screenshotUrlM={saveOfflineM}
+                  screenshotUrl={saveOffline}
+                  graceImgUrl={grace2}
+                  message="You can save books for later and read them offline by clicking the Save offline icon!!."
+                  fullscreen={isTablet}
+                />
+              </div>
+            </Slide>
             <DialogActions>
               <MobileStepper
                 variant="dots"
@@ -331,9 +319,9 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 nextButton={
                   <Button
                     size="large"
-                    onClick={this.handleNext.bind(this)}
+                    onClick={this.handleNext}
                     autoFocus
-                    style={Styles.nextButton}
+                    style={styles.nextButton}
                   >
                     {this.state.activeStep === 2 ? 'Finish' : 'Next'}
                   </Button>
@@ -341,7 +329,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 backButton={
                   <Button
                     size="large"
-                    onClick={this.handleBack.bind(this)}
+                    onClick={this.handleBack}
                     disabled={this.state.activeStep === 0}
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.16)'
@@ -364,14 +352,14 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 size="small"
                 onClick={this.handleClose.bind(this)}
                 color="primary"
-                style={Styles.skipButton}
+                style={styles.skipButton}
               >
                 Skip
               </Button>
             </div>
           </div>
-        </div>
-      </Dialog>
+        </Dialog>
+      </>
     );
   }
 }

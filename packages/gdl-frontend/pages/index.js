@@ -208,7 +208,11 @@ class IndexPage extends React.Component<Props> {
           languageCode={languageCode}
           featuredContent={featuredContent}
         />
-        <WelcomeTutorial shouldOpen={!visitedBefore} />
+        <WelcomeTutorial
+          shouldOpen={!visitedBefore}
+          listButton={false}
+          swipeable={null}
+        />
         {setVisited()}
       </>
     );
