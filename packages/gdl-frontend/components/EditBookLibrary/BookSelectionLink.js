@@ -22,7 +22,7 @@ export type Book = $ReadOnly<{
 type Props = {
   book: Book,
   selectedBooks: Array<string>,
-  active: number,
+  allActive: number,
   changeActive: () => void
 };
 
@@ -36,12 +36,16 @@ export default class BookLink extends React.Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.active !== this.props.active) {
-      if (this.props.active === 0) {
-        this.setState({ active: false });
-      } else if (this.props.active === 1) {
-        this.setState({ active: true });
-      }
+    if (
+      prevProps.allActive !== this.props.allActive &&
+      this.props.allActive === 0
+    ) {
+      this.setState({ active: false });
+    } else if (
+      prevProps.allActive !== this.props.allActive &&
+      this.props.allActive === 1
+    ) {
+      this.setState({ active: true });
     }
   }
   handleClick(id: string, selectedBooks: Array<string>) {
@@ -57,12 +61,10 @@ export default class BookLink extends React.Component<Props, State> {
 
   render() {
     const { book, selectedBooks } = this.props;
-    if (this.state.active && !selectedBooks.some(item => book.id === item)) {
+    const bookSelected = selectedBooks.some(item => book.id === item);
+    if (this.state.active && !bookSelected) {
       selectedBooks.push(book.id);
-    } else if (
-      !this.state.active &&
-      selectedBooks.some(item => book.id === item)
-    ) {
+    } else if (!this.state.active && bookSelected) {
       selectedBooks.splice(selectedBooks.indexOf(book.id), 1);
     }
 

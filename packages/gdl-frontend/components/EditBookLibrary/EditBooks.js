@@ -1,6 +1,6 @@
 // @flow
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { Hidden, Typography, Button, Dialog, Tooltip } from '@material-ui/core';
 import { Delete, CheckCircle, Clear } from '@material-ui/icons';
 import { Container, Center, IconButton } from '../../elements';
@@ -8,6 +8,7 @@ import EditBookGrid from './BookGrid';
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { spacing, misc } from '../../style/theme';
+import type { intlShape } from 'react-intl';
 
 type Props = {
   books: Array<any>,
@@ -20,8 +21,28 @@ type Props = {
   selectAllBooks: () => void,
   deselectAllBooks: () => void,
   changeActive: () => void,
-  favorites: boolean
+  favorites: boolean,
+  intl: intlShape
 };
+
+const translations = defineMessages({
+  books: {
+    id: 'books',
+    defaultMessage: 'books'
+  },
+  book: {
+    id: 'book',
+    defaultMessage: 'book'
+  },
+  favorites: {
+    id: 'favorites',
+    defaultMessage: 'favorites?'
+  },
+  offlineLibrary: {
+    id: 'offline library',
+    defaultMessage: 'offline library?'
+  }
+});
 
 const EditBooks = ({
   books,
@@ -34,7 +55,8 @@ const EditBooks = ({
   selectAll,
   deselectAllBooks,
   changeActive,
-  favorites
+  favorites,
+  intl
 }: Props) => (
   <>
     <Hidden smUp>
@@ -163,7 +185,7 @@ const EditBooks = ({
           size="small"
         >
           <FormattedMessage
-            id="Back to"
+            id="Back to fav/offline"
             defaultMessage={'Back to {place}'}
             values={{ place: favorites ? 'favorites' : 'offline library' }}
           />
@@ -182,10 +204,24 @@ const EditBooks = ({
           }}
         >
           <p>
-            Are you sure you want to delete {selectedBooks.length}{' '}
-            {selectedBooks.length > 1 ? 'books' : 'book'} from your{' '}
-            {favorites ? 'favorites' : 'offline library'}?
+            <FormattedMessage
+              id="Are you sure you want to delete"
+              defaultMessage={'Are you sure you want to delete'}
+            />
+            {` ${selectedBooks.length} `}
+            {` ${
+              selectedBooks.length > 1
+                ? `${intl.formatMessage(translations.books)} `
+                : `${intl.formatMessage(translations.book)} `
+            }`}
+            <FormattedMessage id="from" defaultMessage={'from'} />
+            {`${
+              favorites
+                ? ` ${intl.formatMessage(translations.favorites)}`
+                : ` ${intl.formatMessage(translations.offlineLibrary)}`
+            }`}
           </p>
+
           <Button color="primary" onClick={dialog} css={{ width: '50%' }}>
             <FormattedMessage id="Cancel" defaultMessage="Cancel" />
           </Button>
@@ -234,4 +270,4 @@ const iconButtonStyle = css`
   }
 `;
 
-export default EditBooks;
+export default injectIntl(EditBooks);

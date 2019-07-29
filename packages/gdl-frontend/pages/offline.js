@@ -24,11 +24,6 @@ import OnlineStatusContext, {
 } from '../components/OnlineStatusContext';
 import EditBooks from '../components/EditBookLibrary/EditBooks';
 
-/**
- * This is the page that we load if we suspect the user is offline (see service-worker.js).
- * The page display's a grid with the books the user has marked as available offline.
- */
-
 type State = {
   books: Array<Book>,
   loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR',
@@ -111,13 +106,11 @@ class OfflinePage extends React.Component<{}, State> {
 
     if (this.state.selectedBooks.length !== this.state.books.length) {
       try {
-        for (let i = 0; i < this.state.selectedBooks.length; i++) {
-          await offlineLibrary.deleteBook(this.state.selectedBooks[i]);
-          const book = this.state.books.find(
-            book => book.id === this.state.selectedBooks[i]
-          );
+        this.state.selectedBooks.forEach(async bookId => {
+          const book = this.state.books.find(book => book.id === bookId);
           this.state.books.splice(this.state.books.indexOf(book), 1);
-        }
+          await offlineLibrary.deleteBook(bookId);
+        });
       } catch (error) {
         this.setState({ loadingStatus: 'ERROR' });
       }
@@ -127,13 +120,6 @@ class OfflinePage extends React.Component<{}, State> {
     this.openCloseEditMode();
   };
 
-  /**
-   * The server side renderer offline page HTML
-   * is cached on the client and used as a fallback for page navigation requests when the network can't connect.
-   * The default implementation of the OnlineStatusProvider is online=true on the server. The navbar search field
-   * is only shown when online. Since we use this page as a fallback when offline, we don't want to show the search field
-   * in the inital HTML. So therefore we wrap the content here on the server with a false value
-   */
   wrapWithOfflineFromServer(children: React.Node) {
     if (typeof window !== 'undefined') {
       return children;
@@ -215,7 +201,6 @@ const OfflineBooks = ({ books, onClick }) => (
           defaultMessage="Offline library"
         />
       </Typography>
-      {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
       <BookGrid books={books} />
       <Center>
         <Button

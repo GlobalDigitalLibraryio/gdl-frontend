@@ -14,11 +14,6 @@ type Props = {
 class BookGrid extends React.Component<Props> {
   render() {
     const { books, selectedBooks, active } = this.props;
-    /*    if (selectedBooks.length > 0 && active === 0) {
-      selectedBooks.forEach(function(el) {
-        selectedBooks.pop();
-      });
-    } */
 
     return (
       <GridContainer>
@@ -27,7 +22,7 @@ class BookGrid extends React.Component<Props> {
             key={book.id}
             book={book}
             selectedBooks={selectedBooks}
-            active={active}
+            allActive={active}
             changeActive={this.props.changeActive}
           />
         ))}

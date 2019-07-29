@@ -104,9 +104,9 @@ class FavoritesPage extends React.Component<
 
   deleteSelected = async () => {
     if (this.state.selectedBooks.length !== getFavoritedBookIds().length) {
-      for (let i = 0; i < this.state.selectedBooks.length; i++) {
-        removeFavorite(this.state.selectedBooks[i]);
-      }
+      this.state.selectedBooks.forEach(book => {
+        removeFavorite(book);
+      });
     } else {
       clearFavorites();
     }
