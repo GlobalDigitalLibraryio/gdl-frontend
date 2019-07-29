@@ -22,6 +22,7 @@ import BookGrid from '../components/BookGrid';
 import OnlineStatusContext, {
   withOnlineStatusContext
 } from '../components/OnlineStatusContext';
+import EditBooks from '../components/EditBookLibrary/EditBooks';
 
 /**
  * This is the page that we load if we suspect the user is offline (see service-worker.js).
@@ -30,13 +31,27 @@ import OnlineStatusContext, {
 
 type State = {
   books: Array<Book>,
-  loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR'
+  loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR',
+  editMode: boolean,
+  selectedBooks: Array<string>,
+  openDialog: boolean,
+  selectAll: number
 };
 
 class OfflinePage extends React.Component<{}, State> {
   state = {
     books: [],
-    loadingStatus: 'LOADING'
+    loadingStatus: 'LOADING',
+    editMode: false,
+    selectedBooks: [],
+    openDialog: false,
+    selectAll: 2
+  };
+
+  changeActive = () => {
+    this.state.selectedBooks.length === this.state.books.length
+      ? this.setState({ selectAll: 1 })
+      : this.setState({ selectAll: 2 });
   };
 
   async componentDidMount() {
@@ -61,6 +76,55 @@ class OfflinePage extends React.Component<{}, State> {
     } catch (error) {
       this.setState({ loadingStatus: 'ERROR' });
     }
+  };
+
+  openCloseEditMode = () => {
+    this.setState({
+      editMode: !this.state.editMode,
+      selectedBooks: [],
+      openDialog: false,
+      selectAll: 0
+    });
+  };
+
+  openCloseDialog = () => {
+    if (this.state.selectedBooks.length > 0) {
+      this.setState({ openDialog: !this.state.openDialog });
+    }
+  };
+
+  selectAllBooks = () => {
+    this.state.selectedBooks.length === this.state.books.length
+      ? this.setState({ selectAll: 0, selectedBooks: [] })
+      : this.setState({
+          selectAll: 1,
+          selectedBooks: this.state.books.map(book => book.id)
+        });
+  };
+
+  deselectAllBooks = () => {
+    this.setState({ selectAll: 0, selectedBooks: [] });
+  };
+
+  deleteSelected = async () => {
+    if (!offlineLibrary) return;
+
+    if (this.state.selectedBooks.length !== this.state.books.length) {
+      try {
+        for (let i = 0; i < this.state.selectedBooks.length; i++) {
+          await offlineLibrary.deleteBook(this.state.selectedBooks[i]);
+          const book = this.state.books.find(
+            book => book.id === this.state.selectedBooks[i]
+          );
+          this.state.books.splice(this.state.books.indexOf(book), 1);
+        }
+      } catch (error) {
+        this.setState({ loadingStatus: 'ERROR' });
+      }
+    } else {
+      this.handleClear();
+    }
+    this.openCloseEditMode();
   };
 
   /**
@@ -88,25 +152,48 @@ class OfflinePage extends React.Component<{}, State> {
         <Head title="Offline Library" />
         {this.wrapWithOfflineFromServer(
           <Layout>
-            <Container
+            {/* <Container
               css={{ marginTop: spacing.large, marginBottom: spacing.large }}
-            >
-              {loadingStatus === 'LOADING' && (
+            > */}
+            {loadingStatus === 'LOADING' && (
+              <Container
+                css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+              >
                 <Center>
                   <CircularProgress />
                 </Center>
-              )}
-
-              {loadingStatus === 'SUCCESS' && (
-                <>
-                  {books.length > 0 ? (
-                    <OfflineBooks books={books} onClear={this.handleClear} />
+              </Container>
+            )}
+            {loadingStatus === 'SUCCESS' && (
+              <>
+                {books.length > 0 ? (
+                  this.state.editMode ? (
+                    <EditBooks
+                      books={books}
+                      onClick={this.openCloseEditMode}
+                      selectedBooks={this.state.selectedBooks}
+                      onDelete={this.deleteSelected}
+                      dialog={this.openCloseDialog}
+                      open={this.state.openDialog}
+                      selectAllBooks={this.selectAllBooks}
+                      selectAll={this.state.selectAll}
+                      deselectAllBooks={this.deselectAllBooks}
+                      changeActive={this.changeActive.bind(this)}
+                      favorites={false}
+                    />
                   ) : (
-                    <NoOfflineBooks />
-                  )}
-                </>
-              )}
-            </Container>
+                    <OfflineBooks
+                      books={books}
+                      onClick={this.openCloseEditMode}
+                    />
+                  )
+                ) : (
+                  <NoOfflineBooks />
+                )}
+              </>
+            )}
+            {/*             </Container>
+             */}{' '}
           </Layout>
         )}
       </>
@@ -114,31 +201,36 @@ class OfflinePage extends React.Component<{}, State> {
   }
 }
 
-const OfflineBooks = ({ books, onClear }) => (
+const OfflineBooks = ({ books, onClick }) => (
   <>
-    <Typography
-      variant="h4"
-      component="h1"
-      align="center"
-      css={{ marginBottom: spacing.large }}
-    >
-      <FormattedMessage id="Offline library" defaultMessage="Offline library" />
-    </Typography>
-    {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
-    <BookGrid books={books} />
-    <Center>
-      <Button
-        onClick={onClear}
-        css={{ marginTop: spacing.large }}
-        variant="outlined"
-        size="small"
+    <Container css={{ marginTop: spacing.large, marginBottom: spacing.large }}>
+      <Typography
+        variant="h4"
+        component="h1"
+        align="center"
+        css={{ marginBottom: spacing.large }}
       >
         <FormattedMessage
-          id="Remove all books"
-          defaultMessage="Remove all books"
+          id="Offline library"
+          defaultMessage="Offline library"
         />
-      </Button>
-    </Center>
+      </Typography>
+      {/* $FlowFixMe: Apparently Flow doesn't like it if i type BookGrid as Array<Book> | Array<BookDetails> */}
+      <BookGrid books={books} />
+      <Center>
+        <Button
+          onClick={onClick}
+          css={{ marginTop: spacing.large }}
+          variant="outlined"
+          size="small"
+        >
+          <FormattedMessage
+            id="Edit offline library"
+            defaultMessage="Edit offline library"
+          />
+        </Button>
+      </Center>
+    </Container>
   </>
 );
 
@@ -157,29 +249,31 @@ const translations = defineMessages({
 
 const NoOfflineBooks = withOnlineStatusContext(
   injectIntl(({ online, intl }: { online: boolean, intl: intlShape }) => (
-    <Center>
-      <Typography
-        align="center"
-        variant="h4"
-        component="h1"
-        css={{ marginBottom: spacing.large }}
-      >
-        {intl.formatMessage(translations.noBooks)}
-      </Typography>
-      <Typography align="center" css={{ marginBottom: spacing.large }}>
-        {intl.formatMessage(translations.offline)}
-      </Typography>
-      {online && (
-        <Link passHref href="/">
-          <Button variant="outlined">
-            <FormattedMessage
-              id="Find something to read"
-              defaultMessage="Find something to read"
-            />
-          </Button>
-        </Link>
-      )}
-    </Center>
+    <Container css={{ marginTop: spacing.large, marginBottom: spacing.large }}>
+      <Center>
+        <Typography
+          align="center"
+          variant="h4"
+          component="h1"
+          css={{ marginBottom: spacing.large }}
+        >
+          {intl.formatMessage(translations.noBooks)}
+        </Typography>
+        <Typography align="center" css={{ marginBottom: spacing.large }}>
+          {intl.formatMessage(translations.offline)}
+        </Typography>
+        {online && (
+          <Link passHref href="/">
+            <Button variant="outlined">
+              <FormattedMessage
+                id="Find something to read"
+                defaultMessage="Find something to read"
+              />
+            </Button>
+          </Link>
+        )}
+      </Center>
+    </Container>
   ))
 );
 

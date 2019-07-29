@@ -23,7 +23,7 @@ import Layout from '../components/Layout';
 import Head from '../components/Head';
 import { Container, Center } from '../elements';
 import { spacing } from '../style/theme';
-import type { Favorites, FavoritesVariables } from '../gqlTypes';
+import type { Favorites } from '../gqlTypes';
 import type { intlShape } from 'react-intl';
 import {
   getFavoritedBookIds,
@@ -31,11 +31,13 @@ import {
   clearFavorites
 } from '../lib/favorites';
 import BookGrid from '../components/BookGrid';
+import EditBooks from '../components/EditBookLibrary/EditBooks';
 
 /**
  * If we have favorited books that we are unable to get from the server
  * we cleanup by deleting the not found ones
  */
+
 function removeBooksNotFound(data: Favorites) {
   if (!('books' in data)) return null;
 
@@ -47,10 +49,68 @@ function removeBooksNotFound(data: Favorites) {
   diff.forEach(removeFavorite);
 }
 
-class FavoritesPage extends React.Component<{ intl: intlShape }> {
-  handleClearFavorites = (refetch: FavoritesVariables => void) => {
-    clearFavorites();
-    refetch({ ids: [] });
+type State = {
+  editMode: boolean,
+  selectedBooks: Array<string>,
+  openDialog: boolean,
+  selectAll: number
+};
+
+class FavoritesPage extends React.Component<
+  {
+    intl: intlShape
+  },
+  State
+> {
+  state = {
+    editMode: false,
+    selectedBooks: [],
+    openDialog: false,
+    selectAll: 2
+  };
+
+  openCloseEditMode = () => {
+    this.setState({
+      editMode: !this.state.editMode,
+      selectedBooks: [],
+      openDialog: false,
+      selectAll: 0
+    });
+  };
+
+  openCloseDialog = () => {
+    if (this.state.selectedBooks.length > 0) {
+      this.setState({ openDialog: !this.state.openDialog });
+    }
+  };
+
+  changeActive = () => {
+    this.state.selectedBooks.length === getFavoritedBookIds().length
+      ? this.setState({ selectAll: 1 })
+      : this.setState({ selectAll: 2 });
+  };
+  selectAllBooks = () => {
+    this.state.selectedBooks.length === getFavoritedBookIds().length
+      ? this.setState({ selectAll: 0, selectedBooks: [] })
+      : this.setState({
+          selectAll: 1,
+          selectedBooks: getFavoritedBookIds().map(book => book)
+        });
+  };
+
+  deselectAllBooks = () => {
+    this.setState({ selectAll: 0, selectedBooks: [] });
+  };
+
+  deleteSelected = async () => {
+    if (this.state.selectedBooks.length !== getFavoritedBookIds().length) {
+      for (let i = 0; i < this.state.selectedBooks.length; i++) {
+        removeFavorite(this.state.selectedBooks[i]);
+      }
+    } else {
+      clearFavorites();
+    }
+    this.openCloseEditMode();
   };
 
   render() {
@@ -64,104 +124,151 @@ class FavoritesPage extends React.Component<{ intl: intlShape }> {
           })}
         />
         <Layout>
-          <Container
-            css={{ marginTop: spacing.large, marginBottom: spacing.large }}
+          <Query
+            query={FAVORITES_QUERY}
+            variables={{ ids: getFavoritedBookIds() }}
+            ssr={false}
+            onCompleted={removeBooksNotFound}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              align="center"
-              css={{ marginBottom: spacing.large }}
-            >
-              <FormattedMessage id="Favorites" defaultMessage="Favorites" />
-            </Typography>
-
-            <Query
-              query={FAVORITES_QUERY}
-              variables={{ ids: getFavoritedBookIds() }}
-              ssr={false}
-              onCompleted={removeBooksNotFound}
-            >
-              {({
-                loading,
-                data,
-                error,
-                refetch
-              }: {
-                loading: boolean,
-                data: Favorites,
-                error: any,
-                refetch: FavoritesVariables => void
-              }) => {
-                if (loading || !data) {
-                  return (
+            {({
+              loading,
+              data,
+              error
+            }: {
+              loading: boolean,
+              data: Favorites,
+              error: any
+            }) => {
+              if (loading || !data) {
+                return (
+                  <Container
+                    css={{
+                      marginTop: spacing.large,
+                      marginBottom: spacing.large
+                    }}
+                  >
                     <Center>
                       <CircularProgress />
                     </Center>
-                  );
-                }
-                if (error) {
-                  return <div>Something went wrong</div>;
-                }
-                if (!('books' in data)) return null;
-
-                const books = data.books.filter(Boolean);
-
-                return books.length === 0 ? (
-                  <NoFavorites />
-                ) : (
-                  <>
-                    <BookGrid books={books} />
-                    <Center>
-                      <Button
-                        onClick={() => this.handleClearFavorites(refetch)}
-                        css={{ marginTop: spacing.large }}
-                        variant="outlined"
-                        size="small"
-                      >
-                        <FormattedMessage
-                          id="Clear all favorites"
-                          defaultMessage="Clear all favorites"
-                        />
-                      </Button>
-                    </Center>
-                  </>
+                  </Container>
                 );
-              }}
-            </Query>
-          </Container>
+              }
+
+              if (error) {
+                return <div>Something went wrong</div>;
+              }
+              if (!('books' in data)) {
+                return null;
+              }
+
+              const books = data.books.filter(Boolean);
+
+              return books.length > 0 ? (
+                this.state.editMode ? (
+                  <>
+                    <EditBooks
+                      books={books}
+                      onClick={this.openCloseEditMode}
+                      selectedBooks={this.state.selectedBooks}
+                      onDelete={this.deleteSelected}
+                      dialog={this.openCloseDialog}
+                      open={this.state.openDialog}
+                      selectAllBooks={this.selectAllBooks}
+                      selectAll={this.state.selectAll}
+                      deselectAllBooks={this.deselectAllBooks}
+                      changeActive={this.changeActive.bind(this)}
+                      favorites={true}
+                    />
+                  </>
+                ) : (
+                  <FavoriteBooks
+                    books={books}
+                    onClick={() => this.openCloseEditMode()}
+                  />
+                )
+              ) : (
+                <NoFavorites />
+              );
+            }}
+          </Query>
         </Layout>
       </>
     );
   }
 }
 
-const NoFavorites = () => (
-  <Center>
-    <Avatar css={{ height: 100, width: 100 }}>
-      <FavoriteBorderIcon css={{ color: 'red', fontSize: 70 }} />
-    </Avatar>
+const FavoriteBooks = ({ books, onClick }) => (
+  <Container
+    css={{
+      marginTop: spacing.large,
+      marginBottom: spacing.large
+    }}
+  >
     <Typography
+      variant="h4"
+      component="h1"
       align="center"
-      css={{
-        marginTop: spacing.large,
-        marginBottom: spacing.medium
-      }}
+      css={{ marginBottom: spacing.large }}
     >
-      <FormattedMessage
-        id="Add favorite books"
-        defaultMessage="Add books to your favorites so you can easily find them later."
-      />
+      <FormattedMessage id="Favorites" defaultMessage="Favorites" />
     </Typography>
-    <Link passHref href="/">
-      <Button variant="outlined">
-        <FormattedMessage
-          id="Find something to read"
-          defaultMessage="Find something to read"
-        />
+
+    <BookGrid books={books} />
+    <Center>
+      <Button
+        onClick={onClick}
+        css={{ marginTop: spacing.large }}
+        variant="outlined"
+        size="small"
+      >
+        <FormattedMessage id="Edit favorites" defaultMessage="Edit favorites" />
       </Button>
-    </Link>
-  </Center>
+    </Center>
+  </Container>
+);
+
+const NoFavorites = () => (
+  <Container
+    css={{
+      marginTop: spacing.large,
+      marginBottom: spacing.large
+    }}
+  >
+    <Typography
+      variant="h4"
+      component="h1"
+      align="center"
+      css={{ marginBottom: spacing.large }}
+    >
+      <FormattedMessage id="Favorites" defaultMessage="Favorites" />
+    </Typography>
+
+    <Center>
+      <Avatar css={{ height: 100, width: 100 }}>
+        <FavoriteBorderIcon css={{ color: 'red', fontSize: 70 }} />
+      </Avatar>
+      <Typography
+        align="center"
+        css={{
+          marginTop: spacing.large,
+          marginBottom: spacing.medium
+        }}
+      >
+        <FormattedMessage
+          id="Add favorite books"
+          defaultMessage="Add books to your favorites so you can easily find them later."
+        />
+      </Typography>
+      <Link passHref href="/">
+        <Button variant="outlined">
+          <FormattedMessage
+            id="Find something to read"
+            defaultMessage="Find something to read"
+          />
+        </Button>
+      </Link>
+    </Center>
+  </Container>
 );
 
 const FAVORITES_QUERY = gql`
