@@ -179,9 +179,10 @@ const EditBooks = ({
       />
       <Center>
         <Button
+          color="primary"
           onClick={onClick}
           css={{ marginTop: spacing.large }}
-          variant="outlined"
+          variant="contained"
           size="small"
         >
           <FormattedMessage
@@ -222,14 +223,18 @@ const EditBooks = ({
             }`}
           </p>
 
-          <Button color="primary" onClick={dialog} css={{ width: '50%' }}>
+          <Button
+            color="primary"
+            onClick={dialog}
+            css={{ width: '45%', marginRight: '5%' }}
+          >
             <FormattedMessage id="Cancel" defaultMessage="Cancel" />
           </Button>
           <Button
             variant="contained"
             onClick={onDelete}
             color="primary"
-            css={{ width: '50%' }}
+            css={{ width: '45%', marginLeft: '5%' }}
           >
             <FormattedMessage id="Delete" defaultMessage="Delete" />
           </Button>

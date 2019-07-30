@@ -218,7 +218,8 @@ const FavoriteBooks = ({ books, onClick }) => (
       <Button
         onClick={onClick}
         css={{ marginTop: spacing.large }}
-        variant="outlined"
+        color="primary"
+        variant="contained"
         size="small"
       >
         <FormattedMessage id="Edit favorites" defaultMessage="Edit favorites" />
@@ -260,7 +261,7 @@ const NoFavorites = () => (
         />
       </Typography>
       <Link passHref href="/">
-        <Button variant="outlined">
+        <Button variant="contained" color="primary">
           <FormattedMessage
             id="Find something to read"
             defaultMessage="Find something to read"

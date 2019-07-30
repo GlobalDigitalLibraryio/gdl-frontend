@@ -10,7 +10,6 @@ import * as React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Button, CircularProgress, Typography } from '@material-ui/core';
 import Link from 'next/link';
-
 import type { intlShape } from 'react-intl';
 import type { OfflineBook_book as Book } from '../gqlTypes';
 import offlineLibrary from '../lib/offlineLibrary';
@@ -206,7 +205,8 @@ const OfflineBooks = ({ books, onClick }) => (
         <Button
           onClick={onClick}
           css={{ marginTop: spacing.large }}
-          variant="outlined"
+          variant="contained"
+          color="primary"
           size="small"
         >
           <FormattedMessage
@@ -249,7 +249,7 @@ const NoOfflineBooks = withOnlineStatusContext(
         </Typography>
         {online && (
           <Link passHref href="/">
-            <Button variant="outlined">
+            <Button variant="contained" color="primary">
               <FormattedMessage
                 id="Find something to read"
                 defaultMessage="Find something to read"
