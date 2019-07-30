@@ -89,109 +89,129 @@ class Carousel extends React.Component<Props, State> {
         </View>
       );
     };
+
+    const card = content => {
+      return (
+        <>
+          <Head image={content.imageUrl} />
+          <Banner src={content.imageUrl}>
+            <HeroCovertitle>
+              <Typography
+                component="h1"
+                variant="h6"
+                css={{ color: colors.base.white }}
+              >
+                <FormattedMessage id="Featured" defaultMessage="Featured" />
+              </Typography>
+            </HeroCovertitle>
+            <HeroCardTablet>
+              {/* Specifying width here makes text in IE11 wrap*/}
+              <CardContent style={{ width: '100%' }}>
+                {cardContent(content)}
+              </CardContent>
+            </HeroCardTablet>
+          </Banner>
+        </>
+      );
+    };
     return (
       <div style={{ position: 'relative' }}>
-        <AutoPlaySwipeableViews
-          interval={7000}
-          index={index}
-          onChangeIndex={index => this.setState({ index })}
-        >
-          {featuredContent.map(content => (
-            <div key={content.id}>
-              <Head image={content.imageUrl} />
-              <Banner src={content.imageUrl}>
-                <HeroCovertitle>
-                  <Typography
-                    component="h1"
-                    variant="h6"
-                    css={{ color: colors.base.white }}
-                  >
-                    <FormattedMessage id="Featured" defaultMessage="Featured" />
-                  </Typography>
-                </HeroCovertitle>
-                <HeroCardTablet>
-                  {/* Specifying width here makes text in IE11 wrap*/}
-                  <CardContent style={{ width: '100%' }}>
-                    {cardContent(content)}
-                  </CardContent>
-                </HeroCardTablet>
-              </Banner>
+        {featuredContent.length !== 1 ? (
+          <>
+            <AutoPlaySwipeableViews
+              interval={7000}
+              index={index}
+              onChangeIndex={index => this.setState({ index })}
+            >
+              {featuredContent.map(content => (
+                <div key={content.id}>
+                  {card(content)}
 
-              <HeroCardMobile>
-                <CardContent>
-                  {cardContent(content)}
-                  <Hidden only="mobile">
-                    <div style={{ paddingTop: '8px' }}>
-                      <Pagination
-                        dots={featuredContent.length}
-                        index={index}
-                        onChangeIndex={index => this.setState({ index })}
-                      />
-                    </div>
-                  </Hidden>{' '}
-                </CardContent>
-              </HeroCardMobile>
-            </div>
-          ))}
-        </AutoPlaySwipeableViews>
-        <Hidden only="desktop">
-          {(index !== 0 && (
-            <div
-              css={arrowLeftContainer}
-              aria-label="Previous"
-              onClick={this.handlePrevIndex}
-            >
-              {' '}
-              <KeyboardArrowLeft style={{ color: 'white' }} />
-            </div>
-          )) ||
-            (index === 0 && (
-              <div
-                css={arrowLeftContainer}
-                aria-label="Previous"
-                onClick={this.goToLastPage}
-              >
-                {' '}
-                <KeyboardArrowLeft style={{ color: 'white' }} />
+                  <HeroCardMobile>
+                    <CardContent>
+                      {cardContent(content)}
+                      <Hidden only="mobile">
+                        <div style={{ paddingTop: '8px' }}>
+                          <Pagination
+                            dots={featuredContent.length}
+                            index={index}
+                            onChangeIndex={index => this.setState({ index })}
+                          />
+                        </div>
+                      </Hidden>{' '}
+                    </CardContent>
+                  </HeroCardMobile>
+                </div>
+              ))}
+            </AutoPlaySwipeableViews>
+            <Hidden only="desktop">
+              {(index !== 0 && (
+                <div
+                  css={arrowLeftContainer}
+                  aria-label="Previous"
+                  onClick={this.handlePrevIndex}
+                >
+                  {' '}
+                  <KeyboardArrowLeft style={{ color: 'white' }} />
+                </div>
+              )) ||
+                (index === 0 && (
+                  <div
+                    css={arrowLeftContainer}
+                    aria-label="Previous"
+                    onClick={this.goToLastPage}
+                  >
+                    {' '}
+                    <KeyboardArrowLeft style={{ color: 'white' }} />
+                  </div>
+                ))}
+              {(index !== featuredContent.length - 1 && (
+                <div
+                  css={arrowRightContainer}
+                  aria-label="Next"
+                  onClick={this.handleNextIndex}
+                >
+                  {' '}
+                  <KeyboardArrowRight style={{ color: 'white' }} />
+                </div>
+              )) ||
+                (index === featuredContent.length - 1 && (
+                  <div
+                    css={arrowRightContainer}
+                    aria-label="Next"
+                    onClick={this.goToFirstPage}
+                  >
+                    {' '}
+                    <KeyboardArrowRight style={{ color: 'white' }} />
+                  </div>
+                ))}
+              <div css={dotsContainer}>
+                <Pagination
+                  dots={featuredContent.length}
+                  index={index}
+                  onChangeIndex={index => this.setState({ index })}
+                />
               </div>
-            ))}
-          {(index !== featuredContent.length - 1 && (
-            <div
-              css={arrowRightContainer}
-              aria-label="Next"
-              onClick={this.handleNextIndex}
-            >
-              {' '}
-              <KeyboardArrowRight style={{ color: 'white' }} />
-            </div>
-          )) ||
-            (index === featuredContent.length - 1 && (
-              <div
-                css={arrowRightContainer}
-                aria-label="Next"
-                onClick={this.goToFirstPage}
-              >
-                {' '}
-                <KeyboardArrowRight style={{ color: 'white' }} />
+            </Hidden>
+            <Hidden only="tablet">
+              <div css={dotsContainer}>
+                <Pagination
+                  dots={featuredContent.length}
+                  index={index}
+                  onChangeIndex={index => this.setState({ index })}
+                />
               </div>
-            ))}
-          <div css={dotsContainer}>
-            <Pagination
-              dots={featuredContent.length}
-              index={index}
-              onChangeIndex={index => this.setState({ index })}
-            />
-          </div>
-        </Hidden>
-        <Hidden only="tablet">
-          <div css={dotsContainer}>
-            <Pagination
-              dots={featuredContent.length}
-              index={index}
-              onChangeIndex={index => this.setState({ index })}
-            />
-          </div>
-        </Hidden>
+            </Hidden>
+          </>
+        ) : (
+          <>
+            {card(featuredContent[0])}
+
+            <HeroCardMobile>
+              <CardContent>{cardContent(featuredContent[0])}</CardContent>
+            </HeroCardMobile>
+          </>
+        )}
       </div>
     );
   }
@@ -211,7 +231,11 @@ const arrowRightContainer = css`
   flex-direction: row-reverse;
   &:hover {
     transition: all 0.2s ease-in;
-    background: rgba(0, 0, 0, 0.5);
+    background-image: linear-gradient(
+      90deg,
+      rgba(207, 207, 207, 0.1),
+      rgba(0, 0, 0, 0.5)
+    );
     cursor: pointer;
   }
 `;
@@ -227,7 +251,11 @@ const arrowLeftContainer = css`
   flex-direction: row;
   &:hover {
     transition: all 0.2s ease-in;
-    background: rgba(0, 0, 0, 0.5);
+    background-image: linear-gradient(
+      -90deg,
+      rgba(207, 207, 207, 0.1),
+      rgba(0, 0, 0, 0.5)
+    );
     cursor: pointer;
   }
 `;
