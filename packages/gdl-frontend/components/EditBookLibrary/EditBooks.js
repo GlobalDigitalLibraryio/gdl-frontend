@@ -83,7 +83,7 @@ const EditBooks = ({
         }}
       >
         <IconButton
-          css={iconButtonStyle}
+          css={bottomIconButtonStyle}
           onClick={selectAllBooks}
           aria-label="select"
           icon={<CheckCircle color={selectAll === 1 ? 'primary' : 'inherit'} />}
@@ -92,9 +92,9 @@ const EditBooks = ({
           }
         />
         <IconButton
-          css={iconButtonStyle}
+          css={bottomIconButtonStyle}
           onClick={dialog}
-          style={{ margin: 'auto' }}
+          className="test"
           icon={
             <Delete
               color={selectedBooks.length === 0 ? 'disabled' : 'inherit'}
@@ -265,6 +265,14 @@ const iconButtonStyle = css`
   height: 60px;
   width: fit-content;
   padding: 0 12px;
+  span {
+    font-size: 0.8rem;
+  }
+`;
+const bottomIconButtonStyle = css`
+  height: 60px;
+  width: 35%;
+  border-radius: 10%;
   span {
     font-size: 0.8rem;
   }
