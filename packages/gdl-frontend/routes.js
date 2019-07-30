@@ -40,13 +40,16 @@ routes.add('classroom', `/${langParam}/books/category/classroom`, 'index');
 routes.add('library', `/${langParam}/books/category/library`, 'index');
 
 // Browse the books
-routes.add('browse', `/${langParam}/books/browse`, 'books/browse');
+routes.add('browseBooks', `/${langParam}/books/browse`, 'books/browse');
 
 // Book details page
 routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
 // Game details page
 routes.add('game', `/${langParam}/games/details/:id`, 'games/_game');
+
+// Browse the books
+routes.add('browseGames', `/${langParam}/games/browse`, 'games/browse');
 
 // Read book
 routes.add(

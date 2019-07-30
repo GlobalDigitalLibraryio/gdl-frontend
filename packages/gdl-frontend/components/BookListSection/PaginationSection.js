@@ -22,7 +22,10 @@ import InfiniteScrollView from './InfiniteScrollView';
 import PaginationArrowView from './PaginationArrowView';
 
 import type { Book } from './BookLink';
-import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
+import type {
+  BrowseGames_games_v2_results as Game,
+  ReadingLevel
+} from '../../gqlTypes';
 
 type Props = {
   loadMore: () => void,
@@ -42,7 +45,10 @@ export default class PaginationSection extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     return (
       this.props.languageCode !== nextProps.languageCode ||
-      this.props.items.length <= nextProps.items.length
+      // Check for items.length as precedence to not allow rerendring of elements
+      // with the same key, when spamming.
+      this.props.items.length <= nextProps.items.length ||
+      this.props.items !== nextProps.items
     );
   }
 
@@ -88,7 +94,7 @@ export default class PaginationSection extends Component<Props> {
                   data-cy="browse-more-button"
                   color="primary"
                   size="small"
-                  variant="outlined"
+                  variant="contained"
                 >
                   <FormattedMessage id="More" defaultMessage="More" />
                 </Button>

@@ -13,12 +13,15 @@ import {
   Card,
   Typography,
   Grid,
-  CircularProgress
+  CircularProgress,
+  TextField,
+  IconButton
 } from '@material-ui/core';
 import {
   ArrowForward as ArrowForwardIcon,
   Sync as SyncIcon,
-  Translate as TranslateIcon
+  Translate as TranslateIcon,
+  Sort as SortIcon
 } from '@material-ui/icons';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -39,8 +42,8 @@ import mq from '../../style/mq';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import CircleLabel from '../../components/GlobalMenu/CircleLabel';
-
 import type { intlShape } from 'react-intl';
+
 import type {
   MyBookTranslations,
   MyBookTranslations_currentUser_translations as Translation
@@ -333,9 +336,99 @@ const CustomGrid = styled('div')`
   }
 `;
 
-class MyTranslationsPage extends React.Component<{
-  intl: intlShape
-}> {
+const CustomSearchBar = styled('div')`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const CustomSearchbarItem = styled('div')`
+  width: 100%;
+  padding-top: 5px;
+`;
+
+function sortOnTitle(sortDirection: 'asc' | 'desc') {
+  return function(a, b) {
+    const result =
+      a.to['title'] < b.to['title']
+        ? -1
+        : a.to['title'] > b.to['title']
+        ? 1
+        : 0;
+    return result * (sortDirection === 'asc' ? 1 : -1);
+  };
+}
+
+function showSelectedTranslations(
+  translations,
+  refetch,
+  titleSearch,
+  sortDirection
+) {
+  let copyTranslations = [...translations];
+  copyTranslations.sort(sortOnTitle(sortDirection));
+  if (titleSearch !== '') {
+    copyTranslations = copyTranslations.filter(
+      value =>
+        value.to.title.toLowerCase().indexOf(titleSearch.toLowerCase()) !== -1
+    );
+  }
+  if (copyTranslations.length > 0) {
+    return copyTranslations.map(translation => (
+      <TranslationCard
+        key={translation.to.id}
+        translation={translation}
+        handleSync={refetch}
+      />
+    ));
+  } else {
+    return (
+      <p>
+        There are no results for <b>"{titleSearch}"</b>
+      </p>
+    );
+  }
+}
+
+type State = {
+  titleSearch: string,
+  sortDirection: 'asc' | 'desc',
+  sortDirStyle: { [key: string]: string | number }
+};
+
+class MyTranslationsPage extends React.Component<
+  {
+    intl: intlShape
+  },
+  State
+> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      titleSearch: '',
+      sortDirection: 'asc',
+      sortDirStyle: { transform: 'scaleX(1)', margin: 10 }
+    };
+  }
+
+  toggleSortDirection() {
+    if (this.state.sortDirection === 'asc') {
+      this.setState({
+        sortDirection: 'desc',
+        sortDirStyle: { transform: 'scaleY(-1)', margin: 10 }
+      });
+    } else {
+      this.setState({
+        sortDirection: 'asc',
+        sortDirStyle: { transform: 'scaleY(1)', margin: 10 }
+      });
+    }
+  }
+  titleSearchCallback = dataFromChild => {
+    this.setState({
+      titleSearch: dataFromChild
+    });
+  };
   render() {
     const { intl } = this.props;
     return (
@@ -361,6 +454,7 @@ class MyTranslationsPage extends React.Component<{
           {/*  Docs: https://www.apollographql.com/docs/react/essentials/queries#props partialRefetch
                 Issue: https://github.com/apollographql/apollo-client/pull/4743
             */}
+
           <Query
             query={MY_TRANSLATION_QUERY}
             partialRefetch
@@ -413,13 +507,36 @@ class MyTranslationsPage extends React.Component<{
                   />
                 </Typography>
               ) : (
-                translations.map(translation => (
-                  <TranslationCard
-                    key={translation.to.id}
-                    translation={translation}
-                    handleSync={refetch}
-                  />
-                ))
+                <>
+                  <CustomSearchBar>
+                    <CustomSearchbarItem>
+                      <TextField
+                        id="standard-search"
+                        label="Search titles"
+                        type="search"
+                        value={this.state.titleSearch}
+                        onChange={event =>
+                          this.setState({ titleSearch: event.target.value })
+                        }
+                        variant="outlined"
+                        css={{ width: '100%' }}
+                      />
+                    </CustomSearchbarItem>
+                    <IconButton
+                      aria-label="Sort"
+                      css={this.state.sortDirStyle}
+                      onClick={() => this.toggleSortDirection()}
+                    >
+                      <SortIcon />
+                    </IconButton>
+                  </CustomSearchBar>
+                  {showSelectedTranslations(
+                    translations,
+                    refetch,
+                    this.state.titleSearch,
+                    this.state.sortDirection
+                  )}
+                </>
               );
             }}
           </Query>

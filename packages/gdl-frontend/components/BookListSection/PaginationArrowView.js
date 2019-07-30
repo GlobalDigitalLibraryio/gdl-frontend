@@ -18,7 +18,10 @@ import BookLink from './BookLink';
 import PaginationScrollGrid from './PaginationScrollGrid';
 
 import type { Book } from './BookLink';
-import type { game_game as Game, ReadingLevel } from '../../gqlTypes';
+import type {
+  BrowseGames_games_v2_results as Game,
+  ReadingLevel
+} from '../../gqlTypes';
 
 type Props = {
   loading: boolean,

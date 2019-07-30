@@ -33,7 +33,7 @@ import type { BrowseBooks, Category, ReadingLevel } from '../../gqlTypes';
 const PAGE_SIZE = 30;
 const INITIAL_PAGE_NUMBER = 1;
 
-const QUERY = gql`
+const BROWSE_BOOKS_QUERY = gql`
   query BrowseBooks(
     $language: String!
     $readingLevel: ReadingLevel
@@ -124,7 +124,7 @@ class BrowsePage extends React.Component<Props> {
       const parsedLevel = parseReadingLevel(queryFromPath.readingLevel);
 
       await apolloClient.query({
-        query: QUERY,
+        query: BROWSE_BOOKS_QUERY,
         variables: {
           page: INITIAL_PAGE_NUMBER,
           category,
@@ -208,7 +208,7 @@ class BrowsePage extends React.Component<Props> {
 
     return (
       <Query
-        query={QUERY}
+        query={BROWSE_BOOKS_QUERY}
         variables={{
           page: INITIAL_PAGE_NUMBER,
           category,
@@ -295,7 +295,7 @@ class BrowsePage extends React.Component<Props> {
                     }
                     isLoading={loading}
                     color="primary"
-                    variant="outlined"
+                    variant="contained"
                     css={{
                       marginTop: spacing.xlarge,
                       marginBottom: spacing.medium

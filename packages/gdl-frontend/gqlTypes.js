@@ -644,6 +644,59 @@ export type BrowseBooksVariables = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: BrowseGames
+// ====================================================
+
+export type BrowseGames_games_v2_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type BrowseGames_games_v2_results_coverImage = {
+  __typename: "GameImage",
+  url: string,
+  altText: ?string,
+};
+
+export type BrowseGames_games_v2_results = {
+  __typename: "Game",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  license: string,
+  language: string,
+  coverImage: BrowseGames_games_v2_results_coverImage,
+};
+
+export type BrowseGames_games_v2 = {
+  __typename: "GameResult",
+  pageInfo: BrowseGames_games_v2_pageInfo,
+  results: Array<BrowseGames_games_v2_results>,
+};
+
+export type BrowseGames = {
+  games_v2: BrowseGames_games_v2
+};
+
+export type BrowseGamesVariables = {
+  language: string,
+  pageSize?: ?number,
+  page?: ?number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: MyBookTranslations
 // ====================================================
 

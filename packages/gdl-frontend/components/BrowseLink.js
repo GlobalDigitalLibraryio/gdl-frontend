@@ -10,7 +10,8 @@ import { Link } from '../routes';
 import type { Category } from '../gqlTypes';
 
 export type Props = {
-  category: Category,
+  route: 'browseBooks' | 'browseGames',
+  category?: Category,
   lang: string,
   readingLevel?: string,
   sort?: '-arrivalDate',
@@ -18,8 +19,8 @@ export type Props = {
 };
 
 // Special link component that routes the browse page. Nice to typecheck the props
-export default ({ children, ...props }: Props) => (
-  <Link route="browse" passHref params={props}>
+export default ({ children, route, ...props }: Props) => (
+  <Link passHref params={props} route={route}>
     {children}
   </Link>
 );

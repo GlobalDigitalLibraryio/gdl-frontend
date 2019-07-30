@@ -34,6 +34,7 @@ import media from '../../style/media';
 import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
+import { Hidden } from '../../elements';
 
 type Props = {
   onMenuClick(): void,
@@ -84,7 +85,7 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
               <FormattedMessage id="Open menu" defaultMessage="Open menu" />
             </SrOnly>
           </IconButton>
-          {brandLink}
+          <Hidden only="desktop">{brandLink}</Hidden>
         </Left>
 
         {/* This component is not visibile on mobile */}
