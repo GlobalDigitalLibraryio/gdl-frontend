@@ -1,5 +1,6 @@
 //@flow
 import React from 'react';
+import { injectIntl, defineMessages } from 'react-intl';
 import {
   Button,
   Dialog,
@@ -15,6 +16,7 @@ import { Help as HelpIcon } from '@material-ui/icons';
 import { css, jsx } from '@emotion/core';
 import GetDialogContent from './DialogContent';
 import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+import type { intlShape } from 'react-intl';
 
 const grace1 = '/static/img/grace1.png';
 const grace2 = '/static/img/grace2.png';
@@ -22,8 +24,10 @@ const grace3 = '/static/img/grace3.png';
 const selectLanguage = '/static/img/selectLanguage.png';
 const saveOffline = '/static/img/saveOffline.png';
 const menu = '/static/img/menu.png';
+const start = '/static/img/startempty.png';
 const saveOfflineM = '/static/img/saveOfflineM.png'; //for mobile
 const menuM = '/static/img/menuM.png'; //for mobile
+const startM = '/static/img/startM.png'; //for mobile
 
 type State = {
   open: boolean,
@@ -43,7 +47,8 @@ type State = {
 type Props = {
   shouldOpen: boolean,
   listButton: boolean,
-  swipeable: ?any
+  swipeable: ?() => void,
+  intl: intlShape
 };
 type TargetTouches = {
   clientX: number
@@ -71,14 +76,43 @@ const styles = {
   },
   nextButton: {
     color: 'white',
-    backgroundColor: '#8FE346'
+    backgroundColor: '#8FE346',
+    width: 44,
+    padding: 0,
+    textShadow: '0px 0px 3px #383838'
   },
   skipButton: {
     color: 'white',
     backgroundColor: 'rgba(255, 255, 255, 0.16)',
-    width: '100%'
+    width: '100%',
+    textShadow: '0px 0px 3px #383838'
   }
 };
+
+const translations = defineMessages({
+  languageTip: {
+    id: 'languagetip',
+    defaultMessage:
+      'If you want to change the language, click on the globe at the top-right corner of the screen!'
+  },
+  tutorialStartText: {
+    id: 'TutorialStartText',
+    defaultMessage:
+      'Hi there! This is a quick tutorial on some of the core functionality of the website. Click next for more information.'
+  },
+  menuTip: {
+    id: 'menuTip',
+    defaultMessage:
+      'The menu is in the top-left corner. From the menu you can access Categories, Favorites and more.'
+  },
+  offlineTip: {
+    id: 'offlineTip',
+    defaultMessage:
+      'You can save books for later and read them offline by clicking the Save offline icon!'
+  }
+});
+
+let NUMBER_OF_PAGES: number;
 
 class WelcomeTutorial extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -98,8 +132,9 @@ class WelcomeTutorial extends React.Component<Props, State> {
       beingTouched: false,
       intervalId: null
     };
-  }
 
+    NUMBER_OF_PAGES = this.props.shouldOpen ? 3 : 4;
+  }
   handleTouchStart(touchStartEvent: touchStartEventType, mobile: boolean) {
     if (this.state.intervalId !== null && mobile) {
       window.clearInterval(this.state.intervalId);
@@ -124,17 +159,21 @@ class WelcomeTutorial extends React.Component<Props, State> {
       this.setState({ left, velocity, intervalId: null, originalOffset: 0 });
     }
   }
-  handleClose() {
-    this.setState({
-      open: false
-    });
-    if (this.props.swipeable) {
-      this.props.swipeable();
-    }
-  }
+  handleClose = () => {
+    this.setState(
+      {
+        open: false
+      },
+      function() {
+        if (this.props.swipeable) {
+          this.props.swipeable();
+        }
+      }
+    );
+  };
 
   handleNext = () => {
-    this.state.activeStep === 2
+    this.state.activeStep === NUMBER_OF_PAGES - 1
       ? this.handleClose()
       : this.setState({
           activeStep: this.state.activeStep + 1,
@@ -221,6 +260,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
 
   render() {
     const isTablet: boolean = this.state.width < TABLET_BREAKPOINT;
+    const { intl } = this.props;
     return (
       <>
         {this.getListButton()}
@@ -251,10 +291,10 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 }}
               >
                 <GetDialogContent
-                  screenshotUrlM={selectLanguage}
-                  screenshotUrl={selectLanguage}
+                  screenshotUrlM={startM}
+                  screenshotUrl={start}
                   graceImgUrl={grace1}
-                  message="Hi! If you want to change the language, click on the globe at the top-right corner of the screen!"
+                  message={intl.formatMessage(translations.tutorialStartText)}
                   fullscreen={isTablet}
                 />
               </div>
@@ -272,10 +312,10 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 }}
               >
                 <GetDialogContent
-                  screenshotUrlM={menuM}
-                  screenshotUrl={menu}
+                  screenshotUrlM={selectLanguage}
+                  screenshotUrl={selectLanguage}
                   graceImgUrl={grace3}
-                  message="The menu is in the top-left corner. From the menu you can access Categories, Favorites and more."
+                  message={intl.formatMessage(translations.languageTip)}
                   fullscreen={isTablet}
                 />
               </div>
@@ -293,10 +333,31 @@ class WelcomeTutorial extends React.Component<Props, State> {
                 }}
               >
                 <GetDialogContent
+                  screenshotUrlM={menuM}
+                  screenshotUrl={menu}
+                  graceImgUrl={grace2}
+                  message={intl.formatMessage(translations.menuTip)}
+                  fullscreen={isTablet}
+                />
+              </div>
+            </Slide>
+            <Slide
+              style={{ height: '100%' }}
+              direction={this.state.direction}
+              in={this.state.activeStep === 3}
+            >
+              <div
+                style={{
+                  display: this.state.activeStep === 3 ? 'flex' : 'none',
+                  left: this.state.left,
+                  position: 'relative'
+                }}
+              >
+                <GetDialogContent
                   screenshotUrlM={saveOfflineM}
                   screenshotUrl={saveOffline}
                   graceImgUrl={grace2}
-                  message="You can save books for later and read them offline by clicking the Save offline icon!!."
+                  message={intl.formatMessage(translations.offlineTip)}
                   fullscreen={isTablet}
                 />
               </div>
@@ -304,7 +365,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
             <DialogActions>
               <MobileStepper
                 variant="dots"
-                steps={3}
+                steps={NUMBER_OF_PAGES}
                 position="static"
                 activeStep={this.state.activeStep}
                 classes={{ dotActive: 'activeDot' }}
@@ -323,7 +384,9 @@ class WelcomeTutorial extends React.Component<Props, State> {
                     autoFocus
                     style={styles.nextButton}
                   >
-                    {this.state.activeStep === 2 ? 'Finish' : 'Next'}
+                    {this.state.activeStep === NUMBER_OF_PAGES - 1
+                      ? 'Finish!'
+                      : 'Next'}
                   </Button>
                 }
                 backButton={
@@ -332,13 +395,15 @@ class WelcomeTutorial extends React.Component<Props, State> {
                     onClick={this.handleBack}
                     disabled={this.state.activeStep === 0}
                     style={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.16)'
+                      backgroundColor: 'rgba(255, 255, 255, 0.16)',
+                      width: 44,
+                      padding: 0
                     }}
                     css={css`
                       color: white;
                     `}
                   >
-                    Back
+                    back
                   </Button>
                 }
               />
@@ -350,7 +415,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
             >
               <Button
                 size="small"
-                onClick={this.handleClose.bind(this)}
+                onClick={this.handleClose}
                 color="primary"
                 style={styles.skipButton}
               >
@@ -364,4 +429,4 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 }
 
-export default WelcomeTutorial;
+export default injectIntl(WelcomeTutorial);

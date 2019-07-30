@@ -13,16 +13,6 @@ type Props = {
 
 class GetDialogContent extends React.Component<Props> {
   render() {
-    let isFullscreenStyle;
-    let isFullscreenScreenshot;
-    if (this.props.fullscreen) {
-      isFullscreenStyle = { display: 'flex' };
-      isFullscreenScreenshot = this.props.screenshotUrlM;
-    } else {
-      isFullscreenStyle = { height: '270px' };
-      isFullscreenScreenshot = this.props.screenshotUrl;
-    }
-
     return (
       <DialogContent
         style={{
@@ -32,9 +22,17 @@ class GetDialogContent extends React.Component<Props> {
           height: '100%'
         }}
       >
-        <div style={isFullscreenStyle}>
+        <div
+          style={
+            this.props.fullscreen ? { display: 'flex' } : { height: '270px' }
+          }
+        >
           <img
-            src={isFullscreenScreenshot}
+            src={
+              this.props.fullscreen
+                ? this.props.screenshotUrlM
+                : this.props.screenshotUrl
+            }
             alt="screenshot from the page"
             style={{ width: '100%' }}
           />
@@ -47,14 +45,29 @@ class GetDialogContent extends React.Component<Props> {
           />
           <Card style={{ marginLeft: '15px', width: '100%' }}>
             <CardContent
-              style={{ display: 'table', height: '100%', width: '100%' }}
+              style={{
+                display: 'table',
+                height: '100%',
+                width: '100%',
+                padding: 0
+              }}
             >
               <p
-                style={{
-                  textAlign: 'center',
-                  verticalAlign: 'middle',
-                  display: 'table-cell'
-                }}
+                style={
+                  this.props.fullscreen
+                    ? {
+                        fontSize: '14px',
+                        textAlign: 'center',
+                        verticalAlign: 'middle',
+                        display: 'table-cell'
+                      }
+                    : {
+                        fontSize: '16px',
+                        textAlign: 'center',
+                        verticalAlign: 'middle',
+                        display: 'table-cell'
+                      }
+                }
               >
                 {this.props.message}
               </p>
