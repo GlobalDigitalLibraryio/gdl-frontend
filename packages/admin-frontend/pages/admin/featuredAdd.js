@@ -4,15 +4,16 @@ import { Add } from '@material-ui/icons';
 import FeaturedEdit from './featuredEdit';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import type { FeaturedContent } from '../../types';
 
 export default function FeatureAdd(
   defaultReturned: boolean,
-  handleSaveButtonClick: any,
-  handleFileChosen: any,
-  handleOnCancel: any,
-  file: any,
-  handleOnUpload: any,
-  featuredContentList: Array<any>,
+  handleSaveButtonClick: (boolean, FeaturedContent) => void,
+  handleFileChosen: (SyntheticInputEvent<EventTarget>) => void,
+  handleOnCancel: () => void,
+  file: ?File,
+  handleOnUpload: (string, (string, any) => void) => void,
+  featuredContentList: Array<FeaturedContent>,
   selectedLanguage: string
 ) {
   return (

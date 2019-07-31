@@ -71,25 +71,15 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
 
   getFeaturedContent = async (languageCode: string) => {
     const featuredContentRes = await fetchFeaturedContent(languageCode);
-    const featContList = [];
-    let i = 0;
-    while (featuredContentRes.isOk) {
-      if (featuredContentRes.data[i]) {
-        featContList.push(featuredContentRes.data[i]);
-      } else {
-        break;
-      }
-      i++;
-    }
 
-    if (featuredContentRes.isOk) {
-      if (featContList[0].language.code !== languageCode) {
+    if (featuredContentRes.isOk && featuredContentRes.data[0]) {
+      if (featuredContentRes.data[0].language.code !== languageCode) {
         this.setState({
           featuredContentList: []
         });
       } else {
         this.setState({
-          featuredContentList: featContList
+          featuredContentList: featuredContentRes.data
         });
       }
     }

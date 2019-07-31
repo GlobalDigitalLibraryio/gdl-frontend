@@ -11,14 +11,14 @@ import type { FeaturedContent } from '../../types';
 type Props = {
   i: number,
   button: any,
-  featuredContentList: Array<any>,
+  featuredContentList: Array<FeaturedContent>,
   selectedLanguage: string,
   defaultReturned: boolean,
-  handleSaveButtonClick: any,
-  handleFileChosen: any,
-  handleOnCancel: any,
-  file: any,
-  handleOnUpload: any
+  handleSaveButtonClick: (boolean, FeaturedContent) => void,
+  handleFileChosen: (SyntheticInputEvent<EventTarget>) => void,
+  handleOnCancel: () => void,
+  file: ?File,
+  handleOnUpload: (string, (string, any) => void) => void
 };
 type State = {
   open: boolean
@@ -55,11 +55,11 @@ export default class FeaturedEdit extends React.Component<Props, State> {
     };
   }
 
-  handleClickOpen() {
+  handleClickOpen = () => {
     this.setState({
       open: true
     });
-  }
+  };
   handleClose() {
     this.setState({
       open: false
@@ -73,9 +73,17 @@ export default class FeaturedEdit extends React.Component<Props, State> {
     this.setState({ open: false });
   };
   render() {
+    const {
+      button,
+      featuredContentList,
+      selectedLanguage,
+      i,
+      defaultReturned,
+      file
+    } = this.props;
     return (
       <>
-        <div onClick={this.handleClickOpen.bind(this)}>{this.props.button}</div>
+        <div onClick={this.handleClickOpen}>{button}</div>
 
         <Dialog
           open={this.state.open}
@@ -85,12 +93,8 @@ export default class FeaturedEdit extends React.Component<Props, State> {
           <div style={{ padding: 25 }}>
             <>
               <Form
-                initialValues={
-                  this.props.featuredContentList[this.props.i] || {}
-                }
-                onSubmit={this.handleSaveButtonClick(
-                  this.props.defaultReturned
-                )}
+                initialValues={featuredContentList[i] || {}}
+                onSubmit={this.handleSaveButtonClick(defaultReturned)}
                 validate={handleValidate}
                 render={({ handleSubmit, pristine, invalid, form }) => (
                   <form>
@@ -101,7 +105,7 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                           fullWidth
                           error={meta.error && meta.touched}
                           margin="normal"
-                          disabled={this.props.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Title"
                           {...input}
                         />
@@ -114,7 +118,7 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                           fullWidth
                           margin="normal"
                           error={meta.error && meta.touched}
-                          disabled={this.props.selectedLanguage === ''}
+                          disabled={selectedLanguage === ''}
                           label="Description"
                           {...input}
                           multiline
@@ -130,7 +134,7 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                             type="url"
                             error={meta.error && meta.touched}
                             margin="normal"
-                            disabled={this.props.selectedLanguage === ''}
+                            disabled={selectedLanguage === ''}
                             label="Link"
                             {...input}
                           />
@@ -155,7 +159,7 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                                 margin="normal"
                                 error={meta.error && meta.touched}
                                 type="url"
-                                disabled={this.props.selectedLanguage === ''}
+                                disabled={selectedLanguage === ''}
                                 label="Image Url"
                                 {...input}
                               />
@@ -172,18 +176,18 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                       <span>or</span>
 
                       <input
-                        disabled={this.props.selectedLanguage === ''}
+                        disabled={selectedLanguage === ''}
                         type="file"
                         accept="image/*"
                         value=""
                         onChange={event => this.props.handleFileChosen(event)}
                       />
 
-                      {this.props.file && (
+                      {file && (
                         <UploadFileDialog
-                          language={this.props.selectedLanguage}
-                          selectedFile={this.props.file}
-                          objectURL={URL.createObjectURL(this.props.file)}
+                          language={selectedLanguage}
+                          selectedFile={file}
+                          objectURL={URL.createObjectURL(file)}
                           onCancel={this.props.handleOnCancel}
                           onUpload={url =>
                             this.props.handleOnUpload(url, form.change)
@@ -208,16 +212,14 @@ export default class FeaturedEdit extends React.Component<Props, State> {
                       type="submit"
                       onClick={handleSubmit}
                     >
-                      {this.props.featuredContentList.length > this.props.i
-                        ? 'Save changes'
-                        : 'Save'}
+                      {featuredContentList.length > i ? 'Save changes' : 'Save'}
                     </Button>
                     <Button
                       color="secondary"
                       disabled={pristine}
                       onClick={form.reset}
                     >
-                      {this.props.featuredContentList.length > this.props.i
+                      {featuredContentList.length > i
                         ? 'Discard changes'
                         : 'Discard'}
                     </Button>
