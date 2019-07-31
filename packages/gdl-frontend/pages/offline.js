@@ -23,13 +23,14 @@ import OnlineStatusContext, {
 } from '../components/OnlineStatusContext';
 import EditBooks from '../components/EditBookLibrary/EditBooks';
 
+type Selected = 'all' | 'none' | 'some';
 type State = {
   books: Array<Book>,
   loadingStatus: 'LOADING' | 'SUCCESS' | 'ERROR',
   editMode: boolean,
   selectedBooks: Array<string>,
   openDialog: boolean,
-  selectAll: number
+  selected: Selected
 };
 
 class OfflinePage extends React.Component<{}, State> {
@@ -39,13 +40,13 @@ class OfflinePage extends React.Component<{}, State> {
     editMode: false,
     selectedBooks: [],
     openDialog: false,
-    selectAll: 2
+    selected: 'none'
   };
 
   changeActive = () => {
     this.state.selectedBooks.length === this.state.books.length
-      ? this.setState({ selectAll: 1 })
-      : this.setState({ selectAll: 2 });
+      ? this.setState({ selected: 'all' })
+      : this.setState({ selected: 'some' });
   };
 
   async componentDidMount() {
@@ -77,7 +78,7 @@ class OfflinePage extends React.Component<{}, State> {
       editMode: !this.state.editMode,
       selectedBooks: [],
       openDialog: false,
-      selectAll: 0
+      selected: 'none'
     });
   };
 
@@ -89,15 +90,15 @@ class OfflinePage extends React.Component<{}, State> {
 
   selectAllBooks = () => {
     this.state.selectedBooks.length === this.state.books.length
-      ? this.setState({ selectAll: 0, selectedBooks: [] })
+      ? this.setState({ selected: 'none', selectedBooks: [] })
       : this.setState({
-          selectAll: 1,
+          selected: 'all',
           selectedBooks: this.state.books.map(book => book.id)
         });
   };
 
   deselectAllBooks = () => {
-    this.setState({ selectAll: 0, selectedBooks: [] });
+    this.setState({ selected: 'none', selectedBooks: [] });
   };
 
   deleteSelected = async () => {
@@ -161,7 +162,7 @@ class OfflinePage extends React.Component<{}, State> {
                       dialog={this.openCloseDialog}
                       open={this.state.openDialog}
                       selectAllBooks={this.selectAllBooks}
-                      selectAll={this.state.selectAll}
+                      selected={this.state.selected}
                       deselectAllBooks={this.deselectAllBooks}
                       changeActive={this.changeActive.bind(this)}
                       favorites={false}

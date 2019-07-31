@@ -33,11 +33,6 @@ import {
 import BookGrid from '../components/BookGrid';
 import EditBooks from '../components/EditBookLibrary/EditBooks';
 
-/**
- * If we have favorited books that we are unable to get from the server
- * we cleanup by deleting the not found ones
- */
-
 function removeBooksNotFound(data: Favorites) {
   if (!('books' in data)) return null;
 
@@ -49,11 +44,13 @@ function removeBooksNotFound(data: Favorites) {
   diff.forEach(removeFavorite);
 }
 
+type Selected = 'all' | 'none' | 'some';
+
 type State = {
   editMode: boolean,
   selectedBooks: Array<string>,
   openDialog: boolean,
-  selectAll: number
+  selected: Selected
 };
 
 class FavoritesPage extends React.Component<
@@ -66,7 +63,7 @@ class FavoritesPage extends React.Component<
     editMode: false,
     selectedBooks: [],
     openDialog: false,
-    selectAll: 2
+    selected: 'none'
   };
 
   openCloseEditMode = () => {
@@ -74,7 +71,7 @@ class FavoritesPage extends React.Component<
       editMode: !this.state.editMode,
       selectedBooks: [],
       openDialog: false,
-      selectAll: 0
+      selected: 'none'
     });
   };
 
@@ -86,20 +83,20 @@ class FavoritesPage extends React.Component<
 
   changeActive = () => {
     this.state.selectedBooks.length === getFavoritedBookIds().length
-      ? this.setState({ selectAll: 1 })
-      : this.setState({ selectAll: 2 });
+      ? this.setState({ selected: 'all' })
+      : this.setState({ selected: 'some' });
   };
   selectAllBooks = () => {
     this.state.selectedBooks.length === getFavoritedBookIds().length
-      ? this.setState({ selectAll: 0, selectedBooks: [] })
+      ? this.setState({ selected: 'none', selectedBooks: [] })
       : this.setState({
-          selectAll: 1,
+          selected: 'all',
           selectedBooks: getFavoritedBookIds().map(book => book)
         });
   };
 
   deselectAllBooks = () => {
-    this.setState({ selectAll: 0, selectedBooks: [] });
+    this.setState({ selected: 'none', selectedBooks: [] });
   };
 
   deleteSelected = async () => {
@@ -174,7 +171,7 @@ class FavoritesPage extends React.Component<
                       dialog={this.openCloseDialog}
                       open={this.state.openDialog}
                       selectAllBooks={this.selectAllBooks}
-                      selectAll={this.state.selectAll}
+                      selected={this.state.selected}
                       deselectAllBooks={this.deselectAllBooks}
                       changeActive={this.changeActive.bind(this)}
                       favorites={true}

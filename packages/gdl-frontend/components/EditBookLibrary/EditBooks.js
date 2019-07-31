@@ -10,6 +10,8 @@ import styled from '@emotion/styled';
 import { spacing, misc } from '../../style/theme';
 import type { intlShape } from 'react-intl';
 
+type Selected = 'all' | 'none' | 'some';
+
 type Props = {
   books: Array<any>,
   onClick: () => void,
@@ -17,7 +19,7 @@ type Props = {
   onDelete: () => Promise<void>,
   dialog: () => void,
   open: boolean,
-  selectAll: number,
+  selected: Selected,
   selectAllBooks: () => void,
   deselectAllBooks: () => void,
   changeActive: () => void,
@@ -52,7 +54,7 @@ const EditBooks = ({
   dialog,
   open,
   selectAllBooks,
-  selectAll,
+  selected,
   deselectAllBooks,
   changeActive,
   favorites,
@@ -86,7 +88,13 @@ const EditBooks = ({
           css={bottomIconButtonStyle}
           onClick={selectAllBooks}
           aria-label="select"
-          icon={<CheckCircle color={selectAll === 1 ? 'primary' : 'inherit'} />}
+          icon={
+            <CheckCircle
+              color={
+                selectedBooks.length === books.length ? 'primary' : 'inherit'
+              }
+            />
+          }
           label={
             <FormattedMessage id="Select all" defaultMessage="Select all" />
           }
@@ -94,7 +102,6 @@ const EditBooks = ({
         <IconButton
           css={bottomIconButtonStyle}
           onClick={dialog}
-          className="test"
           icon={
             <Delete
               color={selectedBooks.length === 0 ? 'disabled' : 'inherit'}
@@ -147,7 +154,11 @@ const EditBooks = ({
             aria-label="select"
             onClick={selectAllBooks}
             icon={
-              <CheckCircle color={selectAll === 1 ? 'primary' : 'inherit'} />
+              <CheckCircle
+                color={
+                  selectedBooks.length === books.length ? 'primary' : 'inherit'
+                }
+              />
             }
             label={
               <FormattedMessage id="Select all" defaultMessage="Select all" />
@@ -173,7 +184,7 @@ const EditBooks = ({
       <EditBookGrid
         books={books}
         selectedBooks={selectedBooks}
-        active={selectAll}
+        selected={selected}
         changeActive={changeActive.bind(this)}
         css={{ marginTop: '68px' }}
       />

@@ -9,6 +9,8 @@ import CoverImage from '../CoverImage';
 import media from '../../style/media';
 import { coverWidths } from '../BookListSection/coverWidths';
 
+type Selected = 'all' | 'none' | 'some';
+
 export type Book = $ReadOnly<{
   id: string,
   bookId: number,
@@ -22,7 +24,8 @@ export type Book = $ReadOnly<{
 type Props = {
   book: Book,
   selectedBooks: Array<string>,
-  allActive: number,
+  selected: Selected,
+  booksLength: number,
   changeActive: () => void
 };
 
@@ -36,18 +39,18 @@ export default class BookLink extends React.Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.allActive !== this.props.allActive &&
-      this.props.allActive === 0
-    ) {
+    console.log('first');
+    const activeHasChanged = prevProps.selected !== this.props.selected;
+
+    activeHasChanged &&
+      this.props.selected === 'none' &&
       this.setState({ active: false });
-    } else if (
-      prevProps.allActive !== this.props.allActive &&
-      this.props.allActive === 1
-    ) {
+
+    activeHasChanged &&
+      this.props.selected === 'all' &&
       this.setState({ active: true });
-    }
   }
+
   handleClick(id: string, selectedBooks: Array<string>) {
     if (!selectedBooks.some(item => id === item)) {
       selectedBooks.push(id);

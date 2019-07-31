@@ -4,16 +4,18 @@ import * as React from 'react';
 import GridContainer from '../BookGrid/styledGridContainer';
 import BookLink, { type Book } from './BookSelectionLink';
 
+type Selected = 'all' | 'none' | 'some';
+
 type Props = {
   books: $ReadOnlyArray<Book>,
   selectedBooks: Array<string>,
-  active: number,
+  selected: Selected,
   changeActive: () => void
 };
 
 class BookGrid extends React.Component<Props> {
   render() {
-    const { books, selectedBooks, active } = this.props;
+    const { books, selectedBooks, selected } = this.props;
 
     return (
       <GridContainer>
@@ -21,8 +23,9 @@ class BookGrid extends React.Component<Props> {
           <BookLink
             key={book.id}
             book={book}
+            booksLength={books.length}
             selectedBooks={selectedBooks}
-            allActive={active}
+            selected={selected}
             changeActive={this.props.changeActive}
           />
         ))}
