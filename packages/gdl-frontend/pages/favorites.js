@@ -44,13 +44,11 @@ function removeBooksNotFound(data: Favorites) {
   diff.forEach(removeFavorite);
 }
 
-type Selected = 'all' | 'none' | 'some';
-
 type State = {
   editMode: boolean,
   selectedBooks: Array<string>,
   openDialog: boolean,
-  selected: Selected
+  selectAll: boolean
 };
 
 class FavoritesPage extends React.Component<
@@ -63,7 +61,7 @@ class FavoritesPage extends React.Component<
     editMode: false,
     selectedBooks: [],
     openDialog: false,
-    selected: 'none'
+    selectAll: false
   };
 
   openCloseEditMode = () => {
@@ -71,7 +69,7 @@ class FavoritesPage extends React.Component<
       editMode: !this.state.editMode,
       selectedBooks: [],
       openDialog: false,
-      selected: 'none'
+      selectAll: false
     });
   };
 
@@ -83,20 +81,26 @@ class FavoritesPage extends React.Component<
 
   changeActive = () => {
     this.state.selectedBooks.length === getFavoritedBookIds().length
-      ? this.setState({ selected: 'all' })
-      : this.setState({ selected: 'some' });
+      ? this.setState({ selectAll: true })
+      : this.setState({ selectAll: false });
   };
   selectAllBooks = () => {
     this.state.selectedBooks.length === getFavoritedBookIds().length
-      ? this.setState({ selected: 'none', selectedBooks: [] })
+      ? this.setState({
+          selectAll: false,
+          selectedBooks: []
+        })
       : this.setState({
-          selected: 'all',
+          selectAll: true,
           selectedBooks: getFavoritedBookIds().map(book => book)
         });
   };
 
   deselectAllBooks = () => {
-    this.setState({ selected: 'none', selectedBooks: [] });
+    this.setState({
+      selectAll: false,
+      selectedBooks: []
+    });
   };
 
   deleteSelected = async () => {
@@ -171,10 +175,10 @@ class FavoritesPage extends React.Component<
                       dialog={this.openCloseDialog}
                       open={this.state.openDialog}
                       selectAllBooks={this.selectAllBooks}
-                      selected={this.state.selected}
                       deselectAllBooks={this.deselectAllBooks}
                       changeActive={this.changeActive.bind(this)}
                       favorites={true}
+                      selectAll={this.state.selectAll}
                     />
                   </>
                 ) : (

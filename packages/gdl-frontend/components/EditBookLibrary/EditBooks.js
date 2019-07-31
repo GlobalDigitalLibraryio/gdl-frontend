@@ -10,8 +10,6 @@ import styled from '@emotion/styled';
 import { spacing, misc } from '../../style/theme';
 import type { intlShape } from 'react-intl';
 
-type Selected = 'all' | 'none' | 'some';
-
 type Props = {
   books: Array<any>,
   onClick: () => void,
@@ -19,12 +17,12 @@ type Props = {
   onDelete: () => Promise<void>,
   dialog: () => void,
   open: boolean,
-  selected: Selected,
   selectAllBooks: () => void,
   deselectAllBooks: () => void,
   changeActive: () => void,
   favorites: boolean,
-  intl: intlShape
+  intl: intlShape,
+  selectAll: boolean
 };
 
 const translations = defineMessages({
@@ -54,11 +52,11 @@ const EditBooks = ({
   dialog,
   open,
   selectAllBooks,
-  selected,
   deselectAllBooks,
   changeActive,
   favorites,
-  intl
+  intl,
+  selectAll
 }: Props) => (
   <>
     <Hidden smUp>
@@ -184,9 +182,9 @@ const EditBooks = ({
       <EditBookGrid
         books={books}
         selectedBooks={selectedBooks}
-        selected={selected}
         changeActive={changeActive.bind(this)}
         css={{ marginTop: '68px' }}
+        selectAll={selectAll}
       />
       <Center>
         <Button
