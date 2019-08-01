@@ -15,7 +15,10 @@ import { Help as HelpIcon } from '@material-ui/icons';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import GetDialogContent from './DialogContent';
-import { TABLET_BREAKPOINT } from '../../style/theme/misc';
+import {
+  TABLET_BREAKPOINT,
+  LARGER_TABLET_BREAKPOINT
+} from '../../style/theme/misc';
 import type { intlShape } from 'react-intl';
 
 const grace1 = '/static/img/grace1.png';
@@ -252,20 +255,52 @@ class WelcomeTutorial extends React.Component<Props, State> {
           <ListItemIcon>
             <HelpIcon />
           </ListItemIcon>
-          <ListItemText>tutorial</ListItemText>
+          <ListItemText>Tutorial</ListItemText>
         </ListItem>
       );
     }
   }
 
   render() {
-    const isTablet: boolean = this.state.width < TABLET_BREAKPOINT;
+    // const isTablet: boolean = this.state.width < TABLET_BREAKPOINT;
+    const isTablet: boolean = this.state.width <= LARGER_TABLET_BREAKPOINT;
     const { intl } = this.props;
+
+    const dialogContent = [
+      {
+        screenshotUrlM: startM,
+        screenshotUrl: start,
+        graceImgUrl: grace1,
+        message: intl.formatMessage(translations.tutorialStartText)
+      },
+      {
+        screenshotUrlM: selectLanguage,
+        screenshotUrl: selectLanguage,
+        graceImgUrl: grace3,
+        message: intl.formatMessage(translations.languageTip)
+      },
+      {
+        screenshotUrlM: menuM,
+        screenshotUrl: menu,
+        graceImgUrl: grace2,
+        message: intl.formatMessage(translations.menuTip)
+      },
+      {
+        screenshotUrlM: saveOfflineM,
+        screenshotUrl: saveOffline,
+        graceImgUrl: grace2,
+        message: intl.formatMessage(translations.offlineTip)
+      }
+    ];
+
     return (
       <>
         {this.getListButton()}
 
-        <Dialog fullScreen={isTablet} open={this.state.open}>
+        <Dialog
+          fullScreen={this.state.width < TABLET_BREAKPOINT}
+          open={this.state.open}
+        >
           <div
             style={styles.dialogWindow}
             onTouchStart={touchStartEvent =>
@@ -278,90 +313,30 @@ class WelcomeTutorial extends React.Component<Props, State> {
               this.handleTouchEnd(isTablet);
             }}
           >
-            <Slide
-              style={{ height: '100%' }}
-              direction={this.state.direction}
-              in={this.state.activeStep === 0}
-            >
-              <div
-                style={{
-                  display: this.state.activeStep === 0 ? 'flex' : 'none',
-                  left: this.state.left,
-                  position: 'relative'
-                }}
+            {dialogContent.map((content, index) => (
+              <Slide
+                style={{ height: '70%' }}
+                direction={this.state.direction}
+                in={this.state.activeStep === index}
+                key={index}
               >
-                <GetDialogContent
-                  screenshotUrlM={startM}
-                  screenshotUrl={start}
-                  graceImgUrl={grace1}
-                  message={intl.formatMessage(translations.tutorialStartText)}
-                  fullscreen={isTablet}
-                />
-              </div>
-            </Slide>
-            <Slide
-              style={{ height: '100%' }}
-              direction={this.state.direction}
-              in={this.state.activeStep === 1}
-            >
-              <div
-                style={{
-                  display: this.state.activeStep === 1 ? 'flex' : 'none',
-                  left: this.state.left,
-                  position: 'relative'
-                }}
-              >
-                <GetDialogContent
-                  screenshotUrlM={selectLanguage}
-                  screenshotUrl={selectLanguage}
-                  graceImgUrl={grace3}
-                  message={intl.formatMessage(translations.languageTip)}
-                  fullscreen={isTablet}
-                />
-              </div>
-            </Slide>
-            <Slide
-              style={{ height: '100%' }}
-              direction={this.state.direction}
-              in={this.state.activeStep === 2}
-            >
-              <div
-                style={{
-                  display: this.state.activeStep === 2 ? 'flex' : 'none',
-                  left: this.state.left,
-                  position: 'relative'
-                }}
-              >
-                <GetDialogContent
-                  screenshotUrlM={menuM}
-                  screenshotUrl={menu}
-                  graceImgUrl={grace2}
-                  message={intl.formatMessage(translations.menuTip)}
-                  fullscreen={isTablet}
-                />
-              </div>
-            </Slide>
-            <Slide
-              style={{ height: '100%' }}
-              direction={this.state.direction}
-              in={this.state.activeStep === 3}
-            >
-              <div
-                style={{
-                  display: this.state.activeStep === 3 ? 'flex' : 'none',
-                  left: this.state.left,
-                  position: 'relative'
-                }}
-              >
-                <GetDialogContent
-                  screenshotUrlM={saveOfflineM}
-                  screenshotUrl={saveOffline}
-                  graceImgUrl={grace2}
-                  message={intl.formatMessage(translations.offlineTip)}
-                  fullscreen={isTablet}
-                />
-              </div>
-            </Slide>
+                <div
+                  style={{
+                    display: this.state.activeStep === index ? 'flex' : 'none',
+                    left: this.state.left,
+                    position: 'relative'
+                  }}
+                >
+                  <GetDialogContent
+                    screenshotUrlM={content.screenshotUrlM}
+                    screenshotUrl={content.screenshotUrl}
+                    graceImgUrl={content.graceImgUrl}
+                    message={content.message}
+                    fullscreen={this.state.width < TABLET_BREAKPOINT}
+                  />
+                </div>
+              </Slide>
+            ))}
             <DialogActions>
               <MobileStepper
                 variant="dots"

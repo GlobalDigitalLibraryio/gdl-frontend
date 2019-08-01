@@ -1,7 +1,6 @@
 //@flow
 import React from 'react';
-import DialogContent from '@material-ui/core/DialogContent';
-import { Card, CardContent } from '@material-ui/core';
+import { Card, CardContent, DialogContent } from '@material-ui/core';
 
 type Props = {
   screenshotUrlM: string,
@@ -19,12 +18,20 @@ class GetDialogContent extends React.Component<Props> {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-around',
-          height: '100%'
+          /* height: '100%', */
+          alignItems: 'center'
         }}
       >
         <div
           style={
-            this.props.fullscreen ? { display: 'flex' } : { height: '270px' }
+            this.props.fullscreen
+              ? {
+                  display: 'flex',
+                  height: '50%',
+                  width: '-webkit-fill-available',
+                  justifyContent: 'center'
+                }
+              : { height: '270px' }
           }
         >
           <img
@@ -34,12 +41,27 @@ class GetDialogContent extends React.Component<Props> {
                 : this.props.screenshotUrl
             }
             alt="screenshot from the page"
-            style={{ width: '100%' }}
+            style={
+              this.props.fullscreen
+                ? {
+                    objectFit: 'contain',
+                    height: '100%',
+                    maxWidth: '100%'
+                  }
+                : { width: '100%' }
+            }
           />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', marginTop: 10 }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            marginTop: 20,
+            height: '50%'
+          }}
+        >
           <img
-            style={{ maxHeight: 170 }}
+            style={{ maxHeight: 170, objectFit: 'scale-down' }}
             src={this.props.graceImgUrl}
             alt="Grace"
           />
@@ -59,13 +81,15 @@ class GetDialogContent extends React.Component<Props> {
                         fontSize: '14px',
                         textAlign: 'center',
                         verticalAlign: 'middle',
-                        display: 'table-cell'
+                        display: 'table-cell',
+                        padding: '0 10px'
                       }
                     : {
                         fontSize: '16px',
                         textAlign: 'center',
                         verticalAlign: 'middle',
-                        display: 'table-cell'
+                        display: 'table-cell',
+                        padding: '0 10px'
                       }
                 }
               >
