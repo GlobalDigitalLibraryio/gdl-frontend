@@ -6,7 +6,8 @@ import {
   Button,
   TextField,
   Typography,
-  Select
+  Select,
+  Checkbox
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
@@ -20,14 +21,36 @@ import Container from '../Container';
 import Row from '../Row';
 import BookCover from './BookCover';
 
+import { fetchFeaturedContent, deleteFeaturedContent } from '../../lib/fetch';
+import type { FeaturedContent, Language } from '../../types';
+
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
 
 type Props = {
   book: BookDetails
 };
+type State = {
+  featuredContentList: Array<FeaturedContent>,
+  isFeaturedContent: boolean,
+  featuredContent: FeaturedContent
+};
 
-export default class EditBookForm extends React.Component<Props> {
+export default class EditBookForm extends React.Component<Props, State> {
+  state = {
+    featuredContentList: [],
+    isFeaturedContent: false,
+    featuredContent: {
+      id: this.props.book.id,
+      title: this.props.book.title,
+      description: this.props.book.description,
+      link: `/${this.props.book.language.code}/books/details/${
+        this.props.book.id
+      }`,
+      imageUrl: this.props.book.coverImage.url,
+      language: this.props.book.language
+    }
+  };
   handleSubmit = (content: BookDetails) => {
     this.updateBook(content);
   };
@@ -43,8 +66,55 @@ export default class EditBookForm extends React.Component<Props> {
     }
   };
 
+  async componentDidMount() {
+    console.log('test');
+    try {
+      this.inFeaturedContent();
+    } catch (error) {}
+  }
+
+  getFeaturedContent = async (languageCode: string) => {
+    const featuredContentRes = await fetchFeaturedContent(languageCode);
+
+    if (featuredContentRes.isOk && featuredContentRes.data[0]) {
+      if (featuredContentRes.data[0].language.code !== languageCode) {
+        this.setState({
+          featuredContentList: []
+        });
+      } else {
+        this.setState({
+          featuredContentList: featuredContentRes.data
+        });
+      }
+    }
+  };
+
+  inFeaturedContent = async () => {
+    try {
+      await this.getFeaturedContent(this.props.book.language.code);
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(this.state.featuredContentList);
+    this.state.featuredContentList.some(item => item.id === this.props.book.id)
+      ? this.setState({ isFeaturedContent: true })
+      : this.setState({ isFeaturedContent: false });
+  };
+
+  addRemoveFeaturedContent = async () => {
+    if (this.state.isFeaturedContent) {
+      this.setState({ isFeaturedContent: false });
+      //  await deleteFeaturedContent(this.props.book.id);
+    } else {
+      this.setState({ isFeaturedContent: true });
+    }
+
+    console.log(this.state.featuredContent);
+  };
+
   render() {
     const book = this.props.book;
+    console.log(book);
     return (
       <Container>
         {' '}
@@ -161,6 +231,12 @@ export default class EditBookForm extends React.Component<Props> {
                     </Button>
                   </div>
                 </Row>
+                <Button onClick={this.addRemoveFeaturedContent}>
+                  <Checkbox
+                    color="primary"
+                    checked={this.state.isFeaturedContent}
+                  />
+                </Button>
               </form>
             )}
           />
