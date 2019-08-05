@@ -63,24 +63,6 @@ export default class EditBookForm extends React.Component<Props, State> {
   };
 
   postNewFeaturedContent = async (content: FeaturedContent) => {
-    /*  let content = {
-      title: this.props.book.title,
-      description: this.props.book.description,
-      imageUrl:
-        this.props.book.coverImage !== undefined
-          ? this.props.book.coverImage.url
-          : 'https://res.cloudinary.com/dwqxoowxi/f_auto,q_auto/e7ad2d851664f1485743e157c46f7142',
-      link: `${baseUrl}/${this.props.book.language.code}/books/details/${
-        this.props.book.id
-      }`
-    }; */
-    console.log(content);
-    /* content.title = this.props.book.title;
-    content.description = this.props.book.description;
-    content.imageUrl = this.props.book.coverImage.url;
-    content.link = `${baseUrl}/${this.props.book.language.code}/books/details/${
-      this.props.book.id
-    }`; */
     const result = await saveFeaturedContent(
       content,
       this.props.book.language.code
@@ -96,15 +78,16 @@ export default class EditBookForm extends React.Component<Props, State> {
     const book = this.props.book;
     const { snackbarMessage } = this.state;
     const content = {
-      title: this.props.book.title,
-      description: this.props.book.description,
+      id: 0,
+      title: book.title,
+      description: book.description,
+      language: book.language,
+      //default image (Grace in Space) if book does not have cover image
       imageUrl:
-        this.props.book.coverImage !== undefined
-          ? this.props.book.coverImage.url
+        book.coverImage !== undefined
+          ? book.coverImage.url
           : 'https://res.cloudinary.com/dwqxoowxi/f_auto,q_auto/e7ad2d851664f1485743e157c46f7142',
-      link: `${baseUrl}/${this.props.book.language.code}/books/details/${
-        this.props.book.id
-      }`
+      link: `${baseUrl}/${book.language.code}/books/details/${book.id}`
     };
     return (
       <Container>
@@ -211,7 +194,6 @@ export default class EditBookForm extends React.Component<Props, State> {
                     >
                       Discard changes
                     </Button>
-
                     <Button
                       color="primary"
                       onClick={handleSubmit}
