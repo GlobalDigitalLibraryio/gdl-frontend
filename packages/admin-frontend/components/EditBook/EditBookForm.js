@@ -215,10 +215,13 @@ export default class EditBookForm extends React.Component<Props, State> {
           open={Boolean(snackbarMessage)}
           onClose={() => this.setState({ snackbarMessage: null })}
           ContentProps={{
-            'aria-describedby': 'offline-snack-msg'
+            'aria-describedby': 'feature-content-snack-msg'
           }}
           message={
-            <span data-cy="save-offline-snackbar" id="offline-snack-msg">
+            <span
+              data-cy="save-featured-content-snackbar"
+              id="save-featured-content-snackbar"
+            >
               {snackbarMessage}
             </span>
           }
