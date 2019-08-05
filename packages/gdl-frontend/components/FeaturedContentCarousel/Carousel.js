@@ -132,7 +132,7 @@ class Carousel extends React.Component<Props, State> {
 
     return (
       <div style={{ position: 'relative' }}>
-        {featuredContent.length !== 1 ? (
+        {featuredContent.length > 1 ? (
           <>
             <AutoPlaySwipeableViews
               interval={7000}
