@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
   Select,
-  Checkbox
+  Snackbar
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
@@ -21,8 +21,13 @@ import Container from '../Container';
 import Row from '../Row';
 import BookCover from './BookCover';
 
-import { fetchFeaturedContent, deleteFeaturedContent } from '../../lib/fetch';
-import type { FeaturedContent, Language } from '../../types';
+import { saveFeaturedContent } from '../../lib/fetch';
+import type { FeaturedContent } from '../../types';
+import getConfig from 'next/config';
+
+const {
+  publicRuntimeConfig: { baseUrl }
+} = getConfig();
 
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
@@ -33,23 +38,14 @@ type Props = {
 type State = {
   featuredContentList: Array<FeaturedContent>,
   isFeaturedContent: boolean,
-  featuredContent: FeaturedContent
+  snackbarMessage: ?string
 };
 
 export default class EditBookForm extends React.Component<Props, State> {
   state = {
     featuredContentList: [],
     isFeaturedContent: false,
-    featuredContent: {
-      id: this.props.book.id,
-      title: this.props.book.title,
-      description: this.props.book.description,
-      link: `/${this.props.book.language.code}/books/details/${
-        this.props.book.id
-      }`,
-      imageUrl: this.props.book.coverImage.url,
-      language: this.props.book.language
-    }
+    snackbarMessage: null
   };
   handleSubmit = (content: BookDetails) => {
     this.updateBook(content);
@@ -66,55 +62,50 @@ export default class EditBookForm extends React.Component<Props, State> {
     }
   };
 
-  async componentDidMount() {
-    console.log('test');
-    try {
-      this.inFeaturedContent();
-    } catch (error) {}
-  }
-
-  getFeaturedContent = async (languageCode: string) => {
-    const featuredContentRes = await fetchFeaturedContent(languageCode);
-
-    if (featuredContentRes.isOk && featuredContentRes.data[0]) {
-      if (featuredContentRes.data[0].language.code !== languageCode) {
-        this.setState({
-          featuredContentList: []
-        });
-      } else {
-        this.setState({
-          featuredContentList: featuredContentRes.data
-        });
-      }
+  postNewFeaturedContent = async (content: FeaturedContent) => {
+    /*  let content = {
+      title: this.props.book.title,
+      description: this.props.book.description,
+      imageUrl:
+        this.props.book.coverImage !== undefined
+          ? this.props.book.coverImage.url
+          : 'https://res.cloudinary.com/dwqxoowxi/f_auto,q_auto/e7ad2d851664f1485743e157c46f7142',
+      link: `${baseUrl}/${this.props.book.language.code}/books/details/${
+        this.props.book.id
+      }`
+    }; */
+    console.log(content);
+    /* content.title = this.props.book.title;
+    content.description = this.props.book.description;
+    content.imageUrl = this.props.book.coverImage.url;
+    content.link = `${baseUrl}/${this.props.book.language.code}/books/details/${
+      this.props.book.id
+    }`; */
+    const result = await saveFeaturedContent(
+      content,
+      this.props.book.language.code
+    );
+    if (result.isOk) {
+      this.setState({
+        snackbarMessage: `${this.props.book.title} is added to featured content`
+      });
     }
-  };
-
-  inFeaturedContent = async () => {
-    try {
-      await this.getFeaturedContent(this.props.book.language.code);
-    } catch (error) {
-      console.log(error);
-    }
-    console.log(this.state.featuredContentList);
-    this.state.featuredContentList.some(item => item.id === this.props.book.id)
-      ? this.setState({ isFeaturedContent: true })
-      : this.setState({ isFeaturedContent: false });
-  };
-
-  addRemoveFeaturedContent = async () => {
-    if (this.state.isFeaturedContent) {
-      this.setState({ isFeaturedContent: false });
-      //  await deleteFeaturedContent(this.props.book.id);
-    } else {
-      this.setState({ isFeaturedContent: true });
-    }
-
-    console.log(this.state.featuredContent);
   };
 
   render() {
     const book = this.props.book;
-    console.log(book);
+    const { snackbarMessage } = this.state;
+    const content = {
+      title: this.props.book.title,
+      description: this.props.book.description,
+      imageUrl:
+        this.props.book.coverImage !== undefined
+          ? this.props.book.coverImage.url
+          : 'https://res.cloudinary.com/dwqxoowxi/f_auto,q_auto/e7ad2d851664f1485743e157c46f7142',
+      link: `${baseUrl}/${this.props.book.language.code}/books/details/${
+        this.props.book.id
+      }`
+    };
     return (
       <Container>
         {' '}
@@ -231,16 +222,29 @@ export default class EditBookForm extends React.Component<Props, State> {
                     </Button>
                   </div>
                 </Row>
-                <Button onClick={this.addRemoveFeaturedContent}>
-                  <Checkbox
-                    color="primary"
-                    checked={this.state.isFeaturedContent}
-                  />
+                <Button
+                  disabled={!pristine}
+                  onClick={() => this.postNewFeaturedContent(content)}
+                >
+                  Add to featured content
                 </Button>
               </form>
             )}
           />
         </Row>
+        <Snackbar
+          autoHideDuration={3000}
+          open={Boolean(snackbarMessage)}
+          onClose={() => this.setState({ snackbarMessage: null })}
+          ContentProps={{
+            'aria-describedby': 'offline-snack-msg'
+          }}
+          message={
+            <span data-cy="save-offline-snackbar" id="offline-snack-msg">
+              {snackbarMessage}
+            </span>
+          }
+        />
       </Container>
     );
   }

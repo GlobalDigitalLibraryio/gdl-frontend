@@ -110,6 +110,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
     }
   };
   postNewFeaturedContent = async (content: FeaturedContent) => {
+    console.log(content);
     const result = await saveFeaturedContent(
       content,
       this.state.selectedLanguage
@@ -215,7 +216,7 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
         >
           <DialogContent>
             <DialogTitle>
-              Do you want to delete {this.state.selectedContent.title} form
+              Do you want to delete {this.state.selectedContent.title} from
               featured content?
             </DialogTitle>
           </DialogContent>
