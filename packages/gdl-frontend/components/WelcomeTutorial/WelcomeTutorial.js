@@ -262,7 +262,6 @@ class WelcomeTutorial extends React.Component<Props, State> {
   }
 
   render() {
-    // const isTablet: boolean = this.state.width < TABLET_BREAKPOINT;
     const isTablet: boolean = this.state.width <= LARGER_TABLET_BREAKPOINT;
     const { intl } = this.props;
 
@@ -378,7 +377,7 @@ class WelcomeTutorial extends React.Component<Props, State> {
                       color: white;
                     `}
                   >
-                    back
+                    Back
                   </Button>
                 }
               />

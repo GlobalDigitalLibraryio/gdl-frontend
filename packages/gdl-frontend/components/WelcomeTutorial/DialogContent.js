@@ -18,7 +18,6 @@ class GetDialogContent extends React.Component<Props> {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-around',
-          /* height: '100%', */
           alignItems: 'center'
         }}
       >
@@ -75,23 +74,13 @@ class GetDialogContent extends React.Component<Props> {
               }}
             >
               <p
-                style={
-                  this.props.fullscreen
-                    ? {
-                        fontSize: '14px',
-                        textAlign: 'center',
-                        verticalAlign: 'middle',
-                        display: 'table-cell',
-                        padding: '0 10px'
-                      }
-                    : {
-                        fontSize: '16px',
-                        textAlign: 'center',
-                        verticalAlign: 'middle',
-                        display: 'table-cell',
-                        padding: '0 10px'
-                      }
-                }
+                style={{
+                  fontSize: `${this.props.fullscreen ? '14' : '16'}px`,
+                  textAlign: 'center',
+                  verticalAlign: 'middle',
+                  display: 'table-cell',
+                  padding: '0 10px'
+                }}
               >
                 {this.props.message}
               </p>
