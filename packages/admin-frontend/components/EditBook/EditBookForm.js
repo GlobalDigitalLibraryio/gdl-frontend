@@ -36,15 +36,11 @@ type Props = {
   book: BookDetails
 };
 type State = {
-  featuredContentList: Array<FeaturedContent>,
-  isFeaturedContent: boolean,
   snackbarMessage: ?string
 };
 
 export default class EditBookForm extends React.Component<Props, State> {
   state = {
-    featuredContentList: [],
-    isFeaturedContent: false,
     snackbarMessage: null
   };
   handleSubmit = (content: BookDetails) => {
