@@ -26,6 +26,10 @@ type Props = {|
   featuredContent: Array<FeaturedContent>
 |};
 
+function mod(n, m) {
+  let remain = n % m;
+  return remain >= 0 ? remain : remain + m;
+}
 class Carousel extends React.Component<Props, State> {
   state = { index: 0 };
   handleNextIndex = () => {
@@ -100,15 +104,13 @@ class Carousel extends React.Component<Props, State> {
     );
   };
   slideRenderer = (params: { index: number, key: number }) => {
-    const { key } = params;
+    const { key, index } = params;
     const { featuredContent } = this.props;
-    const indexPage = Math.abs(this.state.index % featuredContent.length);
+    const indexPage = mod(index, featuredContent.length);
     const content = featuredContent[indexPage];
-
     return (
       <div key={key}>
         {this.card(content)}
-
         <HeroCardMobile>
           <CardContent>
             {this.cardContent(content)}
@@ -120,7 +122,7 @@ class Carousel extends React.Component<Props, State> {
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
-            </Hidden>{' '}
+            </Hidden>
           </CardContent>
         </HeroCardMobile>
       </div>
@@ -146,7 +148,6 @@ class Carousel extends React.Component<Props, State> {
                 aria-label="Previous"
                 onClick={this.handlePrevIndex}
               >
-                {' '}
                 <KeyboardArrowLeft style={{ color: 'white' }} />
               </div>
 
@@ -155,13 +156,12 @@ class Carousel extends React.Component<Props, State> {
                 aria-label="Next"
                 onClick={this.handleNextIndex}
               >
-                {' '}
                 <KeyboardArrowRight style={{ color: 'white' }} />
               </div>
               <div css={dotsContainer}>
                 <Pagination
                   dots={featuredContent.length}
-                  index={Math.abs(index % featuredContent.length)}
+                  index={mod(index, featuredContent.length)}
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
@@ -170,7 +170,7 @@ class Carousel extends React.Component<Props, State> {
               <div css={dotsContainer}>
                 <Pagination
                   dots={featuredContent.length}
-                  index={Math.abs(index % featuredContent.length)}
+                  index={mod(index, featuredContent.length)}
                   onChangeIndex={index => this.setState({ index })}
                 />
               </div>
