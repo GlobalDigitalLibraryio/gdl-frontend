@@ -127,25 +127,6 @@ const Categories = ({
             defaultMessage="Classroom books"
           />
         </ListSubheader>
-        <Link
-          route="browseBooks"
-          category="Classroom"
-          lang={languageCode}
-          sort="-arrivalDate"
-          passHref
-        >
-          <ListItem onClick={onSelectCategory} button component="a">
-            <ListItemIcon>
-              <CircleLabel />
-            </ListItemIcon>
-            <ListItemText inset>
-              <FormattedMessage
-                id="New arrivals"
-                defaultMessage="New arrivals"
-              />
-            </ListItemText>
-          </ListItem>
-        </Link>
         {classroom.map(level => (
           <Link
             route="browseBooks"
@@ -177,25 +158,6 @@ const Categories = ({
         <ListSubheader component="div">
           <FormattedMessage id="Library books" defaultMessage="Library books" />
         </ListSubheader>
-        <Link
-          route="browseBooks"
-          category="Library"
-          lang={languageCode}
-          sort="-arrivalDate"
-          passHref
-        >
-          <ListItem button onClick={onSelectCategory} component="a">
-            <ListItemIcon>
-              <CircleLabel />
-            </ListItemIcon>
-            <ListItemText>
-              <FormattedMessage
-                id="New arrivals"
-                defaultMessage="New arrivals"
-              />
-            </ListItemText>
-          </ListItem>
-        </Link>
         {library.map(level => (
           <Link
             route="browseBooks"

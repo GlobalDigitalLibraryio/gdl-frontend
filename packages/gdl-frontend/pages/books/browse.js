@@ -266,17 +266,11 @@ class BrowsePage extends React.Component<Props> {
                           />
                         </>
                       ) : (
-                        <>
-                          <FormattedMessage
-                            id="New arrivals"
-                            defaultMessage="New arrivals"
-                          />
-                          <LevelHR
-                            css={{
-                              margin: `${spacing.xsmall} 0`
-                            }}
-                          />
-                        </>
+                        <LevelHR
+                          css={{
+                            margin: `${spacing.xsmall} 0`
+                          }}
+                        />
                       )
                     ) : (
                       <FormattedMessage
