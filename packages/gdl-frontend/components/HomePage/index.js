@@ -175,41 +175,6 @@ class HomePage extends React.Component<Props> {
           <HeroCardMobile>
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
-
-          <View css={scrollStyle}>
-            <Container width="100%">
-              <QueryBookList
-                category={category}
-                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                language={languageCode}
-                orderBy="arrivalDate_DESC"
-              >
-                {({ books, loadMore, goBack, loading }) => (
-                  <PaginationSection
-                    loading={loading}
-                    loadMore={loadMore}
-                    goBack={goBack}
-                    pageInfo={books.pageInfo}
-                    shouldBeColorized
-                    languageCode={languageCode}
-                    heading={
-                      <FormattedMessage
-                        id="New arrivals"
-                        defaultMessage="New arrivals"
-                      />
-                    }
-                    browseLinkProps={{
-                      lang: languageCode,
-                      category: category,
-                      route: 'browseBooks'
-                    }}
-                    items={books.results}
-                  />
-                )}
-              </QueryBookList>
-            </Container>
-          </View>
-
           {Object.entries(readingLevels)
             // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
             .filter(
