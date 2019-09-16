@@ -11,10 +11,10 @@ import { css } from '@emotion/core';
 import { Paper } from '@material-ui/core';
 
 import { misc, colors } from '../../style/theme';
+import media from '../../style/media';
 
 const styles = {
   default: css`
-    background: ${colors.container.background};
     flex: 1 0 auto;
     width: 100%;
     max-width: ${misc.containers.large}px;
@@ -23,6 +23,13 @@ const styles = {
   `,
   white: css`
     background: ${colors.base.white};
+  `,
+  container: css`
+    margin-left: 0;
+    ${media.largerTablet`
+      margin-left: 90px;
+      flex: 1 0 auto;
+    `}
   `
 };
 
@@ -32,12 +39,16 @@ type Props = {
   background?: 'white' | 'gray'
 };
 
-const Main = ({ background, ...props }: Props) => (
-  <Paper
-    css={[styles.default, background === 'white' && styles.white]}
-    component="main"
-    {...props}
-  />
+const Main = ({ background, children, className }: Props) => (
+  <div css={styles.container}>
+    <div
+      css={[styles.default, background === 'white' && styles.white]}
+      component="main"
+      className={className}
+    >
+      {children}
+    </div>
+  </div>
 );
 
 export default Main;

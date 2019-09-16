@@ -16,6 +16,8 @@ import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
 import media from '../../../style/media';
+import { misc } from '../../../style/theme';
+import { SIDE_DRAWER_WIDTH } from '../../../style/constants';
 
 type Props = {
   autoFocus?: boolean,

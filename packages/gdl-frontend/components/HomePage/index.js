@@ -10,7 +10,16 @@ import * as React from 'react';
 import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardContent,
+  Typography,
+  Drawer,
+  IconButton,
+  Divider
+} from '@material-ui/core';
+import MailIcon from '@material-ui/icons/Mail';
 
 import type {
   Category,
@@ -22,17 +31,18 @@ import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View } from '../../elements';
+import { Container, View, Hidden } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
 import Head from '../../components/Head';
 import PaginationSection from '../BookListSection/PaginationSection';
-import { colors, spacing } from '../../style/theme';
+import { colors, spacing, misc } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 import { QueryBookList, QueryGameList } from '../../gql';
+import SideNavBar from '../../components/SideNavBar';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -50,6 +60,12 @@ const Banner = styled('div')`
     padding: 20px;
     justify-content: flex-end;
   `};
+  ${media.largerTablet`
+    max-width: ${misc.containers.small}px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  `}
 `;
 
 const HeroCovertitle = styled('div')`
@@ -156,6 +172,9 @@ class HomePage extends React.Component<Props> {
             languageCode={languageCode}
           />
         </NavContextBar>
+        <Hidden only="desktop">
+          <SideNavBar />
+        </Hidden>
         <Main>
           <Banner src={featuredContent.imageUrl}>
             <HeroCovertitle>

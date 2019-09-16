@@ -23,6 +23,7 @@ import {
   WifiOff as WifiOffIcon
 } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
+import { withStyles } from '@material-ui/core/styles';
 
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
@@ -35,12 +36,26 @@ import { misc } from '../../style/theme';
 import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
 import { Hidden } from '../../elements';
+import { SIDE_DRAWER_WIDTH } from '../../style/constants';
 
 type Props = {
   onMenuClick(): void,
   online: boolean,
-  homeTutorialInProgress?: boolean
+  homeTutorialInProgress?: boolean,
+  classes: Object
 };
+
+const styles = theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1
+  },
+  toolBar: {
+    minHeight: 56,
+    [`@media (min-width: 600px)`]: {
+      minHeight: 67
+    }
+  }
+});
 
 const BrandLink = styled('a')`
   margin-right: auto;
@@ -55,7 +70,12 @@ const BrandLink = styled('a')`
   }
 `;
 
-const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
+const Navbar = ({
+  onMenuClick,
+  online,
+  homeTutorialInProgress,
+  classes
+}: Props) => {
   const offline = !online;
 
   const brandLink = (
@@ -71,8 +91,8 @@ const Navbar = ({ onMenuClick, online, homeTutorialInProgress }: Props) => {
   );
 
   return (
-    <AppBar position="fixed">
-      <Toolbar>
+    <AppBar position="fixed" className={classes.appBar}>
+      <Toolbar className={classes.toolBar}>
         <Left>
           <IconButton
             data-cy="hamburger-menu"
@@ -189,10 +209,13 @@ const Center = styled('div')`
   display: flex;
   align-items: center;
   max-width: ${misc.containers.large}px;
-  display: flex;
-  align-items: center;
-  flex: 1 25%;
+
+  flex: 1 50%;
   ${media.mobile`display: none;`};
+  ${media.largerTablet`
+    max-width: ${misc.containers.small}px;
+    margin-left: ${SIDE_DRAWER_WIDTH}px;
+  `}
 `;
 
 const Right = styled('div')`
@@ -202,4 +225,6 @@ const Right = styled('div')`
   flex: 1;
 `;
 
-export default withOnlineStatusContext(Navbar);
+export default withOnlineStatusContext(
+  withStyles(styles, { withTheme: true })(Navbar)
+);
