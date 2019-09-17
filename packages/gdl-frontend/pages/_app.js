@@ -34,6 +34,8 @@ import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
 import { fetchSiteTranslation } from '../fetch';
+import routes from '../routes';
+import { RouteNameContext } from '../context';
 
 import type { Context, ConfigShape } from '../types';
 
@@ -68,6 +70,7 @@ class App extends NextApp {
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
+      pageProps.routeName = routes.match(ctx.asPath).route.name;
     }
 
     const { req, query } = ctx;
@@ -211,20 +214,23 @@ class App extends NextApp {
               registry={this.pageContext.sheetsRegistry}
               generateClassName={this.pageContext.generateClassName}
             >
-              {/* MuiThemeProvider makes the theme available down the React
+              {/* Provider to get access to current route name defined in routes.js*/}
+              <RouteNameContext.Provider value={pageProps.routeName}>
+                {/* MuiThemeProvider makes the theme available down the React
               tree thanks to React context. */}
-              <MuiThemeProvider
-                theme={this.pageContext.theme}
-                sheetsManager={this.pageContext.sheetsManager}
-              >
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <OnlineStatusRedirectProvider>
-                  {/* Pass pageContext to the _document though the renderPage enhancer
+                <MuiThemeProvider
+                  theme={this.pageContext.theme}
+                  sheetsManager={this.pageContext.sheetsManager}
+                >
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  <OnlineStatusRedirectProvider>
+                    {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                  <Component pageContext={this.pageContext} {...pageProps} />
-                </OnlineStatusRedirectProvider>
-              </MuiThemeProvider>
+                    <Component pageContext={this.pageContext} {...pageProps} />
+                  </OnlineStatusRedirectProvider>
+                </MuiThemeProvider>
+              </RouteNameContext.Provider>
             </JssProvider>
           </GdlI18nProvider>
         </ApolloProvider>

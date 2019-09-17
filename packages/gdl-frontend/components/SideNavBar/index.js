@@ -19,6 +19,7 @@ import {
   SportsEsports
 } from '@material-ui/icons';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
+import { RouteNameContext } from '../../context';
 
 const styles = theme => ({
   root: {},
@@ -46,44 +47,52 @@ const styles = theme => ({
 
 const SideNavBar = ({ classes }: { classes: Object }) => {
   return (
-    <Drawer
-      variant="permanent"
-      className={classes.drawer}
-      classes={{ paper: classes.drawerPaper }}
-    >
-      <List disablePadding>
-        <ListItem key="placeholder" className={classes.menuButton}>
-          <ListItemIcon className={classes.icon}>
-            <MusicNote />
-          </ListItemIcon>
-          <ListItemText primary="no" />
-        </ListItem>
-        <ListItem button className={classes.menuButton}>
-          <ListItemIcon className={classes.icon}>
-            <LibraryBooks />
-          </ListItemIcon>
-          <ListItemText primary="Books" />
-        </ListItem>
-        <ListItem button className={classes.menuButton}>
-          <ListItemIcon className={classes.icon}>
-            <MusicNote />
-          </ListItemIcon>
-          <ListItemText primary="Audio" />
-        </ListItem>
-        <ListItem button className={classes.menuButton}>
-          <ListItemIcon className={classes.icon}>
-            <OndemandVideo />
-          </ListItemIcon>
-          <ListItemText primary="Video" />
-        </ListItem>
-        <ListItem button className={classes.menuButton}>
-          <ListItemIcon className={classes.icon}>
-            <SportsEsports />
-          </ListItemIcon>
-          <ListItemText primary="Games" />
-        </ListItem>
-      </List>
-    </Drawer>
+    <RouteNameContext.Consumer>
+      {routeName => (
+        <Drawer
+          variant="permanent"
+          className={classes.drawer}
+          classes={{ paper: classes.drawerPaper }}
+        >
+          <List disablePadding>
+            <ListItem key="placeholder" className={classes.menuButton}>
+              <ListItemIcon className={classes.icon}>
+                <MusicNote />
+              </ListItemIcon>
+              <ListItemText primary="no" />
+            </ListItem>
+            <ListItem
+              button
+              selected={routeName === 'books'}
+              className={classes.menuButton}
+            >
+              <ListItemIcon className={classes.icon}>
+                <LibraryBooks />
+              </ListItemIcon>
+              <ListItemText primary="Books" />
+            </ListItem>
+            <ListItem button className={classes.menuButton}>
+              <ListItemIcon className={classes.icon}>
+                <MusicNote />
+              </ListItemIcon>
+              <ListItemText primary="Audio" />
+            </ListItem>
+            <ListItem button className={classes.menuButton}>
+              <ListItemIcon className={classes.icon}>
+                <OndemandVideo />
+              </ListItemIcon>
+              <ListItemText primary="Video" />
+            </ListItem>
+            <ListItem button className={classes.menuButton}>
+              <ListItemIcon className={classes.icon}>
+                <SportsEsports />
+              </ListItemIcon>
+              <ListItemText primary="Games" />
+            </ListItem>
+          </List>
+        </Drawer>
+      )}
+    </RouteNameContext.Consumer>
   );
 };
 

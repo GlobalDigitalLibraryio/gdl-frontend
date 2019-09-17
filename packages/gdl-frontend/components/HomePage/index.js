@@ -43,6 +43,7 @@ import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 import { QueryBookList, QueryGameList } from '../../gql';
 import SideNavBar from '../../components/SideNavBar';
+import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -263,6 +264,9 @@ class HomePage extends React.Component<Props> {
             </View>
           )}
         </Main>
+        <Hidden only="mobileAndTablet">
+          <MobileBottomBar />
+        </Hidden>
       </Layout>
     );
   }
