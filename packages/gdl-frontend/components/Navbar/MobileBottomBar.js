@@ -87,7 +87,7 @@ class MobileBottomBar extends React.Component<Props, { trigger: boolean }> {
                 params={{ lang }}
                 value="/games"
               >
-                <LibraryBooks />
+                <SportsEsports />
               </WrappedNavButton>
             </BottomNavigation>
           </Slide>
