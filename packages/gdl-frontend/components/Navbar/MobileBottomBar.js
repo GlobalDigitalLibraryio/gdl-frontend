@@ -26,7 +26,7 @@ const WrappedNavButton = ({
   children,
   ...rest
 }) => (
-  <Link route={name} params={params} passHref>
+  <Link route={name} params={params} passHref prefetch={true}>
     <BottomNavigationAction
       {...rest}
       label={label}
