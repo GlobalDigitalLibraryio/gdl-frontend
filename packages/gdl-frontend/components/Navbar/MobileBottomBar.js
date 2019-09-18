@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
@@ -5,6 +6,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { LibraryBooks, SportsEsports } from '@material-ui/icons';
 import { RouteNameContext } from '../../context';
 import { Link } from '../../routes';
+import { getTrigger } from './helpers';
+import { Slide } from '@material-ui/core';
 
 const styles = theme => ({
   root: {
@@ -33,36 +36,65 @@ const WrappedNavButton = ({
   </Link>
 );
 
-const MobileBottomBar = ({
-  classes,
-  lang
-}: {
+type Props = {
   classes: Object,
   lang: string
-}) => (
-  <RouteNameContext.Consumer>
-    {pageRoute => (
-      <BottomNavigation value={pageRoute} showLabels className={classes.root}>
-        <WrappedNavButton
-          name="books"
-          label="Books"
-          params={{ lang }}
-          value="/"
-        >
-          <LibraryBooks />
-        </WrappedNavButton>
+};
 
-        <WrappedNavButton
-          name="games"
-          label="Games"
-          params={{ lang }}
-          value="/games"
-        >
-          <LibraryBooks />
-        </WrappedNavButton>
-      </BottomNavigation>
-    )}
-  </RouteNameContext.Consumer>
-);
+class MobileBottomBar extends React.Component<Props, { trigger: boolean }> {
+  scrollerRef = React.createRef<HTMLDivElement>();
+
+  state = {
+    trigger: getTrigger(null, this.scrollerRef)
+  };
+
+  handleScroll = (event: SyntheticEvent<HTMLDivElement>) =>
+    this.setState({ trigger: getTrigger(event, this.scrollerRef) });
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  render() {
+    const { classes, lang } = this.props;
+    const { trigger } = this.state;
+
+    return (
+      <RouteNameContext.Consumer>
+        {pageRoute => (
+          <Slide direction="up" in={!trigger}>
+            <BottomNavigation
+              value={pageRoute}
+              showLabels
+              className={classes.root}
+            >
+              <WrappedNavButton
+                name="books"
+                label="Books"
+                params={{ lang }}
+                value="/"
+              >
+                <LibraryBooks />
+              </WrappedNavButton>
+
+              <WrappedNavButton
+                name="games"
+                label="Games"
+                params={{ lang }}
+                value="/games"
+              >
+                <LibraryBooks />
+              </WrappedNavButton>
+            </BottomNavigation>
+          </Slide>
+        )}
+      </RouteNameContext.Consumer>
+    );
+  }
+}
 
 export default withStyles(styles)(MobileBottomBar);

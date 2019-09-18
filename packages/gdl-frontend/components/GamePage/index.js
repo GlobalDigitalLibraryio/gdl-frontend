@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { css } from '@emotion/core';
+import { FormattedMessage } from 'react-intl';
 
 import type { GameContent_games as Games } from '../../gqlTypes';
 
@@ -75,7 +76,10 @@ class GamePage extends React.Component<Props> {
                     }}
                   >
                     <Typography>
-                      We don't have any games for this language
+                      <FormattedMessage
+                        id="No games found"
+                        defaultMessage="No games found"
+                      />
                     </Typography>
                   </div>
                 )}
