@@ -225,6 +225,4 @@ const Right = styled('div')`
   flex: 1;
 `;
 
-export default withOnlineStatusContext(
-  withStyles(styles, { withTheme: true })(Navbar)
-);
+export default withOnlineStatusContext(withStyles(styles)(Navbar));

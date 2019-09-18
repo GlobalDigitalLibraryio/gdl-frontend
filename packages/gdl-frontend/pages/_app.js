@@ -70,7 +70,7 @@ class App extends NextApp {
 
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx);
-      pageProps.routeName = routes.match(ctx.asPath).route.name;
+      pageProps.pageRoute = routes.match(ctx.asPath).route.page;
     }
 
     const { req, query } = ctx;
@@ -215,7 +215,7 @@ class App extends NextApp {
               generateClassName={this.pageContext.generateClassName}
             >
               {/* Provider to get access to current route name defined in routes.js*/}
-              <RouteNameContext.Provider value={pageProps.routeName}>
+              <RouteNameContext.Provider value={pageProps.pageRoute}>
                 {/* MuiThemeProvider makes the theme available down the React
               tree thanks to React context. */}
                 <MuiThemeProvider

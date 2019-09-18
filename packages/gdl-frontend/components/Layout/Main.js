@@ -20,6 +20,7 @@ const styles = {
     max-width: ${misc.containers.large}px;
     margin-left: auto;
     margin-right: auto;
+    min-height: 100vh;
   `,
   white: css`
     background: ${colors.base.white};

@@ -18,8 +18,9 @@ import { Container, View, Hidden, SideMenuMargin } from '../../elements';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { spacing } from '../../style/theme';
 import { QueryGameList } from '../../gql';
-import SideNavBar from '../../components/SideNavBar';
 import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
+import SideMenuBar from '../../components/Navbar/SideMenuBar';
+import { Typography } from '@material-ui/core';
 
 export const AMOUNT_OF_ITEMS_PER_LEVEL = 5;
 
@@ -35,13 +36,13 @@ class GamePage extends React.Component<Props> {
     return (
       <Layout wrapWithMain={false}>
         <Hidden only="desktop">
-          <SideNavBar />
+          <SideMenuBar lang={languageCode} />
         </Hidden>
         <SideMenuMargin>
           <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
-            {games.pageInfo.pageCount > 0 && (
-              <View css={scrollStyle}>
-                <Container width="100%">
+            <View css={scrollStyle}>
+              <Container width="100%">
+                {games.pageInfo.pageCount > 0 ? (
                   <QueryGameList
                     language={languageCode}
                     pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
@@ -64,13 +65,26 @@ class GamePage extends React.Component<Props> {
                       />
                     )}
                   </QueryGameList>
-                </Container>
-              </View>
-            )}
+                ) : (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginTop: 50
+                    }}
+                  >
+                    <Typography>
+                      We don't have any games for this language
+                    </Typography>
+                  </div>
+                )}
+              </Container>
+            </View>
           </Main>
         </SideMenuMargin>
         <Hidden only="mobileAndTablet">
-          <MobileBottomBar />
+          <MobileBottomBar lang={languageCode} />
         </Hidden>
       </Layout>
     );

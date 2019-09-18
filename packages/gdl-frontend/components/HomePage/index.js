@@ -33,8 +33,8 @@ import { colors, spacing, misc } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 import { QueryBookList } from '../../gql';
-import SideNavBar from '../../components/SideNavBar';
 import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
+import SideMenuBar from '../../components/Navbar/SideMenuBar';
 
 import type { ReadingLevel } from '../../gqlTypes';
 
@@ -165,7 +165,7 @@ class HomePage extends React.Component<Props> {
           />
         </NavContextBar>
         <Hidden only="desktop">
-          <SideNavBar />
+          <SideMenuBar lang={languageCode} />
         </Hidden>
         <SideMenuMargin>
           <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
@@ -232,7 +232,7 @@ class HomePage extends React.Component<Props> {
           </Main>
         </SideMenuMargin>
         <Hidden only="mobileAndTablet">
-          <MobileBottomBar />
+          <MobileBottomBar lang={languageCode} />
         </Hidden>
       </Layout>
     );
