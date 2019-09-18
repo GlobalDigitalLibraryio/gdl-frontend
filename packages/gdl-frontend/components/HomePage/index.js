@@ -22,7 +22,7 @@ import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View, Hidden } from '../../elements';
+import { Container, View, Hidden, SideMenuMargin } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
@@ -167,65 +167,70 @@ class HomePage extends React.Component<Props> {
         <Hidden only="desktop">
           <SideNavBar />
         </Hidden>
-        <Main>
-          <Banner src={featuredContent.imageUrl}>
-            <HeroCovertitle>
-              <Typography
-                component="h1"
-                variant="h6"
-                css={{ color: colors.base.white }}
-              >
-                <FormattedMessage id="Featured" defaultMessage="Featured" />
-              </Typography>
-            </HeroCovertitle>
-            <HeroCardTablet>
-              {/* Specifying width here makes text in IE11 wrap*/}
-              <CardContent style={{ width: '100%' }}>{cardContent}</CardContent>
-            </HeroCardTablet>
-          </Banner>
-          <HeroCardMobile>
-            <CardContent>{cardContent}</CardContent>
-          </HeroCardMobile>
-          {Object.entries(readingLevels)
-            // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
-            .filter(
-              ([_, data]: [ReadingLevel, any]) =>
-                data.results && data.results.length > 0
-            )
-            .map(([level, data]: [ReadingLevel, any]) => (
-              <View css={scrollStyle} key={level}>
-                <Container width="100%">
-                  <QueryBookList
-                    category={category}
-                    readingLevel={level}
-                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                    language={languageCode}
-                    orderBy="title_ASC"
-                  >
-                    {({ books, loadMore, goBack, loading }) => (
-                      <PaginationSection
-                        loading={loading}
-                        loadMore={loadMore}
-                        goBack={goBack}
-                        pageInfo={books.pageInfo}
-                        shouldBeColorized
-                        level={level}
-                        languageCode={languageCode}
-                        heading={<ReadingLevelTrans readingLevel={level} />}
-                        browseLinkProps={{
-                          lang: languageCode,
-                          readingLevel: level,
-                          category: category,
-                          route: 'browseBooks'
-                        }}
-                        items={books.results}
-                      />
-                    )}
-                  </QueryBookList>
-                </Container>
-              </View>
-            ))}
-        </Main>
+        <SideMenuMargin>
+          <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
+            <Banner src={featuredContent.imageUrl}>
+              <HeroCovertitle>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  css={{ color: colors.base.white }}
+                >
+                  <FormattedMessage id="Featured" defaultMessage="Featured" />
+                </Typography>
+              </HeroCovertitle>
+              <HeroCardTablet>
+                {/* Specifying width here makes text in IE11 wrap*/}
+                <CardContent style={{ width: '100%' }}>
+                  {cardContent}
+                </CardContent>
+              </HeroCardTablet>
+            </Banner>
+            <HeroCardMobile>
+              <CardContent>{cardContent}</CardContent>
+            </HeroCardMobile>
+
+            {Object.entries(readingLevels)
+              // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
+              .filter(
+                ([_, data]: [ReadingLevel, any]) =>
+                  data.results && data.results.length > 0
+              )
+              .map(([level, data]: [ReadingLevel, any]) => (
+                <View css={scrollStyle} key={level}>
+                  <Container width="100%">
+                    <QueryBookList
+                      category={category}
+                      readingLevel={level}
+                      pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+                      language={languageCode}
+                      orderBy="title_ASC"
+                    >
+                      {({ books, loadMore, goBack, loading }) => (
+                        <PaginationSection
+                          loading={loading}
+                          loadMore={loadMore}
+                          goBack={goBack}
+                          pageInfo={books.pageInfo}
+                          shouldBeColorized
+                          level={level}
+                          languageCode={languageCode}
+                          heading={<ReadingLevelTrans readingLevel={level} />}
+                          browseLinkProps={{
+                            lang: languageCode,
+                            readingLevel: level,
+                            category: category,
+                            route: 'browseBooks'
+                          }}
+                          items={books.results}
+                        />
+                      )}
+                    </QueryBookList>
+                  </Container>
+                </View>
+              ))}
+          </Main>
+        </SideMenuMargin>
         <Hidden only="mobileAndTablet">
           <MobileBottomBar />
         </Hidden>
@@ -240,9 +245,6 @@ const scrollStyle = css`
   align-items: center;
   justify-content: center;
   padding: ${spacing.medium} 0;
-  &:last-child {
-    margin-bottom: 50px;
-  }
 `;
 
 export default HomePage;

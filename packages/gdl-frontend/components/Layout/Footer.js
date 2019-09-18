@@ -16,9 +16,8 @@ import { withOnlineStatusContext } from '../OnlineStatusContext';
 import { FacebookIcon, TwitterIcon, YoutubeIcon } from '../../components/icons';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
-import { colors, misc } from '../../style/theme';
+import { colors } from '../../style/theme';
 import media from '../../style/media';
-import css from '@emotion/css';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
 
 const {
@@ -28,12 +27,7 @@ const {
 const Footer = ({ online }) => {
   if (!online) return null;
   return (
-    <div
-      style={{
-        backgroundColor: '#f6f7f9',
-        borderTop: 'solid 0.5px rgba(112,112,112,0.22)'
-      }}
-    >
+    <FooterWrapper>
       <Container
         size="small"
         // https://philipwalton.com/articles/normalizing-cross-browser-flexbox-bugs/
@@ -131,11 +125,17 @@ const Footer = ({ online }) => {
           </SocialMediaIcons>
         </FooterStyle>
       </Container>
-    </div>
+    </FooterWrapper>
   );
 };
 
-const FooterStyle = styled('footer')`
+const FooterWrapper = styled('footer')`
+  background-color: #f6f7f9;
+  border-top: solid 0.5px rgba(112, 112, 112, 0.22);
+  margin-top: 24px;
+`;
+
+const FooterStyle = styled('div')`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;

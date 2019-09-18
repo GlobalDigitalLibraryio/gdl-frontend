@@ -14,7 +14,7 @@ import type { GameContent_games as Games } from '../../gqlTypes';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View, Hidden } from '../../elements';
+import { Container, View, Hidden, SideMenuMargin } from '../../elements';
 import PaginationSection from '../BookListSection/PaginationSection';
 import { spacing } from '../../style/theme';
 import { QueryGameList } from '../../gql';
@@ -37,36 +37,38 @@ class GamePage extends React.Component<Props> {
         <Hidden only="desktop">
           <SideNavBar />
         </Hidden>
-        <Main>
-          {games.pageInfo.pageCount > 0 && (
-            <View css={scrollStyle}>
-              <Container width="100%">
-                <QueryGameList
-                  language={languageCode}
-                  pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                >
-                  {({ games, loadMore, goBack, loading }) => (
-                    <PaginationSection
-                      loading={loading}
-                      loadMore={loadMore}
-                      goBack={goBack}
-                      pageInfo={games.pageInfo}
-                      shouldBeColorized
-                      languageCode={languageCode}
-                      level="Games"
-                      browseLinkProps={{
-                        lang: languageCode,
-                        route: 'browseGames'
-                      }}
-                      heading={<ReadingLevelTrans readingLevel="Games" />}
-                      items={games.results}
-                    />
-                  )}
-                </QueryGameList>
-              </Container>
-            </View>
-          )}
-        </Main>
+        <SideMenuMargin>
+          <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
+            {games.pageInfo.pageCount > 0 && (
+              <View css={scrollStyle}>
+                <Container width="100%">
+                  <QueryGameList
+                    language={languageCode}
+                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+                  >
+                    {({ games, loadMore, goBack, loading }) => (
+                      <PaginationSection
+                        loading={loading}
+                        loadMore={loadMore}
+                        goBack={goBack}
+                        pageInfo={games.pageInfo}
+                        shouldBeColorized
+                        languageCode={languageCode}
+                        level="Games"
+                        browseLinkProps={{
+                          lang: languageCode,
+                          route: 'browseGames'
+                        }}
+                        heading={<ReadingLevelTrans readingLevel="Games" />}
+                        items={games.results}
+                      />
+                    )}
+                  </QueryGameList>
+                </Container>
+              </View>
+            )}
+          </Main>
+        </SideMenuMargin>
         <Hidden only="mobileAndTablet">
           <MobileBottomBar />
         </Hidden>
