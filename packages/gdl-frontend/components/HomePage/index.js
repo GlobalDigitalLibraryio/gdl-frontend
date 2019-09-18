@@ -10,16 +10,7 @@ import * as React from 'react';
 import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
-import {
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  Drawer,
-  IconButton,
-  Divider
-} from '@material-ui/core';
-import MailIcon from '@material-ui/icons/Mail';
+import { Button, Card, CardContent, Typography } from '@material-ui/core';
 
 import type {
   Category,
@@ -41,7 +32,7 @@ import PaginationSection from '../BookListSection/PaginationSection';
 import { colors, spacing, misc } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import { QueryBookList, QueryGameList } from '../../gql';
+import { QueryBookList } from '../../gql';
 import SideNavBar from '../../components/SideNavBar';
 import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
 
@@ -234,35 +225,6 @@ class HomePage extends React.Component<Props> {
                 </Container>
               </View>
             ))}
-
-          {Games.pageInfo.pageCount > 0 && (
-            <View css={scrollStyle}>
-              <Container width="100%">
-                <QueryGameList
-                  language={languageCode}
-                  pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                >
-                  {({ games, loadMore, goBack, loading }) => (
-                    <PaginationSection
-                      loading={loading}
-                      loadMore={loadMore}
-                      goBack={goBack}
-                      pageInfo={games.pageInfo}
-                      shouldBeColorized
-                      languageCode={languageCode}
-                      level="Games"
-                      browseLinkProps={{
-                        lang: languageCode,
-                        route: 'browseGames'
-                      }}
-                      heading={<ReadingLevelTrans readingLevel="Games" />}
-                      items={games.results}
-                    />
-                  )}
-                </QueryGameList>
-              </Container>
-            </View>
-          )}
         </Main>
         <Hidden only="mobileAndTablet">
           <MobileBottomBar />
@@ -278,7 +240,9 @@ const scrollStyle = css`
   align-items: center;
   justify-content: center;
   padding: ${spacing.medium} 0;
-  border-bottom: solid 1px ${colors.base.grayLight};
+  &:last-child {
+    margin-bottom: 50px;
+  }
 `;
 
 export default HomePage;

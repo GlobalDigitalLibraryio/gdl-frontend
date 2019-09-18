@@ -16,6 +16,7 @@ import colorMap from '../../style/colorMapping';
 import GameLink from './GameLink';
 import BookLink from './BookLink';
 import PaginationScrollGrid from './PaginationScrollGrid';
+import { AMOUNT_OF_ITEMS_PER_LEVEL } from '../HomePage';
 
 import type { Book } from './BookLink';
 import type {
@@ -72,7 +73,10 @@ const PaginationArrowView = ({
 
       <PaginationScrollGrid>
         {items
-          .slice((currentIndex - 1) * 5, currentIndex * 5)
+          .slice(
+            (currentIndex - 1) * AMOUNT_OF_ITEMS_PER_LEVEL,
+            currentIndex * AMOUNT_OF_ITEMS_PER_LEVEL
+          )
           .map((item: any) => (
             <div className={itemStyle} key={item.id}>
               {level === 'Games' ? (

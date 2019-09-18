@@ -9,37 +9,49 @@ import {
   SportsEsports
 } from '@material-ui/icons';
 import { RouteNameContext } from '../../context';
+import { Link } from '../../routes';
 
 const styles = theme => ({
   root: {
     position: 'fixed',
     width: '100%',
-    bottom: 0
+    bottom: 0,
+    zIndex: theme.zIndex.appBar
   }
 });
 
-const MobileBottomBar = ({ classes }) => {
-  return (
-    <RouteNameContext.Consumer>
-      {routeName => (
-        <BottomNavigation
-          value={routeName}
-          onChange={() => {}}
-          showLabels
-          className={classes.root}
-        >
-          <BottomNavigationAction
-            label="Books"
-            value="books"
-            icon={<LibraryBooks />}
-          />
-          <BottomNavigationAction label="Audio" icon={<MusicNote />} />
-          <BottomNavigationAction label="Video" icon={<OndemandVideo />} />
-          <BottomNavigationAction label="Games" icon={<SportsEsports />} />
-        </BottomNavigation>
-      )}
-    </RouteNameContext.Consumer>
-  );
-};
+const WrappedNavButton = ({ label, value, params, children, ...rest }) => (
+  <Link route={value} params={params} passHref>
+    <BottomNavigationAction
+      {...rest}
+      label={label}
+      value={value}
+      icon={children}
+    />
+  </Link>
+);
 
-export default withStyles(styles, { withTheme: true })(MobileBottomBar);
+const MobileBottomBar = ({ classes }) => (
+  <RouteNameContext.Consumer>
+    {routeName => (
+      <BottomNavigation
+        value={routeName}
+        onChange={() => {}}
+        showLabels
+        className={classes.root}
+      >
+        <WrappedNavButton label="Books" value="books">
+          <LibraryBooks />
+        </WrappedNavButton>
+
+        <BottomNavigationAction label="Audio" icon={<MusicNote />} />
+        <BottomNavigationAction label="Video" icon={<OndemandVideo />} />
+        <WrappedNavButton label="Games" params={{ lang: 'en' }} value="games">
+          <LibraryBooks />
+        </WrappedNavButton>
+      </BottomNavigation>
+    )}
+  </RouteNameContext.Consumer>
+);
+
+export default withStyles(styles)(MobileBottomBar);

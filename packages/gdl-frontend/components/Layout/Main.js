@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { css } from '@emotion/core';
-import { Paper } from '@material-ui/core';
 
 import { misc, colors } from '../../style/theme';
 import media from '../../style/media';
