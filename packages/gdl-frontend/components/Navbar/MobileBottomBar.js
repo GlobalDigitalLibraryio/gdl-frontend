@@ -41,11 +41,11 @@ type Props = {
   lang: string
 };
 
-class MobileBottomBar extends React.Component<Props, { trigger: boolean }> {
+class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
   scrollerRef = React.createRef<HTMLDivElement>();
 
   state = {
-    trigger: getTrigger(null, this.scrollerRef)
+    trigger: null
   };
 
   handleScroll = (event: SyntheticEvent<HTMLDivElement>) =>
@@ -66,7 +66,12 @@ class MobileBottomBar extends React.Component<Props, { trigger: boolean }> {
     return (
       <RouteNameContext.Consumer>
         {pageRoute => (
-          <Slide direction="up" in={!trigger}>
+          <Slide
+            direction="up"
+            in={!trigger}
+            // check to disable slidein animation on initial render
+            timeout={{ enter: trigger === null ? 0 : 225, exit: 195 }}
+          >
             <BottomNavigation
               value={pageRoute}
               showLabels
