@@ -106,8 +106,8 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
-    const { NewArrivals, Games, ...readingLevels } = homeContent;
+    // Destructuring Games, otherwise apollo can't seperate it
+    const { Games, ...readingLevels } = homeContent;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
@@ -175,41 +175,6 @@ class HomePage extends React.Component<Props> {
           <HeroCardMobile>
             <CardContent>{cardContent}</CardContent>
           </HeroCardMobile>
-
-          <View css={scrollStyle}>
-            <Container width="100%">
-              <QueryBookList
-                category={category}
-                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                language={languageCode}
-                orderBy="arrivalDate_DESC"
-              >
-                {({ books, loadMore, goBack, loading }) => (
-                  <PaginationSection
-                    loading={loading}
-                    loadMore={loadMore}
-                    goBack={goBack}
-                    pageInfo={books.pageInfo}
-                    shouldBeColorized
-                    languageCode={languageCode}
-                    heading={
-                      <FormattedMessage
-                        id="New arrivals"
-                        defaultMessage="New arrivals"
-                      />
-                    }
-                    browseLinkProps={{
-                      lang: languageCode,
-                      category: category,
-                      route: 'browseBooks'
-                    }}
-                    items={books.results}
-                  />
-                )}
-              </QueryBookList>
-            </Container>
-          </View>
-
           {Object.entries(readingLevels)
             // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
             .filter(

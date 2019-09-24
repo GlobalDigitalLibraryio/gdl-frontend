@@ -232,15 +232,6 @@ const HOME_CONTENT_QUERY = gql`
         code
       }
     }
-    NewArrivals: bookSummaries(
-      language: $language
-      category: $category
-      orderBy: arrivalDate_DESC
-      pageSize: $pageSize
-      page: $page
-    ) {
-      ...fields
-    }
     Decodable: bookSummaries(
       language: $language
       pageSize: $pageSize
