@@ -292,29 +292,6 @@ const HOME_CONTENT_QUERY = gql`
     ) {
       ...fields
     }
-    Games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
-      pageInfo {
-        page
-        pageSize
-        pageCount
-        hasPreviousPage
-        hasNextPage
-      }
-      results {
-        id
-        title
-        description
-        url
-        source
-        publisher
-        license
-        language
-        coverImage {
-          url
-          altText
-        }
-      }
-    }
   }
 
   fragment fields on ResultItemConnection {
