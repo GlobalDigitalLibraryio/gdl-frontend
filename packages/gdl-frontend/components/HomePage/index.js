@@ -106,8 +106,8 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
-    const { NewArrivals, Games, ...readingLevels } = homeContent;
+    // Destructuring Games, otherwise apollo can't seperate it
+    const { Games, ...readingLevels } = homeContent;
 
     const cardContent = (
       // Specifying width here makes text in IE11 wrap
