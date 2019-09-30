@@ -254,30 +254,18 @@ class BrowsePage extends React.Component<Props> {
                     }}
                   >
                     {results.length > 0 ? (
-                      readingLevel ? (
-                        <>
-                          {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                      <>
+                        {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                        {readingLevel ? (
                           <ReadingLevelTrans readingLevel={readingLevel} />
-                          <LevelHR
-                            level={readingLevel}
-                            css={{
-                              margin: `${spacing.xsmall} 0`
-                            }}
-                          />
-                        </>
-                      ) : (
-                        <>
-                          <FormattedMessage
-                            id="New arrivals"
-                            defaultMessage="New arrivals"
-                          />
-                          <LevelHR
-                            css={{
-                              margin: `${spacing.xsmall} 0`
-                            }}
-                          />
-                        </>
-                      )
+                        ) : null}
+                        <LevelHR
+                          level={readingLevel}
+                          css={{
+                            margin: `${spacing.xsmall} 0`
+                          }}
+                        />
+                      </>
                     ) : (
                       <FormattedMessage
                         id="No books found"

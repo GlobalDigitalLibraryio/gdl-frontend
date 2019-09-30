@@ -232,15 +232,6 @@ const HOME_CONTENT_QUERY = gql`
         code
       }
     }
-    NewArrivals: bookSummaries(
-      language: $language
-      category: $category
-      orderBy: arrivalDate_DESC
-      pageSize: $pageSize
-      page: $page
-    ) {
-      ...fields
-    }
     Decodable: bookSummaries(
       language: $language
       pageSize: $pageSize
@@ -300,29 +291,6 @@ const HOME_CONTENT_QUERY = gql`
       orderBy: title_ASC
     ) {
       ...fields
-    }
-    Games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
-      pageInfo {
-        page
-        pageSize
-        pageCount
-        hasPreviousPage
-        hasNextPage
-      }
-      results {
-        id
-        title
-        description
-        url
-        source
-        publisher
-        license
-        language
-        coverImage {
-          url
-          altText
-        }
-      }
     }
   }
 

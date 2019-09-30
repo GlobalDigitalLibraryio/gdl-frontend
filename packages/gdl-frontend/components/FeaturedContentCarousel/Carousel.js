@@ -6,6 +6,8 @@ import Pagination from '../FeaturedContentCarousel/Pagination';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay, virtualize } from 'react-swipeable-views-utils';
 import { KeyboardArrowRight, KeyboardArrowLeft } from '@material-ui/icons/';
+import styled from '@emotion/styled';
+
 import Head from '../../components/Head';
 import {
   Banner,
@@ -17,7 +19,7 @@ import { logEvent } from '../../lib/analytics';
 import { FormattedMessage } from 'react-intl';
 import { css } from '@emotion/core';
 import type { HomeContent_featuredContent as FeaturedContent } from '../../gqlTypes';
-import { colors } from '../../style/theme';
+import { colors, misc } from '../../style/theme';
 
 type State = { index: number };
 const AutoPlaySwipeableViews = autoPlay(virtualize(SwipeableViews));
@@ -133,7 +135,7 @@ class Carousel extends React.Component<Props, State> {
     const { featuredContent } = this.props;
 
     return (
-      <div style={{ position: 'relative' }}>
+      <Container>
         {featuredContent.length > 1 ? (
           <>
             <AutoPlaySwipeableViews
@@ -144,7 +146,7 @@ class Carousel extends React.Component<Props, State> {
             />
             <Hidden only="desktop">
               <div
-                css={arrowLeftContainer}
+                css={[arrowLeftContainer, fadeIn]}
                 aria-label="Previous"
                 onClick={this.handlePrevIndex}
               >
@@ -152,7 +154,7 @@ class Carousel extends React.Component<Props, State> {
               </div>
 
               <div
-                css={arrowRightContainer}
+                css={[arrowRightContainer, fadeIn]}
                 aria-label="Next"
                 onClick={this.handleNextIndex}
               >
@@ -185,12 +187,34 @@ class Carousel extends React.Component<Props, State> {
             </HeroCardMobile>
           </>
         )}
-      </div>
+      </Container>
     );
   }
 }
 
 export default Carousel;
+
+const Container = styled('div')`
+  position: relative;
+  max-width: ${misc.containers.small}px;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
+const fadeIn = css`
+  &:hover {
+    animation: fade-in ease 0.5s;
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+`;
 
 const arrowRightContainer = css`
   position: absolute;
@@ -203,10 +227,9 @@ const arrowRightContainer = css`
   align-items: center;
   flex-direction: row-reverse;
   &:hover {
-    transition: all 0.2s ease-in;
     background-image: linear-gradient(
       90deg,
-      rgba(207, 207, 207, 0.1),
+      rgba(240, 240, 240, 0.1),
       rgba(0, 0, 0, 0.5)
     );
     cursor: pointer;
@@ -223,10 +246,9 @@ const arrowLeftContainer = css`
   align-items: center;
   flex-direction: row;
   &:hover {
-    transition: all 0.2s ease-in;
     background-image: linear-gradient(
       -90deg,
-      rgba(207, 207, 207, 0.1),
+      rgba(240, 240, 240, 0.1),
       rgba(0, 0, 0, 0.5)
     );
     cursor: pointer;

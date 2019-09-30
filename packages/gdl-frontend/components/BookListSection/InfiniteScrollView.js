@@ -47,7 +47,7 @@ type Props = {
 
 export default class InfiniteScrollView extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
-    return this.props.items.length <= nextProps.items.length;
+    return this.props.items !== nextProps.items;
   }
   scrollerRef = React.createRef<HTMLElement>();
 

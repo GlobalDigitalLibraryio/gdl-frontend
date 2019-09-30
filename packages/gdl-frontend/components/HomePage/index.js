@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { css } from '@emotion/core';
-import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
 import { Card } from '@material-ui/core';
 
@@ -21,16 +20,18 @@ import type {
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View } from '../../elements';
+import { Container, View, Hidden, SideMenuMargin } from '../../elements';
 import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
 import PaginationSection from '../BookListSection/PaginationSection';
-import { colors, spacing } from '../../style/theme';
+import { spacing, misc } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
-import { QueryBookList, QueryGameList } from '../../gql';
+import { QueryBookList } from '../../gql';
+import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
+import SideMenuBar from '../../components/Navbar/SideMenuBar';
 
 import type { ReadingLevel } from '../../gqlTypes';
 import Carousel from '../FeaturedContentCarousel/Carousel';
@@ -49,6 +50,12 @@ export const Banner = styled('div')`
     padding: 20px;
     justify-content: flex-end;
   `};
+  ${media.largerTablet`
+    max-width: ${misc.containers.small}px;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  `}
 `;
 
 export const HeroCovertitle = styled('div')`
@@ -108,8 +115,8 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    // Destructuring NewArrivals and Games, otherwise apollo can't seperate it
-    const { NewArrivals, Games, ...readingLevels } = homeContent;
+    // Destructuring Games, otherwise apollo can't separate it
+    const { Games, ...readingLevels } = homeContent;
 
     return (
       <Layout wrapWithMain={false}>
@@ -120,111 +127,57 @@ class HomePage extends React.Component<Props> {
             languageCode={languageCode}
           />
         </NavContextBar>
-        <Main>
-          <Carousel featuredContent={featuredContent} />
-          <View css={scrollStyle}>
-            <Container width="100%">
-              <QueryBookList
-                category={category}
-                pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                language={languageCode}
-                orderBy="arrivalDate_DESC"
-              >
-                {({ books, loadMore, goBack, loading }) => (
-                  <PaginationSection
-                    loading={loading}
-                    loadMore={loadMore}
-                    goBack={goBack}
-                    pageInfo={books.pageInfo}
-                    shouldBeColorized
-                    languageCode={languageCode}
-                    heading={
-                      <FormattedMessage
-                        id="New arrivals"
-                        defaultMessage="New arrivals"
-                      />
-                    }
-                    browseLinkProps={{
-                      lang: languageCode,
-                      category: category,
-                      route: 'browseBooks'
-                    }}
-                    items={books.results}
-                  />
-                )}
-              </QueryBookList>
-            </Container>
-          </View>
+        <Hidden only="desktop">
+          <SideMenuBar lang={languageCode} />
+        </Hidden>
+        <SideMenuMargin>
+          <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
+            <Carousel featuredContent={featuredContent} />
 
-          {Object.entries(readingLevels)
-            // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
-            .filter(
-              ([_, data]: [ReadingLevel, any]) =>
-                data.results && data.results.length > 0
-            )
-            .map(([level, data]: [ReadingLevel, any]) => (
-              <View css={scrollStyle} key={level}>
-                <Container width="100%">
-                  <QueryBookList
-                    category={category}
-                    readingLevel={level}
-                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                    language={languageCode}
-                    orderBy="title_ASC"
-                  >
-                    {({ books, loadMore, goBack, loading }) => (
-                      <PaginationSection
-                        loading={loading}
-                        loadMore={loadMore}
-                        goBack={goBack}
-                        pageInfo={books.pageInfo}
-                        shouldBeColorized
-                        level={level}
-                        languageCode={languageCode}
-                        heading={<ReadingLevelTrans readingLevel={level} />}
-                        browseLinkProps={{
-                          lang: languageCode,
-                          readingLevel: level,
-                          category: category,
-                          route: 'browseBooks'
-                        }}
-                        items={books.results}
-                      />
-                    )}
-                  </QueryBookList>
-                </Container>
-              </View>
-            ))}
-
-          {Games.pageInfo.pageCount > 0 && (
-            <View css={scrollStyle}>
-              <Container width="100%">
-                <QueryGameList
-                  language={languageCode}
-                  pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                >
-                  {({ games, loadMore, goBack, loading }) => (
-                    <PaginationSection
-                      loading={loading}
-                      loadMore={loadMore}
-                      goBack={goBack}
-                      pageInfo={games.pageInfo}
-                      shouldBeColorized
-                      languageCode={languageCode}
-                      level="Games"
-                      browseLinkProps={{
-                        lang: languageCode,
-                        route: 'browseGames'
-                      }}
-                      heading={<ReadingLevelTrans readingLevel="Games" />}
-                      items={games.results}
-                    />
-                  )}
-                </QueryGameList>
-              </Container>
-            </View>
-          )}
-        </Main>
+            {Object.entries(readingLevels)
+              // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
+              .filter(
+                ([_, data]: [ReadingLevel, any]) =>
+                  data.results && data.results.length > 0
+              )
+              .map(([level, data]: [ReadingLevel, any]) => (
+                <View css={scrollStyle} key={level}>
+                  <Container width="100%">
+                    <QueryBookList
+                      category={category}
+                      readingLevel={level}
+                      pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
+                      language={languageCode}
+                      orderBy="title_ASC"
+                    >
+                      {({ books, loadMore, goBack, loading }) => (
+                        <PaginationSection
+                          loading={loading}
+                          loadMore={loadMore}
+                          goBack={goBack}
+                          pageInfo={books.pageInfo}
+                          shouldBeColorized
+                          level={level}
+                          languageCode={languageCode}
+                          heading={<ReadingLevelTrans readingLevel={level} />}
+                          browseLinkProps={{
+                            lang: languageCode,
+                            readingLevel: level,
+                            category: category,
+                            route: 'browseBooks'
+                          }}
+                          items={books.results}
+                        />
+                      )}
+                    </QueryBookList>
+                  </Container>
+                </View>
+              ))}
+          </Main>
+        </SideMenuMargin>
+        <Hidden only="mobileAndTablet">
+          <MobileBottomBar lang={languageCode} />
+        </Hidden>
       </Layout>
     );
   }
@@ -236,7 +189,6 @@ const scrollStyle = css`
   align-items: center;
   justify-content: center;
   padding: ${spacing.medium} 0;
-  border-bottom: solid 1px ${colors.base.grayLight};
 `;
 
 export default HomePage;
