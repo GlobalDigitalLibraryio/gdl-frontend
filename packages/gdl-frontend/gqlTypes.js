@@ -1,5 +1,3 @@
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -16,8 +14,6 @@ export type catgoryReadingLevels = {
 export type catgoryReadingLevelsVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -35,8 +31,6 @@ export type languages_languages = {
 export type languages = {
   languages: Array<languages_languages>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -133,8 +127,6 @@ export type OfflineBook = {
 export type OfflineBookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -231,8 +223,6 @@ export type OfflineBooks = {
 export type OfflineBooksVariables = {
   ids: Array<string>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -318,8 +308,6 @@ export type book = {
 export type bookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -365,8 +353,6 @@ export type similar = {
 export type similarVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -411,8 +397,6 @@ export type ReadBook = {
 export type ReadBookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -437,8 +421,6 @@ export type Chapter = {
 export type ChapterVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -532,8 +514,6 @@ export type CrowdinBookVariables = {
   bookId: string,
   toLanguage: string,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -584,8 +564,6 @@ export type TranslateBookVariables = {
   id: string,
   languageCode: string,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -637,61 +615,6 @@ export type BrowseBooksVariables = {
   pageSize?: ?number,
   page: number,
 };
-
-
-/* @flow */
-/* eslint-disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: BrowseGames
-// ====================================================
-
-export type BrowseGames_games_v2_pageInfo = {
-  __typename: "PageInfo",
-  page: number,
-  pageSize: number,
-  pageCount: number,
-  hasPreviousPage: boolean,
-  hasNextPage: boolean,
-};
-
-export type BrowseGames_games_v2_results_coverImage = {
-  __typename: "GameImage",
-  url: string,
-  altText: ?string,
-};
-
-export type BrowseGames_games_v2_results = {
-  __typename: "Game",
-  id: string,
-  title: string,
-  description: string,
-  url: string,
-  source: string,
-  publisher: string,
-  license: string,
-  language: string,
-  coverImage: BrowseGames_games_v2_results_coverImage,
-};
-
-export type BrowseGames_games_v2 = {
-  __typename: "GameResult",
-  pageInfo: BrowseGames_games_v2_pageInfo,
-  results: Array<BrowseGames_games_v2_results>,
-};
-
-export type BrowseGames = {
-  games_v2: BrowseGames_games_v2
-};
-
-export type BrowseGamesVariables = {
-  language: string,
-  pageSize?: ?number,
-  page?: ?number,
-};
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -753,8 +676,6 @@ export type MyBookTranslations_currentUser = {
 export type MyBookTranslations = {
   currentUser: ?MyBookTranslations_currentUser
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -789,8 +710,6 @@ export type Favorites = {
 export type FavoritesVariables = {
   ids: Array<string>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -826,8 +745,57 @@ export type game = {
 export type gameVariables = {
   id: string
 };
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL query operation: BrowseGames
+// ====================================================
 
+export type BrowseGames_games_v2_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type BrowseGames_games_v2_results_coverImage = {
+  __typename: "GameImage",
+  url: string,
+  altText: ?string,
+};
+
+export type BrowseGames_games_v2_results = {
+  __typename: "Game",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  license: string,
+  language: string,
+  coverImage: BrowseGames_games_v2_results_coverImage,
+};
+
+export type BrowseGames_games_v2 = {
+  __typename: "GameResult",
+  pageInfo: BrowseGames_games_v2_pageInfo,
+  results: Array<BrowseGames_games_v2_results>,
+};
+
+export type BrowseGames = {
+  games_v2: BrowseGames_games_v2
+};
+
+export type BrowseGamesVariables = {
+  language: string,
+  pageSize?: ?number,
+  page?: ?number,
+};
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -843,8 +811,6 @@ export type CheckLanguageSupport = {
 export type CheckLanguageSupportVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -860,8 +826,6 @@ export type GetCategories = {
 export type GetCategoriesVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -883,40 +847,6 @@ export type HomeContent_featuredContent = {
   link: string,
   imageUrl: string,
   language: HomeContent_featuredContent_language,
-};
-
-export type HomeContent_NewArrivals_pageInfo = {
-  __typename: "PageInfo",
-  page: number,
-  pageSize: number,
-  pageCount: number,
-  hasPreviousPage: boolean,
-  hasNextPage: boolean,
-};
-
-export type HomeContent_NewArrivals_results_coverImage = {
-  __typename: "CoverImage",
-  url: string,
-};
-
-export type HomeContent_NewArrivals_results_language = {
-  __typename: "Language",
-  code: string,
-};
-
-export type HomeContent_NewArrivals_results = {
-  __typename: "BookSummary",
-  id: string,
-  bookId: number,
-  title: string,
-  coverImage: ?HomeContent_NewArrivals_results_coverImage,
-  language: HomeContent_NewArrivals_results_language,
-};
-
-export type HomeContent_NewArrivals = {
-  __typename: "ResultItemConnection",
-  pageInfo: HomeContent_NewArrivals_pageInfo,
-  results: Array<HomeContent_NewArrivals_results>,
 };
 
 export type HomeContent_Decodable_pageInfo = {
@@ -1159,7 +1089,6 @@ export type HomeContent_Games = {
 
 export type HomeContent = {
   featuredContent: Array<HomeContent_featuredContent>,
-  NewArrivals: HomeContent_NewArrivals,
   Decodable: HomeContent_Decodable,
   Level1: HomeContent_Level1,
   Level2: HomeContent_Level2,
@@ -1175,8 +1104,6 @@ export type HomeContentVariables = {
   pageSize?: ?number,
   page?: ?number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1231,8 +1158,6 @@ export type SearchVariables = {
   pageSize?: ?number,
   page: number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1321,8 +1246,6 @@ export type OfflinedBook = {
   translators: ?Array<OfflinedBook_translators>,
   photographers: ?Array<OfflinedBook_photographers>,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1363,9 +1286,7 @@ export type fields = {
   __typename: "ResultItemConnection",
   pageInfo: fields_pageInfo,
   results: Array<fields_results>,
-};
-
-/* @flow */
+};/* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
@@ -1376,7 +1297,7 @@ export type fields = {
 /**
  * 
  */
-export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
+export type ReadingLevel = "Decodable" | "Decodable1" | "Decodable10" | "Decodable11" | "Decodable12" | "Decodable2" | "Decodable3" | "Decodable4" | "Decodable5" | "Decodable6" | "Decodable7" | "Decodable8" | "Decodable9" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
 
 /**
  * 

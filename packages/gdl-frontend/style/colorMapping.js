@@ -23,6 +23,18 @@ const colorMap = {
   Level4: '#FF9442',
   ReadAloud: '#EE6D6D',
   Decodable: '#EE8BD0',
+  Decodable1: '#EE8BD0',
+  Decodable2: '#EE8BD0',
+  Decodable3: '#EE8BD0',
+  Decodable4: '#EE8BD0',
+  Decodable5: '#EE8BD0',
+  Decodable6: '#EE8BD0',
+  Decodable7: '#EE8BD0',
+  Decodable8: '#EE8BD0',
+  Decodable9: '#EE8BD0',
+  Decodable10: '#EE8BD0',
+  Decodable11: '#EE8BD0',
+  Decodable12: '#EE8BD0',
   Games: '#BBBEC1'
 };
 

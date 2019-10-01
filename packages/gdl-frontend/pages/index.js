@@ -242,6 +242,126 @@ const HOME_CONTENT_QUERY = gql`
     ) {
       ...fields
     }
+    Decodable1: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable1
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable2: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable2
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable3: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable3
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable4: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable4
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable5: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable5
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable6: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable6
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable7: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable7
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable8: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable8
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable9: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable9
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable10: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable10
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable11: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable11
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Decodable12: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Decodable12
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
     Level1: bookSummaries(
       language: $language
       pageSize: $pageSize
