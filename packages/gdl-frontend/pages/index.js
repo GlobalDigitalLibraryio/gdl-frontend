@@ -38,7 +38,7 @@ type Props = {|
   category: Category,
   categories: Array<Category>,
   languageCode: string,
-  featuredContent: FeaturedContent,
+  featuredContent: Array<FeaturedContent>,
   homeContent: HomeContent
 |};
 
@@ -128,7 +128,7 @@ class IndexPage extends React.Component<Props> {
         categories,
         languageCode,
         // Currently the UI only supports one featured content, not an array
-        featuredContent: featuredContent[0],
+        featuredContent: featuredContent,
         homeContent,
         // site languge from cookie
         siteLanguage

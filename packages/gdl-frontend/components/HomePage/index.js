@@ -8,9 +8,8 @@
 
 import * as React from 'react';
 import { css } from '@emotion/core';
-import { FormattedMessage } from 'react-intl';
 import styled from '@emotion/styled';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
+import { Card } from '@material-ui/core';
 
 import type {
   Category,
@@ -18,7 +17,6 @@ import type {
   HomeContent_featuredContent as FeaturedContent
 } from '../../gqlTypes';
 
-import { logEvent } from '../../lib/analytics';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
@@ -27,9 +25,8 @@ import {
   NavContextBar,
   CategoryNavigation
 } from '../../components/NavContextBar';
-import Head from '../../components/Head';
 import PaginationSection from '../BookListSection/PaginationSection';
-import { colors, spacing, misc } from '../../style/theme';
+import { spacing, misc } from '../../style/theme';
 import media from '../../style/media';
 import { flexCenter } from '../../style/flex';
 import { QueryBookList } from '../../gql';
@@ -37,14 +34,15 @@ import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
 import SideMenuBar from '../../components/Navbar/SideMenuBar';
 
 import type { ReadingLevel } from '../../gqlTypes';
+import Carousel from '../FeaturedContentCarousel/Carousel';
 
-const Banner = styled('div')`
+export const Banner = styled('div')`
   background-image: ${p => (p.src ? `url(${p.src})` : 'none')};
   background-size: cover;
   position: relative;
   display: flex;
   padding: 15px;
-  justify-content: center;
+  justify-content: flex;
   ${media.mobile`
     height: 210px;
   `} ${media.tablet`
@@ -60,7 +58,7 @@ const Banner = styled('div')`
   `}
 `;
 
-const HeroCovertitle = styled('div')`
+export const HeroCovertitle = styled('div')`
   position: absolute;
   top: 0;
   left: 0;
@@ -69,18 +67,20 @@ const HeroCovertitle = styled('div')`
   padding: 3px 12px;
 `;
 
-const HeroCardMobile = styled(Card)`
+export const HeroCardMobile = styled(Card)`
   ${flexCenter};
   position: relative;
   margin-top: -50px;
   margin-left: ${spacing.large};
   margin-right: ${spacing.large};
+  margin-bottom: 1px;
+
   ${media.tablet`
     display: none;
   `};
 `;
 
-const HeroCardTablet = styled(Card)`
+export const HeroCardTablet = styled(Card)`
   ${flexCenter};
   max-width: 375px;
   ${media.mobile`
@@ -93,7 +93,7 @@ export const AMOUNT_OF_ITEMS_PER_LEVEL = 5;
 type Props = {|
   homeContent: HomeContent,
   languageCode: string,
-  featuredContent: FeaturedContent,
+  featuredContent: Array<FeaturedContent>,
   categories: Array<Category>,
   category: Category
 |};
@@ -105,6 +105,7 @@ class HomePage extends React.Component<Props> {
       this.props.category !== nextProps.category
     );
   }
+
   render() {
     const {
       homeContent,
@@ -114,49 +115,11 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    // Destructuring Games, otherwise apollo can't seperate it
+    // Destructuring Games, otherwise apollo can't separate it
     const { Games, ...readingLevels } = homeContent;
-
-    const cardContent = (
-      // Specifying width here makes text in IE11 wrap
-      <View alignItems="center" style={{ width: '100%' }}>
-        <Typography
-          lang={featuredContent.language.code}
-          align="center"
-          variant="h5"
-          component="h2"
-          gutterBottom
-          // Specifying width here makes text in IE11 wrap
-          style={{ width: '100%' }}
-        >
-          {featuredContent.title}
-        </Typography>
-        <Typography
-          lang={featuredContent.language.code}
-          align="center"
-          paragraph
-          // Specifying width here makes text in IE11 wrap
-          style={{ width: '100%' }}
-        >
-          {featuredContent.description}
-        </Typography>
-        <Button
-          onClick={() =>
-            logEvent('Navigation', 'Featured', featuredContent.title)
-          }
-          href={featuredContent.link}
-          variant="contained"
-          color="primary"
-          size="large"
-        >
-          <FormattedMessage id="More" defaultMessage="More" />
-        </Button>
-      </View>
-    );
 
     return (
       <Layout wrapWithMain={false}>
-        <Head image={featuredContent.imageUrl} />
         <NavContextBar>
           <CategoryNavigation
             category={category}
@@ -169,26 +132,7 @@ class HomePage extends React.Component<Props> {
         </Hidden>
         <SideMenuMargin>
           <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
-            <Banner src={featuredContent.imageUrl}>
-              <HeroCovertitle>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  css={{ color: colors.base.white }}
-                >
-                  <FormattedMessage id="Featured" defaultMessage="Featured" />
-                </Typography>
-              </HeroCovertitle>
-              <HeroCardTablet>
-                {/* Specifying width here makes text in IE11 wrap*/}
-                <CardContent style={{ width: '100%' }}>
-                  {cardContent}
-                </CardContent>
-              </HeroCardTablet>
-            </Banner>
-            <HeroCardMobile>
-              <CardContent>{cardContent}</CardContent>
-            </HeroCardMobile>
+            <Carousel featuredContent={featuredContent} />
 
             {Object.entries(readingLevels)
               // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type

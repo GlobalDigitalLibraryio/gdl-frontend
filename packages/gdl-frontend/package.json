@@ -67,6 +67,7 @@
     "react-joyride": "2.0.5",
     "react-jss": "8.6.1",
     "react-swipeable": "^4.3.0",
+    "react-swipeable-views": "^0.13.3",
     "universal-cookie": "3.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
