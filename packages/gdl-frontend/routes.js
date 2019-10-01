@@ -51,6 +51,9 @@ routes.add('games', `/${langParam}/games`, 'games/index');
 // Game details page
 routes.add('game', `/${langParam}/games/details/:id`, 'games/_game');
 
+// Play H5P games
+routes.add('play', `/${langParam}/games/play/:id`, 'games/_play');
+
 // Browse the books
 routes.add('browseGames', `/${langParam}/games/browse`, 'games/browse');
 
