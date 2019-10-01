@@ -1,4 +1,11 @@
-//@flow
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2019 GDL
+ *
+ * See LICENSE
+ */
+
 import * as React from 'react';
 import { Button, CardContent, Typography } from '@material-ui/core';
 import { View, Hidden } from '../../elements';

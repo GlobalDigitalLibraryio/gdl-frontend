@@ -1,4 +1,11 @@
-//@flow
+// @flow
+/**
+ * Part of GDL gdl-frontend.
+ * Copyright (C) 2019 GDL
+ *
+ * See LICENSE
+ */
+
 import React from 'react';
 import PaginationDot from './PaginationDot';
 
