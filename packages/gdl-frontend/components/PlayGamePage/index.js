@@ -8,6 +8,7 @@
 
 import * as React from 'react';
 import { Card } from '@material-ui/core';
+import { Global, css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Toolbar from './Toolbar';
 import { Container } from '../../elements';
@@ -25,6 +26,14 @@ type Props = {
  */
 const PlayGamePage = ({ game, onClose }: Props) => (
   <Container size="large" gutter={false}>
+    {/* Disable scrolling and only allow it in the iframe */}
+    <Global
+      styles={css`
+        body {
+          overflow: hidden;
+        }
+      `}
+    />
     <Backdrop />
     <Card>
       <Toolbar title={game.title} onClose={onClose} />
@@ -45,8 +54,8 @@ export default PlayGamePage;
 
 const ResponsiveIframeContainer = styled('div')`
   position: relative;
-  overflow: hidden;
   padding-top: 100vh;
+  overflow: auto;
 `;
 
 const ResponsiveIframe = styled('iframe')`
