@@ -120,7 +120,8 @@ const EditBooks = ({
           }}
         >
           <Typography variant="h5" component="h5">
-            Edit {favorites ? 'favorites' : 'offline library'}
+            <FormattedMessage id="Edit" defaultMessage="Edit" />{' '}
+            {favorites ? 'favorites' : 'offline library'}
           </Typography>
         </div>
         <IconButton
@@ -143,7 +144,8 @@ const EditBooks = ({
           }
         />
         <Typography variant="subtitle1" component="p">
-          {selectedBooks.length} books chosen
+          {`${selectedBooks.length} `}
+          <FormattedMessage id="books chosen" defaultMessage="books chosen" />
         </Typography>
 
         <Right>
