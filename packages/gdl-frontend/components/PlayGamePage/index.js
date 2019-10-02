@@ -52,7 +52,9 @@ const PlayGamePage = ({ game, onClose }: Props) => (
 
 export default PlayGamePage;
 
+// -webkit-overflow-scrolling: touch allow iframe scrolling for iOS
 const ResponsiveIframeContainer = styled('div')`
+  -webkit-overflow-scrolling: touch;
   position: relative;
   padding-top: 100vh;
   overflow: auto;
