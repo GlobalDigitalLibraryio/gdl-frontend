@@ -1019,6 +1019,74 @@ export type HomeContent_Level4 = {
   results: Array<HomeContent_Level4_results>,
 };
 
+export type HomeContent_Level5_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level5_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level5_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level5_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level5_results_coverImage,
+  language: HomeContent_Level5_results_language,
+};
+
+export type HomeContent_Level5 = {
+  __typename: "ResultItemConnection",
+  pageInfo: HomeContent_Level5_pageInfo,
+  results: Array<HomeContent_Level5_results>,
+};
+
+export type HomeContent_Level6_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type HomeContent_Level6_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type HomeContent_Level6_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type HomeContent_Level6_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?HomeContent_Level6_results_coverImage,
+  language: HomeContent_Level6_results_language,
+};
+
+export type HomeContent_Level6 = {
+  __typename: "ResultItemConnection",
+  pageInfo: HomeContent_Level6_pageInfo,
+  results: Array<HomeContent_Level6_results>,
+};
+
 export type HomeContent_ReadAloud_pageInfo = {
   __typename: "PageInfo",
   page: number,
@@ -1094,6 +1162,8 @@ export type HomeContent = {
   Level2: HomeContent_Level2,
   Level3: HomeContent_Level3,
   Level4: HomeContent_Level4,
+  Level5: HomeContent_Level5,
+  Level6: HomeContent_Level6,
   ReadAloud: HomeContent_ReadAloud,
   Games: HomeContent_Games,
 };
@@ -1297,7 +1367,7 @@ export type fields = {
 /**
  * 
  */
-export type ReadingLevel = "Decodable" | "Decodable1" | "Decodable10" | "Decodable11" | "Decodable12" | "Decodable2" | "Decodable3" | "Decodable4" | "Decodable5" | "Decodable6" | "Decodable7" | "Decodable8" | "Decodable9" | "Level1" | "Level2" | "Level3" | "Level4" | "ReadAloud";
+export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "Level5" | "Level6" | "ReadAloud";
 
 /**
  * 
