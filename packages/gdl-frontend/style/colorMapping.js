@@ -20,9 +20,9 @@ const colorMap = {
   Level1: '#5BCDE5',
   Level2: '#90CE4C',
   Level3: '#F1C528',
-  Level4: '#FF9442',
+  Level4: '#F1C528',
   Level5: '#FF9442',
-  Level6: '#FF9442',
+  Level6: '#FD6E68',
   ReadAloud: '#EE6D6D',
   Decodable: '#EE8BD0',
   Games: '#BBBEC1'
