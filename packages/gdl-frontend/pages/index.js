@@ -282,6 +282,26 @@ const HOME_CONTENT_QUERY = gql`
     ) {
       ...fields
     }
+    Level5: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Level5
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
+    Level6: bookSummaries(
+      language: $language
+      pageSize: $pageSize
+      page: $page
+      readingLevel: Level6
+      category: $category
+      orderBy: title_ASC
+    ) {
+      ...fields
+    }
     ReadAloud: bookSummaries(
       language: $language
       pageSize: $pageSize
