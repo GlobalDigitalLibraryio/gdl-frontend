@@ -17,14 +17,14 @@
  * pink: #EE8BD0
  */
 const colorMap = {
-  Level1: '#5BCDE5',
-  Level2: '#90CE4C',
-  Level3: '#F1C528',
+  Level1: '#75C1FD',
+  Level2: '#5DDAC8',
+  Level3: '#97CE4C',
   Level4: '#F1C528',
   Level5: '#FF9442',
   Level6: '#FD6E68',
-  ReadAloud: '#EE6D6D',
-  Decodable: '#EE8BD0',
+  ReadAloud: '#F898D0',
+  Decodable: '#BFA2E9',
   Games: '#BBBEC1'
 };
 
