@@ -115,9 +115,6 @@ class HomePage extends React.Component<Props> {
       languageCode
     } = this.props;
 
-    // Destructuring Games, otherwise apollo can't separate it
-    const { Games, ...readingLevels } = homeContent;
-
     return (
       <Layout wrapWithMain={false}>
         <NavContextBar>
@@ -134,7 +131,7 @@ class HomePage extends React.Component<Props> {
           <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
             <Carousel featuredContent={featuredContent} />
 
-            {Object.entries(readingLevels)
+            {Object.entries(homeContent)
               // $FlowFixMe TODO: Get this properly typed. Maybe newer Flow versions understands this instead of turning into a mixed type
               .filter(
                 ([_, data]: [ReadingLevel, any]) =>
