@@ -5,7 +5,7 @@
  *
  * See LICENSE
  */
-
+import type { ReadingLevel } from '../gqlTypes';
 /**
  * Colors we use in GDL
  * purple: #B4A4E5
@@ -16,7 +16,8 @@
  * light red: #EE6D6D
  * pink: #EE8BD0
  */
-const colorMap = {
+
+const colorMap: { [key: ReadingLevel | 'Games']: string } = {
   Level1: '#75C1FD',
   Level2: '#5DDAC8',
   Level3: '#97CE4C',
