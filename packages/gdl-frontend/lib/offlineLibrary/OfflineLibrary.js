@@ -237,7 +237,7 @@ const OfflineBookFragment = gql`
       seqNo
       chapterId
       content
-      imageUrls
+      imageUrls: imageUrlsV2
     }
     downloads {
       epub

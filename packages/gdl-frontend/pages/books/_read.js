@@ -257,7 +257,7 @@ const CHAPTER_QUERY = gql`
       seqNo
       chapterId
       content
-      imageUrls
+      imageUrls: imageUrlsV2
     }
   }
 `;
