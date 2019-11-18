@@ -244,7 +244,7 @@ const BOOK_QUERY = gql`
         chapterId
       }
       coverImage {
-        url
+        url: urlV2
       }
     }
   }

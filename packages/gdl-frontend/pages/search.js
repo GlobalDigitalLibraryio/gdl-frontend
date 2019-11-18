@@ -215,7 +215,7 @@ const SEARCH_QUERY = gql`
         highlightDescription
         readingLevel
         coverImage {
-          url
+          url: urlV2
         }
         language {
           code

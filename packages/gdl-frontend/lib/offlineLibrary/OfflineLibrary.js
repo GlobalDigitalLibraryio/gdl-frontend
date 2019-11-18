@@ -253,7 +253,7 @@ const OfflineBookFragment = gql`
       isRTL
     }
     coverImage {
-      url
+      url: urlV2
     }
     publisher {
       name

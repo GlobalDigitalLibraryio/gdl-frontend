@@ -79,7 +79,7 @@ const MY_TRANSLATION_QUERY = gql`
             name
           }
           coverImage {
-            url
+            url: urlV2
           }
           language {
             name
