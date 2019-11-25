@@ -1,3 +1,5 @@
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -14,6 +16,8 @@ export type catgoryReadingLevels = {
 export type catgoryReadingLevelsVariables = {
   language: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -31,6 +35,8 @@ export type languages_languages = {
 export type languages = {
   languages: Array<languages_languages>
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -127,6 +133,8 @@ export type OfflineBook = {
 export type OfflineBookVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -223,6 +231,8 @@ export type OfflineBooks = {
 export type OfflineBooksVariables = {
   ids: Array<string>
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -308,6 +318,8 @@ export type book = {
 export type bookVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -353,6 +365,8 @@ export type similar = {
 export type similarVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -397,6 +411,8 @@ export type ReadBook = {
 export type ReadBookVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -421,6 +437,8 @@ export type Chapter = {
 export type ChapterVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -514,6 +532,8 @@ export type CrowdinBookVariables = {
   bookId: string,
   toLanguage: string,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -564,6 +584,8 @@ export type TranslateBookVariables = {
   id: string,
   languageCode: string,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -615,6 +637,8 @@ export type BrowseBooksVariables = {
   pageSize?: ?number,
   page: number,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -676,6 +700,8 @@ export type MyBookTranslations_currentUser = {
 export type MyBookTranslations = {
   currentUser: ?MyBookTranslations_currentUser
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -710,6 +736,8 @@ export type Favorites = {
 export type FavoritesVariables = {
   ids: Array<string>
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -745,6 +773,8 @@ export type game = {
 export type gameVariables = {
   id: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -796,6 +826,61 @@ export type BrowseGamesVariables = {
   pageSize?: ?number,
   page?: ?number,
 };
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GameContent
+// ====================================================
+
+export type GameContent_games_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type GameContent_games_results_coverImage = {
+  __typename: "GameImage",
+  url: string,
+  altText: ?string,
+};
+
+export type GameContent_games_results = {
+  __typename: "Game",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  license: string,
+  language: string,
+  coverImage: GameContent_games_results_coverImage,
+};
+
+export type GameContent_games = {
+  __typename: "GameResult",
+  pageInfo: GameContent_games_pageInfo,
+  results: Array<GameContent_games_results>,
+};
+
+export type GameContent = {
+  games: GameContent_games
+};
+
+export type GameContentVariables = {
+  language: string,
+  pageSize?: ?number,
+  page?: ?number,
+};
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -811,6 +896,8 @@ export type CheckLanguageSupport = {
 export type CheckLanguageSupportVariables = {
   language: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -826,6 +913,8 @@ export type GetCategories = {
 export type GetCategoriesVariables = {
   language: string
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1121,40 +1210,6 @@ export type HomeContent_ReadAloud = {
   results: Array<HomeContent_ReadAloud_results>,
 };
 
-export type HomeContent_Games_pageInfo = {
-  __typename: "PageInfo",
-  page: number,
-  pageSize: number,
-  pageCount: number,
-  hasPreviousPage: boolean,
-  hasNextPage: boolean,
-};
-
-export type HomeContent_Games_results_coverImage = {
-  __typename: "GameImage",
-  url: string,
-  altText: ?string,
-};
-
-export type HomeContent_Games_results = {
-  __typename: "Game",
-  id: string,
-  title: string,
-  description: string,
-  url: string,
-  source: string,
-  publisher: string,
-  license: string,
-  language: string,
-  coverImage: HomeContent_Games_results_coverImage,
-};
-
-export type HomeContent_Games = {
-  __typename: "GameResult",
-  pageInfo: HomeContent_Games_pageInfo,
-  results: Array<HomeContent_Games_results>,
-};
-
 export type HomeContent = {
   featuredContent: Array<HomeContent_featuredContent>,
   Decodable: HomeContent_Decodable,
@@ -1165,7 +1220,6 @@ export type HomeContent = {
   Level5: HomeContent_Level5,
   Level6: HomeContent_Level6,
   ReadAloud: HomeContent_ReadAloud,
-  Games: HomeContent_Games,
 };
 
 export type HomeContentVariables = {
@@ -1174,6 +1228,8 @@ export type HomeContentVariables = {
   pageSize?: ?number,
   page?: ?number,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1228,6 +1284,8 @@ export type SearchVariables = {
   pageSize?: ?number,
   page: number,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1316,6 +1374,8 @@ export type OfflinedBook = {
   translators: ?Array<OfflinedBook_translators>,
   photographers: ?Array<OfflinedBook_photographers>,
 };
+
+
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1356,7 +1416,9 @@ export type fields = {
   __typename: "ResultItemConnection",
   pageInfo: fields_pageInfo,
   results: Array<fields_results>,
-};/* @flow */
+};
+
+/* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
@@ -1367,7 +1429,7 @@ export type fields = {
 /**
  * 
  */
-export type ReadingLevel = "Decodable" | "Level1" | "Level2" | "Level3" | "Level4" | "Level5" | "Level6" | "ReadAloud";
+export type ReadingLevel = "Decodable" | "Decodable1" | "Decodable10" | "Decodable11" | "Decodable12" | "Decodable2" | "Decodable3" | "Decodable4" | "Decodable5" | "Decodable6" | "Decodable7" | "Decodable8" | "Decodable9" | "Level1" | "Level2" | "Level3" | "Level4" | "Level5" | "Level6" | "ReadAloud";
 
 /**
  * 
