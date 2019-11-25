@@ -38,7 +38,7 @@ type Props = {|
   category: Category,
   categories: Array<Category>,
   languageCode: string,
-  featuredContent: FeaturedContent,
+  featuredContent: Array<FeaturedContent>,
   homeContent: HomeContent
 |};
 
@@ -128,7 +128,7 @@ class IndexPage extends React.Component<Props> {
         categories,
         languageCode,
         // Currently the UI only supports one featured content, not an array
-        featuredContent: featuredContent[0],
+        featuredContent: featuredContent,
         homeContent,
         // site languge from cookie
         siteLanguage
@@ -311,29 +311,6 @@ const HOME_CONTENT_QUERY = gql`
       orderBy: title_ASC
     ) {
       ...fields
-    }
-    Games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
-      pageInfo {
-        page
-        pageSize
-        pageCount
-        hasPreviousPage
-        hasNextPage
-      }
-      results {
-        id
-        title
-        description
-        url
-        source
-        publisher
-        license
-        language
-        coverImage {
-          url
-          altText
-        }
-      }
     }
   }
 

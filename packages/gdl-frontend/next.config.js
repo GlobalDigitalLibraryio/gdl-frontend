@@ -8,6 +8,7 @@ const withSourceMaps = require('@zeit/next-source-maps');
 const InlinePrecacheManifestPlugin = require('./inlinePrecacheManifestPlugin');
 const { serverRuntimeConfig, publicRuntimeConfig } = require('./config');
 const { ANALYZE } = process.env;
+const withImages = require('next-images');
 
 // See https://developers.google.com/web/tools/workbox/modules/workbox-build
 const swDest = 'service-worker.js';
@@ -83,4 +84,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withSourceMaps(withTM(nextConfig));
+module.exports = withSourceMaps(withTM(withImages(nextConfig)));

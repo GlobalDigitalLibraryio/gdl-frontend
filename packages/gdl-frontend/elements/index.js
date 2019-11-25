@@ -16,3 +16,4 @@ export { default as Center } from './Center';
 export { default as Hidden } from './Hidden';
 export { default as Scroller } from './Scroller';
 export { default as Shimmer } from './Shimmer';
+export { default as SideMenuMargin } from './SideMenuMargin';
