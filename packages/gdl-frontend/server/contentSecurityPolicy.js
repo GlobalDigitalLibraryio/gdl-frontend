@@ -18,6 +18,7 @@ const directives = {
     "'self'",
     "'unsafe-inline'",
     googleAnalytics,
+    'https://gdl.h5p.com',
     'https://*.crowdin.com',
     'https://crowdin.com',
     'https://cdn.polyfill.io',
@@ -46,7 +47,7 @@ const directives = {
     googleAnalytics,
     'https://www.facebook.com'
   ],
-  frameSrc: ["'self'", 'https://crowdin.com'],
+  frameSrc: ["'self'", 'https://crowdin.com', 'https://gdl.h5p.com'],
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
