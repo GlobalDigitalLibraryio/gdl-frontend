@@ -31,14 +31,16 @@ import {
   Divider,
   ShareButton
 } from '../../components/DetailsPage';
+import { Link } from '../../routes';
 
+import type { game_game as Game } from '../../gqlTypes';
 import type { Context, ConfigShape } from '../../types';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
 
-const GamePage = ({ game }) => (
+const GamePage = ({ game }: { game: Game }) => (
   <>
     <Head
       description={game.description}
@@ -56,7 +58,7 @@ const GamePage = ({ game }) => (
                 size="large"
               />
               <Hidden only="tablet" css={{ marginTop: spacing.xxlarge }}>
-                <GameLinkButton title={game.title} url={game.url} />
+                <GameLinkButton game={game} />
               </Hidden>
               <Hidden only="mobile" css={styles.mobileRibbon}>
                 <LevelRibbon level="Games" />
@@ -93,7 +95,7 @@ const GamePage = ({ game }) => (
                 {game.description}
               </Typography>
               <Hidden only="mobile">
-                <GameLinkButton title={game.title} url={game.url} />
+                <GameLinkButton game={game} />
               </Hidden>
             </GridItem>
           </Grid>
@@ -170,23 +172,42 @@ GamePage.getInitialProps = async ({ query, req, apolloClient }: Context) => {
   };
 };
 
-const GameLinkButton = ({ title, url }: { title: string, url: string }) => (
-  <Button
-    rel="noopener noreferrer"
-    target="_blank"
-    data-cy="game-link-button"
-    href={url}
-    variant="contained"
-    color="primary"
-    size="large"
-    fullWidth
-    onClick={() => logEvent('Games', 'Play', title)}
-  >
-    <FormattedMessage id="Go to game" defaultMessage="Go to game" />
-  </Button>
-);
+const GameLinkButton = ({ game }: { game: Game }) => {
+  const { id, language, title, url } = game;
+  const isH5P = url.includes('gdl.h5p');
+  if (isH5P) {
+    return (
+      <Link route="play" params={{ id, lang: language }} passHref>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          fullWidth
+          onClick={() => logEvent('Games', 'Play', title)}
+        >
+          <FormattedMessage id="Play" defaultMessage="Play" />
+        </Button>
+      </Link>
+    );
+  }
+  return (
+    <Button
+      rel="noopener noreferrer"
+      target="_blank"
+      data-cy="game-link-button"
+      href={url}
+      variant="contained"
+      color="primary"
+      size="large"
+      fullWidth
+      onClick={() => logEvent('Games', 'Play', title)}
+    >
+      <FormattedMessage id="Go to game" defaultMessage="Go to game" />
+    </Button>
+  );
+};
 
-const GAME_QUERY = gql`
+export const GAME_QUERY = gql`
   query game($id: ID!) {
     game(id: $id) {
       id
