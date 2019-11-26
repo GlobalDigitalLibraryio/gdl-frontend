@@ -28,6 +28,7 @@ import {
   getBookCategory,
   getSiteLanguage
 } from '../lib/storage';
+import { GET_GAMES_QUERY } from '../gql/QueryGameList';
 
 const {
   publicRuntimeConfig: { canonicalUrl, DEFAULT_LANGUAGE }
@@ -111,6 +112,14 @@ class IndexPage extends React.Component<Props> {
         query: HOME_CONTENT_QUERY,
         variables: {
           category,
+          language: languageCode,
+          pageSize: AMOUNT_OF_ITEMS_PER_LEVEL
+        }
+      });
+
+      const prefetchGames = await apolloClient.query({
+        query: GET_GAMES_QUERY,
+        variables: {
           language: languageCode,
           pageSize: AMOUNT_OF_ITEMS_PER_LEVEL
         }
