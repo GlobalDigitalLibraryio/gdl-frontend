@@ -16,9 +16,9 @@ import LanguageList from '../LanguageList';
 import { getBookLanguageCode } from '../../lib/storage';
 import { GdlI18nConsumer } from '../GdlI18nProvider';
 
-function linkProps(language) {
+function linkProps(language, route) {
   return {
-    route: 'books',
+    route: route === '/' ? 'books' : route.replace('/', ''),
     params: { lang: language.code }
   };
 }
