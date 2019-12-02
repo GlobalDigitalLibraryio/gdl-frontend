@@ -28,6 +28,8 @@ import {
   getBookCategory,
   getSiteLanguage
 } from '../lib/storage';
+import { throwIfGraphql404 } from '../utils/errorHandler';
+
 import { GET_GAMES_QUERY } from '../gql/QueryGameList';
 
 const {
@@ -117,6 +119,10 @@ class IndexPage extends React.Component<Props> {
         }
       });
 
+      /**
+       * Prefetch games to improve toggling performance in menu
+       * https://github.com/GlobalDigitalLibraryio/issues/issues/642
+       */
       const prefetchGames = await apolloClient.query({
         query: GET_GAMES_QUERY,
         variables: {
@@ -143,20 +149,7 @@ class IndexPage extends React.Component<Props> {
         siteLanguage
       };
     } catch (error) {
-      /*
-       * If user request invalid query param to graphql you trigger bad input validation
-       * and receive 400: Bad Request. The right feedback to the client is a 404 page
-       * and since graphql does not have a better error handling mechanism this is a dirty check.
-       */
-      if (
-        error.graphQLErrors &&
-        error.graphQLErrors.length > 0 &&
-        error.graphQLErrors[0].message === '400: Bad Request'
-      ) {
-        return {
-          statusCode: 404
-        };
-      }
+      throwIfGraphql404(error);
       return {
         statusCode: 500
       };
@@ -212,19 +205,19 @@ class IndexPage extends React.Component<Props> {
 
 export default withErrorPage(IndexPage);
 
-const LANGUAGE_SUPPORT_QUERY = gql`
+export const LANGUAGE_SUPPORT_QUERY = gql`
   query CheckLanguageSupport($language: String!) {
     languageSupport(language: $language)
   }
 `;
 
-const CATEGORIES_QUERY = gql`
+export const CATEGORIES_QUERY = gql`
   query GetCategories($language: String!) {
     categories(language: $language)
   }
 `;
 
-const HOME_CONTENT_QUERY = gql`
+export const HOME_CONTENT_QUERY = gql`
   query HomeContent(
     $language: String!
     $category: Category!
