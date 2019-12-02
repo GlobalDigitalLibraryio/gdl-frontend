@@ -23,6 +23,7 @@ import { Check as CheckIcon } from '@material-ui/icons';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
 import { colors } from '../style/theme';
+import { RouteNameContext } from '../context';
 
 import type { intlShape } from 'react-intl';
 import type { languages_languages as Language } from '../gqlTypes';
@@ -32,7 +33,7 @@ type Props = {
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
-  linkProps?: (language: Language) => {},
+  linkProps?: (language: Language, routeName: string) => {},
   intl: intlShape
 };
 
@@ -170,16 +171,24 @@ const NoLanguageItem = () => (
 const LanguageItem = ({ language, linkProps, onSelectLanguage }) => {
   if (linkProps) {
     return (
-      <Link key={language.code} passHref {...linkProps(language)}>
-        <ListItem
-          data-cy="choose-language-field"
-          button
-          component="a"
-          onClick={() => onSelectLanguage(language)}
-        >
-          <ListItemText inset>{language.name}</ListItemText>
-        </ListItem>
-      </Link>
+      <RouteNameContext.Consumer>
+        {pageRoute => (
+          <Link
+            key={language.code}
+            passHref
+            {...linkProps(language, pageRoute)}
+          >
+            <ListItem
+              data-cy="choose-language-field"
+              button
+              component="a"
+              onClick={() => onSelectLanguage(language)}
+            >
+              <ListItemText inset>{language.name}</ListItemText>
+            </ListItem>
+          </Link>
+        )}
+      </RouteNameContext.Consumer>
     );
   }
 
