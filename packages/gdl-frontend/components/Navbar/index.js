@@ -37,6 +37,8 @@ import SearchInput from '../Search/components/SearchInput';
 import SearchDrawer from '../Search/components/SearchDrawer';
 import { Hidden } from '../../elements';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
+import { CategoryContext } from '../../context/CategoryContext';
+import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 type Props = {
   onMenuClick(): void,
@@ -78,124 +80,154 @@ const Navbar = ({
 }: Props) => {
   const offline = !online;
 
-  const brandLink = (
-    <Link route={offline ? 'offline' : 'books'} passHref>
-      <BrandLink
-        data-cy="gdl-logo"
-        aria-label="Global Digital Library"
-        onClick={() => logEvent('Navigation', 'Home', 'Brand logo')}
-      >
-        <GlobalDigitalLibraryLogo aria-hidden />
-      </BrandLink>
-    </Link>
-  );
-
   return (
-    <AppBar position="fixed" className={classes.appBar}>
-      <Toolbar className={classes.toolBar}>
-        <Left>
-          <IconButton
-            data-cy="hamburger-menu"
-            color="inherit"
-            onClick={onMenuClick}
-            css={media.tablet({ marginRight: 18 })}
-          >
-            <MenuIcon />
-            <SrOnly>
-              <FormattedMessage id="Open menu" defaultMessage="Open menu" />
-            </SrOnly>
-          </IconButton>
-          <Hidden only="desktop">{brandLink}</Hidden>
-        </Left>
-
-        {/* This component is not visibile on mobile */}
-        {!offline && (
-          <Center>
-            <SearchInput />
-          </Center>
-        )}
-
-        <Right>
-          {offline ? (
-            <Link route="offline" passHref>
-              <IconButton color="inherit" component="a">
-                <WifiOffIcon />
-                <SrOnly>
-                  <FormattedMessage
-                    id="Offline library"
-                    defaultMessage="Offline library"
-                  />
-                </SrOnly>
-              </IconButton>
-            </Link>
-          ) : (
-            <>
-              <SearchDrawer>
-                {({ onShowClick }) => (
+    <CategoryContext.Consumer>
+      {({ category }) => (
+        <GdlI18nConsumer>
+          {({ language }) => (
+            <AppBar position="fixed" className={classes.appBar}>
+              <Toolbar className={classes.toolBar}>
+                <Left>
                   <IconButton
+                    data-cy="hamburger-menu"
                     color="inherit"
-                    onClick={onShowClick}
-                    css={media.tablet`display: none;`}
-                    focusRipple={false}
+                    onClick={onMenuClick}
+                    css={media.tablet({ marginRight: 18 })}
                   >
-                    <SearchIcon />
+                    <MenuIcon />
                     <SrOnly>
-                      <FormattedMessage id="Search" defaultMessage="Search" />
+                      <FormattedMessage
+                        id="Open menu"
+                        defaultMessage="Open menu"
+                      />
                     </SrOnly>
                   </IconButton>
-                )}
-              </SearchDrawer>
-              <Link route="books" passHref>
-                <IconButton
-                  data-cy="home-button"
-                  color="inherit"
-                  component="a"
-                  onClick={() => logEvent('Navigation', 'Home', 'House icon')}
-                >
-                  <HomeIcon />
-                  <SrOnly>
-                    <FormattedMessage id="Home" defaultMessage="Home" />
-                  </SrOnly>
-                </IconButton>
-              </Link>
-              <SelectBookLanguage anchor="right">
-                {({ onClick, loading }) => (
-                  <Tooltip
-                    title={
-                      <FormattedMessage
-                        id="Choose book language"
-                        defaultMessage="Choose book language"
-                      />
-                    }
-                  >
-                    <IconButton
-                      data-cy="global-language-button"
-                      onClick={() => {
-                        logEvent('Navigation', 'Language', 'Globe icon');
-                        onClick();
-                      }}
-                      color="inherit"
+                  <Hidden only="desktop">
+                    <Link
+                      route={offline ? 'offline' : category}
+                      passHref
+                      params={{ lang: language }}
                     >
-                      {loading ? (
-                        <CircularProgress color="inherit" size={24} />
-                      ) : (
-                        <LanguageIcon />
-                      )}
-                      <SrOnly>
-                        <FormattedMessage
-                          id="Choose book language"
-                          defaultMessage="Choose book language"
-                        />
-                      </SrOnly>
-                    </IconButton>
-                  </Tooltip>
+                      <BrandLink
+                        data-cy="gdl-logo"
+                        aria-label="Global Digital Library"
+                        onClick={() =>
+                          logEvent('Navigation', 'Home', 'Brand logo')
+                        }
+                      >
+                        <GlobalDigitalLibraryLogo aria-hidden />
+                      </BrandLink>
+                    </Link>
+                  </Hidden>
+                </Left>
+
+                {/* This component is not visibile on mobile */}
+                {!offline && (
+                  <Center>
+                    <SearchInput />
+                  </Center>
                 )}
-              </SelectBookLanguage>
-            </>
+
+                <Right>
+                  {offline ? (
+                    <Link route="offline" passHref>
+                      <IconButton color="inherit" component="a">
+                        <WifiOffIcon />
+                        <SrOnly>
+                          <FormattedMessage
+                            id="Offline library"
+                            defaultMessage="Offline library"
+                          />
+                        </SrOnly>
+                      </IconButton>
+                    </Link>
+                  ) : (
+                    <>
+                      <SearchDrawer>
+                        {({ onShowClick }) => (
+                          <IconButton
+                            color="inherit"
+                            onClick={onShowClick}
+                            css={media.tablet`display: none;`}
+                            focusRipple={false}
+                          >
+                            <SearchIcon />
+                            <SrOnly>
+                              <FormattedMessage
+                                id="Search"
+                                defaultMessage="Search"
+                              />
+                            </SrOnly>
+                          </IconButton>
+                        )}
+                      </SearchDrawer>
+
+                      <Link
+                        route={category}
+                        passHref
+                        params={{ lang: language }}
+                      >
+                        <IconButton
+                          data-cy="home-button"
+                          color="inherit"
+                          component="a"
+                          onClick={() =>
+                            logEvent('Navigation', 'Home', 'House icon')
+                          }
+                        >
+                          <HomeIcon />
+                          <SrOnly>
+                            <FormattedMessage id="Home" defaultMessage="Home" />
+                          </SrOnly>
+                        </IconButton>
+                      </Link>
+
+                      <SelectBookLanguage anchor="right">
+                        {({ onClick, loading }) => (
+                          <Tooltip
+                            title={
+                              <FormattedMessage
+                                id="Choose book language"
+                                defaultMessage="Choose book language"
+                              />
+                            }
+                          >
+                            <IconButton
+                              data-cy="global-language-button"
+                              onClick={() => {
+                                logEvent(
+                                  'Navigation',
+                                  'Language',
+                                  'Globe icon'
+                                );
+                                onClick();
+                              }}
+                              color="inherit"
+                            >
+                              {loading ? (
+                                <CircularProgress color="inherit" size={24} />
+                              ) : (
+                                <LanguageIcon />
+                              )}
+                              <SrOnly>
+                                <FormattedMessage
+                                  id="Choose book language"
+                                  defaultMessage="Choose book language"
+                                />
+                              </SrOnly>
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                      </SelectBookLanguage>
+                    </>
+                  )}
+                </Right>
+              </Toolbar>
+            </AppBar>
           )}
-        </Right>
-      </Toolbar>
-    </AppBar>
+        </GdlI18nConsumer>
+      )}
+    </CategoryContext.Consumer>
   );
 };
 

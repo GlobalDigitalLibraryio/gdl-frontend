@@ -23,9 +23,10 @@ import { Check as CheckIcon } from '@material-ui/icons';
 import { Link } from '../routes';
 import SrOnly from './SrOnly';
 import { colors } from '../style/theme';
-import { RouteNameContext } from '../context';
+import { CategoryContext } from '../context/CategoryContext';
 
 import type { intlShape } from 'react-intl';
+import type { MainCategory } from '../types';
 import type { languages_languages as Language } from '../gqlTypes';
 
 type Props = {
@@ -33,7 +34,7 @@ type Props = {
   selectedLanguageCode: ?string,
   onSelectLanguage: Language => void,
   languages: Array<Language>,
-  linkProps?: (language: Language, routeName: string) => {},
+  linkProps?: (language: Language, category: MainCategory) => {},
   intl: intlShape
 };
 
@@ -142,14 +143,19 @@ class LanguageList extends React.Component<Props, State> {
           {noResult ? (
             <NoLanguageItem />
           ) : (
-            filteredLanguages.map(l => (
-              <LanguageItem
-                key={l.code}
-                language={l}
-                linkProps={linkProps}
-                onSelectLanguage={onSelectLanguage}
-              />
-            ))
+            <CategoryContext.Consumer>
+              {({ category }) =>
+                filteredLanguages.map(l => (
+                  <LanguageItem
+                    key={l.code}
+                    language={l}
+                    linkProps={linkProps}
+                    currentCategory={category}
+                    onSelectLanguage={onSelectLanguage}
+                  />
+                ))
+              }
+            </CategoryContext.Consumer>
           )}
         </List>
       </RootRef>
@@ -168,27 +174,28 @@ const NoLanguageItem = () => (
   </ListItem>
 );
 
-const LanguageItem = ({ language, linkProps, onSelectLanguage }) => {
+const LanguageItem = ({
+  language,
+  linkProps,
+  onSelectLanguage,
+  currentCategory
+}) => {
   if (linkProps) {
     return (
-      <RouteNameContext.Consumer>
-        {pageRoute => (
-          <Link
-            key={language.code}
-            passHref
-            {...linkProps(language, pageRoute)}
-          >
-            <ListItem
-              data-cy="choose-language-field"
-              button
-              component="a"
-              onClick={() => onSelectLanguage(language)}
-            >
-              <ListItemText inset>{language.name}</ListItemText>
-            </ListItem>
-          </Link>
-        )}
-      </RouteNameContext.Consumer>
+      <Link
+        key={language.code}
+        passHref
+        {...linkProps(language, currentCategory)}
+      >
+        <ListItem
+          data-cy="choose-language-field"
+          button
+          component="a"
+          onClick={() => onSelectLanguage(language)}
+        >
+          <ListItemText inset>{language.name}</ListItemText>
+        </ListItem>
+      </Link>
     );
   }
 

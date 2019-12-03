@@ -12,6 +12,13 @@ const routes = nextRoutes();
 // For the language parameter, match any combination of alphanumeric and - (Poor man's BCP47 matching!)
 const langParam = `:lang([\\w-]+)`;
 
+/**
+ * Currently, we have divided our application into main categories e.g books, games
+ * During navigation, we want to know the current category so we use a Context to store the state
+ * The state is corresponding to the available route name here so if new category are added,
+ * it needs to follow the same pattern with /utils/getMainCategory.js and MainCategory in types.js
+ */
+
 routes.add(
   'translate',
   `/${langParam}/books/translate/:id(\\d+)`,
