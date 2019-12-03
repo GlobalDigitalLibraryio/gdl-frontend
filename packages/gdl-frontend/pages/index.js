@@ -123,7 +123,7 @@ class IndexPage extends React.Component<Props> {
        * Prefetch games to improve toggling performance in menu
        * https://github.com/GlobalDigitalLibraryio/issues/issues/642
        */
-      const prefetchGames = await apolloClient.query({
+      await apolloClient.query({
         query: GET_GAMES_QUERY,
         variables: {
           language: languageCode,

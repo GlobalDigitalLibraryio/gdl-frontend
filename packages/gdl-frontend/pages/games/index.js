@@ -50,7 +50,6 @@ GameIndexPage.getInitialProps = async ({
   try {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
-    const siteLanguage = query.lang || getSiteLanguage(req);
 
     // Check if queried language is supported with content
     const langRes = await apolloClient.query({
