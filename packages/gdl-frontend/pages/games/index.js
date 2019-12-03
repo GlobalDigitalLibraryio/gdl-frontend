@@ -24,7 +24,6 @@ import { withErrorPage } from '../../hocs';
 import GamePage from '../../components/GamePage';
 import {
   getBookLanguageCode,
-  getSiteLanguage,
   getBookCategory,
   setBookLanguageAndCategory
 } from '../../lib/storage';
