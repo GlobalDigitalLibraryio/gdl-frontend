@@ -27,9 +27,13 @@ const defaultCatalog = {
   en: enTranslations
 };
 
-const GdlI18nContext = React.createContext<?{
+const GdlI18nContext = React.createContext<{
+  language: string,
   changeSiteLanguage: ChangeSiteAction
-}>();
+}>({
+  language: '',
+  changeSiteLanguage: async () => {}
+});
 const GdlI18nConsumer = GdlI18nContext.Consumer;
 
 // https://github.com/yahoo/react-intl/wiki/API
@@ -83,6 +87,7 @@ class GdlI18nProvider extends Component<
     return (
       <GdlI18nContext.Provider
         value={{
+          language,
           changeSiteLanguage: this.changeSiteLanguage
         }}
       >
