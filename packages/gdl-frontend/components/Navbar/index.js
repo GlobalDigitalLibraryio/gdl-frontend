@@ -24,6 +24,7 @@ import {
 } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'next/router';
 
 import { withOnlineStatusContext } from '../OnlineStatusContext';
 import SelectBookLanguage from '../GlobalMenu/SelectBookLanguage';
@@ -44,7 +45,8 @@ type Props = {
   onMenuClick(): void,
   online: boolean,
   homeTutorialInProgress?: boolean,
-  classes: Object
+  classes: Object,
+  router: { query: { lang: string } }
 };
 
 const styles = theme => ({
@@ -76,10 +78,13 @@ const Navbar = ({
   onMenuClick,
   online,
   homeTutorialInProgress,
-  classes
+  classes,
+  router: {
+    query: { lang }
+  }
 }: Props) => {
   const offline = !online;
-  const language = getBookLanguageCode();
+  const language = lang || getBookLanguageCode();
 
   return (
     <CategoryContext.Consumer>
@@ -241,4 +246,4 @@ const Right = styled('div')`
   flex: 1;
 `;
 
-export default withOnlineStatusContext(withStyles(styles)(Navbar));
+export default withRouter(withOnlineStatusContext(withStyles(styles)(Navbar)));
