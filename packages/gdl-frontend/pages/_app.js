@@ -35,7 +35,7 @@ import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
 import { fetchSiteTranslation } from '../fetch';
 import routes from '../routes';
-import { CategoryProvider } from '../context/CategoryContext';
+import CategoryProvider from '../context/CategoryContext';
 import { getMainCategory } from '../utils/getMainCategory';
 
 import type { Context, ConfigShape, MainCategory } from '../types';
@@ -73,9 +73,11 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const mainCategory: MainCategory = getMainCategory(pageProps.pageRoute);
+    const { req, query, pathname } = ctx;
+    const mainCategory: MainCategory = getMainCategory(
+      pageProps.pageRoute || pathname
+    );
 
-    const { req, query } = ctx;
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
     const response = req || window.__NEXT_DATA__.props;
 

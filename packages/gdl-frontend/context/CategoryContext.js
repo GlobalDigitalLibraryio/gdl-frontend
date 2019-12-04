@@ -8,8 +8,9 @@
 
 import * as React from 'react';
 import type { MainCategory } from '../types';
+import { withRouter } from 'next/router';
 
-const CategoryContext = React.createContext<{
+export const CategoryContext = React.createContext<{
   category: MainCategory,
   setCategory: (category: MainCategory) => void
 }>({
@@ -46,4 +47,4 @@ class CategoryProvider extends React.Component<Props, State> {
   }
 }
 
-export { CategoryContext, CategoryProvider };
+export default withRouter(CategoryProvider);
