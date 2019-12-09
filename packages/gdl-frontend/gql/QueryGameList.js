@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Query, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const GET_GAMES_QUERY = gql`
+export const GET_GAMES_QUERY = gql`
   query GameList($language: String!, $pageSize: Int, $page: Int) {
     games_v2(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
