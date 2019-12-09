@@ -11,7 +11,6 @@ import {
 import { LibraryBooks, SportsEsports } from '@material-ui/icons';
 import { withRouter } from 'next/router';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
-import { RouteNameContext } from '../../context';
 import { Link } from '../../routes';
 import type { NextRouter } from '../../types';
 
