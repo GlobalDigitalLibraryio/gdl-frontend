@@ -216,3 +216,17 @@ export type Locale = {
   language: string,
   catalog: Catalogs
 };
+
+export type NextRouter = {
+  asPath: string,
+  back: () => void,
+  beforePopState: () => void,
+  events: { on: () => void, off: () => void, emit: () => void },
+  pathname: string,
+  prefetch: () => void,
+  push: () => void,
+  query: Object,
+  reload: () => void,
+  replace: () => void,
+  route: string
+};
