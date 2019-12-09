@@ -4,10 +4,11 @@ import { withStyles } from '@material-ui/core/styles';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { LibraryBooks, SportsEsports } from '@material-ui/icons';
-import { RouteNameContext } from '../../context';
 import { Link } from '../../routes';
 import { getTrigger } from './helpers';
 import { Slide } from '@material-ui/core';
+import { withRouter } from 'next/router';
+import type { NextRouter } from '../../types';
 
 const styles = theme => ({
   root: {
@@ -38,7 +39,8 @@ const WrappedNavButton = ({
 
 type Props = {
   classes: Object,
-  lang: string
+  lang: string,
+  router: NextRouter
 };
 
 class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
@@ -60,46 +62,42 @@ class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
   }
 
   render() {
-    const { classes, lang } = this.props;
+    const {
+      classes,
+      lang,
+      router: { pathname }
+    } = this.props;
     const { trigger } = this.state;
 
     return (
-      <RouteNameContext.Consumer>
-        {pageRoute => (
-          <Slide
-            direction="up"
-            in={!trigger}
-            // check to disable slidein animation on initial render
-            timeout={{ enter: trigger === null ? 0 : 225, exit: 195 }}
+      <Slide
+        direction="up"
+        in={!trigger}
+        // check to disable slidein animation on initial render
+        timeout={{ enter: trigger === null ? 0 : 225, exit: 195 }}
+      >
+        <BottomNavigation value={pathname} showLabels className={classes.root}>
+          <WrappedNavButton
+            name="books"
+            label="Books"
+            params={{ lang }}
+            value="/"
           >
-            <BottomNavigation
-              value={pageRoute}
-              showLabels
-              className={classes.root}
-            >
-              <WrappedNavButton
-                name="books"
-                label="Books"
-                params={{ lang }}
-                value="/"
-              >
-                <LibraryBooks />
-              </WrappedNavButton>
+            <LibraryBooks />
+          </WrappedNavButton>
 
-              <WrappedNavButton
-                name="games"
-                label="Games"
-                params={{ lang }}
-                value="/games"
-              >
-                <SportsEsports />
-              </WrappedNavButton>
-            </BottomNavigation>
-          </Slide>
-        )}
-      </RouteNameContext.Consumer>
+          <WrappedNavButton
+            name="games"
+            label="Games"
+            params={{ lang }}
+            value="/games"
+          >
+            <SportsEsports />
+          </WrappedNavButton>
+        </BottomNavigation>
+      </Slide>
     );
   }
 }
 
-export default withStyles(styles)(MobileBottomBar);
+export default withRouter(withStyles(styles)(MobileBottomBar));

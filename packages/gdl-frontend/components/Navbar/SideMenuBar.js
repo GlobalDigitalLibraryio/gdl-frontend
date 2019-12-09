@@ -9,9 +9,10 @@ import {
   ListItemText
 } from '@material-ui/core';
 import { LibraryBooks, SportsEsports } from '@material-ui/icons';
+import { withRouter } from 'next/router';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
-import { RouteNameContext } from '../../context';
 import { Link } from '../../routes';
+import type { NextRouter } from '../../types';
 
 const styles = theme => ({
   root: {},
@@ -37,50 +38,53 @@ const styles = theme => ({
   }
 });
 
-const SideMenuBar = ({ classes, lang }: { classes: Object, lang: string }) => (
-  <RouteNameContext.Consumer>
-    {pageRoute => (
-      <Drawer
-        variant="permanent"
-        className={classes.drawer}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <List disablePadding>
-          <ListItem key="placeholder" className={classes.menuButton}>
-            <ListItemIcon className={classes.icon}>
-              <LibraryBooks />
-            </ListItemIcon>
-            <ListItemText primary="no" />
-          </ListItem>
-          <Link route="books" params={{ lang }} passHref>
-            <ListItem
-              button
-              selected={pageRoute === '/'}
-              className={classes.menuButton}
-            >
-              <ListItemIcon className={classes.icon}>
-                <LibraryBooks />
-              </ListItemIcon>
-              <ListItemText primary="Books" />
-            </ListItem>
-          </Link>
-
-          <Link route="games" params={{ lang }} passHref>
-            <ListItem
-              button
-              selected={pageRoute === '/games'}
-              className={classes.menuButton}
-            >
-              <ListItemIcon className={classes.icon}>
-                <SportsEsports />
-              </ListItemIcon>
-              <ListItemText primary="Games" />
-            </ListItem>
-          </Link>
-        </List>
-      </Drawer>
-    )}
-  </RouteNameContext.Consumer>
+const SideMenuBar = ({
+  classes,
+  lang,
+  router: { pathname }
+}: {
+  classes: Object,
+  lang: string,
+  router: NextRouter
+}) => (
+  <Drawer
+    variant="permanent"
+    className={classes.drawer}
+    classes={{ paper: classes.drawerPaper }}
+  >
+    <List disablePadding>
+      <ListItem key="placeholder" className={classes.menuButton}>
+        <ListItemIcon className={classes.icon}>
+          <LibraryBooks />
+        </ListItemIcon>
+        <ListItemText primary="no" />
+      </ListItem>
+      <Link route="books" params={{ lang }} passHref>
+        <ListItem
+          button
+          selected={pathname === '/'}
+          className={classes.menuButton}
+        >
+          <ListItemIcon className={classes.icon}>
+            <LibraryBooks />
+          </ListItemIcon>
+          <ListItemText primary="Books" />
+        </ListItem>
+      </Link>
+      <Link route="games" params={{ lang }} passHref>
+        <ListItem
+          button
+          selected={pathname === '/games'}
+          className={classes.menuButton}
+        >
+          <ListItemIcon className={classes.icon}>
+            <SportsEsports />
+          </ListItemIcon>
+          <ListItemText primary="Games" />
+        </ListItem>
+      </Link>
+    </List>
+  </Drawer>
 );
 
-export default withStyles(styles)(SideMenuBar);
+export default withRouter(withStyles(styles)(SideMenuBar));
