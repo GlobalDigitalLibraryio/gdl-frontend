@@ -34,7 +34,6 @@ import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
 import { fetchSiteTranslation } from '../fetch';
-import routes from '../routes';
 import CategoryProvider from '../context/CategoryContext';
 import { getMainCategory } from '../utils/getMainCategory';
 
