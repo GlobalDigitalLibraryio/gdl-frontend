@@ -230,3 +230,9 @@ export type NextRouter = {
   replace: () => void,
   route: string
 };
+
+/**
+ * These type are directly related to the available main route names in routes.js
+ * In other words, if a new main category e.g audio, video are added it also needs to be added here
+ */
+export type MainCategory = 'books' | 'games';

@@ -34,8 +34,10 @@ import GlobalStyles from '../components/GlobalStyles';
 import { getSiteLanguage } from '../lib/storage';
 import { parseCookies } from '../utils/util';
 import { fetchSiteTranslation } from '../fetch';
+import CategoryProvider from '../context/CategoryContext';
+import { getMainCategory } from '../utils/getMainCategory';
 
-import type { Context, ConfigShape } from '../types';
+import type { Context, ConfigShape, MainCategory } from '../types';
 
 const {
   publicRuntimeConfig: { DEFAULT_LANGUAGE }
@@ -70,7 +72,11 @@ class App extends NextApp {
       pageProps = await Component.getInitialProps(ctx);
     }
 
-    const { req, query } = ctx;
+    const { req, query, pathname } = ctx;
+    const mainCategory: MainCategory = getMainCategory(
+      pageProps.pageRoute || pathname
+    );
+
     // $FlowFixMe: localeCatalog is our own and not in Express' $Request type
     const response = req || window.__NEXT_DATA__.props;
 
@@ -100,7 +106,7 @@ class App extends NextApp {
     const siteLanguage =
       (query && query.lang) || response.siteLanguage || getSiteLanguage(req);
 
-    return { pageProps, localeCatalog, siteLanguage };
+    return { pageProps, localeCatalog, siteLanguage, mainCategory };
   }
 
   constructor(props: { apolloClient: ApolloClient }) {
@@ -185,7 +191,8 @@ class App extends NextApp {
       pageProps,
       apolloClient,
       localeCatalog,
-      siteLanguage
+      siteLanguage,
+      mainCategory
     } = this.props;
     return (
       <NextContainer>
@@ -211,20 +218,22 @@ class App extends NextApp {
               registry={this.pageContext.sheetsRegistry}
               generateClassName={this.pageContext.generateClassName}
             >
-              {/* MuiThemeProvider makes the theme available down the React
+              <CategoryProvider initialMainCategory={mainCategory}>
+                {/* MuiThemeProvider makes the theme available down the React
               tree thanks to React context. */}
-              <MuiThemeProvider
-                theme={this.pageContext.theme}
-                sheetsManager={this.pageContext.sheetsManager}
-              >
-                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                <CssBaseline />
-                <OnlineStatusRedirectProvider>
-                  {/* Pass pageContext to the _document though the renderPage enhancer
+                <MuiThemeProvider
+                  theme={this.pageContext.theme}
+                  sheetsManager={this.pageContext.sheetsManager}
+                >
+                  {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                  <CssBaseline />
+                  <OnlineStatusRedirectProvider>
+                    {/* Pass pageContext to the _document though the renderPage enhancer
                 to render collected styles on server side. */}
-                  <Component pageContext={this.pageContext} {...pageProps} />
-                </OnlineStatusRedirectProvider>
-              </MuiThemeProvider>
+                    <Component pageContext={this.pageContext} {...pageProps} />
+                  </OnlineStatusRedirectProvider>
+                </MuiThemeProvider>
+              </CategoryProvider>
             </JssProvider>
           </GdlI18nProvider>
         </ApolloProvider>
