@@ -9,6 +9,7 @@ import { getTrigger } from './helpers';
 import { Slide } from '@material-ui/core';
 import { withRouter } from 'next/router';
 import type { NextRouter } from '../../types';
+import { CategoryContext } from '../../context/CategoryContext';
 
 const styles = theme => ({
   root: {
@@ -70,32 +71,42 @@ class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
     const { trigger } = this.state;
 
     return (
-      <Slide
-        direction="up"
-        in={!trigger}
-        // check to disable slidein animation on initial render
-        timeout={{ enter: trigger === null ? 0 : 225, exit: 195 }}
-      >
-        <BottomNavigation value={pathname} showLabels className={classes.root}>
-          <WrappedNavButton
-            name="books"
-            label="Books"
-            params={{ lang }}
-            value="/"
+      <CategoryContext.Consumer>
+        {({ setCategory }) => (
+          <Slide
+            direction="up"
+            in={!trigger}
+            // check to disable slidein animation on initial render
+            timeout={{ enter: trigger === null ? 0 : 225, exit: 195 }}
           >
-            <LibraryBooks />
-          </WrappedNavButton>
+            <BottomNavigation
+              value={pathname}
+              showLabels
+              className={classes.root}
+            >
+              <WrappedNavButton
+                name="books"
+                label="Books"
+                onClick={() => setCategory('books')}
+                params={{ lang }}
+                value="/"
+              >
+                <LibraryBooks />
+              </WrappedNavButton>
 
-          <WrappedNavButton
-            name="games"
-            label="Games"
-            params={{ lang }}
-            value="/games"
-          >
-            <SportsEsports />
-          </WrappedNavButton>
-        </BottomNavigation>
-      </Slide>
+              <WrappedNavButton
+                name="games"
+                label="Games"
+                onClick={() => setCategory('games')}
+                params={{ lang }}
+                value="/games"
+              >
+                <SportsEsports />
+              </WrappedNavButton>
+            </BottomNavigation>
+          </Slide>
+        )}
+      </CategoryContext.Consumer>
     );
   }
 }
