@@ -15,85 +15,101 @@ import type { GameContent_games as Games } from '../../gqlTypes';
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
-import { Container, View, Hidden, SideMenuMargin } from '../../elements';
-import PaginationSection from '../BookListSection/PaginationSection';
+import {
+  Container,
+  View,
+  Hidden,
+  SideMenuMargin,
+  LoadingButton
+} from '../../elements';
 import { spacing } from '../../style/theme';
-import { QueryGameList } from '../../gql';
 import MobileBottomBar from '../../components/Navbar/MobileBottomBar';
 import SideMenuBar from '../../components/Navbar/SideMenuBar';
 import { Typography } from '@material-ui/core';
-
-export const AMOUNT_OF_ITEMS_PER_LEVEL = 5;
+import GridContainer from '../BookGrid/styledGridContainer';
+import LevelHR from '../Level/LevelHR';
+import GameLink from '../BookListSection/GameLink';
 
 type Props = {|
   games: Games,
-  languageCode: string
+  languageCode: string,
+  loading: boolean,
+  loadMore: () => void
 |};
 
-class GamePage extends React.Component<Props> {
-  render() {
-    const { games, languageCode } = this.props;
-
-    return (
-      <Layout wrapWithMain={false}>
-        <Hidden only="desktop">
-          <SideMenuBar lang={languageCode} />
-        </Hidden>
-        <SideMenuMargin>
-          <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
-            <View css={scrollStyle}>
-              <Container width="100%">
-                {games.pageInfo.pageCount > 0 ? (
-                  <QueryGameList
-                    language={languageCode}
-                    pageSize={AMOUNT_OF_ITEMS_PER_LEVEL}
-                  >
-                    {({ games, loadMore, goBack, loading }) => (
-                      <PaginationSection
-                        loading={loading}
-                        loadMore={loadMore}
-                        goBack={goBack}
-                        pageInfo={games.pageInfo}
-                        shouldBeColorized
-                        languageCode={languageCode}
-                        level="Games"
-                        browseLinkProps={{
-                          lang: languageCode,
-                          route: 'browseGames'
-                        }}
-                        heading={<ReadingLevelTrans readingLevel="Games" />}
-                        items={games.results}
-                      />
-                    )}
-                  </QueryGameList>
+const GamePage = ({
+  games: { pageInfo, results },
+  loading,
+  loadMore,
+  languageCode
+}: Props) => (
+  <Layout wrapWithMain={false}>
+    <Hidden only="desktop">
+      <SideMenuBar lang={languageCode} />
+    </Hidden>
+    <SideMenuMargin>
+      <Main elevation={0} style={{ backgroundColor: 'transparent' }}>
+        <View css={scrollStyle}>
+          <Container width="100%">
+            <GridContainer>
+              <Typography
+                variant="h4"
+                component="h1"
+                align="left"
+                css={{
+                  margin: `${spacing.large} 0`,
+                  width: 'auto',
+                  gridColumn: '1/-1'
+                }}
+              >
+                {results.length > 0 ? (
+                  <>
+                    {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
+                    <ReadingLevelTrans readingLevel="Games" />
+                    <LevelHR
+                      level="Games"
+                      css={{
+                        margin: `${spacing.xsmall} 0`
+                      }}
+                    />
+                  </>
                 ) : (
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginTop: 50
-                    }}
-                  >
-                    <Typography>
-                      <FormattedMessage
-                        id="No games found"
-                        defaultMessage="No games found"
-                      />
-                    </Typography>
-                  </div>
+                  <FormattedMessage
+                    id="No games found"
+                    defaultMessage="No games found"
+                  />
                 )}
-              </Container>
-            </View>
-          </Main>
-        </SideMenuMargin>
-        <Hidden only="mobileAndTablet">
-          <MobileBottomBar lang={languageCode} />
-        </Hidden>
-      </Layout>
-    );
-  }
-}
+              </Typography>
+            </GridContainer>
+            <GridContainer>
+              {results.map(game => (
+                <GameLink key={game.id} game={game} />
+              ))}
+            </GridContainer>
+            <div css={{ alignSelf: 'center' }}>
+              <LoadingButton
+                disabled={!pageInfo.hasNextPage}
+                onClick={loadMore}
+                isLoading={loading}
+                color="primary"
+                variant="outlined"
+                css={{
+                  marginTop: spacing.xlarge,
+                  marginBottom: spacing.medium
+                }}
+              >
+                <FormattedMessage id="More games" defaultMessage="More games" />
+              </LoadingButton>
+            </div>
+          </Container>
+        </View>
+      </Main>
+    </SideMenuMargin>
+    <Hidden only="mobileAndTablet">
+      <MobileBottomBar lang={languageCode} />
+    </Hidden>
+  </Layout>
+);
 
 const scrollStyle = css`
   display: flex;

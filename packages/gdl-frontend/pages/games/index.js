@@ -7,14 +7,6 @@
  */
 
 import React from 'react';
-import gql from 'graphql-tag';
-
-import type { Context } from '../../types';
-import type {
-  GameContent,
-  GameContent_games as Games,
-  GetCategories as Categories
-} from '../../gqlTypes';
 import {
   LANGUAGE_SUPPORT_QUERY,
   HOME_CONTENT_QUERY,
@@ -29,14 +21,33 @@ import {
 } from '../../lib/storage';
 import { throwIfGraphql404 } from '../../utils/errorHandler';
 import { AMOUNT_OF_ITEMS_PER_LEVEL } from '../../components/HomePage';
+import QueryGameList, { GET_GAMES_QUERY } from '../../gql/QueryGameList';
+
+import type { Context } from '../../types';
+import type {
+  GameContent,
+  GameContent_games as Games,
+  GetCategories as Categories
+} from '../../gqlTypes';
+
+export const PAGE_SIZE = 30;
 
 type Props = {|
   languageCode: string,
   games: Games
 |};
 
-const GameIndexPage = ({ games, languageCode }: Props) => (
-  <GamePage games={games} languageCode={languageCode} />
+const GameIndexPage = ({ languageCode }: Props) => (
+  <QueryGameList language={languageCode} pageSize={PAGE_SIZE}>
+    {({ loading, games, loadMore }) => (
+      <GamePage
+        games={games}
+        languageCode={languageCode}
+        loading={loading}
+        loadMore={loadMore}
+      />
+    )}
+  </QueryGameList>
 );
 
 GameIndexPage.getInitialProps = async ({
@@ -101,10 +112,10 @@ GameIndexPage.getInitialProps = async ({
     const gameContentResult: {
       data: GameContent
     } = await apolloClient.query({
-      query: GAME_CONTENT_QUERY,
+      query: GET_GAMES_QUERY,
       variables: {
         language: languageCode,
-        pageSize: 5
+        pageSize: PAGE_SIZE
       }
     });
 
@@ -120,31 +131,3 @@ GameIndexPage.getInitialProps = async ({
 };
 
 export default withErrorPage(GameIndexPage);
-
-const GAME_CONTENT_QUERY = gql`
-  query GameContent($language: String!, $pageSize: Int, $page: Int) {
-    games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
-      pageInfo {
-        page
-        pageSize
-        pageCount
-        hasPreviousPage
-        hasNextPage
-      }
-      results {
-        id
-        title
-        description
-        url
-        source
-        publisher
-        license
-        language
-        coverImage {
-          url
-          altText
-        }
-      }
-    }
-  }
-`;
