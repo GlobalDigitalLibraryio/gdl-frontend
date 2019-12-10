@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 export const GET_GAMES_QUERY = gql`
   query GameList($language: String!, $pageSize: Int, $page: Int) {
-    games_v2(language: $language, pageSize: $pageSize, page: $page) {
+    games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize
@@ -59,31 +59,31 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
           const loading = networkStatus < 7;
 
           const loadMore = async () => {
-            const { games_v2 } = await client.readQuery({
+            const { games } = await client.readQuery({
               query: GET_GAMES_QUERY,
               variables: { language, pageSize }
             });
 
             // Check if result is already in cache
             const shouldFetch =
-              games_v2.results.length / 5 === games_v2.pageInfo.page;
+              games.results.length / 5 === games.pageInfo.page;
             if (shouldFetch) {
               !loading &&
                 (await fetchMore({
                   variables: {
                     language,
-                    page: data.games_v2.pageInfo.page + 1
+                    page: data.games.pageInfo.page + 1
                   },
                   updateQuery: (prev, { fetchMoreResult }) => {
                     if (!fetchMoreResult) return prev;
 
                     return Object.assign({}, prev, {
-                      games_v2: {
-                        ...prev.games_v2,
-                        pageInfo: fetchMoreResult.games_v2.pageInfo,
+                      games: {
+                        ...prev.games,
+                        pageInfo: fetchMoreResult.games.pageInfo,
                         results: [
-                          ...prev.games_v2.results,
-                          ...fetchMoreResult.games_v2.results
+                          ...prev.games.results,
+                          ...fetchMoreResult.games.results
                         ]
                       }
                     });
@@ -97,15 +97,14 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
                   pageSize
                 },
                 data: {
-                  games_v2: {
-                    ...games_v2,
+                  games: {
+                    ...games,
                     pageInfo: {
-                      ...games_v2.pageInfo,
+                      ...games.pageInfo,
                       hasPreviousPage: true,
                       hasNextPage:
-                        games_v2.pageInfo.page <
-                        games_v2.pageInfo.pageCount - 1,
-                      page: games_v2.pageInfo.page + 1
+                        games.pageInfo.page < games.pageInfo.pageCount - 1,
+                      page: games.pageInfo.page + 1
                     }
                   }
                 }
@@ -114,7 +113,7 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
           };
 
           const goBack = async () => {
-            const { games_v2 } = await client.readQuery({
+            const { games } = await client.readQuery({
               query: GET_GAMES_QUERY,
               variables: { language, pageSize }
             });
@@ -126,14 +125,14 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
                 pageSize
               },
               data: {
-                games_v2: {
-                  ...games_v2,
+                games: {
+                  ...games,
                   pageInfo: {
-                    ...games_v2.pageInfo,
+                    ...games.pageInfo,
                     // There is always a prev page if you have navigated to page 2
-                    hasPreviousPage: games_v2.pageInfo.page > 2,
+                    hasPreviousPage: games.pageInfo.page > 2,
                     hasNextPage: true,
-                    page: games_v2.pageInfo.page - 1
+                    page: games.pageInfo.page - 1
                   }
                 }
               }
@@ -142,7 +141,7 @@ const QueryGameList = ({ language, children, pageSize }: Props) => (
 
           return children({
             loading,
-            games: data.games_v2,
+            games: data.games,
             loadMore,
             goBack
           });
