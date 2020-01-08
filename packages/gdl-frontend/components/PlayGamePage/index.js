@@ -8,7 +8,7 @@
 
 import * as React from 'react';
 import { Card } from '@material-ui/core';
-import { Global, css } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Toolbar from './Toolbar';
 import { Container } from '../../elements';
@@ -27,8 +27,6 @@ type Props = {
  */
 const PlayGamePage = ({ game, onClose }: Props) => (
   <Container size="large" gutter={false}>
-    {/* Disable scrolling and only allow it in the iframe */}
-
     <Backdrop />
     <Card>
       <Toolbar title={game.title} onClose={onClose} />
