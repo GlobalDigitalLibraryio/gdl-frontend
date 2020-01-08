@@ -8,7 +8,6 @@
 
 import * as React from 'react';
 import { Card } from '@material-ui/core';
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import Toolbar from './Toolbar';
 import { Container } from '../../elements';
