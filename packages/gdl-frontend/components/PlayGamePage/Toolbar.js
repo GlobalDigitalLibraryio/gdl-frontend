@@ -40,7 +40,6 @@ const Toolbar = ({ title, onClose }: Props) => (
 const Div = styled.div`
   z-index: 2;
   background: #fff;
-  position: relative;
   position: sticky;
   top: 0;
   color: ${colors.text.subtle};

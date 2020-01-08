@@ -13,6 +13,7 @@ import styled from '@emotion/styled';
 import Toolbar from './Toolbar';
 import { Container } from '../../elements';
 import { Backdrop } from '../../components/Reader/styledReader';
+import media from '../../style/media';
 
 import type { game_game as Game } from '../../gqlTypes';
 
@@ -27,13 +28,7 @@ type Props = {
 const PlayGamePage = ({ game, onClose }: Props) => (
   <Container size="large" gutter={false}>
     {/* Disable scrolling and only allow it in the iframe */}
-    <Global
-      styles={css`
-        body {
-          overflow: hidden;
-        }
-      `}
-    />
+
     <Backdrop />
     <Card>
       <Toolbar title={game.title} onClose={onClose} />
@@ -56,8 +51,11 @@ export default PlayGamePage;
 const ResponsiveIframeContainer = styled('div')`
   -webkit-overflow-scrolling: touch;
   position: relative;
-  padding-top: 100vh;
   overflow: auto;
+  padding-top: calc(100vh - 50px);
+  ${media.tablet`
+    padding-top: calc(100vh - 98px);
+  `};
 `;
 
 const ResponsiveIframe = styled('iframe')`
