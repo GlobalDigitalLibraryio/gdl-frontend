@@ -33,7 +33,9 @@ export default function ReadingLevelTrans({ readingLevel: level }: Props) {
     case 'Level6':
       return <FormattedMessage id="Level 6" defaultMessage="Level 6" />;
     case 'Games':
-      return <FormattedMessage id="Games" defaultMessage="Games" />;
+      return (
+        <FormattedMessage id="Games (beta)" defaultMessage="Games (beta)" />
+      );
     default:
       return level;
   }
