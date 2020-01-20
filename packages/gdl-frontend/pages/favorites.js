@@ -283,7 +283,7 @@ const FAVORITES_QUERY = gql`
         code
       }
       coverImage {
-        url
+        url: urlV2
       }
     }
   }

@@ -244,7 +244,7 @@ const BOOK_QUERY = gql`
         chapterId
       }
       coverImage {
-        url
+        url: urlV2
       }
     }
   }
@@ -257,7 +257,7 @@ const CHAPTER_QUERY = gql`
       seqNo
       chapterId
       content
-      imageUrls
+      imageUrls: imageUrlsV2
     }
   }
 `;

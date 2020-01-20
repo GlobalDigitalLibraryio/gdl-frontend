@@ -55,7 +55,7 @@ const BROWSE_BOOKS_QUERY = gql`
         bookId
         title
         coverImage {
-          url
+          url: urlV2
         }
         language {
           code

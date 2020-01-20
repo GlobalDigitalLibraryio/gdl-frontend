@@ -81,7 +81,7 @@ const BOOK_QUERY = gql`
         name
       }
       coverImage {
-        url
+        url: urlV2
       }
       publisher {
         name
@@ -537,7 +537,7 @@ const SIMILAR_BOOKS_QUERY = gql`
             code
           }
           coverImage {
-            url
+            url: urlV2
           }
         }
       }

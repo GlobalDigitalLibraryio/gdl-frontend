@@ -237,7 +237,7 @@ const OfflineBookFragment = gql`
       seqNo
       chapterId
       content
-      imageUrls
+      imageUrls: imageUrlsV2
     }
     downloads {
       epub
@@ -253,7 +253,7 @@ const OfflineBookFragment = gql`
       isRTL
     }
     coverImage {
-      url
+      url: urlV2
     }
     publisher {
       name
