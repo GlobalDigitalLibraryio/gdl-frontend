@@ -10,7 +10,7 @@ import * as React from 'react';
 import { css } from '@emotion/core';
 import { FormattedMessage } from 'react-intl';
 
-import type { GameContent_games as Games } from '../../gqlTypes';
+import type { GameList_games as Games } from '../../gqlTypes';
 
 import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';

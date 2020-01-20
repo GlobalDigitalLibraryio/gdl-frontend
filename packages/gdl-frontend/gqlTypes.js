@@ -42,6 +42,132 @@ export type languages = {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: BookList
+// ====================================================
+
+export type BookList_bookSummaries_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type BookList_bookSummaries_results_coverImage = {
+  __typename: "CoverImage",
+  url: string,
+};
+
+export type BookList_bookSummaries_results_language = {
+  __typename: "Language",
+  code: string,
+};
+
+export type BookList_bookSummaries_results = {
+  __typename: "BookSummary",
+  id: string,
+  bookId: number,
+  title: string,
+  coverImage: ?BookList_bookSummaries_results_coverImage,
+  language: BookList_bookSummaries_results_language,
+};
+
+export type BookList_bookSummaries = {
+  __typename: "ResultItemConnection",
+  pageInfo: BookList_bookSummaries_pageInfo,
+  results: Array<BookList_bookSummaries_results>,
+};
+
+export type BookList = {
+  bookSummaries: BookList_bookSummaries
+};
+
+export type BookListVariables = {
+  page?: ?number,
+  language: string,
+  category: Category,
+  pageSize?: ?number,
+  readingLevel?: ?ReadingLevel,
+  orderBy?: ?OrderBy,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: GameList
+// ====================================================
+
+export type GameList_games_pageInfo = {
+  __typename: "PageInfo",
+  page: number,
+  pageSize: number,
+  pageCount: number,
+  hasPreviousPage: boolean,
+  hasNextPage: boolean,
+};
+
+export type GameList_games_results_coverImage = {
+  __typename: "GameImage",
+  url: string,
+  altText: ?string,
+};
+
+export type GameList_games_results = {
+  __typename: "Game_v2",
+  id: string,
+  title: string,
+  description: string,
+  url: string,
+  source: string,
+  publisher: string,
+  language: string,
+  coverImage: GameList_games_results_coverImage,
+};
+
+export type GameList_games = {
+  __typename: "GameResult_v2",
+  pageInfo: GameList_games_pageInfo,
+  results: Array<GameList_games_results>,
+};
+
+export type GameList = {
+  games: GameList_games
+};
+
+export type GameListVariables = {
+  language: string,
+  pageSize?: ?number,
+  page?: ?number,
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: currentUser
+// ====================================================
+
+export type currentUser_currentUser = {
+  __typename: "User",
+  isAdmin: boolean,
+};
+
+export type currentUser = {
+  currentUser: ?currentUser_currentUser
+};
+
+
+/* @flow */
+/* eslint-disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: OfflineBook
 // ====================================================
 
@@ -1339,17 +1465,17 @@ export type Category = "Classroom" | "Library";
 /**
  * 
  */
+export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
+
+/**
+ * 
+ */
 export type BookFormat = "HTML" | "PDF";
 
 /**
  * 
  */
 export type ChapterType = "Content" | "FrontPage";
-
-/**
- * 
- */
-export type OrderBy = "arrivalDate_ASC" | "arrivalDate_DESC" | "title_ASC" | "title_DESC";
 
 //==============================================================
 // END Enums and Input Objects

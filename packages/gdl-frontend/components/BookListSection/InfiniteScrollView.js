@@ -20,7 +20,7 @@ import { coverWidths } from './coverWidths';
 
 import type { Book } from './BookLink';
 import type {
-  BrowseGames_games_v2_results as Game,
+  GameList_games_results as Game,
   ReadingLevel
 } from '../../gqlTypes';
 
