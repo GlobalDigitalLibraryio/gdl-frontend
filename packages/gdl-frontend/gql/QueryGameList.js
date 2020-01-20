@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 
 export const GET_GAMES_QUERY = gql`
   query GameList($language: String!, $pageSize: Int, $page: Int) {
-    games: games_v2(language: $language, pageSize: $pageSize, page: $page) {
+    games: games_v3(language: $language, pageSize: $pageSize, page: $page) {
       pageInfo {
         page
         pageSize
@@ -26,7 +26,6 @@ export const GET_GAMES_QUERY = gql`
         url
         source
         publisher
-        license
         language
         coverImage {
           url

@@ -18,13 +18,14 @@ import { withErrorPage } from '../../hocs';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import Head from '../../components/Head';
-import { Container, Hidden } from '../../elements';
+import { Container, Hidden, A } from '../../elements';
 import CoverImage from '../../components/CoverImage';
 import { spacing } from '../../style/theme';
 import mq from '../../style/mq';
 import media from '../../style/media';
 import LevelRibbon from '../../components/Level/LevelRibbon';
 import { logEvent } from '../../lib/analytics';
+import OnlineStatusContext from '../../components/OnlineStatusContext';
 import {
   Grid,
   GridItem,
@@ -117,15 +118,27 @@ const GamePage = ({ game }: { game: Game }) => (
               <Typography variant="subtitle2" component="span">
                 <FormattedMessage id="License" defaultMessage="License" />
               </Typography>
-              <Typography
-                component="span"
-                paragraph
-                css={css`
-                  margin-bottom: 0;
-                `}
-              >
-                {game.license}
-              </Typography>
+              <OnlineStatusContext.Consumer>
+                {online =>
+                  online ? (
+                    <A
+                      href={game.license.url}
+                      paragraph
+                      css={styles.noMarginForLastChild}
+                    >
+                      {game.license.name}
+                    </A>
+                  ) : (
+                    <Typography
+                      component="span"
+                      paragraph
+                      css={styles.noMarginForLastChild}
+                    >
+                      {game.license.name}
+                    </Typography>
+                  )
+                }
+              </OnlineStatusContext.Consumer>
             </GridItem>
             <Hidden only="mobile">
               <GridItem>
@@ -209,14 +222,17 @@ const GameLinkButton = ({ game }: { game: Game }) => {
 
 export const GAME_QUERY = gql`
   query game($id: ID!) {
-    game(id: $id) {
+    game: game_v2(id: $id) {
       id
       title
       description
       url
       source
       publisher
-      license
+      license {
+        url
+        name
+      }
       language
       coverImage {
         imageId
@@ -244,6 +260,11 @@ const styles = {
   mobileRibbon: css`
     margin-top: -20px;
     margin-bottom: ${spacing.medium};
+  `,
+  noMarginForLastChild: css`
+    &:last-child {
+      margin-bottom: 0;
+    }
   `
 };
 
