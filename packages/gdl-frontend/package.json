@@ -12,7 +12,8 @@
     "build": "yarn i18n:extract && next build",
     "start": "NODE_ENV=production node server",
     "i18n:extract": "node_modules/extract-react-intl-messages/cli.js -l=en -o locale/en './**/*.js'",
-    "analyze": "cross-env ANALYZE=1 next build"
+    "analyze": "cross-env ANALYZE=1 next build",
+    "gqlTypegen": "apollo client:codegen ./gqlTypes.js --outputFlat --includes \"{pages,components,lib,gql}/**/*.js\" --target flow --endpoint http://localhost:4000"
   },
   "dependencies": {
     "@emotion/core": "^10.0.14",

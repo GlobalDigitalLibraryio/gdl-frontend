@@ -25,8 +25,8 @@ import QueryGameList, { GET_GAMES_QUERY } from '../../gql/QueryGameList';
 
 import type { Context } from '../../types';
 import type {
-  GameContent,
-  GameContent_games as Games,
+  GameList,
+  GameList_games_results as Games,
   GetCategories as Categories
 } from '../../gqlTypes';
 
@@ -110,7 +110,7 @@ GameIndexPage.getInitialProps = async ({
     }
 
     const gameContentResult: {
-      data: GameContent
+      data: GameList
     } = await apolloClient.query({
       query: GET_GAMES_QUERY,
       variables: {

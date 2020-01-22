@@ -14,7 +14,7 @@ import { Link } from '../../routes';
 import CoverImage from '../CoverImage';
 import ClickTarget from './ClickTarget';
 
-import type { BrowseGames_games_v2_results as Game } from '../../gqlTypes';
+import type { GameList_games_results as Game } from '../../gqlTypes';
 
 /**
  * Adds an absolute anchor above the whole cover, so you can click anywhere.
