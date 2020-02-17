@@ -256,7 +256,7 @@ const CHAPTER_QUERY = gql`
       id
       seqNo
       chapterId
-      content
+      content: content_v2
       imageUrls: imageUrlsV2
     }
   }
