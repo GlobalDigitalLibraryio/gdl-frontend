@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   ListItemText
 } from '@material-ui/core';
-import { LibraryBooks, SportsEsports } from '@material-ui/icons';
+import { LibraryBooks, SportsEsports, Videocam } from '@material-ui/icons';
 import { withRouter } from 'next/router';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
 import { Link } from '../../routes';
@@ -89,6 +89,21 @@ const SideMenuBar = ({
               <ListItemText primary="Games" />
             </ListItem>
           </Link>
+
+          <Link route="videos" params={{ lang }} passHref prefetch>
+            <ListItem
+              button
+              // onClick={() => setCategory('video')}
+              // selected={pathname === '/videos'}
+              className={classes.menuButton}
+            >
+              <ListItemIcon className={classes.icon}>
+                <Videocam />
+              </ListItemIcon>
+              <ListItemText primary="Videos" />
+            </ListItem>
+          </Link>
+
         </List>
       </Drawer>
     )}

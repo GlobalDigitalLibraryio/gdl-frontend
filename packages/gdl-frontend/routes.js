@@ -52,6 +52,9 @@ routes.add('browseBooks', `/${langParam}/books/browse`, 'books/browse');
 // Book details page
 routes.add('book', `/${langParam}/books/details/:id(\\d+)`, 'books/_book');
 
+// Video landing page
+routes.add('videos', `/${langParam}/videos`, 'videos/index');
+
 // Game landing page
 routes.add('games', `/${langParam}/games`, 'games/index');
 
