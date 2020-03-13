@@ -12,7 +12,6 @@ import { FormattedMessage } from 'react-intl';
 
 import type { GameList_games as Games } from '../../gqlTypes';
 
-import ReadingLevelTrans from '../../components/ReadingLevelTrans';
 import Layout from '../../components/Layout';
 import Main from '../../components/Layout/Main';
 import {
