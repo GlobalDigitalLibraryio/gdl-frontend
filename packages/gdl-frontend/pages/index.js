@@ -211,6 +211,15 @@ export const LANGUAGE_SUPPORT_QUERY = gql`
   }
 `;
 
+export const LANGUAGES_QUERY = gql`
+  query languages {
+    languages {
+      code
+      name
+    }
+  }
+`;
+
 export const CATEGORIES_QUERY = gql`
   query GetCategories($language: String!) {
     categories(language: $language)

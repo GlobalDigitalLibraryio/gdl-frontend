@@ -33,6 +33,7 @@ import GameLink from '../BookListSection/GameLink';
 type Props = {|
   games: Games,
   languageCode: string,
+  languageName: string,
   loading: boolean,
   loadMore: () => void
 |};
@@ -41,7 +42,8 @@ const GamePage = ({
   games: { pageInfo, results },
   loading,
   loadMore,
-  languageCode
+  languageCode,
+  languageName
 }: Props) => (
   <Layout wrapWithMain={false}>
     <Hidden only="desktop">
@@ -65,7 +67,7 @@ const GamePage = ({
                 {results.length > 0 ? (
                   <>
                     {/* $FlowFixMe This is the level from the query parameter. Which doesn't really typecheck */}
-                    <ReadingLevelTrans readingLevel="Games" />
+                    {languageName}
                     <LevelHR
                       level="Games"
                       css={{
