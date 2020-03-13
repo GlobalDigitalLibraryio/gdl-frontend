@@ -64,9 +64,9 @@ class IndexPage extends React.Component<Props> {
         variables: { language: languageCode }
       });
 
-      if (!langRes.data.languageSupport) {
+      /*if (!langRes.data.languageSupport) {
         return { statusCode: 404 };
-      }
+      }*/
 
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
