@@ -91,7 +91,8 @@ app.prepare().then(() => {
       helmet({
         contentSecurityPolicy: {
           directives: contentSecurityPolicy.normalDirectives
-        }
+        },
+        frameguard: { action: 'allow-from', domain: '*://freelearning.io' }
       })
     );
   }

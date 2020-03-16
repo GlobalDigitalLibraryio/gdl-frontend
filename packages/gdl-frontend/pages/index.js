@@ -59,14 +59,14 @@ class IndexPage extends React.Component<Props> {
       const siteLanguage = query.lang || getSiteLanguage(req);
 
       // Check if queried language is supported with content
-      const langRes = await apolloClient.query({
+      /*const langRes = await apolloClient.query({
         query: LANGUAGE_SUPPORT_QUERY,
         variables: { language: languageCode }
       });
 
       if (!langRes.data.languageSupport) {
         return { statusCode: 404 };
-      }
+      }*/
 
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
@@ -208,6 +208,15 @@ export default withErrorPage(IndexPage);
 export const LANGUAGE_SUPPORT_QUERY = gql`
   query CheckLanguageSupport($language: String!) {
     languageSupport(language: $language)
+  }
+`;
+
+export const LANGUAGES_QUERY = gql`
+  query languages {
+    languages {
+      code
+      name
+    }
   }
 `;
 

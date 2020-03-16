@@ -9,6 +9,7 @@
 import React from 'react';
 import {
   LANGUAGE_SUPPORT_QUERY,
+  LANGUAGES_QUERY,
   HOME_CONTENT_QUERY,
   CATEGORIES_QUERY
 } from '../index';
@@ -34,15 +35,17 @@ export const PAGE_SIZE = 30;
 
 type Props = {|
   languageCode: string,
+  languageName: string,
   games: Games
 |};
 
-const GameIndexPage = ({ languageCode }: Props) => (
+const GameIndexPage = ({ languageCode, languageName }: Props) => (
   <QueryGameList language={languageCode} pageSize={PAGE_SIZE}>
     {({ loading, games, loadMore }) => (
       <GamePage
         games={games}
         languageCode={languageCode}
+        languageName={languageName}
         loading={loading}
         loadMore={loadMore}
       />
@@ -60,6 +63,14 @@ GameIndexPage.getInitialProps = async ({
   try {
     // Get the language either from the URL or the user's cookies
     const languageCode = query.lang || getBookLanguageCode(req);
+
+    const languagesRes = await apolloClient.query({
+      query: LANGUAGES_QUERY
+    });
+    const language = languagesRes.data.languages.find(
+      lang => lang.code === languageCode
+    );
+    const languageName = language.name;
 
     // Check if queried language is supported with content
     const langRes = await apolloClient.query({
@@ -123,7 +134,7 @@ GameIndexPage.getInitialProps = async ({
       data: { games }
     } = gameContentResult;
 
-    return { languageCode, games };
+    return { languageCode, languageName, games };
   } catch (error) {
     throwIfGraphql404(error);
     return { statusCode: 500 };
