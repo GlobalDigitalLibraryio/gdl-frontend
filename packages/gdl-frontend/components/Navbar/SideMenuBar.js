@@ -39,60 +39,72 @@ const styles = theme => ({
   }
 });
 
+type Props = {
+  classes: Object,
+  lang: string,
+  router: NextRouter,
+  gameContentLength: number,
+  bookContentLength: number
+}
+
 const SideMenuBar = ({
   classes,
   lang,
-  router: { pathname }
-}: {
-  classes: Object,
-  lang: string,
-  router: NextRouter
-}) => (
-  <CategoryContext.Consumer>
-    {({ setCategory }) => (
-      <Drawer
-        variant="permanent"
-        className={classes.drawer}
-        classes={{ paper: classes.drawerPaper }}
-      >
-        <List disablePadding>
-          <ListItem key="placeholder" className={classes.menuButton}>
-            <ListItemIcon className={classes.icon}>
-              <LibraryBooks />
-            </ListItemIcon>
-            <ListItemText primary="no" />
-          </ListItem>
-          <Link route="books" params={{ lang }} passHref prefetch>
-            <ListItem
-              button
-              onClick={() => setCategory('books')}
-              selected={pathname === '/'}
-              className={classes.menuButton}
-            >
+  router: { pathname },
+  gameContentLength,
+  bookContentLength
+}: Props) => (
+    <CategoryContext.Consumer>
+      {({ setCategory }) => (
+        <Drawer
+          variant="permanent"
+          className={classes.drawer}
+          classes={{ paper: classes.drawerPaper }}
+        >
+
+        {console.log("gameContentLength", gameContentLength)}
+          <List disablePadding>
+            <ListItem key="placeholder" className={classes.menuButton}>
               <ListItemIcon className={classes.icon}>
                 <LibraryBooks />
               </ListItemIcon>
-              <ListItemText primary="Books" />
+              <ListItemText primary="no" />
             </ListItem>
-          </Link>
 
-          <Link route="games" params={{ lang }} passHref prefetch>
-            <ListItem
-              button
-              onClick={() => setCategory('games')}
-              selected={pathname === '/games'}
-              className={classes.menuButton}
-            >
-              <ListItemIcon className={classes.icon}>
-                <SportsEsports />
-              </ListItemIcon>
-              <ListItemText primary="Games" />
-            </ListItem>
-          </Link>
-        </List>
-      </Drawer>
-    )}
-  </CategoryContext.Consumer>
+            {console.log("lang: ", lang)}
+
+            {!!bookContentLength && (<Link route="books" params={{ lang }} passHref prefetch>
+              <ListItem
+                button
+                onClick={() => setCategory('books')}
+                selected={pathname === '/'}
+                className={classes.menuButton}
+              >
+                <ListItemIcon className={classes.icon}>
+                  <LibraryBooks />
+                </ListItemIcon>
+                <ListItemText primary="Books" />
+              </ListItem>
+            </Link>)}
+
+            {!!gameContentLength && (<Link route="games" params={{ lang }} passHref prefetch>
+              <ListItem
+                button
+                onClick={() => setCategory('games')}
+                selected={pathname === '/games'}
+                className={classes.menuButton}
+              >
+                <ListItemIcon className={classes.icon}>
+                  <SportsEsports />
+                </ListItemIcon>
+                <ListItemText primary="Games" />
+              </ListItem>
+            </Link>)}
+
+          </List>
+        </Drawer>
+      )}
+    </CategoryContext.Consumer>
 );
 
 export default withRouter(withStyles(styles)(SideMenuBar));

@@ -42,7 +42,8 @@ type Props = {|
   categories: Array<Category>,
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
-  homeContent: HomeContent
+  homeContent: HomeContent,
+  games: any
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -146,7 +147,9 @@ class IndexPage extends React.Component<Props> {
         featuredContent: featuredContent,
         homeContent,
         // site languge from cookie
-        siteLanguage
+        siteLanguage,
+        games,
+        categoriesRes
       };
     } catch (error) {
       throwIfGraphql404(error);
@@ -167,7 +170,9 @@ class IndexPage extends React.Component<Props> {
       category,
       featuredContent,
       categories,
-      languageCode
+      languageCode,
+      games,
+      categoriesRes
     } = this.props;
 
     let categoryTypeForUrl;
@@ -177,8 +182,13 @@ class IndexPage extends React.Component<Props> {
       categoryTypeForUrl = 'classroom';
     }
 
+    const gamesLength = games.data.games.results.length
+    const bookLength = categoriesRes.data.categories.length
+
     return (
       <>
+        {console.log("Hva er HomeContent? ", homeContent)}
+
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -197,6 +207,8 @@ class IndexPage extends React.Component<Props> {
           categories={categories}
           languageCode={languageCode}
           featuredContent={featuredContent}
+          gameContentLength={gamesLength}
+          bookContentLength={bookLength}
         />
       </>
     );
