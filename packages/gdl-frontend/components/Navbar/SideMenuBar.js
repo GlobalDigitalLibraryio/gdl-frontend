@@ -43,37 +43,34 @@ type Props = {
   classes: Object,
   lang: string,
   router: NextRouter,
-  gameContentLength: number,
-  bookContentLength: number
-}
+  showGameButton: boolean,
+  showBookButton: boolean
+};
 
 const SideMenuBar = ({
   classes,
   lang,
   router: { pathname },
-  gameContentLength,
-  bookContentLength
+  showGameButton,
+  showBookButton
 }: Props) => (
-    <CategoryContext.Consumer>
-      {({ setCategory }) => (
-        <Drawer
-          variant="permanent"
-          className={classes.drawer}
-          classes={{ paper: classes.drawerPaper }}
-        >
+  <CategoryContext.Consumer>
+    {({ setCategory }) => (
+      <Drawer
+        variant="permanent"
+        className={classes.drawer}
+        classes={{ paper: classes.drawerPaper }}
+      >
+        <List disablePadding>
+          <ListItem key="placeholder" className={classes.menuButton}>
+            <ListItemIcon className={classes.icon}>
+              <LibraryBooks />
+            </ListItemIcon>
+            <ListItemText primary="no" />
+          </ListItem>
 
-        {console.log("gameContentLength", gameContentLength)}
-          <List disablePadding>
-            <ListItem key="placeholder" className={classes.menuButton}>
-              <ListItemIcon className={classes.icon}>
-                <LibraryBooks />
-              </ListItemIcon>
-              <ListItemText primary="no" />
-            </ListItem>
-
-            {console.log("lang: ", lang)}
-
-            {!!bookContentLength && (<Link route="books" params={{ lang }} passHref prefetch>
+          {showBookButton && (
+            <Link route="books" params={{ lang }} passHref prefetch>
               <ListItem
                 button
                 onClick={() => setCategory('books')}
@@ -85,9 +82,11 @@ const SideMenuBar = ({
                 </ListItemIcon>
                 <ListItemText primary="Books" />
               </ListItem>
-            </Link>)}
+            </Link>
+          )}
 
-            {!!gameContentLength && (<Link route="games" params={{ lang }} passHref prefetch>
+          {showGameButton && (
+            <Link route="games" params={{ lang }} passHref prefetch>
               <ListItem
                 button
                 onClick={() => setCategory('games')}
@@ -99,12 +98,12 @@ const SideMenuBar = ({
                 </ListItemIcon>
                 <ListItemText primary="Games" />
               </ListItem>
-            </Link>)}
-
-          </List>
-        </Drawer>
-      )}
-    </CategoryContext.Consumer>
+            </Link>
+          )}
+        </List>
+      </Drawer>
+    )}
+  </CategoryContext.Consumer>
 );
 
 export default withRouter(withStyles(styles)(SideMenuBar));

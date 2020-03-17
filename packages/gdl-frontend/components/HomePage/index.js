@@ -97,8 +97,8 @@ type Props = {|
   categories: Array<Category>,
   category: Category,
 
-  gameContentLength?: number,
-  bookContentLength?: number
+  showGameButton?: boolean,
+  showBookButton?: boolean
 |};
 
 class HomePage extends React.Component<Props> {
@@ -116,8 +116,8 @@ class HomePage extends React.Component<Props> {
       featuredContent,
       categories,
       languageCode,
-      gameContentLength,
-      bookContentLength
+      showGameButton,
+      showBookButton
     } = this.props;
 
     return (
@@ -130,7 +130,11 @@ class HomePage extends React.Component<Props> {
           />
         </NavContextBar>
         <Hidden only="desktop">
-          <SideMenuBar lang={languageCode} gameContentLength={gameContentLength} bookContentLength={bookContentLength}/>
+          <SideMenuBar
+            lang={languageCode}
+            showBookButton={showBookButton}
+            showGameButton={showGameButton}
+          />
         </Hidden>
         <SideMenuMargin>
           <Main elevation={0} style={{ backgroundColor: 'transparent' }}>

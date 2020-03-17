@@ -43,7 +43,8 @@ type Props = {|
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
   homeContent: HomeContent,
-  games: any
+  languageHasGame: boolean,
+  languageHasBook: boolean
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -60,14 +61,18 @@ class IndexPage extends React.Component<Props> {
       const siteLanguage = query.lang || getSiteLanguage(req);
 
       // Check if queried language is supported with content
-      /*const langRes = await apolloClient.query({
+      const langRes = await apolloClient.query({
         query: LANGUAGE_SUPPORT_QUERY,
         variables: { language: languageCode }
       });
 
-      if (!langRes.data.languageSupport) {
+      /* if (!langRes.data.languageSupport) {
         return { statusCode: 404 };
       }*/
+
+      // Trying to show buttons for available content
+      const languageHasBook = langRes.data.languageSupport.includes('Book');
+      const languageHasGame = langRes.data.languageSupport.includes('Game');
 
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
@@ -148,8 +153,8 @@ class IndexPage extends React.Component<Props> {
         homeContent,
         // site languge from cookie
         siteLanguage,
-        games,
-        categoriesRes
+        languageHasBook,
+        languageHasGame
       };
     } catch (error) {
       throwIfGraphql404(error);
@@ -171,8 +176,8 @@ class IndexPage extends React.Component<Props> {
       featuredContent,
       categories,
       languageCode,
-      games,
-      categoriesRes
+      languageHasBook,
+      languageHasGame
     } = this.props;
 
     let categoryTypeForUrl;
@@ -182,13 +187,8 @@ class IndexPage extends React.Component<Props> {
       categoryTypeForUrl = 'classroom';
     }
 
-    const gamesLength = games.data.games.results.length
-    const bookLength = categoriesRes.data.categories.length
-
     return (
       <>
-        {console.log("Hva er HomeContent? ", homeContent)}
-
         {categoryTypeForUrl && (
           <Head>
             <link
@@ -207,8 +207,8 @@ class IndexPage extends React.Component<Props> {
           categories={categories}
           languageCode={languageCode}
           featuredContent={featuredContent}
-          gameContentLength={gamesLength}
-          bookContentLength={bookLength}
+          showGameButton={languageHasGame}
+          showBookButton={languageHasBook}
         />
       </>
     );

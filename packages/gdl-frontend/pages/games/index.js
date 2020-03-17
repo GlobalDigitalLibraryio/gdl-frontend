@@ -36,10 +36,17 @@ export const PAGE_SIZE = 30;
 type Props = {|
   languageCode: string,
   languageName: string,
-  games: Games
+  games: Games,
+  languageHasGame: boolean,
+  languageHasBook: boolean
 |};
 
-const GameIndexPage = ({ languageCode, languageName }: Props) => (
+const GameIndexPage = ({
+  languageCode,
+  languageName,
+  languageHasBook,
+  languageHasGame
+}: Props) => (
   <QueryGameList language={languageCode} pageSize={PAGE_SIZE}>
     {({ loading, games, loadMore }) => (
       <GamePage
@@ -48,6 +55,8 @@ const GameIndexPage = ({ languageCode, languageName }: Props) => (
         languageName={languageName}
         loading={loading}
         loadMore={loadMore}
+        showGameButton={languageHasGame}
+        showBookButton={languageHasBook}
       />
     )}
   </QueryGameList>
@@ -77,6 +86,10 @@ GameIndexPage.getInitialProps = async ({
       query: LANGUAGE_SUPPORT_QUERY,
       variables: { language: languageCode }
     });
+
+    // Trying to show buttons for available content
+    const languageHasBook = langRes.data.languageSupport.includes('Book');
+    const languageHasGame = langRes.data.languageSupport.includes('Game');
 
     /**
      * Prefetch books only if language is valid to improve toggling performance in menu
@@ -134,7 +147,13 @@ GameIndexPage.getInitialProps = async ({
       data: { games }
     } = gameContentResult;
 
-    return { languageCode, languageName, games };
+    return {
+      languageCode,
+      languageName,
+      games,
+      languageHasBook,
+      languageHasGame
+    };
   } catch (error) {
     throwIfGraphql404(error);
     return { statusCode: 500 };
