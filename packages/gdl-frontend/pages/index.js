@@ -64,7 +64,7 @@ class IndexPage extends React.Component<Props> {
         variables: { language: languageCode }
       });
 
-      if (!langRes.data.languageSupport) {
+      if (!langRes.data.languageSupport.includes('Book')) {
         return { statusCode: 404 };
       }*/
 

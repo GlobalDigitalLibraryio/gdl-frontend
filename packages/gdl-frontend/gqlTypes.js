@@ -1,5 +1,3 @@
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -16,8 +14,6 @@ export type catgoryReadingLevels = {
 export type catgoryReadingLevelsVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -35,8 +31,6 @@ export type languages_languages = {
 export type languages = {
   languages: Array<languages_languages>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -91,8 +85,6 @@ export type BookListVariables = {
   readingLevel?: ?ReadingLevel,
   orderBy?: ?OrderBy,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -143,8 +135,6 @@ export type GameListVariables = {
   pageSize?: ?number,
   page?: ?number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -161,8 +151,6 @@ export type currentUser_currentUser = {
 export type currentUser = {
   currentUser: ?currentUser_currentUser
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -259,8 +247,6 @@ export type OfflineBook = {
 export type OfflineBookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -357,8 +343,6 @@ export type OfflineBooks = {
 export type OfflineBooksVariables = {
   ids: Array<string>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -444,8 +428,6 @@ export type book = {
 export type bookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -491,8 +473,6 @@ export type similar = {
 export type similarVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -537,8 +517,6 @@ export type ReadBook = {
 export type ReadBookVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -563,8 +541,6 @@ export type Chapter = {
 export type ChapterVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -658,8 +634,6 @@ export type CrowdinBookVariables = {
   bookId: string,
   toLanguage: string,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -710,8 +684,6 @@ export type TranslateBookVariables = {
   id: string,
   languageCode: string,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -763,8 +735,6 @@ export type BrowseBooksVariables = {
   pageSize?: ?number,
   page: number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -826,8 +796,6 @@ export type MyBookTranslations_currentUser = {
 export type MyBookTranslations = {
   currentUser: ?MyBookTranslations_currentUser
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -862,8 +830,6 @@ export type Favorites = {
 export type FavoritesVariables = {
   ids: Array<string>
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -905,8 +871,6 @@ export type game = {
 export type gameVariables = {
   id: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -916,14 +880,12 @@ export type gameVariables = {
 // ====================================================
 
 export type CheckLanguageSupport = {
-  languageSupport: boolean
+  languageSupport: Array<?ContentType>
 };
 
 export type CheckLanguageSupportVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -939,8 +901,6 @@ export type GetCategories = {
 export type GetCategoriesVariables = {
   language: string
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1254,8 +1214,6 @@ export type HomeContentVariables = {
   pageSize?: ?number,
   page?: ?number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1310,8 +1268,6 @@ export type SearchVariables = {
   pageSize?: ?number,
   page: number,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1400,8 +1356,6 @@ export type OfflinedBook = {
   translators: ?Array<OfflinedBook_translators>,
   photographers: ?Array<OfflinedBook_photographers>,
 };
-
-
 /* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
@@ -1442,9 +1396,7 @@ export type fields = {
   __typename: "ResultItemConnection",
   pageInfo: fields_pageInfo,
   results: Array<fields_results>,
-};
-
-/* @flow */
+};/* @flow */
 /* eslint-disable */
 // This file was automatically generated and should not be edited.
 
@@ -1476,6 +1428,11 @@ export type BookFormat = "HTML" | "PDF";
  * 
  */
 export type ChapterType = "Content" | "FrontPage";
+
+/**
+ * 
+ */
+export type ContentType = "Book" | "Game";
 
 //==============================================================
 // END Enums and Input Objects
