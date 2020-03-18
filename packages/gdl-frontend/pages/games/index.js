@@ -7,6 +7,9 @@
  */
 
 import React from 'react';
+import Router from 'next/router';
+import getConfig from 'next/config';
+
 import {
   LANGUAGE_SUPPORT_QUERY,
   LANGUAGES_QUERY,
@@ -24,7 +27,7 @@ import { throwIfGraphql404 } from '../../utils/errorHandler';
 import { AMOUNT_OF_ITEMS_PER_LEVEL } from '../../components/HomePage';
 import QueryGameList, { GET_GAMES_QUERY } from '../../gql/QueryGameList';
 
-import type { Context } from '../../types';
+import type { ConfigShape, Context } from '../../types';
 import type {
   GameList,
   GameList_games_results as Games,
@@ -32,6 +35,10 @@ import type {
 } from '../../gqlTypes';
 
 export const PAGE_SIZE = 30;
+
+const {
+  publicRuntimeConfig: { DEFAULT_LANGUAGE }
+}: ConfigShape = getConfig();
 
 type Props = {|
   languageCode: string,
@@ -146,6 +153,30 @@ GameIndexPage.getInitialProps = async ({
     const {
       data: { games }
     } = gameContentResult;
+
+    if (!languageHasGame && games.results.length === 0) {
+      // We have different ways of redirecting on the server and on the client...
+      // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      if (languageHasBook) {
+        const redirectUrlBooks = `/${languageCode}`;
+        if (res) {
+          // TODO: Finn ut hva som er forskjellen på denne og Router.push
+          res.writeHead(302, { Location: redirectUrlBooks });
+          res.end();
+        } else {
+          Router.push(redirectUrlBooks);
+        }
+      } else {
+        const redirectUrlDefault = `/${DEFAULT_LANGUAGE.code}`;
+        if (res) {
+          res.writeHead(302, { Location: redirectUrlDefault });
+          res.end();
+        } else {
+          Router.push(redirectUrlDefault);
+        }
+        return {};
+      }
+    }
 
     return {
       languageCode,

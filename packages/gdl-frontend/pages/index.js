@@ -66,9 +66,9 @@ class IndexPage extends React.Component<Props> {
         variables: { language: languageCode }
       });
 
-      if (!langRes.data.languageSupport.includes('Book')) {
-        return { statusCode: 404 };
-      }
+      // if (!langRes.data.languageSupport.includes('Book')) {
+      //   return { statusCode: 404 };
+      // }
 
       // Trying to show buttons for available content
       const languageHasBook = langRes.data.languageSupport.includes('Book');
@@ -81,22 +81,54 @@ class IndexPage extends React.Component<Props> {
         }
       });
 
+      console.log(
+        'språkkode, game, book:',
+        languageCode,
+        languageHasGame,
+        languageHasBook
+      );
+      console.log('res: ', res);
+
+      if (!languageHasBook && categoriesRes.data.categories.length === 0) {
+        // We have different ways of redirecting on the server and on the client...
+        // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+        if (languageHasGame) {
+          const redirectUrlGames = `/${languageCode}/games`;
+          if (res) {
+            // TODO: Finn ut hva som er forskjellen på denne og Router.push
+            res.writeHead(302, { Location: redirectUrlGames });
+            res.end();
+          } else {
+            Router.push(redirectUrlGames);
+          }
+        } else {
+          const redirectUrlDefault = `/${DEFAULT_LANGUAGE.code}`;
+          if (res) {
+            res.writeHead(302, { Location: redirectUrlDefault });
+            res.end();
+          } else {
+            Router.push(redirectUrlDefault);
+          }
+          return {};
+        }
+      }
+
       /**
        * Some valid languages does not have content and will eventually return empty categories.
        * Fallback/redirect to default language (english).
        */
-      if (categoriesRes.data.categories.length === 0) {
-        // We have different ways of redirecting on the server and on the client...
-        // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
-        const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
-        if (res) {
-          res.writeHead(302, { Location: redirectUrl });
-          res.end();
-        } else {
-          Router.push(redirectUrl);
-        }
-        return {};
-      }
+      // if (categoriesRes.data.categories.length === 0) {
+      //   // We have different ways of redirecting on the server and on the client...
+      //   // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
+      //   const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
+      //   if (res) {
+      //     res.writeHead(302, { Location: redirectUrl });
+      //     res.end();
+      //   } else {
+      //     Router.push(redirectUrl);
+      //   }
+      //   return {};
+      // }
       const categories = categoriesRes.data.categories;
       const categoryInCookie = getBookCategory(req);
 
