@@ -66,9 +66,9 @@ class IndexPage extends React.Component<Props> {
         variables: { language: languageCode }
       });
 
-      /* if (!langRes.data.languageSupport) {
+      if (!langRes.data.languageSupport.includes('Book')) {
         return { statusCode: 404 };
-      }*/
+      }
 
       // Trying to show buttons for available content
       const languageHasBook = langRes.data.languageSupport.includes('Book');

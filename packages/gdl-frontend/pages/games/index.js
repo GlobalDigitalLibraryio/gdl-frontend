@@ -95,7 +95,7 @@ GameIndexPage.getInitialProps = async ({
      * Prefetch books only if language is valid to improve toggling performance in menu
      * https://github.com/GlobalDigitalLibraryio/issues/issues/642
      */
-    if (langRes.data.languageSupport) {
+    if (langRes.data.languageSupport.includes('Book')) {
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
         variables: {
