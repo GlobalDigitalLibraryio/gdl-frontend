@@ -39,15 +39,21 @@ const styles = theme => ({
   }
 });
 
+type Props = {
+  classes: Object,
+  lang: string,
+  router: NextRouter,
+  showBookButton: boolean,
+  showGameButton: boolean
+};
+
 const SideMenuBar = ({
   classes,
   lang,
-  router: { pathname }
-}: {
-  classes: Object,
-  lang: string,
-  router: NextRouter
-}) => (
+  router: { pathname },
+  showBookButton,
+  showGameButton
+}: Props) => (
   <CategoryContext.Consumer>
     {({ setCategory }) => (
       <Drawer
@@ -62,33 +68,38 @@ const SideMenuBar = ({
             </ListItemIcon>
             <ListItemText primary="no" />
           </ListItem>
-          <Link route="books" params={{ lang }} passHref prefetch>
-            <ListItem
-              button
-              onClick={() => setCategory('books')}
-              selected={pathname === '/'}
-              className={classes.menuButton}
-            >
-              <ListItemIcon className={classes.icon}>
-                <LibraryBooks />
-              </ListItemIcon>
-              <ListItemText primary="Books" />
-            </ListItem>
-          </Link>
 
-          <Link route="games" params={{ lang }} passHref prefetch>
-            <ListItem
-              button
-              onClick={() => setCategory('games')}
-              selected={pathname === '/games'}
-              className={classes.menuButton}
-            >
-              <ListItemIcon className={classes.icon}>
-                <SportsEsports />
-              </ListItemIcon>
-              <ListItemText primary="Games" />
-            </ListItem>
-          </Link>
+          {showBookButton && (
+            <Link route="books" params={{ lang }} passHref prefetch>
+              <ListItem
+                button
+                onClick={() => setCategory('books')}
+                selected={pathname === '/'}
+                className={classes.menuButton}
+              >
+                <ListItemIcon className={classes.icon}>
+                  <LibraryBooks />
+                </ListItemIcon>
+                <ListItemText primary="Books" />
+              </ListItem>
+            </Link>
+          )}
+
+          {showGameButton && (
+            <Link route="games" params={{ lang }} passHref prefetch>
+              <ListItem
+                button
+                onClick={() => setCategory('games')}
+                selected={pathname === '/games'}
+                className={classes.menuButton}
+              >
+                <ListItemIcon className={classes.icon}>
+                  <SportsEsports />
+                </ListItemIcon>
+                <ListItemText primary="Games" />
+              </ListItem>
+            </Link>
+          )}
         </List>
       </Drawer>
     )}

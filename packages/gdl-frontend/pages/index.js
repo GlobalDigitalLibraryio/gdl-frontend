@@ -42,7 +42,9 @@ type Props = {|
   categories: Array<Category>,
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
-  homeContent: HomeContent
+  homeContent: HomeContent,
+  languageHasBook: boolean,
+  languageHasGame: boolean
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -59,14 +61,18 @@ class IndexPage extends React.Component<Props> {
       const siteLanguage = query.lang || getSiteLanguage(req);
 
       // Check if queried language is supported with content
-      /*const langRes = await apolloClient.query({
+      const langRes = await apolloClient.query({
         query: LANGUAGE_SUPPORT_QUERY,
         variables: { language: languageCode }
       });
 
-      if (!langRes.data.languageSupport.includes('Book')) {
-        return { statusCode: 404 };
-      }*/
+      // if (!langRes.data.languageSupport.includes('Book')) {
+      //   return { statusCode: 404 };
+      // }
+
+      // Check if lanugange has content of type Book and/or Game
+      const languageHasBook = langRes.data.languageSupport.includes('Book');
+      const languageHasGame = langRes.data.languageSupport.includes('Game');
 
       const categoriesRes: { data: Categories } = await apolloClient.query({
         query: CATEGORIES_QUERY,
@@ -77,20 +83,32 @@ class IndexPage extends React.Component<Props> {
 
       /**
        * Some valid languages does not have content and will eventually return empty categories.
-       * Fallback/redirect to default language (english).
+       * If the language has games/ interactive content but no books redirect to /games page.
+       * Else fallback/redirect to default language (english).
        */
-      if (categoriesRes.data.categories.length === 0) {
+      if (!languageHasBook && categoriesRes.data.categories.length === 0) {
         // We have different ways of redirecting on the server and on the client...
         // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
-        const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
-        if (res) {
-          res.writeHead(302, { Location: redirectUrl });
-          res.end();
+        if (languageHasGame) {
+          const redirectUrlGames = `/${languageCode}/games`;
+          if (res) {
+            res.writeHead(302, { Location: redirectUrlGames });
+            res.end();
+          } else {
+            Router.push(redirectUrlGames);
+          }
         } else {
-          Router.push(redirectUrl);
+          const redirectUrlDefault = `/${DEFAULT_LANGUAGE.code}`;
+          if (res) {
+            res.writeHead(302, { Location: redirectUrlDefault });
+            res.end();
+          } else {
+            Router.push(redirectUrlDefault);
+          }
+          return {};
         }
-        return {};
       }
+
       const categories = categoriesRes.data.categories;
       const categoryInCookie = getBookCategory(req);
 
@@ -146,7 +164,9 @@ class IndexPage extends React.Component<Props> {
         featuredContent: featuredContent,
         homeContent,
         // site languge from cookie
-        siteLanguage
+        siteLanguage,
+        languageHasBook,
+        languageHasGame
       };
     } catch (error) {
       throwIfGraphql404(error);
@@ -167,7 +187,9 @@ class IndexPage extends React.Component<Props> {
       category,
       featuredContent,
       categories,
-      languageCode
+      languageCode,
+      languageHasBook,
+      languageHasGame
     } = this.props;
 
     let categoryTypeForUrl;
@@ -197,6 +219,8 @@ class IndexPage extends React.Component<Props> {
           categories={categories}
           languageCode={languageCode}
           featuredContent={featuredContent}
+          showGameButton={languageHasGame}
+          showBookButton={languageHasBook}
         />
       </>
     );
