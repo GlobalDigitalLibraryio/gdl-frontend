@@ -43,8 +43,8 @@ type Props = {|
   languageCode: string,
   featuredContent: Array<FeaturedContent>,
   homeContent: HomeContent,
-  languageHasGame: boolean,
-  languageHasBook: boolean
+  languageHasBook: boolean,
+  languageHasGame: boolean
 |};
 
 class IndexPage extends React.Component<Props> {
@@ -70,7 +70,7 @@ class IndexPage extends React.Component<Props> {
       //   return { statusCode: 404 };
       // }
 
-      // Trying to show buttons for available content
+      // Check if lanugange has content of type Book and/or Game
       const languageHasBook = langRes.data.languageSupport.includes('Book');
       const languageHasGame = langRes.data.languageSupport.includes('Game');
 

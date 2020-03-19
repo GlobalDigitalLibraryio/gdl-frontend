@@ -96,9 +96,8 @@ type Props = {|
   featuredContent: Array<FeaturedContent>,
   categories: Array<Category>,
   category: Category,
-
-  showGameButton?: boolean,
-  showBookButton?: boolean
+  showBookButton?: boolean,
+  showGameButton?: boolean
 |};
 
 class HomePage extends React.Component<Props> {

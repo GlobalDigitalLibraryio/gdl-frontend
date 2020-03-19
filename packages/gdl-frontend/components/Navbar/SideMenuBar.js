@@ -43,16 +43,16 @@ type Props = {
   classes: Object,
   lang: string,
   router: NextRouter,
-  showGameButton: boolean,
-  showBookButton: boolean
+  showBookButton: boolean,
+  showGameButton: boolean
 };
 
 const SideMenuBar = ({
   classes,
   lang,
   router: { pathname },
-  showGameButton,
-  showBookButton
+  showBookButton,
+  showGameButton
 }: Props) => (
   <CategoryContext.Consumer>
     {({ setCategory }) => (

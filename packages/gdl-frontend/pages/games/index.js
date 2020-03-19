@@ -44,8 +44,8 @@ type Props = {|
   languageCode: string,
   languageName: string,
   games: Games,
-  languageHasGame: boolean,
-  languageHasBook: boolean
+  languageHasBook: boolean,
+  languageHasGame: boolean
 |};
 
 const GameIndexPage = ({
@@ -62,8 +62,8 @@ const GameIndexPage = ({
         languageName={languageName}
         loading={loading}
         loadMore={loadMore}
-        showGameButton={languageHasGame}
         showBookButton={languageHasBook}
+        showGameButton={languageHasGame}
       />
     )}
   </QueryGameList>
@@ -94,7 +94,7 @@ GameIndexPage.getInitialProps = async ({
       variables: { language: languageCode }
     });
 
-    // Trying to show buttons for available content
+    // Check if lanugange has content of type Book and/or Game
     const languageHasBook = langRes.data.languageSupport.includes('Book');
     const languageHasGame = langRes.data.languageSupport.includes('Game');
 
@@ -157,13 +157,17 @@ GameIndexPage.getInitialProps = async ({
       data: { games }
     } = gameContentResult;
 
+    /**
+     * Some valid languages does not have game/ interactive content
+     * If it has book content then the user will be redirected to the homepage for that language
+     * Fallback/redirect to default language (english).
+     */
     if (!languageHasGame && games.results.length === 0) {
       // We have different ways of redirecting on the server and on the client...
       // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
       if (languageHasBook) {
         const redirectUrlBooks = `/${languageCode}`;
         if (res) {
-          // TODO: Finn ut hva som er forskjellen på denne og Router.push
           res.writeHead(302, { Location: redirectUrlBooks });
           res.end();
         } else {

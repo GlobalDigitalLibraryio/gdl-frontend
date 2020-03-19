@@ -35,9 +35,8 @@ type Props = {|
   languageName: string,
   loading: boolean,
   loadMore: () => void,
-
-  showGameButton?: boolean,
-  showBookButton?: boolean
+  showBookButton?: boolean,
+  showGameButton?: boolean
 |};
 
 const GamePage = ({
@@ -52,9 +51,9 @@ const GamePage = ({
   <Layout wrapWithMain={false}>
     <Hidden only="desktop">
       <SideMenuBar
-        showGameButton={showGameButton}
-        showBookButton={showBookButton}
         lang={languageCode}
+        showBookButton={showBookButton}
+        showGameButton={showGameButton}
       />
     </Hidden>
     <SideMenuMargin>
