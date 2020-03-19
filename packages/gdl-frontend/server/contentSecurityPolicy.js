@@ -47,7 +47,7 @@ const directives = {
     googleAnalytics,
     'https://www.facebook.com'
   ],
-  frameSrc: ["'self'", 'https://crowdin.com', 'https://gdl.h5p.com'],
+  frameSrc: ["'self'", 'https://crowdin.com', 'https://*.h5p.com'],
   connectSrc: [
     "'self'",
     'https://*.digitallibrary.io',
