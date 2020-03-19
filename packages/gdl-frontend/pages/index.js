@@ -81,21 +81,17 @@ class IndexPage extends React.Component<Props> {
         }
       });
 
-      console.log(
-        'språkkode, game, book:',
-        languageCode,
-        languageHasGame,
-        languageHasBook
-      );
-      console.log('res: ', res);
-
+      /**
+       * Some valid languages does not have content and will eventually return empty categories.
+       * If the language has games/ interactive content but no books redirect to /games page.
+       * Else fallback/redirect to default language (english).
+       */
       if (!languageHasBook && categoriesRes.data.categories.length === 0) {
         // We have different ways of redirecting on the server and on the client...
         // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
         if (languageHasGame) {
           const redirectUrlGames = `/${languageCode}/games`;
           if (res) {
-            // TODO: Finn ut hva som er forskjellen på denne og Router.push
             res.writeHead(302, { Location: redirectUrlGames });
             res.end();
           } else {
@@ -113,22 +109,6 @@ class IndexPage extends React.Component<Props> {
         }
       }
 
-      /**
-       * Some valid languages does not have content and will eventually return empty categories.
-       * Fallback/redirect to default language (english).
-       */
-      // if (categoriesRes.data.categories.length === 0) {
-      //   // We have different ways of redirecting on the server and on the client...
-      //   // See https://github.com/zeit/next.js/wiki/Redirecting-in-%60getInitialProps%60
-      //   const redirectUrl = `/${DEFAULT_LANGUAGE.code}`;
-      //   if (res) {
-      //     res.writeHead(302, { Location: redirectUrl });
-      //     res.end();
-      //   } else {
-      //     Router.push(redirectUrl);
-      //   }
-      //   return {};
-      // }
       const categories = categoriesRes.data.categories;
       const categoryInCookie = getBookCategory(req);
 
