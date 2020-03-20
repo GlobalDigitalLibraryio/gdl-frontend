@@ -66,10 +66,6 @@ class IndexPage extends React.Component<Props> {
         variables: { language: languageCode }
       });
 
-      // if (!langRes.data.languageSupport.includes('Book')) {
-      //   return { statusCode: 404 };
-      // }
-
       // Check if lanugange has content of type Book and/or Game
       const languageHasBook = langRes.data.languageSupport.includes('Book');
       const languageHasGame = langRes.data.languageSupport.includes('Game');
