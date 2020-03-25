@@ -10,13 +10,18 @@ import * as React from 'react';
 import {
   Select,
   Button,
-  FormHelperText,
   InputLabel,
   FormControl,
-  TextField,
-  Typography
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  CardActions,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
 } from '@material-ui/core';
-import { Form, Field, FormSpy } from 'react-final-form';
 import {
   fetchLanguages,
   fetchFeaturedContent,
@@ -24,22 +29,25 @@ import {
   saveFeaturedContent,
   deleteFeaturedContent
 } from '../../lib/fetch';
-import UploadFileDialog from '../../components/UploadFileDialog';
-import FeaturedImage from '../../components/FeaturedImage';
 import Layout from '../../components/Layout';
-import Row from '../../components/Row';
 import Container from '../../components/Container';
-import isEmptyString from '../../lib/isEmptyString';
 import type { FeaturedContent, Language } from '../../types';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import FeaturedEdit from './featuredEdit';
+import FeatureAdd from './featuredAdd';
 
 type Props = {
   languages: Array<Language>
 };
 
 type State = {
-  featuredContent: ?FeaturedContent,
+  featuredContentList: Array<FeaturedContent>,
   selectedLanguage: string,
-  file: ?File
+  file: ?File,
+  openDeleteDialog: boolean,
+  placementOfSelectedContent: number,
+  selectedContent: null | FeaturedContent
 };
 
 export default class EditFeaturedContent extends React.Component<Props, State> {
@@ -52,26 +60,26 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   }
 
   state = {
-    featuredContent: null,
     selectedLanguage: '',
     croppedParameters: null,
-    file: null
+    file: null,
+    featuredContentList: [],
+    openDeleteDialog: false,
+    selectedContent: null,
+    placementOfSelectedContent: 0
   };
 
   getFeaturedContent = async (languageCode: string) => {
     const featuredContentRes = await fetchFeaturedContent(languageCode);
-    const featuredContent = featuredContentRes.isOk
-      ? featuredContentRes.data[0]
-      : null;
 
-    if (featuredContent) {
-      if (featuredContent.language.code !== languageCode) {
+    if (featuredContentRes.isOk && featuredContentRes.data[0]) {
+      if (featuredContentRes.data[0].language.code !== languageCode) {
         this.setState({
-          featuredContent: null
+          featuredContentList: []
         });
       } else {
         this.setState({
-          featuredContent: featuredContent
+          featuredContentList: featuredContentRes.data
         });
       }
     }
@@ -87,20 +95,29 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
       this.state.selectedLanguage
     );
     if (result.isOk) {
-      this.setState(prevState => ({
-        featuredContent: { ...prevState.featuredContent, id: result.data.id }
-      }));
+      this.setState(() => {
+        const featuredContentList = this.state.featuredContentList.map(item => {
+          if (item.id === content.id) {
+            return content;
+          } else {
+            return item;
+          }
+        });
+        return {
+          featuredContentList
+        };
+      });
     }
   };
-
-  handleSaveButtonClick = (defaultReturned: boolean) => (
-    content: FeaturedContent
-  ) => {
-    defaultReturned
-      ? this.postFeaturedContent(content)
-      : this.putFeaturedContent(content);
-
-    this.setState({ featuredContent: content });
+  postNewFeaturedContent = async (content: FeaturedContent) => {
+    console.log(content);
+    const result = await saveFeaturedContent(
+      content,
+      this.state.selectedLanguage
+    );
+    if (result.isOk) {
+      this.getFeaturedContent(this.state.selectedLanguage);
+    }
   };
 
   handleLanguageSelect = (event: SyntheticInputEvent<EventTarget>) => {
@@ -114,12 +131,32 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
   deleteFeaturedContent = async (id: number) => {
     await deleteFeaturedContent(id);
   };
+  handleCloseDeleteDialog = () => {
+    this.setState({
+      openDeleteDialog: false,
+      selectedContent: null
+    });
+  };
 
-  handleDelete = () => {
-    if (this.state.featuredContent) {
-      this.deleteFeaturedContent(this.state.featuredContent.id);
-      this.setState({ featuredContent: null });
-    }
+  handleOpenDeleteDialog = (content: FeaturedContent, i: number) => {
+    this.setState({
+      openDeleteDialog: true,
+      selectedContent: content,
+      placementOfSelectedContent: i
+    });
+  };
+  handleDelete = (id: number, index: number) => {
+    this.deleteFeaturedContent(this.state.featuredContentList[index].id);
+    this.setState(state => {
+      const featuredContentList = this.state.featuredContentList.filter(
+        item => item.id !== id
+      );
+      return {
+        featuredContentList,
+        openDeleteDialog: false,
+        selectedContent: null
+      };
+    });
   };
 
   handleOnUpload = (
@@ -139,18 +176,83 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
       file: event.target.files[0]
     });
   };
+  handleSaveButtonClick = (
+    defaultReturned: boolean,
+    content: FeaturedContent
+  ) => {
+    defaultReturned
+      ? this.postFeaturedContent(content)
+      : this.putFeaturedContent(content);
+
+    this.setState(() => {
+      const featuredContentList = this.state.featuredContentList.map(item => {
+        if (item.id === content.id) {
+          return content;
+        } else {
+          return item;
+        }
+      });
+      return {
+        featuredContentList
+      };
+    });
+  };
+
+  handleSaveButtonClickNew = (
+    defaultReturned: boolean,
+    content: FeaturedContent
+  ) => {
+    this.postNewFeaturedContent(content);
+  };
+
+  getDialog = () => {
+    if (this.state.selectedContent) {
+      const contentId = this.state.selectedContent.id;
+      return (
+        <Dialog
+          open={this.state.openDeleteDialog}
+          onClose={this.handleCloseDeleteDialog}
+          style={{ backgroundColor: 'rbga(0,0,0,0)' }}
+        >
+          <DialogContent>
+            <DialogTitle>
+              Do you want to delete {this.state.selectedContent.title} from
+              featured content?
+            </DialogTitle>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="secondary"
+              onClick={() =>
+                this.handleDelete(
+                  contentId,
+                  this.state.placementOfSelectedContent
+                )
+              }
+            >
+              Delete
+            </Button>
+            <Button color="primary" onClick={this.handleCloseDeleteDialog}>
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+      );
+    }
+  };
 
   render() {
-    const { featuredContent, selectedLanguage } = this.state;
+    const { selectedLanguage, featuredContentList } = this.state;
 
     // If the language of the featured content is different from what we expected to fetch, there is no featured content for that language. A request defaults to english if it does not exist.
     let defaultReturned = true;
     if (
-      featuredContent &&
-      featuredContent.language &&
-      featuredContent.language.code
+      featuredContentList[0] &&
+      featuredContentList[0].language &&
+      featuredContentList[0].language.code
     ) {
-      defaultReturned = featuredContent.language.code !== selectedLanguage;
+      defaultReturned =
+        featuredContentList[0].language.code !== selectedLanguage;
     }
 
     return (
@@ -180,168 +282,83 @@ export default class EditFeaturedContent extends React.Component<Props, State> {
               ;
             </Select>
           </FormControl>
-          <Form
-            initialValues={featuredContent || {}}
-            onSubmit={this.handleSaveButtonClick(defaultReturned)}
-            validate={handleValidate}
-            render={({ handleSubmit, pristine, invalid, form }) => (
-              <form>
-                <Field
-                  name="title"
-                  render={({ input, meta }) => (
-                    <TextField
-                      fullWidth
-                      error={meta.error && meta.touched}
-                      margin="normal"
-                      disabled={selectedLanguage === ''}
-                      label="Title"
-                      {...input}
-                    />
-                  )}
-                />
-                <Field
-                  name="description"
-                  render={({ input, meta }) => (
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      error={meta.error && meta.touched}
-                      disabled={selectedLanguage === ''}
-                      label="Description"
-                      {...input}
-                      multiline
-                    />
-                  )}
-                />
-                <Field
-                  name="link"
-                  render={({ input, meta }) => (
-                    <>
-                      <TextField
-                        fullWidth
-                        type="url"
-                        error={meta.error && meta.touched}
-                        margin="normal"
-                        disabled={selectedLanguage === ''}
-                        label="Link"
-                        {...input}
-                      />
-                      {meta.error && meta.touched && (
-                        <FormHelperText error>{meta.error}</FormHelperText>
-                      )}
-                    </>
-                  )}
-                />
 
-                <Row
-                  alignItems="center"
-                  gridTemplateColumns="auto min-content min-content"
+          {featuredContentList.length === 0 && selectedLanguage !== '' ? (
+            <p>
+              There is no featured content for the language{' '}
+              <b>{selectedLanguage}</b>
+            </p>
+          ) : null}
+          <div
+            css={css`
+              width: 100%;
+              margin-top: 24px;
+              margin-bottom: 24px;
+              display: grid;
+              grid-gap: 20px;
+              grid-template-columns: auto auto auto;
+              @media only screen and (max-width: 1231px) {
+                grid-template-columns: auto auto;
+              }
+            `}
+          >
+            {featuredContentList.map((content, i) => {
+              return (
+                <Card
+                  style={{ width: 296, height: 450, position: 'relative' }}
+                  key={content.id}
                 >
-                  <div>
-                    <Field
-                      name="imageUrl"
-                      render={({ input, meta }) => (
-                        <>
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            error={meta.error && meta.touched}
-                            type="url"
-                            disabled={selectedLanguage === ''}
-                            label="Image Url"
-                            {...input}
-                          />
-                          {meta.error && meta.touched && (
-                            <FormHelperText error>{meta.error}</FormHelperText>
-                          )}
-                        </>
-                      )}
-                    />
-                  </div>
-
-                  <span>or</span>
-
-                  <input
-                    disabled={this.state.selectedLanguage === ''}
-                    type="file"
-                    accept="image/*"
-                    value=""
-                    onChange={event => this.handleFileChosen(event)}
+                  <CardMedia
+                    style={{ height: 150 }}
+                    image={content.imageUrl}
+                    title={content.title}
                   />
-
-                  {this.state.file && (
-                    <UploadFileDialog
-                      language={selectedLanguage}
-                      selectedFile={this.state.file}
-                      objectURL={URL.createObjectURL(this.state.file)}
-                      onCancel={this.handleOnCancel}
-                      onUpload={url => this.handleOnUpload(url, form.change)}
+                  <CardContent>
+                    <h4>{content.title}</h4>
+                    <p>{content.description}</p>
+                  </CardContent>
+                  <CardActions
+                    style={{ position: 'absolute', bottom: 0, left: 0 }}
+                  >
+                    <FeaturedEdit
+                      button={<Button color="primary">Edit</Button>}
+                      featuredContentList={featuredContentList}
+                      selectedLanguage={selectedLanguage}
+                      i={i}
+                      defaultReturned={defaultReturned}
+                      handleSaveButtonClick={this.handleSaveButtonClick}
+                      handleFileChosen={this.handleFileChosen}
+                      handleOnCancel={this.handleOnCancel}
+                      file={this.state.file}
+                      handleOnUpload={this.handleOnUpload}
                     />
-                  )}
-                </Row>
 
-                <FormSpy
-                  // $FlowFixMe
-                  render={({ values }) =>
-                    // $FlowFixMe
-                    values.imageUrl ? (
-                      <FeaturedImage imageUrl={values.imageUrl} />
-                    ) : null
-                  }
-                />
-
-                <Button
-                  color="primary"
-                  disabled={invalid || pristine}
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Save changes
-                </Button>
-                <Button
-                  color="secondary"
-                  disabled={pristine}
-                  onClick={form.reset}
-                >
-                  Discard changes
-                </Button>
-                <Button
-                  color="secondary"
-                  disabled={
-                    selectedLanguage === '' || !featuredContent // We will disable the button if there is no selected language or if the language selection causes the default feature content to be returned
-                  }
-                  onClick={this.handleDelete}
-                >
-                  Delete featured content
-                </Button>
-              </form>
-            )}
-          />
+                    <Button
+                      color="primary"
+                      onClick={() => this.handleOpenDeleteDialog(content, i)}
+                    >
+                      Delete
+                    </Button>
+                  </CardActions>
+                </Card>
+              );
+            })}
+            {selectedLanguage !== ''
+              ? FeatureAdd(
+                  defaultReturned,
+                  this.handleSaveButtonClickNew,
+                  this.handleFileChosen,
+                  this.handleOnCancel,
+                  this.state.file,
+                  this.handleOnUpload,
+                  this.state.featuredContentList,
+                  this.state.selectedLanguage
+                )
+              : null}
+          </div>
+          {this.getDialog()}
         </Container>
       </Layout>
     );
   }
-}
-function handleValidate(values) {
-  const errors = {};
-
-  if (isEmptyString(values.title)) {
-    errors.title = 'Required';
-  }
-
-  if (isEmptyString(values.description)) {
-    errors.description = 'Required';
-  }
-
-  const regex = /http(s)?:\/\/.*/;
-  if (isEmptyString(values.link) || !values.link.match(regex)) {
-    errors.link = 'Must be a valid URL e.g "https://digitallibrary.io"';
-  }
-
-  if (isEmptyString(values.imageUrl) || !values.imageUrl.match(regex)) {
-    errors.imageUrl =
-      'Must be a valid URL image url e.g "https://images.digitallibrary.io/imageId.png';
-  }
-
-  return errors;
 }

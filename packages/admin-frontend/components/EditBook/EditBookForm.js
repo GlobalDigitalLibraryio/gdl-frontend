@@ -6,7 +6,8 @@ import {
   Button,
   TextField,
   Typography,
-  Select
+  Select,
+  Snackbar
 } from '@material-ui/core';
 import * as React from 'react';
 import Link from 'next/link';
@@ -20,14 +21,28 @@ import Container from '../Container';
 import Row from '../Row';
 import BookCover from './BookCover';
 
+import { saveFeaturedContent } from '../../lib/fetch';
+import type { FeaturedContent } from '../../types';
+import getConfig from 'next/config';
+
+const {
+  publicRuntimeConfig: { baseUrl }
+} = getConfig();
+
 const PUBLISHING_STATUS = ['PUBLISHED', 'FLAGGED', 'UNLISTED'];
 const PAGE_ORIENTATIONS = ['PORTRAIT', 'LANDSCAPE'];
 
 type Props = {
   book: BookDetails
 };
+type State = {
+  snackbarMessage: ?string
+};
 
-export default class EditBookForm extends React.Component<Props> {
+export default class EditBookForm extends React.Component<Props, State> {
+  state = {
+    snackbarMessage: null
+  };
   handleSubmit = (content: BookDetails) => {
     this.updateBook(content);
   };
@@ -43,8 +58,33 @@ export default class EditBookForm extends React.Component<Props> {
     }
   };
 
+  postNewFeaturedContent = async (content: FeaturedContent) => {
+    const result = await saveFeaturedContent(
+      content,
+      this.props.book.language.code
+    );
+    if (result.isOk) {
+      this.setState({
+        snackbarMessage: `${this.props.book.title} is added to featured content`
+      });
+    }
+  };
+
   render() {
     const book = this.props.book;
+    const { snackbarMessage } = this.state;
+    const content = {
+      id: 0,
+      title: book.title,
+      description: book.description,
+      language: book.language,
+      //default image (Grace in Space) if book does not have cover image
+      imageUrl:
+        book.coverImage !== undefined
+          ? book.coverImage.url
+          : 'https://res.cloudinary.com/dwqxoowxi/f_auto,q_auto/e7ad2d851664f1485743e157c46f7142',
+      link: `${baseUrl}/${book.language.code}/books/details/${book.id}`
+    };
     return (
       <Container>
         {' '}
@@ -150,7 +190,6 @@ export default class EditBookForm extends React.Component<Props> {
                     >
                       Discard changes
                     </Button>
-
                     <Button
                       color="primary"
                       onClick={handleSubmit}
@@ -161,10 +200,32 @@ export default class EditBookForm extends React.Component<Props> {
                     </Button>
                   </div>
                 </Row>
+                <Button
+                  disabled={!pristine}
+                  onClick={() => this.postNewFeaturedContent(content)}
+                >
+                  Add to featured content
+                </Button>
               </form>
             )}
           />
         </Row>
+        <Snackbar
+          autoHideDuration={3000}
+          open={Boolean(snackbarMessage)}
+          onClose={() => this.setState({ snackbarMessage: null })}
+          ContentProps={{
+            'aria-describedby': 'feature-content-snack-msg'
+          }}
+          message={
+            <span
+              data-cy="save-featured-content-snackbar"
+              id="save-featured-content-snackbar"
+            >
+              {snackbarMessage}
+            </span>
+          }
+        />
       </Container>
     );
   }

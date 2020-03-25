@@ -51,7 +51,6 @@ class App extends NextApp {
     }
 
     const userHasAuthToken = hasAuthToken(ctx.req);
-
     const userHasAdminPrivileges = hasClaim(claims.readAdmin, ctx.req);
 
     // If we have response object, set a proper HTTP status code

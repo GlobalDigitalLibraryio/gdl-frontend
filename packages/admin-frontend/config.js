@@ -46,6 +46,19 @@ const imageApiUrl = () => {
   }
 };
 
+const baseUrl = () => {
+  switch (GDL_ENVIRONMENT) {
+    case 'local':
+      return 'http://localhost:3000';
+    case 'dev':
+      return 'https://test.digitallibrary.io';
+    case 'prod':
+      return 'https://digitallibrary.io';
+    default:
+      return `https://${GDL_ENVIRONMENT}.digitallibrary.io`;
+  }
+};
+
 module.exports = {
   serverRuntimeConfig: {
     port: process.env.ADMIN_FRONTEND_PORT || 3010
@@ -53,6 +66,7 @@ module.exports = {
   publicRuntimeConfig: {
     imageApiUrl: imageApiUrl(),
     bookApiUrl: bookApiUrl(),
-    statisticsUrl: statisticsUrl()
+    statisticsUrl: statisticsUrl(),
+    baseUrl: baseUrl()
   }
 };
