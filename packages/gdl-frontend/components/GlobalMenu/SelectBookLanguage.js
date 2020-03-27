@@ -6,6 +6,7 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
+import Router from 'next/router';
 import { FormattedMessage } from 'react-intl';
 import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
@@ -65,6 +66,7 @@ class SelectBookLanguage extends React.Component<Props, State> {
   handleSelectLanguage = (language: Language) => {
     this.handleCloseMenu();
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
+    Router.push(`/${language.code}`);
   };
 
   handleShowMenu = () => {
