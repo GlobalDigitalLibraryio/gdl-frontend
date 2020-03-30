@@ -171,6 +171,7 @@ const Unesco = styled('div')`
   order: 3;
   flex-grow: 1;
   text-align: center;
+  padding-right: 15px;
   a:hover {
     fill: ${colors.default};
   }
@@ -194,9 +195,9 @@ const LinkList = styled('ul')`
   list-style: none;
   li {
     padding: 8px;
-    width: 50%;
+    width: 45%;
     ${media.tablet`
-      width: 50%;
+      width: 45%;
   `}
   }
   ${media.largerTablet`
@@ -204,6 +205,7 @@ const LinkList = styled('ul')`
       padding: 8px 0;
     }
     margin-left: 10px;
+    width: 33%;
   `}
 `;
 
@@ -227,7 +229,7 @@ const SocialMediaIcons = styled('div')`
   `};
   ${media.largerTablet`
     order: 4;
-    margin: 14px 0 14px 36px;
+    margin: 14px 0 14px 30px;
   `}
 `;
 
