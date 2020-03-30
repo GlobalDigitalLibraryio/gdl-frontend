@@ -20,6 +20,8 @@ import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
 
+const UNESCO_LOGO_URL = '/static/unesco.png';
+
 const {
   publicRuntimeConfig: { zendeskUrl }
 }: ConfigShape = getConfig();
@@ -45,6 +47,16 @@ const Footer = ({ online }) => {
               media.tablet({ display: 'none' })
             ]}
           />
+
+          <Unesco>
+            <a href="https://en.unesco.org/" aria-label="Unesco">
+              <img
+                src={UNESCO_LOGO_URL}
+                css={{ width: '150px' }}
+                alt="Unesco"
+              />
+            </a>
+          </Unesco>
 
           <LinkList>
             <li>
@@ -155,10 +167,26 @@ const FooterStyle = styled('div')`
   `}
 `;
 
+const Unesco = styled('div')`
+  order: 3;
+  flex-grow: 1;
+  text-align: center;
+  padding-right: 15px;
+  a:hover {
+    fill: ${colors.default};
+  }
+  ${media.tablet`
+    order: 1;
+  `};
+  ${media.largerTablet`
+    order: 1;
+  `}
+`;
+
 const LinkList = styled('ul')`
   display: flex;
   justify-content: space-between;
-  flex-grow: 3;
+  flex-grow: 2;
   flex-wrap: wrap;
   order: 2;
   font-size: 0.8rem;
@@ -167,16 +195,17 @@ const LinkList = styled('ul')`
   list-style: none;
   li {
     padding: 8px;
-    width: 50%;
+    width: 45%;
     ${media.tablet`
-      width: 33%;
+      width: 45%;
   `}
   }
   ${media.largerTablet`
     li {
       padding: 8px 0;
     }
-    margin-left: 0;
+    margin-left: 10px;
+    width: 33%;
   `}
 `;
 
@@ -200,12 +229,12 @@ const SocialMediaIcons = styled('div')`
   `};
   ${media.largerTablet`
     order: 4;
-    margin: 14px 0 14px 36px;
+    margin: 14px 0 14px 30px;
   `}
 `;
 
 const CreativeCommons = styled('div')`
-  order: 3;
+  order: 4;
   flex-grow: 1;
   text-align: center;
   a:hover {
