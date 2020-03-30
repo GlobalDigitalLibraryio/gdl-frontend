@@ -16,6 +16,7 @@ import { withOnlineStatusContext } from '../OnlineStatusContext';
 import { FacebookIcon, TwitterIcon, YoutubeIcon } from '../../components/icons';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
+import UnescoLogo from './unesco.png';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
@@ -45,6 +46,12 @@ const Footer = ({ online }) => {
               media.tablet({ display: 'none' })
             ]}
           />
+
+          <Unesco>
+            <a href="https://en.unesco.org/" aria-label="Unesco">
+              <img src={UnescoLogo} css={{ width: '150px' }} alt="Unesco" />
+            </a>
+          </Unesco>
 
           <LinkList>
             <li>
@@ -155,10 +162,25 @@ const FooterStyle = styled('div')`
   `}
 `;
 
+const Unesco = styled('div')`
+  order: 3;
+  flex-grow: 1;
+  text-align: center;
+  a:hover {
+    fill: ${colors.default};
+  }
+  ${media.tablet`
+    order: 1;
+  `};
+  ${media.largerTablet`
+    order: 1;
+  `}
+`;
+
 const LinkList = styled('ul')`
   display: flex;
   justify-content: space-between;
-  flex-grow: 3;
+  flex-grow: 2;
   flex-wrap: wrap;
   order: 2;
   font-size: 0.8rem;
@@ -169,14 +191,14 @@ const LinkList = styled('ul')`
     padding: 8px;
     width: 50%;
     ${media.tablet`
-      width: 33%;
+      width: 50%;
   `}
   }
   ${media.largerTablet`
     li {
       padding: 8px 0;
     }
-    margin-left: 0;
+    margin-left: 10px;
   `}
 `;
 
@@ -205,7 +227,7 @@ const SocialMediaIcons = styled('div')`
 `;
 
 const CreativeCommons = styled('div')`
-  order: 3;
+  order: 4;
   flex-grow: 1;
   text-align: center;
   a:hover {
