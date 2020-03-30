@@ -16,10 +16,11 @@ import { withOnlineStatusContext } from '../OnlineStatusContext';
 import { FacebookIcon, TwitterIcon, YoutubeIcon } from '../../components/icons';
 import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
-import UnescoLogo from './unesco.png';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 import { SIDE_DRAWER_WIDTH } from '../../style/constants';
+
+const UNESCO_LOGO_URL = '/static/unesco.png';
 
 const {
   publicRuntimeConfig: { zendeskUrl }
@@ -49,7 +50,11 @@ const Footer = ({ online }) => {
 
           <Unesco>
             <a href="https://en.unesco.org/" aria-label="Unesco">
-              <img src={UnescoLogo} css={{ width: '150px' }} alt="Unesco" />
+              <img
+                src={UNESCO_LOGO_URL}
+                css={{ width: '150px' }}
+                alt="Unesco"
+              />
             </a>
           </Unesco>
 
