@@ -37,7 +37,7 @@ const Reader = ({
   onRequestNextChapter,
   onRequestPreviousChapter,
   onRequestClose,
-  showToolbarIcons=true
+  showToolbarIcons = true
 }: Props) => {
   const isRtlLanguage = book.language.isRTL;
 

@@ -36,7 +36,10 @@ type Props = {
   showCanonicalChapterUrl: boolean
 };
 
-class Embed extends React.Component<Props, { current: ReadBook_book_chapters }> {
+class Embed extends React.Component<
+  Props,
+  { current: ReadBook_book_chapters }
+> {
   static async getInitialProps({ query, req, apolloClient }: Context) {
     const { data }: { data: ReadBook } = await apolloClient.query({
       query: BOOK_QUERY,
