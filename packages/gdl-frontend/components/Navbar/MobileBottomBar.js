@@ -41,6 +41,8 @@ const WrappedNavButton = ({
 type Props = {
   classes: Object,
   lang: string,
+  showBookButton: Boolean,
+  showGameButton: Boolean,
   router: NextRouter
 };
 
@@ -66,6 +68,8 @@ class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
     const {
       classes,
       lang,
+      showBookButton,
+      showGameButton,
       router: { pathname }
     } = this.props;
     const { trigger } = this.state;
@@ -84,25 +88,29 @@ class MobileBottomBar extends React.Component<Props, { trigger: ?boolean }> {
               showLabels
               className={classes.root}
             >
-              <WrappedNavButton
-                name="books"
-                label="Books"
-                onClick={() => setCategory('books')}
-                params={{ lang }}
-                value="/"
-              >
-                <LibraryBooks />
-              </WrappedNavButton>
+              {showBookButton && (
+                <WrappedNavButton
+                  name="books"
+                  label="Books"
+                  onClick={() => setCategory('books')}
+                  params={{ lang }}
+                  value="/"
+                >
+                  <LibraryBooks />
+                </WrappedNavButton>
+              )}
 
-              <WrappedNavButton
-                name="games"
-                label="Games"
-                onClick={() => setCategory('games')}
-                params={{ lang }}
-                value="/games"
-              >
-                <SportsEsports />
-              </WrappedNavButton>
+              {showGameButton && (
+                <WrappedNavButton
+                  name="games"
+                  label="Games"
+                  onClick={() => setCategory('games')}
+                  params={{ lang }}
+                  value="/games"
+                >
+                  <SportsEsports />
+                </WrappedNavButton>
+              )}
             </BottomNavigation>
           </Slide>
         )}
