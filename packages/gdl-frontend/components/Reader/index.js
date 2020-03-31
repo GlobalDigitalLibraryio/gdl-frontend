@@ -25,7 +25,8 @@ type Props = {|
   hasFrontPage?: boolean,
   chapterWithContent: ?(FrontPageType | ChapterContent),
   onRequestNextChapter(): void,
-  onRequestPreviousChapter(): void
+  onRequestPreviousChapter(): void,
+  showToolbarIcons?: boolean
 |};
 
 const Reader = ({
@@ -35,7 +36,8 @@ const Reader = ({
   chapterPointer,
   onRequestNextChapter,
   onRequestPreviousChapter,
-  onRequestClose
+  onRequestClose,
+  showToolbarIcons=true
 }: Props) => {
   const isRtlLanguage = book.language.isRTL;
 
@@ -47,6 +49,7 @@ const Reader = ({
           book={book}
           chapter={chapterPointer}
           onRequestClose={onRequestClose}
+          showToolbarIcons={showToolbarIcons}
         />
         {/*
             We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.
