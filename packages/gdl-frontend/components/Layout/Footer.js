@@ -162,9 +162,6 @@ const FooterStyle = styled('div')`
       text-decoration: underline;
     }
   }
-  ${media.largerTablet`
-    left: ${SIDE_DRAWER_WIDTH / 2}px;
-  `}
 `;
 
 const Unesco = styled('div')`
@@ -193,6 +190,7 @@ const LinkList = styled('ul')`
   padding: 0;
   margin-left: 28px;
   list-style: none;
+  width: 75%;
   li {
     padding: 8px;
     width: 45%;
@@ -200,9 +198,13 @@ const LinkList = styled('ul')`
       width: 45%;
   `}
   }
+  ${media.tablet`
+  width: 45%;
+`};
   ${media.largerTablet`
     li {
       padding: 8px 0;
+      width: 40%;
     }
     margin-left: 10px;
     width: 33%;
