@@ -181,7 +181,11 @@ class HomePage extends React.Component<Props> {
           </Main>
         </SideMenuMargin>
         <Hidden only="mobileAndTablet">
-          <MobileBottomBar lang={languageCode} />
+          <MobileBottomBar
+            lang={languageCode}
+            showBookButton={showBookButton}
+            showGameButton={showGameButton}
+          />
         </Hidden>
       </Layout>
     );

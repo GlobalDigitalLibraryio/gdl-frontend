@@ -115,7 +115,11 @@ const GamePage = ({
       </Main>
     </SideMenuMargin>
     <Hidden only="mobileAndTablet">
-      <MobileBottomBar lang={languageCode} />
+      <MobileBottomBar
+        lang={languageCode}
+        showBookButton={showBookButton}
+        showGameButton={showGameButton}
+      />
     </Hidden>
   </Layout>
 );
