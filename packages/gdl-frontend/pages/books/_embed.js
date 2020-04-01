@@ -143,7 +143,7 @@ class Embed extends React.Component<
   changeChapter = chapter => {
     this.setState({ current: chapter });
     Router.replaceRoute(
-      'read',
+      'embed',
       {
         id: this.props.book.bookId,
         lang: this.props.book.language.code,

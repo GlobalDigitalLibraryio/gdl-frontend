@@ -14,6 +14,7 @@ import Toolbar, { type Book } from './Toolbar';
 import Container from '../../elements/Container';
 import KeyDown from '../KeyDown';
 import PageNavigation from './PageNavigation';
+import EmbedPageNavigation from './EmbedPageNavigation';
 import { colors } from '../../style/theme';
 import { type CrowdinBook_crowdinBook_frontPage as FrontPageType } from '../../gqlTypes';
 import type { ChapterContent, ChapterPointer } from '../../types';
@@ -45,12 +46,28 @@ const Reader = ({
     <Container size="large" gutter={false}>
       <Backdrop />
       <Card>
+        {showToolbarIcons ? 
         <Toolbar
           book={book}
           chapter={chapterPointer}
           onRequestClose={onRequestClose}
           showToolbarIcons={showToolbarIcons}
-        />
+        /> :
+        
+        (<EmbedPageNavigation css={{ flex: 1 }}
+          isRtlLanguage={isRtlLanguage}
+          onRequestNextChapter={onRequestNextChapter}
+          onRequestPreviousChapter={onRequestPreviousChapter}
+          disableNext={chapterPointer.seqNo >= book.chapters.length}
+          disablePrevious={
+            hasFrontPage ? chapterPointer.seqNo <= 0 : chapterPointer.seqNo <= 1
+          }><Toolbar
+          book={book}
+          chapter={chapterPointer}
+          onRequestClose={onRequestClose}
+          showToolbarIcons={showToolbarIcons}
+        /></EmbedPageNavigation>
+          )}
         {/*
             We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.
           */}
