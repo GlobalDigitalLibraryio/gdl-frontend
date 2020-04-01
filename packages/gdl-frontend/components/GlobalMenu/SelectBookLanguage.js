@@ -6,7 +6,6 @@
  * See LICENSE
  */
 import React, { type Node } from 'react';
-import Router from 'next/router';
 import { FormattedMessage } from 'react-intl';
 import { SwipeableDrawer, Typography } from '@material-ui/core';
 import { Query } from 'react-apollo';
