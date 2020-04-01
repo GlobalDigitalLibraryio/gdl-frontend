@@ -113,7 +113,10 @@ class Export extends React.Component<{ languages: Array<Language> }, State> {
                 value={this.state.selectedLanguage}
                 onChange={this.handleLanguageChange}
               >
-                <option value="all">All</option>
+                <option value="" />
+                <option key="all" value="all">
+                  All
+                </option>
                 {this.props.languages.map(language => {
                   return (
                     <option key={language.code} value={language.code}>
