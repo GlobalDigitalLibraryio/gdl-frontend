@@ -46,28 +46,34 @@ const Reader = ({
     <Container size="large" gutter={false}>
       <Backdrop />
       <Card>
-        {showToolbarIcons ? 
-        <Toolbar
-          book={book}
-          chapter={chapterPointer}
-          onRequestClose={onRequestClose}
-          showToolbarIcons={showToolbarIcons}
-        /> :
-        
-        (<EmbedPageNavigation css={{ flex: 1 }}
-          isRtlLanguage={isRtlLanguage}
-          onRequestNextChapter={onRequestNextChapter}
-          onRequestPreviousChapter={onRequestPreviousChapter}
-          disableNext={chapterPointer.seqNo >= book.chapters.length}
-          disablePrevious={
-            hasFrontPage ? chapterPointer.seqNo <= 0 : chapterPointer.seqNo <= 1
-          }><Toolbar
-          book={book}
-          chapter={chapterPointer}
-          onRequestClose={onRequestClose}
-          showToolbarIcons={showToolbarIcons}
-        /></EmbedPageNavigation>
-          )}
+        {showToolbarIcons ? (
+          <Toolbar
+            book={book}
+            chapter={chapterPointer}
+            onRequestClose={onRequestClose}
+            showToolbarIcons={showToolbarIcons}
+          />
+        ) : (
+          <EmbedPageNavigation
+            css={{ flex: 1 }}
+            isRtlLanguage={isRtlLanguage}
+            onRequestNextChapter={onRequestNextChapter}
+            onRequestPreviousChapter={onRequestPreviousChapter}
+            disableNext={chapterPointer.seqNo >= book.chapters.length}
+            disablePrevious={
+              hasFrontPage
+                ? chapterPointer.seqNo <= 0
+                : chapterPointer.seqNo <= 1
+            }
+          >
+            <Toolbar
+              book={book}
+              chapter={chapterPointer}
+              onRequestClose={onRequestClose}
+              showToolbarIcons={showToolbarIcons}
+            />
+          </EmbedPageNavigation>
+        )}
         {/*
             We don't want the swiping/touch presses to trigger on the toolbar. So wrap PageNavigation around the content here instead of around the entire Card.
           */}

@@ -28,12 +28,7 @@ type Props = {
   children?: React.Node
 };
 
-export default class EmbedPageNavigation extends React.Component<
-  Props
-> {
-
-
-
+export default class EmbedPageNavigation extends React.Component<Props> {
   onTap = (event: SyntheticTouchEvent<HTMLElement>) => {
     // If we clicked a button, ignore the tap
     // $FlowFixMe: Not sure why Flow complains here
@@ -153,7 +148,7 @@ const Button = styled('button')`
   position: fixed;
   top: 0;
   z-index: 3;
-  background: none; 
+  background: none;
   display: flex;
   align-items: center;
   justify-content: center;
