@@ -19,7 +19,7 @@ import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 function linkProps(language, category) {
   return {
-    route: category,
+    route: 'books',
     params: { lang: language.code }
   };
 }
@@ -66,7 +66,6 @@ class SelectBookLanguage extends React.Component<Props, State> {
   handleSelectLanguage = (language: Language) => {
     this.handleCloseMenu();
     this.props.onSelectLanguage && this.props.onSelectLanguage(language);
-    Router.push(`/${language.code}`);
   };
 
   handleShowMenu = () => {
