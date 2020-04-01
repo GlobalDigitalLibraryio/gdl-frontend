@@ -18,7 +18,6 @@ import Container from '../../elements/Container';
 import CCLogo from './cc-logo.svg';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
-import { SIDE_DRAWER_WIDTH } from '../../style/constants';
 
 const UNESCO_LOGO_URL = '/static/unesco.png';
 
