@@ -18,7 +18,7 @@ import { GdlI18nConsumer } from '../GdlI18nProvider';
 
 function linkProps(language, category) {
   return {
-    route: category,
+    route: 'books',
     params: { lang: language.code }
   };
 }
