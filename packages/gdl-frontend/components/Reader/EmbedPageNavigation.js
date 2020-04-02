@@ -144,16 +144,18 @@ const NavigationButtons = injectIntl(
 );
 
 const Button = styled('button')`
-  color: ${colors.text.subtle};
-  position: fixed;
-  top: 0;
   z-index: 3;
-  background: none;
+  color: ${colors.text.subtle};
+  position: absolute;
+  top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   border-style: none;
+  background: none;
   ${media.tablet`
+    opacity: 1 !important;
+    background: none; 
     
     &:hover, &:focus {
       background: rgba(0,0,0,0.1);
