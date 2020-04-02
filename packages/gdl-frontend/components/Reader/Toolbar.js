@@ -31,14 +31,14 @@ type Props = {
   onRequestClose(): void,
   book: Book,
   chapter: $ReadOnly<{ chapterId: number, seqNo: number }>,
-  showToolbarIcons?: boolean
+  isEmbedPage?: boolean
 };
 
 const Toolbar = ({
   book,
   chapter,
   onRequestClose,
-  showToolbarIcons = true
+  isEmbedPage = false
 }: Props) => (
   <Div>
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
@@ -66,7 +66,7 @@ const Toolbar = ({
           )
         }
       </QueryIsAdmin>
-      {showToolbarIcons && (
+      {!isEmbedPage && (
         <>
           <FavButton book={book} />
           <IconButton onClick={onRequestClose}>

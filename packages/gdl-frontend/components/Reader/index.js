@@ -27,7 +27,7 @@ type Props = {|
   chapterWithContent: ?(FrontPageType | ChapterContent),
   onRequestNextChapter(): void,
   onRequestPreviousChapter(): void,
-  showToolbarIcons?: boolean
+  isEmbedPage?: boolean
 |};
 
 const Reader = ({
@@ -38,7 +38,7 @@ const Reader = ({
   onRequestNextChapter,
   onRequestPreviousChapter,
   onRequestClose,
-  showToolbarIcons = true
+  isEmbedPage = false
 }: Props) => {
   const isRtlLanguage = book.language.isRTL;
 
@@ -46,16 +46,15 @@ const Reader = ({
     <Container size="large" gutter={false}>
       <Backdrop />
       <Card>
-        {showToolbarIcons ? (
+        {!isEmbedPage ? (
           <Toolbar
             book={book}
             chapter={chapterPointer}
             onRequestClose={onRequestClose}
-            showToolbarIcons={showToolbarIcons}
+            isEmbedPage={isEmbedPage}
           />
         ) : (
           <EmbedPageNavigation
-            css={{ flex: 1 }}
             isRtlLanguage={isRtlLanguage}
             onRequestNextChapter={onRequestNextChapter}
             onRequestPreviousChapter={onRequestPreviousChapter}
@@ -70,7 +69,7 @@ const Reader = ({
               book={book}
               chapter={chapterPointer}
               onRequestClose={onRequestClose}
-              showToolbarIcons={showToolbarIcons}
+              isEmbedPage={isEmbedPage}
             />
           </EmbedPageNavigation>
         )}

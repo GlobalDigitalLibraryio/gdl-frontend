@@ -222,7 +222,7 @@ class Embed extends React.Component<
               onRequestNextChapter={this.handleNextChapter}
               onRequestPreviousChapter={this.handlePreviousChapter}
               onRequestClose={this.handleCloseBook}
-              showToolbarIcons={false}
+              isEmbedPage={true}
             />
           )}
         </Query>

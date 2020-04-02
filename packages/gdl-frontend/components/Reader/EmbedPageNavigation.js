@@ -124,7 +124,7 @@ const NavigationButtons = injectIntl(
             : intl.formatMessage(navigationTranslations.previous)
         }
       >
-        <KeyboardArrowLeftIcon style={{ fontSize: 50 }} />
+        <KeyboardArrowLeftIcon style={{ fontSize: 45 }} />
       </Button>
       <Button
         style={{ right: 0 }}
@@ -137,7 +137,7 @@ const NavigationButtons = injectIntl(
             : intl.formatMessage(navigationTranslations.next)
         }
       >
-        <KeyboardArrowRightIcon style={{ fontSize: 50 }} />
+        <KeyboardArrowRightIcon style={{ fontSize: 45 }} />
       </Button>
     </>
   )
