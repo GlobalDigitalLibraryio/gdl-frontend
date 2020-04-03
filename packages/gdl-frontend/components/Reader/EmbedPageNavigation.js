@@ -14,7 +14,6 @@ import { injectIntl, defineMessages } from 'react-intl';
 import Swipeable from 'react-swipeable';
 import styled from '@emotion/styled';
 
-import KeyDown from '../KeyDown';
 import { colors } from '../../style/theme';
 import media from '../../style/media';
 
@@ -57,35 +56,26 @@ export default class EmbedPageNavigation extends React.Component<Props> {
       disablePrevious = this.props.disableNext;
     }
 
+    /**
+     * It is important that Swipable includes the Buttons,
+     * so we can start swiping all the way from edge of the screens
+     */
     return (
-      <>
-        {/* It is important that Swipable includes the Buttons, so we can start swiping all the way from edge of the screens */}
-        <Swipeable
-          className={className}
-          onSwipedLeft={onRequestNextChapter}
-          onSwipedRight={onRequestPreviousChapter}
-          onTap={this.onTap}
-        >
-          {this.props.children}
-          <NavigationButtons
-            onRequestNextChapter={onRequestNextChapter}
-            onRequestPreviousChapter={onRequestPreviousChapter}
-            disableNext={disableNext}
-            disablePrevious={disablePrevious}
-            isRtlLanguage={isRtlLanguage}
-          />
-        </Swipeable>
-        <KeyDown
-          when="ArrowRight"
-          then={onRequestNextChapter}
-          disabled={disableNext}
+      <Swipeable
+        className={className}
+        onSwipedLeft={onRequestNextChapter}
+        onSwipedRight={onRequestPreviousChapter}
+        onTap={this.onTap}
+      >
+        {this.props.children}
+        <NavigationButtons
+          onRequestNextChapter={onRequestNextChapter}
+          onRequestPreviousChapter={onRequestPreviousChapter}
+          disableNext={disableNext}
+          disablePrevious={disablePrevious}
+          isRtlLanguage={isRtlLanguage}
         />
-        <KeyDown
-          when="ArrowLeft"
-          then={onRequestPreviousChapter}
-          disabled={disablePrevious}
-        />
-      </>
+      </Swipeable>
     );
   }
 }
