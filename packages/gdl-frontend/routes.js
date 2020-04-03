@@ -68,4 +68,11 @@ routes.add(
   'books/_read'
 );
 
+// Embed book for freelearning.io
+routes.add(
+  'embed',
+  `/${langParam}/books/embed/:id(\\d+)/:chapterId(\\d+)?`,
+  'books/_embed'
+);
+
 module.exports = routes;

@@ -26,13 +26,20 @@ export type Book = $ReadOnly<{
   title: string,
   chapters: $ReadOnlyArray<any>
 }>;
+
 type Props = {
   onRequestClose(): void,
   book: Book,
-  chapter: $ReadOnly<{ chapterId: number, seqNo: number }>
+  chapter: $ReadOnly<{ chapterId: number, seqNo: number }>,
+  isEmbedPage?: boolean
 };
 
-const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
+const Toolbar = ({
+  book,
+  chapter,
+  onRequestClose,
+  isEmbedPage = false
+}: Props) => (
   <Div>
     {/* Create single string for page / of x. Reads better in screen readers. Otherwise each thing is on a new line */}
     <div data-cy="read-book-chapter-index">{`${chapter.seqNo} / ${
@@ -59,13 +66,17 @@ const Toolbar = ({ book, chapter, onRequestClose }: Props) => (
           )
         }
       </QueryIsAdmin>
-      <FavButton book={book} />
-      <IconButton onClick={onRequestClose}>
-        <CloseIcon data-cy="read-book-close-button" />
-        <SrOnly>
-          <FormattedMessage id="Close book" defaultMessage="Close book" />
-        </SrOnly>
-      </IconButton>
+      {!isEmbedPage && (
+        <>
+          <FavButton book={book} />
+          <IconButton onClick={onRequestClose}>
+            <CloseIcon data-cy="read-book-close-button" />
+            <SrOnly>
+              <FormattedMessage id="Close book" defaultMessage="Close book" />
+            </SrOnly>
+          </IconButton>
+        </>
+      )}
     </Buttons>
   </Div>
 );
