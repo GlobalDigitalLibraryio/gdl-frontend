@@ -67,6 +67,14 @@ const Footer = ({ online }) => {
               </a>
             </li>
             <li>
+              <a href="https://home.digitallibrary.io/accessibility/">
+                <FormattedMessage
+                  id="Accessibility"
+                  defaultMessage="Accessibility"
+                />
+              </a>
+            </li>
+            <li>
               <a href="https://home.digitallibrary.io/privacy/">
                 <FormattedMessage
                   id="Privacy policy"
