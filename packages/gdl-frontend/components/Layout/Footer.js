@@ -59,10 +59,10 @@ const Footer = ({ online }) => {
 
           <LinkList>
             <li>
-              <a href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
+              <a href="https://home.digitallibrary.io/cc/">
                 <FormattedMessage
-                  id="Cookie policy"
-                  defaultMessage="Cookie policy"
+                  id="Licensing and reuse"
+                  defaultMessage="Licensing and reuse"
                 />
               </a>
             </li>
@@ -75,26 +75,18 @@ const Footer = ({ online }) => {
               </a>
             </li>
             <li>
+              <a href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
+                <FormattedMessage
+                  id="Cookie policy"
+                  defaultMessage="Cookie policy"
+                />
+              </a>
+            </li>
+            <li>
               <a href="https://home.digitallibrary.io/privacy/">
                 <FormattedMessage
                   id="Privacy policy"
                   defaultMessage="Privacy policy"
-                />
-              </a>
-            </li>
-            <li>
-              <a href="https://home.digitallibrary.io/cc/">
-                <FormattedMessage
-                  id="Licensing and reuse"
-                  defaultMessage="Licensing and reuse"
-                />
-              </a>
-            </li>
-            <li>
-              <a href={zendeskUrl}>
-                <FormattedMessage
-                  id="Report issues"
-                  defaultMessage="Report issues"
                 />
               </a>
             </li>
@@ -106,6 +98,14 @@ const Footer = ({ online }) => {
             <li>
               <a href="https://blog.digitallibrary.io/">
                 <FormattedMessage id="Blog" defaultMessage="Blog" />
+              </a>
+            </li>
+            <li>
+              <a href={zendeskUrl}>
+                <FormattedMessage
+                  id="Report issues"
+                  defaultMessage="Report issues"
+                />
               </a>
             </li>
           </LinkList>
