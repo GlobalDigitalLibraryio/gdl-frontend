@@ -59,6 +59,22 @@ const Footer = ({ online }) => {
 
           <LinkList>
             <li>
+              <a href="https://home.digitallibrary.io/cc/">
+                <FormattedMessage
+                  id="Licensing and reuse"
+                  defaultMessage="Licensing and reuse"
+                />
+              </a>
+            </li>
+            <li>
+              <a href="https://home.digitallibrary.io/accessibility/">
+                <FormattedMessage
+                  id="Accessibility"
+                  defaultMessage="Accessibility"
+                />
+              </a>
+            </li>
+            <li>
               <a href="https://home.digitallibrary.io/the-global-digital-library-uses-cookies/">
                 <FormattedMessage
                   id="Cookie policy"
@@ -75,11 +91,13 @@ const Footer = ({ online }) => {
               </a>
             </li>
             <li>
-              <a href="https://home.digitallibrary.io/cc/">
-                <FormattedMessage
-                  id="Licensing and reuse"
-                  defaultMessage="Licensing and reuse"
-                />
+              <a href="https://home.digitallibrary.io/about/">
+                <FormattedMessage id="About" defaultMessage="About" />
+              </a>
+            </li>
+            <li>
+              <a href="https://blog.digitallibrary.io/">
+                <FormattedMessage id="Blog" defaultMessage="Blog" />
               </a>
             </li>
             <li>
@@ -88,16 +106,6 @@ const Footer = ({ online }) => {
                   id="Report issues"
                   defaultMessage="Report issues"
                 />
-              </a>
-            </li>
-            <li>
-              <a href="https://home.digitallibrary.io/about/">
-                <FormattedMessage id="About" defaultMessage="About" />
-              </a>
-            </li>
-            <li>
-              <a href="https://blog.digitallibrary.io/">
-                <FormattedMessage id="Blog" defaultMessage="Blog" />
               </a>
             </li>
           </LinkList>
