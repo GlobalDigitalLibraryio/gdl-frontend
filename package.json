@@ -96,7 +96,7 @@
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "3.0.8",
     "downshift": "2.0.10",
-    "express": "4.16.4",
+    "express": "4.17.3",
     "express-request-language": "^1.1.15",
     "extract-react-intl-messages": "^1.0.1",
     "facepaint": "1.2.1",
